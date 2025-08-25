@@ -1,52 +1,87 @@
-import { useEffect, useRef, useState } from "react";
-import { SpaceLayout } from "./SpaceLayout";
-import Box from "@mui/material/Box";
+import React, { useEffect, useRef, useState } from "react";
+import {
+  Box,
+  Grid,
+  Skeleton,
+  TablePagination,
+  Pagination,
+} from "@mui/material";
 import { Trans } from "react-i18next";
+import { useSearchParams } from "react-router-dom";
 import Title from "@common/Title";
 import QueryData from "@common/QueryData";
-import ErrorEmptyData from "@common/errors/ErrorEmptyData";
 import useDialog from "@utils/useDialog";
 import CreateSpaceDialog from "./CreateSpaceDialog";
 import { SpacesList } from "./SpaceList";
 import { useServiceContext } from "@providers/ServiceProvider";
-import Skeleton from "@mui/material/Skeleton";
-import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
-import { ToolbarCreateItemBtn } from "@common/buttons/ToolbarCreateItemBtn";
-import CreateNewFolderOutlinedIcon from "@mui/icons-material/CreateNewFolderOutlined";
-import SpaceEmptyStateSVG from "@assets/svg/spaceEmptyState.svg";
-import AddRoundedIcon from "@mui/icons-material/AddRounded";
-import { styles, animations } from "@styles";
-import Pagination from "@mui/material/Pagination";
-import Stack from "@mui/material/Stack";
-import { useNavigate, useParams } from "react-router-dom";
 import { ICustomError } from "@utils/CustomError";
-import showToast from "@utils/toastError";
+import toastError from "@utils/toastError";
+import CreateNewFolderRoundedIcon from "@mui/icons-material/CreateNewFolderRounded";
+import NewAssessmentIcon from "@/assets/icons/newAssessment";
+import ExpandableSection from "../common/buttons/ExpandableSection";
+import { useAuthContext } from "@providers/AuthProvider";
+import AssessmentCEFromDialog from "../assessments/AssessmentCEFromDialog";
+import AssessmenetInfoDialog from "../assessments/AssessmenetInfoDialog";
+import { useFetchAssessments } from "../assessments/AssessmentContainer";
+import { t } from "i18next";
+import { AssessmentsList } from "../assessments/AssessmentList";
+import LoadingAssessmentCards from "../common/loadings/LoadingAssessmentCards";
+import EmptyState from "../kit-designer/common/EmptyState";
+import uniqueId from "@/utils/uniqueId";
 
 const SpaceContainer = () => {
   const dialogProps = useDialog();
-  const navigate = useNavigate();
-  const { page } = useParams();
-  const pageNumber = Number(page);
-  const { fetchSpace, ...rest } = useFetchSpace();
-  const { data, size, total, allowCreateBasic } = rest;
+  const assessmentDialogProps = useDialog();
+  const infoDialogProps = useDialog();
+  const { currentSpace } = useAuthContext();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const assessmentPage = Number(searchParams.get("assessmentPage") ?? 1);
+  const { userInfo: { defaultSpaceId } } = useAuthContext()
+  const [rowsPerPage, setRowsPerPage] = useState<number>(6);
+  const [page, setPage] = useState<number>(0);
 
-  const handleChangePage = (
-    event: React.ChangeEvent<unknown>,
-    value: number,
-  ) => {
-    if (
-      Math.ceil(total / size) > Number(page) ||
-      Math.ceil(total / size) == Number(page)
-    ) {
-      navigate(`/spaces/${value}`);
-    }
+  const {
+    data: spaceData,
+    total: spaceTotal,
+    loading: spaceLoading,
+    error: spaceError,
+    errorObject: spaceErrorObject,
+    allowCreateBasic,
+    fetchSpace,
+  } = useFetchSpace(page, rowsPerPage);
+
+  const {
+    data: assessments,
+    total: assessmentsTotal,
+    loading: assessmentsLoading,
+    error: assessmentsError,
+    errorObject: assessmentsErrorObject,
+    deleteAssessment,
+    fetchAssessments,
+  } = useFetchAssessments(assessmentPage - 1, defaultSpaceId);
+
+  const handleChangePage = (_: unknown, newPage: number) => {
+    setPage(newPage);
   };
 
-  const pageCount = size === 0 ? 1 : Math.ceil(total / size);
-  if (Math.ceil(total / size) < Number(page) && pageCount) {
-    navigate(`/spaces/${pageCount}`);
-  }
+  const handleChangeRowsPerPage = (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    const newSize = parseInt(event.target.value, 10);
+    setRowsPerPage(newSize);
+    setPage(0);
+  };
+
+  const handleAssessmentPagination = (
+    _: React.ChangeEvent<unknown>,
+    newPage: number,
+  ) => {
+    setSearchParams((prev) => {
+      const updated = new URLSearchParams(prev);
+      updated.set("assessmentPage", newPage.toString());
+      return updated;
+    });
+  };
 
   useEffect(() => {
     if (window.location.hash === "#createSpace") {
@@ -55,7 +90,7 @@ const SpaceContainer = () => {
     }
   }, []);
 
-  const handleOpenDialog = () => {
+  const handleAddNewSpace = () => {
     dialogProps.openDialog({ type: "create" });
     window.location.hash = "#createSpace";
   };
@@ -65,136 +100,141 @@ const SpaceContainer = () => {
     window.location.hash = "";
   };
 
+  const handleAddNewAssessment = () => {
+    assessmentDialogProps.openDialog({
+      type: "create",
+      data: {
+        space: {
+          id: currentSpace?.id,
+          title: currentSpace?.title,
+        },
+      },
+    });
+  };
+
   return (
-    <SpaceLayout
-      title={
-        <Box sx={{ ...styles.centerVH, mb: "40px" }}>
-          <Title
-            borderBottom={true}
-            size="large"
-            sx={{ width: "100%" }}
-            toolbarProps={{ whiteSpace: "nowrap" }}
-            toolbar={
-              data?.length !== 0 ? (
-                <ToolbarCreateItemBtn
-                  icon={
-                    <CreateNewFolderOutlinedIcon
-                      sx={{ marginInlineStart: 1, marginInlineEnd: 0 }}
-                    />
+    <Box pt={2}>
+      <Title borderBottom size="large">
+        <Trans i18nKey="assessment.myAssessments" />
+      </Title>
+
+      {/* Workspaces Section */}
+      <ExpandableSection
+        title={t("spaces.workSpaces")}
+        endButtonText={t("spaces.newSpace") ?? ""}
+        onEndButtonClick={spaceData.length ? handleAddNewSpace : undefined}
+        endButtonIcon={<CreateNewFolderRoundedIcon />}
+      >
+        <QueryData
+          data={spaceData}
+          loading={spaceLoading}
+          error={spaceError}
+          errorObject={spaceErrorObject}
+          loaded={!spaceLoading && !!spaceData}
+          renderLoading={() => (
+            <Grid container spacing={3}>
+              {[...Array(6)].map((_, i) => (
+                <Grid item xs={12} sm={6} md={4} key={uniqueId()}>
+                  <Skeleton
+                    variant="rectangular"
+                    sx={{ borderRadius: 2, height: "60px", mb: 1 }}
+                  />
+                </Grid>
+              ))}
+            </Grid>
+          )}
+          render={(data) =>
+            data.length === 0 ? (
+              <EmptyState
+                btnTitle="spaces.newSpace"
+                title="spaces.noSpaceHere"
+                SubTitle="spaces.noSpacesHereDesc"
+                onAddNewRow={handleAddNewSpace}
+              />
+            ) : (
+              <>
+                <SpacesList
+                  dialogProps={dialogProps}
+                  data={data}
+                  fetchSpaces={fetchSpace}
+                />
+                <TablePagination
+                  sx={{ mt: 2 }}
+                  component="div"
+                  count={spaceTotal}
+                  page={page}
+                  onPageChange={handleChangePage}
+                  rowsPerPage={rowsPerPage}
+                  onRowsPerPageChange={handleChangeRowsPerPage}
+                  rowsPerPageOptions={[6, 12, 24, 48]}
+                  labelRowsPerPage={t("common.rowsPerPage")}
+                  labelDisplayedRows={({ from, to, count }) =>
+                    `${from}-${to}  ${t("common.of")} ${
+                      count !== -1 ? count : `${t("common.moreThan")} ${to}`
+                    }`
                   }
-                  onClick={handleOpenDialog}
-                  shouldAnimate={data?.length === 0}
-                  text="spaces.newSpace"
+                />
+              </>
+            )
+          }
+        />
+      </ExpandableSection>
+
+      {/* Assessments Section */}
+      <ExpandableSection
+        title={t("assessment.assessments")}
+        endButtonText={t("assessment.newAssessment") ?? ""}
+        onEndButtonClick={
+          assessments.length ? handleAddNewAssessment : undefined
+        }
+        endButtonIcon={<NewAssessmentIcon width={20} />}
+        sx={{ mt: 4 }}
+      >
+        <QueryData
+          data={assessments}
+          loading={assessmentsLoading}
+          error={assessmentsError}
+          errorObject={assessmentsErrorObject}
+          loaded={!assessmentsLoading && !!assessments}
+          renderLoading={() => <LoadingAssessmentCards />}
+          render={(data) => (
+            <>
+              {!data.length ? (
+                <EmptyState
+                  btnTitle="assessment.newAssessment"
+                  title="assessment.noAssesmentHere"
+                  SubTitle="assessment.createAnAssessmentWith"
+                  onAddNewRow={handleAddNewAssessment}
                 />
               ) : (
-                <></>
-              )
-            }
-          >
-            <Trans i18nKey="spaces.spaces" />
-          </Title>
-          {}
-        </Box>
-      }
-    >
-      <QueryData
-        {...rest}
-        renderLoading={() => (
-          <Box mt={5}>
-            {[1, 2, 3, 4, 5].map((item) => {
-              return (
-                <Skeleton
-                  key={item}
-                  variant="rectangular"
-                  sx={{ borderRadius: 2, height: "60px", mb: 1 }}
-                />
-              );
-            })}
-          </Box>
-        )}
-        emptyDataComponent={
-          <ErrorEmptyData
-            emptyMessage={<Trans i18nKey="notification.nothingToSeeHere" />}
-            suggests={
-              <Typography variant="subtitle1" textAlign="center">
-                <Trans i18nKey="spaces.tryCreatingNewSpace" />
-              </Typography>
-            }
-          />
-        }
-        render={(data) => {
-          return (
-            <>
-              {data?.length == 0 && (
-                <Box width="100%" mt={6} gap={4} sx={{ ...styles.centerCVH }}>
-                  <img
-                    src={SpaceEmptyStateSVG}
-                    alt={"Oh! You have no space?"}
-                    width="240px"
+                <>
+                  {" "}
+                  <AssessmentsList
+                    data={data}
+                    dialogProps={assessmentDialogProps}
+                    space={{ id: 6, title: "draft" }}
+                    deleteAssessment={deleteAssessment}
+                    fetchAssessments={fetchAssessments}
                   />
-                  <Typography
-                    textAlign="center"
-                    variant="headlineLarge"
-                    color="#9DA7B3"
-                    sx={{
-                      fontSize: "3rem",
-                      fontWeight: "900",
-                      width: "60%",
-                    }}
-                  >
-                    <Trans i18nKey="spaces.noSpaceHere" />
-                  </Typography>
-                  <Typography
-                    textAlign="center"
-                    variant="h1"
-                    color="#9DA7B3"
-                    sx={{
-                      fontSize: "1rem",
-                      fontWeight: "500",
-                      width: "60%",
-                    }}
-                  >
-                    <Trans i18nKey="spaces.spacesAreEssentialForCreating" />
-                  </Typography>
-                  <Box>
-                    <Button
-                      startIcon={<AddRoundedIcon />}
-                      variant="contained"
-                      onClick={() => dialogProps.openDialog({ type: "create" })}
-                      sx={{
-                        animation: `${animations.pomp} 1.6s infinite cubic-bezier(0.280, 0.840, 0.420, 1)`,
-                        "&:hover": {
-                          animation: `${animations.noPomp}`,
-                        },
-                      }}
-                    >
-                      <Typography fontSize="1.25rem" variant="button">
-                        <Trans i18nKey="spaces.createYourFirstSpace" />
-                      </Typography>
-                    </Button>
-                  </Box>
-                </Box>
+                  {assessmentsTotal > 8 && (
+                    <Box mt={2} display="flex" justifyContent="center">
+                      <Pagination
+                        variant="outlined"
+                        color="primary"
+                        count={Math.ceil(assessmentsTotal / 8)}
+                        page={assessmentPage}
+                        onChange={handleAssessmentPagination}
+                      />
+                    </Box>
+                  )}
+                </>
               )}
-              <SpacesList
-                dialogProps={dialogProps}
-                data={data}
-                fetchSpaces={fetchSpace}
-              />
             </>
-          );
-        }}
-      />
-      {data.length !== 0 && (
-        <Stack spacing={2} mt={3} sx={{ ...styles.centerVH }}>
-          <Pagination
-            variant="outlined"
-            color="primary"
-            count={pageCount}
-            onChange={handleChangePage}
-            page={pageNumber}
-          />
-        </Stack>
-      )}
+          )}
+        />
+      </ExpandableSection>
+
+      {/* Dialogs */}
       <CreateSpaceDialog
         {...dialogProps}
         allowCreateBasic={allowCreateBasic}
@@ -203,11 +243,22 @@ const SpaceContainer = () => {
         contentStyle={{ p: 0 }}
         onClose={handleCloseDialog}
       />
-    </SpaceLayout>
+
+      <AssessmentCEFromDialog
+        {...assessmentDialogProps}
+        onSubmitForm={fetchAssessments}
+      />
+
+      <AssessmenetInfoDialog
+        {...infoDialogProps}
+        titleStyle={{ mb: 0 }}
+        contentStyle={{ p: 0 }}
+      />
+    </Box>
   );
 };
 
-const useFetchSpace = () => {
+const useFetchSpace = (page: number, size: number) => {
   const [data, setData] = useState<any>({});
   const [allowCreateBasic, setAllowCreateBasic] = useState<boolean>(false);
   const [loading, setLoading] = useState(true);
@@ -215,15 +266,34 @@ const useFetchSpace = () => {
   const [errorObject, setErrorObject] = useState<undefined | ICustomError>(
     undefined,
   );
-  const { page } = useParams();
   const { service } = useServiceContext();
   const abortController = useRef(new AbortController());
-  const pageNumber = Number(page);
-  const PAGESIZE: number = 10;
 
-  useEffect(() => {
-    fetchSpace();
-  }, [pageNumber]);
+  const fetchSpace = async () => {
+    setLoading(true);
+    setErrorObject(undefined);
+    try {
+      checkLimitExceeded();
+      const { data: res } = await service.space.getList(
+        { size, page: page + 1 },
+        { signal: abortController.current.signal },
+      );
+      if (res) {
+        setData(res);
+        setError(false);
+      } else {
+        setData({});
+        setError(true);
+      }
+    } catch (e) {
+      const err = e as ICustomError;
+      toastError(err, { filterByStatus: [404] });
+      setError(true);
+      setErrorObject(err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const checkLimitExceeded = async () => {
     try {
@@ -235,44 +305,18 @@ const useFetchSpace = () => {
       setAllowCreateBasic(allowCreateBasic);
     } catch (e) {
       const err = e as ICustomError;
-      showToast(err, { filterByStatus: [404] });
+      toastError(err, { filterByStatus: [404] });
     }
   };
-  const fetchSpace = async () => {
-    setLoading(true);
-    setErrorObject(undefined);
-    try {
-      checkLimitExceeded();
-      const { data: res } = await service.space.getList(
-        { size: PAGESIZE, page: pageNumber },
-        { signal: abortController.current.signal },
-      );
-      if (res) {
-        setData(res);
-        setError(false);
-      } else {
-        setData({});
-        setError(true);
-      }
 
-      setLoading(false);
-    } catch (e) {
-      const err = e as ICustomError;
-      showToast(err, { filterByStatus: [404] });
-      setLoading(false);
-      setError(true);
-      setErrorObject(err);
-    }
-  };
+  useEffect(() => {
+    fetchSpace();
+  }, [page, size]);
 
   return {
     data: data.items ?? [],
-    page: data.page ?? 0,
-    size: data.size ?? 0,
     total: data.total ?? 0,
-    requested_space: data.requested_space,
     loading,
-    loaded: !!data,
     error,
     errorObject,
     allowCreateBasic,

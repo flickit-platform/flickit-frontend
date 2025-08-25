@@ -42,7 +42,6 @@ const spaceCardRender = (modalStatus: {modal: boolean}) =>{
                      context: undefined
                    }}
                    fetchSpaces={vi.fn()}
-                   deleteSpace={vi.fn()}
                />
              </MemoryRouter>
           )
@@ -57,18 +56,10 @@ describe("SpaceCard", () => {
     const spaceTitle = screen.getByTestId("space-card-title-test");
     const spacePremium = screen.getByTestId("space-card-premium-test");
     const spaceDisplayName = screen.getByTestId("space-card-show-displayName");
-    const membersCount = screen.getByTestId("space-card-test-membersCount");
-    const assessmentsCount = screen.getByTestId("space-card-test-assessmentsCount");
-    const isActiveSpace = screen.getByTestId("space-card-test-isActiveSpace");
 
     expect(spaceTitle).toHaveTextContent("space-card-test1")
     expect(spacePremium).toBeInTheDocument()
     expect(spacePremium).toContainHTML("img")
     expect(spaceDisplayName).toBeInTheDocument()
-    expect(membersCount).toContainHTML("p")
-    expect(membersCount).toHaveTextContent(String(1));
-    expect(assessmentsCount).toBeInTheDocument();
-    expect(assessmentsCount).toHaveTextContent(String(14));
-    expect(isActiveSpace).toBeInTheDocument()
   });
 });

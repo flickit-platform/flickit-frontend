@@ -11,7 +11,7 @@ const AssessmentTitle = (props: IAssessmentReportTitle) => {
 
   return (
     <Title
-      backLink="/"
+      backLink="/spaces"
       wrapperProps={{
         sx: {
           flexDirection: { xs: "column", md: "row" },

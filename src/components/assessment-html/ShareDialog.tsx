@@ -10,7 +10,7 @@ import Chip from "@mui/material/Chip";
 import Share from "@mui/icons-material/Share";
 import LinkIcon from "@mui/icons-material/Link";
 import { CEDialog, CEDialogActions } from "../common/dialogs/CEDialog";
-import React, { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import LoadingButton from "@mui/lab/LoadingButton";
 import stringAvatar from "@/utils/stringAvatar";
 import { useQuery } from "@/utils/useQuery";
@@ -90,6 +90,7 @@ export const ShareDialog = ({
 
   const handleSelect = async (newAccess: VISIBILITY) => {
     try {
+      setAccess(newAccess);
       const response = await PublishReportStatus.query({
         data: { visibility: newAccess },
         assessmentId,
@@ -110,7 +111,6 @@ export const ShareDialog = ({
       showToast(error as ICustomError);
     }
 
-    setAccess(newAccess);
   };
 
   const grantReportAccess = useQuery({
@@ -281,7 +281,7 @@ export const ShareDialog = ({
       }
       maxWidth="sm"
       sx={{ ...styles.rtlStyle(lng === "fa") }}
-      contentStyle={{ p: "40px 64px !important" }}
+      contentStyle={{ p: "38px 64px 32px 64px !important", overflowX:"hidden !important" }}
       titleStyle={{ mb: "0px !important" }}
     >
       <Box mt={0}>
@@ -310,6 +310,7 @@ export const ShareDialog = ({
                 cursor: "pointer",
               }}
               onClick={() => handleSelect(key)}
+              key={key}
             >
               <Box
                 display="flex"
@@ -339,7 +340,11 @@ export const ShareDialog = ({
                 width="398px"
                 height="59px"
               >
-                <Typography  fontFamily="inherit" variant="bodyMedium" sx={{ color: "#2B333B" }}>
+                <Typography
+                  fontFamily="inherit"
+                  variant="bodyMedium"
+                  sx={{ color: "#2B333B" }}
+                >
                   {accessOptionsNew[key].title}
                 </Typography>
                 <Typography
@@ -373,7 +378,7 @@ export const ShareDialog = ({
           }
           onClick={() => handleCopyClick()}
           variant="outlined"
-          sx={{ fontFamily: "inherit" }}
+          sx={{ fontFamily: "inherit" ,}}
         >
           {t("assessmentReport.copyReportLink", { lng })}
         </LoadingButton>
@@ -381,7 +386,7 @@ export const ShareDialog = ({
         <LoadingButton
           variant="contained"
           onClick={onClose}
-          sx={{ mx: 1, fontFamily: "inherit" }}
+          sx={{ marginInlineStart: 1, fontFamily: "inherit" }}
         >
           {t("common.done", { lng })}
         </LoadingButton>

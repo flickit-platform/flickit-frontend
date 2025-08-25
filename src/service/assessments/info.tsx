@@ -121,4 +121,24 @@ export const info = {
   ) {
     return axios.put(`/api/v1/assessments/${id}/mode/`, data, config);
   },
+  getTargetSpaces(
+    { assessmentId }: { assessmentId: TId },
+    config?: AxiosRequestConfig<any>,
+  ) {
+    return axios.get(
+      `/api/v1/assessments/${assessmentId}/move-targets`,
+      config,
+    );
+  },
+
+  AssessmentMoveTarget(
+    { id, targetSpaceId }: { id: any; targetSpaceId: any },
+    config?: AxiosRequestConfig<any>,
+  ) {
+    return axios.put(
+      `/api/v1/assessments/${id}/move/`,
+      { targetSpaceId },
+      config,
+    );
+  },
 };

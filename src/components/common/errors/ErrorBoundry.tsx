@@ -2,6 +2,7 @@ import { Trans } from "react-i18next";
 import ErrorImage from "@assets/img/errorBoundary.png";
 import { Component } from "react";
 import Button from "@mui/material/Button";
+import { HOME_URL } from "@/config/constants";
 import { styles } from "@styles";
 import Box from "@mui/material/Box";
 
@@ -41,7 +42,7 @@ class ErrorBoundary extends Component {
             variant="contained"
             size="large"
             onClick={() => {
-              window.location.href = "/spaces/1";
+              window.location.href = HOME_URL;
             }}
           >
             <Trans i18nKey="common.backToHome" />
