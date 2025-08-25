@@ -21,7 +21,7 @@ interface IGaugeProps extends BoxProps {
   confidence_text?: string | null;
   isMobileScreen?: boolean;
   maturity_status_guide?: string | null;
-  maturity_status_guide_variant?: any;
+  confidence_text_variant?: any;
   status_font_variant?: any;
   textPosition?: "top" | "bottom";
 }
@@ -37,7 +37,7 @@ const Gauge = ({
   isMobileScreen,
   confidence_text,
   maturity_status_guide,
-  maturity_status_guide_variant = "titleMedium",
+  confidence_text_variant = "titleMedium",
   status_font_variant,
   textPosition = "top",
   ...rest
@@ -132,8 +132,8 @@ const Gauge = ({
           {maturity_status_guide && (
             <Typography
               mt="1rem"
-              variant={maturity_status_guide_variant}
-              color="#243342"
+              variant={confidence_text_variant}
+              color="#6C8093"
             >
               {maturity_status_guide}
             </Typography>
@@ -154,7 +154,7 @@ const Gauge = ({
           </Typography>
           {confidence_text && (
             <Typography
-              variant={maturity_status_guide_variant}
+              variant={confidence_text_variant}
               color="background.onVariant"
               mt={!isMobileScreen ? "1.5rem" : "unset"}
               gap="0.125rem"

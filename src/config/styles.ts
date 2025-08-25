@@ -89,8 +89,10 @@ const commonStyles = {
 const sharedChipStyles = {
   chip: {
     fontWeight: 200,
-    padding: 1,
-    background: "rgba(36, 102, 168, 0.04)",
+    border: `1px solid rgba(36, 102, 168, 0.5)`,
+    borderRadius: "8px",
+    gap: "4px",
+    height: 30,
   },
   box: {
     display: "flex",

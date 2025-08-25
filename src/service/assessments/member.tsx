@@ -85,24 +85,4 @@ export const member = {
     return axios.get(`/api/v1/assessment-user-roles/`, config);
   },
 
-  grantReportAccess(
-    args: { assessmentId: any; email: any },
-    config?: AxiosRequestConfig<any>,
-  ) {
-    return axios.post(
-      `/api/v1/assessments/${args.assessmentId}/grant-report-access/`,
-      { email: args.email },
-      config,
-    );
-  },
-
-  getReportAccessUsers(
-    { assessmentId }: { assessmentId: string },
-    config?: AxiosRequestConfig<any>,
-  ) {
-    return axios.get(
-      `/api/v1/assessments/${assessmentId}/users-with-report-access/`,
-      config,
-    );
-  },
 };
