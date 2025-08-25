@@ -312,14 +312,12 @@ const AdviceItemAccordion: React.FC<{
     <>
       <Accordion
         sx={{
-          borderBottom: `1px solid #E0E0E0"`,
           borderInlineStart: readOnly ? `4px solid #6C8093` : "",
           border: readOnly ? "" : `1px solid #E0E0E0"`,
-          borderRadius: "8px",
-          mb: 1,
-          boxShadow: "none",
+          boxShadow: !readOnly ? "none" : "0 1px 4px rgba(0,0,0,25%)",
           bgcolor: !readOnly ? "background.containerLow" : "initial",
           "&:before": { content: "none" },
+          mb: "8px",
         }}
       >
         <AccordionSummary
