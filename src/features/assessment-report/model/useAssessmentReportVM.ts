@@ -2,7 +2,7 @@ import { useMemo, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { useAuthContext } from "@/providers/AuthProvider";
 import { setSurveyBox, useConfigContext } from "@providers/ConfgProvider";
-import { useGraphicalReport } from "./useGraphicalReport"; // ← از همین پوشه
+import { useGraphicalReport } from "./useGraphicalReport";
 import { useReportChips } from "@/hooks/useReportChips";
 import { useIntersectOnce } from "@/utils/helpers";
 import { ASSESSMENT_MODE } from "@/utils/enumType";
