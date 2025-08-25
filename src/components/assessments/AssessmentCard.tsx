@@ -152,7 +152,7 @@ const AssessmentCard = ({
       return `/${spaceId ?? defaultSpaceId}/assessments/${id}/graphical-report/`;
     }
     if (permissions.canViewQuestionnaires && isQuickMode) {
-      return `${id}/questionnaires`;
+      return `/${spaceId ?? defaultSpaceId}/assessments/1/${id}/questionnaires`;
     }
     return "";
   };
@@ -192,6 +192,7 @@ const AssessmentCard = ({
             dialogProps={dialogProps}
             abortController={abortController}
             fetchAssessments={fetchAssessments}
+            spaceId={spaceId ?? defaultSpaceId}
           />
         )}
 
@@ -273,7 +274,7 @@ const AssessmentCard = ({
                   progressPercent={progressPercent}
                   location={location}
                   language={language}
-                  spaceId={spaceId}
+                  spaceId={spaceId ?? defaultSpaceId}
                   type={type}
                 />
               ))}
@@ -419,12 +420,12 @@ const CardButton = ({
     key = "reportTitle";
     label = "assessmentReport.reportTitle";
   } else if (type === "questionnaires") {
-    to = `${item.id}/questionnaires`;
+    to = `/${spaceId}/assessments/1/${item.id}/questionnaires`;
     icon = <QuizRoundedIcon />;
     key = "questionnaires";
     label = "common.questionnaires";
   } else if (type === "dashboard") {
-    to = `${item.id}/dashboard`;
+    to = `/${spaceId}/assessments/1/${item.id}/dashboard`;
     icon = <QueryStatsRounded />;
     key = "dashboard";
     label = "dashboard.dashboard";
@@ -437,12 +438,12 @@ const CardButton = ({
       key = "reportTitle";
       label = "assessmentReport.reportTitle";
     } else if (item.permissions.canViewQuestionnaires) {
-      to = `${item.id}/questionnaires`;
+      to = `/${spaceId}/assessments/1/${item.id}/questionnaires`;
       icon = <QuizRoundedIcon />;
       key = "questionnaires";
       label = "common.questionnaires";
     } else if (item.permissions.canViewDashboard) {
-      to = `${item.id}/dashboard`;
+      to = `/${spaceId}/assessments/1/${item.id}/dashboard`;
       icon = <QueryStatsRounded />;
       key = "dashboard";
       label = "dashboard.dashboard";
@@ -502,12 +503,14 @@ const Actions = ({
   item,
   abortController,
   fetchAssessments,
+  spaceId,
 }: {
   deleteAssessment: TQueryFunction<any, TId>;
   item: IAssessment & { space: any };
   dialogProps: TDialogProps;
   abortController: React.MutableRefObject<AbortController>;
   fetchAssessments: any;
+  spaceId: any;
 }) => {
   const { service } = useServiceContext();
   const [loading, setLoading] = useState(false);
@@ -539,10 +542,7 @@ const Actions = ({
   };
 
   const goToAssessmentSettings = () => {
-    const isInSpaces = location.pathname.startsWith("/spaces");
-    const targetPath = isInSpaces
-      ? `/1605/assessments/1/${item.id}/settings/`
-      : `${item.id}/settings/`;
+    const targetPath = `/${spaceId}/assessments/1/${item.id}/settings/`;
 
     navigate(targetPath, {
       state: item?.color ?? { code: "#073B4C", id: 6 },
