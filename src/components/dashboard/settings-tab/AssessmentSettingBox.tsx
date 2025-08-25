@@ -52,7 +52,6 @@ import {
   useAssessmentContext,
 } from "@/providers/AssessmentProvider";
 import showToast from "@utils/toastError";
-import { useAuthContext } from "@providers/AuthProvider";
 
 type InfoField = "creator" | "assessmentKit" | "created" | "lastModified";
 
