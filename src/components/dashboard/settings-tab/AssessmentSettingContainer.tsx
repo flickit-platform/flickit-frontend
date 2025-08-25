@@ -167,6 +167,7 @@ const AssessmentSettingContainer = () => {
                     handleChangePage={handleChangePage}
                     rowsPerPage={rowsPerPage}
                     handleChangeRowsPerPage={handleChangeRowsPerPage}
+                    kitInfo={assessmentInfo}
                   />
                 </Grid>
               </Grid>

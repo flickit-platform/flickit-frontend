@@ -29,6 +29,7 @@
   "moreAnswersNeeded": "{{count}} more answers needed!",
   "needForAnswers": "questions need answers.",
   "needsForAnswer": "question needs answer.",
+  "needMoveItToSpace": "To grant access to this assessment, you first need to move it to a space.",
   "noIssueFound": "No questionnaire has the selected issue.",
   "noIssuesFound": "No questionnaire has the selected issues.",
   "preparingReport": "Preparing report",
