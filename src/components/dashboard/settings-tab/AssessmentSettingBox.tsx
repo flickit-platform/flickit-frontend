@@ -8,7 +8,7 @@ import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
 import { Trans } from "react-i18next";
 import EditRoundedIcon from "@mui/icons-material/EditRounded";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { styles } from "@styles";
 import Button from "@mui/material/Button";
 import AddIcon from "@mui/icons-material/Add";
@@ -389,6 +389,7 @@ export const AssessmentSettingMemberBox = (props: {
   openRemoveModal: (id: string, name: string, invited?: boolean) => void;
   setChangeData?: any;
   changeData?: any;
+  kitInfo?: any;
   inviteesMemberList: any;
   totalUser: number;
   page: number;
@@ -397,9 +398,7 @@ export const AssessmentSettingMemberBox = (props: {
   handleChangeRowsPerPage: (event: any) => void;
 }) => {
   const { service } = useServiceContext();
-  const { assessmentId = "", spaceId= "" } = useParams();
-  const { userInfo: { defaultSpaceId } } = useAuthContext()
-  const isGrantedRolesActive  =  `${defaultSpaceId}` === spaceId
+  const { assessmentId = "" } = useParams();
 
   const {
     listOfRoles = [],
@@ -414,7 +413,12 @@ export const AssessmentSettingMemberBox = (props: {
     handleChangePage,
     rowsPerPage,
     handleChangeRowsPerPage,
+    kitInfo
   } = props;
+
+  const isGrantedRolesActive = useMemo(()=>{
+    return kitInfo?.space?.isDefault
+  },[kitInfo?.space?.isDefault])
 
   useEffect(() => {
     inviteesMemberList.query();
