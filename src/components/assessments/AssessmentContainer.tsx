@@ -12,6 +12,7 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import { ICustomError } from "@utils/CustomError";
 import { useParams, useNavigate } from "react-router-dom";
+import toastError from "@utils/toastError";
 import { ToolbarCreateItemBtn } from "@common/buttons/ToolbarCreateItemBtn";
 import AddRoundedIcon from "@mui/icons-material/AddRounded";
 import { styles, animations } from "@styles";
@@ -21,26 +22,25 @@ import Stack from "@mui/material/Stack";
 import { useAuthContext } from "@providers/AuthProvider";
 import AssessmentTitle from "./AssessmentTitle";
 import PermissionControl from "../common/PermissionControl";
-import SettingIcon from "@utils/icons/settingIcon";
-import NewAssessmentIcon from "@utils/icons/newAssessment";
+import SettingIcon from "@/assets/icons/settingIcon";
+import NewAssessmentIcon from "@/assets/icons/newAssessment";
 import AssessmenetInfoDialog from "@components/assessments/AssessmenetInfoDialog";
 import { useQuery } from "@/utils/useQuery";
 import useScreenResize from "@utils/useScreenResize";
-import showToast from "@utils/toastError";
-import { DeleteConfirmationDialog } from "@common/dialogs/DeleteConfirmationDialog";
-import { t } from "i18next";
-import { TId } from "@/types";
+import LoadingAssessmentCards from "../common/loadings/LoadingAssessmentCards";
 import { useTheme } from "@mui/material";
 
 const AssessmentContainer = () => {
-  const theme = useTheme();
   const { service } = useServiceContext();
   const dialogProps = useDialog();
   const infoDialogProps = useDialog();
   const { currentSpace } = useAuthContext();
   const { spaceId, page } = useParams();
   const navigate = useNavigate();
-  const { fetchAssessments, deleteAssessment, fetchSpaceInfo, ...rest } = useFetchAssessments();
+  const { fetchAssessments, ...rest } = useFetchAssessments(
+    Number(page) - 1,
+    Number(spaceId),
+  );
   const { data, errorObject, size, total, loading } = rest;
   const isEmpty = data.length === 0;
   const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
@@ -56,26 +56,19 @@ const AssessmentContainer = () => {
     navigate(`/${spaceId}/assessments/${pageCount}`);
   }
 
-  const [openDeleteDialog, setOpenDeleteDialog] = useState<{
-    status: boolean;
-    id: TId;
-  }>({ status: false, id: "" });
-
-  const deleteAssessmentById = async() =>{
-   try {
-    await deleteAssessment(openDeleteDialog?.id)
-     setOpenDeleteDialog({ status: false, id: "" })
-   }catch(e){
-     const err = e as ICustomError;
-     setOpenDeleteDialog({ status: false, id: "" })
-     showToast(err);
-    }
-  };
+  const fetchSpaceInfo = useQuery({
+    service: (args = { spaceId }, config) =>
+      service.space.getById(args, config),
+    runOnMount: false,
+  });
 
   useEffect(() => {
     fetchSpaceInfo.query();
   }, []);
   const isSmallScreen = useScreenResize("sm");
+
+  const theme = useTheme();
+
   return (
     <PermissionControl error={[errorObject?.response]}>
       <Box display="flex" flexDirection="column" m="auto">
@@ -84,18 +77,18 @@ const AssessmentContainer = () => {
           <Typography
             variant="semiBoldSmall"
             onClick={() => infoDialogProps.openDialog({})}
-            textAlign="end"
-            mb={{ xs: "5px", sm: "unset" }}
             sx={{
               textDecoration: "underline",
               cursor: "pointer",
+              textAlign: "end",
+              mb: { xs: "5px", sm: "unset" },
             }}
             color="primary"
           >
             <Trans i18nKey="assessment.learnWhyThisIsUnavailable" />
           </Typography>
         )}
-        <Box mb="40px" mt={1} sx={{ ...styles.centerVH }}>
+        <Box sx={{ ...styles.centerVH, mb: "40px", mt: 1 }}>
           <Title
             borderBottom={true}
             size="large"
@@ -103,7 +96,9 @@ const AssessmentContainer = () => {
             toolbarProps={{ whiteSpace: "nowrap" }}
             toolbar={
               data?.length !== 0 ? (
-                <Box gap="9px" position="relative" sx={{ ...styles.centerVH }}>
+                <Box
+                  sx={{ ...styles.centerVH, gap: "9px", position: "relative" }}
+                >
                   <ToolbarCreateItemBtn
                     icon={
                       <SettingIcon
@@ -223,6 +218,7 @@ const AssessmentContainer = () => {
 
         <QueryData
           {...rest}
+          renderLoading={() => <LoadingAssessmentCards />}
           emptyDataComponent={
             <ErrorEmptyData
               emptyMessage={<Trans i18nKey="notification.nothingToSeeHere" />}
@@ -241,7 +237,7 @@ const AssessmentContainer = () => {
                   data={data}
                   space={{ id: spaceId, title: currentSpace?.title }}
                   dialogProps={dialogProps}
-                  setOpenDeleteDialog={setOpenDeleteDialog}
+                  fetchAssessments={fetchAssessments}
                 />
                 {pageCount > 1 && !isEmpty && (
                   <Stack spacing={2} mt={3} sx={{ ...styles.centerVH }}>
@@ -267,53 +263,37 @@ const AssessmentContainer = () => {
           titleStyle={{ mb: 0 }}
           contentStyle={{ p: 0 }}
         />
-        <DeleteConfirmationDialog
-          open={openDeleteDialog.status}
-          onClose={() =>
-            setOpenDeleteDialog({ ...openDeleteDialog, status: false })
-          }
-          onConfirm={deleteAssessmentById}
-          title="common.warning"
-          content="assessment.areYouSureYouWantDeleteAssessment"
-          confirmButtonText={t("common.continue")}
-        />
       </Box>
     </PermissionControl>
   );
 };
 
-const useFetchAssessments = () => {
+export const useFetchAssessments = (page: any, spaceId: any) => {
   const [data, setData] = useState<any>({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
   const [errorObject, setErrorObject] = useState<undefined | ICustomError>(
     undefined,
   );
-  const { spaceId, page } = useParams();
   const { service } = useServiceContext();
   const abortController = useRef(new AbortController());
 
-  const fetchSpaceInfo = useQuery({
-    service: (args = { spaceId }, config) =>
-      service.space.getById(args, config),
-    runOnMount: false,
-  });
-
   useEffect(() => {
-    fetchAssessments();
+    if (spaceId) {
+      fetchAssessments();
+    }
   }, [page, spaceId]);
   const fetchAssessments = async () => {
     setLoading(true);
     setErrorObject(undefined);
     try {
       const { data: res } = await service.assessments.info.getList(
-        { spaceId: spaceId, size: 4, page: parseInt(page ?? "1", 10) - 1 },
+        { spaceId, size: 8, page },
         { signal: abortController.current.signal },
       );
       if (res) {
         setData(res);
         setError(false);
-        fetchSpaceInfo.query()
       } else {
         setData({});
         setError(true);
@@ -322,14 +302,14 @@ const useFetchAssessments = () => {
       setLoading(false);
     } catch (e) {
       const err = e as ICustomError;
-      showToast(err, { filterByStatus: [404] });
+      toastError(err, { filterByStatus: [404] });
       setLoading(false);
       setError(true);
       setErrorObject(err);
     }
   };
 
-  const deleteAssessment = async (id: TId) => {
+  const deleteAssessment = async (id: any) => {
     setLoading(true);
     try {
       await service.assessments.info.remove(
@@ -337,10 +317,9 @@ const useFetchAssessments = () => {
         { signal: abortController.current.signal },
       );
       fetchAssessments();
-      fetchSpaceInfo.query()
     } catch (e) {
       const err = e as ICustomError;
-      showToast(err);
+      toastError(err);
       setLoading(false);
       setError(true);
     }
@@ -358,7 +337,6 @@ const useFetchAssessments = () => {
     errorObject,
     fetchAssessments,
     deleteAssessment,
-    fetchSpaceInfo
   };
 };
 

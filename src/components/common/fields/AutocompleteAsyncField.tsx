@@ -1,4 +1,4 @@
-import { ReactNode, useEffect, useMemo, useRef, useState } from "react";
+import React, { ReactNode, useEffect, useMemo, useRef, useState } from "react";
 import Autocomplete, { AutocompleteProps } from "@mui/material/Autocomplete";
 import throttle from "lodash/throttle";
 import TextField from "@mui/material/TextField";
@@ -28,7 +28,10 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import ArrowDropDownOutlinedIcon from "@mui/icons-material/ArrowDropDownOutlined";
 import showToast from "@/utils/toastError";
 import { useTheme } from "@mui/material";
-
+import premiumIcon from "@/assets/svg/premium.svg";
+import HomeIcon from "@mui/icons-material/Home";
+import { useLocation } from "react-router-dom";
+import FolderOutlinedIcon from "@mui/icons-material/FolderOutlined";
 type TUnionAutocompleteAndAutocompleteAsyncFieldBase = Omit<
   IAutocompleteAsyncFieldBase,
   "serviceQueryData" | "field"
@@ -163,7 +166,7 @@ const AutocompleteBaseField = (
   } = useFormContext();
   const isFirstFetchRef = useRef(true);
   const { hasError, errorMessage } = getFieldError(errors, name);
-
+  const { pathname } = useLocation();
   const [inputValue, setInputValue] = useState(
     () => getOptionLabel(defaultValue) ?? "",
   );
@@ -377,8 +380,8 @@ const AutocompleteBaseField = (
       popupIcon={
         disabled ? <LockOutlinedIcon /> : <ArrowDropDownOutlinedIcon />
       }
-      renderOption={(props, option) =>
-        option.inputValue ? (
+      renderOption={(props, option) => {
+        return option.inputValue ? (
           <li {...props}>
             <LoadingButton
               fullWidth
@@ -392,12 +395,24 @@ const AutocompleteBaseField = (
         ) : (
           <li {...props} style={{ display: "flex", gap: "8px" }}>
             <Box
-              sx={{
-                fontFamily: languageDetector(option?.[filterFields[0]])
+              fontFamily={
+                languageDetector(option?.[filterFields[0]])
                   ? farsiFontFamily
-                  : primaryFontFamily,
-              }}
+                  : primaryFontFamily
+              }
+              color="surface.onVariant"
+              gap="4.5px"
+              sx={{ ...styles.centerVH }}
             >
+              {option?.isDefault ? (
+                <HomeIcon
+                  sx={{ fontSize: "20px", color: "surface.onVariant" }}
+                />
+              ) : (
+                <FolderOutlinedIcon
+                  sx={{ color: "surface.onVariant", fontSize: "20px" }}
+                />
+              )}
               {option?.[filterFields[0]]}
             </Box>
             {!!option?.[filterFields[1]] && (
@@ -411,15 +426,11 @@ const AutocompleteBaseField = (
                 )
               </Box>
             )}
-            {(option?.isPrivate ||
-              option?.type?.code === SPACE_LEVELS.PREMIUM) && (
+            {option?.isPrivate && (
               <Chip
                 size="small"
                 sx={{
                   marginInlineStart: "auto",
-                  ...(option?.type?.code === SPACE_LEVELS.PREMIUM && {
-                    background: `linear-gradient(to right top,${theme.palette.primary.dark} 0%,#2D80D2 33%,${theme.palette.primary.dark} 100%)`,
-                  }),
                 }}
                 color={option?.isPrivate ? "secondary" : "default"}
                 label={
@@ -427,18 +438,21 @@ const AutocompleteBaseField = (
                     variant="semiBoldSmall"
                     color="background.containerLowest"
                   >
-                    {option?.isPrivate ? (
-                      <Trans i18nKey="common.privateTitle" />
-                    ) : (
-                      option?.type?.title
-                    )}
+                    <Trans i18nKey="common.privateTitle" />
                   </Typography>
                 }
               />
             )}
+            {option?.type?.code === SPACE_LEVELS.PREMIUM && (
+              <Box
+                component={"img"}
+                src={premiumIcon}
+                sx={{ height: "20px", width: "20px" }}
+              />
+            )}
           </li>
-        )
-      }
+        );
+      }}
       noOptionsText={
         error ? (
           <Box sx={{ ...styles.centerVH }}>

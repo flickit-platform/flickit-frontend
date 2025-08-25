@@ -10,7 +10,7 @@ import Chip from "@mui/material/Chip";
 import Share from "@mui/icons-material/Share";
 import LinkIcon from "@mui/icons-material/Link";
 import { CEDialog, CEDialogActions } from "../common/dialogs/CEDialog";
-import React, { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import LoadingButton from "@mui/lab/LoadingButton";
 import stringAvatar from "@/utils/stringAvatar";
 import { useQuery } from "@/utils/useQuery";
@@ -90,6 +90,7 @@ export const ShareDialog = ({
 
   const handleSelect = async (newAccess: VISIBILITY) => {
     try {
+      setAccess(newAccess);
       const response = await PublishReportStatus.query({
         data: { visibility: newAccess },
         assessmentId,
@@ -110,7 +111,6 @@ export const ShareDialog = ({
       showToast(error as ICustomError);
     }
 
-    setAccess(newAccess);
   };
 
   const grantReportAccess = useQuery({
@@ -381,7 +381,7 @@ export const ShareDialog = ({
         <LoadingButton
           variant="contained"
           onClick={onClose}
-          sx={{ mx: 1, fontFamily: "inherit" }}
+          sx={{ marginInlineStart: 1, fontFamily: "inherit" }}
         >
           {t("common.done", { lng })}
         </LoadingButton>

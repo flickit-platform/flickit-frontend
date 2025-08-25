@@ -29,14 +29,17 @@ const SupTitleBreadcrumb = (
 ) => {
   const { displayChip, mouseCursor = "auto", routes = [], ...rest } = props;
   const theme = useTheme();
+  const filteredRoutes = routes.filter(
+    (route) => route.title !== "Default Space",
+  );
   return (
     <Breadcrumbs {...rest}>
-      {routes.map((route, index) => {
+      {filteredRoutes.map((route, index) => {
         const { to, title, icon } = route;
         const disabled =
-          (routes.length - 1 === index || !to) &&
+          (filteredRoutes.length - 1 === index || !to) &&
           (!route.hasOwnProperty("disabled") || route.disabled);
-        const isActive = routes.length - 1 === index;
+        const isActive = filteredRoutes.length - 1 === index;
         return (
           <Box display="flex" flexDirection={"column"} key={uniqueId()}>
             <MuiLink
@@ -64,9 +67,7 @@ const SupTitleBreadcrumb = (
                   sx={{
                     cursor: isActive ? mouseCursor : "pointer",
                     alignSelf: "flex-start",
-                    bgcolor: isActive
-                      ? "#D0E4FF"
-                      : "rgba(206, 211, 217, 0.4)",
+                    bgcolor: isActive ? "#D0E4FF" : "rgba(206, 211, 217, 0.4)",
                     color: isActive ? "#2466A8" : "outline.outline",
                     textTransform: "none",
                     borderRadius: "8px",
