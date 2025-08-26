@@ -13,8 +13,8 @@ import { getMaturityLevelColors, styles } from "@styles";
 import { v3Tokens } from "@config/tokens";
 
 interface Props {
-  title: string;
-  children: React.ReactNode;
+  readonly title: string;
+  readonly children: React.ReactNode;
 }
 
 function InnerAccordion({ title, children }: Props) {
@@ -60,7 +60,7 @@ function InnerAccordion({ title, children }: Props) {
 
 export default function HowIsItMade({ lng, report }: any) {
   const { lang, subjects } = report;
-  const { assessmentKit } = report?.assessment;
+  const { assessmentKit } = report?.assessment ?? {};
   const {
     maturityLevels,
     questionnaires,
@@ -72,6 +72,22 @@ export default function HowIsItMade({ lng, report }: any) {
   const isRTL = lang.code.toLowerCase() === "fa";
   const attributes = subjects.flatMap((s: any) => s.attributes);
 
+  const formatSubjects = (subjects: ISubject[], lng: string): string => {
+    return subjects
+      ?.map((elem, index) => {
+        const isLast = index === subjects.length - 1;
+        const isSingle = subjects.length === 1;
+
+        if (isLast && !isSingle) {
+          return t("common.and", { lng }) + elem.title;
+        }
+        if (index === 0) {
+          return elem.title;
+        }
+        return ", " + elem.title;
+      })
+      ?.join("");
+  };
 
   const rowItem = (data: any[]) => (
     <>
@@ -157,16 +173,7 @@ export default function HowIsItMade({ lng, report }: any) {
                 title: assessmentKit.title,
                 attributesCount: assessmentKit.attributesCount,
                 subjectsLength: subjects.length,
-                subjects: subjects
-                  ?.map((elem: ISubject, index: number) =>
-                    index === subjects?.length - 1 && subjects?.length !== 1
-                      ? t("common.and", { lng: lang?.code.toLowerCase() }) +
-                        elem?.title
-                      : index === 0
-                        ? elem?.title
-                        : ", " + elem?.title,
-                  )
-                  ?.join(""),
+                subjects: formatSubjects(subjects, lang?.code.toLowerCase()),
                 maturityLevelCount,
                 questionnairesCount,
               })}
