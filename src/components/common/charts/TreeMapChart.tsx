@@ -194,10 +194,9 @@ const CustomNode: React.FC<any> = memo((props) => {
     },
   };
 
-  const fontSizeBase = width / 12;
-  const fontSize = fontSizeBase > 13 ? (isSmallScreen ? 10 : 13) : fontSizeBase;
+  const fontSize = (isSmallScreen ? 12 : 15) ;
 
-  const pad = 1;
+  const pad = 6;
 
   if (width <= 30 || height <= 30) {
     return (
@@ -248,7 +247,7 @@ const CustomNode: React.FC<any> = memo((props) => {
                 width: "100%",
                 height: "100%",
                 textAlign: "center",
-                lineHeight: 1.2,
+                lineHeight: 1.5,
                 fontSize: fontSize,
                 fontWeight: 500,
                 color: color,
