@@ -22,7 +22,7 @@ export default function ReportActionsRow({
   onShare,
   onExpert,
   onQuestionnaires,
-}: Props) {
+}: Readonly<Props>) {
   return (
     <Box display="flex" gap={2} justifyContent="space-between">
       <LoadingButton
