@@ -22,6 +22,9 @@ import AdviceSection from "./sections/AdviceSection";
 import SidebarQuickMode from "./sections/SidebarQuickMode";
 import ContactUsDialog from "@/components/common/dialogs/ContactUsDialog";
 import ReportActionsRow from "./ReportActionsRow";
+import HowIsItMade from "@/features/assessment-report/ui/sections/howIsItMade";
+import {useMemo} from "react";
+import {ASSESSMENT_MODE} from "@utils/enumType";
 
 export default function AssessmentReportPage() {
   const {
@@ -43,6 +46,10 @@ export default function AssessmentReportPage() {
     expertDialog,
     shareDialog,
   } = useAssessmentReportVM();
+
+  const isAdvanceMode = useMemo(() => {
+    return ASSESSMENT_MODE.ADVANCED === report?.assessment?.mode?.code;
+  }, [report?.assessment?.mode?.code]);
 
   return (
     <PermissionControl error={[fetchGraphicalReport.errorObject]}>
@@ -189,6 +196,7 @@ export default function AssessmentReportPage() {
                     onExpert={() => expertDialog.openDialog({})}
                     onQuestionnaires={handleGoToQuestionnaire}
                   />
+                  {isAdvanceMode && <HowIsItMade report={report} lng={lng}  />}
                 </Box>
 
                 <ShareDialog {...shareDialog} {...report} lng={lng} />
