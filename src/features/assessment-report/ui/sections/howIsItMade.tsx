@@ -9,37 +9,26 @@ import { ISubject } from "@/types";
 import uniqueId from "@utils/uniqueId";
 import { getMaturityLevelColors, styles } from "@styles";
 import Divider from "@mui/material/Divider";
-import {useMemo} from "react";
 import Accordion from "@mui/material/Accordion";
+import {v3Tokens} from "@config/tokens";
 
 export default function HowIsItMade(props: any) {
   const { lng, report } = props;
-  console.log(report, "test report");
   const { lang, subjects } = report;
   const { assessmentKit } = report?.assessment;
-  const { maturityLevels, questionnaires } = assessmentKit;
+  const {
+    maturityLevels,
+    questionnaires,
+    questionnairesCount,
+    questionsCount,
+    maturityLevelCount,
+  } = assessmentKit;
   const rtlLanguage = lng === "fa";
   const isRTL = lang.code.toLowerCase() === "fa";
-  const items = [
-    "assessmentKit",
-    "maturityLevels",
-    "questionnaires",
-    "Indicator",
-  ];
-  const textStyle = {
-    fontSize: "14px",
-    lineHeight: "1.8",
-    color: "#424242",
-  };
 
-  const attribute = useMemo(()=>{
-      subjects.flatMap(
-          (subject: any) => subject.attributes,
-      );
-  },[])
+  const attribute = subjects.flatMap((subject: any) => subject.attributes);
 
   const rowItem = (data: any) => {
-
     return (
       <>
         {data?.map((item: any) => {
@@ -55,14 +44,16 @@ export default function HowIsItMade(props: any) {
               >
                 {item.title}
               </Typography>
-              <Divider orientation="vertical" flexItem sx={{ mx: "8px" }} />
+              <Divider orientation="vertical" flexItem color={v3Tokens.outline.outline} sx={{ mx: "8px" }} />
               <Typography
                 width="80%"
-                sx={{ ...textStyle, ...styles.rtlStyle(isRTL) }}
+                variant={"bodyMedium"}
+                color={v3Tokens.surface.on}
+                sx={{ ...styles.rtlStyle(isRTL) }}
               >
                 {item.description}
               </Typography>
-              <Divider orientation="vertical" flexItem sx={{ mx: "8px" }} />
+              <Divider orientation="vertical" flexItem color={v3Tokens.outline.outline} sx={{ mx: "8px" }} />
             </Box>
           );
         })}
@@ -86,9 +77,19 @@ export default function HowIsItMade(props: any) {
             borderBottom: "1px solid #2466A880",
             my: 0,
             minHeight: "unset",
+            px: 0,
+            pb: 1.8,
             "& .MuiAccordionSummary-expandIconWrapper": {
-              marginRight: 0,
-              marginLeft: 1,
+              paddingInlineStart: "16px",
+              paddingInlineEnd: "10px",
+            },
+            "& .MuiAccordionSummary-content": {
+              margin: "0px !important",
+              minHeight: "unset",
+            },
+            "&.Mui-expanded": {
+              margin: "0px !important",
+              minHeight: "unset",
             },
           }}
           expandIcon={<ExpandMoreIcon sx={{ color: "primary.main" }} />}
@@ -97,7 +98,7 @@ export default function HowIsItMade(props: any) {
             {t("assessmentReport.howIsThisReportMade", { lng })}
           </Typography>
         </AccordionSummary>
-        <AccordionDetails sx={{ mt: 1.3, p: 0 }}>
+        <AccordionDetails sx={{ mt: 1.2, p: 0, }}>
           <Accordion
             disableGutters
             elevation={0}
@@ -110,13 +111,22 @@ export default function HowIsItMade(props: any) {
               boxShadow: "inset 0 0 0 1px rgba(0,0,0,.08)",
             }}
           >
-            <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-              <Typography>
+            <AccordionSummary
+              sx={{ background: "#E8EBEE", flexDirection: "row-reverse",
+                  px: 0,
+                  "& .MuiAccordionSummary-expandIconWrapper": {
+                      paddingInlineStart: "8px",
+                      paddingInlineEnd: "8px",
+                  },
+              }}
+              expandIcon={<ExpandMoreIcon sx={{ color: "primary.main" }} />}
+            >
+              <Typography variant={"titleMedium"} color={"primary"}>
                 {t("assessmentKit.assessmentKit", { lng })}
               </Typography>
             </AccordionSummary>
-            <AccordionDetails>
-              <Typography variant="body2">
+            <AccordionDetails sx={{ backgroundColor: "#F3F5F6 !important" , px: {sm:"40px"} }}>
+              <Typography variant="bodyMedium" color={v3Tokens.surface.on}>
                 {t("assessmentKit.assessmentKitDescription", {
                   lng,
                   title: assessmentKit.title,
@@ -132,8 +142,8 @@ export default function HowIsItMade(props: any) {
                           : ", " + elem?.title,
                     )
                     ?.join(""),
-                  maturityLevelCount: assessmentKit.maturityLevelCount,
-                  questionnairesCount: assessmentKit.questionnairesCount,
+                  maturityLevelCount: maturityLevelCount,
+                  questionnairesCount: questionnairesCount,
                 })}
               </Typography>
             </AccordionDetails>
@@ -151,15 +161,29 @@ export default function HowIsItMade(props: any) {
               boxShadow: "inset 0 0 0 1px rgba(0,0,0,.08)",
             }}
           >
-            <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-              <Typography>{t("common.maturityLevels", { lng })}</Typography>
+            <AccordionSummary
+              sx={{ background: "#E8EBEE", flexDirection: "row-reverse",
+                  px: 0,
+                  "& .MuiAccordionSummary-expandIconWrapper": {
+                      paddingInlineStart: "8px",
+                      paddingInlineEnd: "8px",
+                  },
+              }}
+              expandIcon={<ExpandMoreIcon sx={{ color: "primary.main" }} />}
+            >
+              <Typography variant={"titleMedium"} color={"primary"}>
+                {t("common.maturityLevels", { lng })}
+              </Typography>
             </AccordionSummary>
-            <AccordionDetails>
+            <AccordionDetails sx={{ backgroundColor: "#F3F5F6 !important", px: {sm:"40px"}  }}>
+                <Typography variant="bodyMedium" color={v3Tokens.surface.on}>
+                    {t("assessmentReport.assessmentKitEvaluatesMaturity", { lng })}
+                </Typography>
               {maturityLevels.map((level: any) => (
                 <Box key={uniqueId()} sx={{ ...styles.centerV }} gap={2}>
                   <Box
                     bgcolor={
-                      getMaturityLevelColors(assessmentKit.maturityLevelCount)[
+                      getMaturityLevelColors(maturityLevelCount)[
                         level.value - 1
                       ]
                     }
@@ -172,7 +196,7 @@ export default function HowIsItMade(props: any) {
                   <Typography
                     component="span"
                     color={
-                      getMaturityLevelColors(assessmentKit.maturityLevelCount)[
+                      getMaturityLevelColors(maturityLevelCount)[
                         level.value - 1
                       ]
                     }
@@ -196,7 +220,6 @@ export default function HowIsItMade(props: any) {
             </AccordionDetails>
           </Accordion>
 
-          {/* شاخص‌ها */}
           <Accordion
             disableGutters
             elevation={0}
@@ -209,10 +232,29 @@ export default function HowIsItMade(props: any) {
               boxShadow: "inset 0 0 0 1px rgba(0,0,0,.08)",
             }}
           >
-            <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-              <Typography>{t("common.Indicators")}</Typography>
+            <AccordionSummary
+              sx={{ background: "#E8EBEE", flexDirection: "row-reverse",
+                  px: 0,
+                  "& .MuiAccordionSummary-expandIconWrapper": {
+                      paddingInlineStart: "8px",
+                      paddingInlineEnd: "8px",
+                  }
+              }}
+              expandIcon={<ExpandMoreIcon sx={{ color: "primary.main" }} />}
+            >
+              <Typography variant={"titleMedium"} color={"primary"}>
+                {t("assessmentReport.subjectsAndAttributes")}
+              </Typography>
             </AccordionSummary>
-            <AccordionDetails>{rowItem(attribute)}</AccordionDetails>
+            <AccordionDetails sx={{ backgroundColor: "#F3F5F6 !important", px: {sm:"40px"}  }}>
+              <Typography variant="bodyMedium" color={v3Tokens.surface.on}>
+                {t("assessmentReport.assessmentStructured", {
+                  lng,
+                  count: attribute.length,
+                })}
+              </Typography>
+              {rowItem(attribute)}
+            </AccordionDetails>
           </Accordion>
           <Accordion
             disableGutters
@@ -226,13 +268,29 @@ export default function HowIsItMade(props: any) {
               boxShadow: "inset 0 0 0 1px rgba(0,0,0,.08)",
             }}
           >
-            <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-              <Typography>{t("common.questionnaires", {lng})}</Typography>
-            </AccordionSummary>
-            <AccordionDetails>
-              <Typography variant="body2">
-                  {rowItem(questionnaires)}
+            <AccordionSummary
+              sx={{ background: "#E8EBEE", flexDirection: "row-reverse",
+                  px: 0,
+                  "& .MuiAccordionSummary-expandIconWrapper": {
+                      paddingInlineStart: "8px",
+                      paddingInlineEnd: "8px",
+                  }
+              }}
+              expandIcon={<ExpandMoreIcon sx={{ color: "primary.main" }} />}
+            >
+              <Typography variant={"titleMedium"} color={"primary"}>
+                {t("common.questionnaires", { lng })}
               </Typography>
+            </AccordionSummary>
+            <AccordionDetails sx={{ backgroundColor: "#F3F5F6 !important", px: {sm:"40px"}  }}>
+              <Typography variant="bodyMedium" color={v3Tokens.surface.on}>
+                {t("assessmentReport.measureMaturityLevel", {
+                  lng,
+                  QuestionCount: questionsCount,
+                  QuestionnairesCount: questionnairesCount,
+                })}
+              </Typography>
+              {rowItem(questionnaires)}
             </AccordionDetails>
           </Accordion>
         </AccordionDetails>
