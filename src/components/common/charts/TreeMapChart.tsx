@@ -9,7 +9,6 @@ import React, {
 import { ResponsiveContainer, Treemap } from "recharts";
 import { getMaturityLevelColors, styles } from "@styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
-import languageDetector from "@/utils/languageDetector";
 import { useTheme, Box, Typography } from "@mui/material";
 import { v3Tokens } from "@/config/tokens";
 import { t } from "i18next";
