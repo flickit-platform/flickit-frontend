@@ -164,15 +164,13 @@ const CustomNode: React.FC<any> = memo((props) => {
     height,
     name,
     color,
-    label,
-    levels,
-    lng,
     bg,
     id,
     selectedId,
     hoveredId,
     onSelect,
     onHover,
+    lng,
   } = props;
 
   const activeId = hoveredId ?? selectedId;
@@ -196,6 +194,11 @@ const CustomNode: React.FC<any> = memo((props) => {
     },
   };
 
+  const fontSizeBase = width / 12;
+  const fontSize = fontSizeBase > 13 ? (isSmallScreen ? 10 : 13) : fontSizeBase;
+
+  const pad = 1;
+
   if (width <= 30 || height <= 30) {
     return (
       <g opacity={groupOpacity} {...events} style={{ cursor: "pointer" }}>
@@ -215,15 +218,6 @@ const CustomNode: React.FC<any> = memo((props) => {
     );
   }
 
-  const fontSize = width / 12;
-  const adjustedFontSize = fontSize > 13 ? (isSmallScreen ? 10 : 13) : fontSize;
-  const truncatedName =
-    name?.length > 10 && fontSize < 10 ? `${name.slice(0, 11)}…` : name;
-  const isFarsi = lng === "fa";
-  const subText = isFarsi
-    ? `\u200F${label} از ${levels}`
-    : `${label} out of ${levels}`;
-
   return (
     <g opacity={groupOpacity} {...events} style={{ cursor: "pointer" }}>
       <rect
@@ -237,34 +231,40 @@ const CustomNode: React.FC<any> = memo((props) => {
         strokeOpacity={groupOpacity}
         style={{ transition: "opacity 120ms ease, stroke-width 120ms ease" }}
       />
-      {width > 50 && height > 20 && (
-        <>
-          <text
-            x={x + width / 2}
-            y={y + height / 2 - 10}
-            textAnchor="middle"
-            fontSize={adjustedFontSize}
-            fontWeight={200}
-            strokeWidth={1}
-            letterSpacing={languageDetector(truncatedName) ? 0 : 0.5}
-            stroke={color}
-            strokeOpacity={groupOpacity}
+
+      {width > 50 && height > 24 && (
+        <foreignObject
+          x={x + pad}
+          y={y + pad}
+          width={Math.max(0, width - pad * 2)}
+          height={Math.max(0, height - pad * 2)}
+          style={{ pointerEvents: "none" }}
+        >
+          <div
+            dir={lng === "fa" ? "rtl" : "ltr"}
+            style={
+              {
+                ...styles.centerVH,
+                width: "100%",
+                height: "100%",
+                textAlign: "center",
+                lineHeight: 1.2,
+                fontSize: fontSize,
+                fontWeight: 500,
+                color: color,
+                opacity: groupOpacity,
+                padding: 0,
+                overflow: "hidden",
+                WebkitLineClamp: 2 as any,
+                WebkitBoxOrient: "vertical" as any,
+                wordBreak: "break-word",
+                whiteSpace: "normal",
+              } as React.CSSProperties
+            }
           >
-            {truncatedName}
-          </text>
-          <text
-            x={x + width / 2}
-            y={y + height / 2 + 10}
-            textAnchor="middle"
-            fontSize={11}
-            fontWeight={200}
-            alignmentBaseline="middle"
-            stroke={color}
-            strokeOpacity={groupOpacity}
-          >
-            {subText}
-          </text>
-        </>
+            {name}
+          </div>
+        </foreignObject>
       )}
     </g>
   );
