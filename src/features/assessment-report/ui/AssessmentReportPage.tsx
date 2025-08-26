@@ -22,6 +22,7 @@ import AdviceSection from "./sections/AdviceSection";
 import SidebarQuickMode from "./sections/SidebarQuickMode";
 import ContactUsDialog from "@/components/common/dialogs/ContactUsDialog";
 import ReportActionsRow from "./ReportActionsRow";
+import HowIsItMade from "@/features/assessment-report/ui/sections/howIsItMade";
 
 export default function AssessmentReportPage() {
   const {
@@ -189,6 +190,7 @@ export default function AssessmentReportPage() {
                     onExpert={() => expertDialog.openDialog({})}
                     onQuestionnaires={handleGoToQuestionnaire}
                   />
+                 <HowIsItMade report={report} lng={lng}  />
                 </Box>
 
                 <ShareDialog {...shareDialog} {...report} lng={lng} />

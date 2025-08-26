@@ -37,6 +37,7 @@
   "quickAccess": "Quick access",
   "recommendations": "Recommendations",
   "helpDescription": "This chart shows how much each measure contributes to a specific attribute. The length of each bar reflects its impact, and the sum of all bars equals 100%. The colors help visualize how much each measure has positively or negatively influenced the attribute. Hovering over a bar reveals the exact percentage of gained or missed score. This breakdown allows you to quickly identify strengths and opportunities for improvement within each area.",
+  "howIsThisReportMade": "How was this report created?",
   "maturityMapOfAssessedAttributes": "Maturity map of assessed attributes",
   "maturityMapOfAssessedAttributesGuidance": "The assessment was conducted using a specialized kit that provides a detailed and technical evaluation of various system attributes—each attribute representing a key aspect of system quality.<br/>The chart below presents a visual summary of the assessed attributes, showing their relative maturity levels and importance within the evaluation. Each block represents an attribute, with its size reflecting its weight in the assessment and its color indicating the maturity level based on the scoring scale defined for this specific evaluation.<br/>It offers a clear snapshot of how different areas of the system compare in terms of maturity, supporting informed analysis and discussion.",
   "measureStatus": "Measure status",
