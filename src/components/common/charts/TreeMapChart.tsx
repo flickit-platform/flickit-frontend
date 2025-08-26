@@ -7,13 +7,12 @@ import React, {
   useMemo,
 } from "react";
 import { ResponsiveContainer, Treemap } from "recharts";
-import { getMaturityLevelColors } from "@styles";
+import { getMaturityLevelColors, styles } from "@styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import languageDetector from "@/utils/languageDetector";
 import { useTheme, Box, Typography } from "@mui/material";
 import { v3Tokens } from "@/config/tokens";
 import { t } from "i18next";
-import { styles } from "@styles";
 
 interface TreeMapNode {
   name: string;
@@ -108,13 +107,13 @@ function VerticalLegend({
   lightColors,
   darkColors,
   height = 50,
-}: {
+}: Readonly<{
   levels: number;
   lng: string;
   lightColors: string[];
   darkColors: string[];
   height?: number;
-}) {
+}>) {
   const order = [...Array(levels).keys()].reverse();
 
   return (
@@ -124,38 +123,29 @@ function VerticalLegend({
     >
       <Typography
         variant="caption"
-        sx={{ color: "success.dark", mb: 0.5, fontWeight: 600 }}
+        color="success.dark"
+        mt={0.5}
+        fontWeight={600}
       >
         {t("common.best", { lng })}
       </Typography>
 
-      <Box
-        sx={{
-          width: LEGEND_WIDTH - 20,
-          borderRadius: 0.5,
-          overflow: "hidden",
-          border: `1px solid ${v3Tokens.outline ?? "#ddd"}`,
-        }}
-      >
+      <Box width={LEGEND_WIDTH - 20} borderRadius={0.5} overflow="hidden">
         {order.map((i) => (
           <Box
             key={i}
-            sx={{
-              height: height / lightColors.length,
-              background: lightColors[i],
-              borderBottom:
-                i !== order[order.length - 1]
-                  ? `1px solid ${v3Tokens.outline ?? "#e6e6e6"}`
-                  : "none",
-              boxShadow: `inset 0 0 0 1px ${darkColors[i]}20`,
-            }}
+            height={height / lightColors.length}
+            bgcolor={lightColors[i]}
+            boxShadow={`inset 0 0 0 1px ${darkColors[i]}20`}
           />
         ))}
       </Box>
 
       <Typography
         variant="caption"
-        sx={{ color: "error.main", mt: 0.5, fontWeight: 600 }}
+        color="error.main"
+        mt={0.5}
+        fontWeight={600}
       >
         {t("common.worst", { lng })}
       </Typography>
