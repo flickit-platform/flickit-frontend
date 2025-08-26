@@ -69,15 +69,6 @@ const TreeMapChart: React.FC<TreeMapProps> = ({
 
   return (
     <Box display="flex" alignItems="flex-end" gap={1}>
-      {/* Legend on the left */}
-      <VerticalLegend
-        levels={levels}
-        lng={lng}
-        lightColors={lightColors}
-        darkColors={darkColors}
-        height={100}
-      />
-
       {/* Chart */}
       <Box sx={{ flex: 1, minWidth: 0 }}>
         <ResponsiveContainer width="100%" height={CHART_HEIGHT}>
@@ -99,6 +90,14 @@ const TreeMapChart: React.FC<TreeMapProps> = ({
           ></Treemap>
         </ResponsiveContainer>
       </Box>
+      {/* Legend  */}
+      <VerticalLegend
+        levels={levels}
+        lng={lng}
+        lightColors={lightColors}
+        darkColors={darkColors}
+        height={100}
+      />
     </Box>
   );
 };
