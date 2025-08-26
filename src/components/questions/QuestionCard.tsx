@@ -722,7 +722,7 @@ const AnswerTemplate = (props: {
   const questionsResultQueryData = useQuery<IQuestionsModel>({
     service: (args, config) =>
       service.assessments.questionnaire.getQuestionnaireAnswers(
-        { questionnaireId, assessmentId, page: args.page ?? 0, size: 50 },
+        { questionnaireId, assessmentId, page: args?.page ?? 0, size: 50 },
         config,
       ),
     runOnMount: false,

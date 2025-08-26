@@ -52,8 +52,8 @@ const AssessmentSettingContainer = () => {
       service.assessments.member.getUsers(
         {
           assessmentId,
-          page: args.page ?? 0,
-          size: args.size ?? 10,
+          page: args?.page ?? 0,
+          size: args?.size ?? 10,
         },
         config,
       ),
