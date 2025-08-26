@@ -1,11 +1,19 @@
-import React, { useCallback, memo, Dispatch, SetStateAction, useState } from "react";
-import { ResponsiveContainer, Treemap, Tooltip } from "recharts";
+import React, {
+  useCallback,
+  memo,
+  Dispatch,
+  SetStateAction,
+  useState,
+  useMemo,
+} from "react";
+import { ResponsiveContainer, Treemap } from "recharts";
 import { getMaturityLevelColors } from "@styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import languageDetector from "@/utils/languageDetector";
-import ChartTooltip from "./ChartTooltip";
-import { useTheme } from "@mui/material";
+import { useTheme, Box, Typography } from "@mui/material";
 import { v3Tokens } from "@/config/tokens";
+import { t } from "i18next";
+import { styles } from "@styles";
 
 interface TreeMapNode {
   name: string;
@@ -23,6 +31,9 @@ interface TreeMapProps {
   setSelectedId: Dispatch<SetStateAction<number | null>>;
 }
 
+const CHART_HEIGHT = 300;
+const LEGEND_WIDTH = 50;
+
 const TreeMapChart: React.FC<TreeMapProps> = ({
   data,
   levels,
@@ -35,55 +46,123 @@ const TreeMapChart: React.FC<TreeMapProps> = ({
   const lightColors = getMaturityLevelColors(levels, true);
   const darkColors = getMaturityLevelColors(levels);
 
-  const treeMapData = data.map((node) => {
-    const idx = Math.max(0, Number(node.label) - 1);
-    return {
-      ...node,
-      color: darkColors[idx],
-      bg: lightColors[idx],
-    };
-  });
+  const treeMapData = useMemo(
+    () =>
+      data.map((node) => {
+        const idx = Math.max(0, Number(node.label) - 1);
+        return { ...node, color: darkColors[idx], bg: lightColors[idx] };
+      }),
+    [data, lightColors, darkColors],
+  );
 
-  const handleSelect = useCallback((id?: number | null) => {
-    if (typeof id !== "number") return;
-    setSelectedId((prev) => (prev === id ? null : id));
-  }, [setSelectedId]);
+  const handleSelect = useCallback(
+    (id?: number | null) => {
+      if (typeof id !== "number") return;
+      setSelectedId((prev) => (prev === id ? null : id));
+    },
+    [setSelectedId],
+  );
 
   const handleHover = useCallback((id?: number | null) => {
     setHoveredId(typeof id === "number" ? id : null);
   }, []);
 
   return (
-    <ResponsiveContainer width="100%" height={300}>
-      <Treemap
-        data={treeMapData}
-        dataKey="count"
-        stroke={v3Tokens.surface.containerLowest}
-        fill={v3Tokens.surface.containerLowest}
-        content={
-          <CustomNode
-            levels={levels}
-            lng={lng}
-            selectedId={selectedId}
-            hoveredId={hoveredId}
-            onSelect={handleSelect}
-            onHover={handleHover}
-          />
-        }
-      >
-        <Tooltip
-          wrapperStyle={{ outline: "none" }}
-          content={
-            <ChartTooltip
-              getPrimary={(d) => d.description}
-              getSecondary={() => ""}
-            />
-          }
-        />
-      </Treemap>
-    </ResponsiveContainer>
+    <Box display="flex" alignItems="flex-end" gap={1}>
+      {/* Legend on the left */}
+      <VerticalLegend
+        levels={levels}
+        lng={lng}
+        lightColors={lightColors}
+        darkColors={darkColors}
+        height={100}
+      />
+
+      {/* Chart */}
+      <Box sx={{ flex: 1, minWidth: 0 }}>
+        <ResponsiveContainer width="100%" height={CHART_HEIGHT}>
+          <Treemap
+            data={treeMapData}
+            dataKey="count"
+            stroke={v3Tokens.surface.containerLowest}
+            fill={v3Tokens.surface.containerLowest}
+            content={
+              <CustomNode
+                levels={levels}
+                lng={lng}
+                selectedId={selectedId}
+                hoveredId={hoveredId}
+                onSelect={handleSelect}
+                onHover={handleHover}
+              />
+            }
+          ></Treemap>
+        </ResponsiveContainer>
+      </Box>
+    </Box>
   );
 };
+
+function VerticalLegend({
+  levels,
+  lng,
+  lightColors,
+  darkColors,
+  height = 50,
+}: {
+  levels: number;
+  lng: string;
+  lightColors: string[];
+  darkColors: string[];
+  height?: number;
+}) {
+  const order = [...Array(levels).keys()].reverse();
+
+  return (
+    <Box
+      width={LEGEND_WIDTH}
+      sx={{ ...styles.centerCH, userSelect: "none", pointerEvents: "none" }}
+    >
+      <Typography
+        variant="caption"
+        sx={{ color: "success.dark", mb: 0.5, fontWeight: 600 }}
+      >
+        {t("common.best", { lng })}
+      </Typography>
+
+      <Box
+        sx={{
+          width: LEGEND_WIDTH - 20,
+          borderRadius: 0.5,
+          overflow: "hidden",
+          border: `1px solid ${v3Tokens.outline ?? "#ddd"}`,
+        }}
+      >
+        {order.map((i) => (
+          <Box
+            key={i}
+            sx={{
+              height: height / lightColors.length,
+              background: lightColors[i],
+              borderBottom:
+                i !== order[order.length - 1]
+                  ? `1px solid ${v3Tokens.outline ?? "#e6e6e6"}`
+                  : "none",
+              boxShadow: `inset 0 0 0 1px ${darkColors[i]}20`,
+            }}
+          />
+        ))}
+      </Box>
+
+      <Typography
+        variant="caption"
+        sx={{ color: "error.main", mt: 0.5, fontWeight: 600 }}
+      >
+        {t("common.worst", { lng })}
+      </Typography>
+    </Box>
+  );
+}
 
 const CustomNode: React.FC<any> = memo((props) => {
   const theme = useTheme();
@@ -110,11 +189,10 @@ const CustomNode: React.FC<any> = memo((props) => {
   const activeId = hoveredId ?? selectedId;
   const isActive = activeId === id;
   const dimOthers = activeId !== null && !isActive;
-
   const groupOpacity = dimOthers ? 0.6 : 1;
   const strokeWidth = dimOthers ? 0.7 : 2;
 
-  const commonEvents = {
+  const events = {
     onClick: (e: React.MouseEvent<SVGGElement>) => {
       e.stopPropagation();
       onSelect?.(id);
@@ -131,7 +209,7 @@ const CustomNode: React.FC<any> = memo((props) => {
 
   if (width <= 30 || height <= 30) {
     return (
-      <g opacity={groupOpacity} {...commonEvents} style={{ cursor: "pointer" }}>
+      <g opacity={groupOpacity} {...events} style={{ cursor: "pointer" }}>
         <rect
           x={x}
           y={y}
@@ -152,14 +230,13 @@ const CustomNode: React.FC<any> = memo((props) => {
   const adjustedFontSize = fontSize > 13 ? (isSmallScreen ? 10 : 13) : fontSize;
   const truncatedName =
     name?.length > 10 && fontSize < 10 ? `${name.slice(0, 11)}…` : name;
-
   const isFarsi = lng === "fa";
   const subText = isFarsi
     ? `\u200F${label} از ${levels}`
     : `${label} out of ${levels}`;
 
   return (
-    <g opacity={groupOpacity} {...commonEvents} style={{ cursor: "pointer" }}>
+    <g opacity={groupOpacity} {...events} style={{ cursor: "pointer" }}>
       <rect
         x={x}
         y={y}
@@ -171,7 +248,6 @@ const CustomNode: React.FC<any> = memo((props) => {
         strokeOpacity={groupOpacity}
         style={{ transition: "opacity 120ms ease, stroke-width 120ms ease" }}
       />
-
       {width > 50 && height > 20 && (
         <>
           <text
