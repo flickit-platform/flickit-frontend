@@ -50,7 +50,13 @@ function InnerAccordion({ title, children }: Props) {
       </AccordionSummary>
 
       <AccordionDetails
-        sx={{ backgroundColor: "#F3F5F6", px: { sm: "40px" }, py: 2 }}
+        sx={{
+          "&.MuiAccordionDetails-root": {
+            bgcolor: "color(srgb 0.9276 0.9376 0.9461) !important",
+          },
+          px: { sm: "40px" },
+          py: 2,
+        }}
       >
         {children}
       </AccordionDetails>
@@ -134,7 +140,7 @@ export default function HowIsItMade({ lng, report }: any) {
         width: "100%",
         mx: "auto",
         direction: lng === "fa" ? "rtl" : "ltr",
-        mb: 4
+        mb: 4,
       }}
     >
       <Accordion sx={{ background: "inherit", boxShadow: "none" }}>
