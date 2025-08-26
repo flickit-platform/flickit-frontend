@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useAuthContext } from "@/providers/AuthProvider";
 import { setSurveyBox, useConfigContext } from "@providers/ConfgProvider";
 import { useGraphicalReport } from "./useGraphicalReport";
@@ -7,11 +7,17 @@ import { useReportChips } from "@/hooks/useReportChips";
 import { useIntersectOnce } from "@/utils/helpers";
 import { ASSESSMENT_MODE } from "@/utils/enumType";
 import type { IGraphicalReport } from "@/types";
+import useDialog from "@/utils/useDialog";
+import keycloakService from "@/service/keycloakService";
+import { Typography } from "@mui/material";
+import { t } from "i18next";
 
 export function useAssessmentReportVM() {
   const location = useLocation();
   const navState = (location.state || {}) as { language?: { code?: string } };
   const langCode = navState.language?.code;
+  const navigate = useNavigate();
+  const { assessmentId, spaceId } = useParams();
 
   const { isAuthenticatedUser } = useAuthContext();
   const { dispatch } = useConfigContext();
@@ -36,6 +42,39 @@ export function useAssessmentReportVM() {
 
   const { infoItems, gotoItems } = useReportChips(report, lng, rtl);
 
+  const shareDialog = useDialog();
+  const expertDialog = useDialog();
+
+  const email =
+    keycloakService._kc.tokenParsed?.preferred_username ??
+    keycloakService._kc.tokenParsed?.sub;
+
+  const expertContext = useMemo(() => {
+    return {
+      type: "requestAnExpertReview",
+      data: {
+        email,
+        dialogTitle: t("assessmentReport.contactExpertGroup", { lng }),
+        children: (
+          <Typography
+            textAlign="justify"
+            variant="bodyLarge"
+            fontFamily="inherit"
+            dangerouslySetInnerHTML={{
+              __html: t("assessmentReport.requestAnExpertReviewContent", {
+                lng,
+              }),
+            }}
+          />
+        ),
+      },
+    };
+  }, []);
+
+  const handleGoToQuestionnaire = () => {
+    navigate(`/${spaceId}/assessments/1/${assessmentId}/questionnaires`);
+  };
+
   return {
     // fetchers
     fetchGraphicalReport,
@@ -59,5 +98,13 @@ export function useAssessmentReportVM() {
 
     // raw
     report,
+
+    // dialogs
+    shareDialog,
+    expertDialog,
+    expertContext,
+
+    //buttons
+    handleGoToQuestionnaire,
   };
 }

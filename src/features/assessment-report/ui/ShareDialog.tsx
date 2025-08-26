@@ -29,7 +29,8 @@ import QueryBatchData from "@/components/common/QueryBatchData";
 type ShareDialogProps = {
   open: boolean;
   onClose: () => void;
-  assessment: any
+  assessment: any;
+  lng: string;
 } & Pick<IGraphicalReport, "visibility" | "permissions" | "linkHash" | "lang">;
 
 export default function ShareDialog({
@@ -38,16 +39,17 @@ export default function ShareDialog({
   visibility,
   permissions,
   linkHash,
-  lang,
-  assessment
+  lng,
+  assessment,
 }: ShareDialogProps) {
   const { t } = useTranslation();
   const methods = useForm<InviteFormData>();
   const { reset, handleSubmit } = methods;
 
-  const lng = (lang?.code ?? "en").toLowerCase();
   const isRTL = lng === "fa";
-  const { space: { isDefault } } = assessment
+  const {
+    space: { isDefault },
+  } = assessment;
   const {
     access,
     snackbarOpen,
@@ -77,10 +79,8 @@ export default function ShareDialog({
     [lng, t],
   );
 
-  const shareSection = () =>{
-    return (
-      isDefault
-      ?
+  const shareSection = () => {
+    return isDefault ? (
       <>
         <Divider sx={{ my: 1 }} />
         <Typography
@@ -91,7 +91,7 @@ export default function ShareDialog({
           {t("assessmentReport.isDraftSpaceReport", { lng })}
         </Typography>
       </>
-      :
+    ) : (
       <>
         {access === VISIBILITY.RESTRICTED && permissions.canShareReport && (
           <>
@@ -196,10 +196,8 @@ export default function ShareDialog({
           </>
         )}
       </>
-
-
-    )
-  }
+    );
+  };
 
   return (
     <CEDialog

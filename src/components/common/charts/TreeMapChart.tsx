@@ -18,7 +18,7 @@ interface TreeMapNode {
 interface TreeMapProps {
   data: TreeMapNode[];
   levels: number;
-  lang: { code: string };
+  lng: string;
   selectedId: number | null;
   setSelectedId: Dispatch<SetStateAction<number | null>>;
 }
@@ -26,7 +26,7 @@ interface TreeMapProps {
 const TreeMapChart: React.FC<TreeMapProps> = ({
   data,
   levels,
-  lang,
+  lng,
   selectedId,
   setSelectedId,
 }) => {
@@ -57,7 +57,7 @@ const TreeMapChart: React.FC<TreeMapProps> = ({
         content={
           <CustomNode
             levels={levels}
-            lang={lang}
+            lng={lng}
             selectedId={selectedId}
             onSelect={handleSelect}
           />
@@ -90,7 +90,7 @@ const CustomNode: React.FC<any> = memo((props) => {
     color,
     label,
     levels,
-    lang,
+    lng,
     bg,
     id,
     selectedId,
@@ -132,7 +132,7 @@ const CustomNode: React.FC<any> = memo((props) => {
   const truncatedName =
     name?.length > 10 && fontSize < 10 ? `${name.slice(0, 11)}…` : name;
 
-  const isFarsi = (lang?.code || "").toUpperCase() === "FA";
+  const isFarsi = lng === "fa";
   const subText = isFarsi
     ? `\u200F${label} از ${levels}`
     : `${label} out of ${levels}`;

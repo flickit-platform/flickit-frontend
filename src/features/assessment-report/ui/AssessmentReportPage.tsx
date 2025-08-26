@@ -1,11 +1,10 @@
 "use client";
 import { Box, Grid } from "@mui/material";
 import LoadingButton from "@mui/lab/LoadingButton";
-import ShareIcon from "@mui/icons-material/Share";
+import ShareIcon from "@mui/icons-material/ShareOutlined";
 import PermissionControl from "@/components/common/PermissionControl";
 import QueryData from "@/components/common/QueryData";
 import GraphicalReportSkeleton from "@/components/common/loadings/GraphicalReportSkeleton";
-import useDialog from "@/utils/useDialog";
 import { styles } from "@styles";
 import { t } from "i18next";
 import type { PathInfo } from "@/types";
@@ -21,6 +20,8 @@ import ScoreSection from "./sections/ScoreSection";
 import TreeMapSection from "./sections/TreeMapSection";
 import AdviceSection from "./sections/AdviceSection";
 import SidebarQuickMode from "./sections/SidebarQuickMode";
+import ContactUsDialog from "@/components/common/dialogs/ContactUsDialog";
+import ReportActionsRow from "./ReportActionsRow";
 
 export default function AssessmentReportPage() {
   const {
@@ -37,19 +38,24 @@ export default function AssessmentReportPage() {
     selectedId,
     setSelectedId,
     report,
+    handleGoToQuestionnaire,
+    expertContext,
+    expertDialog,
+    shareDialog,
   } = useAssessmentReportVM();
-
-  const shareDialog = useDialog();
 
   return (
     <PermissionControl error={[fetchGraphicalReport.errorObject]}>
       <QueryData
         {...fetchGraphicalReport}
         renderLoading={() => (
-          <GraphicalReportSkeleton lang={lng} isAuthenticatedUser={isAuthenticatedUser} />
+          <GraphicalReportSkeleton
+            lang={lng}
+            isAuthenticatedUser={isAuthenticatedUser}
+          />
         )}
         render={() => {
-          const { assessment, advice, subjects, lang, permissions } = report;
+          const { assessment, advice, subjects, permissions } = report;
 
           return (
             <>
@@ -70,15 +76,30 @@ export default function AssessmentReportPage() {
                   <QueryData
                     {...fetchPathInfo}
                     render={(pathInfo: PathInfo) => (
-                      <AssessmentReportTitle pathInfo={pathInfo} rtlLanguage={rtl}>
+                      <AssessmentReportTitle
+                        pathInfo={pathInfo}
+                        rtlLanguage={rtl}
+                      >
                         {(!isQuickMode || !isAuthenticatedUser) && (
                           <LoadingButton
                             variant="contained"
-                            startIcon={<ShareIcon fontSize="small" sx={{ ...styles.iconDirectionStyle(lng) }} />}
+                            startIcon={
+                              <ShareIcon
+                                fontSize="small"
+                                sx={{ ...styles.iconDirectionStyle(lng) }}
+                              />
+                            }
                             size="small"
                             onClick={() => shareDialog.openDialog({})}
-                            disabled={!permissions.canShareReport && !permissions.canManageVisibility}
-                            sx={{ ...styles.rtlStyle(rtl), height: "100%", width: 290 }}
+                            disabled={
+                              !permissions.canShareReport &&
+                              !permissions.canManageVisibility
+                            }
+                            sx={{
+                              ...styles.rtlStyle(rtl),
+                              height: "100%",
+                              width: 290,
+                            }}
                           >
                             {t("assessmentReport.shareReport", { lng })}
                           </LoadingButton>
@@ -92,7 +113,11 @@ export default function AssessmentReportPage() {
                   <Grid container spacing={3}>
                     <Grid item xs={12} md={isQuickMode ? 9 : 12}>
                       <SectionCard>
-                        <ReportHeader rtl={rtl} lng={lng} infoItems={infoItems} />
+                        <ReportHeader
+                          rtl={rtl}
+                          lng={lng}
+                          infoItems={infoItems}
+                        />
                         <ScoreSection
                           rtl={rtl}
                           lng={lng}
@@ -108,21 +133,33 @@ export default function AssessmentReportPage() {
                         show={isAuthenticatedUser && isQuickMode}
                         lng={lng}
                         rtl={rtl}
-                        canShare={permissions.canShareReport || permissions.canManageVisibility}
+                        canShare={
+                          permissions.canShareReport ||
+                          permissions.canManageVisibility
+                        }
                         onShare={() => shareDialog.openDialog({})}
-                        ContactBox={<ContactExpertBox lng={lng} rtl={rtl} onOpen={() => shareDialog.openDialog({})} />}
+                        ContactBox={
+                          <ContactExpertBox
+                            lng={lng}
+                            rtl={rtl}
+                            onOpen={() => expertDialog.openDialog({})}
+                          />
+                        }
                       />
                     </Grid>
                   </Grid>
 
                   <SectionCard
-                    title={t("assessmentReport.howWasThisScoreCalculated", { lng })}
-                    desc={t("assessmentReport.howWasThisScoreCalculatedDesc", { lng })}
+                    title={t("assessmentReport.howWasThisScoreCalculated", {
+                      lng,
+                    })}
+                    desc={t("assessmentReport.howWasThisScoreCalculatedDesc", {
+                      lng,
+                    })}
                     rtl={rtl}
                   >
                     <TreeMapSection
                       assessment={assessment}
-                      lang={lang}
                       subjects={subjects}
                       selectedId={selectedId}
                       setSelectedId={setSelectedId}
@@ -132,14 +169,35 @@ export default function AssessmentReportPage() {
                   </SectionCard>
 
                   <SectionCard
-                    title={t("assessmentReport.howCanTheCurrentSituationBeImproved", { lng })}
+                    title={t(
+                      "assessmentReport.howCanTheCurrentSituationBeImproved",
+                      { lng },
+                    )}
                     rtl={rtl}
                   >
-                    <AdviceSection advice={advice} lang={lang} rtl={rtl} />
+                    <AdviceSection advice={advice} lng={lng} rtl={rtl} />
                   </SectionCard>
+                  <ReportActionsRow
+                    rtl={rtl}
+                    lng={lng}
+                    canShare={
+                      permissions.canShareReport ||
+                      permissions.canManageVisibility
+                    }
+                    isQuickMode={isQuickMode}
+                    onShare={() => shareDialog.openDialog({})}
+                    onExpert={() => expertDialog.openDialog({})}
+                    onQuestionnaires={handleGoToQuestionnaire}
+                  />
                 </Box>
 
-                <ShareDialog {...shareDialog} {...report} lang={lang} />
+                <ShareDialog {...shareDialog} {...report} lng={lng} />
+                <ContactUsDialog
+                  {...expertDialog}
+                  context={expertContext}
+                  lng={lng}
+                  sx={{ ...styles.rtlStyle(rtl) }}
+                />
               </Box>
             </>
           );

@@ -1,6 +1,6 @@
 import { Box } from "@mui/material";
 import LoadingButton from "@mui/lab/LoadingButton";
-import ShareIcon from "@mui/icons-material/Share";
+import ShareIcon from "@mui/icons-material/ShareOutlined";
 import { styles } from "@styles";
 import { t } from "i18next";
 
