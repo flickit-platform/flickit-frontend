@@ -1,4 +1,4 @@
-import React, { useCallback, memo, Dispatch, SetStateAction } from "react";
+import React, { useCallback, memo, Dispatch, SetStateAction, useState } from "react";
 import { ResponsiveContainer, Treemap, Tooltip } from "recharts";
 import { getMaturityLevelColors } from "@styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
@@ -30,6 +30,8 @@ const TreeMapChart: React.FC<TreeMapProps> = ({
   selectedId,
   setSelectedId,
 }) => {
+  const [hoveredId, setHoveredId] = useState<number | null>(null);
+
   const lightColors = getMaturityLevelColors(levels, true);
   const darkColors = getMaturityLevelColors(levels);
 
@@ -45,6 +47,10 @@ const TreeMapChart: React.FC<TreeMapProps> = ({
   const handleSelect = useCallback((id?: number | null) => {
     if (typeof id !== "number") return;
     setSelectedId((prev) => (prev === id ? null : id));
+  }, [setSelectedId]);
+
+  const handleHover = useCallback((id?: number | null) => {
+    setHoveredId(typeof id === "number" ? id : null);
   }, []);
 
   return (
@@ -59,7 +65,9 @@ const TreeMapChart: React.FC<TreeMapProps> = ({
             levels={levels}
             lng={lng}
             selectedId={selectedId}
+            hoveredId={hoveredId}
             onSelect={handleSelect}
+            onHover={handleHover}
           />
         }
       >
@@ -94,24 +102,36 @@ const CustomNode: React.FC<any> = memo((props) => {
     bg,
     id,
     selectedId,
+    hoveredId,
     onSelect,
+    onHover,
   } = props;
 
-  const isSelected = selectedId === id;
-  const dimOthers = selectedId !== null && !isSelected;
+  const activeId = hoveredId ?? selectedId;
+  const isActive = activeId === id;
+  const dimOthers = activeId !== null && !isActive;
+
   const groupOpacity = dimOthers ? 0.6 : 1;
   const strokeWidth = dimOthers ? 0.7 : 2;
 
+  const commonEvents = {
+    onClick: (e: React.MouseEvent<SVGGElement>) => {
+      e.stopPropagation();
+      onSelect?.(id);
+    },
+    onMouseEnter: (e: React.MouseEvent<SVGGElement>) => {
+      e.stopPropagation();
+      onHover?.(id);
+    },
+    onMouseLeave: (e: React.MouseEvent<SVGGElement>) => {
+      e.stopPropagation();
+      onHover?.(null);
+    },
+  };
+
   if (width <= 30 || height <= 30) {
     return (
-      <g
-        opacity={groupOpacity}
-        onClick={(e) => {
-          e.stopPropagation();
-          onSelect?.(id);
-        }}
-        style={{ cursor: "pointer" }}
-      >
+      <g opacity={groupOpacity} {...commonEvents} style={{ cursor: "pointer" }}>
         <rect
           x={x}
           y={y}
@@ -122,6 +142,7 @@ const CustomNode: React.FC<any> = memo((props) => {
           strokeOpacity={groupOpacity}
           rx={8}
           ry={8}
+          style={{ transition: "opacity 120ms ease, stroke-width 120ms ease" }}
         />
       </g>
     );
@@ -138,14 +159,7 @@ const CustomNode: React.FC<any> = memo((props) => {
     : `${label} out of ${levels}`;
 
   return (
-    <g
-      opacity={groupOpacity}
-      onClick={(e) => {
-        e.stopPropagation();
-        onSelect?.(id);
-      }}
-      style={{ cursor: "pointer" }}
-    >
+    <g opacity={groupOpacity} {...commonEvents} style={{ cursor: "pointer" }}>
       <rect
         x={x}
         y={y}
@@ -155,6 +169,7 @@ const CustomNode: React.FC<any> = memo((props) => {
         stroke={color}
         strokeWidth={strokeWidth}
         strokeOpacity={groupOpacity}
+        style={{ transition: "opacity 120ms ease, stroke-width 120ms ease" }}
       />
 
       {width > 50 && height > 20 && (
