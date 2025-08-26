@@ -134,6 +134,7 @@ export default function HowIsItMade({ lng, report }: any) {
         width: "100%",
         mx: "auto",
         direction: lng === "fa" ? "rtl" : "ltr",
+        mb: 4
       }}
     >
       <Accordion sx={{ background: "inherit", boxShadow: "none" }}>
