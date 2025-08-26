@@ -3,8 +3,7 @@ import AdviceItemsAccordion from "@/components/dashboard/advice-tab/advice-items
 import { styles } from "@styles";
 import { t } from "i18next";
 
-export default function AdviceSection({ advice, lang, rtl }: any) {
-  const lng = lang?.code?.toLowerCase();
+export default function AdviceSection({ advice, lng, rtl }: any) {
   return advice?.narration || advice?.adviceItems?.length ? (
     <>
       <Typography textAlign="justify" variant="bodyMedium" sx={{ ...styles.rtlStyle(rtl) }}

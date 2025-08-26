@@ -77,7 +77,7 @@ export default function ContactExpertBox({ lng, rtl, onOpen }: Props) {
             background: `linear-gradient(45deg, #1B4D7E, #2D80D2, #1B4D7E)`,
             opacity: 0.9,
           },
-          fontFamily: "inherit",
+          ...styles.rtlStyle(rtl)
         }}
       >
         {t("assessmentReport.contactExpertGroup", { lng })}

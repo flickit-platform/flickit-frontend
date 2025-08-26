@@ -76,6 +76,7 @@ const commonStyles = {
   rtlStyle: (isRTL = true) => ({
     direction: isRTL ? "rtl" : "ltr",
     fontFamily: isRTL ? farsiFontFamily : primaryFontFamily,
+    letterSpacing: isRTL ? 0 : "inheritx",
   }),
   iconDirectionStyle: (lng?: string) => {
     const isCurrentLang = lng === i18next.language.toLowerCase();
