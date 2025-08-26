@@ -48,7 +48,7 @@ export default function ReportActionsRow({
           disabled={!canShare}
           sx={{ ...styles.rtlStyle(rtl) }}
         >
-          {t("assessmentReport.shareReport", { lng })}
+          {t("common.share", { lng })}
         </LoadingButton>
 
         {isQuickMode && (
