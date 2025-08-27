@@ -25,6 +25,7 @@ import {
 } from "@/components/common/dialogs/CEDialog";
 import { InputFieldUC } from "@/components/common/fields/InputField";
 import QueryBatchData from "@/components/common/QueryBatchData";
+import { farsiFontFamily, primaryFontFamily } from "@config/theme";
 
 type ShareDialogProps = {
   open: boolean;
@@ -48,7 +49,7 @@ export default function ShareDialog({
 
   const isRTL = lng === "fa";
   const {
-    space: { isDefault },
+    space: { isDefault }
   } = assessment;
   const {
     access,
@@ -57,7 +58,7 @@ export default function ShareDialog({
     fetchGraphicalReportUsers,
     handleSelect,
     onInviteSubmit,
-    handleCopyClick,
+    handleCopyClick
   } = useShareDialog({ open, visibility, linkHash });
 
   type AccessOptions = Record<
@@ -69,14 +70,14 @@ export default function ShareDialog({
     () => ({
       [VISIBILITY.RESTRICTED]: {
         title: t("assessmentReport.restrictedShareTitle", { lng }),
-        description: t("assessmentReport.restrictedShareDescription", { lng }),
+        description: t("assessmentReport.restrictedShareDescription", { lng })
       },
       [VISIBILITY.PUBLIC]: {
         title: t("assessmentReport.PublicShareTitle", { lng }),
-        description: t("assessmentReport.PublicShareDescription", { lng }),
-      },
+        description: t("assessmentReport.PublicShareDescription", { lng })
+      }
     }),
-    [lng, t],
+    [lng, t]
   );
 
   const shareSection = () => {
@@ -121,8 +122,9 @@ export default function ShareDialog({
                       name="email"
                       size="small"
                       placeholder={t("assessmentReport.shareReportViaEmail", {
-                        lng,
+                        lng
                       })}
+                      lng={lng}
                       fullWidth
                       required
                       stylesProps={{ input: { padding: "4px 12px" } }}
@@ -136,7 +138,7 @@ export default function ShareDialog({
                         fontFamily: "inherit",
                         minWidth: "inherit",
                         padding: "5px",
-                        height: "100%",
+                        height: "100%"
                       }}
                     >
                       <PersonAddIcon fontSize="small" />
@@ -163,7 +165,7 @@ export default function ShareDialog({
                 <Box display="flex" flexDirection="column" my={1} gap={2}>
                   {[
                     ...(graphicalReportUsers?.users ?? []),
-                    ...(graphicalReportUsers?.invitees ?? []),
+                    ...(graphicalReportUsers?.invitees ?? [])
                   ].map((member) => {
                     const { displayName, id, pictureLink, email } = member;
                     return (
@@ -179,12 +181,18 @@ export default function ShareDialog({
                         />
                         {email}
                         {(graphicalReportUsers?.invitees ?? []).includes(
-                          member,
+                          member
                         ) && (
                           <Chip
                             label={t("common.invited", { lng })}
                             size="small"
-                            sx={{ ".MuiChip-label": { fontFamily: "inherit" } }}
+                            sx={{
+                              ".MuiChip-label": {
+                                fontFamily: lng === "fa"
+                                  ? farsiFontFamily
+                                  : primaryFontFamily
+                              }
+                            }}
                           />
                         )}
                       </Box>
@@ -206,14 +214,21 @@ export default function ShareDialog({
       title={
         <Box sx={{ ...styles.centerV }} gap={1}>
           <Share />
-          {t("assessmentReport.shareReport", { lng })}
+          <Typography variant={"semiBoldXLarge"} sx={{
+            fontFamily:
+              lng === "fa"
+                ? farsiFontFamily
+                : primaryFontFamily
+          }}>
+            {t("assessmentReport.shareReport", { lng })}
+          </Typography>
         </Box>
       }
       maxWidth="sm"
       sx={{ ...styles.rtlStyle(isRTL) }}
       contentStyle={{
         p: "38px 64px 32px 64px !important",
-        overflowX: "hidden !important",
+        overflowX: "hidden !important"
       }}
       titleStyle={{ mb: "0px !important" }}
     >
@@ -242,7 +257,7 @@ export default function ShareDialog({
                 width: "100%",
                 height: "fit-content",
                 borderRadius: "8%",
-                cursor: "pointer",
+                cursor: "pointer"
               }}
               onClick={() => handleSelect(k)}
               role="button"

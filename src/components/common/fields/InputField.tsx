@@ -173,7 +173,10 @@ const InputFieldUC = (props: IInputFieldUCProps) => {
           "& ::placeholder": {
             ...theme.typography.bodyMedium,
             textAlign: languageDetector(placeholder) ? "right" : "left",
-            fontFamily: "inherit",
+            fontFamily:
+              lng === "fa"
+                ? farsiFontFamily
+                : primaryFontFamily,
           },
           "& fieldset": {
             borderColor: pallet?.borderColor,
