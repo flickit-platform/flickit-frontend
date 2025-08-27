@@ -104,6 +104,65 @@ const GraphicalReportSkeleton = ({ isAuthenticatedUser, lang }: any) => (
       </Box>
 
       <Grid container spacing={2}>
+        <Grid item lg={9.5} md={9.5} sm={12} xs={12}>
+          <Paper
+            elevation={3}
+            sx={{
+              position: "relative",
+              bgcolor: "background.containerLowest",
+              borderStartEndRadius: 2,
+              borderStartStartRadius: 2,
+              boxShadow: "none",
+              width: "100%",
+              minHeight: 220,
+              mb: 4,
+              p: { md: 6, xs: 1 },
+              ...styles.centerH,
+            }}
+          >
+            <Box width="100%" px={2}>
+              <Grid container spacing={4} mb="20px">
+                <Grid item xs={12}>
+                  <Skeleton
+                    variant="rounded"
+                    height={36}
+                    width={220}
+                    sx={{ mb: 0.5 }}
+                  />
+                </Grid>
+                <Grid item xs={12} sm={6} md={4} mt={{ xs: 2, md: 5 }}>
+                  <img
+                    src={MatirytySkeleton}
+                    alt="MatirytySkeleton"
+                    width={200}
+                    height={140}
+                  />
+                </Grid>
+                <Grid item xs={12} sm={6} md={8}>
+                  <Skeleton variant="text" width="70%" height={38} />
+                  <Skeleton
+                    variant="text"
+                    width="40%"
+                    height={24}
+                    sx={{ mt: 2 }}
+                  />
+                  <Skeleton
+                    variant="rectangular"
+                    width="100%"
+                    height={70}
+                    sx={{ mt: 2, borderRadius: 2 }}
+                  />
+                  <Skeleton
+                    variant="text"
+                    width="35%"
+                    height={22}
+                    sx={{ mt: 3 }}
+                  />
+                </Grid>
+              </Grid>
+            </Box>
+          </Paper>
+        </Grid>
         <Grid item lg={2.5} md={2.5} sm={12} xs={12}>
           {isAuthenticatedUser && (
             <Box mb={2} sx={{ ...styles.centerH }}>
@@ -161,84 +220,6 @@ const GraphicalReportSkeleton = ({ isAuthenticatedUser, lang }: any) => (
             </Box>
           )}
         </Grid>
-        <Grid item lg={9.5} md={9.5} sm={12} xs={12}>
-          <Paper
-            elevation={3}
-            sx={{
-              position: "relative",
-              bgcolor: "background.containerLowest",
-              borderStartEndRadius: 2,
-              borderStartStartRadius: 2,
-              boxShadow: "none",
-              width: "100%",
-              minHeight: 220,
-              mb: 4,
-              p: { md: 6, xs: 1 },
-              ...styles.centerH,
-            }}
-          >
-            {/* کناره‌ها */}
-            <Box
-              position="absolute"
-              right={{ md: "40px", xs: "12px" }}
-              top={{ md: "60px", xs: "6px" }}
-              bottom={{ md: "40px", xs: "4px" }}
-              width={{ md: "8px", xs: "2px" }}
-              bgcolor="primary.bgVariant"
-              borderRadius={1}
-            />
-            <Box
-              position="absolute"
-              left={{ md: "40px", xs: "12px" }}
-              top={{ md: "60px", xs: "6px" }}
-              bottom={{ md: "40px", xs: "4px" }}
-              width={{ md: "8px", xs: "2px" }}
-              bgcolor="primary.bgVariant"
-              borderRadius={1}
-            />
-            <Box width="100%" px={2}>
-              <Grid container spacing={4} mb="20px">
-                <Grid item xs={12}>
-                  <Skeleton
-                    variant="rounded"
-                    height={36}
-                    width={220}
-                    sx={{ mb: 0.5 }}
-                  />
-                </Grid>
-                <Grid item xs={12} sm={6} md={4} mt={{ xs: 2, md: 5 }}>
-                  <img
-                    src={MatirytySkeleton}
-                    alt="MatirytySkeleton"
-                    width={200}
-                    height={140}
-                  />
-                </Grid>
-                <Grid item xs={12} sm={6} md={8}>
-                  <Skeleton variant="text" width="70%" height={38} />
-                  <Skeleton
-                    variant="text"
-                    width="40%"
-                    height={24}
-                    sx={{ mt: 2 }}
-                  />
-                  <Skeleton
-                    variant="rectangular"
-                    width="100%"
-                    height={70}
-                    sx={{ mt: 2, borderRadius: 2 }}
-                  />
-                  <Skeleton
-                    variant="text"
-                    width="35%"
-                    height={22}
-                    sx={{ mt: 3 }}
-                  />
-                </Grid>
-              </Grid>
-            </Box>
-          </Paper>
-        </Grid>
         <Grid container xs={12}>
           <Paper
             elevation={3}
@@ -280,7 +261,14 @@ const GraphicalReportSkeleton = ({ isAuthenticatedUser, lang }: any) => (
           </Paper>
         </Grid>
         <Grid container xs={12} mt={4}>
-          <Box sx={{width: "100%" , display: "flex", flexDirection: "column", gap: 2}}>
+          <Box
+            sx={{
+              width: "100%",
+              display: "flex",
+              flexDirection: "column",
+              gap: 2,
+            }}
+          >
             {Array.from({ length: 2 }).map((_, index) => (
               <Accordion expanded={true} key={index}>
                 <AccordionSummary

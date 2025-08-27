@@ -4,7 +4,7 @@ import LoadingButton from "@mui/lab/LoadingButton";
 import ShareIcon from "@mui/icons-material/ShareOutlined";
 import PermissionControl from "@/components/common/PermissionControl";
 import QueryData from "@/components/common/QueryData";
-import GraphicalReportSkeleton from "@/components/common/loadings/GraphicalReportSkeleton";
+import GraphicalReportSkeleton from "@/features/assessment-report/ui/loading/GraphicalReportSkeleton";
 import { styles } from "@styles";
 import { t } from "i18next";
 import type { PathInfo } from "@/types";
