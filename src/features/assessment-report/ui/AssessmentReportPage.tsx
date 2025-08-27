@@ -1,5 +1,5 @@
 "use client";
-import { Box, Grid, Typography, useTheme } from "@mui/material";
+import { Box, Grid, Typography } from "@mui/material";
 import LoadingButton from "@mui/lab/LoadingButton";
 import ShareIcon from "@mui/icons-material/ShareOutlined";
 import PermissionControl from "@/components/common/PermissionControl";
@@ -8,6 +8,7 @@ import GraphicalReportSkeleton from "@/components/common/loadings/GraphicalRepor
 import { styles } from "@styles";
 import { t } from "i18next";
 import type { PathInfo } from "@/types";
+import { useCallback } from "react";
 
 import { useAssessmentReportVM } from "../../assessment-report/model/useAssessmentReportVM";
 import AssessmentReportTitle from "./AssessmentReportTitle";
@@ -23,7 +24,6 @@ import SidebarQuickMode from "./sections/header/SidebarQuickMode";
 import ContactUsDialog from "@/components/common/dialogs/ContactUsDialog";
 import ReportActionsRow from "./ReportActionsRow";
 import HowIsItMade from "@/features/assessment-report/ui/sections/howIsItMade";
-import { useMemo } from "react";
 import { ASSESSMENT_MODE } from "@utils/enumType";
 import AIGenerated from "@/components/common/icons/AIGenerated";
 
@@ -48,10 +48,14 @@ export default function AssessmentReportPage() {
     shareDialog,
   } = useAssessmentReportVM();
 
-  const isAdvanceMode = useMemo(() => {
-    return ASSESSMENT_MODE.ADVANCED === report?.assessment?.mode?.code;
-  }, [report?.assessment?.mode?.code]);
-  const theme = useTheme();
+  const onShare = useCallback(() => shareDialog.openDialog({}), [shareDialog]);
+  const onExpert = useCallback(
+    () => expertDialog.openDialog({}),
+    [expertDialog],
+  );
+  const onQuestionnaires = useCallback(handleGoToQuestionnaire, [
+    handleGoToQuestionnaire,
+  ]);
 
   return (
     <PermissionControl error={[fetchGraphicalReport.errorObject]}>
@@ -65,6 +69,20 @@ export default function AssessmentReportPage() {
         )}
         render={() => {
           const { assessment, advice, subjects, permissions } = report;
+          const isAdvancedMode =
+            report?.assessment?.mode?.code === ASSESSMENT_MODE.ADVANCED;
+
+          const sidebarProps = {
+            show: isAuthenticatedUser && isQuickMode,
+            lng,
+            rtl,
+            canShare:
+              permissions.canShareReport || permissions.canManageVisibility,
+            onShare,
+            ContactBox: (
+              <ContactExpertBox lng={lng} rtl={rtl} onOpen={onExpert} />
+            ),
+          };
 
           return (
             <Box pb={4}>
@@ -89,7 +107,7 @@ export default function AssessmentReportPage() {
                         pathInfo={pathInfo}
                         rtlLanguage={rtl}
                       >
-                        {(!isQuickMode || !isAuthenticatedUser) && (
+                        {!isQuickMode && (
                           <LoadingButton
                             variant="contained"
                             startIcon={
@@ -99,7 +117,7 @@ export default function AssessmentReportPage() {
                               />
                             }
                             size="small"
-                            onClick={() => shareDialog.openDialog({})}
+                            onClick={onShare}
                             disabled={
                               !permissions.canShareReport &&
                               !permissions.canManageVisibility
@@ -138,28 +156,13 @@ export default function AssessmentReportPage() {
                     </Grid>
 
                     <Grid item display={{ xs: "none", md: "block" }} md={3}>
-                      <SidebarQuickMode
-                        show={isAuthenticatedUser && isQuickMode}
-                        lng={lng}
-                        rtl={rtl}
-                        canShare={
-                          permissions.canShareReport ||
-                          permissions.canManageVisibility
-                        }
-                        onShare={() => shareDialog.openDialog({})}
-                        ContactBox={
-                          <ContactExpertBox
-                            lng={lng}
-                            rtl={rtl}
-                            onOpen={() => expertDialog.openDialog({})}
-                          />
-                        }
-                      />
+                      <SidebarQuickMode {...sidebarProps} />
                     </Grid>
                   </Grid>
 
                   <SectionCard
                     id="howCalculated"
+                    className="anchor-offset"
                     title={t("assessmentReport.howWasThisScoreCalculated", {
                       lng,
                     })}
@@ -209,14 +212,12 @@ export default function AssessmentReportPage() {
 
                   <SectionCard
                     id="howToImprove"
+                    className="anchor-offset"
                     icon={
                       isQuickMode && (
-                        <AIGenerated
-                          styles={{
-                            color: theme.palette.primary.main,
-                            width: "32px",
-                          }}
-                        />
+                        <Box sx={{ color: "primary.main" }}>
+                          <AIGenerated styles={{ width: "32px" }} />
+                        </Box>
                       )
                     }
                     title={t(
@@ -227,6 +228,7 @@ export default function AssessmentReportPage() {
                   >
                     <AdviceSection advice={advice} lng={lng} rtl={rtl} />
                   </SectionCard>
+
                   <ReportActionsRow
                     rtl={rtl}
                     lng={lng}
@@ -235,32 +237,18 @@ export default function AssessmentReportPage() {
                       permissions.canManageVisibility
                     }
                     isQuickMode={isQuickMode}
-                    onShare={() => shareDialog.openDialog({})}
-                    onExpert={() => expertDialog.openDialog({})}
-                    onQuestionnaires={handleGoToQuestionnaire}
+                    onShare={onShare}
+                    onExpert={onExpert}
+                    onQuestionnaires={onQuestionnaires}
                   />
-                  {isAdvanceMode && <HowIsItMade report={report} lng={lng} />}
+
+                  {isAdvancedMode && <HowIsItMade report={report} lng={lng} />}
                 </Box>
 
                 <Box display={{ xs: "block", md: "none" }}>
-                  <SidebarQuickMode
-                    show={isAuthenticatedUser && isQuickMode}
-                    lng={lng}
-                    rtl={rtl}
-                    canShare={
-                      permissions.canShareReport ||
-                      permissions.canManageVisibility
-                    }
-                    onShare={() => shareDialog.openDialog({})}
-                    ContactBox={
-                      <ContactExpertBox
-                        lng={lng}
-                        rtl={rtl}
-                        onOpen={() => expertDialog.openDialog({})}
-                      />
-                    }
-                  />
+                  <SidebarQuickMode {...sidebarProps} />
                 </Box>
+
                 <ShareDialog {...shareDialog} {...report} lng={lng} />
                 <ContactUsDialog
                   {...expertDialog}
