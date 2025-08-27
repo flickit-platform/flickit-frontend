@@ -2,7 +2,7 @@ import { Box, Grid, Typography } from "@mui/material";
 import { styles } from "@styles";
 import { t } from "i18next";
 import { Gauge } from "@/components/common/charts/Gauge";
-import { useScoreSection } from "../../model/hooks/useScoreSection";
+import { useScoreSection } from "../../../model/hooks/useScoreSection";
 import ChipsRow from "@/components/common/fields/ChipsRow";
 
 export default function ScoreSection({
