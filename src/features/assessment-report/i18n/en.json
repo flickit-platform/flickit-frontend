@@ -62,7 +62,7 @@
   "shareOptions": "Sharing options",
   "subjectsAndAttributes": "Subjects and Attributes",
   "subjectsStatus": "Subjects status",
-  "treemapEmptyState": "Click on any attributes in the chart to view details",
+  "treemapEmptyState": "Click on any attribute in the chart to view details",
   "viewReport": "View report",
   "whyAtThisLevel": "Why is \"{{attribute}}\" at the \"{{maturityLevel}}\" level?",
   "writeAboutParticipants": "Write about the participants and their roles in this assessment here...",
