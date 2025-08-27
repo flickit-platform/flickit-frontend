@@ -118,7 +118,7 @@ const MainTabs = (props: any) => {
   }, [assessmentInfo?.mode?.code]);
   return (
     <>
-      {isMobileScreen ? (
+      {isMobileScreen && selectedTab !== "settings" ? (
         <Box
           sx={{
             ...styles.centerVH,
@@ -176,7 +176,7 @@ const MainTabs = (props: any) => {
         </Box>
       ) : (
         <>
-          {isAdvanceMode ? (
+          {isAdvanceMode && selectedTab !== "settings" ? (
             <>
               {" "}
               {fetchAssessmentPermissions.loading ? (
