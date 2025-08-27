@@ -29,7 +29,7 @@
   "participants": "Participants",
   "publishReport": "Publish report",
   "publicShareTitle": "Public access (No login required)",
-  "ublicShareDescription": "Anyone with the link can view the report without needing to login.",
+  "publicShareDescription": "Anyone with the link can view the report without needing to login.",
   "questionsAndAnswer": "{{count}} questions and answers",
   "recommendations": "Recommendations",
   "howIsThisReportMade": "How was this report created?",
