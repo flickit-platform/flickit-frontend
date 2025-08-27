@@ -472,15 +472,6 @@ const Navbar = () => {
             );
           }}
         />
-        {/* <ListItem disablePadding>
-          <ListItemButton
-            sx={{ textAlign: "left", borderRadius: 1.5 }}
-            component={NavLink}
-            to={`/compare`}
-          >
-            <ListItemText primary={<Trans i18nKey="compare.compare" />} />
-          </ListItemButton>
-        </ListItem> */}
         <ListItem disablePadding>
           <ListItemButton
             sx={{ textAlign: "left", borderRadius: 1.5 }}
@@ -550,26 +541,7 @@ const Navbar = () => {
             />
           </Typography>
           <Box mx="auto" display={{ xs: "none", md: "block" }}>
-            <SpacesButton  />
-            {/* <Button
-              component={NavLink}
-              to={`/compare`}
-              startIcon={
-                <CompareRounded
-                  sx={{ opacity: 0.8, fontSize: "1.125rem !important" }}
-                />
-              }
-              sx={{
-                ...styles.activeNavbarLink,
-                textTransform: "uppercase",
-                marginRight: theme.direction === "rtl" ? 0.8 : 0.1,
-                marginLeft: theme.direction === "ltr" ? 0.8 : 0.1,
-                color: theme.palette.background.containerLowest,
-              }}
-              size="small"
-            >
-              <Trans i18nKey="compare.compare" />
-            </Button> */}
+            <SpacesButton />
             <Button
               component={NavLink}
               to={`/assessment-kits`}
@@ -661,40 +633,39 @@ const Navbar = () => {
 };
 
 const SpacesButton = () => {
-
   const navigate = useNavigate();
   const isActive = location.pathname.startsWith("/spaces");
 
   return (
-      <Button
-        data-cy="spaces"
-        onClick={() => navigate("/spaces")}
-        sx={{
-          textTransform: "uppercase",
-          marginInlineStart: 0.8,
-          marginInlineEnd: 0.1,
-          "&:hover .MuiButton-endIcon > div": {
-            borderLeftColor: "#8080802b",
+    <Button
+      data-cy="spaces"
+      onClick={() => navigate("/spaces")}
+      sx={{
+        textTransform: "uppercase",
+        marginInlineStart: 0.8,
+        marginInlineEnd: 0.1,
+        "&:hover .MuiButton-endIcon > div": {
+          borderLeftColor: "#8080802b",
+        },
+        ...(isActive && {
+          "&::after": {
+            content: '""',
+            position: "absolute",
+            bottom: 0,
+            left: "50%",
+            transform: "translateX(-50%)",
+            width: "90%",
+            height: "2px",
+            backgroundColor: "background.containerLowest",
+            borderRadius: 1,
           },
-          ...(isActive && {
-            "&::after": {
-              content: '""',
-              position: "absolute",
-              bottom: 0,
-              left: "50%",
-              transform: "translateX(-50%)",
-              width: "90%",
-              height: "2px",
-              backgroundColor: "background.containerLowest",
-              borderRadius: 1,
-            },
-          }),
-          color: "background.containerLowest",
-        }}
-        size="small"
-      >
-        <Trans i18nKey="assessment.myAssessments" />
-      </Button>
+        }),
+        color: "background.containerLowest",
+      }}
+      size="small"
+    >
+      <Trans i18nKey="assessment.myAssessments" />
+    </Button>
   );
 };
 
