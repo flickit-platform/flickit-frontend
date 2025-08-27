@@ -1,13 +1,16 @@
 import React, { Dispatch, SetStateAction, useMemo } from "react";
-import { Box, Typography, Grid } from "@mui/material";
+import { Box, Typography, Grid, useTheme } from "@mui/material";
 import TreeMapChart from "@/components/common/charts/TreeMapChart";
 import ManWithMagnifier from "@/assets/svg/man-with-magnifier.svg";
 import { t } from "i18next";
 import { styles } from "@styles";
 import { useTreeMapSection } from "../../model/hooks/useTreeMapSection";
 import languageDetector from "@/utils/languageDetector";
+import MeasuresTable from "./MeasureTable";
+import AIGenerated from "@/components/common/icons/AIGenerated";
 
 type Props = {
+  isQuickMode: boolean;
   assessment: any;
   subjects: any[];
   selectedId: number | null;
@@ -30,8 +33,7 @@ type AttributeVM = {
   guidanceText: string;
 };
 
-const rtlSx = (flag?: boolean) => styles.rtlStyle(flag);
-
+export const rtlSx = (flag?: boolean) => styles.rtlStyle(flag);
 function toAttributeVM(
   attr: any,
   lng: string,
@@ -68,8 +70,8 @@ const HeaderStrip: React.FC<{ vm: AttributeVM }> = ({ vm }) => (
   <Box
     bgcolor="background.containerHigher"
     borderRadius="16px 16px 0 0"
-    p={2}
-    mx={4}
+    p={{ xs: 2, md: 2 }}
+    mx={{ xs: 2, md: 4 }}
     mt={4}
   >
     <Grid
@@ -82,7 +84,12 @@ const HeaderStrip: React.FC<{ vm: AttributeVM }> = ({ vm }) => (
         ...styles.centerV,
       }}
     >
-      <Grid item xs={12} md={4} sx={{ p: 2, textAlign: "center" }}>
+      <Grid
+        item
+        xs={12}
+        md={4}
+        sx={{ p: { xs: 2, md: 2 }, textAlign: "center" }}
+      >
         <Typography
           component="div"
           variant="titleLarge"
@@ -99,7 +106,12 @@ const HeaderStrip: React.FC<{ vm: AttributeVM }> = ({ vm }) => (
           {vm.weightText}
         </Typography>
       </Grid>
-      <Grid item xs={12} md={5.5} sx={{ p: 2, textAlign: "center" }}>
+      <Grid
+        item
+        xs={12}
+        md={5.5}
+        sx={{ p: { xs: 2, md: 2 }, textAlign: "center" }}
+      >
         <Typography
           variant="bodyMedium"
           color="Background.default"
@@ -108,7 +120,12 @@ const HeaderStrip: React.FC<{ vm: AttributeVM }> = ({ vm }) => (
           {vm.description}
         </Typography>
       </Grid>
-      <Grid item xs={12} md={2.5} sx={{ p: 2, textAlign: "center" }}>
+      <Grid
+        item
+        xs={12}
+        md={2.5}
+        sx={{ p: { xs: 2, md: 2 }, textAlign: "center" }}
+      >
         <Typography
           variant="titleLarge"
           color="Background.default"
@@ -125,9 +142,9 @@ const BodyCard: React.FC<{ children: React.ReactNode }> = ({ children }) => (
   <Box
     bgcolor="background.container"
     borderRadius="0 0 16px 16px"
-    px={4}
+    px={{ xs: 2, md: 4 }}
     py={2}
-    mx={4}
+    mx={{ xs: 2, md: 4 }}
   >
     {children}
   </Box>
@@ -137,22 +154,38 @@ const InsightBlock: React.FC<{
   title: string;
   html?: string;
   rtl?: boolean;
-}> = ({ title, html, rtl }) =>
-  html ? (
-    <>
-      <Typography color="text.primary" variant="semiBoldLarge" sx={rtlSx(rtl)}>
-        {title}
-      </Typography>
+  isQuickMode?: boolean;
+}> = ({ title, html, rtl, isQuickMode }) => {
+  const theme = useTheme();
+  return html ? (
+    <Box>
+      <Box sx={{ ...styles.centerV }} gap={0.5}>
+        {isQuickMode && (
+          <AIGenerated
+            styles={{
+              color: theme.palette.text.primary,
+              width: "24px",
+            }}
+          />
+        )}
+        <Typography
+          color="text.primary"
+          variant="semiBoldLarge"
+          sx={rtlSx(rtl)}
+        >
+          {title}
+        </Typography>
+      </Box>
       <Typography
         component="div"
         textAlign="justify"
         variant="bodyMedium"
         sx={{ mt: 1, ...rtlSx(rtl) }}
         dangerouslySetInnerHTML={{ __html: html }}
-        className="tiptap"
       />
-    </>
+    </Box>
   ) : null;
+};
 
 const ReasonBar: React.FC<{ text: string; rtl?: boolean }> = ({
   text,
@@ -196,11 +229,11 @@ const EmptyState: React.FC<{ text: string; rtl?: boolean }> = ({
   <Box
     bgcolor="background.container"
     borderRadius={2}
-    p={4}
-    mx={6}
+    p={{ xs: 0.5, md: 4 }}
+    mx={{ xs: 0.5, md: 6 }}
     mt={4}
     gap={2}
-    sx={{ ...styles.centerVH }}
+    sx={{ ...styles.centerCH }}
   >
     <Box
       component="img"
@@ -215,6 +248,7 @@ const EmptyState: React.FC<{ text: string; rtl?: boolean }> = ({
 );
 
 export default function TreeMapSection({
+  isQuickMode,
   assessment,
   subjects,
   selectedId,
@@ -229,6 +263,17 @@ export default function TreeMapSection({
   const vm = useMemo(
     () => toAttributeVM(selectedAttribute, lng, rtl),
     [selectedAttribute, lng, rtl],
+  );
+  const measures: any[] = useMemo(
+    () =>
+      (selectedAttribute?.attributeMeasures || []).map((m: any) => ({
+        id: m.id,
+        title: m.title,
+        impactPercentage: m.impactPercentage,
+        gainedScorePercentage: m.gainedScorePercentage,
+        missedScorePercentage: m.missedScorePercentage,
+      })),
+    [selectedAttribute],
   );
 
   return (
@@ -245,12 +290,14 @@ export default function TreeMapSection({
           <HeaderStrip vm={vm} />
           <BodyCard>
             <InsightBlock
-              title={t("assessmentReport.resultAnalysis", { lng })}
+              title={t("common.insights", { lng })}
               html={vm.insightHtml}
               rtl={vm.rtl}
+              isQuickMode={isQuickMode}
             />
             <ReasonBar text={vm.reasonText} rtl={vm.rtl} />
             <GuidanceNote text={vm.guidanceText} rtl={vm.rtl} />
+            <MeasuresTable measures={measures} rtl={rtl} lng={lng} />
           </BodyCard>
         </>
       ) : (

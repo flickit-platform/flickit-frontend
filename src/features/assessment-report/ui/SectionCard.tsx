@@ -6,6 +6,7 @@ interface SectionCardProps extends PaperProps {
   title?: any;
   desc?: ReactNode;
   rtl?: boolean;
+  icon?: any;
 }
 
 export default function SectionCard({
@@ -13,6 +14,7 @@ export default function SectionCard({
   desc,
   rtl = false,
   children,
+  icon,
   ...rest
 }: Readonly<SectionCardProps>) {
   return (
@@ -22,23 +24,26 @@ export default function SectionCard({
         ...styles.centerCV,
         borderRadius: "16px",
         boxShadow: "none",
-        padding: 4,
+        padding: { xs:2, md: 4 },
         textAlign: rtl ? "right" : "left",
       }}
       {...rest}
     >
       {title && (
         <Box width="100%" display="flex" flexDirection="column" gap={2}>
-          <Typography
-            component="div"
-            variant="headlineSmall"
-            color="primary.main"
-            fontWeight="bold"
-            whiteSpace="pre-line"
-            sx={{ ...styles.rtlStyle(rtl) }}
-          >
-            {title}
-          </Typography>
+          <Box sx={{ ...styles.centerV }} gap={1}>
+            {icon}
+            <Typography
+              component="div"
+              variant="headlineSmall"
+              color="primary.main"
+              fontWeight="bold"
+              whiteSpace="pre-line"
+              sx={{ ...styles.rtlStyle(rtl) }}
+            >
+              {title}
+            </Typography>
+          </Box>
           {desc && (
             <Typography
               variant="bodyMedium"
