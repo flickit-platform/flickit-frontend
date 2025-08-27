@@ -159,6 +159,7 @@ export default function AssessmentReportPage() {
                   </Grid>
 
                   <SectionCard
+                    id="howCalculated"
                     title={t("assessmentReport.howWasThisScoreCalculated", {
                       lng,
                     })}
@@ -207,6 +208,7 @@ export default function AssessmentReportPage() {
                   </SectionCard>
 
                   <SectionCard
+                    id="howToImprove"
                     icon={
                       isQuickMode && (
                         <AIGenerated

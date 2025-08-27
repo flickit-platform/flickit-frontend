@@ -26,7 +26,12 @@ export default function ScoreSection({
 
   return (
     <Grid container mt={2} columnSpacing={isQuickMode ? 2 : 5}>
-      <Grid item xs={12} md={8}>
+      <Grid
+        item
+        xs={12}
+        md={8}
+        sx={{ display: "flex", flexDirection: "column" }}
+      >
         {!isQuickMode && (
           <>
             <Typography
@@ -65,7 +70,7 @@ export default function ScoreSection({
           className="tiptap"
         />
 
-        <Box sx={{ ...styles.centerV }} gap={2}>
+        <Box sx={{ ...styles.centerV, mt: "auto" }} gap={2}>
           <Typography
             component="div"
             variant="semiBoldLarge"
@@ -73,7 +78,7 @@ export default function ScoreSection({
           >
             {t("common.goto", { lng })}
           </Typography>
-          <ChipsRow items={gotoItems} lng={lng} />
+          <ChipsRow items={gotoItems} lng={lng} hoverable />
         </Box>
       </Grid>
 
