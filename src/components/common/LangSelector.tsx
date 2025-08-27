@@ -26,7 +26,7 @@ const LanguageSelector = () => {
           }}
           color="white"
         >
-          فا
+          EN
         </Typography>
       ) : (
         <Typography
@@ -38,7 +38,7 @@ const LanguageSelector = () => {
           }}
           color="white"
         >
-          EN
+          FA{" "}
         </Typography>
       )}
     </Box>
