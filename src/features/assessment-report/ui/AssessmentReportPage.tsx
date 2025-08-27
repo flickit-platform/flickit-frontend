@@ -1,5 +1,5 @@
 "use client";
-import { Box, Grid, Typography } from "@mui/material";
+import { Box, Grid, Typography, useTheme } from "@mui/material";
 import LoadingButton from "@mui/lab/LoadingButton";
 import ShareIcon from "@mui/icons-material/ShareOutlined";
 import PermissionControl from "@/components/common/PermissionControl";
@@ -25,6 +25,7 @@ import ReportActionsRow from "./ReportActionsRow";
 import HowIsItMade from "@/features/assessment-report/ui/sections/howIsItMade";
 import { useMemo } from "react";
 import { ASSESSMENT_MODE } from "@utils/enumType";
+import AIGenerated from "@/components/common/icons/AIGenerated";
 
 export default function AssessmentReportPage() {
   const {
@@ -50,6 +51,7 @@ export default function AssessmentReportPage() {
   const isAdvanceMode = useMemo(() => {
     return ASSESSMENT_MODE.ADVANCED === report?.assessment?.mode?.code;
   }, [report?.assessment?.mode?.code]);
+  const theme = useTheme();
 
   return (
     <PermissionControl error={[fetchGraphicalReport.errorObject]}>
@@ -188,6 +190,7 @@ export default function AssessmentReportPage() {
                         )}
                       </Box>
                       <TreeMapSection
+                        isQuickMode={isQuickMode}
                         assessment={assessment}
                         subjects={subjects}
                         selectedId={selectedId}
@@ -199,6 +202,16 @@ export default function AssessmentReportPage() {
                   </SectionCard>
 
                   <SectionCard
+                    icon={
+                      isQuickMode && (
+                        <AIGenerated
+                          styles={{
+                            color: theme.palette.primary.main,
+                            width: "32px",
+                          }}
+                        />
+                      )
+                    }
                     title={t(
                       "assessmentReport.howCanTheCurrentSituationBeImproved",
                       { lng },

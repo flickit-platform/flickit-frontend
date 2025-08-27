@@ -1,13 +1,16 @@
 import React, { Dispatch, SetStateAction, useMemo } from "react";
-import { Box, Typography, Grid } from "@mui/material";
+import { Box, Typography, Grid, useTheme } from "@mui/material";
 import TreeMapChart from "@/components/common/charts/TreeMapChart";
 import ManWithMagnifier from "@/assets/svg/man-with-magnifier.svg";
 import { t } from "i18next";
 import { styles } from "@styles";
 import { useTreeMapSection } from "../../model/hooks/useTreeMapSection";
 import languageDetector from "@/utils/languageDetector";
+import MeasuresTable from "./MeasureTable";
+import AIGenerated from "@/components/common/icons/AIGenerated";
 
 type Props = {
+  isQuickMode: boolean;
   assessment: any;
   subjects: any[];
   selectedId: number | null;
@@ -30,8 +33,7 @@ type AttributeVM = {
   guidanceText: string;
 };
 
-const rtlSx = (flag?: boolean) => styles.rtlStyle(flag);
-
+export const rtlSx = (flag?: boolean) => styles.rtlStyle(flag);
 function toAttributeVM(
   attr: any,
   lng: string,
@@ -137,22 +139,38 @@ const InsightBlock: React.FC<{
   title: string;
   html?: string;
   rtl?: boolean;
-}> = ({ title, html, rtl }) =>
-  html ? (
-    <>
-      <Typography color="text.primary" variant="semiBoldLarge" sx={rtlSx(rtl)}>
-        {title}
-      </Typography>
+  isQuickMode?: boolean;
+}> = ({ title, html, rtl, isQuickMode }) => {
+  const theme = useTheme();
+  return html ? (
+    <Box>
+      <Box sx={{ ...styles.centerV }} gap={0.5}>
+        {isQuickMode && (
+          <AIGenerated
+            styles={{
+              color: theme.palette.text.primary,
+              width: "24px",
+            }}
+          />
+        )}
+        <Typography
+          color="text.primary"
+          variant="semiBoldLarge"
+          sx={rtlSx(rtl)}
+        >
+          {title}
+        </Typography>
+      </Box>
       <Typography
         component="div"
         textAlign="justify"
         variant="bodyMedium"
         sx={{ mt: 1, ...rtlSx(rtl) }}
         dangerouslySetInnerHTML={{ __html: html }}
-        className="tiptap"
       />
-    </>
+    </Box>
   ) : null;
+};
 
 const ReasonBar: React.FC<{ text: string; rtl?: boolean }> = ({
   text,
@@ -200,7 +218,7 @@ const EmptyState: React.FC<{ text: string; rtl?: boolean }> = ({
     mx={6}
     mt={4}
     gap={2}
-    sx={{ ...styles.centerVH }}
+    sx={{ ...styles.centerCH }}
   >
     <Box
       component="img"
@@ -215,6 +233,7 @@ const EmptyState: React.FC<{ text: string; rtl?: boolean }> = ({
 );
 
 export default function TreeMapSection({
+  isQuickMode,
   assessment,
   subjects,
   selectedId,
@@ -229,6 +248,17 @@ export default function TreeMapSection({
   const vm = useMemo(
     () => toAttributeVM(selectedAttribute, lng, rtl),
     [selectedAttribute, lng, rtl],
+  );
+  const measures: any[] = useMemo(
+    () =>
+      (selectedAttribute?.attributeMeasures || []).map((m: any) => ({
+        id: m.id,
+        title: m.title,
+        impactPercentage: m.impactPercentage,
+        gainedScorePercentage: m.gainedScorePercentage,
+        missedScorePercentage: m.missedScorePercentage,
+      })),
+    [selectedAttribute],
   );
 
   return (
@@ -248,9 +278,11 @@ export default function TreeMapSection({
               title={t("assessmentReport.resultAnalysis", { lng })}
               html={vm.insightHtml}
               rtl={vm.rtl}
+              isQuickMode={isQuickMode}
             />
             <ReasonBar text={vm.reasonText} rtl={vm.rtl} />
             <GuidanceNote text={vm.guidanceText} rtl={vm.rtl} />
+            <MeasuresTable measures={measures} rtl={rtl} lng={lng} />
           </BodyCard>
         </>
       ) : (
