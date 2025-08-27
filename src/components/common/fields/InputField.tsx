@@ -173,7 +173,7 @@ const InputFieldUC = (props: IInputFieldUCProps) => {
           "& ::placeholder": {
             ...theme.typography.bodyMedium,
             textAlign: languageDetector(placeholder) ? "right" : "left",
-            fontFamily: "inherit"
+            fontFamily: "inherit",
           },
           "& fieldset": {
             borderColor: pallet?.borderColor,
@@ -192,12 +192,16 @@ const InputFieldUC = (props: IInputFieldUCProps) => {
               : "",
           paddingBottom:
             name === "evidence" ? evidenceAttachmentInput.paddingBottom : "",
-          ...stylesProps
+          ...stylesProps,
         },
         "& .MuiFormHelperText-root": {
           textAlign:
-            lng === "fa" || i18next.language === "fa" ? "right" : "left",
-          ...styles.rtlStyle(lng === "fa" || i18next.language === "fa"),
+            lng === "fa" || (!lng && i18next.language === "fa")
+              ? "right"
+              : "left",
+          ...styles.rtlStyle(
+            lng === "fa" || (!lng && i18next.language === "fa"),
+          ),
         },
       }}
       InputLabelProps={{ ...InputLabelProps, required }}
