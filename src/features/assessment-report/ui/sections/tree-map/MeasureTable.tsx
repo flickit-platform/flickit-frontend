@@ -183,8 +183,9 @@ const MeasuresTable: React.FC<{
                       {missed > 0 && (
                         <Box
                           position="absolute"
-                          left={`calc(50% - ${missed}px)`}
+                          left={`calc(50% - ${missed > 68 ? 68 : missed}px)`}
                           width={`${missed}px`}
+                          maxWidth="68px"
                           top={6}
                           bottom={6}
                           sx={{
@@ -198,6 +199,8 @@ const MeasuresTable: React.FC<{
                           position="absolute"
                           left="50%"
                           width={`${gained}px`}
+                          maxWidth="68px"
+
                           top={6}
                           bottom={6}
                           sx={{
