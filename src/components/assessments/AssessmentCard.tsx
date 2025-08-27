@@ -384,7 +384,7 @@ const Header = ({
           p: 0.5,
         }}
       >
-        <Typography variant="labelSmall" color="#6C8093">
+        <Typography variant="labelSmall" color="info.main">
           {language.code}
         </Typography>
       </Box>
@@ -392,7 +392,7 @@ const Header = ({
       <Typography
         variant="labelSmall"
         sx={{ textAlign: "center" }}
-        color="#6C8093"
+        color="info.main"
       >
         <Trans i18nKey="common.lastUpdated" />{" "}
         {getReadableDate(lastModificationTime)}

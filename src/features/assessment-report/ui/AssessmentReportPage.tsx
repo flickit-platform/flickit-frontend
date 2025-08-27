@@ -1,5 +1,5 @@
 "use client";
-import { Box, Grid } from "@mui/material";
+import { Box, Grid, Typography } from "@mui/material";
 import LoadingButton from "@mui/lab/LoadingButton";
 import ShareIcon from "@mui/icons-material/ShareOutlined";
 import PermissionControl from "@/components/common/PermissionControl";
@@ -23,8 +23,8 @@ import SidebarQuickMode from "./sections/SidebarQuickMode";
 import ContactUsDialog from "@/components/common/dialogs/ContactUsDialog";
 import ReportActionsRow from "./ReportActionsRow";
 import HowIsItMade from "@/features/assessment-report/ui/sections/howIsItMade";
-import {useMemo} from "react";
-import {ASSESSMENT_MODE} from "@utils/enumType";
+import { useMemo } from "react";
+import { ASSESSMENT_MODE } from "@utils/enumType";
 
 export default function AssessmentReportPage() {
   const {
@@ -165,14 +165,37 @@ export default function AssessmentReportPage() {
                     })}
                     rtl={rtl}
                   >
-                    <TreeMapSection
-                      assessment={assessment}
-                      subjects={subjects}
-                      selectedId={selectedId}
-                      setSelectedId={setSelectedId}
-                      rtl={rtl}
-                      lng={lng}
-                    />
+                    <Box px={2} mt={4} display="flex" flexDirection="column">
+                      <Box display="flex" flexDirection="column" gap={1} mb={1}>
+                        <Typography
+                          variant="titleLarge"
+                          color="text.primary"
+                          sx={{ ...styles.rtlStyle(rtl) }}
+                        >
+                          {t("assessmentReport.subjectsStatus", { lng })}
+                        </Typography>
+                        {!isQuickMode && (
+                          <Typography
+                            component="div"
+                            textAlign="justify"
+                            variant="bodyMedium"
+                            sx={{ ...styles.rtlStyle(rtl) }}
+                            dangerouslySetInnerHTML={{
+                              __html: assessment.overallInsight,
+                            }}
+                            className="tiptap"
+                          />
+                        )}
+                      </Box>
+                      <TreeMapSection
+                        assessment={assessment}
+                        subjects={subjects}
+                        selectedId={selectedId}
+                        setSelectedId={setSelectedId}
+                        rtl={rtl}
+                        lng={lng}
+                      />
+                    </Box>
                   </SectionCard>
 
                   <SectionCard
@@ -196,7 +219,7 @@ export default function AssessmentReportPage() {
                     onExpert={() => expertDialog.openDialog({})}
                     onQuestionnaires={handleGoToQuestionnaire}
                   />
-                  {isAdvanceMode && <HowIsItMade report={report} lng={lng}  />}
+                  {isAdvanceMode && <HowIsItMade report={report} lng={lng} />}
                 </Box>
 
                 <ShareDialog {...shareDialog} {...report} lng={lng} />

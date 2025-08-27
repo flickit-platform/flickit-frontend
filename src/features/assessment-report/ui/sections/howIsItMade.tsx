@@ -11,6 +11,7 @@ import { ISubject } from "@/types";
 import uniqueId from "@utils/uniqueId";
 import { getMaturityLevelColors, styles } from "@styles";
 import { v3Tokens } from "@config/tokens";
+import { grayBlue } from "@/config/colors";
 
 interface Props {
   readonly title: string;
@@ -33,7 +34,7 @@ function InnerAccordion({ title, children }: Props) {
     >
       <AccordionSummary
         sx={{
-          background: "#E8EBEE",
+          bgcolor: "background.containerHigher",
           borderRadius: 1,
           flexDirection: "row-reverse",
           px: 0,

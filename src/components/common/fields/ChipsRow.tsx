@@ -37,6 +37,8 @@ export default function ChipsRow({ items, lng }: ChipsRowProps) {
               fontFamily: rtl ? farsiFontFamily : primaryFontFamily,
               display: "inline-flex",
               alignItems: "center",
+              fontSize: "10px",
+              fontWeight: "normal",
             },
             "& .MuiChip-icon": {
               marginLeft: lng === "fa" ? "-10px" : "0",
