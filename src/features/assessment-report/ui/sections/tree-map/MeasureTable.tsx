@@ -200,7 +200,6 @@ const MeasuresTable: React.FC<{
                           left="50%"
                           width={`${gained}px`}
                           maxWidth="68px"
-
                           top={6}
                           bottom={6}
                           sx={{
