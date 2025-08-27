@@ -67,7 +67,7 @@ export default function AssessmentReportPage() {
           const { assessment, advice, subjects, permissions } = report;
 
           return (
-            <>
+            <Box pb={4}>
               {hasInvalidReport && <InvalidReportBanner onRetry={reload} />}
 
               <Box
@@ -137,7 +137,7 @@ export default function AssessmentReportPage() {
                       </SectionCard>
                     </Grid>
 
-                    <Grid item xs={12} md={3}>
+                    <Grid item display={{ xs: "none", md: "block" }} md={3}>
                       <SidebarQuickMode
                         show={isAuthenticatedUser && isQuickMode}
                         lng={lng}
@@ -242,6 +242,25 @@ export default function AssessmentReportPage() {
                   {isAdvanceMode && <HowIsItMade report={report} lng={lng} />}
                 </Box>
 
+                <Box display={{ xs: "block", md: "none" }}>
+                  <SidebarQuickMode
+                    show={isAuthenticatedUser && isQuickMode}
+                    lng={lng}
+                    rtl={rtl}
+                    canShare={
+                      permissions.canShareReport ||
+                      permissions.canManageVisibility
+                    }
+                    onShare={() => shareDialog.openDialog({})}
+                    ContactBox={
+                      <ContactExpertBox
+                        lng={lng}
+                        rtl={rtl}
+                        onOpen={() => expertDialog.openDialog({})}
+                      />
+                    }
+                  />
+                </Box>
                 <ShareDialog {...shareDialog} {...report} lng={lng} />
                 <ContactUsDialog
                   {...expertDialog}
@@ -250,7 +269,7 @@ export default function AssessmentReportPage() {
                   sx={{ ...styles.rtlStyle(rtl) }}
                 />
               </Box>
-            </>
+            </Box>
           );
         }}
       />
