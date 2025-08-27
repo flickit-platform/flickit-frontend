@@ -299,6 +299,7 @@ const SubjectAttributeCard = (props: any) => {
                   levelValue={maturityLevel.value}
                   text={maturityLevel.title}
                   confidenceLevelNum={Math.floor(confidenceValue)}
+                  confidenceText={t("common.confidence") + ":"}
                   textPosition="top"
                   sx={{
                     ...styles.centerVH,
@@ -346,7 +347,7 @@ const SubjectAttributeCard = (props: any) => {
                 value={topTab}
                 onChange={handleTopTabChange}
                 sx={{
-                  color: "rgba(0, 0, 0, 0.6)", 
+                  color: "rgba(0, 0, 0, 0.6)",
 
                   "& .Mui-selected": {
                     color: "primary.main !important",

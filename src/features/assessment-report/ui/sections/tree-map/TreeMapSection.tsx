@@ -4,10 +4,12 @@ import TreeMapChart from "@/components/common/charts/TreeMapChart";
 import ManWithMagnifier from "@/assets/svg/man-with-magnifier.svg";
 import { t } from "i18next";
 import { styles } from "@styles";
-import { useTreeMapSection } from "../../model/hooks/useTreeMapSection";
+import { useTreeMapSection } from "../../../model/hooks/useTreeMapSection";
 import languageDetector from "@/utils/languageDetector";
 import MeasuresTable from "./MeasureTable";
 import AIGenerated from "@/components/common/icons/AIGenerated";
+import FlatGauge from "@/components/common/charts/flatGauge/FlatGauge";
+import { IAssessment, IMaturityLevel } from "@/types";
 
 type Props = {
   isQuickMode: boolean;
@@ -23,7 +25,7 @@ type AttributeVM = {
   title: string;
   weightText: string;
   description: string;
-  levelTitle: string;
+  maturityLevel: IMaturityLevel;
   insightHtml?: string;
   titleRtl: boolean;
   descRtl: boolean;
@@ -43,21 +45,21 @@ function toAttributeVM(
   const title = attr.name ?? attr.title ?? "";
   const weight = attr.count ?? attr.weight ?? "";
   const description = attr.description ?? "";
-  const levelTitle = attr.maturityLevel?.title ?? "";
+  const maturityLevel = attr.maturityLevel;
   return {
     title,
     weightText: `${t("common.weight", { lng })}: ${weight}`,
     description,
-    levelTitle,
+    maturityLevel,
     insightHtml: attr.insight,
     titleRtl: languageDetector(title),
     descRtl: languageDetector(description),
-    levelRtl: languageDetector(levelTitle),
+    levelRtl: languageDetector(maturityLevel?.title),
     rtl,
     reasonText: t("assessmentReport.whyAtThisLevel", {
       lng,
       attribute: title,
-      maturityLevel: levelTitle,
+      maturityLevel: maturityLevel?.title,
     }),
     guidanceText: t("assessmentReport.measureGuidance", {
       lng,
@@ -66,7 +68,10 @@ function toAttributeVM(
   };
 }
 
-const HeaderStrip: React.FC<{ vm: AttributeVM }> = ({ vm }) => (
+const HeaderStrip: React.FC<{ vm: AttributeVM; levels: number }> = ({
+  vm,
+  levels,
+}) => (
   <Box
     bgcolor="background.containerHigher"
     borderRadius="16px 16px 0 0"
@@ -126,13 +131,17 @@ const HeaderStrip: React.FC<{ vm: AttributeVM }> = ({ vm }) => (
         md={2.5}
         sx={{ p: { xs: 2, md: 2 }, textAlign: "center" }}
       >
-        <Typography
-          variant="titleLarge"
-          color="Background.default"
-          sx={rtlSx(vm.levelRtl)}
-        >
-          {vm.levelTitle}
-        </Typography>
+        <FlatGauge
+          maturityLevelNumber={levels}
+          levelValue={vm.maturityLevel.value}
+          text={vm.maturityLevel.title}
+          textPosition="top"
+          sx={{
+            ...styles.centerVH,
+            width: "100%",
+            height: "100%",
+          }}
+        />
       </Grid>
     </Grid>
   </Box>
@@ -287,7 +296,10 @@ export default function TreeMapSection({
       />
       {selectedId && vm ? (
         <>
-          <HeaderStrip vm={vm} />
+          <HeaderStrip
+            vm={vm}
+            levels={assessment.assessmentKit.maturityLevelCount}
+          />
           <BodyCard>
             <InsightBlock
               title={t("common.insights", { lng })}
