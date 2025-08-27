@@ -50,7 +50,7 @@
   "shareOptions": "Sharing options",
   "subjectsAndAttributes": "Subjects and Attributes",
   "treemapEmptyState": "Click on any attribute in the chart to view details",
-  "total": "total",
+  "total": "Total",
   "viewReport": "View report",
   "whyAtThisLevel": "Why is \"{{attribute}}\" at the \"{{maturityLevel}}\" level?",
   "writeAboutParticipants": "Write about the participants and their roles in this assessment here...",
