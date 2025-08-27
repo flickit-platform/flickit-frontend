@@ -70,8 +70,8 @@ const HeaderStrip: React.FC<{ vm: AttributeVM }> = ({ vm }) => (
   <Box
     bgcolor="background.containerHigher"
     borderRadius="16px 16px 0 0"
-    p={2}
-    mx={4}
+    p={{ xs: 2, md: 2 }}
+    mx={{ xs: 2, md: 4 }}
     mt={4}
   >
     <Grid
@@ -84,7 +84,12 @@ const HeaderStrip: React.FC<{ vm: AttributeVM }> = ({ vm }) => (
         ...styles.centerV,
       }}
     >
-      <Grid item xs={12} md={4} sx={{ p: 2, textAlign: "center" }}>
+      <Grid
+        item
+        xs={12}
+        md={4}
+        sx={{ p: { xs: 2, md: 2 }, textAlign: "center" }}
+      >
         <Typography
           component="div"
           variant="titleLarge"
@@ -101,7 +106,12 @@ const HeaderStrip: React.FC<{ vm: AttributeVM }> = ({ vm }) => (
           {vm.weightText}
         </Typography>
       </Grid>
-      <Grid item xs={12} md={5.5} sx={{ p: 2, textAlign: "center" }}>
+      <Grid
+        item
+        xs={12}
+        md={5.5}
+        sx={{ p: { xs: 2, md: 2 }, textAlign: "center" }}
+      >
         <Typography
           variant="bodyMedium"
           color="Background.default"
@@ -110,7 +120,12 @@ const HeaderStrip: React.FC<{ vm: AttributeVM }> = ({ vm }) => (
           {vm.description}
         </Typography>
       </Grid>
-      <Grid item xs={12} md={2.5} sx={{ p: 2, textAlign: "center" }}>
+      <Grid
+        item
+        xs={12}
+        md={2.5}
+        sx={{ p: { xs: 2, md: 2 }, textAlign: "center" }}
+      >
         <Typography
           variant="titleLarge"
           color="Background.default"
@@ -127,9 +142,9 @@ const BodyCard: React.FC<{ children: React.ReactNode }> = ({ children }) => (
   <Box
     bgcolor="background.container"
     borderRadius="0 0 16px 16px"
-    px={4}
+    px={{ xs: 2, md: 4 }}
     py={2}
-    mx={4}
+    mx={{ xs: 2, md: 4 }}
   >
     {children}
   </Box>
@@ -214,8 +229,8 @@ const EmptyState: React.FC<{ text: string; rtl?: boolean }> = ({
   <Box
     bgcolor="background.container"
     borderRadius={2}
-    p={4}
-    mx={6}
+    p={{ xs: 0.5, md: 4 }}
+    mx={{ xs: 0.5, md: 6 }}
     mt={4}
     gap={2}
     sx={{ ...styles.centerCH }}

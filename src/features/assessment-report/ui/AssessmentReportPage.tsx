@@ -167,7 +167,12 @@ export default function AssessmentReportPage() {
                     })}
                     rtl={rtl}
                   >
-                    <Box px={2} mt={4} display="flex" flexDirection="column">
+                    <Box
+                      px={{ xs: 0.5, md: 2 }}
+                      mt={4}
+                      display="flex"
+                      flexDirection="column"
+                    >
                       <Box display="flex" flexDirection="column" gap={1} mb={1}>
                         <Typography
                           variant="titleLarge"
