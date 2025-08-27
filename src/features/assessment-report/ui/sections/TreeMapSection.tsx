@@ -290,7 +290,7 @@ export default function TreeMapSection({
           <HeaderStrip vm={vm} />
           <BodyCard>
             <InsightBlock
-              title={t("assessmentReport.resultAnalysis", { lng })}
+              title={t("common.insights", { lng })}
               html={vm.insightHtml}
               rtl={vm.rtl}
               isQuickMode={isQuickMode}

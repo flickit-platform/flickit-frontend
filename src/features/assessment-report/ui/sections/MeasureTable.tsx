@@ -75,18 +75,18 @@ const MeasuresTable: React.FC<{
               </TableCell>
               <TableCell align="center">
                 <Typography variant="labelMedium" color="text.primary" sx={rtlSx(rtl)}>
-                  {t("subject.gainedScore", { lng })}
+                  {t("assessmentReport.contributionToAttribute", { lng })}
                 </Typography>
               </TableCell>
               <TableCell align="center">
                 <Typography variant="labelMedium" color="primary" sx={rtlSx(rtl)}>
-                  {t("subject.gainedScore", { lng })}
+                  {t("assessmentReport.gainedScore", { lng })}
                 </Typography>
               </TableCell>
               <TableCell />
               <TableCell align="center">
                 <Typography variant="labelMedium" color="error.light" sx={rtlSx(rtl)}>
-                  {t("subject.missedScore", { lng })}
+                  {t("assessmentReport.missedScore", { lng })}
                 </Typography>
               </TableCell>
               <TableCell align="center">
