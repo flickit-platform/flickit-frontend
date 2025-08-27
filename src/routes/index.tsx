@@ -39,10 +39,6 @@ const QuestionScreen = lazy(() => import("../screens/QuestionScreen"));
 const QuestionnairesScreen = lazy(
   () => import("../screens/QuestionnairesScreen"),
 );
-const CompareScreen = lazy(() => import("../screens/CompareScreen"));
-const CompareResultScreen = lazy(
-  () => import("../screens/CompareResultScreen"),
-);
 const AssessmentKitsScreen = lazy(
   () => import("../screens/AssessmentKitsScreen"),
 );
@@ -156,12 +152,6 @@ const Routes = () => {
             path="/:spaceId/assessments/:page/:assessmentId/advice"
             element={<AssessmentAdviceScreen />}
           />
-          {/* Questionnaires and questions related routes */}
-
-          {/* Compare routes */}
-          <Route path="/compare" element={<CompareScreen />} />
-          <Route path="/compare/result" element={<CompareResultScreen />} />
-
           <Route
             path="/user/:accountTab/:expertGroupId/kit-designer/:kitVersionId"
             element={<KitDesignerScreen />}
