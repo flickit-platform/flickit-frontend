@@ -12,19 +12,17 @@ export function useTreeMapSection({
       subjects.flatMap((subject: any) =>
         subject.attributes.map((attribute: any) => ({
           name: attribute.title,
-          description: attribute.description,
-          id: attribute.id,
           count: attribute.weight,
           label: attribute.maturityLevel.value.toString(),
-          maturityLevel: attribute.maturityLevel,
-        }))
+          ...attribute,
+        })),
       ),
-    [subjects]
+    [subjects],
   );
 
   const selectedAttribute = useMemo(
     () => treeMapData.find((a) => a.id === selectedId),
-    [treeMapData, selectedId]
+    [treeMapData, selectedId],
   );
 
   return { treeMapData, selectedAttribute };

@@ -31,8 +31,7 @@ export default function ScoreSection({
           <>
             <Typography
               component="div"
-              variant="titleSmall"
-              color="background.onVariant"
+              variant="semiBoldLarge"
               textAlign={rtl ? "right" : "left"}
               sx={{ ...styles.rtlStyle(rtl) }}
             >
@@ -48,8 +47,7 @@ export default function ScoreSection({
             />
             <Typography
               component="div"
-              variant="titleSmall"
-              color="background.onVariant"
+              variant="semiBoldLarge"
               textAlign={rtl ? "right" : "left"}
               sx={{ mt: 2, ...styles.rtlStyle(rtl) }}
             >
@@ -70,8 +68,7 @@ export default function ScoreSection({
         <Box sx={{ ...styles.centerV }} gap={2}>
           <Typography
             component="div"
-            variant="titleSmall"
-            color="background.onVariant"
+            variant="semiBoldLarge"
             sx={{ ...styles.rtlStyle(rtl) }}
           >
             {t("common.goto", { lng })}

@@ -8,6 +8,8 @@ export interface IAttribute {
   index: number;
   confidenceValue: number;
   maturityLevel: IMaturityLevel;
+  weight?: number;
+  insight?: string;
 }
 
 export interface ISubject {
@@ -18,7 +20,7 @@ export interface ISubject {
   confidenceValue: number | null;
   maturityLevel: IMaturityLevel;
   attributes: IAttribute[];
-  insight: string
+  insight: string;
 }
 
 export interface ISubjectInfo {

@@ -3,7 +3,7 @@ import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useAuthContext } from "@/providers/AuthProvider";
 import { setSurveyBox, useConfigContext } from "@providers/ConfgProvider";
 import { useGraphicalReport } from "./useGraphicalReport";
-import { useReportChips } from "@/hooks/useReportChips";
+import { useReportChips } from "@/features/assessment-report/model/hooks/useReportChips";
 import { useIntersectOnce } from "@/utils/helpers";
 import { ASSESSMENT_MODE } from "@/utils/enumType";
 import type { IGraphicalReport } from "@/types";

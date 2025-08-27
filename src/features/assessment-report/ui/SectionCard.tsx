@@ -34,12 +34,18 @@ export default function SectionCard({
             variant="headlineSmall"
             color="primary.main"
             fontWeight="bold"
+            whiteSpace="pre-line"
             sx={{ ...styles.rtlStyle(rtl) }}
           >
             {title}
           </Typography>
           {desc && (
-            <Typography variant="bodyMedium" sx={{ ...styles.rtlStyle(rtl) }}>
+            <Typography
+              variant="bodyMedium"
+              whiteSpace="pre-line"
+              textAlign="justify"
+              sx={{ ...styles.rtlStyle(rtl) }}
+            >
               {desc}
             </Typography>
           )}

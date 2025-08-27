@@ -125,6 +125,7 @@ function VerticalLegend({
         color="success.dark"
         mt={0.5}
         fontWeight={600}
+        sx={{ ...styles.rtlStyle(lng === "fa") }}
       >
         {t("common.best", { lng })}
       </Typography>
@@ -145,6 +146,7 @@ function VerticalLegend({
         color="error.main"
         mt={0.5}
         fontWeight={600}
+        sx={{ ...styles.rtlStyle(lng === "fa") }}
       >
         {t("common.worst", { lng })}
       </Typography>
@@ -193,7 +195,7 @@ const CustomNode: React.FC<any> = memo((props) => {
     },
   };
 
-  const fontSize = (isSmallScreen ? 12 : 15) ;
+  const fontSize = isSmallScreen ? 12 : 15;
 
   const pad = 6;
 

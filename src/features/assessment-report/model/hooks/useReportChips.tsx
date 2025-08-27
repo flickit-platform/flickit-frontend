@@ -12,14 +12,23 @@ import { getReadableDate } from "@/utils/readableDate";
 import { ChipItem } from "@/components/common/fields/ChipsRow";
 import { blue } from "@/config/colors";
 
-export const useReportChips = (graphicalReport: IGraphicalReport, lng: string, rtl: boolean) => {
+export const useReportChips = (
+  graphicalReport: IGraphicalReport,
+  lng: string,
+  rtl: boolean,
+) => {
   const infoItems: ChipItem[] = useMemo(
     () => [
       {
         key: "kit",
         label: (
-          <Box display="inline-flex" alignItems="center" gap={0.5}>
-            <DesignServicesOutlined fontSize="small" color="primary" />
+          <Box
+            display="inline-flex"
+            alignItems="center"
+            gap={0.25}
+            fontSize="10px"
+          >
+            <DesignServicesOutlined fontSize="inherit" color="primary" />
             {t("assessmentReport.kitWithTitle", {
               lng,
               title: graphicalReport?.assessment.assessmentKit.title,
@@ -30,8 +39,13 @@ export const useReportChips = (graphicalReport: IGraphicalReport, lng: string, r
       {
         key: "qna",
         label: (
-          <Box display="inline-flex" alignItems="center" gap={0.5}>
-            <EmojiObjectsOutlined fontSize="small" color="primary" />
+          <Box
+            display="inline-flex"
+            alignItems="center"
+            gap={0.25}
+            fontSize="10px"
+          >
+            <EmojiObjectsOutlined fontSize="inherit" color="primary" />
             {t("assessmentReport.questionsAndAnswer", {
               lng,
               count: graphicalReport?.assessment.assessmentKit.questionsCount,
@@ -42,8 +56,13 @@ export const useReportChips = (graphicalReport: IGraphicalReport, lng: string, r
       {
         key: "date",
         label: (
-          <Box display="inline-flex" alignItems="center" gap={0.5}>
-            <CalendarMonthOutlined fontSize="small" color="primary" />
+          <Box
+            display="inline-flex"
+            alignItems="center"
+            gap={0.25}
+            fontSize="10px"
+          >
+            <CalendarMonthOutlined fontSize="inherit" color="primary" />
             {getReadableDate(graphicalReport?.assessment?.creationTime)}
           </Box>
         ),
