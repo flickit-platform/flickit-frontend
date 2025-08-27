@@ -123,7 +123,7 @@ export default function HowIsItMade({ lng, report }: any) {
           <Typography
             width="80%"
             variant="bodyMedium"
-            color={v3Tokens.surface.on}
+            color={"text.primary"}
             sx={{ ...styles.rtlStyle(isRTL) }}
           >
             {item.description}
@@ -189,7 +189,7 @@ export default function HowIsItMade({ lng, report }: any) {
             <Typography
               sx={{ ...styles.rtlStyle(lng === "fa") }}
               variant="bodyMedium"
-              color={v3Tokens.surface.on}
+              color={"text.primary"}
             >
               {t("assessmentKit.assessmentKitDescription", {
                 lng,
@@ -206,7 +206,7 @@ export default function HowIsItMade({ lng, report }: any) {
           <InnerAccordion title={t("common.maturityLevels", { lng })} lng={lng}>
             <Typography
               variant="bodyMedium"
-              color={v3Tokens.surface.on}
+              color={"text.primary"}
               mb={2}
               sx={{ ...styles.rtlStyle(lng === "fa") }}
             >
@@ -237,7 +237,7 @@ export default function HowIsItMade({ lng, report }: any) {
                   textAlign="justify"
                   component="span"
                   variant="bodyMedium"
-                  color={v3Tokens.surface.on}
+                  color={"text.primary"}
                   sx={{ ...styles.rtlStyle(rtlLanguage) }}
                 >
                   {level.description}
@@ -252,7 +252,7 @@ export default function HowIsItMade({ lng, report }: any) {
           >
             <Typography
               variant="bodyMedium"
-              color={v3Tokens.surface.on}
+              color={"text.primary"}
               sx={{ ...styles.rtlStyle(lng === "fa") }}
             >
               {t("assessmentReport.assessmentStructured", {
@@ -266,7 +266,7 @@ export default function HowIsItMade({ lng, report }: any) {
           <InnerAccordion title={t("common.questionnaires", { lng })} lng={lng}>
             <Typography
               variant="bodyMedium"
-              color={v3Tokens.surface.on}
+              color={"text.primary"}
               sx={{ ...styles.rtlStyle(lng === "fa") }}
             >
               {t("assessmentReport.measureMaturityLevel", {
