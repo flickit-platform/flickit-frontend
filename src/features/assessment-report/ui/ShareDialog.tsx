@@ -21,11 +21,10 @@ import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import { InviteFormData, useShareDialog } from "../model/hooks/useShareDialog";
 import {
   CEDialog,
-  CEDialogActions,
+  CEDialogActions
 } from "@/components/common/dialogs/CEDialog";
 import { InputFieldUC } from "@/components/common/fields/InputField";
 import QueryBatchData from "@/components/common/QueryBatchData";
-import { farsiFontFamily, primaryFontFamily } from "@config/theme";
 
 type ShareDialogProps = {
   open: boolean;
@@ -35,14 +34,14 @@ type ShareDialogProps = {
 } & Pick<IGraphicalReport, "visibility" | "permissions" | "linkHash" | "lang">;
 
 export default function ShareDialog({
-  open,
-  onClose,
-  visibility,
-  permissions,
-  linkHash,
-  lng,
-  assessment,
-}: ShareDialogProps) {
+                                      open,
+                                      onClose,
+                                      visibility,
+                                      permissions,
+                                      linkHash,
+                                      lng,
+                                      assessment
+                                    }: ShareDialogProps) {
   const { t } = useTranslation();
   const methods = useForm<InviteFormData>();
   const { reset, handleSubmit } = methods;
@@ -124,10 +123,16 @@ export default function ShareDialog({
                       placeholder={t("assessmentReport.shareReportViaEmail", {
                         lng
                       })}
-                      lng={lng}
                       fullWidth
                       required
-                      stylesProps={{ input: { padding: "4px 12px" } }}
+                      stylesProps={{
+                        input: {
+                          padding: "4px 12px",
+                          "::placeholder": {
+                            ...styles.rtlStyle(lng === "fa")
+                          }
+                        }
+                      }}
                     />
                   </Grid>
                   <Grid item>
@@ -188,9 +193,7 @@ export default function ShareDialog({
                             size="small"
                             sx={{
                               ".MuiChip-label": {
-                                fontFamily: lng === "fa"
-                                  ? farsiFontFamily
-                                  : primaryFontFamily
+                                ...styles.rtlStyle(lng === "fa")
                               }
                             }}
                           />
@@ -214,12 +217,12 @@ export default function ShareDialog({
       title={
         <Box sx={{ ...styles.centerV }} gap={1}>
           <Share />
-          <Typography variant={"semiBoldXLarge"} sx={{
-            fontFamily:
-              lng === "fa"
-                ? farsiFontFamily
-                : primaryFontFamily
-          }}>
+          <Typography
+            variant={"semiBoldXLarge"}
+            sx={{
+              ...styles.rtlStyle(lng === "fa")
+            }}
+          >
             {t("assessmentReport.shareReport", { lng })}
           </Typography>
         </Box>
