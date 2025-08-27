@@ -43,7 +43,7 @@ const AssessmentReportTitle = (props: any) => {
           routes={[
             {
               title: space?.title,
-              to: `/${spaceId}/assessments/${assessment?.id ?? "1"}`,
+              to: `/${spaceId}/assessments/1`,
             },
             { title: assessment?.title },
           ]}
