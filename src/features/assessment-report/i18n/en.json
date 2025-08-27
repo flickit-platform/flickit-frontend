@@ -14,7 +14,7 @@
     ],
     "outro": "Feel free to contact the expert group that developed the kit used in this assessment."
   },
-  "contributionToAttribute": "Contribution to Attribute (%)",
+  "contributionToAttribute": "Contribution to attribute (%)",
   "gainedScore": "Gained score (%)",
   "getMoreDetailedRecommendations": "Get more detailed recommendations",
   "howWasThisScoreCalculated": "How was this score calculated?",
@@ -37,7 +37,7 @@
   "measureGuidance": "The following metrics, with the contributions shown in the table, were used to calculate the “{{attribute}}” index. The blue and red bars indicate—out of the total attainable score for each metric—how much was gained and how much was lost.\n In addition, you can view the questions associated with each metric and the responses that led to these scores.",
   "measureTitle": "Measure title",
   "measureMaturityLevel": "To measure the maturity level of each subject and its attributes {{QuestionnairesCount}} questionnaires, including a total of {{QuestionCount}} questions, are prepared. During the assessment process, each question will be scored. Each question may affect the score of one or more subject attributes. The following table presents these questionnaires.",
-  "missedScore": "Missed Score (%)",
+  "missedScore": "Missed score (%)",
   "reportIssues": "Report issues",
   "report": "report",
   "reportTitle": "Report",
