@@ -3,7 +3,7 @@
   "assessmentResult": "نتیجه ارزیابی",
   "assessmentKitEvaluatesMaturity": "این کیت ارزیابی، بلوغ موضوعات و ویژگی‌ها را در سطوح مختلف بررسی می‌کند.",
   "assessmentStructured": "این ارزیابی، با تمرکز بر {{count}} شاخص کلیدی تعریف شده است. در ادامه این شاخص‌ها فهرست و به اختصار توضیح داده شده‌اند.",
-  "attributeStatus": "وضعیت شاخص‌ها",
+  "attributesStatus": "وضعیت شاخص‌ها",
   "copyReportLink": "کپی لینک گزارش",
   "contactExpertGroup": "تماس با تیم متخصص",
   "contactExpertBoxText": {
