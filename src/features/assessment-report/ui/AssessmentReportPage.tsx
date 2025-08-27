@@ -183,7 +183,7 @@ export default function AssessmentReportPage() {
                           color="text.primary"
                           sx={{ ...styles.rtlStyle(rtl) }}
                         >
-                          {t("assessmentReport.subjectsStatus", { lng })}
+                          {t("assessmentReport.attributesStatus", { lng })}
                         </Typography>
                         {!isQuickMode && (
                           <Typography

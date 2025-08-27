@@ -72,8 +72,8 @@ export default function ShareDialog({
         description: t("assessmentReport.restrictedShareDescription", { lng })
       },
       [VISIBILITY.PUBLIC]: {
-        title: t("assessmentReport.PublicShareTitle", { lng }),
-        description: t("assessmentReport.PublicShareDescription", { lng })
+        title: t("assessmentReport.publicShareTitle", { lng }),
+        description: t("assessmentReport.publicShareDescription", { lng })
       }
     }),
     [lng, t]
