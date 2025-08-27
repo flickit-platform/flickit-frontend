@@ -7,6 +7,9 @@ import { styles } from "@styles";
 import MatirytySkeleton from "@assets/svg/matirytySkeleton.svg";
 import { t } from "i18next";
 import { useTheme } from "@mui/material";
+import Accordion from "@mui/material/Accordion";
+import AccordionSummary from "@mui/material/AccordionSummary";
+import AccordionDetails from "@mui/material/AccordionDetails";
 
 const DotsLoading = () => {
   const theme = useTheme();
@@ -102,7 +105,34 @@ const GraphicalReportSkeleton = ({ isAuthenticatedUser, lang }: any) => (
 
       <Grid container spacing={2}>
         <Grid item lg={2.5} md={2.5} sm={12} xs={12}>
-          <Skeleton variant="rounded" height={420} sx={{ borderRadius: 2 }} />
+          {isAuthenticatedUser && (
+            <Box mb={2} sx={{ ...styles.centerH }}>
+              <Box
+                width="100%"
+                height={48}
+                borderRadius="4px"
+                position="relative"
+                overflow="hidden"
+                boxShadow="0px 4px 4px 0px rgba(0, 0, 0, 0.25)"
+                sx={{
+                  background: (theme) =>
+                    `linear-gradient(to right, #2466A8, #2D80D2, #2466A8 )`,
+                  backgroundSize: "600% 600%",
+                  animation: "gradientShift 4s ease infinite",
+                }}
+              />
+              <style>
+                {`
+                @keyframes gradientShift {
+                  0% { background-position: 0% 50%; }
+                  50% { background-position: 100% 50%; }
+                  100% { background-position: 0% 50%; }
+                }
+              `}
+              </style>
+            </Box>
+          )}
+          <Skeleton variant="rounded" height={270} sx={{ borderRadius: 2 }} />
           {isAuthenticatedUser && (
             <Box mt={2} sx={{ ...styles.centerH }}>
               <Box
@@ -141,7 +171,7 @@ const GraphicalReportSkeleton = ({ isAuthenticatedUser, lang }: any) => (
               borderStartStartRadius: 2,
               boxShadow: "none",
               width: "100%",
-              minHeight: 420,
+              minHeight: 220,
               mb: 4,
               p: { md: 6, xs: 1 },
               ...styles.centerH,
@@ -167,13 +197,21 @@ const GraphicalReportSkeleton = ({ isAuthenticatedUser, lang }: any) => (
               borderRadius={1}
             />
             <Box width="100%" px={2}>
-              <Grid container spacing={4} mb="40px">
+              <Grid container spacing={4} mb="20px">
                 <Grid item xs={12}>
                   <Skeleton
                     variant="rounded"
                     height={36}
                     width={220}
-                    sx={{ mb: 2 }}
+                    sx={{ mb: 0.5 }}
+                  />
+                </Grid>
+                <Grid item xs={12} sm={6} md={4} mt={{ xs: 2, md: 5 }}>
+                  <img
+                    src={MatirytySkeleton}
+                    alt="MatirytySkeleton"
+                    width={200}
+                    height={140}
                   />
                 </Grid>
                 <Grid item xs={12} sm={6} md={8}>
@@ -187,7 +225,7 @@ const GraphicalReportSkeleton = ({ isAuthenticatedUser, lang }: any) => (
                   <Skeleton
                     variant="rectangular"
                     width="100%"
-                    height={110}
+                    height={70}
                     sx={{ mt: 2, borderRadius: 2 }}
                   />
                   <Skeleton
@@ -196,48 +234,12 @@ const GraphicalReportSkeleton = ({ isAuthenticatedUser, lang }: any) => (
                     height={22}
                     sx={{ mt: 3 }}
                   />
-                  <Skeleton
-                    variant="rectangular"
-                    width="100%"
-                    height={80}
-                    sx={{ mt: 2, borderRadius: 2 }}
-                  />
-                </Grid>
-                <Grid item xs={12} sm={6} md={4} mt={{ xs: 2, md: 10 }}>
-                  <img
-                    src={MatirytySkeleton}
-                    alt="MatirytySkeleton"
-                    width={200}
-                    height={140}
-                  />
                 </Grid>
               </Grid>
-              <Skeleton
-                variant="rectangular"
-                width="100%"
-                height={180}
-                sx={{ borderRadius: 2, mb: 2 }}
-              />
-              <Skeleton
-                variant="text"
-                width="30%"
-                height={28}
-                sx={{ mt: 3, mb: 2 }}
-              />
-              <Skeleton
-                variant="rectangular"
-                width="100%"
-                height={140}
-                sx={{ borderRadius: 2, mb: 2 }}
-              />
-              <Skeleton
-                variant="rectangular"
-                width="100%"
-                height={70}
-                sx={{ borderRadius: 2, mb: 2 }}
-              />
             </Box>
           </Paper>
+        </Grid>
+        <Grid container xs={12}>
           <Paper
             elevation={3}
             sx={{
@@ -276,6 +278,41 @@ const GraphicalReportSkeleton = ({ isAuthenticatedUser, lang }: any) => (
               sx={{ borderRadius: 2 }}
             />
           </Paper>
+        </Grid>
+        <Grid container xs={12} mt={4}>
+          <Box sx={{width: "100%" , display: "flex", flexDirection: "column", gap: 2}}>
+            {Array.from({ length: 2 }).map((_, index) => (
+              <Accordion expanded={true} key={index}>
+                <AccordionSummary
+                  aria-controls={`panel${index}-content`}
+                  id={`panel${index}-header`}
+                >
+                  <Skeleton variant="text" width="60%" height={28} />
+                </AccordionSummary>
+
+                <AccordionDetails>
+                  <Skeleton
+                    variant="rectangular"
+                    width="100%"
+                    height={50}
+                    sx={{ borderRadius: 2 }}
+                  />
+                  <Skeleton
+                    variant="rectangular"
+                    width="100%"
+                    height={30}
+                    sx={{ borderRadius: 2, mb: 2 }}
+                  />
+                  <Skeleton
+                    variant="rectangular"
+                    width="100%"
+                    height={40}
+                    sx={{ borderRadius: 2 }}
+                  />
+                </AccordionDetails>
+              </Accordion>
+            ))}
+          </Box>
         </Grid>
       </Grid>
     </Box>
