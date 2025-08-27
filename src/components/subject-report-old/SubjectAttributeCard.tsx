@@ -334,14 +334,13 @@ const SubjectAttributeCard = (props: any) => {
           }}
         >
           <Box p={{ xs: 2, sm: 5 }} sx={{ ...styles.centerCVH }} width="100%">
-            {expandedAttribute && (
+
               <AttributeInsight
                 progress={progress}
                 attributeId={id}
                 defaultInsight={insight}
                 reloadQuery={reloadQuery}
               />
-            )}
             <Box display={{ xs: "none", sm: "block" }} width="100%">
               <Tabs
                 value={topTab}
