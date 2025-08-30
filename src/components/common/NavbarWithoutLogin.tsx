@@ -13,11 +13,8 @@ import { useConfigContext } from "@providers/ConfgProvider";
 import CircularProgress from "@mui/material/CircularProgress";
 import keycloakService from "@/service/keycloakService";
 
-const rawLandingPage = import.meta.env.VITE_LANDING_PAGE;
-const LandingPage =
-  rawLandingPage && rawLandingPage !== "PLATFORM_LANDING_PAGE"
-    ? rawLandingPage
-    : "";
+const LandingPage = import.meta.env.VITE_LANDING_PAGE;
+
 
 const NavbarWithoutLogin = () => {
   const { config } = useConfigContext();
