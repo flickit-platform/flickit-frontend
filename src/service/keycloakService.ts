@@ -8,9 +8,14 @@ const _kc: KeycloakInstance = new Keycloak({
 
 const PUBLIC_PATHS = ["/assessment-kits", "/graphical-report/"];
 
-export const isPublicRoute = (path: string) =>
-  PUBLIC_PATHS.some((publicPath) => path.includes(publicPath));
+export const isPublicRoute = (path: string) => {
+  console.log(path)
+  if (path.includes("/assessment-kits") && path.includes("createAssessment")) {
+    return false;
+  }
 
+  return PUBLIC_PATHS.some((publicPath) => path.includes(publicPath));
+};
 const initKeycloak = (onAuthenticatedCallback: () => void) => {
   _kc
     .init({
@@ -18,7 +23,7 @@ const initKeycloak = (onAuthenticatedCallback: () => void) => {
       pkceMethod: "S256",
     })
     .then((authenticated) => {
-      const currentPath = location.pathname;
+      const currentPath = location.href;
       if (!authenticated) {
         if (isPublicRoute(currentPath)) {
           onAuthenticatedCallback();

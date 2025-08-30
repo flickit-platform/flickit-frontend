@@ -320,9 +320,7 @@ const Header = ({
           textTransform: "none",
           color: "#101c32",
           background: "transparent",
-          fontFamily: languageDetector(kit?.title)
-            ? farsiFontFamily
-            : primaryFontFamily,
+          ...styles.rtlStyle(languageDetector(kit?.title)),
         }}
         data-cy="assessment-card-title"
       />
