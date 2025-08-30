@@ -54,6 +54,8 @@ const NotificationCenter = lazy(() =>
 
 const drawerWidth = 240;
 
+const LandingPage = import.meta.env.VITE_LANDING_PAGE;
+
 const NotificationIndicator = ({ seen }: { seen: boolean }) => (
   <Box
     minWidth="4px"
@@ -410,7 +412,7 @@ const Navbar = () => {
         width="100%"
         sx={{ ...styles.centerVH }}
         component={NavLink}
-        to={spaceId ? `/${spaceId}/assessments/1` : HOME_URL}
+        to={LandingPage}
       >
         <img
           src={config.appLogoUrl}
@@ -532,8 +534,8 @@ const Navbar = () => {
                 width: "110px",
               },
             }}
-            to={HOME_URL}
-          >
+            to={LandingPage}
+            >
             <img
               src={config.appLogoUrl}
               alt={"logo"}
