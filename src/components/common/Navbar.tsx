@@ -40,7 +40,7 @@ import NotificationEmptyState from "@/assets/svg/notificationEmptyState.svg";
 import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
 import LanguageSelector from "./LangSelector";
 import i18n from "i18next";
-import { HOME_URL, MULTILINGUALITY } from "@/config/constants";
+import { MULTILINGUALITY } from "@/config/constants";
 import languageDetector from "@utils/languageDetector";
 import { getReadableDate } from "@utils/readableDate";
 import flagsmith from "flagsmith";
@@ -53,7 +53,6 @@ const NotificationCenter = lazy(() =>
 );
 
 const drawerWidth = 240;
-
 const LandingPage = import.meta.env.VITE_LANDING_PAGE;
 
 const NotificationIndicator = ({ seen }: { seen: boolean }) => (
@@ -66,6 +65,7 @@ const NotificationIndicator = ({ seen }: { seen: boolean }) => (
     marginInlineEnd="unset"
   />
 );
+
 const NotificationItem = ({
   message,
   onNotificationClick,
@@ -74,7 +74,6 @@ const NotificationItem = ({
   onNotificationClick: any;
 }) => {
   const theme = useTheme();
-
   return (
     <Box
       onClick={onNotificationClick}
@@ -90,15 +89,10 @@ const NotificationItem = ({
       sx={{
         ...styles.centerV,
         cursor: "pointer",
-        "&:hover": {
-          backgroundColor: "#f1f1f1",
-        },
+        "&:hover": { backgroundColor: "#f1f1f1" },
       }}
     >
-      {/* Blue Indicator for Unseen Messages */}
       <NotificationIndicator seen={message.seen} />
-
-      {/* Notification Content */}
       <Box
         flexGrow={1}
         overflow="hidden"
@@ -114,13 +108,9 @@ const NotificationItem = ({
           overflow="hidden"
           whiteSpace="nowrap"
           textOverflow="ellipsis"
-          dangerouslySetInnerHTML={{
-            __html: message.content,
-          }}
+          dangerouslySetInnerHTML={{ __html: message.content }}
         />
       </Box>
-
-      {/* Relative Time Ago */}
       <Typography
         variant="labelSmall"
         color="#3D4D5C"
@@ -130,19 +120,15 @@ const NotificationItem = ({
       >
         {getReadableDate(message.createdAt, "relative")}
       </Typography>
-
-      {/* Arrow Icon */}
       <ArrowForwardIos
         sx={{
           fontSize: "16px",
           color: "#2962FF",
           marginInlineStart: "8px",
           marginInlineEnd: "0",
-          transform: theme.direction === "rtl" ? "rotate(180deg)" : "none", // Rotate for RTL
+          transform: theme.direction === "rtl" ? "rotate(180deg)" : "none",
         }}
       />
-
-      {/* Red Dot Indicator for Unseen Message */}
       <Box
         position="absolute"
         top="8px"
@@ -161,11 +147,8 @@ const NotificationItem = ({
 const NotificationCenterComponent = ({ setNotificationCount }: any) => {
   const [selectedMessage, setSelectedMessage] = useState<IMessage | null>(null);
   const theme = useTheme();
-
-  const handleUnseenCountChanged = (unseenCount: number) => {
+  const handleUnseenCountChanged = (unseenCount: number) =>
     setNotificationCount(unseenCount);
-  };
-
   const handleNotificationClick = (
     message: IMessage,
     onNotificationClick: () => void,
@@ -173,18 +156,13 @@ const NotificationCenterComponent = ({ setNotificationCount }: any) => {
     setSelectedMessage(message);
     onNotificationClick();
   };
-
-  const handleBackClick = () => {
-    setSelectedMessage(null);
-  };
+  const handleBackClick = () => setSelectedMessage(null);
 
   const getLinkedContent = (message: any): string => {
     const { content, payload, templateIdentifier } = message;
     const data = payload?.data;
-
     let titleToLink = "";
     let href = "";
-
     if (data?.kit?.id && payload?.title === "New Assessment on Your Kit") {
       titleToLink = data.kit.title;
       href = `/assessment-kits/${data.kit.id}`;
@@ -202,25 +180,17 @@ const NotificationCenterComponent = ({ setNotificationCount }: any) => {
     } else {
       return content;
     }
-
     if (!titleToLink) return content;
-
     const escapedTitle = titleToLink.replace(/[-[\]/{}()*+?.\\^$|]/g, "\\$&");
     const regex = new RegExp(escapedTitle, "g");
-
     const link = `<a href="${href}" style="color: #1976d2; text-decoration: underline;">${titleToLink}</a>`;
-
     return content.replace(regex, link);
   };
 
   return (
     <Box>
       {selectedMessage ? (
-        <Box
-          className="nc-layout-wrapper"
-          borderRadius={1}
-          width={{ md: 420, sm: 320 }}
-        >
+        <Box className="nc-layout-wrapper" borderRadius={1} width={{ md: 420, sm: 320 }}>
           <Box className="nc-header" height="55px" sx={{ ...styles.centerV }}>
             <Typography
               className="nc-header-title"
@@ -234,8 +204,7 @@ const NotificationCenterComponent = ({ setNotificationCount }: any) => {
               <IconButton onClick={handleBackClick}>
                 <ArrowBackIos
                   sx={{
-                    transform:
-                      theme.direction === "rtl" ? "scaleX(-1)" : "none",
+                    transform: (useTheme().direction === "rtl") ? "scaleX(-1)" : "none",
                     fontSize: "16px",
                   }}
                 />
@@ -243,7 +212,6 @@ const NotificationCenterComponent = ({ setNotificationCount }: any) => {
               <Trans i18nKey="notification.notificationDetails" />
             </Typography>
           </Box>
-
           <Box className="nc-notifications-list" height={400}>
             <Box
               marginBlock="4px"
@@ -253,50 +221,28 @@ const NotificationCenterComponent = ({ setNotificationCount }: any) => {
               position="relative"
               sx={{ ...styles.centerV }}
             >
-              {/* Indicator */}
               <Box
                 position="absolute"
-                left={theme.direction === "ltr" ? 8 : "unset"}
-                right={theme.direction === "rtl" ? 8 : "unset"}
+                left={useTheme().direction === "ltr" ? 8 : "unset"}
+                right={useTheme().direction === "rtl" ? 8 : "unset"}
                 top={8}
                 bottom={0}
                 width="4px"
-                bgcolor={
-                  selectedMessage.seen ? "background.onVariant" : "#2D80D2"
-                }
+                bgcolor={selectedMessage?.seen ? "background.onVariant" : "#2D80D2"}
                 borderRadius="2px"
               />
-
-              <Box
-                paddingLeft="12px"
-                gap="4px"
-                display="flex"
-                flexDirection="column"
-              >
+              <Box paddingLeft="12px" gap="4px" display="flex" flexDirection="column">
                 <Typography variant="titleMedium">
                   {(selectedMessage as any)?.payload?.title}
                 </Typography>
-
-                <Box
-                  flexGrow={1}
-                  display="flex"
-                  alignItems="flex-start"
-                  gap={1}
-                >
+                <Box flexGrow={1} display="flex" alignItems="flex-start" gap={1}>
                   <Typography
                     variant="bodyMedium"
-                    dangerouslySetInnerHTML={{
-                      __html: getLinkedContent(selectedMessage),
-                    }}
+                    dangerouslySetInnerHTML={{ __html: getLinkedContent(selectedMessage) }}
                   />
                 </Box>
-
                 <Typography variant="labelSmall" color="#3D4D5C">
-                  {getReadableDate(
-                    selectedMessage?.createdAt,
-                    "relativeWithDate",
-                    true,
-                  )}
+                  {getReadableDate(selectedMessage?.createdAt, "relativeWithDate", true)}
                 </Typography>
               </Box>
             </Box>
@@ -311,7 +257,7 @@ const NotificationCenterComponent = ({ setNotificationCount }: any) => {
             <Box
               width="100%"
               height="400px"
-              sx={{ ...styles.centerCVH, direction: theme.direction }}
+              sx={{ ...styles.centerCVH, direction: useTheme().direction }}
               gap={1}
             >
               <img src={NotificationEmptyState} alt={"No assesment here!"} />
@@ -320,16 +266,10 @@ const NotificationCenterComponent = ({ setNotificationCount }: any) => {
               </Typography>
             </Box>
           }
-          listItem={(
-            message: IMessage,
-            onActionButtonClick: (actionButtonType: any) => void,
-            onNotificationClick: () => void,
-          ) => (
+          listItem={(message: IMessage, _onAction, onNotificationClick: () => void) => (
             <NotificationItem
               message={message}
-              onNotificationClick={() =>
-                handleNotificationClick(message, onNotificationClick)
-              }
+              onNotificationClick={() => handleNotificationClick(message, onNotificationClick)}
             />
           )}
         />
@@ -355,34 +295,29 @@ const Navbar = () => {
       service.space.getList({ page: 1, size: 20, ...args }, config),
     toastError: true,
   });
+
   const fetchPathInfo = useQuery({
     service: (args, config) =>
       service.common.getPathInfo({ spaceId, ...(args ?? {}) }, config),
     runOnMount: false,
   });
+
   const fetchSpaceInfo = async () => {
     const res = await fetchPathInfo.query();
     dispatch(authActions.setCurrentSpace(res?.space));
   };
-  useEffect(() => {
-    if (spaceId) {
-      fetchSpaceInfo();
-    }
-  }, [spaceId]);
-  const handleDrawerToggle = () => {
-    setMobileOpen(!mobileOpen);
-  };
 
-  const toggleNotificationCenter = () => {
-    setNotificationCenterOpen(!notificationCenterOpen);
-  };
+  useEffect(() => {
+    if (spaceId) fetchSpaceInfo();
+  }, [spaceId]);
+
+  const handleDrawerToggle = () => setMobileOpen((p) => !p);
+  const toggleNotificationCenter = () => setNotificationCenterOpen((p) => !p);
 
   const handleClickOutside = (event: any) => {
     if (
       notificationCenterRef.current &&
-      !(notificationCenterRef.current as HTMLButtonElement).contains(
-        event.target,
-      ) &&
+      !(notificationCenterRef.current as HTMLButtonElement).contains(event.target) &&
       bellButtonRef.current &&
       !(bellButtonRef.current as HTMLButtonElement).contains(event.target)
     ) {
@@ -396,15 +331,11 @@ const Navbar = () => {
     } else {
       document.removeEventListener("mousedown", handleClickOutside);
     }
-
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [notificationCenterOpen]);
 
   const drawer = (
     <Box onClick={handleDrawerToggle} textAlign="center">
-      {/* Drawer content */}
       <Typography
         variant="h6"
         bgcolor="primary.main"
@@ -414,21 +345,12 @@ const Navbar = () => {
         component={NavLink}
         to={LandingPage}
       >
-        <img
-          src={config.appLogoUrl}
-          alt={"logo"}
-          width={"224px"}
-          height={"40px"}
-        />
+        <img src={config.appLogoUrl} alt={"logo"} width={"224px"} height={"40px"} />
       </Typography>
       <Divider />
       <List dense>
         <ListItem disablePadding>
-          <ListItemButton
-            sx={{ textAlign: "left", borderRadius: 1.5 }}
-            component={NavLink}
-            to="/spaces"
-          >
+          <ListItemButton sx={{ textAlign: "left", borderRadius: 1.5 }} component={NavLink} to="/spaces">
             <ListItemText primary={<Trans i18nKey="spaces.spaces" />} />
           </ListItemButton>
         </ListItem>
@@ -438,37 +360,35 @@ const Navbar = () => {
             const { items } = data;
             return (
               <Box>
-                {items.slice(0, 5).map((space: any) => {
-                  return (
-                    <ListItem disablePadding key={space?.id}>
-                      <ListItemButton
-                        sx={{ textAlign: "left", borderRadius: 1.5 }}
-                        component={NavLink}
-                        to={`/${space?.id}/assessments/1`}
-                      >
-                        <ListItemText
-                          primary={
-                            <>
-                              {space?.title && (
-                                <Typography
-                                  variant="caption"
-                                  textTransform="none"
-                                  paddingInlineStart={0.5}
-                                  paddingInlineEnd="unset"
-                                  ml={0.5}
-                                  lineHeight="1"
-                                  borderLeft={`1px solid ${theme.palette.grey[300]}`}
-                                >
-                                  {space?.title}
-                                </Typography>
-                              )}
-                            </>
-                          }
-                        />
-                      </ListItemButton>
-                    </ListItem>
-                  );
-                })}
+                {items.slice(0, 5).map((space: any) => (
+                  <ListItem disablePadding key={space?.id}>
+                    <ListItemButton
+                      sx={{ textAlign: "left", borderRadius: 1.5 }}
+                      component={NavLink}
+                      to={`/${space?.id}/assessments/1`}
+                    >
+                      <ListItemText
+                        primary={
+                          <>
+                            {space?.title && (
+                              <Typography
+                                variant="caption"
+                                textTransform="none"
+                                paddingInlineStart={0.5}
+                                paddingInlineEnd="unset"
+                                ml={0.5}
+                                lineHeight="1"
+                                borderLeft={`1px solid ${theme.palette.grey[300]}`}
+                              >
+                                {space?.title}
+                              </Typography>
+                            )}
+                          </>
+                        }
+                      />
+                    </ListItemButton>
+                  </ListItem>
+                ))}
                 <Divider />
               </Box>
             );
@@ -506,8 +426,11 @@ const Navbar = () => {
             backgroundColor: "primary.main",
             borderRadius: 1,
             justifyContent: "space-between",
+            position: "relative",      // برای وسط‌چین مطلق
+            minHeight: "44px",
           }}
         >
+          {/* منوی همبرگری برای موبایل */}
           <IconButton
             color="primary"
             aria-label="open drawer"
@@ -522,28 +445,38 @@ const Navbar = () => {
           >
             <MenuIcon />
           </IconButton>
+
+          {/* لوگو (سمت چپ/راست بسته به زبان) */}
           <Typography
             variant="h6"
             component={NavLink}
             sx={{
-              display: {
-                xs: "none",
-                md: "block",
-                color: "grey",
-                height: "42px",
-                width: "110px",
-              },
+              display: { xs: "none", md: "block" },
+              color: "grey",
+              height: "42px",
+              width: "110px",
             }}
             to={LandingPage}
-            >
-            <img
-              src={config.appLogoUrl}
-              alt={"logo"}
-              style={{ maxWidth: "120px", height: "100%" }}
-            />
+          >
+            <img src={config.appLogoUrl} alt={"logo"} style={{ maxWidth: "120px", height: "100%" }} />
           </Typography>
-          <Box mx="auto" display={{ xs: "none", md: "block" }}>
-            <SpacesButton />
+
+          {/* لینک‌های وسط: دقیقاً وسط با absolute */}
+          <Box
+            sx={{
+              position: "absolute",
+              left: "50%",
+              transform: "translateX(-50%)",
+              display: { xs: "none", md: "flex" },
+              alignItems: "center",
+              gap: 1.5,
+              pointerEvents: "none", // کانتینر کلی کلیک نگیرد
+            }}
+          >
+            <Box sx={{ pointerEvents: "auto" }}>
+              <SpacesButton />
+            </Box>
+
             <Button
               component={NavLink}
               to={`/assessment-kits`}
@@ -553,15 +486,17 @@ const Navbar = () => {
                 marginInlineStart: 0.8,
                 marginInlineEnd: 0.1,
                 color: "background.containerLowest",
+                height: "32px",
+                px: 1.5,
+                pointerEvents: "auto", // خود دکمه کلیک بگیرد
               }}
               size="small"
             >
               <Trans i18nKey="common.kitLibrary" />
             </Button>
           </Box>
-          <Box display={{ xs: "none", md: "block" }} ml={3}>
-            {/* Other buttons */}
-          </Box>
+
+          {/* سمت راست: زبان و نوتی و پروفایل */}
           <Box gap="0.7rem" sx={{ ...styles.centerV }}>
             {MULTILINGUALITY.toString() == "true" ? <LanguageSelector /> : ""}
             <IconButton onClick={toggleNotificationCenter} ref={bellButtonRef}>
@@ -579,35 +514,32 @@ const Navbar = () => {
                   },
                 }}
               >
-                <NotificationsIcon sx={{ fontSize: 20, color: "white" }} />{" "}
+                <NotificationsIcon sx={{ fontSize: 20, color: "white" }} />
               </Badge>
             </IconButton>
-
             <AccountDropDownButton userInfo={userInfo} />
           </Box>
         </Toolbar>
       </AppBar>
+
+      {/* کشوی موبایل */}
       <Box component="nav">
         <Drawer
           container={window.document.body}
           variant="temporary"
           open={mobileOpen}
           onClose={handleDrawerToggle}
-          ModalProps={{
-            keepMounted: true, // Better open performance on mobile.
-          }}
+          ModalProps={{ keepMounted: true }}
           anchor={i18n.language == "fa" ? "right" : "left"}
           sx={{
             display: { xs: "block", md: "none" },
-            "& .MuiDrawer-paper": {
-              boxSizing: "border-box",
-              width: drawerWidth,
-            },
+            "& .MuiDrawer-paper": { boxSizing: "border-box", width: drawerWidth },
           }}
         >
           {drawer}
         </Drawer>
       </Box>
+
       {/* Notification Center */}
       {notificationCenterOpen && (
         <Box
@@ -618,17 +550,13 @@ const Navbar = () => {
           left={theme.direction === "rtl" ? 20 : "unset"}
           zIndex={1300}
         >
-          <NotificationCenterComponent
-            setNotificationCount={setNotificationCount}
-          />
+          <NotificationCenterComponent setNotificationCount={setNotificationCount} />
         </Box>
       )}
 
       {/* Hidden Notification Center for Count Update */}
       <Box display="none">
-        <NotificationCenterComponent
-          setNotificationCount={setNotificationCount}
-        />
+        <NotificationCenterComponent setNotificationCount={setNotificationCount} />
       </Box>
     </>
   );
@@ -637,7 +565,6 @@ const Navbar = () => {
 const SpacesButton = () => {
   const navigate = useNavigate();
   const isActive = location.pathname.startsWith("/spaces");
-
   return (
     <Button
       data-cy="spaces"
@@ -646,9 +573,7 @@ const SpacesButton = () => {
         textTransform: "uppercase",
         marginInlineStart: 0.8,
         marginInlineEnd: 0.1,
-        "&:hover .MuiButton-endIcon > div": {
-          borderLeftColor: "#8080802b",
-        },
+        "&:hover .MuiButton-endIcon > div": { borderLeftColor: "#8080802b" },
         ...(isActive && {
           "&::after": {
             content: '""',
@@ -663,6 +588,8 @@ const SpacesButton = () => {
           },
         }),
         color: "background.containerLowest",
+        height: "32px",
+        px: 1.5,
       }}
       size="small"
     >
@@ -674,12 +601,9 @@ const SpacesButton = () => {
 const AccountDropDownButton = ({ userInfo }: any) => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) =>
     setAnchorEl(event.currentTarget);
-  };
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
+  const handleClose = () => setAnchorEl(null);
   const showGroups =
     flagsmith.hasFeature(FLAGS.display_expert_groups) || !flagsmith.initialised;
 
@@ -689,21 +613,17 @@ const AccountDropDownButton = ({ userInfo }: any) => {
         data-cy="spaces"
         onClick={(e) => {
           e.stopPropagation();
-          handleClick(e);
+          handleClick(e as any);
         }}
         sx={{
           ...styles.activeNavbarLink,
           marginInlineEnd: 0.8,
           marginInlineStart: 0.1,
           color: "background.containerLowest",
-          fontFamily: languageDetector(userInfo.displayName)
-            ? farsiFontFamily
-            : primaryFontFamily,
+          fontFamily: languageDetector(userInfo.displayName) ? farsiFontFamily : primaryFontFamily,
         }}
         size="small"
-        endIcon={
-          open ? <ArrowDropUpRoundedIcon /> : <ArrowDropDownRoundedIcon />
-        }
+        endIcon={open ? <ArrowDropUpRoundedIcon /> : <ArrowDropDownRoundedIcon />}
       >
         <Avatar
           sx={{
@@ -725,49 +645,22 @@ const AccountDropDownButton = ({ userInfo }: any) => {
         onClose={handleClose}
         PaperProps={{ sx: { minWidth: "180px" } }}
       >
-        <MenuItem
-          dense
-          component={NavLink}
-          to={`/user/account`}
-          onClick={handleClose}
-        >
-          <ListItemIcon>
-            <AccountBoxRoundedIcon fontSize="small" />
-          </ListItemIcon>
-          <ListItemText>
-            <Trans i18nKey="user.account" />
-          </ListItemText>
+        <MenuItem dense component={NavLink} to={`/user/account`} onClick={handleClose}>
+          <ListItemIcon><AccountBoxRoundedIcon fontSize="small" /></ListItemIcon>
+          <ListItemText><Trans i18nKey="user.account" /></ListItemText>
         </MenuItem>
+
         {showGroups && (
-          <MenuItem
-            dense
-            onClick={handleClose}
-            component={NavLink}
-            to={`/user/expert-groups`}
-          >
-            <ListItemIcon>
-              <EngineeringIcon fontSize="small" />
-            </ListItemIcon>
-            <ListItemText>
-              {" "}
-              <Trans i18nKey="expertGroups.expertGroups" />
-            </ListItemText>
+          <MenuItem dense onClick={handleClose} component={NavLink} to={`/user/expert-groups`}>
+            <ListItemIcon><EngineeringIcon fontSize="small" /></ListItemIcon>
+            <ListItemText><Trans i18nKey="expertGroups.expertGroups" /></ListItemText>
           </MenuItem>
         )}
 
         <Divider />
-        <MenuItem
-          dense
-          onClick={() => {
-            keycloakService.doLogout();
-          }}
-        >
-          <ListItemIcon>
-            <LogoutRoundedIcon fontSize="small" />
-          </ListItemIcon>
-          <ListItemText>
-            <Trans i18nKey="common.signOut" />
-          </ListItemText>
+        <MenuItem dense onClick={() => { keycloakService.doLogout(); }}>
+          <ListItemIcon><LogoutRoundedIcon fontSize="small" /></ListItemIcon>
+          <ListItemText><Trans i18nKey="common.signOut" /></ListItemText>
         </MenuItem>
       </Menu>
     </>
