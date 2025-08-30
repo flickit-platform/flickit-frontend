@@ -2,9 +2,8 @@ import Box from "@mui/material/Box";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import Button from "@mui/material/Button";
-import AssessmentRounded from "@mui/icons-material/AssessmentRounded";
 import { styles } from "@styles";
 import { Trans } from "react-i18next";
 import { MULTILINGUALITY } from "@constants";
@@ -15,21 +14,23 @@ import keycloakService from "@/service/keycloakService";
 
 const LandingPage = import.meta.env.VITE_LANDING_PAGE;
 
-
 const NavbarWithoutLogin = () => {
   const { config } = useConfigContext();
+  const navigate = useNavigate();
 
   const handleButtonClick = (e: any, name: string) => {
     keycloakService.doLogin();
-    (window as any).dataLayer.push({
+    (window as any).dataLayer?.push?.({
       event: "ppms.cm:trackEvent",
-      parameters: {
-        category: "Button",
-        action: "Click",
-        name: name,
-      },
+      parameters: { category: "Button", action: "Click", name },
     });
   };
+
+  const navigateToAssessments = (e: any) => {
+    navigate("/spaces");
+    keycloakService.doLogin();
+  };
+
   return (
     <AppBar
       component="nav"
@@ -49,6 +50,8 @@ const NavbarWithoutLogin = () => {
           borderRadius: 1,
           justifyContent: "space-between",
           p: 0,
+          position: "relative",
+          minHeight: "44px",
         }}
       >
         <Typography
@@ -56,9 +59,7 @@ const NavbarWithoutLogin = () => {
           component={NavLink}
           to={LandingPage}
           sx={{
-            display: {
-              xs: "block",
-            },
+            display: { xs: "block" },
             color: "grey",
             height: "42px",
             width: "110px",
@@ -80,47 +81,52 @@ const NavbarWithoutLogin = () => {
             </Box>
           )}
         </Typography>
-        <Box display={{ xs: "none", md: "flex" }} gap={2} mx="auto">
-          {LandingPage && (
-            <Button
-              component={NavLink}
-              to={LandingPage}
-              sx={{
-                ...styles.activeNavbarLink,
-                textTransform: "uppercase",
-                color: "background.containerLowest",
-              }}
-              size="small"
-            >
-              <Trans i18nKey="common.home" />
-            </Button>
-          )}
+
+        <Box
+          sx={{
+            position: "absolute",
+            left: "50%",
+            transform: "translateX(-50%)",
+            display: { xs: "none", md: "flex" },
+            alignItems: "center",
+            gap: 2,
+          }}
+        >
           <Button
-            component={NavLink}
-            to={`/assessment-kits`}
-            startIcon={
-              <AssessmentRounded
-                sx={{ opacity: 0.8, fontSize: "18px !important" }}
-              />
-            }
+            onClick={navigateToAssessments}
             sx={{
               ...styles.activeNavbarLink,
               textTransform: "uppercase",
               color: "background.containerLowest",
+              px: 1.5,
+              height: "32px",
+            }}
+            size="small"
+          >
+            <Trans i18nKey="assessment.myAssessments" />
+          </Button>
+
+          <Button
+            component={NavLink}
+            to={`/assessment-kits`}
+            sx={{
+              ...styles.activeNavbarLink,
+              textTransform: "uppercase",
+              color: "background.containerLowest",
+              px: 1.5,
+              height: "32px",
             }}
             size="small"
           >
             <Trans i18nKey="common.kitLibrary" />
           </Button>
         </Box>
-        <Box display={{ xs: "none", md: "block" }} ml={3}>
-          {/* Other buttons */}
-        </Box>
+
         <Box gap={{ xs: 0.8, sm: 2 }} sx={{ ...styles.centerV }}>
-          {MULTILINGUALITY.toString() == "true" ? <LanguageSelector /> : ""}
+          {MULTILINGUALITY.toString() === "true" ? <LanguageSelector /> : null}
           <Button
-            variant={"contained"}
-            size={"medium"}
+            variant="contained"
+            size="medium"
             onClick={(e) => handleButtonClick(e, "Login")}
             sx={{
               height: "32px",
@@ -128,9 +134,7 @@ const NavbarWithoutLogin = () => {
               textTransform: "capitalize",
               bgcolor: "background.container",
               boxShadow: "0 1px 5px rgba(0,0,0,0.12)",
-              "&:hover": {
-                bgcolor: "background.container",
-              },
+              "&:hover": { bgcolor: "background.container" },
             }}
           >
             <Trans i18nKey="common.loginOrSignup" />
