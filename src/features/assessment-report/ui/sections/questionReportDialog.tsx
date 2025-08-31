@@ -16,6 +16,7 @@ import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 import { Link } from "react-router-dom";
 import { useParams } from "react-router";
 import { IDialogContext, TId } from "@/types";
+import uniqueId from "@utils/uniqueId";
 
 interface IQuestionReportDialog {
   context : IDialogContext | undefined;
@@ -51,7 +52,7 @@ const accordionSummaryStyle = {
   minHeight: "unset",
   borderRadius: 2,
   border: ".5px solid #66809980",
-  background: "#66809914",
+  background: `rgba(102, 128, 153, 0.08)`,
   height: 40,
   "&.Mui-expanded": { margin: 0, minHeight: "unset" },
   "& .MuiAccordionSummary-content": {
@@ -91,7 +92,7 @@ const InnerAccordion = ({
       </Typography>
     </AccordionSummary>
 
-    <AccordionDetails sx={{ direction: lng === "fa" ? "rtl" : "ltr" }}>
+    <AccordionDetails sx={{ direction: lng === "fa" ? "rtl" : "ltr", background: `rgba(102, 128, 153, 0.04)` }}>
       {data?.map((item: any, index: number) => (
         <Box key={item?.question?.id || index} sx={{ px: 2 }}>
           <Box sx={{ display: "flex", alignItems: "center", mb: 1, gap: 1 }}>
@@ -117,12 +118,11 @@ const InnerAccordion = ({
               paddingInlineStart: "40px",
             }}
           >
-            {!!item.answer.title ? (
+            {item.answer.title ? (
               <Box
                 sx={{
                   display: "flex",
                   alignItems: "center",
-                  ml: 5,
                   gap: 1.2,
                   borderRadius: 1,
                   border: ".25px solid #6C8093",
@@ -137,10 +137,9 @@ const InnerAccordion = ({
                 sx={{
                   display: "flex",
                   alignItems: "center",
-                  ml: 5,
                   gap: 1.2,
                   borderRadius: 1,
-                  border: ".25px solid error.main",
+                  boxShadow: "inset 0 0 0 0.5px rgba(138, 15, 36, 0.5)",
                   p: "4px 8px",
                 }}
               >
@@ -179,7 +178,7 @@ const AccordionSkeleton = () => (
       sx={{ borderRadius: 1, mb: 1 }}
     />
     {[...Array(3)].map((_, i) => (
-      <Box key={i} sx={{ px: 2, py: 1 }}>
+      <Box key={uniqueId()} sx={{ px: 2, py: 1 }}>
         <Skeleton variant="text" width="60%" height={20} />
         <Skeleton variant="text" width="40%" height={20} />
         {i !== 2 && <Divider sx={{ my: 1 }} />}

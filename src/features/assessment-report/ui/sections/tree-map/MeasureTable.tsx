@@ -35,8 +35,8 @@ const MeasuresTable: React.FC<{
   rtl?: boolean;
   lng: string;
 }> = ({ measures, rtl, lng, selectedId }) => {
-  if (!measures || measures.length === 0) return null;
   const reportQuestionDialogProps = useDialog();
+  if (!measures || measures.length === 0) return null;
   const PCT = rtl ? "٪" : "%";
   const minus = "−";
   const plus = "+";
