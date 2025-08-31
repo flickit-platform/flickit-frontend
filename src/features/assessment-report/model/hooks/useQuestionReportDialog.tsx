@@ -20,5 +20,6 @@ export function useQuestionReportDialog(measureId: any, attributeId: any) {
     fetchAttributeMeasureQuestions.query();
   }, [measureId]);
   const data = fetchAttributeMeasureQuestions?.data;
-  return { data };
+  const loading = fetchAttributeMeasureQuestions?.loading;
+  return { data,loading };
 }

@@ -93,6 +93,7 @@ interface ICEDialogActionsProps extends PropsWithChildren<DialogActionsProps> {
   onBack?: () => void;
   hasBackBtn?: boolean;
   backType?: any;
+  cancelType?: any;
   cancelLabel?: string | null;
   disablePrimaryButton?: boolean;
   hasContinueBtn?: boolean;
@@ -116,6 +117,7 @@ export const CEDialogActions = (props: ICEDialogActionsProps) => {
     cancelLabel = "common.cancel",
     submitAndViewButtonLabel,
     backType = "contained",
+    cancelType = "outline",
     disablePrimaryButton = false,
     hasContinueBtn,
     children,
@@ -144,6 +146,7 @@ export const CEDialogActions = (props: ICEDialogActionsProps) => {
               data-cy="cancel"
               data-testid="cancel"
               sx={{ fontFamily: "inherit" }}
+              variant={cancelType}
             >
               <Trans i18nKey={cancelLabel ?? ""} />
             </Button>
