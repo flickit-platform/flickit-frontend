@@ -15,14 +15,14 @@ import Skeleton from "@mui/material/Skeleton";
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 import { Link } from "react-router-dom";
 import { useParams } from "react-router";
-import { TId } from "@/types";
+import { IDialogContext, TId } from "@/types";
 
 interface IQuestionReportDialog {
-  context : {type: string, data: any},
-  lng: string,
-  onClose: ()=> void;
+  context : IDialogContext | undefined;
+  lng: string;
+  onClose: () => void;
   open: boolean;
-  openDialog: (context: any)=> {}
+  openDialog: (context: any)=> void
 }
 interface IInnerAccordion {
   title: string;
