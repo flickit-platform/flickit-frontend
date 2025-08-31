@@ -10,6 +10,7 @@ interface SectionCardProps extends PaperProps {
 }
 
 export default function SectionCard({
+  id,
   title,
   desc,
   rtl = false,
@@ -19,12 +20,13 @@ export default function SectionCard({
 }: Readonly<SectionCardProps>) {
   return (
     <Paper
+      id={id}
       elevation={3}
       sx={{
         ...styles.centerCV,
         borderRadius: "16px",
         boxShadow: "none",
-        padding: { xs:2, md: 4 },
+        padding: { xs: 2, md: 4 },
         textAlign: rtl ? "right" : "left",
       }}
       {...rest}

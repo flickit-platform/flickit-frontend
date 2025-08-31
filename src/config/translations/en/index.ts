@@ -3,7 +3,6 @@ import assessment from "./assessment.json";
 import assessmentKit from "./assessmentKit.json";
 import assessmentReport from "@/features/assessment-report/i18n/en.json";
 import common from "./common.json";
-import compare from "./compare.json";
 import dashboard from "./dashboard.json";
 import errors from "./errors.json";
 import expertGroups from "./expertGroups.json";
@@ -21,7 +20,6 @@ export default {
   assessmentKit,
   assessmentReport,
   common,
-  compare,
   dashboard,
   errors,
   expertGroups,

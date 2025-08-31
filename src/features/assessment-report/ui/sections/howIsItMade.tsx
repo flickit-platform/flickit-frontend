@@ -11,14 +11,14 @@ import { ISubject } from "@/types";
 import uniqueId from "@utils/uniqueId";
 import { getMaturityLevelColors, styles } from "@styles";
 import { v3Tokens } from "@config/tokens";
-import { grayBlue } from "@/config/colors";
 
 interface Props {
   readonly title: string;
+  readonly lng: string;
   readonly children: React.ReactNode;
 }
 
-function InnerAccordion({ title, children }: Props) {
+function InnerAccordion({ title, children, lng }: Props) {
   return (
     <Accordion
       disableGutters
@@ -45,7 +45,11 @@ function InnerAccordion({ title, children }: Props) {
         }}
         expandIcon={<ExpandMoreIcon sx={{ color: "primary.main" }} />}
       >
-        <Typography variant="titleMedium" color="primary">
+        <Typography
+          variant="titleMedium"
+          color="primary"
+          sx={{ ...styles.rtlStyle(lng === "fa") }}
+        >
           {title}
         </Typography>
       </AccordionSummary>
@@ -119,7 +123,7 @@ export default function HowIsItMade({ lng, report }: any) {
           <Typography
             width="80%"
             variant="bodyMedium"
-            color={v3Tokens.surface.on}
+            color={"text.primary"}
             sx={{ ...styles.rtlStyle(isRTL) }}
           >
             {item.description}
@@ -168,14 +172,25 @@ export default function HowIsItMade({ lng, report }: any) {
           }}
           expandIcon={<ExpandMoreIcon sx={{ color: "primary.main" }} />}
         >
-          <Typography variant="headlineSmall" color="primary">
+          <Typography
+            variant="headlineSmall"
+            color="primary"
+            sx={{ ...styles.rtlStyle(lng === "fa") }}
+          >
             {t("assessmentReport.howIsThisReportMade", { lng })}
           </Typography>
         </AccordionSummary>
 
         <AccordionDetails sx={{ mt: 1.2, p: 0 }}>
-          <InnerAccordion title={t("assessmentKit.assessmentKit", { lng })}>
-            <Typography variant="bodyMedium" color={v3Tokens.surface.on}>
+          <InnerAccordion
+            title={t("assessmentKit.assessmentKit", { lng })}
+            lng={lng}
+          >
+            <Typography
+              sx={{ ...styles.rtlStyle(lng === "fa") }}
+              variant="bodyMedium"
+              color={"text.primary"}
+            >
               {t("assessmentKit.assessmentKitDescription", {
                 lng,
                 title: assessmentKit.title,
@@ -188,8 +203,13 @@ export default function HowIsItMade({ lng, report }: any) {
             </Typography>
           </InnerAccordion>
 
-          <InnerAccordion title={t("common.maturityLevels", { lng })}>
-            <Typography variant="bodyMedium" color={v3Tokens.surface.on} mb={2}>
+          <InnerAccordion title={t("common.maturityLevels", { lng })} lng={lng}>
+            <Typography
+              variant="bodyMedium"
+              color={"text.primary"}
+              mb={2}
+              sx={{ ...styles.rtlStyle(lng === "fa") }}
+            >
               {t("assessmentReport.assessmentKitEvaluatesMaturity", { lng })}
             </Typography>
             {maturityLevels.map((level: any) => (
@@ -217,7 +237,7 @@ export default function HowIsItMade({ lng, report }: any) {
                   textAlign="justify"
                   component="span"
                   variant="bodyMedium"
-                  color={v3Tokens.surface.on}
+                  color={"text.primary"}
                   sx={{ ...styles.rtlStyle(rtlLanguage) }}
                 >
                   {level.description}
@@ -228,8 +248,13 @@ export default function HowIsItMade({ lng, report }: any) {
 
           <InnerAccordion
             title={t("assessmentReport.subjectsAndAttributes", { lng })}
+            lng={lng}
           >
-            <Typography variant="bodyMedium" color={v3Tokens.surface.on}>
+            <Typography
+              variant="bodyMedium"
+              color={"text.primary"}
+              sx={{ ...styles.rtlStyle(lng === "fa") }}
+            >
               {t("assessmentReport.assessmentStructured", {
                 lng,
                 count: attributes.length,
@@ -238,8 +263,12 @@ export default function HowIsItMade({ lng, report }: any) {
             {rowItem(attributes)}
           </InnerAccordion>
 
-          <InnerAccordion title={t("common.questionnaires", { lng })}>
-            <Typography variant="bodyMedium" color={v3Tokens.surface.on}>
+          <InnerAccordion title={t("common.questionnaires", { lng })} lng={lng}>
+            <Typography
+              variant="bodyMedium"
+              color={"text.primary"}
+              sx={{ ...styles.rtlStyle(lng === "fa") }}
+            >
               {t("assessmentReport.measureMaturityLevel", {
                 lng,
                 QuestionCount: questionsCount,

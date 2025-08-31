@@ -4,13 +4,7 @@ import LoadingGauge from "@common/charts/LoadingGauge";
 import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
 import useMenu from "@utils/useMenu";
 import { useServiceContext } from "@providers/ServiceProvider";
-import {
-  createSearchParams,
-  Link,
-  useLocation,
-  useNavigate,
-  useParams,
-} from "react-router-dom";
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import { Trans } from "react-i18next";
 import { styles } from "@styles";
 import { ICustomError } from "@utils/CustomError";
@@ -32,7 +26,6 @@ import QuizRoundedIcon from "@mui/icons-material/QuizRounded";
 import QueryStatsRounded from "@mui/icons-material/QueryStatsRounded";
 import hasStatus from "@utils/hasStatus";
 import hasMaturityLevel from "@utils/hasMaturityLevel";
-import CompareRoundedIcon from "@mui/icons-material/CompareRounded";
 import { useQuery } from "@utils/useQuery";
 import Star from "@/assets/svg/star.svg";
 import SettingsIcon from "@mui/icons-material/Settings";
@@ -327,9 +320,7 @@ const Header = ({
           textTransform: "none",
           color: "#101c32",
           background: "transparent",
-          fontFamily: languageDetector(kit?.title)
-            ? farsiFontFamily
-            : primaryFontFamily,
+          ...styles.rtlStyle(languageDetector(kit?.title)),
         }}
         data-cy="assessment-card-title"
       />
@@ -532,15 +523,6 @@ const Actions = ({
     }
   };
 
-  const addToCompare = () => {
-    navigate({
-      pathname: "/compare",
-      search: createSearchParams({
-        assessmentIds: item.id as string,
-      }).toString(),
-    });
-  };
-
   const goToAssessmentSettings = () => {
     const targetPath = `/${spaceId}/assessments/1/${item.id}/settings/`;
 
@@ -571,11 +553,6 @@ const Actions = ({
 
   const actions = hasStatus(item.status)
     ? [
-        {
-          icon: <CompareRoundedIcon fontSize="small" />,
-          text: <Trans i18nKey="addToCompare" />,
-          onClick: addToCompare,
-        },
         {
           icon: <DeleteRoundedIcon fontSize="small" />,
           text: <Trans i18nKey="common.delete" />,

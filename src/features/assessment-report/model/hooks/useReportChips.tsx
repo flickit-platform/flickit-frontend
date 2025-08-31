@@ -86,6 +86,7 @@ export const useReportChips = (
           </Box>
         ),
         color: blue[95],
+        anchorId: "howCalculated",
       },
       {
         key: "how-to-improve",
@@ -100,6 +101,7 @@ export const useReportChips = (
           </Box>
         ),
         color: blue[95],
+        anchorId: "howToImprove",
       },
     ],
     [lng, rtl],

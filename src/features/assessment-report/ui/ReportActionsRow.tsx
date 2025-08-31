@@ -29,12 +29,12 @@ export default function ReportActionsRow({
         variant="outlined"
         size="small"
         onClick={onQuestionnaires}
-        sx={{ ...styles.rtlStyle(rtl) }}
+        sx={{ ...styles.rtlStyle(rtl), width: { xs: "100%", md: "unset" } }}
       >
         {t("common.questionnaires", { lng })}
       </LoadingButton>
 
-      <Box display="flex" gap={2}>
+      <Box display={{ xs: "none", md: "flex" }} gap={2}>
         <LoadingButton
           variant="contained"
           startIcon={

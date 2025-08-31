@@ -85,7 +85,7 @@ const Gauge = ({
       position="relative"
       width="100%"
       height={height}
-      overflow="hidden" // اضافه کردن overflow: hidden
+      overflow="hidden"
       {...rest}
     >
       <Suspense fallback={<SkeletonGauge />}>

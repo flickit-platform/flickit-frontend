@@ -8,4 +8,5 @@ export interface IMaturityLevel {
   description: string;
   weight?: number;
   translations?: any;
+  confidenceValue?: number;
 }

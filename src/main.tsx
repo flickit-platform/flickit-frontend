@@ -19,6 +19,7 @@ import { AssessmentProvider } from "./providers/AssessmentProvider";
 import i18next from "i18next";
 import { KitLanguageProvider } from "./providers/KitProvider";
 import { LangProvider, useLangContext } from "./providers/LangProvider";
+import "./globals.css"
 
 // Lazy load non-critical components
 const ToastContainer = lazy(() =>

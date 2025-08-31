@@ -72,8 +72,8 @@ export default function ShareDialog({
         description: t("assessmentReport.restrictedShareDescription", { lng }),
       },
       [VISIBILITY.PUBLIC]: {
-        title: t("assessmentReport.PublicShareTitle", { lng }),
-        description: t("assessmentReport.PublicShareDescription", { lng }),
+        title: t("assessmentReport.publicShareTitle", { lng }),
+        description: t("assessmentReport.publicShareDescription", { lng }),
       },
     }),
     [lng, t],
@@ -118,6 +118,7 @@ export default function ShareDialog({
                 >
                   <Grid item flex={1}>
                     <InputFieldUC
+                      lng={lng}
                       name="email"
                       size="small"
                       placeholder={t("assessmentReport.shareReportViaEmail", {
@@ -125,7 +126,14 @@ export default function ShareDialog({
                       })}
                       fullWidth
                       required
-                      stylesProps={{ input: { padding: "4px 12px" } }}
+                      stylesProps={{
+                        input: {
+                          padding: "4px 12px",
+                          "::placeholder": {
+                            ...styles.rtlStyle(lng === "fa"),
+                          },
+                        },
+                      }}
                     />
                   </Grid>
                   <Grid item>
@@ -184,7 +192,11 @@ export default function ShareDialog({
                           <Chip
                             label={t("common.invited", { lng })}
                             size="small"
-                            sx={{ ".MuiChip-label": { fontFamily: "inherit" } }}
+                            sx={{
+                              ".MuiChip-label": {
+                                ...styles.rtlStyle(lng === "fa"),
+                              },
+                            }}
                           />
                         )}
                       </Box>
@@ -206,7 +218,14 @@ export default function ShareDialog({
       title={
         <Box sx={{ ...styles.centerV }} gap={1}>
           <Share />
-          {t("assessmentReport.shareReport", { lng })}
+          <Typography
+            variant={"semiBoldXLarge"}
+            sx={{
+              ...styles.rtlStyle(lng === "fa"),
+            }}
+          >
+            {t("assessmentReport.shareReport", { lng })}
+          </Typography>
         </Box>
       }
       maxWidth="sm"

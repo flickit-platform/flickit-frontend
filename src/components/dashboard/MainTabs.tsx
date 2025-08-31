@@ -67,7 +67,7 @@ const MainTabs = (props: any) => {
   const { onTabChange, selectedTab, flexColumn } = props;
   const { service } = useServiceContext();
   const { assessmentId = "" } = useParams();
-  const isMobileScreen = useScreenResize("sm");
+  const isMobileScreen = useScreenResize("md");
   const buttonRef = useRef<HTMLButtonElement | null>(null);
   const { open, openMenu, closeMenu, anchorEl } = useMenu();
   const showTabName = () =>
@@ -176,7 +176,7 @@ const MainTabs = (props: any) => {
         </Box>
       ) : (
         <>
-          {isAdvanceMode ? (
+          {isAdvanceMode && selectedTab !== "settings" ? (
             <>
               {" "}
               {fetchAssessmentPermissions.loading ? (

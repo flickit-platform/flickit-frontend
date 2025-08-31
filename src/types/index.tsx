@@ -2,7 +2,6 @@ export * from "./answer";
 export * from "./assessment";
 export * from "./chart";
 export * from "./common";
-export * from "./compare";
 export * from "./dialog";
 export * from "./errors";
 export * from "./expertGroup";

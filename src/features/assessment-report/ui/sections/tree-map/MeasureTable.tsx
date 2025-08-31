@@ -43,7 +43,9 @@ const MeasuresTable: React.FC<{
   const pct = (n: number) => `${Math.round(n)}${PCT}`;
   const fmtSigned = (n: number, positive: boolean) => {
     const v = Math.round(n);
-    return rtl ? `${v}${PCT}${positive ? plus : minus}` : `${positive ? plus : minus}${v}${PCT}`;
+    return rtl
+      ? `${v}${PCT}${positive ? plus : minus}`
+      : `${positive ? plus : minus}${v}${PCT}`;
   };
 
   const totals = measures.reduce(
@@ -71,29 +73,51 @@ const MeasuresTable: React.FC<{
         <Table size="small" aria-label="measures table">
           <TableHead>
             <TableRow sx={{ bgcolor: "background.containerHigher" }}>
-              <TableCell sx={{ textAlign: rtl ? "right" : "left", whiteSpace: "nowrap" }}>
-                <Typography variant="labelMedium" color="text.primary" sx={rtlSx(rtl)}>
+              <TableCell
+                sx={{ textAlign: rtl ? "right" : "left", whiteSpace: "nowrap" }}
+              >
+                <Typography
+                  variant="labelMedium"
+                  color="text.primary"
+                  sx={rtlSx(rtl)}
+                >
                   {t("assessmentReport.measureTitle", { lng })}
                 </Typography>
               </TableCell>
               <TableCell align="center">
-                <Typography variant="labelMedium" color="text.primary" sx={rtlSx(rtl)}>
+                <Typography
+                  variant="labelMedium"
+                  color="text.primary"
+                  sx={rtlSx(rtl)}
+                >
                   {t("assessmentReport.contributionToAttribute", { lng })}
                 </Typography>
               </TableCell>
               <TableCell align="center">
-                <Typography variant="labelMedium" color="primary" sx={rtlSx(rtl)}>
+                <Typography
+                  variant="labelMedium"
+                  color="primary"
+                  sx={rtlSx(rtl)}
+                >
                   {t("assessmentReport.gainedScore", { lng })}
                 </Typography>
               </TableCell>
               <TableCell />
               <TableCell align="center">
-                <Typography variant="labelMedium" color="error.light" sx={rtlSx(rtl)}>
+                <Typography
+                  variant="labelMedium"
+                  color="error.light"
+                  sx={rtlSx(rtl)}
+                >
                   {t("assessmentReport.missedScore", { lng })}
                 </Typography>
               </TableCell>
-              <TableCell align="center">
-                <Typography variant="labelMedium" color="text.primary" sx={rtlSx(rtl)}>
+              <TableCell align="center" sx={{ display: "none" }}>
+                <Typography
+                  variant="labelMedium"
+                  color="text.primary"
+                  sx={rtlSx(rtl)}
+                >
                   {t("common.questions", { lng })}
                 </Typography>
               </TableCell>
@@ -102,7 +126,11 @@ const MeasuresTable: React.FC<{
 
           <TableBody
             sx={{
-              "& td": { textAlign: "center", verticalAlign: "middle", borderBottom: "none" },
+              "& td": {
+                textAlign: "center",
+                verticalAlign: "middle",
+                borderBottom: "none",
+              },
               "& td > *": { mx: "auto" },
               "& td:first-of-type": { textAlign: rtl ? "right" : "left" },
             }}
@@ -130,28 +158,43 @@ const MeasuresTable: React.FC<{
                   </TableCell>
 
                   <TableCell>
-                    <Typography variant="bodySmall" color="primary.main" sx={rtlSx(rtl)}>
+                    <Typography
+                      variant="bodySmall"
+                      color="primary.main"
+                      sx={rtlSx(rtl)}
+                    >
                       {fmtSigned(gained, true)}
                     </Typography>
                   </TableCell>
 
                   <TableCell>
-                    <Box position="relative" height={24}>
+                    <Box
+                      position="relative"
+                      height={24}
+                      sx={{ transform: lng === "en" ? "scaleX(-1)" : "none" }}
+                    >
                       <Box
                         position="absolute"
                         left="50%"
                         top={0}
                         bottom={0}
-                        sx={{ borderLeft: "1px dashed", borderColor: "divider" }}
+                        sx={{
+                          borderLeft: "1px dashed",
+                          borderColor: "divider",
+                        }}
                       />
                       {missed > 0 && (
                         <Box
                           position="absolute"
-                          left={`calc(50% - ${missed}px)`}
+                          left={`calc(50% - ${missed > 68 ? 68 : missed}px)`}
                           width={`${missed}px`}
+                          maxWidth="68px"
                           top={6}
                           bottom={6}
-                          sx={{ bgcolor: "error.light", borderRadius: "4px 0 0 4px" }}
+                          sx={{
+                            bgcolor: "error.light",
+                            borderRadius: "4px 0 0 4px",
+                          }}
                         />
                       )}
                       {gained > 0 && (
@@ -159,16 +202,24 @@ const MeasuresTable: React.FC<{
                           position="absolute"
                           left="50%"
                           width={`${gained}px`}
+                          maxWidth="68px"
                           top={6}
                           bottom={6}
-                          sx={{ bgcolor: "primary.main", borderRadius: "0 4px 4px 0" }}
+                          sx={{
+                            bgcolor: "primary.main",
+                            borderRadius: "0 4px 4px 0",
+                          }}
                         />
                       )}
                     </Box>
                   </TableCell>
 
                   <TableCell>
-                    <Typography variant="bodySmall" color="error.light" sx={rtlSx(rtl)}>
+                    <Typography
+                      variant="bodySmall"
+                      color="error.light"
+                      sx={rtlSx(rtl)}
+                    >
                       {fmtSigned(missed, false)}
                     </Typography>
                   </TableCell>
@@ -187,24 +238,42 @@ const MeasuresTable: React.FC<{
 
           <TableFooter>
             <TableRow sx={{ bgcolor: "background.containerHigher" }}>
-              <TableCell sx={{ textAlign: rtl ? "right" : "left", borderBottom: "none" }}>
-                <Typography variant="labelMedium" color="text.primary" sx={rtlSx(rtl)}>
+              <TableCell
+                sx={{ textAlign: rtl ? "right" : "left", borderBottom: "none" }}
+              >
+                <Typography
+                  variant="labelMedium"
+                  color="text.primary"
+                  sx={rtlSx(rtl)}
+                >
                   {t("assessmentReport.total", { lng })}
                 </Typography>
               </TableCell>
               <TableCell sx={{ textAlign: "center", borderBottom: "none" }}>
-                <Typography variant="labelMedium" color="text.primary" sx={rtlSx(rtl)}>
+                <Typography
+                  variant="labelMedium"
+                  color="text.primary"
+                  sx={rtlSx(rtl)}
+                >
                   {pct(totals.impact)}
                 </Typography>
               </TableCell>
               <TableCell sx={{ textAlign: "center", borderBottom: "none" }}>
-                <Typography variant="labelMedium" color="primary.main" sx={rtlSx(rtl)}>
+                <Typography
+                  variant="labelMedium"
+                  color="primary.main"
+                  sx={rtlSx(rtl)}
+                >
                   {fmtSigned(totals.gained, true)}
                 </Typography>
               </TableCell>
               <TableCell sx={{ borderBottom: "none" }} />
               <TableCell sx={{ textAlign: "center", borderBottom: "none" }}>
-                <Typography variant="labelMedium" color="error.light" sx={rtlSx(rtl)}>
+                <Typography
+                  variant="labelMedium"
+                  color="error.light"
+                  sx={rtlSx(rtl)}
+                >
                   {fmtSigned(totals.missed, false)}
                 </Typography>
               </TableCell>
