@@ -15,13 +15,34 @@ import Skeleton from "@mui/material/Skeleton";
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 import { Link } from "react-router-dom";
 import { useParams } from "react-router";
+import { TId } from "@/types";
+
+interface IQuestionReportDialog {
+  context : {type: string, data: any},
+  lng: string,
+  onClose: ()=> void;
+  open: boolean;
+  openDialog: (context: any)=> {}
+}
+interface IInnerAccordion {
+  title: string;
+  data: any;
+  expanded: boolean;
+  onChange: any;
+  lng: string;
+  measureId: TId;
+  assessmentId: TId;
+}
 
 const accordionBaseStyle = {
   background: "inherit",
   boxShadow: "none",
-  borderRadius: 2,
+  borderRadius: "8px !important",
   border: ".5px solid #66809980",
   mb: 1,
+  "&:before": {
+    display: "none",
+  },
 };
 
 const accordionSummaryStyle = {
@@ -51,7 +72,7 @@ const InnerAccordion = ({
   lng,
   measureId,
   assessmentId,
-}: any) => (
+}: IInnerAccordion) => (
   <Accordion
     expanded={expanded}
     onChange={onChange}
@@ -59,14 +80,14 @@ const InnerAccordion = ({
     sx={accordionBaseStyle}
   >
     <AccordionSummary
-      expandIcon={<ExpandMoreIcon sx={{ color: "primary.main" }} />}
+      expandIcon={<ExpandMoreIcon sx={{ color: "surface.onVariant" }} />}
       sx={accordionSummaryStyle}
     >
-      <Typography variant="titleSmall">
-        {t(`assessmentReport.${title}`, {})}
+      <Typography variant="titleSmall" color={"surface.inverse"}>
+        {t(`assessmentReport.${title}`, { lng })}
       </Typography>
-      <Typography variant="bodyMedium">
-        ({data?.length} {t("common.questions")})
+      <Typography variant="bodyMedium" color={"surface.onVariant"}>
+        ({data?.length} {t("common.questions", { lng })})
       </Typography>
     </AccordionSummary>
 
@@ -76,15 +97,14 @@ const InnerAccordion = ({
           <Box sx={{ display: "flex", alignItems: "center", mb: 1, gap: 1 }}>
             <Box
               sx={{
-                display: "flex",
-                flexDirection: lng === "fa" ? "row" : "row-reverse",
+                display: "flex"
               }}
             >
               <Typography variant="bodyMedium" fontWeight="bold">
                 Q
               </Typography>
               <Typography variant="bodyMedium" fontWeight="bold">
-                .{index + 1}
+                .{ index + 1}
               </Typography>
             </Box>
             <Typography variant="bodySmall">{item.question.title}</Typography>
@@ -126,7 +146,7 @@ const InnerAccordion = ({
               >
                 <ErrorOutlineIcon sx={{ color: "error.main" }} />
                 <Typography variant="bodySmall" color={"error.main"}>
-                  {t("subject.noQuestionHasBeenAnswered", {lng})}
+                  {t("subject.noQuestionHasBeenAnswered", { lng })}
                 </Typography>
               </Box>
             )}
@@ -140,7 +160,7 @@ const InnerAccordion = ({
                 textDecoration: "none",
               }}
             >
-              {t("assessmentReport.goToQuestion", {lng})}
+              {t("assessmentReport.goToQuestion", { lng })}
             </Typography>
           </Box>
 
@@ -168,11 +188,16 @@ const AccordionSkeleton = () => (
   </Box>
 );
 
-const QuestionReportDialog = (props: any) => {
+const QuestionReportDialog = (props: IQuestionReportDialog) => {
+
   const { onClose, lng, context, ...rest } = props;
-  const { assessmentId } = useParams();
+  const { assessmentId = "" } = useParams();
   const { measureId, attributeId } = context?.data ?? {};
-  const { data, loading } = useQuestionReportDialog(measureId, attributeId);
+  const { data, loading } = useQuestionReportDialog(
+    measureId,
+    attributeId,
+    assessmentId,
+  );
   const { highScores = [], lowScores = [] } = data ?? {};
 
   const [expanded, setExpanded] = useState<string | false>(false);
@@ -192,7 +217,7 @@ const QuestionReportDialog = (props: any) => {
         closeDialog={onClose}
         title={
           <Typography variant="semiBoldXLarge" fontFamily="inherit">
-            {t("assessmentReport.viewCodeQualityMeasure")}
+            {t("assessmentReport.viewCodeQualityMeasure", {lng})}
           </Typography>
         }
         contentStyle={{ p: "40px 32px !important" }}

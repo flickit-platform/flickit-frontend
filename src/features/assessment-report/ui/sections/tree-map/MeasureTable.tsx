@@ -225,9 +225,11 @@ const MeasuresTable: React.FC<{
                   </TableCell>
 
                   <TableCell>
-                    <IconButton size="small" onClick={() => reportQuestionDialogProps.openDialog({type:"create",
+                    <IconButton size="small"
+                                onClick={() => reportQuestionDialogProps.openDialog({type:"create",
                     data: {measureId: m.id, attributeId: selectedId}
-                    })} >
+                    })}
+                    >
                       <StickyNote2Outlined fontSize="small" color="primary" />
                     </IconButton>
                   </TableCell>
@@ -282,7 +284,7 @@ const MeasuresTable: React.FC<{
           </TableFooter>
         </Table>
       </TableContainer>
-      <QuestionReportDialog {...reportQuestionDialogProps} lng={lng} />
+      {reportQuestionDialogProps.open &&  <QuestionReportDialog {...reportQuestionDialogProps} lng={lng} />}
     </Box>
   );
 };

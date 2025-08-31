@@ -1,12 +1,10 @@
 import { useEffect } from "react";
 import { useQuery } from "@utils/useQuery";
-import { ReportAccessUsersResponse } from "@/features/assessment-report/model/hooks/useShareDialog";
 import { useServiceContext } from "@providers/ServiceProvider";
-import { useParams } from "react-router";
+import { TId } from "@/types";
 
-export function useQuestionReportDialog(measureId: any, attributeId: any) {
+export function useQuestionReportDialog(measureId: TId, attributeId: TId, assessmentId: TId) {
   const { service } = useServiceContext();
-  const { assessmentId = "" } = useParams();
   const fetchAttributeMeasureQuestions = useQuery<any>({
     service: (args, config) =>
       service.assessments.report.fetchAttributeMeasureQuestions(
