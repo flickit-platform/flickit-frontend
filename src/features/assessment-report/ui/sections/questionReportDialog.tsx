@@ -12,6 +12,9 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import CheckBoxIcon from "@mui/icons-material/CheckBox";
 import Divider from "@mui/material/Divider";
 import Skeleton from "@mui/material/Skeleton";
+import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
+import { Link } from "react-router-dom";
+import { useParams } from "react-router";
 
 const accordionBaseStyle = {
   background: "inherit",
@@ -40,7 +43,15 @@ const accordionSummaryStyle = {
   },
 };
 
-const InnerAccordion = ({ title, data, expanded, onChange, lng }: any) => (
+const InnerAccordion = ({
+  title,
+  data,
+  expanded,
+  onChange,
+  lng,
+  measureId,
+  assessmentId,
+}: any) => (
   <Accordion
     expanded={expanded}
     onChange={onChange}
@@ -52,7 +63,7 @@ const InnerAccordion = ({ title, data, expanded, onChange, lng }: any) => (
       sx={accordionSummaryStyle}
     >
       <Typography variant="titleSmall">
-        {t(`assessmentReport.${title}`)}
+        {t(`assessmentReport.${title}`, {})}
       </Typography>
       <Typography variant="bodyMedium">
         ({data?.length} {t("common.questions")})
@@ -79,24 +90,57 @@ const InnerAccordion = ({ title, data, expanded, onChange, lng }: any) => (
             <Typography variant="bodySmall">{item.question.title}</Typography>
           </Box>
 
-          <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-            <Box
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              paddingInlineStart: "40px",
+            }}
+          >
+            {!!item.answer.title ? (
+              <Box
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  ml: 5,
+                  gap: 1.2,
+                  borderRadius: 1,
+                  border: ".25px solid #6C8093",
+                  p: "4px 8px",
+                }}
+              >
+                <CheckBoxIcon sx={{ color: "#6C8093" }} />
+                <Typography variant="bodySmall">{item.answer.title}</Typography>
+              </Box>
+            ) : (
+              <Box
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  ml: 5,
+                  gap: 1.2,
+                  borderRadius: 1,
+                  border: ".25px solid error.main",
+                  p: "4px 8px",
+                }}
+              >
+                <ErrorOutlineIcon sx={{ color: "error.main" }} />
+                <Typography variant="bodySmall" color={"error.main"}>
+                  {t("subject.noQuestionHasBeenAnswered", {lng})}
+                </Typography>
+              </Box>
+            )}
+
+            <Typography
+              component={Link}
+              to={`./../../1/${assessmentId}/questionnaires/${measureId}/${item?.question?.index}`}
+              variant="bodyMedium"
+              color="primary.main"
               sx={{
-                display: "flex",
-                alignItems: "center",
-                ml: 5,
-                gap: 1.2,
-                borderRadius: 1,
-                border: ".25px solid #6C8093",
-                p: "4px 8px",
+                textDecoration: "none",
               }}
             >
-              <CheckBoxIcon sx={{ color: "#6C8093" }} />
-              <Typography variant="bodySmall">{item.answer.title}</Typography>
-            </Box>
-
-            <Typography variant="bodyMedium" color="primary.main">
-              {t("assessmentReport.goToQuestion")}
+              {t("assessmentReport.goToQuestion", {lng})}
             </Typography>
           </Box>
 
@@ -126,6 +170,7 @@ const AccordionSkeleton = () => (
 
 const QuestionReportDialog = (props: any) => {
   const { onClose, lng, context, ...rest } = props;
+  const { assessmentId } = useParams();
   const { measureId, attributeId } = context?.data ?? {};
   const { data, loading } = useQuestionReportDialog(measureId, attributeId);
   const { highScores = [], lowScores = [] } = data ?? {};
@@ -150,7 +195,7 @@ const QuestionReportDialog = (props: any) => {
             {t("assessmentReport.viewCodeQualityMeasure")}
           </Typography>
         }
-        contentStyle={{ mt: 5, p: "40px 32px" }}
+        contentStyle={{ p: "40px 32px !important" }}
         titleStyle={{ mb: 0 }}
       >
         {loading ? (
@@ -167,6 +212,8 @@ const QuestionReportDialog = (props: any) => {
                 expanded={expanded === "low"}
                 onChange={handleAccordionChange("low")}
                 lng={lng}
+                measureId={measureId}
+                assessmentId={assessmentId}
               />
             )}
             {highScores.length > 0 && (
@@ -176,6 +223,8 @@ const QuestionReportDialog = (props: any) => {
                 expanded={expanded === "high"}
                 onChange={handleAccordionChange("high")}
                 lng={lng}
+                measureId={measureId}
+                assessmentId={assessmentId}
               />
             )}
           </Box>
@@ -197,217 +246,3 @@ const QuestionReportDialog = (props: any) => {
 };
 
 export default QuestionReportDialog;
-
-// import React, {useState} from "react";
-// import { CEDialog, CEDialogActions } from "@common/dialogs/CEDialog";
-// import Typography from "@mui/material/Typography";
-// import Box from "@mui/material/Box";
-// import i18next, { t } from "i18next";
-// import { styles } from "@styles";
-// import { useQuestionReportDialog } from "@/features/assessment-report/model/hooks/useQuestionReportDialog";
-// import Accordion from "@mui/material/Accordion";
-// import AccordionSummary from "@mui/material/AccordionSummary";
-// import AccordionDetails from "@mui/material/AccordionDetails";
-// import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-// import CheckBoxIcon from "@mui/icons-material/CheckBox";
-// import Divider from "@mui/material/Divider";
-//
-// const QuestionReportDialog = (props: any) => {
-//   const { onClose, lng, context, ...rest } = props;
-//   const { measureId, attributeId } = context?.data ?? {};
-//   const { data, loading } = useQuestionReportDialog(measureId, attributeId);
-//   const { highScores, lowScores } = data ?? [];
-//   const [expended,setExpended] = useState(true)
-//   const isRTL = lng === "fa" || (!lng && i18next.language === "fa");
-//   const close = () => {
-//     onClose();
-//   };
-//
-//   const handeChangeExpended = () =>{
-//       setExpended(!expended)
-//   }
-//   const InnerAccoridon = (props: any) => {
-//     const { title, data } = props;
-//     return (
-//         <Accordion
-//             sx={{
-//                 background: "inherit",
-//                 boxShadow: "none",
-//                 borderRadius: 2,
-//                 border: ".5px solid #66809980",
-//                 mb: "8px"
-//             }}
-//             expanded={expended}
-//             onChange={handeChangeExpended}
-//         >
-//         <AccordionSummary
-//           sx={{
-//             flexDirection: "row-reverse",
-//             my: 0,
-//             minHeight: "unset",
-//             px: 2,
-//             borderRadius: 2,
-//             border: ".5px solid #66809980",
-//             background: "#66809914",
-//             height: "40px",
-//             "& .MuiAccordionSummary-root": {
-//               minHeight: "40px",
-//             },
-//             "&.Mui-expanded": {
-//               margin: "0px !important",
-//               minHeight: "unset",
-//             },
-//             "& .MuiAccordionSummary-expandIconWrapper": {
-//               paddingInlineEnd: "10px",
-//             },
-//             "& .MuiAccordionSummary-content": {
-//               display: "flex",
-//               alignItems: "center",
-//               justifyContent: "space-between",
-//             },
-//           }}
-//           expandIcon={<ExpandMoreIcon sx={{ color: "primary.main" }} />}
-//         >
-//           <Typography variant={"titleSmall"}>
-//             {t(`assessmentReport.${title}`)}
-//           </Typography>
-//           <Typography variant={"bodyMedium"}>
-//             ({data?.length}
-//             {"  "}
-//             {t("common.questions")})
-//           </Typography>
-//         </AccordionSummary>
-//         <AccordionDetails
-//           sx={{
-//             direction: lng === "fa" ? "rtl" : "ltr",
-//           }}
-//         >
-//           {data?.map((item: any, index: number) => {
-//             return (
-//               <Box sx={{ px: "16px" }}>
-//                 <Box
-//                   sx={{
-//                     display: "flex",
-//                     alignItems: "center",
-//                     mb: "8px",
-//                     gap: "7px",
-//                   }}
-//                 >
-//                   <Box
-//                     sx={{
-//                       display: "flex",
-//                       flexDirection: lng == "fa" ? "row" : "row-reverse",
-//                     }}
-//                   >
-//                     <Typography
-//                       variant={"bodyMedium"}
-//                       fontWeight={"bold"}
-//                     >{`Q`}</Typography>
-//                     <Typography
-//                       variant={"bodyMedium"}
-//                       fontWeight={"bold"}
-//                     >{`.${index + 1}`}</Typography>
-//                   </Box>
-//                   <Typography variant={"bodySmall"}>
-//                     {item.question.title}
-//                   </Typography>
-//                 </Box>
-//                 <Box
-//                   sx={{
-//                     display: "flex",
-//                     justifyContent: "space-between",
-//                   }}
-//                 >
-//                   <Box
-//                     sx={{
-//                       display: "flex",
-//                       alignItems: "center",
-//                       marginInlineStart: "40px",
-//                       gap: "10px",
-//                       borderRadius: "4px",
-//                       border: ".25px solid #6C8093",
-//                       p: "4px 8px",
-//                     }}
-//                   >
-//                     <CheckBoxIcon sx={{ color: "#6C8093" }} />
-//                     <Typography variant={"bodySmall"}>
-//                       {item.answer.title}
-//                     </Typography>
-//                   </Box>
-//                   <Typography variant={"bodyMedium"} color={"primary.main"}>
-//                     {t("assessmentReport.goToQuestion")}
-//                   </Typography>
-//                 </Box>
-//                 <Divider
-//                   sx={{
-//                     bgcolor: ".5px solid #66809980",
-//                     my: "8px",
-//                   }}
-//                 />
-//               </Box>
-//             );
-//           })}
-//         </AccordionDetails>
-//         </Accordion>
-//     );
-//   };
-//
-//   return (
-//     <Box sx={{ direction: lng === "fa" ? "rtl" : "ltr" }}>
-//       <CEDialog
-//         {...rest}
-//         closeDialog={close}
-//         title={
-//           <Typography variant="semiBoldXLarge" fontFamily="inherit">
-//             {t("assessmentReport.viewCodeQualityMeasure")}
-//           </Typography>
-//         }
-//         contentStyle={{
-//           mt: "40px",
-//           p: "40px 32px",
-//         }}
-//         titleStyle={{
-//           mb: 0,
-//         }}
-//       >
-//         {loading ? (
-//           <>
-//             <>loading</>
-//           </>
-//         ) : (
-//           <Box
-//           >
-//             {lowScores?.length >= 1 && (
-//
-//                 <InnerAccoridon
-//                   title={"lowScoringQuestions"}
-//                   data={lowScores}
-//                 />
-//             )}
-//             {highScores?.length >= 1 && (
-//
-//                 <InnerAccoridon
-//                   title={"highScoringQuestions"}
-//                   data={highScores}
-//                 />
-//             )}
-//           </Box>
-//         )}
-//
-//         <CEDialogActions
-//           cancelLabel={t("common.cancel", { lng })}
-//           submitButtonLabel={t("common.confirm", { lng })}
-//           onClose={close}
-//           onSubmit={() => {}}
-//           sx={{
-//             flexDirection: { xs: "column-reverse", sm: "row" },
-//             gap: 2,
-//             ...styles.rtlStyle(isRTL),
-//           }}
-//         />
-//       </CEDialog>
-//     </Box>
-//   );
-// };
-//
-// export default QuestionReportDialog;
