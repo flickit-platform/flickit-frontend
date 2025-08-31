@@ -65,4 +65,17 @@ export const report = {
       config,
     );
   },
+  fetchAttributeMeasureQuestions(
+    {
+      assessmentId,
+      attributeId= "1865",
+      measureId= "2799",
+    }: { assessmentId: string; attributeId: string; measureId: string },
+    config?: AxiosRequestConfig<any>,
+  ) {
+    return axios.get(
+      `/api/v1/assessments/${assessmentId}/attributes/${attributeId}/measures/${measureId}`,
+      config,
+    );
+  },
 };

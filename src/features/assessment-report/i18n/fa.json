@@ -72,6 +72,7 @@
   "total": "مجموع",
   "treemapEmptyState": "برای مشاهده توضیحات روی یکی از شاخص‌های نمودار کلیک کنید",
   "viewReport": "مشاهده گزارش",
+  "viewCodeQualityMeasure": "مشاهده سوالات موثر بر سنجه",
   "whyAtThisLevel": "چرا «{{attribute}}» در سطح «{{maturityLevel}}» قرار دارد؟",
   "writeAboutParticipants": "درباره مشارکت‌کنندگان در ارزیابی و نقشی که ایفا کرده‌اند بنویسید...",
   "writeIntroduction": "مقدمه گزارش ارزیابی را بنویسید...",

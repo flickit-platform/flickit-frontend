@@ -31,11 +31,11 @@ type Measure = {
 
 const MeasuresTable: React.FC<{
   measures: Measure[];
+  selectedId?: any;
   rtl?: boolean;
   lng: string;
-}> = ({ measures, rtl, lng }) => {
+}> = ({ measures, rtl, lng, selectedId }) => {
   if (!measures || measures.length === 0) return null;
-
   const reportQuestionDialogProps = useDialog();
   const PCT = rtl ? "٪" : "%";
   const minus = "−";
@@ -174,7 +174,9 @@ const MeasuresTable: React.FC<{
                   </TableCell>
 
                   <TableCell>
-                    <IconButton size="small" onClick={() => reportQuestionDialogProps.openDialog({})} >
+                    <IconButton size="small" onClick={() => reportQuestionDialogProps.openDialog({type:"create",
+                    data: {measureId: m.id, attributeId: selectedId}
+                    })} >
                       <StickyNote2Outlined fontSize="small" color="primary" />
                     </IconButton>
                   </TableCell>
