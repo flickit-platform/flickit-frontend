@@ -26,10 +26,9 @@ import ArrowDropUpRoundedIcon from "@mui/icons-material/ArrowDropUpRounded";
 import AccountBoxRoundedIcon from "@mui/icons-material/AccountBoxRounded";
 import EngineeringIcon from "@mui/icons-material/Engineering";
 import LogoutRoundedIcon from "@mui/icons-material/LogoutRounded";
-import QueryData from "@common/QueryData";
 import { useServiceContext } from "@providers/ServiceProvider";
 import { useQuery } from "@utils/useQuery";
-import { FLAGS, ISpacesModel } from "@/types/index";
+import { FLAGS } from "@/types/index";
 import keycloakService from "@/service//keycloakService";
 import { useConfigContext } from "@/providers/ConfgProvider";
 import { IMessage } from "@novu/notification-center";
@@ -290,12 +289,6 @@ const Navbar = () => {
   const { service } = useServiceContext();
   const theme = useTheme();
 
-  const spacesQueryData = useQuery<ISpacesModel>({
-    service: (args?: { page?: number; size?: number }, config?: any) =>
-      service.space.getList({ page: 1, size: 20, ...args }, config),
-    toastError: true,
-  });
-
   const fetchPathInfo = useQuery({
     service: (args, config) =>
       service.common.getPathInfo({ spaceId, ...(args ?? {}) }, config),
@@ -354,46 +347,6 @@ const Navbar = () => {
             <ListItemText primary={<Trans i18nKey="spaces.spaces" />} />
           </ListItemButton>
         </ListItem>
-        <QueryData
-          {...spacesQueryData}
-          render={(data) => {
-            const { items } = data;
-            return (
-              <Box>
-                {items.slice(0, 5).map((space: any) => (
-                  <ListItem disablePadding key={space?.id}>
-                    <ListItemButton
-                      sx={{ textAlign: "left", borderRadius: 1.5 }}
-                      component={NavLink}
-                      to={`/${space?.id}/assessments/1`}
-                    >
-                      <ListItemText
-                        primary={
-                          <>
-                            {space?.title && (
-                              <Typography
-                                variant="caption"
-                                textTransform="none"
-                                paddingInlineStart={0.5}
-                                paddingInlineEnd="unset"
-                                ml={0.5}
-                                lineHeight="1"
-                                borderLeft={`1px solid ${theme.palette.grey[300]}`}
-                              >
-                                {space?.title}
-                              </Typography>
-                            )}
-                          </>
-                        }
-                      />
-                    </ListItemButton>
-                  </ListItem>
-                ))}
-                <Divider />
-              </Box>
-            );
-          }}
-        />
         <ListItem disablePadding>
           <ListItemButton
             sx={{ textAlign: "left", borderRadius: 1.5 }}
