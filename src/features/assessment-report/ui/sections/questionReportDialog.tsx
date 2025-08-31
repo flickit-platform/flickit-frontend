@@ -2,7 +2,7 @@ import React, { useState, useCallback } from "react";
 import { CEDialog, CEDialogActions } from "@common/dialogs/CEDialog";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
-import i18next, { t } from "i18next";
+import { t } from "i18next";
 import { styles } from "@styles";
 import { useQuestionReportDialog } from "@/features/assessment-report/model/hooks/useQuestionReportDialog";
 import Accordion from "@mui/material/Accordion";
