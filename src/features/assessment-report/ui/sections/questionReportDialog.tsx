@@ -200,7 +200,7 @@ const QuestionReportDialog = (props: IQuestionReportDialog) => {
   const { highScores = [], lowScores = [] } = data ?? {};
 
   const [expanded, setExpanded] = useState<string | false>(false);
-  const isRTL = lng === "fa" || (!lng && i18next.language === "fa");
+  const isRTL = lng === "fa";
 
   const handleAccordionChange = useCallback(
     (panel: string) => (_: React.SyntheticEvent, isExpanded: boolean) => {
@@ -210,7 +210,6 @@ const QuestionReportDialog = (props: IQuestionReportDialog) => {
   );
 
   return (
-    <Box sx={{ direction: isRTL ? "rtl" : "ltr" }}>
       <CEDialog
         {...rest}
         closeDialog={onClose}
@@ -219,6 +218,7 @@ const QuestionReportDialog = (props: IQuestionReportDialog) => {
             {t("assessmentReport.viewCodeQualityMeasure", {lng})}
           </Typography>
         }
+        sx={{ direction: isRTL ? "rtl" : "ltr" }}
         contentStyle={{ p: "40px 32px !important" }}
         titleStyle={{ mb: 0 }}
       >
@@ -265,7 +265,6 @@ const QuestionReportDialog = (props: IQuestionReportDialog) => {
           }}
         />
       </CEDialog>
-    </Box>
   );
 };
 
