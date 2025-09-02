@@ -384,7 +384,7 @@ const Navbar = () => {
             component={NavLink}
             to="/spaces"
           >
-            <ListItemText primary={<Trans i18nKey="spaces.spaces" />} />
+            <ListItemText primary={<Trans i18nKey="assessment.myAssessments" />} />
           </ListItemButton>
         </ListItem>
         <ListItem disablePadding>
