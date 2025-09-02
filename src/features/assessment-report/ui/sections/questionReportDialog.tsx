@@ -101,7 +101,7 @@ const InnerAccordion = ({
           ...styles.rtlStyle(lng == "fa"),
         }}
       >
-        ({data?.length} {t("common.questions", { lng })})
+        ({data?.length} {t((lng == "fa" || data?.length == 1) ? "common.question" : "common.questions", { lng })})
       </Typography>
     </AccordionSummary>
 
@@ -123,7 +123,7 @@ const InnerAccordion = ({
                 Q
               </Typography>
               <Typography variant="bodyMedium" fontWeight="bold">
-                .{index + 1}
+                .{item.question.index}
               </Typography>
             </Box>
             <Typography variant="bodySmall"
