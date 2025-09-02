@@ -1,6 +1,6 @@
 import React, { lazy, useEffect, useRef, useState } from "react";
 import { Trans } from "react-i18next";
-import { useParams, NavLink, useNavigate } from "react-router-dom";
+import { useParams, NavLink } from "react-router-dom";
 import { styles } from "@styles";
 import { authActions, useAuthContext } from "@providers/AuthProvider";
 import AppBar from "@mui/material/AppBar";
@@ -360,14 +360,14 @@ const Navbar = () => {
 
   const drawer = (
     <Box onClick={handleDrawerToggle} textAlign="center">
-      <Typography
-        variant="h6"
-        bgcolor="primary.main"
-        height="56px"
-        width="100%"
-        sx={{ ...styles.centerVH }}
-        component={NavLink}
-        to={LandingPage}
+      <Box
+        sx={{
+          height: 56,
+          bgcolor: "primary.main",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
       >
         <img
           src={config.appLogoUrl}
@@ -375,7 +375,7 @@ const Navbar = () => {
           width={"224px"}
           height={"40px"}
         />
-      </Typography>
+      </Box>
       <Divider />
       <List dense>
         <ListItem disablePadding>
@@ -384,7 +384,7 @@ const Navbar = () => {
             component={NavLink}
             to="/spaces"
           >
-            <ListItemText primary={<Trans i18nKey="spaces.spaces" />} />
+            <ListItemText primary={<Trans i18nKey="assessment.myAssessments" />} />
           </ListItemButton>
         </ListItem>
         <ListItem disablePadding>
@@ -408,7 +408,7 @@ const Navbar = () => {
           borderRadius: "0px",
           backgroundColor: "primary.main",
           position: "sticky",
-          px: { xxl: 26, xl: 18, lg: 8, xs: 1, sm: 3 },
+          px: { xxl: 26, xl: 18, lg: 8, xs: 0 },
           boxShadow: "0 0px 8px rgba(10, 35, 66, 0.25)",
         }}
         data-cy="nav-bar"
@@ -419,7 +419,7 @@ const Navbar = () => {
             backgroundColor: "primary.main",
             borderRadius: 1,
             justifyContent: "space-between",
-            position: "relative", 
+            position: "relative",
             minHeight: "44px",
           }}
         >
@@ -429,9 +429,8 @@ const Navbar = () => {
             edge="start"
             onClick={handleDrawerToggle}
             sx={{
-              marginInlineEnd: 1,
-              marginInlineStart: "unset",
-              display: { md: "none" },
+              mr: 0.5,
+              display: { xs: "inline-flex", sm: "none" },
               color: "background.containerLowest",
             }}
           >
@@ -464,7 +463,7 @@ const Navbar = () => {
               display: { xs: "none", md: "flex" },
               alignItems: "center",
               gap: 1.5,
-              pointerEvents: "none", 
+              pointerEvents: "none",
             }}
           >
             <Button
@@ -505,7 +504,6 @@ const Navbar = () => {
             </Button>
           </Box>
 
-          {/* سمت راست: زبان و نوتی و پروفایل */}
           <Box gap="0.7rem" sx={{ ...styles.centerV }}>
             {MULTILINGUALITY.toString() == "true" ? <LanguageSelector /> : ""}
             <IconButton onClick={toggleNotificationCenter} ref={bellButtonRef}>
@@ -595,8 +593,6 @@ const AccountDropDownButton = ({ userInfo }: any) => {
         }}
         sx={{
           ...styles.activeNavbarLink,
-          marginInlineEnd: 0.8,
-          marginInlineStart: 0.1,
           color: "background.containerLowest",
           fontFamily: languageDetector(userInfo.displayName)
             ? farsiFontFamily
