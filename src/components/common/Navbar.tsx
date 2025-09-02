@@ -360,14 +360,14 @@ const Navbar = () => {
 
   const drawer = (
     <Box onClick={handleDrawerToggle} textAlign="center">
-      <Typography
-        variant="h6"
-        bgcolor="primary.main"
-        height="56px"
-        width="100%"
-        sx={{ ...styles.centerVH }}
-        component={NavLink}
-        to={LandingPage}
+      <Box
+        sx={{
+          height: 56,
+          bgcolor: "primary.main",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
       >
         <img
           src={config.appLogoUrl}
@@ -375,7 +375,7 @@ const Navbar = () => {
           width={"224px"}
           height={"40px"}
         />
-      </Typography>
+      </Box>
       <Divider />
       <List dense>
         <ListItem disablePadding>
