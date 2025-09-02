@@ -361,6 +361,8 @@ const Navbar = () => {
   const drawer = (
     <Box onClick={handleDrawerToggle} textAlign="center">
       <Box
+        component={NavLink}
+        to={LandingPage}
         sx={{
           height: 56,
           bgcolor: "primary.main",
@@ -384,7 +386,9 @@ const Navbar = () => {
             component={NavLink}
             to="/spaces"
           >
-            <ListItemText primary={<Trans i18nKey="assessment.myAssessments" />} />
+            <ListItemText
+              primary={<Trans i18nKey="assessment.myAssessments" />}
+            />
           </ListItemButton>
         </ListItem>
         <ListItem disablePadding>
