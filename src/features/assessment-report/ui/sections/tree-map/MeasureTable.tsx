@@ -112,7 +112,7 @@ const MeasuresTable: React.FC<{
                   {t("assessmentReport.missedScore", { lng })}
                 </Typography>
               </TableCell>
-              <TableCell align="center" sx={{ display: "none" }}>
+              <TableCell align="center" >
                 <Typography
                   variant="labelMedium"
                   color="text.primary"

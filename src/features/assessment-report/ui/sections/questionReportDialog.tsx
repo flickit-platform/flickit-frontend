@@ -16,15 +16,16 @@ import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 import { Link } from "react-router-dom";
 import { useParams } from "react-router";
 import { IDialogContext, TId } from "@/types";
-import uniqueId from "@utils/uniqueId";
+import StickyNote2Icon from '@mui/icons-material/StickyNote2';
 
 interface IQuestionReportDialog {
-  context : IDialogContext | undefined;
+  context: IDialogContext | undefined;
   lng: string;
   onClose: () => void;
   open: boolean;
-  openDialog: (context: any)=> void
+  openDialog: (context: any) => void;
 }
+
 interface IInnerAccordion {
   title: string;
   data: any;
@@ -84,31 +85,52 @@ const InnerAccordion = ({
       expandIcon={<ExpandMoreIcon sx={{ color: "surface.onVariant" }} />}
       sx={accordionSummaryStyle}
     >
-      <Typography variant="titleSmall" color={"surface.inverse"}>
+      <Typography
+        variant="titleSmall"
+        color={"surface.inverse"}
+        sx={{
+          ...styles.rtlStyle(lng == "fa"),
+        }}
+      >
         {t(`assessmentReport.${title}`, { lng })}
       </Typography>
-      <Typography variant="bodyMedium" color={"surface.onVariant"}>
+      <Typography
+        variant="bodyMedium"
+        color={"surface.onVariant"}
+        sx={{
+          ...styles.rtlStyle(lng == "fa"),
+        }}
+      >
         ({data?.length} {t("common.questions", { lng })})
       </Typography>
     </AccordionSummary>
 
-    <AccordionDetails sx={{ direction: lng === "fa" ? "rtl" : "ltr", background: `rgba(102, 128, 153, 0.04)` }}>
+    <AccordionDetails
+      sx={{
+        direction: lng === "fa" ? "rtl" : "ltr",
+        background: `rgba(102, 128, 153, 0.04)`,
+      }}
+    >
       {data?.map((item: any, index: number) => (
         <Box key={item?.question?.id || index} sx={{ px: 2 }}>
           <Box sx={{ display: "flex", alignItems: "center", mb: 1, gap: 1 }}>
             <Box
               sx={{
-                display: "flex"
+                display: "flex",
               }}
             >
               <Typography variant="bodyMedium" fontWeight="bold">
                 Q
               </Typography>
               <Typography variant="bodyMedium" fontWeight="bold">
-                .{ index + 1}
+                .{index + 1}
               </Typography>
             </Box>
-            <Typography variant="bodySmall">{item.question.title}</Typography>
+            <Typography variant="bodySmall"
+            sx={{
+              ...styles.rtlStyle(lng == "fa")
+            }}
+            >{item.question.title}</Typography>
           </Box>
 
           <Box
@@ -121,8 +143,7 @@ const InnerAccordion = ({
             {item.answer.title ? (
               <Box
                 sx={{
-                  display: "flex",
-                  alignItems: "center",
+                  ...styles.centerV,
                   gap: 1.2,
                   borderRadius: 1,
                   border: ".25px solid #6C8093",
@@ -130,13 +151,16 @@ const InnerAccordion = ({
                 }}
               >
                 <CheckBoxIcon sx={{ color: "#6C8093" }} />
-                <Typography variant="bodySmall">{item.answer.title}</Typography>
+                <Typography variant="bodySmall"
+                sx={{
+                  ...styles.rtlStyle(lng == "fa")
+                }}
+                >{item.answer.title}</Typography>
               </Box>
             ) : (
               <Box
                 sx={{
-                  display: "flex",
-                  alignItems: "center",
+                  ...styles.centerV,
                   gap: 1.2,
                   borderRadius: 1,
                   boxShadow: "inset 0 0 0 0.5px rgba(138, 15, 36, 0.5)",
@@ -144,7 +168,11 @@ const InnerAccordion = ({
                 }}
               >
                 <ErrorOutlineIcon sx={{ color: "error.main" }} />
-                <Typography variant="bodySmall" color={"error.main"}>
+                <Typography variant="bodySmall" color={"error.main"}
+                sx={{
+                  ...styles.rtlStyle(lng == "fa")
+                }}
+                >
                   {t("subject.noQuestionHasBeenAnswered", { lng })}
                 </Typography>
               </Box>
@@ -153,10 +181,12 @@ const InnerAccordion = ({
             <Typography
               component={Link}
               to={`./../../1/${assessmentId}/questionnaires/${measureId}/${item?.question?.index}`}
+              target={"_blank"}
               variant="bodyMedium"
               color="primary.main"
               sx={{
                 textDecoration: "none",
+                ...styles.rtlStyle(lng == "fa")
               }}
             >
               {t("assessmentReport.goToQuestion", { lng })}
@@ -177,13 +207,6 @@ const AccordionSkeleton = () => (
       height={40}
       sx={{ borderRadius: 1, mb: 1 }}
     />
-    {[...Array(3)].map((_, i) => (
-      <Box key={uniqueId()} sx={{ px: 2, py: 1 }}>
-        <Skeleton variant="text" width="60%" height={20} />
-        <Skeleton variant="text" width="40%" height={20} />
-        {i !== 2 && <Divider sx={{ my: 1 }} />}
-      </Box>
-    ))}
   </Box>
 );
 
@@ -210,61 +233,69 @@ const QuestionReportDialog = (props: IQuestionReportDialog) => {
   );
 
   return (
-      <CEDialog
-        {...rest}
-        closeDialog={onClose}
-        title={
-          <Typography variant="semiBoldXLarge" fontFamily="inherit">
-            {t("assessmentReport.viewCodeQualityMeasure", {lng})}
-          </Typography>
-        }
-        sx={{ direction: isRTL ? "rtl" : "ltr" }}
-        contentStyle={{ p: "40px 32px !important" }}
-        titleStyle={{ mb: 0 }}
-      >
-        {loading ? (
-          <>
-            <AccordionSkeleton />
-            <AccordionSkeleton />
-          </>
-        ) : (
-          <Box>
-            {lowScores.length > 0 && (
-              <InnerAccordion
-                title="lowScoringQuestions"
-                data={lowScores}
-                expanded={expanded === "low"}
-                onChange={handleAccordionChange("low")}
-                lng={lng}
-                measureId={measureId}
-                assessmentId={assessmentId}
-              />
-            )}
-            {highScores.length > 0 && (
-              <InnerAccordion
-                title="highScoringQuestions"
-                data={highScores}
-                expanded={expanded === "high"}
-                onChange={handleAccordionChange("high")}
-                lng={lng}
-                measureId={measureId}
-                assessmentId={assessmentId}
-              />
-            )}
-          </Box>
-        )}
-        <CEDialogActions
-          cancelLabel={t("common.close", { lng })}
-          hideSubmitButton={true}
-          cancelType={"contained"}
-          onClose={onClose}
+    <CEDialog
+      {...rest}
+      closeDialog={onClose}
+      title={
+      <Box sx={{ ...styles.centerV, gap: 0.7 }}>
+      <StickyNote2Icon fontSize={"small"} />
+        <Typography
+          variant="semiBoldXLarge"
           sx={{
-            flexDirection: { xs: "column-reverse", sm: "row" },
-            gap: 2,
-            ...styles.rtlStyle(isRTL),
+            ...styles.rtlStyle(lng == "fa"),
           }}
-        />
-      </CEDialog>
+        >
+          {t("assessmentReport.viewCodeQualityMeasure", { lng })}
+        </Typography>
+      </Box>
+      }
+      sx={{ direction: isRTL ? "rtl" : "ltr" }}
+      contentStyle={{ p: "40px 32px !important" }}
+      titleStyle={{ mb: 0 }}
+    >
+      {loading ? (
+        <>
+          <AccordionSkeleton />
+          <AccordionSkeleton />
+        </>
+      ) : (
+        <Box>
+          {lowScores.length > 0 && (
+            <InnerAccordion
+              title="lowScoringQuestions"
+              data={lowScores}
+              expanded={expanded === "low"}
+              onChange={handleAccordionChange("low")}
+              lng={lng}
+              measureId={measureId}
+              assessmentId={assessmentId}
+            />
+          )}
+          {highScores.length > 0 && (
+            <InnerAccordion
+              title="highScoringQuestions"
+              data={highScores}
+              expanded={expanded === "high"}
+              onChange={handleAccordionChange("high")}
+              lng={lng}
+              measureId={measureId}
+              assessmentId={assessmentId}
+            />
+          )}
+        </Box>
+      )}
+      <CEDialogActions
+        cancelLabel={t("common.close", { lng })}
+        hideSubmitButton={true}
+        cancelType={"contained"}
+        onClose={onClose}
+        sx={{
+          flexDirection: { xs: "column-reverse", sm: "row" },
+          gap: 2,
+          ...styles.rtlStyle(isRTL),
+        }}
+      />
+    </CEDialog>
   );
 };
 
