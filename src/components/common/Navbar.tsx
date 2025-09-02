@@ -189,7 +189,11 @@ const NotificationCenterComponent = ({ setNotificationCount }: any) => {
   return (
     <Box>
       {selectedMessage ? (
-        <Box className="nc-layout-wrapper" borderRadius={1} width={{ md: 420, sm: 320 }}>
+        <Box
+          className="nc-layout-wrapper"
+          borderRadius={1}
+          width={{ md: 420, sm: 320 }}
+        >
           <Box className="nc-header" height="55px" sx={{ ...styles.centerV }}>
             <Typography
               className="nc-header-title"
@@ -203,7 +207,8 @@ const NotificationCenterComponent = ({ setNotificationCount }: any) => {
               <IconButton onClick={handleBackClick}>
                 <ArrowBackIos
                   sx={{
-                    transform: (theme.direction === "rtl") ? "scaleX(-1)" : "none",
+                    transform:
+                      theme.direction === "rtl" ? "scaleX(-1)" : "none",
                     fontSize: "16px",
                   }}
                 />
@@ -227,21 +232,39 @@ const NotificationCenterComponent = ({ setNotificationCount }: any) => {
                 top={8}
                 bottom={0}
                 width="4px"
-                bgcolor={selectedMessage?.seen ? "background.onVariant" : "#2D80D2"}
+                bgcolor={
+                  selectedMessage?.seen ? "background.onVariant" : "#2D80D2"
+                }
                 borderRadius="2px"
               />
-              <Box paddingLeft="12px" gap="4px" display="flex" flexDirection="column">
+              <Box
+                paddingLeft="12px"
+                gap="4px"
+                display="flex"
+                flexDirection="column"
+              >
                 <Typography variant="titleMedium">
                   {(selectedMessage as any)?.payload?.title}
                 </Typography>
-                <Box flexGrow={1} display="flex" alignItems="flex-start" gap={1}>
+                <Box
+                  flexGrow={1}
+                  display="flex"
+                  alignItems="flex-start"
+                  gap={1}
+                >
                   <Typography
                     variant="bodyMedium"
-                    dangerouslySetInnerHTML={{ __html: getLinkedContent(selectedMessage) }}
+                    dangerouslySetInnerHTML={{
+                      __html: getLinkedContent(selectedMessage),
+                    }}
                   />
                 </Box>
                 <Typography variant="labelSmall" color="#3D4D5C">
-                  {getReadableDate(selectedMessage?.createdAt, "relativeWithDate", true)}
+                  {getReadableDate(
+                    selectedMessage?.createdAt,
+                    "relativeWithDate",
+                    true,
+                  )}
                 </Typography>
               </Box>
             </Box>
@@ -265,10 +288,16 @@ const NotificationCenterComponent = ({ setNotificationCount }: any) => {
               </Typography>
             </Box>
           }
-          listItem={(message: IMessage, _onAction, onNotificationClick: () => void) => (
+          listItem={(
+            message: IMessage,
+            _onAction,
+            onNotificationClick: () => void,
+          ) => (
             <NotificationItem
               message={message}
-              onNotificationClick={() => handleNotificationClick(message, onNotificationClick)}
+              onNotificationClick={() =>
+                handleNotificationClick(message, onNotificationClick)
+              }
             />
           )}
         />
@@ -310,7 +339,9 @@ const Navbar = () => {
   const handleClickOutside = (event: any) => {
     if (
       notificationCenterRef.current &&
-      !(notificationCenterRef.current as HTMLButtonElement).contains(event.target) &&
+      !(notificationCenterRef.current as HTMLButtonElement).contains(
+        event.target,
+      ) &&
       bellButtonRef.current &&
       !(bellButtonRef.current as HTMLButtonElement).contains(event.target)
     ) {
@@ -338,12 +369,21 @@ const Navbar = () => {
         component={NavLink}
         to={LandingPage}
       >
-        <img src={config.appLogoUrl} alt={"logo"} width={"224px"} height={"40px"} />
+        <img
+          src={config.appLogoUrl}
+          alt={"logo"}
+          width={"224px"}
+          height={"40px"}
+        />
       </Typography>
       <Divider />
       <List dense>
         <ListItem disablePadding>
-          <ListItemButton sx={{ textAlign: "left", borderRadius: 1.5 }} component={NavLink} to="/spaces">
+          <ListItemButton
+            sx={{ textAlign: "left", borderRadius: 1.5 }}
+            component={NavLink}
+            to="/spaces"
+          >
             <ListItemText primary={<Trans i18nKey="spaces.spaces" />} />
           </ListItemButton>
         </ListItem>
@@ -379,11 +419,10 @@ const Navbar = () => {
             backgroundColor: "primary.main",
             borderRadius: 1,
             justifyContent: "space-between",
-            position: "relative",      // برای وسط‌چین مطلق
+            position: "relative", 
             minHeight: "44px",
           }}
         >
-          {/* منوی همبرگری برای موبایل */}
           <IconButton
             color="primary"
             aria-label="open drawer"
@@ -399,7 +438,6 @@ const Navbar = () => {
             <MenuIcon />
           </IconButton>
 
-          {/* لوگو (سمت چپ/راست بسته به زبان) */}
           <Typography
             variant="h6"
             component={NavLink}
@@ -411,10 +449,13 @@ const Navbar = () => {
             }}
             to={LandingPage}
           >
-            <img src={config.appLogoUrl} alt={"logo"} style={{ maxWidth: "120px", height: "100%" }} />
+            <img
+              src={config.appLogoUrl}
+              alt={"logo"}
+              style={{ maxWidth: "120px", height: "100%" }}
+            />
           </Typography>
 
-          {/* لینک‌های وسط: دقیقاً وسط با absolute */}
           <Box
             sx={{
               position: "absolute",
@@ -423,12 +464,27 @@ const Navbar = () => {
               display: { xs: "none", md: "flex" },
               alignItems: "center",
               gap: 1.5,
-              pointerEvents: "none", // کانتینر کلی کلیک نگیرد
+              pointerEvents: "none", 
             }}
           >
-            <Box sx={{ pointerEvents: "auto" }}>
-              <SpacesButton />
-            </Box>
+            <Button
+              component={NavLink}
+              data-cy="spaces"
+              to={`/spaces`}
+              sx={{
+                ...styles.activeNavbarLink,
+                textTransform: "uppercase",
+                marginInlineStart: 0.8,
+                marginInlineEnd: 0.1,
+                color: "background.containerLowest",
+                height: "32px",
+                px: 1.5,
+                pointerEvents: "auto",
+              }}
+              size="small"
+            >
+              <Trans i18nKey="assessment.myAssessments" />
+            </Button>
 
             <Button
               component={NavLink}
@@ -441,7 +497,7 @@ const Navbar = () => {
                 color: "background.containerLowest",
                 height: "32px",
                 px: 1.5,
-                pointerEvents: "auto", // خود دکمه کلیک بگیرد
+                pointerEvents: "auto",
               }}
               size="small"
             >
@@ -486,14 +542,16 @@ const Navbar = () => {
           anchor={i18n.language == "fa" ? "right" : "left"}
           sx={{
             display: { xs: "block", md: "none" },
-            "& .MuiDrawer-paper": { boxSizing: "border-box", width: drawerWidth },
+            "& .MuiDrawer-paper": {
+              boxSizing: "border-box",
+              width: drawerWidth,
+            },
           }}
         >
           {drawer}
         </Drawer>
       </Box>
 
-      {/* Notification Center */}
       {notificationCenterOpen && (
         <Box
           ref={notificationCenterRef}
@@ -503,51 +561,18 @@ const Navbar = () => {
           left={theme.direction === "rtl" ? 20 : "unset"}
           zIndex={1300}
         >
-          <NotificationCenterComponent setNotificationCount={setNotificationCount} />
+          <NotificationCenterComponent
+            setNotificationCount={setNotificationCount}
+          />
         </Box>
       )}
 
-      {/* Hidden Notification Center for Count Update */}
       <Box display="none">
-        <NotificationCenterComponent setNotificationCount={setNotificationCount} />
+        <NotificationCenterComponent
+          setNotificationCount={setNotificationCount}
+        />
       </Box>
     </>
-  );
-};
-
-const SpacesButton = () => {
-  const navigate = useNavigate();
-  const isActive = location.pathname.startsWith("/spaces");
-  return (
-    <Button
-      data-cy="spaces"
-      onClick={() => navigate("/spaces")}
-      sx={{
-        textTransform: "uppercase",
-        marginInlineStart: 0.8,
-        marginInlineEnd: 0.1,
-        "&:hover .MuiButton-endIcon > div": { borderLeftColor: "#8080802b" },
-        ...(isActive && {
-          "&::after": {
-            content: '""',
-            position: "absolute",
-            bottom: 0,
-            left: "50%",
-            transform: "translateX(-50%)",
-            width: "90%",
-            height: "2px",
-            backgroundColor: "background.containerLowest",
-            borderRadius: 1,
-          },
-        }),
-        color: "background.containerLowest",
-        height: "32px",
-        px: 1.5,
-      }}
-      size="small"
-    >
-      <Trans i18nKey="assessment.myAssessments" />
-    </Button>
   );
 };
 
@@ -573,10 +598,14 @@ const AccountDropDownButton = ({ userInfo }: any) => {
           marginInlineEnd: 0.8,
           marginInlineStart: 0.1,
           color: "background.containerLowest",
-          fontFamily: languageDetector(userInfo.displayName) ? farsiFontFamily : primaryFontFamily,
+          fontFamily: languageDetector(userInfo.displayName)
+            ? farsiFontFamily
+            : primaryFontFamily,
         }}
         size="small"
-        endIcon={open ? <ArrowDropUpRoundedIcon /> : <ArrowDropDownRoundedIcon />}
+        endIcon={
+          open ? <ArrowDropUpRoundedIcon /> : <ArrowDropDownRoundedIcon />
+        }
       >
         <Avatar
           sx={{
@@ -598,22 +627,49 @@ const AccountDropDownButton = ({ userInfo }: any) => {
         onClose={handleClose}
         PaperProps={{ sx: { minWidth: "180px" } }}
       >
-        <MenuItem dense component={NavLink} to={`/user/account`} onClick={handleClose}>
-          <ListItemIcon><AccountBoxRoundedIcon fontSize="small" /></ListItemIcon>
-          <ListItemText><Trans i18nKey="user.account" /></ListItemText>
+        <MenuItem
+          dense
+          component={NavLink}
+          to={`/user/account`}
+          onClick={handleClose}
+        >
+          <ListItemIcon>
+            <AccountBoxRoundedIcon fontSize="small" />
+          </ListItemIcon>
+          <ListItemText>
+            <Trans i18nKey="user.account" />
+          </ListItemText>
         </MenuItem>
 
         {showGroups && (
-          <MenuItem dense onClick={handleClose} component={NavLink} to={`/user/expert-groups`}>
-            <ListItemIcon><EngineeringIcon fontSize="small" /></ListItemIcon>
-            <ListItemText><Trans i18nKey="expertGroups.expertGroups" /></ListItemText>
+          <MenuItem
+            dense
+            onClick={handleClose}
+            component={NavLink}
+            to={`/user/expert-groups`}
+          >
+            <ListItemIcon>
+              <EngineeringIcon fontSize="small" />
+            </ListItemIcon>
+            <ListItemText>
+              <Trans i18nKey="expertGroups.expertGroups" />
+            </ListItemText>
           </MenuItem>
         )}
 
         <Divider />
-        <MenuItem dense onClick={() => { keycloakService.doLogout(); }}>
-          <ListItemIcon><LogoutRoundedIcon fontSize="small" /></ListItemIcon>
-          <ListItemText><Trans i18nKey="common.signOut" /></ListItemText>
+        <MenuItem
+          dense
+          onClick={() => {
+            keycloakService.doLogout();
+          }}
+        >
+          <ListItemIcon>
+            <LogoutRoundedIcon fontSize="small" />
+          </ListItemIcon>
+          <ListItemText>
+            <Trans i18nKey="common.signOut" />
+          </ListItemText>
         </MenuItem>
       </Menu>
     </>
