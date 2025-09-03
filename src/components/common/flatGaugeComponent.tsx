@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useMemo} from "react";
 import { Box, Typography } from "@mui/material";
 import { styles } from "@styles";
 import { t } from "i18next";
@@ -17,7 +17,6 @@ interface Props {
   darkColors: string[];
   position: "horizontal" | "vertical";
   guideText?: boolean;
-  reversed?: boolean;
   pointer?: boolean;
 }
 interface IArrow {
@@ -59,7 +58,6 @@ const FlatGaugeComponent: React.FC<Props> = ({
   position= pos.horizontal,
   pointer,
   guideText = false,
-  reversed = false,
 }) => {
   const LEGEND_WIDTH = position ===  pos.horizontal ? 150 : 30;
 
@@ -70,14 +68,23 @@ const FlatGaugeComponent: React.FC<Props> = ({
 
   const segPct = 100 / levels;
 
-  const activeIdx = position ===  pos.horizontal ? idx : idxInverse;
+  const ArrowDir = useMemo(()=>{
+      if(position ===  pos.horizontal && lng == "fa"){
+          return idxInverse
+      }if(position ===  pos.horizontal && lng != "fa"){
+          return idx
+      }else {
+         return  idxInverse
+      }
+  },[lng,position,levelValue])
+
+
+  const activeIdx = ArrowDir;
   const centerPct = (activeIdx + 0.5) * segPct;
 
   const markerColor = darkColors[idx] ?? "#000";
 
-  const order = reversed
-    ? [...Array(levels).keys()].reverse()
-    : [...Array(levels).keys()];
+  const order = [...Array(levels).keys()];
 
   return (
     <Box
