@@ -206,6 +206,7 @@ export default function AssessmentReportPage() {
                         setSelectedId={setSelectedId}
                         rtl={rtl}
                         lng={lng}
+                        permissions={permissions}
                       />
                     </Box>
                   </SectionCard>

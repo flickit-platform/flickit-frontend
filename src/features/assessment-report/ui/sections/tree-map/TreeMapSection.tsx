@@ -9,7 +9,7 @@ import languageDetector from "@/utils/languageDetector";
 import MeasuresTable from "./MeasureTable";
 import AIGenerated from "@/components/common/icons/AIGenerated";
 import FlatGauge from "@/components/common/charts/flatGauge/FlatGauge";
-import { IAssessment, IMaturityLevel } from "@/types";
+import { IAssessment, IMaturityLevel, IUserPermissions } from "@/types";
 
 type Props = {
   isQuickMode: boolean;
@@ -19,6 +19,7 @@ type Props = {
   setSelectedId: Dispatch<SetStateAction<number | null>>;
   lng: string;
   rtl?: boolean;
+  permissions: IUserPermissions;
 };
 
 type AttributeVM = {
@@ -264,6 +265,7 @@ export default function TreeMapSection({
   setSelectedId,
   lng,
   rtl,
+  permissions,
 }: Props) {
   const { treeMapData, selectedAttribute } = useTreeMapSection({
     subjects,
@@ -308,7 +310,13 @@ export default function TreeMapSection({
             />
             <ReasonBar text={vm.reasonText} rtl={vm.rtl} />
             <GuidanceNote text={vm.guidanceText} rtl={vm.rtl} />
-            <MeasuresTable measures={measures} selectedId={selectedId} rtl={rtl} lng={lng} />
+            <MeasuresTable
+              measures={measures}
+              selectedId={selectedId}
+              isRTL={rtl}
+              locale={lng}
+              showQuestionColumn={permissions.canViewMeasureQuestions}
+            />
           </BodyCard>
         </>
       ) : (
