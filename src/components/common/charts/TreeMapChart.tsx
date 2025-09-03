@@ -9,7 +9,7 @@ import React, {
 import { ResponsiveContainer, Treemap } from "recharts";
 import { getMaturityLevelColors, styles } from "@styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
-import { useTheme, Box, Typography } from "@mui/material";
+import { useTheme, Box } from "@mui/material";
 import { v3Tokens } from "@/config/tokens";
 import FlatGaugeComponent from "@common/flatGaugeComponent";
 

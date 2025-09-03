@@ -16,6 +16,35 @@ interface Props {
   reversed?: boolean;
   pointer?: boolean;
 }
+interface IArrow {
+  position: string;
+  markerColor: string;
+}
+
+const Arrow = (props: IArrow) => {
+  const { position, markerColor } = props;
+  return position === "H" ? (
+    <Box
+      sx={{
+        width: 0,
+        height: 0,
+        borderLeft: "6px solid transparent",
+        borderRight: "6px solid transparent",
+        borderTop: `8px solid ${markerColor}`,
+      }}
+    />
+  ) : (
+    <Box
+      sx={{
+        width: 0,
+        height: 0,
+        borderTop: "6px solid transparent",
+        borderBottom: "6px solid transparent",
+        borderLeft: `8px solid ${markerColor}`,
+      }}
+    />
+  );
+};
 
 const FlatGaugeComponent: React.FC<Props> = ({
   levels,
@@ -41,29 +70,6 @@ const FlatGaugeComponent: React.FC<Props> = ({
   const centerPct = (activeIdx + 0.5) * segPct;
 
   const markerColor = darkColors[idx] ?? "#000";
-
-  const Arrow = () =>
-    position === "H" ? (
-      <Box
-        sx={{
-          width: 0,
-          height: 0,
-          borderLeft: "6px solid transparent",
-          borderRight: "6px solid transparent",
-          borderTop: `8px solid ${markerColor}`, // نوک به سمت باکس
-        }}
-      />
-    ) : (
-      <Box
-        sx={{
-          width: 0,
-          height: 0,
-          borderTop: "6px solid transparent",
-          borderBottom: "6px solid transparent",
-          borderLeft: `8px solid ${markerColor}`, // نوک به سمت باکس
-        }}
-      />
-    );
 
   const order = reversed
     ? [...Array(levels).keys()].reverse()
@@ -129,7 +135,7 @@ const FlatGaugeComponent: React.FC<Props> = ({
                   }),
             }}
           >
-            <Arrow />
+            <Arrow position={position} markerColor={markerColor} />
           </Box>
         )}
       </Box>
