@@ -1,12 +1,12 @@
-import { lazy, Suspense, useMemo } from "react";
+import { Suspense } from "react";
 import Box, { BoxProps } from "@mui/material/Box";
 import { farsiFontFamily, primaryFontFamily } from "@config/theme";
 import Typography from "@mui/material/Typography";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { confidenceColor, getMaturityLevelColors, styles } from "@styles";
 import { capitalizeFirstLetter } from "@/utils/filterLetter";
-import { t } from "i18next";
 import languageDetector from "@/utils/languageDetector";
+import FlatGaugeComponent from "@common/flatGaugeComponent";
 
 type TPosition = "top" | "left";
 
@@ -48,12 +48,9 @@ const FlatGauge = (props: IGaugeProps) => {
     theme.breakpoints.down("sm"),
   );
 
-  const FlatGaugeComponent = useMemo(
-    () => lazy(() => import(`./flatGauge${maturityLevelNumber}.tsx`)),
-    [maturityLevelNumber],
-  );
-
   if (maturityLevelNumber < levelValue) return null;
+  const lightColors = getMaturityLevelColors(maturityLevelNumber, true);
+  const darkColors = getMaturityLevelColors(maturityLevelNumber);
 
   const checkColor = (num: number): string => {
     if (num == 100) {
@@ -99,7 +96,16 @@ const FlatGauge = (props: IGaugeProps) => {
             flexDirection={isSmallScreen ? "column" : "row"}
             sx={{ ...styles.centerV }}
           >
-            <FlatGaugeComponent colorCode={colorCode} value={levelValue} />
+            <FlatGaugeComponent
+            levels={maturityLevelNumber}
+            levelValue={levelValue}
+            lng={lng}
+            lightColors={lightColors}
+            darkColors={darkColors}
+            position="H"
+            guideText={false}
+            pointer={true}
+            />
             {textPosition === "left" && (
               <Typography
                 color={colorCode}
