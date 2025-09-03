@@ -70,7 +70,7 @@ function InnerAccordion({ title, children, lng }: Props) {
 }
 
 export default function HowIsItMade({ lng, report }: any) {
-  const { lang, subjects } = report;
+  const { lang, subjects, assessmentProcess } = report;
   const { assessmentKit } = report?.assessment ?? {};
   const {
     maturityLevels,
@@ -182,6 +182,60 @@ export default function HowIsItMade({ lng, report }: any) {
         </AccordionSummary>
 
         <AccordionDetails sx={{ mt: 1.2, p: 0 }}>
+          <InnerAccordion
+            title={t("assessmentReport.disclaimer", { lng })}
+            lng={lng}
+          >
+            <Typography
+              sx={{ ...styles.rtlStyle(lng === "fa") }}
+              variant="bodyMedium"
+              color={"text.primary"}
+            >
+              {t("assessmentReport.disclaimerDescription", { lng })}
+            </Typography>
+          </InnerAccordion>
+
+          <InnerAccordion
+            title={t("assessment.assessmentSteps", { lng })}
+            lng={lng}
+          >
+            {assessmentProcess.steps ? (
+              <Typography
+                variant="bodyMedium"
+                textAlign="justify"
+                sx={{ ...styles.rtlStyle(lng === "fa") }}
+                dangerouslySetInnerHTML={{
+                  __html:
+                    assessmentProcess.steps ?? t("common.unavailable", { lng }),
+                }}
+                className={"tiptap"}
+              />
+            ) : (
+              <>{t("common.unavailable", { lng })}</>
+            )}
+          </InnerAccordion>
+
+          <InnerAccordion
+            title={t("assessmentKit.participant", { lng })}
+            lng={lng}
+          >
+            {assessmentProcess.participant ? (
+              <Typography
+                variant="bodyMedium"
+                textAlign="justify"
+                sx={{ ...styles.rtlStyle(lng === "fa") }}
+                dangerouslySetInnerHTML={{
+                  __html:
+                    assessmentProcess.participant ??
+                    t("common.unavailable", { lng }),
+                }}
+                className={"tiptap"}
+              />
+            ) : (
+              <>{t("common.unavailable", { lng })}</>
+            )}
+          </InnerAccordion>
+
           <InnerAccordion
             title={t("assessmentKit.assessmentKit", { lng })}
             lng={lng}
