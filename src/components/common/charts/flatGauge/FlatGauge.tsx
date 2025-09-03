@@ -102,7 +102,7 @@ const FlatGauge = (props: IGaugeProps) => {
             lng={lng}
             lightColors={lightColors}
             darkColors={darkColors}
-            position="H"
+            position="horizontal"
             guideText={false}
             pointer={true}
             />

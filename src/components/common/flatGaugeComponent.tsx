@@ -3,7 +3,11 @@ import { Box, Typography } from "@mui/material";
 import { styles } from "@styles";
 import { t } from "i18next";
 
-type Pos = "H" | "V";
+
+enum pos {
+    horizontal = "horizontal",
+    vertical = "vertical",
+}
 
 interface Props {
   levels: number;
@@ -11,7 +15,7 @@ interface Props {
   lng?: string;
   lightColors: string[];
   darkColors: string[];
-  position?: Pos;
+  position: "horizontal" | "vertical";
   guideText?: boolean;
   reversed?: boolean;
   pointer?: boolean;
@@ -23,7 +27,7 @@ interface IArrow {
 
 const Arrow = (props: IArrow) => {
   const { position, markerColor } = props;
-  return position === "H" ? (
+  return position === pos.horizontal ? (
     <Box
       sx={{
         width: 0,
@@ -52,12 +56,12 @@ const FlatGaugeComponent: React.FC<Props> = ({
   lng,
   lightColors,
   darkColors,
-  position = "H",
+  position= pos.horizontal,
   pointer,
   guideText = false,
   reversed = false,
 }) => {
-  const LEGEND_WIDTH = position === "H" ? 150 : 30;
+  const LEGEND_WIDTH = position ===  pos.horizontal ? 150 : 30;
 
   const idx = levelValue
     ? Math.max(0, Math.min(levels - 1, levelValue - 1))
@@ -66,7 +70,7 @@ const FlatGaugeComponent: React.FC<Props> = ({
 
   const segPct = 100 / levels;
 
-  const activeIdx = position === "H" ? idx : idxInverse;
+  const activeIdx = position ===  pos.horizontal ? idx : idxInverse;
   const centerPct = (activeIdx + 0.5) * segPct;
 
   const markerColor = darkColors[idx] ?? "#000";
@@ -79,7 +83,7 @@ const FlatGaugeComponent: React.FC<Props> = ({
     <Box
       width={LEGEND_WIDTH}
       sx={{
-        ...styles[position === "V" ? "centerCH" : "centerH"],
+        ...styles[position ===  pos.vertical ? "centerCH" : "centerH"],
         userSelect: "none",
         pointerEvents: "none",
         direction: lng === "fa" ? "rtl" : "ltr",
@@ -101,7 +105,7 @@ const FlatGaugeComponent: React.FC<Props> = ({
         <Box
           sx={{
             display: "flex",
-            flexDirection: position === "H" ? "row" : "column-reverse",
+            flexDirection: position ===  pos.horizontal ? "row" : "column-reverse",
             borderRadius: 0.5,
             overflow: "hidden",
             width: "100%",
@@ -110,7 +114,7 @@ const FlatGaugeComponent: React.FC<Props> = ({
           {order.map((i) => (
             <Box
               key={i}
-              width={position === "H" ? `${100 / levels}%` : "100%"}
+              width={position === pos.horizontal ? `${100 / levels}%` : "100%"}
               height={25}
               bgcolor={lightColors[i]}
               boxShadow={`inset 0 0 0 1px ${darkColors[i]}20`}
@@ -122,7 +126,7 @@ const FlatGaugeComponent: React.FC<Props> = ({
           <Box
             sx={{
               position: "absolute",
-              ...(position === "H"
+              ...(position ===  pos.horizontal
                 ? {
                     left: `${centerPct}%`,
                     top: -10,

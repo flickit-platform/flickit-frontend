@@ -94,7 +94,7 @@ const TreeMapChart: React.FC<TreeMapProps> = ({
           lng={lng}
           lightColors={lightColors}
           darkColors={darkColors}
-          position="V"
+          position={"vertical"}
           guideText={true}
           pointer={false}
       />
