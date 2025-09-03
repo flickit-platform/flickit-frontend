@@ -16,6 +16,8 @@ import { t } from "i18next";
 import { StickyNote2Outlined } from "@mui/icons-material";
 import { rtlSx } from "./TreeMapSection";
 import languageDetector from "@/utils/languageDetector";
+import useDialog from "@utils/useDialog";
+import QuestionReportDialog from "@/features/assessment-report/ui/sections/questionReportDialog";
 
 const clamp01 = (n: number) => Math.max(0, Math.min(100, n || 0));
 
@@ -29,11 +31,12 @@ type Measure = {
 
 const MeasuresTable: React.FC<{
   measures: Measure[];
+  selectedId?: any;
   rtl?: boolean;
   lng: string;
-}> = ({ measures, rtl, lng }) => {
+}> = ({ measures, rtl, lng, selectedId }) => {
+  const reportQuestionDialogProps = useDialog();
   if (!measures || measures.length === 0) return null;
-
   const PCT = rtl ? "٪" : "%";
   const minus = "−";
   const plus = "+";
@@ -109,7 +112,7 @@ const MeasuresTable: React.FC<{
                   {t("assessmentReport.missedScore", { lng })}
                 </Typography>
               </TableCell>
-              <TableCell align="center" sx={{ display: "none" }}>
+              <TableCell align="center" >
                 <Typography
                   variant="labelMedium"
                   color="text.primary"
@@ -221,8 +224,12 @@ const MeasuresTable: React.FC<{
                     </Typography>
                   </TableCell>
 
-                  <TableCell sx={{ display: "none" }}>
-                    <IconButton size="small">
+                  <TableCell>
+                    <IconButton size="small"
+                                onClick={() => reportQuestionDialogProps.openDialog({type:"create",
+                    data: {measureId: m.id, attributeId: selectedId}
+                    })}
+                    >
                       <StickyNote2Outlined fontSize="small" color="primary" />
                     </IconButton>
                   </TableCell>
@@ -277,6 +284,7 @@ const MeasuresTable: React.FC<{
           </TableFooter>
         </Table>
       </TableContainer>
+      {reportQuestionDialogProps.open &&  <QuestionReportDialog {...reportQuestionDialogProps} lng={lng} />}
     </Box>
   );
 };

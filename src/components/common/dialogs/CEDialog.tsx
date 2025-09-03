@@ -13,6 +13,8 @@ import { TDialogContextType } from "@/types/index";
 import { t } from "i18next";
 import { Box, IconButton } from "@mui/material";
 import { Close } from "@mui/icons-material";
+import languageDetector from "@utils/languageDetector";
+import { farsiFontFamily, secondaryFontFamily } from "@config/theme";
 
 interface ICEDialogProps extends Omit<DialogProps, "title"> {
   closeDialog?: () => void;
@@ -93,6 +95,7 @@ interface ICEDialogActionsProps extends PropsWithChildren<DialogActionsProps> {
   onBack?: () => void;
   hasBackBtn?: boolean;
   backType?: any;
+  cancelType?: any;
   cancelLabel?: string | null;
   disablePrimaryButton?: boolean;
   hasContinueBtn?: boolean;
@@ -116,6 +119,7 @@ export const CEDialogActions = (props: ICEDialogActionsProps) => {
     cancelLabel = "common.cancel",
     submitAndViewButtonLabel,
     backType = "contained",
+    cancelType = "outline",
     disablePrimaryButton = false,
     hasContinueBtn,
     children,
@@ -143,7 +147,8 @@ export const CEDialogActions = (props: ICEDialogActionsProps) => {
               onClick={onClose}
               data-cy="cancel"
               data-testid="cancel"
-              sx={{ fontFamily: "inherit" }}
+              sx={{ fontFamily: languageDetector(cancelLabel) ? farsiFontFamily : secondaryFontFamily }}
+              variant={cancelType}
             >
               <Trans i18nKey={cancelLabel ?? ""} />
             </Button>

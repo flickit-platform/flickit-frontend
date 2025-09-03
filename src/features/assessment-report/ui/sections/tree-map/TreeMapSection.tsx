@@ -284,7 +284,6 @@ export default function TreeMapSection({
       })),
     [selectedAttribute],
   );
-
   return (
     <Box>
       <TreeMapChart
@@ -309,7 +308,7 @@ export default function TreeMapSection({
             />
             <ReasonBar text={vm.reasonText} rtl={vm.rtl} />
             <GuidanceNote text={vm.guidanceText} rtl={vm.rtl} />
-            <MeasuresTable measures={measures} rtl={rtl} lng={lng} />
+            <MeasuresTable measures={measures} selectedId={selectedId} rtl={rtl} lng={lng} />
           </BodyCard>
         </>
       ) : (
