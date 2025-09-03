@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback, useMemo } from "react";
 import {
   Box,
   Typography,
@@ -19,8 +19,6 @@ import languageDetector from "@/utils/languageDetector";
 import useDialog from "@utils/useDialog";
 import QuestionReportDialog from "@/features/assessment-report/ui/sections/questionReportDialog";
 
-const clamp01 = (n: number) => Math.max(0, Math.min(100, n || 0));
-
 type Measure = {
   id: number;
   title: string;
@@ -29,34 +27,299 @@ type Measure = {
   missedScorePercentage: number;
 };
 
-const MeasuresTable: React.FC<{
+type Props = {
   measures: Measure[];
-  selectedId?: any;
-  rtl?: boolean;
-  lng: string;
-}> = ({ measures, rtl, lng, selectedId }) => {
-  const reportQuestionDialogProps = useDialog();
-  if (!measures || measures.length === 0) return null;
-  const PCT = rtl ? "٪" : "%";
+  selectedId?: number | null;
+  isRTL?: boolean;
+  locale: string;
+  showQuestionColumn?: boolean;
+};
+
+const BAR_SEGMENT_MAX_WIDTH_PX = 68;
+
+const clampPercentage = (n: number | undefined | null) => {
+  const v = Number.isFinite(n as number) ? Number(n) : 0;
+  return Math.max(0, Math.min(100, v));
+};
+
+const PERSIAN_PERCENT = "٪";
+const LATIN_PERCENT = "%";
+const getPercentSymbol = (isRTL?: boolean) =>
+  isRTL ? PERSIAN_PERCENT : LATIN_PERCENT;
+const formatRoundedPercent = (n: number, isRTL?: boolean) =>
+  `${Math.round(n)}${getPercentSymbol(isRTL)}`;
+
+const SignedPercent: React.FC<{
+  value: number;
+  positive?: boolean;
+  isRTL?: boolean;
+  color?: string;
+}> = ({ value, positive = false, isRTL, color }) => {
+  const rounded = Math.round(value);
   const minus = "−";
   const plus = "+";
-  const pct = (n: number) => `${Math.round(n)}${PCT}`;
-  const fmtSigned = (n: number, positive: boolean) => {
-    const v = Math.round(n);
-    return rtl
-      ? `${v}${PCT}${positive ? plus : minus}`
-      : `${positive ? plus : minus}${v}${PCT}`;
-  };
+  const sign = positive ? plus : minus;
+  const pct = getPercentSymbol(isRTL);
 
-  const totals = measures.reduce(
-    (acc, m) => {
-      acc.impact += m.impactPercentage || 0;
-      acc.gained += m.gainedScorePercentage || 0;
-      acc.missed += m.missedScorePercentage || 0;
-      return acc;
-    },
-    { impact: 0, gained: 0, missed: 0 },
+  return (
+    <Typography variant="bodySmall" sx={rtlSx(isRTL)} color={color}>
+      {isRTL
+        ? `${rounded}${pct}${rounded !== 0 ? sign : ""}`
+        : `${rounded !== 0 ? sign : ""}${rounded}${pct}`}
+    </Typography>
   );
+};
+
+const DivergingCenterBar: React.FC<{
+  gainedPct: number;
+  missedPct: number;
+  invertForEnglish?: boolean;
+}> = ({ gainedPct, missedPct, invertForEnglish }) => {
+  const gainedW = Math.min(BAR_SEGMENT_MAX_WIDTH_PX, Math.max(0, gainedPct));
+  const missedW = Math.min(BAR_SEGMENT_MAX_WIDTH_PX, Math.max(0, missedPct));
+
+  return (
+    <Box
+      position="relative"
+      height={24}
+      sx={{ transform: invertForEnglish ? "scaleX(-1)" : "none" }}
+    >
+      <Box
+        position="absolute"
+        left="50%"
+        top={0}
+        bottom={0}
+        sx={{ borderLeft: "1px dashed", borderColor: "divider" }}
+      />
+      {missedW > 0 && (
+        <Box
+          position="absolute"
+          left={`calc(50% - ${missedW}px)`}
+          width={`${missedW}px`}
+          top={6}
+          bottom={6}
+          sx={{ bgcolor: "error.light", borderRadius: "4px 0 0 4px" }}
+        />
+      )}
+      {gainedW > 0 && (
+        <Box
+          position="absolute"
+          left="50%"
+          width={`${gainedW}px`}
+          top={6}
+          bottom={6}
+          sx={{ bgcolor: "primary.main", borderRadius: "0 4px 4px 0" }}
+        />
+      )}
+    </Box>
+  );
+};
+
+/* ---------- Column definition ---------- */
+type Column = {
+  id: string;
+  align: "left" | "center" | "right";
+  header: React.ReactNode;
+  body: (m: Measure) => React.ReactNode;
+  footer?: React.ReactNode;
+};
+
+const MeasuresTable: React.FC<Props> = ({
+  measures,
+  isRTL,
+  locale,
+  selectedId,
+  showQuestionColumn,
+}) => {
+  const questionDialog = useDialog();
+  if (!measures || measures.length === 0) return null;
+
+  const totals = useMemo(
+    () =>
+      measures.reduce(
+        (acc, m) => {
+          acc.impactPct += m.impactPercentage || 0;
+          acc.gainedPct += m.gainedScorePercentage || 0;
+          acc.missedPct += m.missedScorePercentage || 0;
+          return acc;
+        },
+        { impactPct: 0, gainedPct: 0, missedPct: 0 },
+      ),
+    [measures],
+  );
+
+  const openMeasureQuestionsDialog = useCallback(
+    (measureId: number) =>
+      questionDialog.openDialog({
+        type: "create",
+        data: { measureId, attributeId: selectedId ?? null },
+      }),
+    [questionDialog, selectedId],
+  );
+
+  const tableColumns: Column[] = useMemo(() => {
+    const cols: Column[] = [
+      {
+        id: "measureTitle",
+        align: isRTL ? "right" : "left",
+        header: (
+          <Typography
+            variant="labelMedium"
+            color="text.primary"
+            sx={rtlSx(isRTL)}
+          >
+            {t("assessmentReport.measureTitle", { lng: locale })}
+          </Typography>
+        ),
+        body: (m) => (
+          <Typography
+            variant="bodySmall"
+            sx={rtlSx(languageDetector(m.title))}
+            noWrap
+            title={m.title}
+          >
+            {m.title}
+          </Typography>
+        ),
+        footer: (
+          <Typography
+            variant="labelMedium"
+            color="text.primary"
+            sx={rtlSx(isRTL)}
+          >
+            {t("assessmentReport.total", { lng: locale })}
+          </Typography>
+        ),
+      },
+      {
+        id: "contributionToAttribute",
+        align: "center",
+        header: (
+          <Typography
+            variant="labelMedium"
+            color="text.primary"
+            sx={rtlSx(isRTL)}
+          >
+            {t("assessmentReport.contributionToAttribute", { lng: locale })}
+          </Typography>
+        ),
+        body: (m) => (
+          <Typography variant="bodySmall" sx={rtlSx(isRTL)}>
+            {formatRoundedPercent(m.impactPercentage, isRTL)}
+          </Typography>
+        ),
+        footer: (
+          <Typography
+            variant="labelMedium"
+            color="text.primary"
+            sx={rtlSx(isRTL)}
+          >
+            {formatRoundedPercent(totals.impactPct, isRTL)}
+          </Typography>
+        ),
+      },
+      {
+        id: "gainedPercent",
+        align: "center",
+        header: (
+          <Typography variant="labelMedium" color="primary" sx={rtlSx(isRTL)}>
+            {t("assessmentReport.gainedScore", { lng: locale })}
+          </Typography>
+        ),
+        body: (m) => (
+          <SignedPercent
+            value={clampPercentage(m.gainedScorePercentage)}
+            positive
+            isRTL={isRTL}
+            color="primary.main"
+          />
+        ),
+        footer: (
+          <SignedPercent
+            value={totals.gainedPct}
+            positive
+            isRTL={isRTL}
+            color="primary.main"
+          />
+        ),
+      },
+      {
+        id: "divergingBar",
+        align: "center",
+        header: <></>,
+        body: (m) => (
+          <DivergingCenterBar
+            gainedPct={clampPercentage(m.gainedScorePercentage)}
+            missedPct={clampPercentage(m.missedScorePercentage)}
+            invertForEnglish={locale === "en"}
+          />
+        ),
+      },
+      {
+        id: "missedPercent",
+        align: "center",
+        header: (
+          <Typography
+            variant="labelMedium"
+            color="error.light"
+            sx={rtlSx(isRTL)}
+          >
+            {t("assessmentReport.missedScore", { lng: locale })}
+          </Typography>
+        ),
+        body: (m) => (
+          <SignedPercent
+            value={clampPercentage(m.missedScorePercentage)}
+            positive={false}
+            isRTL={isRTL}
+            color="error.light"
+          />
+        ),
+        footer: (
+          <SignedPercent
+            value={totals.missedPct}
+            positive={false}
+            isRTL={isRTL}
+            color="error.light"
+          />
+        ),
+      },
+    ];
+
+    if (showQuestionColumn) {
+      cols.push({
+        id: "questions",
+        align: "center",
+        header: (
+          <Typography
+            variant="labelMedium"
+            color="text.primary"
+            sx={rtlSx(isRTL)}
+          >
+            {t("common.questions", { lng: locale })}
+          </Typography>
+        ),
+        body: (m) => (
+          <IconButton
+            size="small"
+            onClick={() => openMeasureQuestionsDialog(m.id)}
+          >
+            <StickyNote2Outlined fontSize="small" color="primary" />
+          </IconButton>
+        ),
+      });
+    }
+
+    return cols;
+  }, [
+    isRTL,
+    locale,
+    totals.gainedPct,
+    totals.missedPct,
+    totals.impactPct,
+    showQuestionColumn,
+    openMeasureQuestionsDialog,
+  ]);
 
   return (
     <Box sx={{ maxWidth: 700, width: "100%", mx: "auto" }}>
@@ -67,60 +330,17 @@ const MeasuresTable: React.FC<{
           bgcolor: "transparent",
           borderRadius: 2,
           mt: 2,
-          direction: rtl ? "rtl" : "ltr",
+          direction: isRTL ? "rtl" : "ltr",
         }}
       >
         <Table size="small" aria-label="measures table">
           <TableHead>
             <TableRow sx={{ bgcolor: "background.containerHigher" }}>
-              <TableCell
-                sx={{ textAlign: rtl ? "right" : "left", whiteSpace: "nowrap" }}
-              >
-                <Typography
-                  variant="labelMedium"
-                  color="text.primary"
-                  sx={rtlSx(rtl)}
-                >
-                  {t("assessmentReport.measureTitle", { lng })}
-                </Typography>
-              </TableCell>
-              <TableCell align="center">
-                <Typography
-                  variant="labelMedium"
-                  color="text.primary"
-                  sx={rtlSx(rtl)}
-                >
-                  {t("assessmentReport.contributionToAttribute", { lng })}
-                </Typography>
-              </TableCell>
-              <TableCell align="center">
-                <Typography
-                  variant="labelMedium"
-                  color="primary"
-                  sx={rtlSx(rtl)}
-                >
-                  {t("assessmentReport.gainedScore", { lng })}
-                </Typography>
-              </TableCell>
-              <TableCell />
-              <TableCell align="center">
-                <Typography
-                  variant="labelMedium"
-                  color="error.light"
-                  sx={rtlSx(rtl)}
-                >
-                  {t("assessmentReport.missedScore", { lng })}
-                </Typography>
-              </TableCell>
-              <TableCell align="center" >
-                <Typography
-                  variant="labelMedium"
-                  color="text.primary"
-                  sx={rtlSx(rtl)}
-                >
-                  {t("common.questions", { lng })}
-                </Typography>
-              </TableCell>
+              {tableColumns.map((col) => (
+                <TableCell key={col.id} sx={{ textAlign: col.align }}>
+                  {col.header}
+                </TableCell>
+              ))}
             </TableRow>
           </TableHead>
 
@@ -132,159 +352,49 @@ const MeasuresTable: React.FC<{
                 borderBottom: "none",
               },
               "& td > *": { mx: "auto" },
-              "& td:first-of-type": { textAlign: rtl ? "right" : "left" },
+              "& td:first-of-type": { textAlign: isRTL ? "right" : "left" },
             }}
           >
-            {measures.map((m) => {
-              const gained = clamp01(m.gainedScorePercentage);
-              const missed = clamp01(m.missedScorePercentage);
-              return (
-                <TableRow key={m.id}>
-                  <TableCell>
-                    <Typography
-                      variant="bodySmall"
-                      sx={rtlSx(languageDetector(m.title))}
-                      noWrap
-                      title={m.title}
-                    >
-                      {m.title}
-                    </Typography>
+            {measures.map((m) => (
+              <TableRow key={m.id}>
+                {tableColumns.map((col) => (
+                  <TableCell key={col.id} align={col.align}>
+                    {col.body(m)}
                   </TableCell>
-
-                  <TableCell>
-                    <Typography variant="bodySmall" sx={rtlSx(rtl)}>
-                      {pct(m.impactPercentage)}
-                    </Typography>
-                  </TableCell>
-
-                  <TableCell>
-                    <Typography
-                      variant="bodySmall"
-                      color="primary.main"
-                      sx={rtlSx(rtl)}
-                    >
-                      {fmtSigned(gained, true)}
-                    </Typography>
-                  </TableCell>
-
-                  <TableCell>
-                    <Box
-                      position="relative"
-                      height={24}
-                      sx={{ transform: lng === "en" ? "scaleX(-1)" : "none" }}
-                    >
-                      <Box
-                        position="absolute"
-                        left="50%"
-                        top={0}
-                        bottom={0}
-                        sx={{
-                          borderLeft: "1px dashed",
-                          borderColor: "divider",
-                        }}
-                      />
-                      {missed > 0 && (
-                        <Box
-                          position="absolute"
-                          left={`calc(50% - ${missed > 68 ? 68 : missed}px)`}
-                          width={`${missed}px`}
-                          maxWidth="68px"
-                          top={6}
-                          bottom={6}
-                          sx={{
-                            bgcolor: "error.light",
-                            borderRadius: "4px 0 0 4px",
-                          }}
-                        />
-                      )}
-                      {gained > 0 && (
-                        <Box
-                          position="absolute"
-                          left="50%"
-                          width={`${gained}px`}
-                          maxWidth="68px"
-                          top={6}
-                          bottom={6}
-                          sx={{
-                            bgcolor: "primary.main",
-                            borderRadius: "0 4px 4px 0",
-                          }}
-                        />
-                      )}
-                    </Box>
-                  </TableCell>
-
-                  <TableCell>
-                    <Typography
-                      variant="bodySmall"
-                      color="error.light"
-                      sx={rtlSx(rtl)}
-                    >
-                      {fmtSigned(missed, false)}
-                    </Typography>
-                  </TableCell>
-
-                  <TableCell>
-                    <IconButton size="small"
-                                onClick={() => reportQuestionDialogProps.openDialog({type:"create",
-                    data: {measureId: m.id, attributeId: selectedId}
-                    })}
-                    >
-                      <StickyNote2Outlined fontSize="small" color="primary" />
-                    </IconButton>
-                  </TableCell>
-                </TableRow>
-              );
-            })}
+                ))}
+              </TableRow>
+            ))}
           </TableBody>
 
           <TableFooter>
-            <TableRow sx={{ bgcolor: "background.containerHigher" }}>
-              <TableCell
-                sx={{ textAlign: rtl ? "right" : "left", borderBottom: "none" }}
-              >
-                <Typography
-                  variant="labelMedium"
-                  color="text.primary"
-                  sx={rtlSx(rtl)}
+            <TableRow
+              sx={{
+                bgcolor: "background.containerHigher",
+                "& td": {
+                  textAlign: "center",
+                  verticalAlign: "middle",
+                },
+                "& td > *": { mx: "auto" },
+                "& td:first-of-type": { textAlign: isRTL ? "right" : "left" },
+              }}
+            >
+              {tableColumns.map((col) => (
+                <TableCell
+                  key={col.id}
+                  align={col.align}
+                  sx={{ borderBottom: "none" }}
                 >
-                  {t("assessmentReport.total", { lng })}
-                </Typography>
-              </TableCell>
-              <TableCell sx={{ textAlign: "center", borderBottom: "none" }}>
-                <Typography
-                  variant="labelMedium"
-                  color="text.primary"
-                  sx={rtlSx(rtl)}
-                >
-                  {pct(totals.impact)}
-                </Typography>
-              </TableCell>
-              <TableCell sx={{ textAlign: "center", borderBottom: "none" }}>
-                <Typography
-                  variant="labelMedium"
-                  color="primary.main"
-                  sx={rtlSx(rtl)}
-                >
-                  {fmtSigned(totals.gained, true)}
-                </Typography>
-              </TableCell>
-              <TableCell sx={{ borderBottom: "none" }} />
-              <TableCell sx={{ textAlign: "center", borderBottom: "none" }}>
-                <Typography
-                  variant="labelMedium"
-                  color="error.light"
-                  sx={rtlSx(rtl)}
-                >
-                  {fmtSigned(totals.missed, false)}
-                </Typography>
-              </TableCell>
-              <TableCell sx={{ borderBottom: "none" }} />
+                  {col.footer ?? null}
+                </TableCell>
+              ))}
             </TableRow>
           </TableFooter>
         </Table>
       </TableContainer>
-      {reportQuestionDialogProps.open &&  <QuestionReportDialog {...reportQuestionDialogProps} lng={lng} />}
+
+      {questionDialog.open && (
+        <QuestionReportDialog {...questionDialog} lng={locale} />
+      )}
     </Box>
   );
 };

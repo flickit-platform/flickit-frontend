@@ -30,6 +30,7 @@ export interface IUserPermissions {
   canViewDashboard: boolean;
   canViewQuestionnaires: boolean;
   canManageVisibility: boolean;
+  canViewMeasureQuestions?: boolean;
 }
 
 export enum FLAGS {
