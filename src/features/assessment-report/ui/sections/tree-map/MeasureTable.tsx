@@ -355,7 +355,11 @@ const MeasuresTable: React.FC<Props> = ({
           <TableHead>
             <TableRow sx={{ bgcolor: "background.containerHigher" }}>
               {tableColumns.map((col) => (
-                <TableCell key={col.id} align={col.align}>
+                <TableCell
+                  key={col.id}
+                  align={col.align}
+                  sx={{ textAlign: col.align }}
+                >
                   {col.header}
                 </TableCell>
               ))}
