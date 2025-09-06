@@ -9,9 +9,9 @@ import React, {
 import { ResponsiveContainer, Treemap } from "recharts";
 import { getMaturityLevelColors, styles } from "@styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
-import { useTheme, Box, Typography } from "@mui/material";
+import { useTheme, Box } from "@mui/material";
 import { v3Tokens } from "@/config/tokens";
-import { t } from "i18next";
+import FlatGaugeComponent from "@common/flatGaugeComponent";
 
 interface TreeMapNode {
   name: string;
@@ -88,71 +88,18 @@ const TreeMapChart: React.FC<TreeMapProps> = ({
           ></Treemap>
         </ResponsiveContainer>
       </Box>
-      {/* Legend  */}
-      <VerticalLegend
-        levels={levels}
-        lng={lng}
-        lightColors={lightColors}
-        darkColors={darkColors}
-        height={100}
+      <FlatGaugeComponent
+          levels={levels}
+          levelValue={null}
+          lng={lng}
+          darkColors={darkColors}
+          position={"vertical"}
+          guideText={true}
+          pointer={false}
       />
     </Box>
   );
 };
-
-function VerticalLegend({
-  levels,
-  lng,
-  lightColors,
-  darkColors,
-  height = 50,
-}: Readonly<{
-  levels: number;
-  lng: string;
-  lightColors: string[];
-  darkColors: string[];
-  height?: number;
-}>) {
-  const order = [...Array(levels).keys()].reverse();
-
-  return (
-    <Box
-      width={LEGEND_WIDTH}
-      sx={{ ...styles.centerCH, userSelect: "none", pointerEvents: "none" }}
-    >
-      <Typography
-        variant="caption"
-        color="success.dark"
-        mt={0.5}
-        fontWeight={600}
-        sx={{ ...styles.rtlStyle(lng === "fa") }}
-      >
-        {t("common.best", { lng })}
-      </Typography>
-
-      <Box width={LEGEND_WIDTH - 20} borderRadius={0.5} overflow="hidden">
-        {order.map((i) => (
-          <Box
-            key={i}
-            height={height / lightColors.length}
-            bgcolor={lightColors[i]}
-            boxShadow={`inset 0 0 0 1px ${darkColors[i]}20`}
-          />
-        ))}
-      </Box>
-
-      <Typography
-        variant="caption"
-        color="error.main"
-        mt={0.5}
-        fontWeight={600}
-        sx={{ ...styles.rtlStyle(lng === "fa") }}
-      >
-        {t("common.worst", { lng })}
-      </Typography>
-    </Box>
-  );
-}
 
 const CustomNode: React.FC<any> = memo((props) => {
   const theme = useTheme();

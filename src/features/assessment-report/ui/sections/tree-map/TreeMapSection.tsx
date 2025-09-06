@@ -69,9 +69,10 @@ function toAttributeVM(
   };
 }
 
-const HeaderStrip: React.FC<{ vm: AttributeVM; levels: number }> = ({
+const HeaderStrip: React.FC<{ vm: AttributeVM; levels: number, lng: string }> = ({
   vm,
   levels,
+  lng
 }) => (
   <Box
     bgcolor="background.containerHigher"
@@ -137,6 +138,7 @@ const HeaderStrip: React.FC<{ vm: AttributeVM; levels: number }> = ({
           levelValue={vm.maturityLevel.value}
           text={vm.maturityLevel.title}
           textPosition="top"
+          lng={lng}
           sx={{
             ...styles.centerVH,
             width: "100%",
@@ -300,6 +302,7 @@ export default function TreeMapSection({
           <HeaderStrip
             vm={vm}
             levels={assessment.assessmentKit.maturityLevelCount}
+            lng={lng}
           />
           <BodyCard>
             <InsightBlock
