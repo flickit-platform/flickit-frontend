@@ -29,44 +29,45 @@ const Arrow: React.FC<ArrowProps> = ({ position, markerColor }) => (
     sx={
       position === "horizontal"
         ? {
-            width: 0,
-            height: 0,
-            borderLeft: "6px solid transparent",
-            borderRight: "6px solid transparent",
-            borderTop: `8px solid ${markerColor}`,
-          }
+          width: 0,
+          height: 0,
+          borderLeft: "6px solid transparent",
+          borderRight: "6px solid transparent",
+          borderTop: `8px solid ${markerColor}`,
+        }
         : {
-            width: 0,
-            height: 0,
-            borderTop: "6px solid transparent",
-            borderBottom: "6px solid transparent",
-            borderLeft: `8px solid ${markerColor}`,
-          }
+          width: 0,
+          height: 0,
+          borderTop: "6px solid transparent",
+          borderBottom: "6px solid transparent",
+          borderLeft: `8px solid ${markerColor}`,
+        }
     }
   />
 );
 
 const FlatGaugeComponent: React.FC<Props> = ({
-  levels,
-  levelValue,
-  lng,
-  darkColors,
-  position = "horizontal",
-  pointer,
-  guideText = false,
-}) => {
+                                               levels,
+                                               levelValue,
+                                               lng,
+                                               darkColors,
+                                               position = "horizontal",
+                                               pointer,
+                                               guideText = false,
+                                             }) => {
   const { assessmentInfo } = useAssessmentContext();
   const language = assessmentInfo?.language;
   const lngCode = language?.code.toLowerCase();
   const isRtl = lng === "fa" || lngCode === "fa";
 
-  const idx = levelValue
-    ? Math.max(0, Math.min(levels - 1, levelValue - 1))
-    : 0;
+  const idx = levelValue ? Math.max(0, Math.min(levels - 1, levelValue - 1)) : 0;
   const idxInverse = levels - 1 - idx;
 
   const activeIdx = useMemo(() => {
-    return position === "horizontal" ? (isRtl ? idxInverse : idx) : idxInverse;
+    if (position === "horizontal") {
+      return isRtl ? idxInverse : idx;
+    }
+    return idxInverse;
   }, [position, isRtl, idx, idxInverse]);
 
   const segPct = 100 / levels;
@@ -77,19 +78,17 @@ const FlatGaugeComponent: React.FC<Props> = ({
     const isFirst = i === 0;
     const isLast = i === levels - 1;
 
-    if (position === "horizontal") {
-      if (isRtl) {
-        if (isFirst) return "0 2px 2px 0";
-        if (isLast) return "2px 0 0 2px";
-      } else {
-        if (isFirst) return "2px 0 0 2px";
-        if (isLast) return "0 2px 2px 0";
-      }
-    } else {
-      if (isFirst) return "0 0 2px 2px";
-      if (isLast) return "2px 2px 0 0";
+    if (!isFirst && !isLast) return "0";
+
+    if (position === "vertical") {
+      return isFirst ? "0 0 2px 2px" : "2px 2px 0 0";
     }
-    return "0";
+
+    if (isRtl) {
+      return isFirst ? "0 2px 2px 0" : "2px 0 0 2px";
+    }
+
+    return isFirst ? "2px 0 0 2px" : "0 2px 2px 0";
   };
 
   return (
@@ -141,15 +140,15 @@ const FlatGaugeComponent: React.FC<Props> = ({
               position: "absolute",
               ...(position === "horizontal"
                 ? {
-                    left: `${centerPct}%`,
-                    top: -10,
-                    transform: "translateX(-50%)",
-                  }
+                  left: `${centerPct}%`,
+                  top: -10,
+                  transform: "translateX(-50%)",
+                }
                 : {
-                    top: `${centerPct}%`,
-                    left: -10,
-                    transform: "translateY(-50%)",
-                  }),
+                  top: `${centerPct}%`,
+                  left: -10,
+                  transform: "translateY(-50%)",
+                }),
             }}
           >
             <Arrow position={position} markerColor={markerColor} />
