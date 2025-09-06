@@ -209,8 +209,10 @@ const AssessmentCard = ({
           <Grid
             item
             xs={12}
-            sx={{ ...styles.centerCH, textDecoration: "none" }}
-            mt={2}
+            sx={{
+              ...styles.centerCH,
+              textDecoration: "none",
+            }}
             component={Link}
             to={pathRoute(hasML)}
           >
@@ -221,8 +223,8 @@ const AssessmentCard = ({
                 maturity_level_status={
                   gaugeResult?.title ?? maturityLevel?.title
                 }
-                maxWidth="275px"
-                mt="auto"
+                status_font_variant="headlineSmall"
+                maxWidth="200px"
               />
             ) : (
               <LoadingGauge />
@@ -230,20 +232,18 @@ const AssessmentCard = ({
           </Grid>
           {/* Confidence */}
           {permissions.canViewReport && !isQuickMode && (
-            <Grid item xs={12} mt="-4rem">
+            <Grid item xs={12}>
               <Typography
-                variant="titleSmall"
-                color="#243342"
-                justifyContent="center"
-                alignItems="center"
-                display="flex"
+                sx={{ ...styles.centerVH }}
+                variant="bodySmall"
+                color="background.onVariant"
                 gap="0.125rem"
               >
-                <Trans i18nKey="common.withConfidence" />:
+                <Trans i18nKey="common.confidence" />:
                 <ConfidenceLevel
                   displayNumber
                   inputNumber={Math.ceil(confidenceValue)}
-                  variant="titleMedium"
+                  variant="titleSmall"
                 />
               </Typography>
             </Grid>
@@ -297,11 +297,8 @@ const Header = ({
 }: any) => (
   <Box
     sx={{
+      ...styles.centerCVH,
       textDecoration: "none",
-      display: "flex",
-      flexDirection: "column",
-      alignItems: "center",
-      justifyContent: "center",
     }}
     component={Link}
     to={pathRoute(isCalculateValid)}

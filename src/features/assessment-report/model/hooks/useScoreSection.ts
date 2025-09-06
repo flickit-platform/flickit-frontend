@@ -12,12 +12,12 @@ export function useScoreSection({
 }) {
   const introHtml = useMemo(
     () => assessment?.intro ?? t("common.unavailable", { lng }),
-    [assessment?.intro, lng]
+    [assessment?.intro, lng],
   );
 
   const overallInsightHtml = useMemo(
     () => assessment?.overallInsight ?? t("common.unavailable", { lng }),
-    [assessment?.overallInsight, lng]
+    [assessment?.overallInsight, lng],
   );
 
   const gaugeProps = useMemo(
@@ -26,7 +26,7 @@ export function useScoreSection({
       maturity_level_status: assessment?.maturityLevel?.title,
       maturity_level_number: assessment?.assessmentKit?.maturityLevelCount,
       confidence_value: assessment?.confidenceValue,
-      confidence_text: isQuickMode ? "" : t("common.withPercentConfidence", { lng }),
+      confidence_text: isQuickMode ? "" : t("common.confidence", { lng }) + ":",
     }),
     [
       assessment?.maturityLevel?.value,
@@ -35,7 +35,7 @@ export function useScoreSection({
       assessment?.confidenceValue,
       isQuickMode,
       lng,
-    ]
+    ],
   );
 
   return { introHtml, overallInsightHtml, gaugeProps };
