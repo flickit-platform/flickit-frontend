@@ -31,7 +31,7 @@ const Gauge = ({
   maturity_level_number = 5,
   level_value,
   confidence_value = 0,
-  height = 200,
+  height,
   className,
   confidence_text,
   maturity_status_guide,
@@ -72,7 +72,7 @@ const Gauge = ({
       {level_value ? (
         <Box
           sx={{
-            mt: "-30px",
+            mt: "-15px",
             width: "100%",
             textAlign: "center",
             px: 1,

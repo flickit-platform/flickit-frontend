@@ -209,7 +209,10 @@ const AssessmentCard = ({
           <Grid
             item
             xs={12}
-            sx={{ ...styles.centerCH, textDecoration: "none" }}
+            sx={{
+              ...styles.centerCH,
+              textDecoration: "none",
+            }}
             component={Link}
             to={pathRoute(hasML)}
           >
@@ -294,11 +297,8 @@ const Header = ({
 }: any) => (
   <Box
     sx={{
+      ...styles.centerCVH,
       textDecoration: "none",
-      display: "flex",
-      flexDirection: "column",
-      alignItems: "center",
-      justifyContent: "center",
     }}
     component={Link}
     to={pathRoute(isCalculateValid)}
