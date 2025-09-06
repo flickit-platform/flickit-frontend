@@ -42,7 +42,9 @@ const ConfidenceLevel = ({
             {number}%
           </Typography>
         )}
-        <ImgRate />
+        <Box>
+          <ImgRate />
+        </Box>
       </Box>
     </Suspense>
   );
