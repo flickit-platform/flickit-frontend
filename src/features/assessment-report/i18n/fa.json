@@ -1,4 +1,6 @@
 {
+  "aboutAssessmentKit": "درباره‌ی کیت ارزیابی",
+  "aboutAssessmentKitDesc": "برای ارزیابی وضعیت سامانه از کیت ارزیابی {{title}} استفاده شده است. این کیت {{attributesCount}} شاخص اصلی را در {{subjectsLength}} موضوع ({{subjects}}) می‌سنجد و امتیاز هر شاخص را در قالب {{maturityLevelCount}} سطح بلوغ گزارش می‌کند. این کیت شامل {{questionnairesCount}} پرسش‌نامه است که در ادامه به تفکیک بررسی می‌شوند.",
   "assessmentReport": "گزارش ارزیابی",
   "assessmentResult": "نتیجه ارزیابی",
   "assessmentKitEvaluatesMaturity": "این کیت ارزیابی، بلوغ موضوعات و ویژگی‌ها را در سطوح مختلف بررسی می‌کند.",
