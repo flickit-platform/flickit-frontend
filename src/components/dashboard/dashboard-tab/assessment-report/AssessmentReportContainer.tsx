@@ -176,8 +176,8 @@ const AssessmentReportContainer = (props: any) => {
                 </Box>
 
                 <Box
-                  width="180px"
-                  minWidth={{ xs: "100%", sm: "180px" }}
+                  width="240px"
+                  minWidth={{ xs: "100%", sm: "240px" }}
                   mt={1}
                   sx={{ ...styles.centerVH }}
                 >
@@ -189,10 +189,7 @@ const AssessmentReportContainer = (props: any) => {
                     confidence_value={confidenceValue}
                     confidence_text={t("common.confidence") + ":"}
                     hideGuidance={true}
-                    maxWidth="180px"
                     confidence_text_variant="bodyMedium"
-                    m="auto"
-                    maturity_status_guide={t("assessmentReport.overallStatus")}
                   />
                 </Box>
               </Box>
