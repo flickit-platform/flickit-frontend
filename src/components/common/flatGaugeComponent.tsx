@@ -2,6 +2,7 @@ import React, {useMemo} from "react";
 import { Box, Typography } from "@mui/material";
 import { styles } from "@styles";
 import { t } from "i18next";
+import { useAssessmentContext } from "@providers/AssessmentProvider";
 
 
 enum pos {
@@ -61,6 +62,10 @@ const FlatGaugeComponent: React.FC<Props> = ({
 }) => {
   const LEGEND_WIDTH = position ===  pos.horizontal ? 150 : 30;
 
+  const { assessmentInfo } = useAssessmentContext();
+  const language = assessmentInfo?.language;
+  const lngCode = language?.code.toLowerCase()
+  const isRtl = lng == "fa" || lngCode == "fa"
   const idx = levelValue
     ? Math.max(0, Math.min(levels - 1, levelValue - 1))
     : 0;
@@ -69,15 +74,14 @@ const FlatGaugeComponent: React.FC<Props> = ({
   const segPct = 100 / levels;
 
   const ArrowDir = useMemo(()=>{
-      if(position ===  pos.horizontal && lng == "fa"){
+      if(position ===  pos.horizontal && (isRtl) ){
           return idxInverse
-      }if(position ===  pos.horizontal && lng != "fa"){
+      }if(position ===  pos.horizontal && (lng != "fa" || lngCode != "fa") ){
           return idx
       }else {
          return  idxInverse
       }
   },[lng,position,levelValue])
-
 
   const activeIdx = ArrowDir;
   const centerPct = (activeIdx + 0.5) * segPct;
@@ -93,7 +97,7 @@ const FlatGaugeComponent: React.FC<Props> = ({
         ...styles[position ===  pos.vertical ? "centerCH" : "centerH"],
         userSelect: "none",
         pointerEvents: "none",
-        direction: lng === "fa" ? "rtl" : "ltr",
+        direction: isRtl ? "rtl" : "ltr",
       }}
     >
       {guideText && (
@@ -102,7 +106,7 @@ const FlatGaugeComponent: React.FC<Props> = ({
           color="success.dark"
           mt={0.5}
           fontWeight={600}
-          sx={{ ...styles.rtlStyle(lng === "fa") }}
+          sx={{ ...styles.rtlStyle(isRtl) }}
         >
           {t("common.best", { lng })}
         </Typography>
@@ -157,7 +161,7 @@ const FlatGaugeComponent: React.FC<Props> = ({
           color="error.main"
           mt={0.5}
           fontWeight={600}
-          sx={{ ...styles.rtlStyle(lng === "fa") }}
+          sx={{ ...styles.rtlStyle(isRtl) }}
         >
           {t("common.worst", { lng })}
         </Typography>
