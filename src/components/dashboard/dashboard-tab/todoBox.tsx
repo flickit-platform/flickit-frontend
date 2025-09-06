@@ -345,6 +345,8 @@ export const IssuesItem = ({
         : "dashboard.metadataIsNotProvided",
     unpublished: "dashboard.unpublishedReport",
     total: "dashboard.suggestAnyAdvicesSoFar",
+    unapprovedAdvices: "dashboard.unapprovedAdvices",
+    expiredAdvices: "dashboard.expiredAdvices"
   } as any;
 
   const colorPalette = (theme.palette as any)[color] ?? theme.palette.primary;
@@ -382,7 +384,7 @@ export const IssuesItem = ({
         {issueTextMap[name] && <Trans i18nKey={issueTextMap[name]} />}
       </Typography>
 
-      {name === "unapproved" && (
+      {name === "unapproved" || name === "unapprovedAdvices" && (
         <Button
           onClick={handleApproveAll}
           sx={{
@@ -421,7 +423,7 @@ export const IssuesItem = ({
           </div>
         </Tooltip>
       )}
-      {name == "expired" && (
+      {name == "expired" || name == "expiredAdvices" && (
         <>
           <Tooltip
             disableHoverListener={issues?.unanswered < 1}
@@ -479,7 +481,7 @@ export const IssuesItem = ({
           </Typography>
         </Button>
       )}
-      {name === "unapprovedAnswers" && (
+      {name === "unapprovedAnswers"  && (
         <Box style={{ marginInlineStart: "auto" }}>
           <LoadingButton
             onClick={(event) => handleApproveAllAnswers(event)}

@@ -11,6 +11,7 @@
   "dashboard": "Dashboard",
   "expiredDueToNewAnswer": "Insight has expired due to a new answer.",
   "expiredDueToNewAnswers": "Insights have expired due to new answers.",
+  "expiredAdvices": "Advice narration has expired due to a new answer.",
   "filterQuestionsWithIssues": "Filter by issues:",
   "fromTotalQuestionsCount": "of total questions",
   "generateAll": "Generate all",
@@ -53,5 +54,6 @@
   "whatToDoNext": "What to do next",
   "whatToDoNextTooltip": "In this section, the issues that need to be addressed in the next steps of the assessment are highlighted.",
   "whatToDoNow": "What to do now",
-  "whatToDoNowTooltip": "In this section, the tasks to be done are listed according to the current step of the assessment."
+  "whatToDoNowTooltip": "In this section, the tasks to be done are listed according to the current step of the assessment.",
+  "unapprovedAdvices": "Advice narration needs approval."
 }
