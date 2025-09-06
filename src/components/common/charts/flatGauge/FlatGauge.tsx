@@ -49,7 +49,6 @@ const FlatGauge = (props: IGaugeProps) => {
   );
 
   if (maturityLevelNumber < levelValue) return null;
-  const lightColors = getMaturityLevelColors(maturityLevelNumber, true);
   const darkColors = getMaturityLevelColors(maturityLevelNumber);
 
   const checkColor = (num: number): string => {
@@ -100,7 +99,6 @@ const FlatGauge = (props: IGaugeProps) => {
             levels={maturityLevelNumber}
             levelValue={levelValue}
             lng={lng}
-            lightColors={lightColors}
             darkColors={darkColors}
             position="horizontal"
             guideText={false}

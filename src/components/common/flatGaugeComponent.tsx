@@ -1,100 +1,101 @@
-import React, {useMemo} from "react";
+import React, { useMemo } from "react";
 import { Box, Typography } from "@mui/material";
 import { styles } from "@styles";
 import { t } from "i18next";
 import { useAssessmentContext } from "@providers/AssessmentProvider";
 
-
-enum pos {
-    horizontal = "horizontal",
-    vertical = "vertical",
-}
+const SEGMENT = {
+  horizontal: { width: 20, height: 12 },
+  vertical: { width: 24, height: 16 },
+};
 
 interface Props {
   levels: number;
   levelValue: number | null;
   lng?: string;
-  lightColors: string[];
   darkColors: string[];
-  position: "horizontal" | "vertical";
+  position?: "horizontal" | "vertical";
   guideText?: boolean;
   pointer?: boolean;
 }
-interface IArrow {
-  position: string;
+
+interface ArrowProps {
+  position: "horizontal" | "vertical";
   markerColor: string;
 }
 
-const Arrow = (props: IArrow) => {
-  const { position, markerColor } = props;
-  return position === pos.horizontal ? (
-    <Box
-      sx={{
-        width: 0,
-        height: 0,
-        borderLeft: "6px solid transparent",
-        borderRight: "6px solid transparent",
-        borderTop: `8px solid ${markerColor}`,
-      }}
-    />
-  ) : (
-    <Box
-      sx={{
-        width: 0,
-        height: 0,
-        borderTop: "6px solid transparent",
-        borderBottom: "6px solid transparent",
-        borderLeft: `8px solid ${markerColor}`,
-      }}
-    />
-  );
-};
+const Arrow: React.FC<ArrowProps> = ({ position, markerColor }) => (
+  <Box
+    sx={
+      position === "horizontal"
+        ? {
+            width: 0,
+            height: 0,
+            borderLeft: "6px solid transparent",
+            borderRight: "6px solid transparent",
+            borderTop: `8px solid ${markerColor}`,
+          }
+        : {
+            width: 0,
+            height: 0,
+            borderTop: "6px solid transparent",
+            borderBottom: "6px solid transparent",
+            borderLeft: `8px solid ${markerColor}`,
+          }
+    }
+  />
+);
 
 const FlatGaugeComponent: React.FC<Props> = ({
   levels,
   levelValue,
   lng,
-  lightColors,
   darkColors,
-  position= pos.horizontal,
+  position = "horizontal",
   pointer,
   guideText = false,
 }) => {
-  const LEGEND_WIDTH = position ===  pos.horizontal ? 150 : 30;
-
   const { assessmentInfo } = useAssessmentContext();
   const language = assessmentInfo?.language;
-  const lngCode = language?.code.toLowerCase()
-  const isRtl = lng == "fa" || lngCode == "fa"
+  const lngCode = language?.code.toLowerCase();
+  const isRtl = lng === "fa" || lngCode === "fa";
+
   const idx = levelValue
     ? Math.max(0, Math.min(levels - 1, levelValue - 1))
     : 0;
   const idxInverse = levels - 1 - idx;
 
+  const activeIdx = useMemo(() => {
+    return position === "horizontal" ? (isRtl ? idxInverse : idx) : idxInverse;
+  }, [position, isRtl, idx, idxInverse]);
+
   const segPct = 100 / levels;
-
-  const ArrowDir = useMemo(()=>{
-      if(position ===  pos.horizontal && (isRtl) ){
-          return idxInverse
-      }if(position ===  pos.horizontal && (lng != "fa" || lngCode != "fa") ){
-          return idx
-      }else {
-         return  idxInverse
-      }
-  },[lng,position,levelValue])
-
-  const activeIdx = ArrowDir;
   const centerPct = (activeIdx + 0.5) * segPct;
-
   const markerColor = darkColors[idx] ?? "#000";
 
-  const order = [...Array(levels).keys()];
+  const getBorderRadius = (i: number): string => {
+    const isFirst = i === 0;
+    const isLast = i === levels - 1;
+
+    if (position === "horizontal") {
+      if (isRtl) {
+        if (isFirst) return "0 2px 2px 0";
+        if (isLast) return "2px 0 0 2px";
+      } else {
+        if (isFirst) return "2px 0 0 2px";
+        if (isLast) return "0 2px 2px 0";
+      }
+    } else {
+      if (isFirst) return "0 0 2px 2px";
+      if (isLast) return "2px 2px 0 0";
+    }
+    return "0";
+  };
 
   return (
     <Box
-      width={LEGEND_WIDTH}
       sx={{
-        ...styles[position ===  pos.vertical ? "centerCH" : "centerH"],
+        ...styles[position === "vertical" ? "centerCH" : "centerH"],
         userSelect: "none",
         pointerEvents: "none",
         direction: isRtl ? "rtl" : "ltr",
@@ -112,23 +113,24 @@ const FlatGaugeComponent: React.FC<Props> = ({
         </Typography>
       )}
 
-      <Box sx={{ position: "relative", width: "100%" }}>
+      <Box sx={{ position: "relative" }}>
         <Box
           sx={{
             display: "flex",
-            flexDirection: position ===  pos.horizontal ? "row" : "column-reverse",
-            borderRadius: 0.5,
+            flexDirection: position === "horizontal" ? "row" : "column-reverse",
             overflow: "hidden",
-            width: "100%",
           }}
         >
-          {order.map((i) => (
+          {Array.from({ length: levels }).map((_, i) => (
             <Box
               key={i}
-              width={position === pos.horizontal ? `${100 / levels}%` : "100%"}
-              height={25}
-              bgcolor={lightColors[i]}
-              boxShadow={`inset 0 0 0 1px ${darkColors[i]}20`}
+              sx={{
+                width: SEGMENT[position].width,
+                height: SEGMENT[position].height,
+                bgcolor: darkColors[i],
+                border: "0.5px solid #3D4D5C80",
+                borderRadius: getBorderRadius(i),
+              }}
             />
           ))}
         </Box>
@@ -137,7 +139,7 @@ const FlatGaugeComponent: React.FC<Props> = ({
           <Box
             sx={{
               position: "absolute",
-              ...(position ===  pos.horizontal
+              ...(position === "horizontal"
                 ? {
                     left: `${centerPct}%`,
                     top: -10,
