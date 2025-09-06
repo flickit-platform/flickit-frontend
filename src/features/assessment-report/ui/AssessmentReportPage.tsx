@@ -192,7 +192,7 @@ export default function AssessmentReportPage() {
                             variant="bodyMedium"
                             sx={{ ...styles.rtlStyle(rtl) }}
                             dangerouslySetInnerHTML={{
-                              __html: assessment.overallInsight,
+                              __html: assessment.prosAndCons,
                             }}
                             className="tiptap"
                           />
