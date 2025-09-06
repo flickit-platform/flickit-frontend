@@ -80,6 +80,7 @@ const Gauge = ({
           }}
         >
           <Typography
+            component="div"
             sx={{
               fontFamily: languageDetector(t(maturity_level_status))
                 ? farsiFontFamily
