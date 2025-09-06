@@ -181,7 +181,7 @@ const NewAssessmentDialog = (props: IAssessmentCEFromDialogProps) => {
                 sx={{ ...styles.centerV }}
               >
                 <FolderOutlinedIcon
-                  sx={{ color: "surface.onVariant", background: "transparent" }}
+                  sx={{ color: "background.onVariant", background: "transparent" }}
                 />
                 <Typography>
                   <Trans i18nKey="spaces.targetSpace" />
@@ -215,7 +215,7 @@ const NewAssessmentDialog = (props: IAssessmentCEFromDialogProps) => {
                 sx={{ ...styles.centerV }}
               >
                 <LanguageIcon
-                  sx={{ color: "surface.onVariant", background: "transparent" }}
+                  sx={{ color: "background.onVariant", background: "transparent" }}
                 />
                 <Typography>
                   <Trans i18nKey="assessmentKit.assessmentLanguage" />

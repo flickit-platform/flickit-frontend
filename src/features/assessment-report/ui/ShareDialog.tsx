@@ -84,7 +84,7 @@ export default function ShareDialog({
       <>
         <Divider sx={{ my: 1 }} />
         <Typography
-          color={"surface.onVariant"}
+          color="background.onVariant"
           variant={"bodySmall"}
           fontFamily="inherit"
         >

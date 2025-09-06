@@ -1,9 +1,9 @@
 const ConfLevel100 = (props: any) => {
   return (
     <svg
-      width="31"
-      height="28"
-      viewBox="0 0 31 28"
+      width="20"
+      height="24"
+      viewBox="0 0 27 24"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >
