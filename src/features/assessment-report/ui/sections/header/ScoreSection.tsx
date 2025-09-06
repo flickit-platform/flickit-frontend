@@ -29,7 +29,7 @@ export default function ScoreSection({
       <Grid
         item
         xs={12}
-        md={isQuickMode ? 8.5 : 9.5}
+        md={isQuickMode ? 8.5 : 9.3}
         sx={{ display: "flex", flexDirection: "column" }}
       >
         {!isQuickMode && (
@@ -85,7 +85,7 @@ export default function ScoreSection({
       <Grid
         item
         xs={12}
-        md={isQuickMode ? 3.5 : 2.5}
+        md={isQuickMode ? 3.5 : 2.7}
         height="230px"
         sx={{ ...styles.centerVH }}
       >
@@ -95,7 +95,6 @@ export default function ScoreSection({
           maturity_level_number={gaugeProps.maturity_level_number}
           confidence_value={gaugeProps.confidence_value}
           confidence_text={gaugeProps.confidence_text}
-          isMobileScreen={false}
           hideGuidance
           status_font_variant="headlineMedium"
           maxWidth="240px"

@@ -176,20 +176,19 @@ const AssessmentReportContainer = (props: any) => {
                 </Box>
 
                 <Box
-                  width="240px"
-                  minWidth={{ xs: "100%", sm: "240px" }}
                   mt={1}
                   sx={{ ...styles.centerVH }}
+                  height="230px"
                 >
                   <Gauge
                     maturity_level_number={kit?.maturityLevelsCount}
-                    isMobileScreen={true}
                     maturity_level_status={maturityLevel?.title}
                     level_value={maturityLevel?.index ?? 0}
                     confidence_value={confidenceValue}
                     confidence_text={t("common.confidence") + ":"}
-                    hideGuidance={true}
-                    confidence_text_variant="bodyMedium"
+                    hideGuidance
+                    confidence_text_variant="semiBoldSmall"
+                    maxWidth="240px"
                   />
                 </Box>
               </Box>

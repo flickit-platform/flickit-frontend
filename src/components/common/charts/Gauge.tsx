@@ -20,7 +20,6 @@ interface IGaugeProps extends BoxProps {
   className?: string;
   hideGuidance?: boolean;
   confidence_text?: string | null;
-  isMobileScreen?: boolean;
   maturity_status_guide?: string | null;
   confidence_text_variant?: any;
   status_font_variant?: any;
@@ -72,7 +71,6 @@ const Gauge = ({
       {level_value ? (
         <Box
           sx={{
-            mt: "-15px",
             width: "100%",
             textAlign: "center",
             px: 1,
@@ -86,8 +84,6 @@ const Gauge = ({
                 ? farsiFontFamily
                 : primaryFontFamily,
               whiteSpace: "normal",
-              wordBreak: "break-word",
-              overflowWrap: "anywhere",
             }}
             variant={status_font_variant ?? "headlineMedium"}
             color="background.onVariant"

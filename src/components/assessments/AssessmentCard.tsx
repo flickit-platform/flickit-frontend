@@ -175,7 +175,6 @@ const AssessmentCard = ({
           justifyContent: "space-between",
           ":hover": { boxShadow: 9 },
         }}
-        elevation={4}
         data-cy="assessment-card"
       >
         {permissions.canManageSettings && (
@@ -214,46 +213,49 @@ const AssessmentCard = ({
               textDecoration: "none",
             }}
             component={Link}
+            mt={2}
             to={pathRoute(hasML)}
           >
             {show ? (
-              <Gauge
-                maturity_level_number={kit.maturityLevelsCount}
-                level_value={gaugeResult?.index ?? maturityLevel?.index}
-                maturity_level_status={
-                  gaugeResult?.title ?? maturityLevel?.title
-                }
-                status_font_variant="headlineSmall"
-                maxWidth="200px"
-              />
+              <>
+                <Gauge
+                  maturity_level_number={kit.maturityLevelsCount}
+                  level_value={gaugeResult?.index ?? maturityLevel?.index}
+                  maturity_level_status={
+                    gaugeResult?.title ?? maturityLevel?.title
+                  }
+                  status_font_variant="headlineSmall"
+                  maxWidth="200px"
+                  height="130px"
+                />
+                {permissions.canViewReport && !isQuickMode && (
+                  <Typography
+                    sx={{ ...styles.centerVH }}
+                    variant="bodySmall"
+                    color="background.onVariant"
+                    gap="0.125rem"
+                  >
+                    <Trans i18nKey="common.confidence" />:
+                    <ConfidenceLevel
+                      displayNumber
+                      inputNumber={Math.ceil(confidenceValue)}
+                      variant="titleSmall"
+                    />
+                  </Typography>
+                )}
+              </>
             ) : (
               <LoadingGauge />
             )}
           </Grid>
           {/* Confidence */}
-          {permissions.canViewReport && !isQuickMode && (
-            <Grid item xs={12}>
-              <Typography
-                sx={{ ...styles.centerVH }}
-                variant="bodySmall"
-                color="background.onVariant"
-                gap="0.125rem"
-              >
-                <Trans i18nKey="common.confidence" />:
-                <ConfidenceLevel
-                  displayNumber
-                  inputNumber={Math.ceil(confidenceValue)}
-                  variant="titleSmall"
-                />
-              </Typography>
-            </Grid>
-          )}
+
           {/* Buttons Section */}
           {buttonTypes.length > 0 && (
             <Grid
               item
               xs={12}
-              mt={1}
+              mt={2}
               sx={{
                 ...styles.centerCH,
                 gap: 1,
