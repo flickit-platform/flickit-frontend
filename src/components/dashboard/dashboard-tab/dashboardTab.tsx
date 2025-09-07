@@ -65,6 +65,20 @@ const DashboardTab = () => {
 
         item.metrics.name = item.category;
 
+        if (item.category === "advices" && item.metrics) {
+          const renameMap: Record<string, string> = {
+            unapproved: "unapprovedAdvices",
+            expired: "expiredAdvices",
+          };
+
+          Object.entries(renameMap).forEach(([oldKey, newKey]) => {
+            if (item.metrics[oldKey] !== undefined) {
+              item.metrics[newKey] = item.metrics[oldKey];
+              delete item.metrics[oldKey];
+            }
+          });
+        }
+
         const stepConditions: Record<
           number,
           (cat: string, metrics: Record<string, any>) => boolean

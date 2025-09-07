@@ -155,7 +155,7 @@ const TodoBox = (props: any) => {
                             now={now}
                             next={next}
                             originalName={item.name}
-                            fetchDashboard={fetchDashboard}
+                            fetchDashboard={fetchDashboard.query}
                             color={
                               now?.length > 0 && next?.length > 0
                                 ? "info"
@@ -197,6 +197,12 @@ export const IssuesItem = ({
   const approveInsights = useQuery({
     service: (args, config) =>
       service.assessments.insight.approveAll(args ?? { assessmentId }, config),
+    runOnMount: false,
+  });
+
+  const approveAdvice = useQuery({
+    service: (args, config) =>
+      service.assessments.advice.approveAI(args ?? { assessmentId }, config),
     runOnMount: false,
   });
 
@@ -247,9 +253,11 @@ export const IssuesItem = ({
     }
   };
 
-  const handleApproveAll = async () => {
+  const handleApproveAll = async (type: any) => {
     try {
-      await approveInsights.query();
+      type === "insight"
+        ? await approveInsights.query()
+        : await approveAdvice.query();
       await fetchDashboard();
     } catch (e) {
       showToast(e as ICustomError);
@@ -262,6 +270,9 @@ export const IssuesItem = ({
   };
 
   const regeneratedAll = async () => {
+    if (name == "expiredAdvices") {
+      return navigate(`../advice`);
+    }
     try {
       await regenerateInsights.query();
       await fetchDashboard();
@@ -282,9 +293,11 @@ export const IssuesItem = ({
     }
   };
 
-  const handleApproveAllExpired = async () => {
+  const handleApproveAllExpired = async (type: any) => {
     try {
-      await approveExpiredInsights.query();
+      type === "insight"
+        ? await approveExpiredInsights.query()
+        : await approveAdvice.query();
       await fetchDashboard();
     } catch (e) {
       showToast(e as ICustomError);
@@ -345,6 +358,8 @@ export const IssuesItem = ({
         : "dashboard.metadataIsNotProvided",
     unpublished: "dashboard.unpublishedReport",
     total: "dashboard.suggestAnyAdvicesSoFar",
+    unapprovedAdvices: "dashboard.unapprovedAdvices",
+    expiredAdvices: "dashboard.expiredAdvices",
   } as any;
 
   const colorPalette = (theme.palette as any)[color] ?? theme.palette.primary;
@@ -376,27 +391,37 @@ export const IssuesItem = ({
         color={colorPalette.dark}
         variant={textVariant}
       >
-        {typeof value === "number" && value !== 0 && (
-          <Box component="span">{value.toString()}</Box>
-        )}
+        {typeof value === "number" &&
+          value !== 0 &&
+          name != "unapprovedAdvices" &&
+          name != "expiredAdvices" && (
+            <Box component="span">{value.toString()}</Box>
+          )}
         {issueTextMap[name] && <Trans i18nKey={issueTextMap[name]} />}
       </Typography>
 
-      {name === "unapproved" && (
-        <Button
-          onClick={handleApproveAll}
-          sx={{
-            padding: "4px 10px",
-            marginInlineStart: "auto",
-          }}
-          color={color === "info" ? "primary" : color}
-          variant="outlined"
-        >
-          <Typography variant="labelMedium">
-            <Trans i18nKey="common.approveAll" />
-          </Typography>
-        </Button>
-      )}
+      {name === "unapproved" ||
+        (name === "unapprovedAdvices" && (
+          <Button
+            onClick={() =>
+              handleApproveAll(name === "unapproved" ? "insight" : "advice")
+            }
+            sx={{
+              padding: "4px 10px",
+              marginInlineStart: "auto",
+            }}
+            color={color === "info" ? "primary" : color}
+            variant="outlined"
+          >
+            <Typography variant="labelMedium">
+              <Trans
+                i18nKey={
+                  name === "unapproved" ? "common.approveAll" : "common.approve"
+                }
+              />
+            </Typography>
+          </Button>
+        ))}
 
       {name === "notGenerated" && (
         <Tooltip
@@ -421,49 +446,75 @@ export const IssuesItem = ({
           </div>
         </Tooltip>
       )}
-      {name == "expired" && (
-        <>
-          <Tooltip
-            disableHoverListener={issues?.unanswered < 1}
-            title={<Trans i18nKey="dashboard.allQuestonsMustBeAnsweredFirst" />}
-          >
-            <div
-              style={{
-                marginInlineStart: "auto",
-                color: theme.palette.primary.main,
-              }}
+      {name == "expired" ||
+        (name == "expiredAdvices" && (
+          <>
+            <Tooltip
+              disableHoverListener={issues?.unanswered < 1}
+              title={
+                name == "expired" ? (
+                  <Trans i18nKey="dashboard.allQuestonsMustBeAnsweredFirst" />
+                ) : (
+                  ""
+                )
+              }
             >
+              <div
+                style={{
+                  marginInlineStart: "auto",
+                  color: theme.palette.primary.main,
+                }}
+              >
+                <LoadingButton
+                  onClick={regeneratedAll}
+                  variant={"outlined"}
+                  disabled={
+                    name == "expired"
+                      ? issues?.unanswered > 0 || disableGenerateButtons
+                      : false
+                  }
+                  loading={regenerateInsights.loading}
+                  color={color === "info" ? "primary" : color}
+                >
+                  <Typography
+                    variant="labelMedium"
+                    sx={{ whiteSpace: "nowrap" }}
+                  >
+                    {name == "expired" && (
+                      <Trans i18nKey={"common.regenerateAll"} />
+                    )}
+                    {name == "expiredAdvices" && (
+                      <Trans i18nKey={"common.regenerate"} />
+                    )}
+                  </Typography>
+                </LoadingButton>
+              </div>
+            </Tooltip>
+            <Box>
               <LoadingButton
-                onClick={regeneratedAll}
-                variant={"outlined"}
-                disabled={issues?.unanswered > 0 || disableGenerateButtons}
-                loading={regenerateInsights.loading}
+                onClick={() =>
+                  handleApproveAllExpired(
+                    name === "unapproved" ? "insight" : "advice",
+                  )
+                }
+                loading={approveExpiredInsights.loading}
+                sx={{
+                  padding: "4px 10px",
+                  marginInlineStart: "auto",
+                }}
                 color={color === "info" ? "primary" : color}
+                variant="outlined"
               >
                 <Typography variant="labelMedium" sx={{ whiteSpace: "nowrap" }}>
-                  <Trans i18nKey={"common.regenerateAll"} />
+                  {name == "expired" && <Trans i18nKey={"common.approveAll"} />}
+                  {name == "expiredAdvices" && (
+                    <Trans i18nKey={"common.approve"} />
+                  )}
                 </Typography>
               </LoadingButton>
-            </div>
-          </Tooltip>
-          <Box>
-            <LoadingButton
-              onClick={handleApproveAllExpired}
-              loading={approveExpiredInsights.loading}
-              sx={{
-                padding: "4px 10px",
-                marginInlineStart: "auto",
-              }}
-              color={color === "info" ? "primary" : color}
-              variant="outlined"
-            >
-              <Typography variant="labelMedium" sx={{ whiteSpace: "nowrap" }}>
-                <Trans i18nKey="common.approveAll" />
-              </Typography>
-            </LoadingButton>
-          </Box>
-        </>
-      )}
+            </Box>
+          </>
+        ))}
       {name === "unresolvedComments" && (
         <Button
           onClick={(event) => handleSolvedComments(event)}
