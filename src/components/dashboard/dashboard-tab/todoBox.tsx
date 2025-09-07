@@ -264,6 +264,9 @@ export const IssuesItem = ({
   const regeneratedAll = async () => {
     try {
       await regenerateInsights.query();
+      if(name == "expiredAdvices"){
+       return navigate(`../advice`)
+      }
       await fetchDashboard();
     } catch (e) {
       const err = e as ICustomError;
@@ -378,7 +381,7 @@ export const IssuesItem = ({
         color={colorPalette.dark}
         variant={textVariant}
       >
-        {typeof value === "number" && value !== 0 && (
+        {typeof value === "number" && value !== 0 && name != "unapprovedAdvices" && name != "expiredAdvices" && (
           <Box component="span">{value.toString()}</Box>
         )}
         {issueTextMap[name] && <Trans i18nKey={issueTextMap[name]} />}
@@ -395,7 +398,7 @@ export const IssuesItem = ({
           variant="outlined"
         >
           <Typography variant="labelMedium">
-            <Trans i18nKey="common.approveAll" />
+            <Trans i18nKey={name === "unapproved" ? "common.approveAll" : "common.approve" } />
           </Typography>
         </Button>
       )}
@@ -427,7 +430,7 @@ export const IssuesItem = ({
         <>
           <Tooltip
             disableHoverListener={issues?.unanswered < 1}
-            title={<Trans i18nKey="dashboard.allQuestonsMustBeAnsweredFirst" />}
+            title={name == "expired" ? <Trans i18nKey="dashboard.allQuestonsMustBeAnsweredFirst" /> : ""}
           >
             <div
               style={{
@@ -438,12 +441,13 @@ export const IssuesItem = ({
               <LoadingButton
                 onClick={regeneratedAll}
                 variant={"outlined"}
-                disabled={issues?.unanswered > 0 || disableGenerateButtons}
+                disabled={name == "expired" ? issues?.unanswered > 0 || disableGenerateButtons : false}
                 loading={regenerateInsights.loading}
                 color={color === "info" ? "primary" : color}
               >
                 <Typography variant="labelMedium" sx={{ whiteSpace: "nowrap" }}>
-                  <Trans i18nKey={"common.regenerateAll"} />
+                  {name == "expired" &&  <Trans i18nKey={"common.regenerateAll"} />}
+                  {name == "expiredAdvices" &&  <Trans i18nKey={"common.regenerate"} />}
                 </Typography>
               </LoadingButton>
             </div>
@@ -460,7 +464,8 @@ export const IssuesItem = ({
               variant="outlined"
             >
               <Typography variant="labelMedium" sx={{ whiteSpace: "nowrap" }}>
-                <Trans i18nKey="common.approveAll" />
+                {name == "expired" &&  <Trans i18nKey={"common.approveAll"} />}
+                {name == "expiredAdvices" &&  <Trans i18nKey={"common.approve"} />}
               </Typography>
             </LoadingButton>
           </Box>
