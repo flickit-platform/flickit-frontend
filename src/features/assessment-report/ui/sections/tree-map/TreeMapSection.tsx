@@ -69,10 +69,12 @@ function toAttributeVM(
   };
 }
 
-const HeaderStrip: React.FC<{ vm: AttributeVM; levels: number, lng: string }> = ({
+const HeaderStrip: React.FC<{ vm: AttributeVM; levels: number, lng: string, isQuickMode: boolean, assessment: any }> = ({
   vm,
   levels,
-  lng
+  lng,
+  isQuickMode,
+  assessment
 }) => (
   <Box
     bgcolor="background.containerHigher"
@@ -138,6 +140,8 @@ const HeaderStrip: React.FC<{ vm: AttributeVM; levels: number, lng: string }> = 
           levelValue={vm.maturityLevel.value}
           text={vm.maturityLevel.title}
           textPosition="top"
+          confidenceLevelNum={Math.floor(assessment.confidenceValue)}
+          confidenceText={!isQuickMode ? t("common.confidence") + ":": ""}
           lng={lng}
           sx={{
             ...styles.centerVH,
@@ -303,6 +307,8 @@ export default function TreeMapSection({
             vm={vm}
             levels={assessment.assessmentKit.maturityLevelCount}
             lng={lng}
+            isQuickMode={isQuickMode}
+            assessment={assessment}
           />
           <BodyCard>
             <InsightBlock
