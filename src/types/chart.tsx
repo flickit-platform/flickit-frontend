@@ -7,6 +7,7 @@ export interface IFlatGauge {
 export interface IDynamicGaugeSVGProps {
   colorCode: string;
   value: number;
+  colorPallet: any[]
   confidence_value?: number | null;
   height?: number;
   width?: number | string;

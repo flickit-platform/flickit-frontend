@@ -280,39 +280,41 @@ export const statusColorMap: Record<NonNullable<TStatus>, string> = {
   "Not Calculated": "#b7b7b7",
 };
 
-export const C1 = "#B71515";
-export const C2 = "#D74427";
-export const C3 = "#F55C3D";
-export const C4 = "#F2995A";
-export const C5 = "#FFBC00";
-export const C6 = "#D2C931";
-export const C7 = "#99CB34";
-export const C8 = "#4FB34C";
-export const C9 = "#168345";
-export const C10 = "#0A5C25";
+export const C0 = "#821717";
+export const C1 = "#9B4545";
+export const C2 = "#B47474";
+export const C3 = "#CDA2A2";
+export const C4 = "#E6D1D1";
+export const C5 = "#F3F5F6";
+export const C6 = "#D1E6D8";
+export const C7 = "#A2CDB1";
+export const C8 = "#74B489";
+export const C9 = "#459B62";
+export const C10 = "#17823B";
 
-export const C1BG = "#B7151515";
-export const C2BG = "#D7442715";
-export const C3BG = "#F55C3D15";
-export const C4BG = "#F2995A15";
-export const C5BG = "#FFBC0015";
-export const C6BG = "#D2C93115";
-export const C7BG = "#99CB3415";
-export const C8BG = "#4FB34C15";
-export const C9BG = "#16834515";
-export const C10BG = "#0A5C2515";
+export const C0BG = "#82171730";
+export const C1BG = "#9B454530";
+export const C2BG = "#B4747430";
+export const C3BG = "#CDA2A230";
+export const C4BG = "#E6D1D130";
+export const C5BG = "#F3F5F630";
+export const C6BG = "#D1E6D830";
+export const C7BG = "#A2CDB130";
+export const C8BG = "#74B48930";
+export const C9BG = "#459B6230";
+export const C10BG = "#17823B30";
 
 export const maturityLevelColorMap: any = {
-  ML1: [C1],
-  ML2: [C1, C10],
-  ML3: [C1, C6, C10],
-  ML4: [C1, C5, C7, C10],
-  ML5: [C1, C4, C5, C8, C10],
-  ML6: [C1, C3, C5, C7, C8, C10],
-  ML7: [C1, C2, C4, C6, C7, C8, C10],
-  ML8: [C1, C2, C4, C5, C7, C8, C9, C10],
-  ML9: [C1, C2, C3, C4, C6, C7, C8, C9, C10],
-  ML10: [C1, C2, C3, C4, C5, C6, C7, C8, C9, C10],
+  ML1: [C0],
+  ML2: [C0, C10],
+  ML3: [C0, C5, C10],
+  ML4: [C0, C2, C8, C10],
+  ML5: [C0, C2, C5, C8, C10],
+  ML6: [C0, C2, C3, C7, C8, C10],
+  ML7: [C0, C2, C3, C5, C7, C8, C10],
+  ML8: [C0, C1, C2, C3, C7, C8, C9, C10],
+  ML9: [C0, C1, C2, C3, C5, C7, C8, C9, C10],
+  ML10: [C0, C1, C2, C3, C4, C6, C7, C8, C9, C10],
 };
 
 export const maturityLevelBGColorMap: any = {

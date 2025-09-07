@@ -1,4 +1,6 @@
 {
+  "aboutAssessmentKit": "About assessment kit",
+  "aboutAssessmentKitDesc": "To assess the system's status, the {{title}} assessment kit is used. This kit measures {{attributesCount}} main attributes across {{subjectsLength}} topics, namely {{subjects}}, and reports each attribute's score in {{maturityLevelCount}} maturity levels. The kit consists of {{questionnairesCount}} questionnaires, each of which will be reviewed separately below.",
   "assessmentReport": "Assessment report",
   "assessmentResult": "Assessment result",
   "assessmentKitEvaluatesMaturity": "This assessment kit evaluates the maturity of subjects and attributes across multiple levels.",
@@ -30,7 +32,6 @@
   "highScoringQuestions": "High-scoring questions",
   "kitWithTitle": "{{title}} kit",
   "peopleWithAccess": "People with access",
-  "overallStatus": "Overall status",
   "participants": "Participants",
   "publishReport": "Publish report",
   "publicShareTitle": "Public access (No login required)",
@@ -53,7 +54,7 @@
   "shareReport": "Share report",
   "shareReportViaEmail": "Share the report with new people via email...",
   "shareOptions": "Sharing options",
-  "subjectsAndAttributes": "Subjects and Attributes",
+  "subjectsAndAttributes": "Subjects and attributes",
   "treemapEmptyState": "Click on any attribute in the chart to view details",
   "total": "Total",
   "viewReport": "View report",

@@ -216,7 +216,7 @@ export default function HowIsItMade({ lng, report }: any) {
           </InnerAccordion>
 
           <InnerAccordion
-            title={t("assessmentKit.participant", { lng })}
+            title={t("assessmentReport.participants", { lng })}
             lng={lng}
           >
             {assessmentProcess.participant ? (
@@ -237,7 +237,7 @@ export default function HowIsItMade({ lng, report }: any) {
           </InnerAccordion>
 
           <InnerAccordion
-            title={t("assessmentKit.assessmentKit", { lng })}
+            title={t("assessmentReport.aboutAssessmentKit", { lng })}
             lng={lng}
           >
             <Typography
@@ -245,7 +245,7 @@ export default function HowIsItMade({ lng, report }: any) {
               variant="bodyMedium"
               color={"text.primary"}
             >
-              {t("assessmentKit.assessmentKitDescription", {
+              {t("assessmentReport.aboutAssessmentKitDesc", {
                 lng,
                 title: assessmentKit.title,
                 attributesCount: assessmentKit.attributesCount,

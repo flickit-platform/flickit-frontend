@@ -2,14 +2,15 @@ import Box, { BoxProps } from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import { lazy, Suspense, useMemo, useRef } from "react";
 import { Trans } from "react-i18next";
-import { styles, getMaturityLevelColors } from "@styles";
+import { getMaturityLevelColors } from "@styles";
 import SkeletonGauge from "@common/charts/SkeletonGauge";
 import ConfidenceLevel from "@/utils/confidenceLevel/confidenceLevel";
-import PermissionRequired from "@common/charts/permissionRequired";
+import mlIndicator from "@/assets/svg/ml-indicator.svg";
+import permissionRequired from "@/assets/svg/permission-required.svg";
 import languageDetector from "@/utils/languageDetector";
 import { t } from "i18next";
 import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
-
+import { styles } from "@styles";
 interface IGaugeProps extends BoxProps {
   maturity_level_number: number;
   maturity_level_status: string;
@@ -19,11 +20,9 @@ interface IGaugeProps extends BoxProps {
   className?: string;
   hideGuidance?: boolean;
   confidence_text?: string | null;
-  isMobileScreen?: boolean;
   maturity_status_guide?: string | null;
   confidence_text_variant?: any;
   status_font_variant?: any;
-  textPosition?: "top" | "bottom";
 }
 
 const Gauge = ({
@@ -31,22 +30,18 @@ const Gauge = ({
   maturity_level_number = 5,
   level_value,
   confidence_value = 0,
-  height = 200,
+  height,
   className,
-  hideGuidance,
-  isMobileScreen,
   confidence_text,
   maturity_status_guide,
   confidence_text_variant = "titleMedium",
   status_font_variant,
-  textPosition = "top",
   ...rest
 }: IGaugeProps) => {
   const colorPallet = getMaturityLevelColors(maturity_level_number);
   const colorCode = colorPallet?.[level_value - 1] ?? "disabled.main";
 
   const gaugeComponentCache = useRef<any>({});
-
   const GaugeComponent = useMemo(() => {
     gaugeComponentCache.current[maturity_level_number] ??= lazy(
       () => import(`./GaugeComponent${maturity_level_number}.tsx`),
@@ -54,115 +49,64 @@ const Gauge = ({
     return gaugeComponentCache.current[maturity_level_number];
   }, [maturity_level_number]);
 
-  const calculateFontSize = (length: number): string => {
-    const maxLength = 14; // Example threshold for maximum length
-    const minLength = 4; // Example threshold for minimum length
-    let maxFontSizeRem = 1.5; // 24px / 16 = 1.5rem
-    let minFontSizeRem = 1; // 18px / 16 = 1.125rem
-    if (isMobileScreen) {
-      maxFontSizeRem = 2.5;
-      minFontSizeRem = 1.125;
-    }
-    if (hideGuidance && !isMobileScreen) {
-      maxFontSizeRem = 3;
-      minFontSizeRem = 2.25;
-    }
-
-    if (length <= minLength) return `${maxFontSizeRem}rem`;
-    if (length >= maxLength) return `${minFontSizeRem}rem`;
-
-    const fontSizeRem =
-      maxFontSizeRem -
-      ((length - minLength) / (maxLength - minLength)) *
-        (maxFontSizeRem - minFontSizeRem);
-    return `${fontSizeRem}rem`;
-  };
-
-  const fontSize = calculateFontSize(maturity_level_status?.length ?? 0);
-
   return (
-    <Box
-      position="relative"
-      width="100%"
-      height={height}
-      overflow="hidden"
-      {...rest}
-    >
-      <Suspense fallback={<SkeletonGauge />}>
-        {maturity_level_status ? (
-          <GaugeComponent
-            confidence_value={confidence_value}
-            colorCode={colorCode}
-            value={level_value || -1}
-            height={height}
-            className={className}
-          />
-        ) : (
-          <img
-            alt="empty"
-            width="100%"
-            height={height}
-            src="/assets/svg/maturityNull.svg"
-          />
-        )}
-      </Suspense>
+    <Box width="100%" overflow="visible" position="relative" {...rest}>
+      <Box position="relative" width="100%" height={height} overflow="hidden">
+        <Suspense fallback={<SkeletonGauge />}>
+          {maturity_level_status ? (
+            <GaugeComponent
+              confidence_value={confidence_value}
+              colorPallet={colorPallet}
+              colorCode={colorCode}
+              value={level_value || -1}
+              height={height}
+              className={className}
+            />
+          ) : (
+            <img alt="empty" width="100%" height={height} src={mlIndicator} />
+          )}
+        </Suspense>
+      </Box>
+
       {level_value ? (
         <Box
           sx={{
-            ...styles.centerCVH,
-            position: "absolute",
-            top: isMobileScreen ? "unset" : "50%",
-            bottom: isMobileScreen ? "4%" : "unset",
-            left: "50%",
-            transform: isMobileScreen
-              ? "translateX(-50%)"
-              : "translate(-50%, -50%)",
+            width: "100%",
             textAlign: "center",
+            px: 1,
+            pointerEvents: "none",
           }}
         >
-          {!hideGuidance && !isMobileScreen && (
-            <Typography
-              variant="subtitle2"
-              color="black"
-              fontSize={{ xs: "1.35rem", sm: "1.35rem", md: "0.875rem" }}
-            >
-              <Trans i18nKey="common.maturityGuidanceFirst" />
-            </Typography>
-          )}
-          {maturity_status_guide && (
-            <Typography
-              mt="1rem"
-              variant={confidence_text_variant}
-              color="#6C8093"
-            >
-              {maturity_status_guide}
-            </Typography>
-          )}
           <Typography
+            component="div"
             sx={{
-              fontWeight: "bold",
               fontFamily: languageDetector(t(maturity_level_status))
                 ? farsiFontFamily
                 : primaryFontFamily,
+              whiteSpace: "normal",
             }}
-            variant={status_font_variant ?? "h6"}
-            color={colorCode}
-            fontSize={status_font_variant ? "2rem" : fontSize}
-            mt={maturity_status_guide ? "0.5rem" : "0px"}
+            variant={status_font_variant ?? "headlineMedium"}
+            color="background.onVariant"
           >
             {maturity_level_status}
           </Typography>
+
           {confidence_text && (
             <Typography
               variant={confidence_text_variant}
               color="background.onVariant"
-              mt={!isMobileScreen ? "1.5rem" : "unset"}
               gap="0.125rem"
+              mt="4px"
               sx={{
-                ...styles.centerVH,
+                display: "inline-flex",
+                alignItems: "center",
+                justifyContent: "center",
                 fontFamily: languageDetector(confidence_text)
                   ? farsiFontFamily
                   : primaryFontFamily,
+                whiteSpace: "normal",
+                wordBreak: "break-word",
+                overflowWrap: "anywhere",
               }}
             >
               {confidence_text}
@@ -178,28 +122,44 @@ const Gauge = ({
               />
             </Typography>
           )}
-          {!hideGuidance && !isMobileScreen && (
+
+          {maturity_status_guide && (
             <Typography
-              variant="subtitle2"
-              color="black"
-              fontSize={{ xs: "1.35rem", sm: "1.35rem", md: "0.875rem" }}
+              variant={confidence_text_variant}
+              color="#6C8093"
+              sx={{
+                whiteSpace: "normal",
+                wordBreak: "break-word",
+                overflowWrap: "anywhere",
+              }}
             >
-              <Trans i18nKey="common.maturityGuidanceSecond" />
+              {maturity_status_guide}
             </Typography>
           )}
         </Box>
       ) : (
         <Box
-          sx={{ ...styles.centerCVH, bottom: "22%", left: "25%", right: "25%" }}
-          position="absolute"
+          sx={{
+            ...styles.centerCVH,
+            position: "absolute",
+            inset: 0,
+            gap: "8px",
+            pointerEvents: "none",
+            px: 2,
+          }}
         >
-          <PermissionRequired />
+          <img
+            alt="empty"
+            width="80px"
+            height="80px"
+            src={permissionRequired}
+          />{" "}
           <Typography
-            sx={{ fontWeight: "bold", whiteSpace: "nowrap" }}
-            variant="h5"
-            color="GrayText"
+            variant="headlineSmall"
+            color="background.onVariant"
+            textAlign="center"
           >
-            <Trans i18nKey="notification.permissionRequired" />
+            <Trans i18nKey="notification.reportInaccebile" />
           </Typography>
         </Box>
       )}
