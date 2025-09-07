@@ -115,7 +115,7 @@ const ActionPopup = ({
         onClick={togglePopup}
         sx={{
           display: "flex",
-          minWidth: "210px",
+          minWidth: "260px",
           justifyContent: "space-between",
           backgroundColor: colorScheme.light,
           borderRadius: borderRadiusValue,
@@ -253,8 +253,10 @@ const ActionContent = ({
     <Typography
       color={colorScheme.main}
       textAlign="justify"
-      variant="bodySmall"
       mb={1}
+      sx={(theme) => ({
+        ...theme.typography.bodySmall,
+      })}
     >
       {texts.description}
     </Typography>

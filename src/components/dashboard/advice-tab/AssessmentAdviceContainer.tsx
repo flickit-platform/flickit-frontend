@@ -14,11 +14,13 @@ import AdviceItems from "./advice-items/AdviceItems";
 import { styles } from "@styles";
 import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
-import AIGenerated from "@common/tags/AIGenerated";
 import { ErrorCodes } from "@/types/index";
 import useCalculate from "@/hooks/useCalculate";
 import FaWandMagicSparkles from "@/components/common/icons/FaWandMagicSparkles";
 import { useAssessmentContext } from "@/providers/AssessmentProvider";
+import useInsightPopup from "@/hooks/useAssessmentInsightPopup";
+import ActionPopup from "@/components/common/buttons/ActionPopup";
+import { t } from "i18next";
 
 const AssessmentAdviceContainer = (props: any) => {
   const { permissions } = useAssessmentContext();
@@ -99,6 +101,44 @@ const AssessmentAdviceContainer = (props: any) => {
     setIsAIGenerated(!!fetchAdviceNarration.data?.aiNarration);
   }, [fetchAdviceNarration.data]);
 
+  const approveAdvice = async (event: React.SyntheticEvent) => {
+    try {
+      event.stopPropagation();
+      await ApproveAIAdvice.query().then(() => {
+        fetchAdviceNarration.query();
+      });
+    } catch (e) {}
+  };
+
+  const ApproveAIAdvice = useQuery({
+    service: (args, config) =>
+      service.assessments.advice.approveAI(args ?? { assessmentId }, config),
+    runOnMount: false,
+  });
+
+  const {
+    status,
+    hidePrimaryButton,
+    onPrimaryAction,
+    loadingPrimary,
+    onSecondaryAction,
+    loadingSecondary,
+    colorScheme,
+    texts,
+  } = useInsightPopup({
+    insight:
+      fetchAdviceNarration.data?.aiNarration?.narration ??
+      fetchAdviceNarration.data?.assessorNarration?.narration,
+    isExpired: fetchAdviceNarration.data?.issues?.expired,
+    isApproved: !fetchAdviceNarration.data?.issues?.unapproved,
+    initQuery: handleClickOpen,
+    initLoading: false,
+    approveAction: approveAdvice,
+    approveLoading: ApproveAIAdvice.loading,
+    AIEnabled: fetchAdviceNarration.data?.aiEnabled,
+    label: t("common.advice")
+  });
+
   return (
     <QueryBatchData
       queryBatchData={[fetchAdviceNarration]}
@@ -121,41 +161,27 @@ const AssessmentAdviceContainer = (props: any) => {
                     <Typography variant="semiBoldLarge">
                       <Trans i18nKey="advice.approachToAdvice" />
                     </Typography>
-                    {isAIGenerated && <AIGenerated />}
                   </Box>
-                  <Tooltip
-                    title={
-                      !narrationComponent.aiEnabled && (
-                        <Trans i18nKey="advice.AIDisabled" />
-                      )
-                    }
-                  >
-                    <div>
-                      <Button
-                        variant="contained"
-                        sx={{
-                          display: "flex",
-                          gap: 1,
-                        }}
-                        size="small"
-                        onClick={handleClickOpen}
-                        disabled={!narrationComponent.aiEnabled}
-                      >
-                        <Trans
-                          i18nKey={
-                            isAIGenerated
-                              ? "advice.regenerateAdvicesViaAI"
-                              : "advice.generateAdvicesViaAI"
-                          }
-                        />
-                        <FaWandMagicSparkles
-                          styles={{
-                            color: "white",
-                          }}
-                        />
-                      </Button>
-                    </div>
-                  </Tooltip>
+                  {fetchAdviceNarration.data?.editable && (
+                    <ActionPopup
+                      status={status}
+                      hidePrimaryButton={hidePrimaryButton}
+                      onPrimaryAction={onPrimaryAction}
+                      loadingPrimary={loadingPrimary}
+                      onSecondaryAction={onSecondaryAction}
+                      loadingSecondary={loadingSecondary}
+                      colorScheme={colorScheme}
+                      texts={texts}
+                      disablePrimaryButton={
+                        !permissions?.approveAdviceNarration
+                      }
+                      disablePrimaryButtonText={
+                        t(
+                          "assessment.questionsArentCompleteSoAICantBeGenerated",
+                        ) ?? ""
+                      }
+                    />
+                  )}
                 </Box>
 
                 <AssessmentReportNarrator

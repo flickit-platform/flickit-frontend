@@ -5,10 +5,9 @@ export const advice = {
     { assessmentId }: { assessmentId: string },
     config?: AxiosRequestConfig<any>,
   ) {
-    return axios.get(
-      `/api/v1/assessments/${assessmentId}/advice-narration/`,
-      { ...(config ?? {}) },
-    );
+    return axios.get(`/api/v1/assessments/${assessmentId}/advice-narration/`, {
+      ...(config ?? {}),
+    });
   },
 
   updateNarration(
@@ -62,6 +61,16 @@ export const advice = {
       `/api/v1/assessments/${assessmentId}/advice-narration-ai/`,
       { attributeLevelTargets, adviceListItems },
       config,
+    );
+  },
+
+  approveAI(
+    { assessmentId }: { assessmentId: string },
+    config?: AxiosRequestConfig<any>,
+  ) {
+    return axios.put(
+      `/api/v1/assessments/${assessmentId}/approve-advice-narration/`,
+      { ...(config ?? {}) },
     );
   },
 };
