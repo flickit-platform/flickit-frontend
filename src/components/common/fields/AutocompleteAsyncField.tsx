@@ -356,7 +356,7 @@ const AutocompleteBaseField = (
           label={label}
           fullWidth
           inputRef={ref}
-          error={hasError || errorObject?.response?.data.message}
+          error={!inputValue && (hasError || errorObject?.response?.data.message)}
           helperText={
             (errorMessage as ReactNode) ||
             (errorObject?.response?.data.message &&
