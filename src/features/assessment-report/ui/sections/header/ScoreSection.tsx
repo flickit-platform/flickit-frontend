@@ -99,6 +99,7 @@ export default function ScoreSection({
           status_font_variant="headlineMedium"
           maxWidth="240px"
           confidence_text_variant="semiBoldSmall"
+          height="156px"
         />
       </Grid>
     </Grid>
