@@ -226,7 +226,7 @@ const AssessmentCard = ({
                   }
                   status_font_variant="headlineSmall"
                   maxWidth="200px"
-                  height="130px"
+                  height={permissions.canViewReport ? "130px" : "unset"}
                 />
                 {permissions.canViewReport && !isQuickMode && (
                   <Typography
