@@ -64,7 +64,7 @@ const AssessmentContainer = () => {
 
   useEffect(() => {
     fetchSpaceInfo.query();
-  }, []);
+  }, [data.length]);
   const isSmallScreen = useScreenResize("sm");
 
   const theme = useTheme();
