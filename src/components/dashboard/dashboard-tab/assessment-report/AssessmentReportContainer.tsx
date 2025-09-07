@@ -178,6 +178,7 @@ const AssessmentReportContainer = (props: any) => {
                 <Box
                   mt={1}
                   sx={{ ...styles.centerVH }}
+                  width="100%"
                   height="230px"
                 >
                   <Gauge
