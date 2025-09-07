@@ -7,6 +7,7 @@ import { confidenceColor, getMaturityLevelColors, styles } from "@styles";
 import { capitalizeFirstLetter } from "@/utils/filterLetter";
 import languageDetector from "@/utils/languageDetector";
 import FlatGaugeComponent from "@common/flatGaugeComponent";
+import ConfidenceLevel from "@utils/confidenceLevel/confidenceLevel";
 
 type TPosition = "top" | "left";
 
@@ -60,8 +61,6 @@ const FlatGauge = (props: IGaugeProps) => {
     }
   };
 
-  const colorPallet = getMaturityLevelColors(maturityLevelNumber);
-  const colorCode = colorPallet ? colorPallet[levelValue - 1] : "disabled.main";
   const isFarsi = languageDetector(text ?? "");
 
   return (
@@ -77,9 +76,8 @@ const FlatGauge = (props: IGaugeProps) => {
         >
           {textPosition === "top" && (
             <Typography
-              color={colorCode}
+              color={"surface.on"}
               sx={{
-                color: colorCode,
                 fontSize: "1.25rem",
                 fontWeight: "bold",
                 fontFamily: isFarsi ? farsiFontFamily : primaryFontFamily,
@@ -103,10 +101,14 @@ const FlatGauge = (props: IGaugeProps) => {
             position="horizontal"
             guideText={false}
             pointer={true}
+            segment={{
+              horizontal: { width: 30, height: 18 },
+              vertical: { width: 24, height: 16 },
+            }}
             />
             {textPosition === "left" && (
               <Typography
-                color={colorCode}
+                color={"surface.on"}
                 sx={{
                   fontFamily: isFarsi ? farsiFontFamily : primaryFontFamily,
                   ml: 0.5,
@@ -128,6 +130,7 @@ const FlatGauge = (props: IGaugeProps) => {
                 fontFamily: languageDetector(confidenceText ?? "")
                   ? farsiFontFamily
                   : primaryFontFamily,
+                color : "surface.onVariant"
               }}
             >
               {confidenceText}
@@ -142,6 +145,7 @@ const FlatGauge = (props: IGaugeProps) => {
               >
                 {confidenceLevelNum}%
               </Typography>
+              <ConfidenceLevel inputNumber={confidenceLevelNum} />
             </Typography>
           )}
         </Box>
