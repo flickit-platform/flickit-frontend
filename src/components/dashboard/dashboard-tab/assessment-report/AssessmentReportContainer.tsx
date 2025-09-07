@@ -189,6 +189,7 @@ const AssessmentReportContainer = (props: any) => {
                     hideGuidance
                     confidence_text_variant="semiBoldSmall"
                     maxWidth="240px"
+                    height="156px"
                   />
                 </Box>
               </Box>
