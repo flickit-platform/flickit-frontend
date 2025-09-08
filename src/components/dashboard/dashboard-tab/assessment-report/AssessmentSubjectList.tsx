@@ -6,7 +6,7 @@ import { ISubjectInfo } from "@/types/index";
 interface IAssessmentSubjectListProps {
   subjects: ISubjectInfo[];
   colorCode: string;
-  maturityLevelCount?: number;
+  maturityLevelCount: number;
   reloadQuery?: any;
   progress?: number;
 }

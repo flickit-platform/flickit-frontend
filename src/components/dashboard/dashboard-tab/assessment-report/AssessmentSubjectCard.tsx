@@ -15,6 +15,7 @@ import languageDetector from "@/utils/languageDetector";
 import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
 import DonutChart from "../../../common/charts/donutChart/donutChart";
 import SubjectContainer from "../../../subject-report-old/SubjectContainer";
+import FlatGaugeComponent from "@common/flatGaugeComponent";
 
 interface IAssessmentSubjectCardProps extends ISubjectInfo {
   maturity_level?: IMaturityLevel;
@@ -47,7 +48,9 @@ export const AssessmentSubjectAccordion = (
   ) => {
     setExpanded(isExpanded);
   };
-
+  console.log(maturityLevelCount,maturityLevel,confidenceValue,"oooooo");
+  const darkColors = getMaturityLevelColors(maturityLevelCount ?? 5);
+  console.log();
   return (
     <Accordion
       expanded={expanded}
@@ -186,10 +189,20 @@ export const AssessmentSubjectAccordion = (
           </Grid>
           {!isMobileScreen && (
             <Grid item xs={6} lg={1} md={1} sm={12}>
-              <SubjectStatus
-                title={title}
-                maturity_level={maturityLevel}
-                maturityLevelCount={maturityLevelCount}
+              {/*<SubjectStatus*/}
+              {/*  title={title}*/}
+              {/*  maturity_level={maturityLevel}*/}
+              {/*  maturityLevelCount={maturityLevelCount}*/}
+              {/*/>*/}
+              <FlatGaugeComponent
+                levels={5}
+                levelValue={3}
+                lng={"fa"}
+                darkColors={darkColors}
+                position={"vertical-trapezoid"}
+                guideText={false}
+                pointer={true}
+                segment={{width: 24, height: 16}}
               />
             </Grid>
           )}

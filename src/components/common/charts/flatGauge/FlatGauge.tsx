@@ -53,7 +53,7 @@ const FlatGauge = (props: IGaugeProps) => {
 
   if (maturityLevelNumber < levelValue) return null;
   const darkColors = getMaturityLevelColors(maturityLevelNumber);
-
+  console.log(maturityLevelNumber,"maturityLevelNumber");
   const checkColor = (num: number): string => {
     if (num == 100) {
       return confidenceColor[4];
