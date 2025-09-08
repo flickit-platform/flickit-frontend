@@ -364,6 +364,7 @@ const AutocompleteBaseField = (
             helperText
           }
           sx={{
+            background: "#fff",
             "& .MuiOutlinedInput-root": {
               fontFamily: farsiFontFamily,
               "& .MuiAutocomplete-endAdornment": {
