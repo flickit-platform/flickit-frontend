@@ -12,7 +12,7 @@ interface Props {
   position?: "horizontal" | "vertical";
   guideText?: boolean;
   pointer?: boolean;
-  segment?: any;
+  segment?: {width: number, height: number};
 }
 
 interface ArrowProps {
@@ -51,8 +51,7 @@ const FlatGaugeComponent: React.FC<Props> = ({
   pointer,
   guideText = false,
   segment = {
-    horizontal: { width: 20, height: 12 },
-    vertical: { width: 24, height: 16 },
+   width: 20, height: 12
   },
 }) => {
   const { assessmentInfo } = useAssessmentContext();
@@ -126,8 +125,8 @@ const FlatGaugeComponent: React.FC<Props> = ({
             <Box
               key={i}
               sx={{
-                width: segment[position].width,
-                height: segment[position].height,
+                width: segment.width,
+                height: segment.height,
                 bgcolor: darkColors[i],
                 border: "0.5px solid #3D4D5C80",
                 borderRadius: getBorderRadius(i),

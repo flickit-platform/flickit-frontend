@@ -19,6 +19,7 @@ interface IGaugeProps extends BoxProps {
   confidenceLevelNum?: number;
   confidenceText?: string | null;
   lng?: string;
+  segment?: {width: number, height: number}
 }
 
 export const confidencePallet: any = {
@@ -94,6 +95,7 @@ const FlatGauge = (props: IGaugeProps) => {
             sx={{ ...styles.centerV }}
           >
             <FlatGaugeComponent
+              {...rest}
             levels={maturityLevelNumber}
             levelValue={levelValue}
             lng={lng}
@@ -101,10 +103,6 @@ const FlatGauge = (props: IGaugeProps) => {
             position="horizontal"
             guideText={false}
             pointer={true}
-            segment={{
-              horizontal: { width: 30, height: 18 },
-              vertical: { width: 24, height: 16 },
-            }}
             />
             {textPosition === "left" && (
               <Typography
@@ -134,18 +132,7 @@ const FlatGauge = (props: IGaugeProps) => {
               }}
             >
               {confidenceText}
-              <Typography
-                variant="titleMedium"
-                color={checkColor(confidenceLevelNum)}
-                sx={{
-                  fontFamily: languageDetector(confidenceText ?? "")
-                    ? farsiFontFamily
-                    : primaryFontFamily,
-                }}
-              >
-                {confidenceLevelNum}%
-              </Typography>
-              <ConfidenceLevel inputNumber={confidenceLevelNum} />
+              <ConfidenceLevel displayNumber={true} inputNumber={confidenceLevelNum} />
             </Typography>
           )}
         </Box>

@@ -301,6 +301,9 @@ const SubjectAttributeCard = (props: any) => {
                   confidenceLevelNum={Math.floor(confidenceValue)}
                   confidenceText={t("common.confidence") + ":"}
                   textPosition="top"
+                  segment={{
+                    width: 30, height: 18
+                  }}
                   sx={{
                     ...styles.centerVH,
                     width: "100%",
