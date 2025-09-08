@@ -236,7 +236,7 @@ const SubjectAttributeCard = (props: any) => {
               borderRadius: "16px",
             }}
           >
-            <Grid item xs={12} sm={8} md={9} lg={10} sx={{ p: 4 }}>
+            <Grid item xs={12} sm={9} sx={{ p: 4 }}>
               <Title>
                 <Typography
                   variant="headlineSmall"
@@ -274,7 +274,7 @@ const SubjectAttributeCard = (props: any) => {
                 {description}
               </Typography>
             </Grid>
-            <Grid item xs={12} sm={4} md={3} lg={2}>
+            <Grid item xs={12} sm={3}>
               <Box
                 width="100%"
                 height="100%"
