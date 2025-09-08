@@ -64,7 +64,7 @@ const AssessmentContainer = () => {
 
   useEffect(() => {
     fetchSpaceInfo.query();
-  }, []);
+  }, [data.length]);
   const isSmallScreen = useScreenResize("sm");
 
   const theme = useTheme();
@@ -192,6 +192,7 @@ const AssessmentContainer = () => {
             <Box>
               <Button
                 startIcon={<AddRoundedIcon />}
+                disabled={!fetchSpaceInfo.data?.canCreateAssessment}
                 variant="contained"
                 sx={{
                   animation: `${animations.pomp} 1.6s infinite cubic-bezier(0.280, 0.840, 0.420, 1)`,
