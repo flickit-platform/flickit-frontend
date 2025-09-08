@@ -123,6 +123,7 @@ const FlatGauge = (props: IGaugeProps) => {
           {textPosition === "top" && confidenceText && (
             <Typography
               variant="bodyMedium"
+              color={"surface.onVariant"}
               sx={{
                 ...styles.centerVH,
                 gap: "5px",
@@ -130,7 +131,6 @@ const FlatGauge = (props: IGaugeProps) => {
                 fontFamily: languageDetector(confidenceText ?? "")
                   ? farsiFontFamily
                   : primaryFontFamily,
-                color : "surface.onVariant"
               }}
             >
               {confidenceText}
