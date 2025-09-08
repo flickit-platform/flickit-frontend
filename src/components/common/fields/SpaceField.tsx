@@ -77,6 +77,7 @@ export const SpaceField = ({
       defaultValue={computedDefault as any}
       label={label ?? <Trans i18nKey="spaces.space" />}
       createItemQuery={createItemQuery}
+      showIconBeforeOption={true}
       {...rest}
     />
   );

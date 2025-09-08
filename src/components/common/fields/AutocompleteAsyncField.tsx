@@ -112,6 +112,7 @@ interface IAutocompleteAsyncFieldBase
   createItemQuery?: any;
   setError?: any;
   searchable?: boolean;
+  showIconBeforeOption?: boolean;
 }
 
 const AutocompleteBaseField = (
@@ -157,6 +158,7 @@ const AutocompleteBaseField = (
     searchable = true,
     disabled,
     filterSelectedOptions = true,
+    showIconBeforeOption,
     ...rest
   } = props;
   const theme = useTheme();
@@ -404,14 +406,16 @@ const AutocompleteBaseField = (
               gap="4.5px"
               sx={{ ...styles.centerVH }}
             >
-              {option?.isDefault ? (
-                <HomeIcon
-                  sx={{ fontSize: "20px", color: "surface.onVariant" }}
-                />
-              ) : (
-                <FolderOutlinedIcon
-                  sx={{ color: "surface.onVariant", fontSize: "20px" }}
-                />
+              {showIconBeforeOption && (
+                option?.isDefault ? (
+                  <HomeIcon
+                    sx={{ fontSize: "20px", color: "surface.onVariant" }}
+                  />
+                ) : (
+                  <FolderOutlinedIcon
+                    sx={{ color: "surface.onVariant", fontSize: "20px" }}
+                  />
+                )
               )}
               {option?.[filterFields[0]]}
             </Box>

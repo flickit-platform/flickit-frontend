@@ -316,6 +316,7 @@ const AssessmentKitField = ({
       label={<Trans i18nKey="assessmentKit.assessmentKit" />}
       data-cy="assessment_kit"
       filterFields={["title", "mainLanguage"]}
+      showIconBeforeOption={true}
     />
   );
 };
