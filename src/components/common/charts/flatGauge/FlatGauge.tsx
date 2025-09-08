@@ -8,6 +8,7 @@ import { capitalizeFirstLetter } from "@/utils/filterLetter";
 import languageDetector from "@/utils/languageDetector";
 import FlatGaugeComponent from "@common/flatGaugeComponent";
 import ConfidenceLevel from "@utils/confidenceLevel/confidenceLevel";
+import Tooltip from "@mui/material/Tooltip";
 
 type TPosition = "top" | "left";
 
@@ -76,16 +77,27 @@ const FlatGauge = (props: IGaugeProps) => {
           sx={{ ...styles.centerVH }}
         >
           {textPosition === "top" && (
-            <Typography
-              color={"surface.on"}
-              sx={{
-                fontSize: "1.25rem",
-                fontWeight: "bold",
-                fontFamily: isFarsi ? farsiFontFamily : primaryFontFamily,
-              }}
+            <Tooltip title={text}
+            sx={{
+              fontFamily: isFarsi ? farsiFontFamily : primaryFontFamily,
+            }}
             >
-              {capitalizeFirstLetter(text)}
-            </Typography>
+              <Typography
+                color={"surface.on"}
+                sx={{
+                  fontSize: "1.25rem",
+                  fontWeight: "bold",
+                  fontFamily: isFarsi ? farsiFontFamily : primaryFontFamily,
+                  whiteSpace: "nowrap",
+                  textAlign: "center",
+                  overflow: "hidden",
+                  textOverflow: "ellipsis",
+                  width: { sm: "100px", md: "200px", lg: "300px" },
+                }}
+              >
+                {capitalizeFirstLetter(text)}
+              </Typography>
+            </Tooltip>
           )}
 
           <Box

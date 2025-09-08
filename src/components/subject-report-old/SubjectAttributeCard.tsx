@@ -234,9 +234,10 @@ const SubjectAttributeCard = (props: any) => {
               width: "100%",
               direction: theme.direction,
               borderRadius: "16px",
+              alignItems: "center"
             }}
           >
-            <Grid item xs={12} sm={9} sx={{ p: 4 }}>
+            <Grid item xs={12} sm={8} md={8.5} sx={{ p: 4 }}>
               <Title>
                 <Typography
                   variant="headlineSmall"
@@ -274,7 +275,7 @@ const SubjectAttributeCard = (props: any) => {
                 {description}
               </Typography>
             </Grid>
-            <Grid item xs={12} sm={3}>
+            <Grid item xs={12} sm={4}  md={3.5}>
               <Box
                 width="100%"
                 height="100%"
@@ -283,6 +284,7 @@ const SubjectAttributeCard = (props: any) => {
                 boxShadow="0 0 4px 0 #0A234240"
                 sx={{
                   ...styles.centerVH,
+                  py:3,
                   borderEndEndRadius: "16px",
                   borderStartEndRadius: {
                     sm: "16px",
