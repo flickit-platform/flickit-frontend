@@ -6,7 +6,7 @@ import i18next, { t } from "i18next";
 interface Props {
   levels: number;
   levelValue: number | null;
-  lng?: string;
+  lng?: string | null;
   darkColors: string[];
   position?: "horizontal" | "vertical" | "vertical-trapezoid";
   guideText?: boolean;
@@ -54,7 +54,8 @@ const FlatGaugeComponent: React.FC<Props> = ({
     height: 12,
   },
 }) => {
-  const isRtl = (i18next.language === "fa" && !lng) || lng === "fa";
+  const lngCode = lng ?? i18next.language;
+  const isRtl = (lngCode === "fa" && !lng) || lng === "fa";
 
   const idx = levelValue
     ? Math.max(0, Math.min(levels - 1, levelValue - 1))
@@ -72,9 +73,9 @@ const FlatGaugeComponent: React.FC<Props> = ({
   const centerPct = (activeIdx + 0.5) * segPct;
   const markerColor = darkColors[idx] ?? "#000";
 
-    const topWidth = 24;
-    const cellHeight = 20;
-    const slope = 0.1;
+  const topWidth = 24;
+  const cellHeight = 20;
+  const slope = 0.1;
 
   const getBorderRadius = (i: number): string => {
     const isFirst = i === 0;
@@ -110,74 +111,71 @@ const FlatGaugeComponent: React.FC<Props> = ({
           fontWeight={600}
           sx={{ ...styles.rtlStyle(isRtl) }}
         >
-          {t("common.best", { lng })}
+          {t("common.best", { lngCode })}
         </Typography>
       )}
 
       <Box sx={{ position: "relative" }}>
-          {position === "vertical-trapezoid" ? (
-              <Box
+        {position === "vertical-trapezoid" ? (
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column-reverse",
+              alignItems: "center",
+            }}
+          >
+            {Array.from({ length: levels }).map((_, i) => {
+              const widthTop = topWidth * Math.pow(1 - slope, levels - 1 - i);
+              const widthBottom = topWidth * Math.pow(1 - slope, levels - i);
+              const offsetTop = (topWidth - widthTop) / 2;
+              const offsetBottom = (topWidth - widthBottom) / 2;
+              const clipPath = `polygon(${offsetTop}px 0, ${
+                offsetTop + widthTop
+              }px 0, ${offsetBottom + widthBottom}px ${cellHeight}px, ${offsetBottom}px ${cellHeight}px)`;
+
+              const borderRadius =
+                i === levels - 1 ? "2px 2px 0 0" : i === 0 ? "0 0 2px 2px" : 0;
+
+              return (
+                <Box
+                  key={i}
                   sx={{
-                      display: "flex",
-                      flexDirection: "column-reverse",
-                      alignItems: "center",
+                    width: `${topWidth}px`,
+                    height: `${cellHeight}px`,
+                    bgcolor: darkColors[i],
+                    clipPath,
+                    WebkitClipPath: clipPath,
+                    mb: 0,
+                    borderRadius,
+                    overflow: "hidden",
                   }}
-              >
-                  {Array.from({ length: levels }).map((_, i) => {
-                      const widthTop = topWidth * Math.pow(1 - slope, levels - 1 - i);
-                      const widthBottom = topWidth * Math.pow(1 - slope, levels - i);
-                      const offsetTop = (topWidth - widthTop) / 2;
-                      const offsetBottom = (topWidth - widthBottom) / 2;
-                      const clipPath = `polygon(${offsetTop}px 0, ${
-                          offsetTop + widthTop
-                      }px 0, ${offsetBottom + widthBottom}px ${cellHeight}px, ${offsetBottom}px ${cellHeight}px)`;
-
-                      const borderRadius =
-                          i === levels - 1
-                              ? "2px 2px 0 0"
-                              : i === 0
-                                  ? "0 0 2px 2px"
-                                  : 0;
-
-                      return (
-                          <Box
-                              key={i}
-                              sx={{
-                                  width: `${topWidth}px`,
-                                  height: `${cellHeight}px`,
-                                  bgcolor: darkColors[i],
-                                  clipPath,
-                                  WebkitClipPath: clipPath,
-                                  mb:  0,
-                                  borderRadius,
-                                  overflow: "hidden",
-                              }}
-                          />
-                      );
-                  })}
-              </Box>
-          ) : (
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: position === "horizontal" ? "row" : "column-reverse",
-            overflow: "hidden",
-          }}
-        >
-          {Array.from({ length: levels }).map((_, i) => (
-            <Box
-              key={i}
-              sx={{
-                width: segment.width,
-                height: segment.height,
-                bgcolor: darkColors[i],
-                border: "0.5px solid #3D4D5C80",
-                borderRadius: getBorderRadius(i),
-              }}
-            />
-          ))}
-        </Box>)
-          }
+                />
+              );
+            })}
+          </Box>
+        ) : (
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection:
+                position === "horizontal" ? "row" : "column-reverse",
+              overflow: "hidden",
+            }}
+          >
+            {Array.from({ length: levels }).map((_, i) => (
+              <Box
+                key={i}
+                sx={{
+                  width: segment.width,
+                  height: segment.height,
+                  bgcolor: darkColors[i],
+                  border: "0.5px solid #3D4D5C80",
+                  borderRadius: getBorderRadius(i),
+                }}
+              />
+            ))}
+          </Box>
+        )}
 
         {pointer && levelValue && (
           <Box
@@ -209,7 +207,7 @@ const FlatGaugeComponent: React.FC<Props> = ({
           fontWeight={600}
           sx={{ ...styles.rtlStyle(isRtl) }}
         >
-          {t("common.worst", { lng })}
+          {t("common.worst", { lngCode })}
         </Typography>
       )}
     </Box>

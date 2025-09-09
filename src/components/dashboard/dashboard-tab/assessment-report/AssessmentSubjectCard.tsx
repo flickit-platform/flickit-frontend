@@ -41,7 +41,7 @@ export const AssessmentSubjectAccordion = (
     theme.breakpoints.down("md"),
   );
 
-    const darkColors = getMaturityLevelColors(maturityLevelCount);
+  const darkColors = getMaturityLevelColors(maturityLevelCount);
 
   const handleAccordionChange = (
     event: React.SyntheticEvent,
@@ -147,16 +147,16 @@ export const AssessmentSubjectAccordion = (
           <Grid item xs={12} lg={1} md={1} sm={12}></Grid>
           {isMobileScreen && (
             <Grid item xs={12} lg={2} md={2} sm={12} py={1}>
-                <FlatGaugeComponent
-                    levels={maturityLevelCount}
-                    levelValue={maturityLevel?.value ??  1}
-                    lng={"fa"}
-                    darkColors={darkColors}
-                    position={"vertical-trapezoid"}
-                    guideText={false}
-                    pointer={true}
-                    segment={{width: 24, height: 16}}
-                />
+              <FlatGaugeComponent
+                levels={maturityLevelCount}
+                levelValue={maturityLevel?.value ?? 1}
+                lng={null}
+                darkColors={darkColors}
+                position={"vertical-trapezoid"}
+                guideText={false}
+                pointer={true}
+                segment={{ width: 24, height: 20 }}
+              />
             </Grid>
           )}
           <Grid item xs={12} lg={2} md={2} sm={12}>
@@ -194,17 +194,17 @@ export const AssessmentSubjectAccordion = (
             </Box>
           </Grid>
           {!isMobileScreen && (
-            <Grid item xs={.5}>
-                <FlatGaugeComponent
-                    levels={maturityLevelCount}
-                    levelValue={maturityLevel?.value ??  1}
-                    lng={"fa"}
-                    darkColors={darkColors}
-                    position={"vertical-trapezoid"}
-                    guideText={false}
-                    pointer={true}
-                    segment={{width: 24, height: 16}}
-                />
+            <Grid item xs={0.4}>
+              <FlatGaugeComponent
+                levels={maturityLevelCount}
+                levelValue={maturityLevel?.value ?? 1}
+                lng={null}
+                darkColors={darkColors}
+                position={"vertical-trapezoid"}
+                guideText={false}
+                pointer={true}
+                segment={{ width: 24, height: 20 }}
+              />
             </Grid>
           )}
         </Grid>
