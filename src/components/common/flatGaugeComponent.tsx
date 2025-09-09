@@ -2,6 +2,7 @@ import React, { useMemo } from "react";
 import { Box, Typography } from "@mui/material";
 import { styles } from "@styles";
 import i18next, { t } from "i18next";
+import { v3Tokens } from "@/config/tokens";
 
 interface Props {
   levels: number;
@@ -149,7 +150,7 @@ const FlatGaugeComponent: React.FC<Props> = ({
                   }),
             }}
           >
-            <Arrow position={position} markerColor={markerColor} />
+            <Arrow position={position} markerColor={v3Tokens.primary.main} />
           </Box>
         )}
       </Box>
