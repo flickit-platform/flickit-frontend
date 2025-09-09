@@ -2,6 +2,7 @@ import React, { useMemo } from "react";
 import { Box, Typography } from "@mui/material";
 import { styles } from "@styles";
 import i18next, { t } from "i18next";
+import uniqueId from "@utils/uniqueId";
 
 interface Props {
   levels: number;
@@ -133,8 +134,14 @@ const FlatGaugeComponent: React.FC<Props> = ({
                 offsetTop + widthTop
               }px 0, ${offsetBottom + widthBottom}px ${cellHeight}px, ${offsetBottom}px ${cellHeight}px)`;
 
-              const borderRadius =
-                i === levels - 1 ? "2px 2px 0 0" : i === 0 ? "0 0 2px 2px" : 0;
+
+              let borderRadius: string | number = 0;
+
+              if (i === levels - 1) {
+                borderRadius = "2px 2px 0 0";
+              } else if (i === 0) {
+                borderRadius = "0 0 2px 2px";
+              }
 
               return (
                 <Box
@@ -164,7 +171,7 @@ const FlatGaugeComponent: React.FC<Props> = ({
           >
             {Array.from({ length: levels }).map((_, i) => (
               <Box
-                key={i}
+                key={uniqueId()}
                 sx={{
                   width: segment.width,
                   height: segment.height,
