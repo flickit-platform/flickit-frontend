@@ -275,7 +275,7 @@ const SubjectAttributeCard = (props: any) => {
                 {description}
               </Typography>
             </Grid>
-            <Grid item xs={12} sm={3} height="100%">
+            <Grid item xs={12} sm={3} height={{ sm: "100%", xs: "unset" }}>
               {" "}
               <Box
                 width="100%"
