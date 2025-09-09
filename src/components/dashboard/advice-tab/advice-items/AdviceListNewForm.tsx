@@ -211,7 +211,7 @@ const AdviceListNewForm = ({
                       IconComponent={KeyboardArrowDownIcon}
                       name={item}
                       displayEmpty
-                      input={<OutlinedInput label="user.name" />}
+                      input={<OutlinedInput label={t("user.name")} />}
                       onChange={(e) => handleInputChange(e)}
                       sx={{
                         fontSize: "14px",

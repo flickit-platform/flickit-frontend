@@ -17,6 +17,7 @@ import UploadField from "@common/fields/UploadField";
 import convertToBytes from "@/utils/convertToBytes";
 import { useQuery } from "@utils/useQuery";
 import showToast from "@utils/toastError";
+import { v3Tokens } from "@/config/tokens";
 
 interface IExpertGroupCEFromDialogProps extends DialogProps {
   onClose: () => void;
@@ -163,6 +164,7 @@ const ExpertGroupCEFormDialog = (props: IExpertGroupCEFromDialogProps) => {
           </Grid>
           <Grid item xs={12}>
             <RichEditorField
+              bgcolor={v3Tokens.primary.bg}
               name="about"
               label={<Trans i18nKey="common.about" />}
               defaultValue={defaultValues.about ?? ""}

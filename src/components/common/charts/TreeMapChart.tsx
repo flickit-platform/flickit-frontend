@@ -42,15 +42,16 @@ const TreeMapChart: React.FC<TreeMapProps> = ({
   const [hoveredId, setHoveredId] = useState<number | null>(null);
 
   const lightColors = getMaturityLevelColors(levels, true);
+  const textColors = getMaturityLevelColors(levels, false, true);
   const darkColors = getMaturityLevelColors(levels);
 
   const treeMapData = useMemo(
     () =>
       data.map((node) => {
         const idx = Math.max(0, Number(node.label) - 1);
-        return { ...node, color: darkColors[idx], bg: lightColors[idx] };
+        return { ...node, color: textColors[idx], bg: lightColors[idx] };
       }),
-    [data, lightColors, darkColors],
+    [data, lightColors, textColors],
   );
 
   const handleSelect = useCallback(
@@ -89,14 +90,14 @@ const TreeMapChart: React.FC<TreeMapProps> = ({
         </ResponsiveContainer>
       </Box>
       <FlatGaugeComponent
-          levels={levels}
-          levelValue={null}
-          lng={lng}
-          darkColors={darkColors}
-          position={"vertical"}
-          guideText={true}
-          pointer={false}
-          segment={{width: 24, height: 16}}
+        levels={levels}
+        levelValue={null}
+        lng={lng}
+        darkColors={darkColors}
+        position={"vertical"}
+        guideText={true}
+        pointer={false}
+        segment={{ width: 24, height: 16 }}
       />
     </Box>
   );

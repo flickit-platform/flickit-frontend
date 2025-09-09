@@ -304,6 +304,10 @@ export const C8BG = "#74B48930";
 export const C9BG = "#459B6230";
 export const C10BG = "#17823B30";
 
+export const C4Text = "#661100";
+export const C5Text = "#2B333B";
+export const C6Text = "#0F582E";
+
 export const maturityLevelColorMap: any = {
   ML1: [C0],
   ML2: [C0, C10],
@@ -318,26 +322,51 @@ export const maturityLevelColorMap: any = {
 };
 
 export const maturityLevelBGColorMap: any = {
-  ML1: [C1BG],
-  ML2: [C1BG, C10BG],
-  ML3: [C1BG, C6BG, C10BG],
-  ML4: [C1BG, C5BG, C7BG, C10BG],
-  ML5: [C1BG, C4BG, C5BG, C8BG, C10BG],
-  ML6: [C1BG, C3BG, C5BG, C7BG, C8BG, C10BG],
-  ML7: [C1BG, C2BG, C4BG, C6BG, C7BG, C8BG, C10BG],
-  ML8: [C1BG, C2BG, C4BG, C5BG, C7BG, C8BG, C9BG, C10BG],
-  ML9: [C1BG, C2BG, C3BG, C4BG, C6BG, C7BG, C8BG, C9BG, C10BG],
-  ML10: [C1BG, C2BG, C3BG, C4BG, C5BG, C6BG, C7BG, C8BG, C9BG, C10BG],
+  ML1: [C0BG],
+  ML2: [C0BG, C10BG],
+  ML3: [C0BG, C5BG, C10BG],
+  ML4: [C0BG, C2BG, C8BG, C10BG],
+  ML5: [C0BG, C2BG, C5BG, C8BG, C10BG],
+  ML6: [C0BG, C2BG, C3BG, C7BG, C8BG, C10BG],
+  ML7: [C0BG, C2BG, C3BG, C5BG, C7BG, C8BG, C10BG],
+  ML8: [C0BG, C1BG, C2BG, C3BG, C7BG, C8BG, C9BG, C10BG],
+  ML9: [C0BG, C1BG, C2BG, C3BG, C5BG, C7BG, C8BG, C9BG, C10BG],
+  ML10: [C0BG, C1BG, C2BG, C3BG, C4BG, C6BG, C7BG, C8BG, C9BG, C10BG],
 };
 
-export const confidenceColor = [C1, C3, C4, C8, C10];
+export const maturityLevelTextColorMap: any = {
+  ML1: [C0],
+  ML2: [C0, C10],
+  ML3: [C0, C5Text, C10],
+  ML4: [C0, C2, C8, C10],
+  ML5: [C0, C2, C5Text, C8, C10],
+  ML6: [C0, C2, C3, C7, C8, C10],
+  ML7: [C0, C2, C3, C5Text, C7, C8, C10],
+  ML8: [C0, C1, C2, C3, C7, C8, C9, C10],
+  ML9: [C0, C1, C2, C3, C5Text, C7, C8, C9, C10],
+  ML10: [C0, C1, C2, C3, C4Text, C6Text, C7, C8, C9, C10],
+};
+
+
+export const C1_PREV = "#B71515";
+export const C2_PREV = "#D74427";
+export const C3_PREV = "#F55C3D";
+export const C4_PREV = "#F2995A";
+export const C8_PREV = "#4FB34C";
+export const C10_PREV = "#0A5C25";
+
+export const confidenceColor = [C1_PREV, C2_PREV, C4_PREV, C8_PREV, C10_PREV];
 export const getMaturityLevelColors = (
   maturity_level_number: number,
   bg?: boolean,
+  text?: boolean,
 ) => {
   let maturityInstance = maturityLevelColorMap;
   if (bg) {
     maturityInstance = maturityLevelBGColorMap;
+  }
+  if (text) {
+    maturityInstance = maturityLevelTextColorMap;
   }
   switch (maturity_level_number) {
     case 1:

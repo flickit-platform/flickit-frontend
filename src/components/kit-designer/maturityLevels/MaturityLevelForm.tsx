@@ -85,7 +85,7 @@ const MaturityLevelForm = ({
           <MultiLangTextField
             key={field}
             name={field}
-            label={<Trans i18nKey={field} />}
+            label={<Trans i18nKey={`common.${field}`} />}
             value={newMaturityLevel[field]}
             onChange={handleInputChange}
             translationValue={

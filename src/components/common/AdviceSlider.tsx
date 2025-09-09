@@ -6,6 +6,7 @@ import { Trans } from "react-i18next";
 import languageDetector from "@/utils/languageDetector";
 import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
 import Typography from "@mui/material/Typography";
+import { v3Tokens } from "@/config/tokens";
 const AdviceSlider = (props: any) => {
   const {
     defaultValue,
@@ -58,7 +59,7 @@ const AdviceSlider = (props: any) => {
       textAlign="start"
       sx={{ ...styles.centerH }}
     >
-      <Box sx={{ ...styles.centerVH }} gap={2} width="30%">
+      <Box sx={{ ...styles.centerVH }} gap={2} width="35%">
         <Box
           px="10px"
           color="#D81E5B"
@@ -88,7 +89,7 @@ const AdviceSlider = (props: any) => {
           {attribute.title}
         </Typography>
       </Box>
-      <Box width={{ xs: "100%", md: "320px" }} mt={4}>
+      <Box width={{ xs: "100%", md: "37%" }} mt={4}>
         <Box px={2}>
           <Slider
             defaultValue={defaultValue}
@@ -157,7 +158,7 @@ const AdviceSlider = (props: any) => {
         </Box>
       </Box>
 
-      <Box width={{ xs: "90%", sm: "20%" }} mt={1} sx={{ ...styles.centerVH }}>
+      <Box width={{ xs: "90%", sm: "28%" }} mt={1} sx={{ ...styles.centerVH }}>
         <Typography color="background.onVariant" variant="bodySmall">
           <Trans
             i18nKey="advice.fromTo"
@@ -171,7 +172,7 @@ const AdviceSlider = (props: any) => {
                 <span
                   style={{
                     fontSize: "14px",
-                    color: colorPallet[currentState?.index - 1],
+                    color: v3Tokens.surface.on,
                     fontWeight: "700",
                     fontFamily: languageDetector(currentState?.title)
                       ? farsiFontFamily
@@ -183,7 +184,7 @@ const AdviceSlider = (props: any) => {
                 <span
                   style={{
                     fontSize: "14px",
-                    color: colorPallet[value ? value - 1 : defaultValue - 1],
+                    color: v3Tokens.surface.on,
                     fontWeight: "700",
                     fontFamily: languageDetector(
                       maturityLevels[value ? value - 1 : defaultValue - 1]

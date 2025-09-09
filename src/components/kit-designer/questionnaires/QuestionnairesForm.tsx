@@ -92,7 +92,7 @@ const QuestionnairesForm = ({
           <MultiLangTextField
             key={field}
             name={field}
-            label={<Trans i18nKey={field} />}
+            label={<Trans i18nKey={`common.${field}`} />}
             value={newItem[field]}
             onChange={handleInputChange}
             translationValue={

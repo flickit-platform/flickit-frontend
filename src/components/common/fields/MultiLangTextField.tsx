@@ -32,6 +32,7 @@ interface MultiLangTextFieldProps extends Omit<TextFieldProps, "variant"> {
   lang?: string;
   handleCancelTextBox?: any;
   handleSaveEdit?: any;
+  bgcolor?: string;
 }
 
 const MultiLangTextField = ({
@@ -40,7 +41,7 @@ const MultiLangTextField = ({
   onChange,
   label,
   inputProps,
-  translationValue= "",
+  translationValue = "",
   onTranslationChange,
   translationLabel = t("common.translation") ?? "",
   showTranslation: controlledShow,
@@ -52,6 +53,7 @@ const MultiLangTextField = ({
   lang,
   handleCancelTextBox,
   handleSaveEdit,
+  bgcolor,
   ...rest
 }: MultiLangTextFieldProps) => {
   const { kitState } = useKitDesignerContext();
@@ -118,7 +120,7 @@ const MultiLangTextField = ({
         onClick={(e) => e.stopPropagation()}
         sx={{
           "& .MuiOutlinedInput-root": {
-            bgcolor: "background.containerLowest",
+            bgcolor: bgcolor ? bgcolor : "background.containerLowest",
             fontSize: 14,
             ...(multiline ? {} : { height: 40 }),
           },
