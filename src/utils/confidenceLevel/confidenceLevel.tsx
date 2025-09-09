@@ -2,12 +2,15 @@ import { lazy, Suspense, useMemo } from "react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import { confidenceColor } from "@/config/styles";
+import { formatRoundedPercent } from "@/features/assessment-report/ui/sections/tree-map/MeasureTable";
+import i18next from "i18next";
 
 interface IconfidenceLevelType {
   inputNumber?: number | null;
   displayNumber?: boolean;
   variant?: any;
   fontFamily?: any;
+  isRTL?: boolean;
 }
 
 const ConfidenceLevel = ({
@@ -15,6 +18,7 @@ const ConfidenceLevel = ({
   displayNumber = false,
   variant = "titleLarge",
   fontFamily,
+  isRTL,
 }: IconfidenceLevelType) => {
   const { id, colorText, number } = calculate(inputNumber);
 
@@ -39,7 +43,8 @@ const ConfidenceLevel = ({
               fontFamily: fontFamily,
             }}
           >
-            {number}%
+            {number}
+            {i18next.language === "en" ? "%" : "٪"}
           </Typography>
         )}
         <ImgRate />

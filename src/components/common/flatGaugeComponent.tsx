@@ -1,8 +1,7 @@
 import React, { useMemo } from "react";
 import { Box, Typography } from "@mui/material";
 import { styles } from "@styles";
-import { t } from "i18next";
-import { useAssessmentContext } from "@providers/AssessmentProvider";
+import i18next, { t } from "i18next";
 
 interface Props {
   levels: number;
@@ -12,7 +11,7 @@ interface Props {
   position?: "horizontal" | "vertical";
   guideText?: boolean;
   pointer?: boolean;
-  segment?: {width: number, height: number};
+  segment?: { width: number; height: number };
 }
 
 interface ArrowProps {
@@ -51,13 +50,11 @@ const FlatGaugeComponent: React.FC<Props> = ({
   pointer,
   guideText = false,
   segment = {
-   width: 20, height: 12
+    width: 20,
+    height: 12,
   },
 }) => {
-  const { assessmentInfo } = useAssessmentContext();
-  const language = assessmentInfo?.language;
-  const lngCode = language?.code.toLowerCase();
-  const isRtl = lng === "fa" || lngCode === "fa";
+  const isRtl = (i18next.language === "fa" && !lng) || lng === "fa";
 
   const idx = levelValue
     ? Math.max(0, Math.min(levels - 1, levelValue - 1))

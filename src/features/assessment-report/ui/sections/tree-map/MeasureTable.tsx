@@ -46,7 +46,7 @@ const PERSIAN_PERCENT = "٪";
 const LATIN_PERCENT = "%";
 const getPercentSymbol = (isRTL?: boolean) =>
   isRTL ? PERSIAN_PERCENT : LATIN_PERCENT;
-const formatRoundedPercent = (n: number, isRTL?: boolean) =>
+export const formatRoundedPercent = (n: number, isRTL?: boolean) =>
   `${Math.round(n)}${getPercentSymbol(isRTL)}`;
 
 const SignedPercent: React.FC<{
