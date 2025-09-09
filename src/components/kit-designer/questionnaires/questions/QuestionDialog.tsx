@@ -244,6 +244,7 @@ const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
               onTranslationChange={updateTranslation("title", setTempValue)}
               placeholder={t("kitDesigner.questionPlaceholder")?.toString()}
               multiline
+              bgcolor="inherit"
             />
           </Grid>
           <Grid item xs={12}>
@@ -259,6 +260,7 @@ const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
               onTranslationChange={updateTranslation("hint", setTempValue)}
               placeholder={t("hintPlaceholder")?.toString()}
               multiline
+              bgcolor="inherit"
             />
           </Grid>
 

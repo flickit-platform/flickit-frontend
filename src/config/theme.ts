@@ -605,7 +605,7 @@ export const getTheme = (lang: any) => {
         styleOverrides: {
           paper: {
             borderRadius: "8px",
-            background: "#F3F5F6"
+            background: grayBlue[96]
           },
         },
       },

@@ -116,7 +116,7 @@ export const CEDialogActions = (props: ICEDialogActionsProps) => {
     submitButtonLabel = type === "update"
       ? t("common.update")
       : t("common.create"),
-    cancelLabel = "common.cancel",
+    cancelLabel = t("common.cancel"),
     submitAndViewButtonLabel,
     backType = "contained",
     cancelType = "outline",
@@ -150,7 +150,7 @@ export const CEDialogActions = (props: ICEDialogActionsProps) => {
               sx={{ fontFamily: languageDetector(cancelLabel) ? farsiFontFamily : secondaryFontFamily }}
               variant={cancelType}
             >
-              <Trans i18nKey={cancelLabel ?? ""} />
+              {cancelLabel}
             </Button>
           </Grid>
         )}

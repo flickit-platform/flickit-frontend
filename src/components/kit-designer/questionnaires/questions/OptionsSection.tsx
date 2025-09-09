@@ -172,7 +172,11 @@ const OptionsSection = ({
           <Select
             value={selectedAnswerRange ?? ""}
             onChange={handleAnswerRangeChange}
-            sx={{ ...dropdownStyle, fontFamily: farsiFontFamily }}
+            sx={{
+              ...dropdownStyle,
+              fontFamily: farsiFontFamily,
+              bgcolor: "inherit",
+            }}
             size="small"
             displayEmpty
             disabled={fetchAnswerRanges?.data?.items?.length === 0}

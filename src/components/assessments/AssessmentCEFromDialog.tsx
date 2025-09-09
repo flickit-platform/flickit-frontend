@@ -21,6 +21,7 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import showToast from "@utils/toastError";
 import { useAuthContext } from "@/providers/AuthProvider";
+import { t } from "i18next";
 
 interface IAssessmentCEFromDialogProps extends DialogProps {
   onClose: () => void;
@@ -269,7 +270,7 @@ const AssessmentCEFromDialog = (props: IAssessmentCEFromDialogProps) => {
             closeDialog={close}
             loading={loading}
             type={undefined}
-            cancelLabel="common.close"
+            cancelLabel={t("common.close")}
             hideSubmitButton
           >
             <Link

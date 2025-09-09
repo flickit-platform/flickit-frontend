@@ -5,6 +5,7 @@ import OutlinedInput from "@mui/material/OutlinedInput";
 import Select from "@mui/material/Select";
 import { Trans } from "react-i18next";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import { t } from "i18next";
 
 const SelectLanguage = (props: any) => {
   const { mainLanguage, handleChange, languages, editable } = props;
@@ -23,11 +24,11 @@ const SelectLanguage = (props: any) => {
         IconComponent={KeyboardArrowDownIcon}
         displayEmpty
         required={true}
-        input={<OutlinedInput label="common.language" />}
+        input={<OutlinedInput label={t("common.language")} />}
         onChange={(e) => handleChange(e)}
         sx={{
           fontSize: "14px",
-          bgcolor: "background.containerLowest",
+          bgcolor: "inherit",
           px: "0px",
           height: "40px",
           "& .MuiSelect-select": {
