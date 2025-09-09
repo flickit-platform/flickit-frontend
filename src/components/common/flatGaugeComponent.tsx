@@ -132,12 +132,11 @@ const FlatGaugeComponent: React.FC<Props> = ({
                           offsetTop + widthTop
                       }px 0, ${offsetBottom + widthBottom}px ${cellHeight}px, ${offsetBottom}px ${cellHeight}px)`;
 
-                      // فقط برای اولین و آخرین خانه radius اضافه می‌کنیم
                       const borderRadius =
                           i === levels - 1
-                              ? "2px 2px 0 0" // بالا
+                              ? "2px 2px 0 0"
                               : i === 0
-                                  ? "0 0 2px 2px" // پایین
+                                  ? "0 0 2px 2px"
                                   : 0;
 
                       return (

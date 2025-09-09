@@ -146,7 +146,7 @@ export const AssessmentSubjectAccordion = (
           )}
           <Grid item xs={12} lg={1} md={1} sm={12}></Grid>
           {isMobileScreen && (
-            <Grid item xs={12} lg={2} md={2} sm={12}>
+            <Grid item xs={12} lg={2} md={2} sm={12} py={1}>
                 <FlatGaugeComponent
                     levels={maturityLevelCount}
                     levelValue={maturityLevel?.value ??  1}
@@ -157,8 +157,6 @@ export const AssessmentSubjectAccordion = (
                     pointer={true}
                     segment={{width: 24, height: 16}}
                 />
-
-
             </Grid>
           )}
           <Grid item xs={12} lg={2} md={2} sm={12}>
@@ -170,9 +168,7 @@ export const AssessmentSubjectAccordion = (
               }}
             >
               <Typography
-                color={getMaturityLevelColors(maturityLevelCount ?? 5)[
-                  (maturityLevel?.value ?? 1) - 1
-                ]}
+                color={"text.primary"}
                 sx={{
                   display: "flex",
                   gap: "5px",
@@ -198,7 +194,7 @@ export const AssessmentSubjectAccordion = (
             </Box>
           </Grid>
           {!isMobileScreen && (
-            <Grid item xs={6} lg={1} md={1} sm={12}>
+            <Grid item xs={.5}>
                 <FlatGaugeComponent
                     levels={maturityLevelCount}
                     levelValue={maturityLevel?.value ??  1}
