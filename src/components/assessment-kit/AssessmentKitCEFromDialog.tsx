@@ -30,6 +30,7 @@ import SelectLanguage from "@utils/selectLanguage";
 import uniqueId from "@/utils/uniqueId";
 import i18n from "i18next";
 import showToast from "@utils/toastError";
+import { v3Tokens } from "@/config/tokens";
 
 interface IAssessmentKitCEFromDialogProps extends DialogProps {
   onClose: () => void;
@@ -378,6 +379,7 @@ const AssessmentKitCEFromDialog = (props: IAssessmentKitCEFromDialogProps) => {
         </Grid>
         <Grid item xs={12} md={12} display={activeStep === 0 ? "none" : ""}>
           <RichEditorField
+            bgcolor={v3Tokens.primary.bg}
             name="about"
             label={<Trans i18nKey="common.about" />}
             required={true}

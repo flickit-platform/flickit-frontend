@@ -52,6 +52,7 @@ const RichEditorFieldBase = (props: any) => {
     placeholder,
     type,
     showEditorMenu,
+    bgcolor,
   } = props;
   const [shrink, setShrink] = useState(() => Boolean(defaultValue));
   const [focus, setFocus] = useState(false);
@@ -98,7 +99,10 @@ const RichEditorFieldBase = (props: any) => {
         <InputLabel
           className={focus ? "Mui-focused" : ""}
           shrink={shrink}
-          sx={{ bgcolor: "background.containerLowest", px: 0.2 }}
+          sx={{
+            bgcolor: !bgcolor ? "background.containerLowest" : bgcolor,
+            px: 0.2,
+          }}
           required={required}
         >
           {label}
@@ -117,6 +121,7 @@ const RichEditorFieldBase = (props: any) => {
         placeholder={placeholder}
         type={type}
         showEditorMenu={showEditorMenu || hover}
+        bgcolor={bgcolor}
       />
       <FormHelperText style={{ marginTop: 0, marginLeft: 0, marginRight: 0 }}>
         {errorMessage as string}

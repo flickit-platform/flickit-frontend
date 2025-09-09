@@ -65,13 +65,18 @@ const ImpactForm: React.FC<ImpactFormProps> = ({
           name={field.name}
           value={newItem[field.name] ?? ""}
           onChange={handleSelectChange}
-          sx={{ ...dropdownStyle, fontFamily: farsiFontFamily }}
+          sx={{
+            ...dropdownStyle,
+            fontFamily: farsiFontFamily,
+            bgcolor: "inherit",
+          }}
           size="small"
           fullWidth
           displayEmpty
         >
           <MenuItem value="" disabled>
-            <Trans i18nKey={`select${field.label.replace(" ", "")}`} />
+            <Trans i18nKey="common.select" />{" "}
+            <Trans i18nKey={`${field.label}`} />
           </MenuItem>
           {field.options?.map((option) => (
             <MenuItem
@@ -100,7 +105,6 @@ const ImpactForm: React.FC<ImpactFormProps> = ({
         size="small"
         sx={{
           mx: 1,
-          backgroundColor: "background.containerLowest",
           textFieldStyle,
           width: "50%",
         }}
