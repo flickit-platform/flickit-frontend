@@ -20,7 +20,7 @@ interface IAssessmentSubjectCardProps extends ISubjectInfo {
   maturity_level?: IMaturityLevel;
   confidenceValue?: number;
   attributes?: any;
-  maturityLevelCount: number;
+  maturityLevelCount?: number;
   reloadQuery?: any;
 }
 
@@ -30,7 +30,7 @@ export const AssessmentSubjectAccordion = (
   const {
     title,
     maturityLevel,
-    maturityLevelCount,
+    maturityLevelCount = 1,
     confidenceValue,
     description = "",
     reloadQuery,
