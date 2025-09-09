@@ -8,14 +8,14 @@ interface Props {
   levelValue: number | null;
   lng?: string;
   darkColors: string[];
-  position?: "horizontal" | "vertical";
+  position?: "horizontal" | "vertical" | "vertical-trapezoid";
   guideText?: boolean;
   pointer?: boolean;
   segment?: { width: number; height: number };
 }
 
 interface ArrowProps {
-  position: "horizontal" | "vertical";
+  position: "horizontal" | "vertical" | "vertical-trapezoid";
   markerColor: string;
 }
 
@@ -72,6 +72,10 @@ const FlatGaugeComponent: React.FC<Props> = ({
   const centerPct = (activeIdx + 0.5) * segPct;
   const markerColor = darkColors[idx] ?? "#000";
 
+    const topWidth = 24;
+    const cellHeight = 20;
+    const slope = 0.1;
+
   const getBorderRadius = (i: number): string => {
     const isFirst = i === 0;
     const isLast = i === levels - 1;
@@ -111,6 +115,49 @@ const FlatGaugeComponent: React.FC<Props> = ({
       )}
 
       <Box sx={{ position: "relative" }}>
+          {position === "vertical-trapezoid" ? (
+              <Box
+                  sx={{
+                      display: "flex",
+                      flexDirection: "column-reverse",
+                      alignItems: "center",
+                  }}
+              >
+                  {Array.from({ length: levels }).map((_, i) => {
+                      const widthTop = topWidth * Math.pow(1 - slope, levels - 1 - i);
+                      const widthBottom = topWidth * Math.pow(1 - slope, levels - i);
+                      const offsetTop = (topWidth - widthTop) / 2;
+                      const offsetBottom = (topWidth - widthBottom) / 2;
+                      const clipPath = `polygon(${offsetTop}px 0, ${
+                          offsetTop + widthTop
+                      }px 0, ${offsetBottom + widthBottom}px ${cellHeight}px, ${offsetBottom}px ${cellHeight}px)`;
+
+                      // فقط برای اولین و آخرین خانه radius اضافه می‌کنیم
+                      const borderRadius =
+                          i === levels - 1
+                              ? "2px 2px 0 0" // بالا
+                              : i === 0
+                                  ? "0 0 2px 2px" // پایین
+                                  : 0;
+
+                      return (
+                          <Box
+                              key={i}
+                              sx={{
+                                  width: `${topWidth}px`,
+                                  height: `${cellHeight}px`,
+                                  bgcolor: darkColors[i],
+                                  clipPath,
+                                  WebkitClipPath: clipPath,
+                                  mb:  0,
+                                  borderRadius,
+                                  overflow: "hidden",
+                              }}
+                          />
+                      );
+                  })}
+              </Box>
+          ) : (
         <Box
           sx={{
             display: "flex",
@@ -130,7 +177,8 @@ const FlatGaugeComponent: React.FC<Props> = ({
               }}
             />
           ))}
-        </Box>
+        </Box>)
+          }
 
         {pointer && levelValue && (
           <Box

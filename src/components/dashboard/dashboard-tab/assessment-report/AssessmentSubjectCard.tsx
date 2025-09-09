@@ -14,12 +14,13 @@ import ConfidenceLevel from "@/utils/confidenceLevel/confidenceLevel";
 import languageDetector from "@/utils/languageDetector";
 import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
 import SubjectContainer from "../../../subject-report-old/SubjectContainer";
+import FlatGaugeComponent from "@common/flatGaugeComponent";
 
 interface IAssessmentSubjectCardProps extends ISubjectInfo {
   maturity_level?: IMaturityLevel;
   confidenceValue?: number;
   attributes?: any;
-  maturityLevelCount?: number;
+  maturityLevelCount: number;
   reloadQuery?: any;
 }
 
@@ -39,6 +40,8 @@ export const AssessmentSubjectAccordion = (
   const isMobileScreen = useMediaQuery((theme: any) =>
     theme.breakpoints.down("md"),
   );
+
+    const darkColors = getMaturityLevelColors(maturityLevelCount);
 
   const handleAccordionChange = (
     event: React.SyntheticEvent,
@@ -144,7 +147,18 @@ export const AssessmentSubjectAccordion = (
           <Grid item xs={12} lg={1} md={1} sm={12}></Grid>
           {isMobileScreen && (
             <Grid item xs={12} lg={2} md={2} sm={12}>
-              {/*<SubjectStatus title={title} maturity_level={maturityLevel} />*/}
+                <FlatGaugeComponent
+                    levels={maturityLevelCount}
+                    levelValue={maturityLevel?.value ??  1}
+                    lng={"fa"}
+                    darkColors={darkColors}
+                    position={"vertical-trapezoid"}
+                    guideText={false}
+                    pointer={true}
+                    segment={{width: 24, height: 16}}
+                />
+
+
             </Grid>
           )}
           <Grid item xs={12} lg={2} md={2} sm={12}>
@@ -185,11 +199,16 @@ export const AssessmentSubjectAccordion = (
           </Grid>
           {!isMobileScreen && (
             <Grid item xs={6} lg={1} md={1} sm={12}>
-              {/*<SubjectStatus*/}
-              {/*  title={title}*/}
-              {/*  maturity_level={maturityLevel}*/}
-              {/*  maturityLevelCount={maturityLevelCount}*/}
-              {/*/>*/}
+                <FlatGaugeComponent
+                    levels={maturityLevelCount}
+                    levelValue={maturityLevel?.value ??  1}
+                    lng={"fa"}
+                    darkColors={darkColors}
+                    position={"vertical-trapezoid"}
+                    guideText={false}
+                    pointer={true}
+                    segment={{width: 24, height: 16}}
+                />
             </Grid>
           )}
         </Grid>
