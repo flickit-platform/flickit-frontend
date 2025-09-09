@@ -1,13 +1,7 @@
 import React, { useMemo } from "react";
 import { Box, Typography } from "@mui/material";
 import { styles } from "@styles";
-import { t } from "i18next";
-import { useAssessmentContext } from "@providers/AssessmentProvider";
-
-const SEGMENT = {
-  horizontal: { width: 20, height: 12 },
-  vertical: { width: 24, height: 16 },
-};
+import i18next, { t } from "i18next";
 
 interface Props {
   levels: number;
@@ -17,6 +11,7 @@ interface Props {
   position?: "horizontal" | "vertical";
   guideText?: boolean;
   pointer?: boolean;
+  segment?: { width: number; height: number };
 }
 
 interface ArrowProps {
@@ -29,38 +24,41 @@ const Arrow: React.FC<ArrowProps> = ({ position, markerColor }) => (
     sx={
       position === "horizontal"
         ? {
-          width: 0,
-          height: 0,
-          borderLeft: "6px solid transparent",
-          borderRight: "6px solid transparent",
-          borderTop: `8px solid ${markerColor}`,
-        }
+            width: 0,
+            height: 0,
+            borderLeft: "6px solid transparent",
+            borderRight: "6px solid transparent",
+            borderTop: `8px solid ${markerColor}`,
+          }
         : {
-          width: 0,
-          height: 0,
-          borderTop: "6px solid transparent",
-          borderBottom: "6px solid transparent",
-          borderLeft: `8px solid ${markerColor}`,
-        }
+            width: 0,
+            height: 0,
+            borderTop: "6px solid transparent",
+            borderBottom: "6px solid transparent",
+            borderLeft: `8px solid ${markerColor}`,
+          }
     }
   />
 );
 
 const FlatGaugeComponent: React.FC<Props> = ({
-                                               levels,
-                                               levelValue,
-                                               lng,
-                                               darkColors,
-                                               position = "horizontal",
-                                               pointer,
-                                               guideText = false,
-                                             }) => {
-  const { assessmentInfo } = useAssessmentContext();
-  const language = assessmentInfo?.language;
-  const lngCode = language?.code.toLowerCase();
-  const isRtl = lng === "fa" || lngCode === "fa";
+  levels,
+  levelValue,
+  lng,
+  darkColors,
+  position = "horizontal",
+  pointer,
+  guideText = false,
+  segment = {
+    width: 20,
+    height: 12,
+  },
+}) => {
+  const isRtl = (i18next.language === "fa" && !lng) || lng === "fa";
 
-  const idx = levelValue ? Math.max(0, Math.min(levels - 1, levelValue - 1)) : 0;
+  const idx = levelValue
+    ? Math.max(0, Math.min(levels - 1, levelValue - 1))
+    : 0;
   const idxInverse = levels - 1 - idx;
 
   const activeIdx = useMemo(() => {
@@ -124,8 +122,8 @@ const FlatGaugeComponent: React.FC<Props> = ({
             <Box
               key={i}
               sx={{
-                width: SEGMENT[position].width,
-                height: SEGMENT[position].height,
+                width: segment.width,
+                height: segment.height,
                 bgcolor: darkColors[i],
                 border: "0.5px solid #3D4D5C80",
                 borderRadius: getBorderRadius(i),
@@ -140,15 +138,15 @@ const FlatGaugeComponent: React.FC<Props> = ({
               position: "absolute",
               ...(position === "horizontal"
                 ? {
-                  left: `${centerPct}%`,
-                  top: -10,
-                  transform: "translateX(-50%)",
-                }
+                    left: `${centerPct}%`,
+                    top: -10,
+                    transform: "translateX(-50%)",
+                  }
                 : {
-                  top: `${centerPct}%`,
-                  left: -10,
-                  transform: "translateY(-50%)",
-                }),
+                    top: `${centerPct}%`,
+                    left: -10,
+                    transform: "translateY(-50%)",
+                  }),
             }}
           >
             <Arrow position={position} markerColor={markerColor} />

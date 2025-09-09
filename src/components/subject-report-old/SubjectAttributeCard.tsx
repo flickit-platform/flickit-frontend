@@ -234,6 +234,7 @@ const SubjectAttributeCard = (props: any) => {
               width: "100%",
               direction: theme.direction,
               borderRadius: "16px",
+              alignItems: "center",
             }}
           >
             <Grid item xs={12} sm={9} sx={{ p: 4 }}>
@@ -274,7 +275,8 @@ const SubjectAttributeCard = (props: any) => {
                 {description}
               </Typography>
             </Grid>
-            <Grid item xs={12} sm={3}>
+            <Grid item xs={12} sm={3} height="100%">
+              {" "}
               <Box
                 width="100%"
                 height="100%"
@@ -283,6 +285,7 @@ const SubjectAttributeCard = (props: any) => {
                 boxShadow="0 0 4px 0 #0A234240"
                 sx={{
                   ...styles.centerVH,
+                  py: 2,
                   borderEndEndRadius: "16px",
                   borderStartEndRadius: {
                     sm: "16px",
@@ -300,7 +303,10 @@ const SubjectAttributeCard = (props: any) => {
                   text={maturityLevel.title}
                   confidenceLevelNum={Math.floor(confidenceValue)}
                   confidenceText={t("common.confidence") + ":"}
-                  textPosition="top"
+                  segment={{
+                    width: 30,
+                    height: 18,
+                  }}
                   sx={{
                     ...styles.centerVH,
                     width: "100%",
@@ -334,13 +340,12 @@ const SubjectAttributeCard = (props: any) => {
           }}
         >
           <Box p={{ xs: 2, sm: 5 }} sx={{ ...styles.centerCVH }} width="100%">
-
-              <AttributeInsight
-                progress={progress}
-                attributeId={id}
-                defaultInsight={insight}
-                reloadQuery={reloadQuery}
-              />
+            <AttributeInsight
+              progress={progress}
+              attributeId={id}
+              defaultInsight={insight}
+              reloadQuery={reloadQuery}
+            />
             <Box display={{ xs: "none", sm: "block" }} width="100%">
               <Tabs
                 value={topTab}

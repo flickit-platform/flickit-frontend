@@ -96,6 +96,7 @@ const TreeMapChart: React.FC<TreeMapProps> = ({
           position={"vertical"}
           guideText={true}
           pointer={false}
+          segment={{width: 24, height: 16}}
       />
     </Box>
   );

@@ -3,21 +3,22 @@ import Box, { BoxProps } from "@mui/material/Box";
 import { farsiFontFamily, primaryFontFamily } from "@config/theme";
 import Typography from "@mui/material/Typography";
 import useMediaQuery from "@mui/material/useMediaQuery";
-import { confidenceColor, getMaturityLevelColors, styles } from "@styles";
+import { getMaturityLevelColors, styles } from "@styles";
 import { capitalizeFirstLetter } from "@/utils/filterLetter";
 import languageDetector from "@/utils/languageDetector";
 import FlatGaugeComponent from "@common/flatGaugeComponent";
-
-type TPosition = "top" | "left";
+import ConfidenceLevel from "@utils/confidenceLevel/confidenceLevel";
+import Tooltip from "@mui/material/Tooltip";
+import i18next from "i18next";
 
 interface IGaugeProps extends BoxProps {
   maturityLevelNumber: number;
   levelValue: number;
   text: string;
-  textPosition: TPosition;
   confidenceLevelNum?: number;
   confidenceText?: string | null;
   lng?: string;
+  segment?: { width: number; height: number };
 }
 
 export const confidencePallet: any = {
@@ -38,7 +39,6 @@ const FlatGauge = (props: IGaugeProps) => {
     maturityLevelNumber,
     levelValue,
     text,
-    textPosition,
     confidenceLevelNum = 0,
     confidenceText,
     lng,
@@ -51,43 +51,34 @@ const FlatGauge = (props: IGaugeProps) => {
   if (maturityLevelNumber < levelValue) return null;
   const darkColors = getMaturityLevelColors(maturityLevelNumber);
 
-  const checkColor = (num: number): string => {
-    if (num == 100) {
-      return confidenceColor[4];
-    } else {
-      let newNum = Math.floor(num / 20);
-      return confidenceColor[newNum];
-    }
-  };
-
-  const colorPallet = getMaturityLevelColors(maturityLevelNumber);
-  const colorCode = colorPallet ? colorPallet[levelValue - 1] : "disabled.main";
   const isFarsi = languageDetector(text ?? "");
 
   return (
     <Suspense fallback={<Box>fallback</Box>}>
       <Box sx={{ height: "100%", textAlign: "center" }} {...rest}>
-        <Box
-          flexDirection={
-            textPosition === "top" || isSmallScreen ? "column" : "row"
-          }
-          gap="1rem"
-          mx="auto"
-          sx={{ ...styles.centerVH }}
-        >
-          {textPosition === "top" && (
+        <Box gap="1rem" mx="auto" sx={{ ...styles.centerCVH }}>
+          <Tooltip
+            title={text}
+            sx={{
+              fontFamily: isFarsi ? farsiFontFamily : primaryFontFamily,
+            }}
+          >
             <Typography
-              color={colorCode}
+              color={"surface.on"}
               sx={{
-                color: colorCode,
                 fontSize: "1.25rem",
                 fontWeight: "bold",
                 fontFamily: isFarsi ? farsiFontFamily : primaryFontFamily,
+                whiteSpace: "nowrap",
+                textAlign: "center",
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+                width: { sm: "100px", md: "200px", lg: "300px" },
               }}
             >
               {capitalizeFirstLetter(text)}
             </Typography>
-          )}
+          </Tooltip>
 
           <Box
             gap="3px"
@@ -96,54 +87,35 @@ const FlatGauge = (props: IGaugeProps) => {
             sx={{ ...styles.centerV }}
           >
             <FlatGaugeComponent
-            levels={maturityLevelNumber}
-            levelValue={levelValue}
-            lng={lng}
-            darkColors={darkColors}
-            position="horizontal"
-            guideText={false}
-            pointer={true}
+              {...rest}
+              levels={maturityLevelNumber}
+              levelValue={levelValue}
+              lng={lng}
+              darkColors={darkColors}
+              position="horizontal"
+              guideText={false}
+              pointer={true}
             />
-            {textPosition === "left" && (
-              <Typography
-                color={colorCode}
-                sx={{
-                  fontFamily: isFarsi ? farsiFontFamily : primaryFontFamily,
-                  ml: 0.5,
-                  textAlign: "right",
-                }}
-              >
-                {text}
-              </Typography>
-            )}
           </Box>
-
-          {textPosition === "top" && confidenceText && (
-            <Typography
-              variant="bodyMedium"
-              sx={{
-                ...styles.centerVH,
-                gap: "5px",
-                fontWeight: 300,
-                fontFamily: languageDetector(confidenceText ?? "")
-                  ? farsiFontFamily
-                  : primaryFontFamily,
-              }}
-            >
-              {confidenceText}
-              <Typography
-                variant="titleMedium"
-                color={checkColor(confidenceLevelNum)}
-                sx={{
-                  fontFamily: languageDetector(confidenceText ?? "")
-                    ? farsiFontFamily
-                    : primaryFontFamily,
-                }}
-              >
-                {confidenceLevelNum}%
-              </Typography>
-            </Typography>
-          )}
+          <Typography
+            variant="bodyMedium"
+            color={"surface.onVariant"}
+            sx={{
+              ...styles.centerVH,
+              gap: "5px",
+              fontWeight: 300,
+              fontFamily: languageDetector(confidenceText ?? "")
+                ? farsiFontFamily
+                : primaryFontFamily,
+            }}
+          >
+            {confidenceText}
+            <ConfidenceLevel
+              displayNumber={true}
+              inputNumber={confidenceLevelNum}
+              variant="semiBoldMedium"
+            />
+          </Typography>
         </Box>
       </Box>
     </Suspense>
