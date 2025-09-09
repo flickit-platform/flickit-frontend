@@ -13,7 +13,6 @@ import { ISubjectInfo, IMaturityLevel } from "@/types/index";
 import ConfidenceLevel from "@/utils/confidenceLevel/confidenceLevel";
 import languageDetector from "@/utils/languageDetector";
 import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
-import DonutChart from "../../../common/charts/donutChart/donutChart";
 import SubjectContainer from "../../../subject-report-old/SubjectContainer";
 
 interface IAssessmentSubjectCardProps extends ISubjectInfo {
@@ -145,7 +144,7 @@ export const AssessmentSubjectAccordion = (
           <Grid item xs={12} lg={1} md={1} sm={12}></Grid>
           {isMobileScreen && (
             <Grid item xs={12} lg={2} md={2} sm={12}>
-              <SubjectStatus title={title} maturity_level={maturityLevel} />
+              {/*<SubjectStatus title={title} maturity_level={maturityLevel} />*/}
             </Grid>
           )}
           <Grid item xs={12} lg={2} md={2} sm={12}>
@@ -186,11 +185,11 @@ export const AssessmentSubjectAccordion = (
           </Grid>
           {!isMobileScreen && (
             <Grid item xs={6} lg={1} md={1} sm={12}>
-              <SubjectStatus
-                title={title}
-                maturity_level={maturityLevel}
-                maturityLevelCount={maturityLevelCount}
-              />
+              {/*<SubjectStatus*/}
+              {/*  title={title}*/}
+              {/*  maturity_level={maturityLevel}*/}
+              {/*  maturityLevelCount={maturityLevelCount}*/}
+              {/*/>*/}
             </Grid>
           )}
         </Grid>
@@ -201,33 +200,5 @@ export const AssessmentSubjectAccordion = (
         </Box>
       </AccordionDetails>
     </Accordion>
-  );
-};
-
-const SubjectStatus = (
-  props: Pick<
-    IAssessmentSubjectCardProps,
-    "title" | "maturity_level" | "maturityLevelCount"
-  >,
-) => {
-  const { maturity_level, maturityLevelCount } = props;
-  const hasStats = Boolean(maturity_level?.index);
-
-  return (
-    <Box>
-      {hasStats ? (
-        <DonutChart
-          maturityLevelNumber={maturityLevelCount ?? 5}
-          levelValue={maturity_level?.value ?? 1}
-          text={maturity_level?.title ?? ""}
-          displayTitle={false}
-          height="100"
-        />
-      ) : (
-        <Typography>
-          <Trans i18nKey="common.notEvaluated" />
-        </Typography>
-      )}
-    </Box>
   );
 };
