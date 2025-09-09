@@ -10,7 +10,6 @@ interface IconfidenceLevelType {
   displayNumber?: boolean;
   variant?: any;
   fontFamily?: any;
-  isRTL?: boolean;
 }
 
 const ConfidenceLevel = ({
@@ -18,7 +17,6 @@ const ConfidenceLevel = ({
   displayNumber = false,
   variant = "titleLarge",
   fontFamily,
-  isRTL,
 }: IconfidenceLevelType) => {
   const { id, colorText, number } = calculate(inputNumber);
 
