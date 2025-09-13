@@ -68,6 +68,7 @@ const SubjectTable: React.FC<SubjectTableProps> = ({
   handleEdit,
 }) => {
   const [attributes, setAttributes] = useState<Attribute[]>(initialAttributes);
+  const [editAttribute, setEditAttribute] = useState<Attribute | null>(null);
   const [targetSubjectId, setTargetSubjectId] = useState<number | null>(null);
   const [editAttributeId, setEditAttributeId] = useState<string | null>(null);
   const { kitState } = useKitDesignerContext();
@@ -82,22 +83,32 @@ const SubjectTable: React.FC<SubjectTableProps> = ({
     setTargetSubjectId(Number(subjects[subjects?.length - 1]?.id));
   }, [subjects]);
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    mode: "new" | "edit" = "new",
+  ) => {
     const { name, value } = e.target;
     const parsedValue = name === "weight" ? parseInt(value) || 1 : value;
-    setNewAttribute((prev: any) => ({
-      ...prev,
-      [name]: parsedValue,
-    }));
+    if (mode === "edit") {
+      setEditAttribute((prev) => ({
+        ...(prev as any),
+        [name]: parsedValue,
+      }));
+    } else {
+      setNewAttribute((prev: any) => ({
+        ...prev,
+        [name]: parsedValue,
+      }));
+    }
   };
 
   const handleEditAttribute = (attribute: Attribute) => {
     setEditAttributeId(String(attribute.id));
-    setNewAttribute(attribute);
+    setEditAttribute({ ...attribute })
   };
 
   const handleSaveEdit = () => {
-    handleEdit(newAttribute);
+    handleEdit(editAttribute);
     setEditAttributeId(null);
   };
 
@@ -256,12 +267,14 @@ const SubjectTable: React.FC<SubjectTableProps> = ({
                                     String(attribute.id) ? (
                                       <TableCell sx={{ width: "100%" }}>
                                         <AttributeForm
-                                          newAttribute={newAttribute}
+                                          newAttribute={editAttribute}
                                           handleCancel={handleCancelEdit}
                                           handleSave={handleSaveEdit}
-                                          handleInputChange={handleInputChange}
+                                          handleInputChange={(e) =>
+                                            handleInputChange(e, "edit")
+                                          }
                                           langCode={langCode}
-                                          setNewAttribute={setNewAttribute}
+                                          setNewAttribute={setEditAttribute}
                                           updateTranslation={updateTranslation}
                                         />
                                       </TableCell>
@@ -398,7 +411,9 @@ const SubjectTable: React.FC<SubjectTableProps> = ({
                                   >
                                     <AttributeForm
                                       newAttribute={newAttribute}
-                                      handleInputChange={handleInputChange}
+                                      handleInputChange={(e) =>
+                                        handleInputChange(e, "new")
+                                      }
                                       handleSave={() => handleSave(subject.id)} // Pass the subject ID to add
                                       handleCancel={handleCancel}
                                       langCode={langCode}
