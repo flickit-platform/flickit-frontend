@@ -1,6 +1,6 @@
 import React, { lazy, useEffect, useRef, useState } from "react";
 import { Trans } from "react-i18next";
-import { useParams, NavLink } from "react-router-dom";
+import { useParams, NavLink, useNavigate } from "react-router-dom";
 import { styles } from "@styles";
 import { authActions, useAuthContext } from "@providers/AuthProvider";
 import AppBar from "@mui/material/AppBar";
@@ -44,6 +44,7 @@ import languageDetector from "@utils/languageDetector";
 import { getReadableDate } from "@utils/readableDate";
 import flagsmith from "flagsmith";
 import { useTheme } from "@mui/material";
+import CircularProgress from "@mui/material/CircularProgress";
 
 const NotificationCenter = lazy(() =>
   import("@novu/notification-center").then((module) => ({
@@ -318,6 +319,9 @@ const Navbar = () => {
   const { service } = useServiceContext();
   const theme = useTheme();
 
+  const isAuthenticated = keycloakService.isLoggedIn();
+  const navigate = useNavigate();
+
   const fetchPathInfo = useQuery({
     service: (args, config) =>
       service.common.getPathInfo({ spaceId, ...(args ?? {}) }, config),
@@ -357,6 +361,21 @@ const Navbar = () => {
     }
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [notificationCenterOpen]);
+
+  const navigateToAssessments = () => {
+    navigate("/spaces")
+    if(!isAuthenticated){
+      keycloakService.doLogin()
+    }
+  };
+
+  const handleButtonClick = (e: any, name: string) => {
+    keycloakService.doLogin();
+    (window as any).dataLayer?.push?.({
+      event: "ppms.cm:trackEvent",
+      parameters: { category: "Button", action: "Click", name },
+    });
+  };
 
   const drawer = (
     <Box onClick={handleDrawerToggle} textAlign="center">
@@ -427,36 +446,48 @@ const Navbar = () => {
             minHeight: "44px",
           }}
         >
-          <IconButton
-            color="primary"
-            aria-label="open drawer"
-            edge="start"
-            onClick={handleDrawerToggle}
-            sx={{
-              mr: 0.5,
-              display: { xs: "inline-flex", sm: "none" },
-              color: "background.containerLowest",
-            }}
-          >
-            <MenuIcon />
-          </IconButton>
+          {isAuthenticated && (
+            <IconButton
+              color="primary"
+              aria-label="open drawer"
+              edge="start"
+              onClick={handleDrawerToggle}
+              sx={{
+                mr: 0.5,
+                display: { xs: "inline-flex", sm: "none" },
+                color: "background.containerLowest",
+              }}
+            >
+              <MenuIcon />
+            </IconButton>
+          )}
 
           <Typography
             variant="h6"
             component={NavLink}
             sx={{
-              display: { xs: "none", md: "block" },
+              display: isAuthenticated ? { xs: "none", md: "block" } : { xs: "block" } ,
               color: "grey",
               height: "42px",
               width: "110px",
+              cursor: LandingPage ? "pointer" : "default",
             }}
             to={LandingPage}
           >
-            <img
-              src={config.appLogoUrl}
-              alt={"logo"}
-              style={{ maxWidth: "120px", height: "100%" }}
-            />
+            {config.appLogoUrl ? (
+              <img
+                src={config.appLogoUrl}
+                alt={"logo"}
+                style={{ maxWidth: "120px", height: "100%" }}
+              />
+            ) : (
+              <Box height="100" sx={{ ...styles.centerVH }}>
+                <CircularProgress
+                  size={20}
+                  sx={{ color: "background.containerLowest" }}
+                />
+              </Box>
+            )}
           </Typography>
 
           <Box
@@ -471,9 +502,8 @@ const Navbar = () => {
             }}
           >
             <Button
-              component={NavLink}
+              onClick={navigateToAssessments}
               data-cy="spaces"
-              to={`/spaces`}
               sx={{
                 ...styles.activeNavbarLink,
                 textTransform: "uppercase",
@@ -508,33 +538,54 @@ const Navbar = () => {
             </Button>
           </Box>
 
-          <Box gap="0.7rem" sx={{ ...styles.centerV }}>
-            {MULTILINGUALITY.toString() == "true" ? <LanguageSelector /> : ""}
-            <IconButton onClick={toggleNotificationCenter} ref={bellButtonRef}>
-              <Badge
-                max={99}
-                badgeContent={notificationCount}
-                color="error"
-                overlap="circular"
-                sx={{
-                  "& .MuiBadge-badge": {
-                    backgroundColor: "secondary.main",
-                    minWidth: "16px",
-                    padding: 0,
-                    height: "16px",
-                  },
-                }}
-              >
-                <NotificationsIcon sx={{ fontSize: 20, color: "white" }} />
-              </Badge>
-            </IconButton>
-            <AccountDropDownButton userInfo={userInfo} />
+          <Box gap={{ xs: 0.8, sm: 2 }} sx={{ ...styles.centerV }}>
+            {MULTILINGUALITY.toString() == "true" ? <LanguageSelector /> : null}
+            {
+              isAuthenticated ? (
+                <IconButton onClick={toggleNotificationCenter} ref={bellButtonRef}>
+                  <Badge
+                    max={99}
+                    badgeContent={notificationCount}
+                    color="error"
+                    overlap="circular"
+                    sx={{
+                      "& .MuiBadge-badge": {
+                        backgroundColor: "secondary.main",
+                        minWidth: "16px",
+                        padding: 0,
+                        height: "16px",
+                      },
+                    }}
+                  >
+                    <NotificationsIcon sx={{ fontSize: 20, color: "white" }} />
+                  </Badge>
+                </IconButton>
+              ) : (
+                <Button
+                  variant="contained"
+                  size="medium"
+                  onClick={(e) => handleButtonClick(e, "Login")}
+                  sx={{
+                    height: "32px",
+                    color: "primary.main",
+                    textTransform: "capitalize",
+                    bgcolor: "background.container",
+                    boxShadow: "0 1px 5px rgba(0,0,0,0.12)",
+                    "&:hover": { bgcolor: "background.container" },
+                  }}
+                >
+                  <Trans i18nKey="common.loginOrSignup" />
+                </Button>
+              )
+            }
+
+            {isAuthenticated && <AccountDropDownButton userInfo={userInfo} /> }
           </Box>
         </Toolbar>
       </AppBar>
 
       {/* کشوی موبایل */}
-      <Box component="nav">
+      {isAuthenticated && <Box component="nav">
         <Drawer
           container={window.document.body}
           variant="temporary"
@@ -553,8 +604,8 @@ const Navbar = () => {
           {drawer}
         </Drawer>
       </Box>
-
-      {notificationCenterOpen && (
+      }
+      {notificationCenterOpen && isAuthenticated && (
         <Box
           ref={notificationCenterRef}
           position="fixed"
