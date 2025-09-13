@@ -13,8 +13,8 @@ import { ISubjectInfo, IMaturityLevel } from "@/types/index";
 import ConfidenceLevel from "@/utils/confidenceLevel/confidenceLevel";
 import languageDetector from "@/utils/languageDetector";
 import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
-import DonutChart from "../../../common/charts/donutChart/donutChart";
 import SubjectContainer from "../../../subject-report-old/SubjectContainer";
+import FlatGaugeComponent from "@common/flatGaugeComponent";
 
 interface IAssessmentSubjectCardProps extends ISubjectInfo {
   maturity_level?: IMaturityLevel;
@@ -30,7 +30,7 @@ export const AssessmentSubjectAccordion = (
   const {
     title,
     maturityLevel,
-    maturityLevelCount,
+    maturityLevelCount = 1,
     confidenceValue,
     description = "",
     reloadQuery,
@@ -40,6 +40,8 @@ export const AssessmentSubjectAccordion = (
   const isMobileScreen = useMediaQuery((theme: any) =>
     theme.breakpoints.down("md"),
   );
+
+  const darkColors = getMaturityLevelColors(maturityLevelCount);
 
   const handleAccordionChange = (
     event: React.SyntheticEvent,
@@ -79,7 +81,7 @@ export const AssessmentSubjectAccordion = (
           alignItems="center"
           sx={{ textDecoration: "none", color: "inherit" }}
         >
-          <Grid item xs={12} lg={3.75} md={3.75} sm={12}>
+          <Grid item xs={12} md={3} sm={12}>
             <Box sx={{ ...styles.centerCVH }} gap={1}>
               <Box
                 sx={{
@@ -110,10 +112,10 @@ export const AssessmentSubjectAccordion = (
               </Typography>
             </Box>
           </Grid>
-          <Grid item xs={12} lg={0.25} md={0.25} sm={12}></Grid>
+          <Grid item xs={12} md={0.5} sm={12}></Grid>
 
           {!isMobileScreen && (
-            <Grid item xs={12} lg={3.7} md={3.7} sm={12}>
+            <Grid item xs={12} md={5} sm={12}>
               <Box
                 sx={{
                   maxHeight: "100px",
@@ -142,13 +144,22 @@ export const AssessmentSubjectAccordion = (
               </Box>
             </Grid>
           )}
-          <Grid item xs={12} lg={1} md={1} sm={12}></Grid>
+          <Grid item xs={12} md={1} sm={12}></Grid>
           {isMobileScreen && (
-            <Grid item xs={12} lg={2} md={2} sm={12}>
-              <SubjectStatus title={title} maturity_level={maturityLevel} />
+            <Grid item xs={12} md={2} sm={12} py={1}>
+              <FlatGaugeComponent
+                levels={maturityLevelCount}
+                levelValue={maturityLevel?.value ?? 1}
+                lng={null}
+                darkColors={darkColors}
+                position={"vertical-trapezoid"}
+                guideText={false}
+                pointer={true}
+                segment={{ width: 24, height: 20 }}
+              />
             </Grid>
           )}
-          <Grid item xs={12} lg={2} md={2} sm={12}>
+          <Grid item xs={12} md={2} sm={12}>
             <Box
               sx={{
                 ...styles.centerCVH,
@@ -157,9 +168,7 @@ export const AssessmentSubjectAccordion = (
               }}
             >
               <Typography
-                color={getMaturityLevelColors(maturityLevelCount ?? 5)[
-                  (maturityLevel?.value ?? 1) - 1
-                ]}
+                color={"text.primary"}
                 sx={{
                   display: "flex",
                   gap: "5px",
@@ -185,11 +194,16 @@ export const AssessmentSubjectAccordion = (
             </Box>
           </Grid>
           {!isMobileScreen && (
-            <Grid item xs={6} lg={1} md={1} sm={12}>
-              <SubjectStatus
-                title={title}
-                maturity_level={maturityLevel}
-                maturityLevelCount={maturityLevelCount}
+            <Grid item xs={0.4}>
+              <FlatGaugeComponent
+                levels={maturityLevelCount}
+                levelValue={maturityLevel?.value ?? 1}
+                lng={null}
+                darkColors={darkColors}
+                position={"vertical-trapezoid"}
+                guideText={false}
+                pointer={true}
+                segment={{ width: 24, height: 20 }}
               />
             </Grid>
           )}
@@ -201,33 +215,5 @@ export const AssessmentSubjectAccordion = (
         </Box>
       </AccordionDetails>
     </Accordion>
-  );
-};
-
-const SubjectStatus = (
-  props: Pick<
-    IAssessmentSubjectCardProps,
-    "title" | "maturity_level" | "maturityLevelCount"
-  >,
-) => {
-  const { maturity_level, maturityLevelCount } = props;
-  const hasStats = Boolean(maturity_level?.index);
-
-  return (
-    <Box>
-      {hasStats ? (
-        <DonutChart
-          maturityLevelNumber={maturityLevelCount ?? 5}
-          levelValue={maturity_level?.value ?? 1}
-          text={maturity_level?.title ?? ""}
-          displayTitle={false}
-          height="100"
-        />
-      ) : (
-        <Typography>
-          <Trans i18nKey="common.notEvaluated" />
-        </Typography>
-      )}
-    </Box>
   );
 };
