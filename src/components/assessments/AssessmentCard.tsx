@@ -31,7 +31,7 @@ import Star from "@/assets/svg/star.svg";
 import SettingsIcon from "@mui/icons-material/Settings";
 import Tooltip from "@mui/material/Tooltip";
 import Chip from "@mui/material/Chip";
-import ConfidenceLevel from "@/utils/confidenceLevel/confidenceLevel";
+import CompletionRing from "@/components/common/charts/completion-ring/CompletionRing";
 import { farsiFontFamily, primaryFontFamily } from "@config/theme";
 import languageDetector from "@/utils/languageDetector";
 import Assessment from "@mui/icons-material/Assessment";
@@ -236,7 +236,7 @@ const AssessmentCard = ({
                     gap="0.125rem"
                   >
                     <Trans i18nKey="common.confidence" />:
-                    <ConfidenceLevel
+                    <CompletionRing
                       displayNumber
                       inputNumber={Math.ceil(confidenceValue)}
                       variant="titleSmall"

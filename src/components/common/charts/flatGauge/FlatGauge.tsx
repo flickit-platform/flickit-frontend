@@ -7,7 +7,7 @@ import { getMaturityLevelColors, styles } from "@styles";
 import { capitalizeFirstLetter } from "@/utils/filterLetter";
 import languageDetector from "@/utils/languageDetector";
 import FlatGaugeComponent from "@common/flatGaugeComponent";
-import ConfidenceLevel from "@utils/confidenceLevel/confidenceLevel";
+import CompletionRing from "@/components/common/charts/completion-ring/CompletionRing";
 import Tooltip from "@mui/material/Tooltip";
 import i18next from "i18next";
 
@@ -110,7 +110,7 @@ const FlatGauge = (props: IGaugeProps) => {
             }}
           >
             {confidenceText}
-            <ConfidenceLevel
+            <CompletionRing
               displayNumber={true}
               inputNumber={confidenceLevelNum}
               variant="semiBoldMedium"
