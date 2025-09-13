@@ -4,8 +4,6 @@ import GettingThingsReadyLoading from "@common/loadings/GettingThingsReadyLoadin
 import Navbar from "@common/Navbar";
 import { styles } from "@styles";
 import { useLocation, useParams } from "react-router-dom";
-import NavbarWithoutLogin from "@/components/common/NavbarWithoutLogin";
-import keycloakService from "@/service/keycloakService";
 import FloatButton from "@/components/common/buttons/FloatButton";
 import useDialog from "@utils/useDialog";
 import ContactUsDialog from "@/components/common/dialogs/ContactUsDialog";
@@ -26,11 +24,9 @@ const AppLayout = (props: PropsWithChildren<{}>) => {
     "/graphical-report",
   ]);
 
-  const isAuthenticated = keycloakService.isLoggedIn();
-
   return (
     <Box sx={{ overflowX: "clip", minHeight: "100vh" }}>
-      {isAuthenticated ? <Navbar /> : <NavbarWithoutLogin />}{" "}
+      <Navbar />{" "}
       <Box
         sx={{
           p: shouldApplyPadding ? { xs: 1, sm: 1, md: 4 } : "0",
