@@ -227,6 +227,7 @@ export interface AssessmentKitInfoType {
   mainLanguage?: { code: string; title: string };
   metadata?: { context: string; goal: string };
   translations?: any;
+  languages: {code: string, title: string}[]
 }
 
 export interface IAssessmentModel extends IDefaultModel<IAssessment> {
