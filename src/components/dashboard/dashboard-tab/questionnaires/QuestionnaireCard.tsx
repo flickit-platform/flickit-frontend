@@ -102,7 +102,6 @@ const QuestionnaireCard = (props: IQuestionnaireCardProps) => {
                       sx={{
                         cursor: "pointer",
                         userSelect: "none",
-                        marginInline: 1,
                       }}
                       onClick={() => setCollapse(!collapse)}
                       size="small"
