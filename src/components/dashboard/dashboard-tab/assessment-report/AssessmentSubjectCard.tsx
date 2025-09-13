@@ -10,7 +10,7 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { Trans } from "react-i18next";
 import { getMaturityLevelColors, styles } from "@styles";
 import { ISubjectInfo, IMaturityLevel } from "@/types/index";
-import ConfidenceLevel from "@/utils/confidenceLevel/confidenceLevel";
+import CompletionRing from "@/components/common/charts/completion-ring/CompletionRing";
 import languageDetector from "@/utils/languageDetector";
 import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
 import SubjectContainer from "../../../subject-report-old/SubjectContainer";
@@ -185,7 +185,7 @@ export const AssessmentSubjectAccordion = (
                 <Typography variant="bodyMedium" color="background.onVariant">
                   <Trans i18nKey="common.confidence" />:
                 </Typography>
-                <ConfidenceLevel
+                <CompletionRing
                   inputNumber={confidenceValue}
                   displayNumber
                   variant="titleSmall"

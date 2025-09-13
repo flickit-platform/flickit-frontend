@@ -4,7 +4,7 @@ import { lazy, Suspense, useMemo, useRef } from "react";
 import { Trans } from "react-i18next";
 import { getMaturityLevelColors } from "@styles";
 import SkeletonGauge from "@common/charts/SkeletonGauge";
-import ConfidenceLevel from "@/utils/confidenceLevel/confidenceLevel";
+import CompletionRing from "@/components/common/charts/completion-ring/CompletionRing";
 import mlIndicator from "@/assets/svg/ml-indicator.svg";
 import permissionRequired from "@/assets/svg/permission-required.svg";
 import languageDetector from "@/utils/languageDetector";
@@ -110,7 +110,7 @@ const Gauge = ({
               }}
             >
               {confidence_text}
-              <ConfidenceLevel
+              <CompletionRing
                 displayNumber
                 inputNumber={Math.ceil(confidence_value ?? 0)}
                 variant="titleSmall"

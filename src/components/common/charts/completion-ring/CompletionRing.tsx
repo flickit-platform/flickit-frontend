@@ -5,23 +5,23 @@ import { confidenceColor } from "@/config/styles";
 import { formatRoundedPercent } from "@/features/assessment-report/ui/sections/tree-map/MeasureTable";
 import i18next from "i18next";
 
-interface IconfidenceLevelType {
+interface IcompletionRingType {
   inputNumber?: number | null;
   displayNumber?: boolean;
   variant?: any;
   fontFamily?: any;
 }
 
-const ConfidenceLevel = ({
+const CompletionRing = ({
   inputNumber = 0,
   displayNumber = false,
   variant = "titleLarge",
   fontFamily,
-}: IconfidenceLevelType) => {
-  const { id, colorText, number } = calculate(inputNumber);
+}: IcompletionRingType) => {
+  const { id, textColor, number } = calculate(inputNumber);
 
-  const ImgRate = useMemo(
-    () => lazy(() => import(`./confLevel${id}.tsx`)),
+  const CompletionRingComponent = useMemo(
+    () => lazy(() => import(`./CompletionRing${id}.tsx`)),
     [id],
   );
   return (
@@ -36,7 +36,7 @@ const ConfidenceLevel = ({
         {displayNumber && (
           <Typography
             variant={variant}
-            color={colorText}
+            color={textColor}
             sx={{
               fontFamily: fontFamily,
             }}
@@ -45,7 +45,7 @@ const ConfidenceLevel = ({
             {i18next.language === "en" ? "%" : "٪"}
           </Typography>
         )}
-        <ImgRate />
+        <CompletionRingComponent color={textColor}/>
       </Box>
     </Suspense>
   );
@@ -54,7 +54,7 @@ const ConfidenceLevel = ({
 const calculate = (inputNumber: any) => {
   let number;
   let id;
-  let colorText;
+  let textColor;
 
   if (!inputNumber || typeof inputNumber !== "number") {
     number = 0;
@@ -63,7 +63,7 @@ const calculate = (inputNumber: any) => {
   }
 
   let newNum = Math.floor(number / 20);
-  colorText = confidenceColor[newNum];
+  textColor = confidenceColor[newNum];
 
   switch (number >= 0) {
     case number < 20:
@@ -85,7 +85,7 @@ const calculate = (inputNumber: any) => {
       id = 100;
   }
 
-  return { id, colorText, number };
+  return { id, textColor, number };
 };
 
-export default ConfidenceLevel;
+export default CompletionRing;
