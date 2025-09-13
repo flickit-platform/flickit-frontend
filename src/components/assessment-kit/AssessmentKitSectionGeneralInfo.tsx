@@ -64,7 +64,7 @@ const AssessmentKitSectionGeneralInfo = (
 ) => {
   const { setExpertGroup, setAssessmentKitTitle, setHasActiveVersion } = props;
   const {
-    config: { languages },
+    config: { languages: appLangs },
   }: any = useConfigContext();
   const { assessmentKitId } = useParams();
   const { service } = useServiceContext();
@@ -127,7 +127,7 @@ const AssessmentKitSectionGeneralInfo = (
   const handleLanguageChange = async (e: any) => {
     const { value } = e.target;
 
-    let adjustValue = languages.find(
+    let adjustValue = appLangs.find(
       (item: { code: string; title: string }) => item.title == value,
     );
 
@@ -179,6 +179,7 @@ const AssessmentKitSectionGeneralInfo = (
           mainLanguage,
           metadata,
           translations,
+          languages
         } = info as AssessmentKitInfoType;
         const {
           creationTime,
