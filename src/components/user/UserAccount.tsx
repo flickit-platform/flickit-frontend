@@ -47,7 +47,7 @@ const UserAccount = () => {
   });
   useEffect(() => {
     setUserInfo(userProfileInfo);
-  }, []);
+  }, [userQueryData?.data]);
 
   const dialogProps = useDialog();
   useDocumentTitle(`${t("user.userProfile")}: ${getUserName(userInfo)}`);
