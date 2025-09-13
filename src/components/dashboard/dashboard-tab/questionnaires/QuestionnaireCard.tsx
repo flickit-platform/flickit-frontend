@@ -97,20 +97,19 @@ const QuestionnaireCard = (props: IQuestionnaireCardProps) => {
                   >
                     {title}
                   </span>
+                  {description && (
+                    <IconButton
+                      sx={{
+                        cursor: "pointer",
+                        userSelect: "none",
+                      }}
+                      onClick={() => setCollapse(!collapse)}
+                      size="small"
+                    >
+                      <InfoOutlined sx={{ width: "16px", height: "16px" }} />
+                    </IconButton>
+                  )}
                 </Title>
-                {description && (
-                  <IconButton
-                    sx={{
-                      cursor: "pointer",
-                      userSelect: "none",
-                      marginInline: 1,
-                    }}
-                    onClick={() => setCollapse(!collapse)}
-                    size="small"
-                  >
-                    <InfoOutlined sx={{ width: "16px", height: "16px" }} />
-                  </IconButton>
-                )}
                 <Box
                   ref={boxRef}
                   display="inline-block"
