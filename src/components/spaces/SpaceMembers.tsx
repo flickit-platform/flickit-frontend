@@ -1,7 +1,6 @@
 import Box from "@mui/material/Box";
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
-import Title from "@common/Title";
 import QueryData from "@common/QueryData";
 import { useServiceContext } from "@providers/ServiceProvider";
 import { useQuery } from "@utils/useQuery";
@@ -38,6 +37,7 @@ import languageDetector from "@utils/languageDetector";
 import { getReadableDate } from "@utils/readableDate";
 import showToast from "@utils/toastError";
 import { DeleteConfirmationDialog } from "@common/dialogs/DeleteConfirmationDialog";
+import Title from "@common/Title";
 
 export const SpaceMembers = (props: any) => {
   const { editable } = props;

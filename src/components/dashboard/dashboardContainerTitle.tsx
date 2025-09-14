@@ -1,10 +1,10 @@
-import Title from "@common/TitleComponent";
 import SupTitleBreadcrumb from "@/components/common/SupTitleBreadcrumb";
 import { Link, useParams } from "react-router-dom";
 import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import { styles } from "@styles";
 import { IconButton } from "@mui/material";
 import { useMemo } from "react";
+import Title from "@common/Title";
 
 const DashboardTitle = (props: any) => {
   const { pathInfo, title, permissions } = props;

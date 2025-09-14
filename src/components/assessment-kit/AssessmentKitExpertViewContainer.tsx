@@ -6,7 +6,6 @@ import Alert from "@mui/material/Alert";
 import { useServiceContext } from "@providers/ServiceProvider";
 import { useParams } from "react-router-dom";
 import { useQuery } from "@utils/useQuery";
-import Title from "@common/TitleComponent";
 import { Trans } from "react-i18next";
 import Tab from "@mui/material/Tab";
 import TabList from "@mui/lab/TabList";
@@ -41,6 +40,7 @@ import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
 import LoadingButton from "@mui/lab/LoadingButton";
 import uniqueId from "@/utils/uniqueId";
 import showToast from "@utils/toastError";
+import Title from "@common/Title";
 
 const AssessmentKitExpertViewContainer = () => {
   const { fetchAssessmentKitDetailsQuery, fetchAssessmentKitDownloadUrlQuery } =

@@ -1,7 +1,6 @@
 import React from "react";
 import Box from "@mui/material/Box";
 import { Trans } from "react-i18next";
-import Title from "@common/Title";
 import TabContext from "@mui/lab/TabContext";
 import TabList from "@mui/lab/TabList";
 import Tab from "@mui/material/Tab";
@@ -19,6 +18,7 @@ import useDialog from "@utils/useDialog";
 import CreateSpaceDialog from "./CreateSpaceDialog";
 import LoadingButton from "@mui/lab/LoadingButton";
 import BorderColorRoundedIcon from "@mui/icons-material/BorderColorRounded";
+import Title from "@common/Title";
 
 const SpaceSettingContainer = () => {
   const { spaceId = "" } = useParams();

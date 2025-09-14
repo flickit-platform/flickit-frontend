@@ -1,10 +1,10 @@
 import { useEffect } from "react";
-import Title from "@common/TitleComponent";
 import SupTitleBreadcrumb from "@/components/common/SupTitleBreadcrumb";
 import setDocumentTitle from "@utils/setDocumentTitle";
 import { t } from "i18next";
 import { useConfigContext } from "@/providers/ConfgProvider";
 import { IKitVersion } from "@/types/index";
+import Title from "@common/Title";
 
 const KitDesignerTitle = ({ kitVersion }: { kitVersion: IKitVersion }) => {
   const { config } = useConfigContext();

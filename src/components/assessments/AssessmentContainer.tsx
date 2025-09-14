@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Trans } from "react-i18next";
-import Title from "@common/Title";
 import QueryData from "@common/QueryData";
 import ErrorEmptyData from "@common/errors/ErrorEmptyData";
 import AssessmentEmptyState from "@assets/svg/assessmentEmptyState.svg";
@@ -29,6 +28,7 @@ import { useQuery } from "@/utils/useQuery";
 import useScreenResize from "@utils/useScreenResize";
 import LoadingAssessmentCards from "../common/loadings/LoadingAssessmentCards";
 import { useTheme } from "@mui/material";
+import Title from "@common/Title";
 
 const AssessmentContainer = () => {
   const { service } = useServiceContext();

@@ -1,5 +1,4 @@
 import { t } from "i18next";
-import Title from "@common/Title";
 import { Trans } from "react-i18next";
 import useDialog from "@utils/useDialog";
 import { useQuery } from "@utils/useQuery";
@@ -26,6 +25,7 @@ import { styles } from "@styles";
 import languageDetector from "@/utils/languageDetector";
 import showToast from "@utils/toastError";
 import { useTheme } from "@mui/material";
+import Title from "@common/Title";
 
 const UserAccount = () => {
   const [hover, setHover] = useState(false);

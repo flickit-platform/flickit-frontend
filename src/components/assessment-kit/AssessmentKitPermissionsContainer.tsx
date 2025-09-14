@@ -1,5 +1,4 @@
 import Box from "@mui/material/Box";
-import Title from "@common/Title";
 import { useServiceContext } from "@providers/ServiceProvider";
 import { useParams } from "react-router-dom";
 import { useQuery } from "@utils/useQuery";
@@ -10,6 +9,7 @@ import { t } from "i18next";
 import setDocumentTitle from "@utils/setDocumentTitle";
 import { useConfigContext } from "@/providers/ConfgProvider";
 import MemberList from "@/components/assessment-kit/AssessmentKitMemberList";
+import Title from "@common/Title";
 
 const AssessmentKitPermissionsContainer = () => {
   const { service } = useServiceContext();

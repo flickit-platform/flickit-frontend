@@ -20,12 +20,12 @@ import { Trans } from "react-i18next";
 import languageDetector from "@/utils/languageDetector";
 import AssessmentKitsStoreListCard from "./AssessmentKitsStoreListCard";
 import { useEffect, useRef } from "react";
-import Title from "@common/TitleComponent";
 import SupTitleBreadcrumb from "../common/SupTitleBreadcrumb";
 import AssessmentKitSubjects from "./AssessmentKitSubjects";
 import LoadingAssessmentKit from "../common/loadings/LoadingSkeletonAssessmentKit";
 import keycloakService from "@/service/keycloakService";
 import useScreenResize from "@/utils/useScreenResize";
+import Title from "@common/Title";
 
 type PurchaseStatus = "free" | "paid" | "purchased";
 

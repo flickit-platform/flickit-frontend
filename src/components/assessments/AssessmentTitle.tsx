@@ -1,5 +1,5 @@
-import Title from "@common/TitleComponent";
 import SupTitleBreadcrumb from "@/components/common/SupTitleBreadcrumb";
+import Title from "@common/Title";
 
 interface IAssessmentReportTitle {
   data: any;

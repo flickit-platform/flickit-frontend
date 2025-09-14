@@ -1,5 +1,4 @@
 import Grid from "@mui/material/Grid";
-import Title from "@common/Title";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import { Trans } from "react-i18next";
@@ -32,6 +31,7 @@ import i18next, { t } from "i18next";
 import ScoreImpactBarChart from "./ScoreImpactBarChart";
 import DropDownContent from "./DropDownContent";
 import { useTheme } from "@mui/material";
+import Title from "@common/Title";
 
 const SubjectAttributeCard = (props: any) => {
   const {

@@ -6,10 +6,10 @@ import { useServiceContext } from "@providers/ServiceProvider";
 import { ICustomError } from "@utils/CustomError";
 import { useQuery } from "@utils/useQuery";
 import QueryData from "@common/QueryData";
-import Title from "@common/Title";
 import ExpertGroupsItem from "./ExpertGroupsItem";
 import showToast from "@utils/toastError";
 import { HOME_URL } from "@/config/constants";
+import Title from "@common/Title";
 
 const ExpertGroupConfirmInvitationContainer = () => {
   const { service } = useServiceContext();

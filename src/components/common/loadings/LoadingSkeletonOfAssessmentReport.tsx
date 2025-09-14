@@ -1,8 +1,8 @@
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import Skeleton from "@mui/material/Skeleton";
-import Title from "../Title";
 import { LoadingSkeleton } from "./LoadingSkeleton";
+import Title from "@common/Title";
 
 const LoadingSkeletonOfAssessmentReport = () => {
   return (

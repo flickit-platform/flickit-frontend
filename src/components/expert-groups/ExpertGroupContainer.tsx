@@ -15,7 +15,6 @@ import { useParams } from "react-router-dom";
 import { useServiceContext } from "@providers/ServiceProvider";
 import { useQuery } from "@utils/useQuery";
 import QueryData from "@common/QueryData";
-import Title from "@common/TitleComponent";
 import PeopleRoundedIcon from "@mui/icons-material/PeopleRounded";
 import { styles } from "@styles";
 import { Trans } from "react-i18next";
@@ -67,6 +66,7 @@ import { getReadableDate } from "@utils/readableDate";
 import flagsmith from "flagsmith";
 import showToast from "@utils/toastError";
 import { useTheme } from "@mui/material";
+import Title from "@common/Title";
 
 const ExpertGroupContainer = () => {
   const { service } = useServiceContext();

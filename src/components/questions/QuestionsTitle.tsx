@@ -3,7 +3,6 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import { Trans } from "react-i18next";
 import { Link, useParams } from "react-router-dom";
-import Title from "@common/Title";
 import {
   questionActions,
   useQuestionContext,
@@ -22,6 +21,7 @@ import ArrowForward from "@mui/icons-material/ArrowForward";
 import { useQuestionnaire } from "../dashboard/dashboard-tab/questionnaires/QuestionnaireContainer";
 import OutlinedProgressButton from "../common/buttons/OutlinedProgressButton";
 import { Skeleton, useTheme } from "@mui/material";
+import Title from "@common/Title";
 
 const itemNames = [
   {

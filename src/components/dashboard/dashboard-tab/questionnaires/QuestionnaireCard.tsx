@@ -2,7 +2,6 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Paper from "@mui/material/Paper";
 import { Trans } from "react-i18next";
-import Title from "@common/Title";
 import QANumberIndicator from "@common/QANumberIndicator";
 import QuestionnaireProgress from "@common/progress/CategoryProgress";
 import { Link } from "react-router-dom";
@@ -20,6 +19,7 @@ import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
 import Grid from "@mui/material/Grid";
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 import { useTheme } from "@mui/material";
+import Title from "@common/Title";
 
 interface IQuestionnaireCardProps {
   data: IQuestionnairesInfo;
@@ -67,7 +67,7 @@ const QuestionnaireCard = (props: IQuestionnaireCardProps) => {
       >
         <Box>
           <Box flex={1}>
-            <Title size="small" fontWeight={"bold"}>
+            <Title size="small" sx={{width:"100%"}} fontWeight={"bold"}>
               <Box ref={mainBoxRef} flex="1" sx={{ ...styles.centerV }}>
                 <Title
                   fontWeight={"bold"}
