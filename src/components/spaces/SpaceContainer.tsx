@@ -8,7 +8,6 @@ import {
 } from "@mui/material";
 import { Trans } from "react-i18next";
 import { useSearchParams } from "react-router-dom";
-import Title from "@common/Title";
 import QueryData from "@common/QueryData";
 import useDialog from "@utils/useDialog";
 import CreateSpaceDialog from "./CreateSpaceDialog";

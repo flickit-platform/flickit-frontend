@@ -1,7 +1,6 @@
 import Box from "@mui/material/Box";
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
-import Title from "@common/Title";
 import QueryData from "@common/QueryData";
 import { useServiceContext } from "@providers/ServiceProvider";
 import { useQuery } from "@utils/useQuery";
@@ -356,7 +355,7 @@ export const SpaceMembers = (props: any) => {
               <Box>
                 {items.length > 0 && (
                   <Box mt={4}>
-                    <Title
+                    <NewTitle
                       size="small"
                       titleProps={{
                         textTransform: "none",
@@ -364,7 +363,7 @@ export const SpaceMembers = (props: any) => {
                       }}
                     >
                       <Trans i18nKey="common.invitees" />
-                    </Title>
+                    </NewTitle>
                     <Box mt={1}>
                       {items.map((invitees: any) => {
                         const { id, email, expirationDate } = invitees;
