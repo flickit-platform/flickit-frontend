@@ -6,10 +6,10 @@ import { useServiceContext } from "@providers/ServiceProvider";
 import { ICustomError } from "@utils/CustomError";
 import { useQuery } from "@utils/useQuery";
 import QueryData from "@common/QueryData";
-import Title from "@common/Title";
 import ExpertGroupsItem from "./ExpertGroupsItem";
 import showToast from "@utils/toastError";
 import { HOME_URL } from "@/config/constants";
+import NewTitle from "@common/newTitle";
 
 const ExpertGroupConfirmInvitationContainer = () => {
   const { service } = useServiceContext();
@@ -80,9 +80,9 @@ const ExpertGroupConfirmInvitationContainer = () => {
               m: "auto",
             }}
           >
-            <Title size="small" textTransform={"none"}>
+            <NewTitle size="small" textTransform={"none"}>
               <Trans i18nKey="expertGroups.youHaveBeenInvitedToExpertGroup" />
-            </Title>
+            </NewTitle>
             <Box my={3}>
               <ExpertGroupsItem data={data} disableActions={true} />
             </Box>

@@ -4,9 +4,9 @@ import Collapse from "@mui/material/Collapse";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import React, { useState } from "react";
-import Title from "@common/Title";
 import { Trans } from "react-i18next";
 import { styles } from "@styles";
+import NewTitle from "@common/newTitle";
 
 export const QuestionGuide = (props: any) => {
   const [collapse, setCollapse] = useState<boolean>(false);
@@ -16,7 +16,7 @@ export const QuestionGuide = (props: any) => {
   return (
     <Box>
       <Box mt={1} width="100%">
-        <Title
+        <NewTitle
           sup={
             <Box color="background.containerLowest" sx={{ ...styles.centerVH }}>
               <InfoRounded
@@ -32,7 +32,8 @@ export const QuestionGuide = (props: any) => {
           sx={{ cursor: "pointer", userSelect: "none" }}
           onClick={() => setCollapse(!collapse)}
           mb={1}
-        ></Title>
+        >
+        </NewTitle>
         <Collapse in={collapse}>
           <Box
             flex={1}

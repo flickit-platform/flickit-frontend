@@ -1,5 +1,4 @@
 import { t } from "i18next";
-import Title from "@common/Title";
 import { Trans } from "react-i18next";
 import useDialog from "@utils/useDialog";
 import { useQuery } from "@utils/useQuery";
@@ -26,6 +25,7 @@ import { styles } from "@styles";
 import languageDetector from "@/utils/languageDetector";
 import showToast from "@utils/toastError";
 import { useTheme } from "@mui/material";
+import NewTitle from "@common/newTitle";
 
 const UserAccount = () => {
   const [hover, setHover] = useState(false);
@@ -188,7 +188,7 @@ const UserAccount = () => {
         </Box>
       </Box>
       <Box sx={{ marginInlineStart: "130px" }} mt={1}>
-        <Title
+        <NewTitle
           textTransform={"capitalize"}
           sub={<Box textTransform={"none"}>{userInfo?.email}</Box>}
           toolbar={
@@ -209,15 +209,15 @@ const UserAccount = () => {
           }
         >
           {userInfo?.displayName}
-        </Title>
+        </NewTitle>
       </Box>
       <Box mt={8}>
         <Box borderTop={"1px solid #d1d1d1"} px={1} py={3} m={1}>
           <Grid container spacing={3}>
             <Grid item md={3}>
-              <Title size="small" textTransform={"none"}>
+              <NewTitle size="small" textTransform={"none"}>
                 <Trans i18nKey="common.about" />
-              </Title>
+              </NewTitle>
             </Grid>
             <Grid item md={9}>
               <Box>
