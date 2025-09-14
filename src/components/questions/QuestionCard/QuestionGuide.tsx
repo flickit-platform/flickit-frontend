@@ -3,7 +3,7 @@ import InfoRounded from "@mui/icons-material/InfoRounded";
 import Collapse from "@mui/material/Collapse";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import React, { useState } from "react";
+import { Fragment, useState } from "react";
 import { Trans } from "react-i18next";
 import { styles } from "@styles";
 import Title from "@common/Title";
@@ -32,8 +32,7 @@ export const QuestionGuide = (props: any) => {
           sx={{ cursor: "pointer", userSelect: "none" }}
           onClick={() => setCollapse(!collapse)}
           mb={1}
-        >
-        </Title>
+        ></Title>
         <Collapse in={collapse}>
           <Box
             flex={1}
@@ -53,16 +52,16 @@ export const QuestionGuide = (props: any) => {
                       .substring(1)
                       .split("\n")
                       .map((line: string) => (
-                        <React.Fragment key={line}>
+                        <Fragment key={line}>
                           {line}
                           <br />
-                        </React.Fragment>
+                        </Fragment>
                       ))
                   : hint.split("\n").map((line: string) => (
-                      <React.Fragment key={line}>
+                      <Fragment key={line}>
                         {line}
                         <br />
-                      </React.Fragment>
+                      </Fragment>
                     ))}
               </Typography>
             </Box>

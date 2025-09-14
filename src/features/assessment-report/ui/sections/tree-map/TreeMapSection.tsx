@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction, useMemo } from "react";
+import { Dispatch, SetStateAction, useMemo } from "react";
 import { Box, Typography, Grid, useTheme } from "@mui/material";
 import TreeMapChart from "@/components/common/charts/TreeMapChart";
 import ManWithMagnifier from "@/assets/svg/man-with-magnifier.svg";
@@ -9,7 +9,7 @@ import languageDetector from "@/utils/languageDetector";
 import MeasuresTable from "./MeasureTable";
 import AIGenerated from "@/components/common/icons/AIGenerated";
 import FlatGauge from "@/components/common/charts/flatGauge/FlatGauge";
-import { IAssessment, IMaturityLevel, IUserPermissions } from "@/types";
+import { IMaturityLevel, IUserPermissions } from "@/types";
 
 type Props = {
   isQuickMode: boolean;

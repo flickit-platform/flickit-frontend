@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import Box from "@mui/material/Box";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -177,7 +177,7 @@ const KitCustomizationTable: React.FC<SubjectTableProps> = ({
         </TableHead>
         <TableBody>
           {subjects?.map((subject, index) => (
-            <React.Fragment key={subject.id}>
+            <Fragment key={subject.id}>
               <TableRow
                 sx={{ bgcolor: "#F9F9F9", borderRadius: "0.5rem", mb: 1 }}
               >
@@ -324,7 +324,7 @@ const KitCustomizationTable: React.FC<SubjectTableProps> = ({
                   </TableCell>
                 </TableRow>
               ))}
-            </React.Fragment>
+            </Fragment>
           ))}
         </TableBody>
       </Table>

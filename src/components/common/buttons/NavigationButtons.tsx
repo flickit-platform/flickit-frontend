@@ -1,4 +1,3 @@
-import React from "react";
 import { Button, Box, Typography } from "@mui/material";
 import { ArrowBackIos, ArrowForwardIos } from "@mui/icons-material";
 import { Trans } from "react-i18next";

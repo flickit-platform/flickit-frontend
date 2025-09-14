@@ -118,7 +118,7 @@ const CompetencesTable = ({
               <TableCell sx={{ textAlign: "center" }} key={row.id}>
                 <Typography
                   sx={{
-                    fontFamily: languageDetector(row.title as string)
+                    fontFamily: languageDetector(row.title)
                       ? farsiFontFamily
                       : primaryFontFamily,
                   }}
@@ -145,7 +145,7 @@ const CompetencesTable = ({
                 <Typography
                   variant="semiBoldMedium"
                   sx={{
-                    fontFamily: languageDetector(row.title as string)
+                    fontFamily: languageDetector(row.title)
                       ? farsiFontFamily
                       : primaryFontFamily,
                   }}

@@ -5,7 +5,6 @@ import { styles } from "@styles";
 import { useConfigContext } from "@/providers/ConfgProvider";
 import FaWandMagicSparkles from "@/components/common/icons/FaWandMagicSparkles";
 import { useTheme } from "@mui/material";
-import { isPromise } from "util/types";
 
 interface InsightStatus {
   status: "default" | "expired" | "approved" | "pending";

@@ -1,4 +1,3 @@
-import React from "react";
 import { IDynamicGaugeSVGProps } from "@/types/index";
 import "./style.css";
 
@@ -51,7 +50,6 @@ const GaugeComponent9: React.FC<IDynamicGaugeSVGProps> = ({
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       className={className}
-      role="img"
       aria-label={`gauge-${v}`}
     >
       <path d={BASE_1} fill={colorPallet[0]} />

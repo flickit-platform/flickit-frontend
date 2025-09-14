@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Gauge } from "@common/charts/Gauge";
 import LoadingGauge from "@common/charts/LoadingGauge";
 import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
@@ -503,7 +503,6 @@ const Actions = ({
   spaceId: any;
 }) => {
   const { service } = useServiceContext();
-  const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
   const moveAssessmentDialogProps = useDialog();
@@ -531,7 +530,6 @@ const Actions = ({
   };
 
   const handleMoveToAssessment = (e: any, id: any, title: any) => {
-    setLoading(true);
     e.preventDefault();
     e.stopPropagation();
 
@@ -540,11 +538,10 @@ const Actions = ({
         id,
         title,
         languages: [],
-        setLoading,
+        setLoading: undefined,
         queryDataSpacesArgs: { assessmentId: item.id },
       });
     } else {
-      setLoading(false);
       window.location.hash = `#createAssessment?id=${id}`;
       keycloakService.doLogin();
     }

@@ -3,7 +3,7 @@ import Grid from "@mui/material/Grid";
 import ExpertGroupsItem from "./ExpertGroupsItem";
 import { DeleteConfirmationDialog } from "@common/dialogs/DeleteConfirmationDialog";
 import { t } from "i18next";
-import React, { useState } from "react";
+import { useState } from "react";
 import { ICustomError } from "@utils/CustomError";
 import showToast from "@utils/toastError";
 import { useQueryDataContext } from "@common/QueryData";

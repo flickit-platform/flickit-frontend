@@ -9,7 +9,6 @@ import languageDetector from "@/utils/languageDetector";
 import FlatGaugeComponent from "@common/flatGaugeComponent";
 import CompletionRing from "@/components/common/charts/completion-ring/CompletionRing";
 import Tooltip from "@mui/material/Tooltip";
-import i18next from "i18next";
 
 interface IGaugeProps extends BoxProps {
   maturityLevelNumber: number;

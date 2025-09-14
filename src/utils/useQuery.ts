@@ -2,9 +2,8 @@ import { useEffect, useRef, useState } from "react";
 import { AxiosRequestConfig, AxiosResponse } from "axios";
 import { ICustomError } from "./CustomError";
 import dataExist from "./dataExist";
-import defToastError, { IToastOptions } from "./toastError";
+import showToast, { IToastOptions } from "./toastError";
 import get from "lodash/get";
-import showToast from "./toastError";
 
 export type TQueryServiceFunction<T extends any = any, A extends any = any> = (
   args?: A,
@@ -26,9 +25,7 @@ interface IUseQueryProps<T, A> {
   /**
    * if true we call the toastError implicitly function by passing the error object. you can pass the function to get the error and do it your self
    */
-  toastError?:
-    | boolean
-    | ((err: ICustomError, options?: IToastOptions) => void);
+  toastError?: boolean | ((err: ICustomError, options?: IToastOptions) => void);
   /**
    * toastError config object
    */
@@ -125,7 +122,7 @@ export const useQuery = <T extends any = any, A extends any = any>(
       if (typeof toastError === "function") {
         showToast(err, toastErrorOptions);
       } else if (typeof toastError === "boolean" && toastError) {
-        defToastError(err, toastErrorOptions);
+        showToast(err, toastErrorOptions);
       }
       setErrorObject(err);
       setLoading(false);

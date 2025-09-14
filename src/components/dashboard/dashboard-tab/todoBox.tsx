@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { Fragment, useEffect } from "react";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
@@ -44,7 +44,7 @@ const TodoBox = (props: any) => {
           </Box>
           {now.map((item: any) => {
             return (
-              <React.Fragment key={uniqueId()}>
+              <Fragment key={uniqueId()}>
                 <Box
                   id={item.name}
                   justifyContent="space-between"
@@ -87,7 +87,7 @@ const TodoBox = (props: any) => {
                       );
                     })}
                 </Grid>
-              </React.Fragment>
+              </Fragment>
             );
           })}
         </Box>

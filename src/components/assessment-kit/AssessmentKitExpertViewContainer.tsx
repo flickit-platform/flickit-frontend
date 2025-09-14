@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import { Fragment, SyntheticEvent, useEffect, useMemo, useState } from "react";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
@@ -53,9 +53,8 @@ const AssessmentKitExpertViewContainer = () => {
   const [expertGroup, setExpertGroup] = useState<any>();
   const [assessmentKitTitle, setAssessmentKitTitle] = useState<any>();
   const [hasActiveVersion, setHasActiveVersion] = useState<any>(false);
-  const [loaded, setLoaded] = React.useState<boolean>(false);
-  const [loadingExportBtn, setLoadingExportBtn] =
-    React.useState<boolean>(false);
+  const [loaded, setLoaded] = useState<boolean>(false);
+  const [loadingExportBtn, setLoadingExportBtn] = useState<boolean>(false);
 
   const { service } = useServiceContext();
 
@@ -209,7 +208,7 @@ const AssessmentKitSectionsTabs = (props: {
   update: boolean;
 }) => {
   const [value, setValue] = useState("maturityLevels");
-  const handleTabChange = (event: React.SyntheticEvent, newValue: string) => {
+  const handleTabChange = (event: SyntheticEvent, newValue: string) => {
     setValue(newValue);
   };
   const { details, update } = props;
@@ -273,14 +272,14 @@ const AssessmentKitSectionsTabs = (props: {
 };
 const AssessmentKitSubjects = (props: { details: any[]; update: boolean }) => {
   const { details, update } = props;
-  const [expanded, setExpanded] = React.useState<string | false>(false);
+  const [expanded, setExpanded] = useState<string | false>(false);
   const [assessmentKitSubjectDetails, setAssessmentKitSubjectDetails] =
     useState<any>();
   const [subjectId, setSubjectId] = useState<any>();
   const { fetchAssessmentKitSubjectDetailsQuery } = useAssessmentKit();
   const { assessmentKitId } = useParams();
   const handleChange =
-    (panel: any) => (event: React.SyntheticEvent, isExpanded: boolean) => {
+    (panel: any) => (event: SyntheticEvent, isExpanded: boolean) => {
       if (isExpanded) {
         setSubjectId(panel?.id);
       }
@@ -380,7 +379,7 @@ const AssessmentKitSubjects = (props: { details: any[]; update: boolean }) => {
                     items={assessmentKitSubjectDetails.attributes}
                     renderItem={(item, index, isExpanded) => {
                       return (
-                        <React.Fragment key={item?.id}>
+                        <Fragment key={item?.id}>
                           <Box
                             display="flex"
                             alignItems={isExpanded ? "stretch" : "center"}
@@ -398,7 +397,7 @@ const AssessmentKitSubjects = (props: { details: any[]; update: boolean }) => {
                             isExpanded={isExpanded}
                             attributeId={item.id}
                           />
-                        </React.Fragment>
+                        </Fragment>
                       );
                     }}
                   />
@@ -416,13 +415,13 @@ const AssessmentKitQuestionnaires = (props: {
   update: boolean;
 }) => {
   const { details, update } = props;
-  const [expanded, setExpanded] = React.useState<string | false>(false);
+  const [expanded, setExpanded] = useState<string | false>(false);
   const [questionnaireId, setQuestionnaireId] = useState<any>();
   const [questionnaireDetails, setQuestionnaireDetails] = useState<any>();
   const { fetchAssessmentKitQuestionnairesQuery } = useAssessmentKit();
   const { assessmentKitId } = useParams();
   const handleChange =
-    (panel: any) => (event: React.SyntheticEvent, isExpanded: boolean) => {
+    (panel: any) => (event: SyntheticEvent, isExpanded: boolean) => {
       setExpanded(isExpanded ? panel.title : false);
       setQuestionnaireId(panel.id);
     };
@@ -577,7 +576,7 @@ const AssessmentKitQuestionsList = (props: {
   }, [isExpanded]);
   const [value, setValue] = useState("");
   const [selectedTabIndex, setSelectedTabIndex] = useState("");
-  const handleTabChange = (event: React.SyntheticEvent, newValue: string) => {
+  const handleTabChange = (event: SyntheticEvent, newValue: string) => {
     setValue(newValue);
     setSelectedTabIndex(
       attributesDetails?.maturityLevels.findIndex(
@@ -912,9 +911,9 @@ const UpdateAssessmentKitDialog = (props: any) => {
 };
 const SubjectQuestionList = (props: any) => {
   const { questions } = props;
-  const [expanded, setExpanded] = React.useState<string | false>(false);
+  const [expanded, setExpanded] = useState<string | false>(false);
   const handleChange =
-    (panel: any) => (event: React.SyntheticEvent, isExpanded: boolean) => {
+    (panel: any) => (event: SyntheticEvent, isExpanded: boolean) => {
       setExpanded(isExpanded ? panel?.title : false);
     };
 
@@ -1074,14 +1073,14 @@ const SubjectQuestionList = (props: any) => {
 };
 const QuestionnairesQuestionList = (props: any) => {
   const { questions } = props;
-  const [expanded, setExpanded] = React.useState<string | false>(false);
+  const [expanded, setExpanded] = useState<string | false>(false);
   const [questionId, setQuestionId] = useState<any>();
   const [questionsDetails, setQuestionsDetails] = useState<any>();
   const { fetchAssessmentKitQuestionnairesQuestionsQuery } = useAssessmentKit();
   const { assessmentKitId } = useParams();
 
   const handleChange =
-    (panel: any) => (event: React.SyntheticEvent, isExpanded: boolean) => {
+    (panel: any) => (event: SyntheticEvent, isExpanded: boolean) => {
       setQuestionId(panel.id);
       setExpanded(isExpanded ? panel?.title : false);
     };

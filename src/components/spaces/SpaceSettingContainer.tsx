@@ -1,4 +1,3 @@
-import React from "react";
 import Box from "@mui/material/Box";
 import { Trans } from "react-i18next";
 import TabContext from "@mui/lab/TabContext";
@@ -19,6 +18,7 @@ import CreateSpaceDialog from "./CreateSpaceDialog";
 import LoadingButton from "@mui/lab/LoadingButton";
 import BorderColorRoundedIcon from "@mui/icons-material/BorderColorRounded";
 import Title from "@common/Title";
+import { useState } from "react";
 
 const SpaceSettingContainer = () => {
   const { spaceId = "" } = useParams();
@@ -126,12 +126,11 @@ const EditSpaceButton = (props: any) => {
 function SpaceSettings(props: any) {
   const { editable } = props;
 
-  const [value, setValue] = React.useState("1");
+  const [value, setValue] = useState("1");
 
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
     setValue(newValue);
   };
-  const is_farsi = Boolean(localStorage.getItem("lang") === "fa");
   return (
     <Box sx={{ width: "100%", typography: "body1" }}>
       <TabContext value={value}>

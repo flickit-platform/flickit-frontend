@@ -10,7 +10,6 @@ import { useServiceContext } from "@providers/ServiceProvider";
 import { ICustomError } from "@utils/CustomError";
 import setServerFieldErrors from "@utils/setServerFieldError";
 import CreateNewFolderRoundedIcon from "@mui/icons-material/CreateNewFolderRounded";
-import { useNavigate } from "react-router-dom";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
@@ -58,7 +57,6 @@ const CreateSpaceDialog = (props: any) => {
   const [loading, setLoading] = useState(false);
   const [isFocused, setIsFocused] = useState(true);
   const [selectedType, setSelectedType] = useState<string>("");
-  const [spaceIdNum, setSpaceIdNum] = useState<number>();
   const [step, setStep] = useState(1);
   const { service } = useServiceContext();
   const {
@@ -76,7 +74,6 @@ const CreateSpaceDialog = (props: any) => {
     type === "update" ? data : { title: "", code: nanoid(5) };
   const formMethods = useForm({ shouldUnregister: true });
   const abortController = useMemo(() => new AbortController(), [rest.open]);
-  const navigate = useNavigate();
   const { dispatch, pendingKitData } = useAssessmentContext();
 
   useEffect(() => {
@@ -116,8 +113,7 @@ const CreateSpaceDialog = (props: any) => {
         await service.space.markAsSeen({ spaceId }, {});
         close();
       } else {
-        const res = await service.space.create(data);
-        setSpaceIdNum(res.data.id);
+        await service.space.create(data);
         showToast(t("spaces.spaceCreatedSuccessfully"), { variant: "success" });
         close();
       }
@@ -158,11 +154,6 @@ const CreateSpaceDialog = (props: any) => {
       };
     }
   }, [openDialog]);
-
-  const goToSpace = () => {
-    type !== "update" && navigate(`/${spaceIdNum}/assessments/1`);
-    close();
-  };
 
   const renderStepOne = () => (
     <Box sx={{ pt: 4, px: 4, pb: 0, height: "100%" }}>

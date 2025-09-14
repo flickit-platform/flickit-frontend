@@ -2,7 +2,6 @@ import { lazy, Suspense, useMemo } from "react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import { confidenceColor } from "@/config/styles";
-import { formatRoundedPercent } from "@/features/assessment-report/ui/sections/tree-map/MeasureTable";
 import i18next from "i18next";
 
 interface IcompletionRingType {

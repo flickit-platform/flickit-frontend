@@ -1,4 +1,3 @@
-import React from "react";
 import Typography, { TypographyProps } from "@mui/material/Typography";
 import Box, { BoxProps } from "@mui/material/Box";
 import { Link as RLink, To } from "react-router-dom";

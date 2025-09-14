@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import { useMemo } from "react";
 import { Box, Typography } from "@mui/material";
 import { styles } from "@styles";
 import i18next, { t } from "i18next";
@@ -73,7 +73,6 @@ const FlatGaugeComponent: React.FC<Props> = ({
 
   const segPct = 100 / levels;
   const centerPct = (activeIdx + 0.5) * segPct;
-  const markerColor = darkColors[idx] ?? "#000";
 
   const topWidth = 24;
   const cellHeight = 20;

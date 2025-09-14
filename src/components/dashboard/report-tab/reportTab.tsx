@@ -3,7 +3,6 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
 import { Trans } from "react-i18next";
-import React from "react";
 import { Link, useParams } from "react-router-dom";
 import { t } from "i18next";
 import { useQuery } from "@utils/useQuery";

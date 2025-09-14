@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Box from "@mui/material/Box";
 import Slider from "@mui/material/Slider";
-import { getMaturityLevelColors, styles } from "@styles";
+import { styles } from "@styles";
 import { Trans } from "react-i18next";
 import languageDetector from "@/utils/languageDetector";
 import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
@@ -47,7 +47,6 @@ const AdviceSlider = (props: any) => {
       }
     }
   };
-  const colorPallet = getMaturityLevelColors(maturityLevels?.length ?? 5);
   return (
     <Box
       justifyContent="space-between"

@@ -1,4 +1,3 @@
-import React from 'react';
 import { Box } from '@mui/material';
 import MaturityLevelTable from './MaturityLevelTable';
 import QueryBatchData from '../common/QueryBatchData';

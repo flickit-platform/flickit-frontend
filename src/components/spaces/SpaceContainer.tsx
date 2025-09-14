@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   Box,
   Grid,
@@ -36,7 +36,9 @@ const SpaceContainer = () => {
   const { currentSpace } = useAuthContext();
   const [searchParams, setSearchParams] = useSearchParams();
   const assessmentPage = Number(searchParams.get("assessmentPage") ?? 1);
-  const { userInfo: { defaultSpaceId } } = useAuthContext()
+  const {
+    userInfo: { defaultSpaceId },
+  } = useAuthContext();
   const [rowsPerPage, setRowsPerPage] = useState<number>(6);
   const [page, setPage] = useState<number>(0);
 

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Box, Button, Skeleton, useTheme } from "@mui/material";
 import ArrowForwardIosRounded from "@mui/icons-material/ArrowForwardIosRounded";
 import ArrowBackIosRounded from "@mui/icons-material/ArrowBackIosRounded";

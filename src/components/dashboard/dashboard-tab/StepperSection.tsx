@@ -10,7 +10,7 @@ import { t } from "i18next";
 import { styles } from "@styles";
 import uniqueId from "@/utils/uniqueId";
 import { Link } from "react-router-dom";
-import React, { useEffect } from "react";
+import { useEffect, useState } from "react";
 import useScreenResize from "@utils/useScreenResize";
 import { useTheme } from "@mui/material";
 
@@ -91,7 +91,7 @@ const StepperSection = (props: IStepperSection) => {
 const StepBox = (props: IStepBox) => {
   const theme = useTheme();
   const { category, metrics, setActiveStep, activeStep } = props;
-  const [localStep, setLocalStep] = React.useState(activeStep);
+  const [localStep, setLocalStep] = useState(activeStep);
 
   const isCategory = (name: string) => category === name;
   const questions = isCategory("questions");
@@ -376,14 +376,9 @@ const StepBox = (props: IStepBox) => {
         px: "20px",
         py: "10px",
         height: "190px",
-        borderInlineEnd: !report
-          ? `1px solid #8F99A3`
-          : "",
+        borderInlineEnd: !report ? `1px solid #8F99A3` : "",
         borderTop: {
-          xs:
-            insights || report
-              ? `1px solid #8F99A3`
-              : "",
+          xs: insights || report ? `1px solid #8F99A3` : "",
           md: "none",
         },
         borderBottom: {

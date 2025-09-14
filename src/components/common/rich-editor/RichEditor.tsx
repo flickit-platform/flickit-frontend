@@ -163,7 +163,7 @@ const RichEditor = (props: IRichEditorProps) => {
                 minHeight: `${editor?.isEmpty && type === "reportTab" ? "100px" : "110px"}`,
                 border: `1px solid ${editor?.isEmpty && type === "reportTab" ? "#8A0F2480" : "rgba(0, 0, 0, 0.23)"}`,
                 borderRadius: 1,
-                bgcolor: bgcolor ? bgcolor : "white",
+                bgcolor: bgcolor ?? "white",
                 paddingInline: 1.5,
                 py: 1,
                 "& > p": editor?.isEmpty

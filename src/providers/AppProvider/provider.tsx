@@ -1,10 +1,4 @@
-import React, {
-  useReducer,
-  FC,
-  useContext,
-  Dispatch,
-  createContext,
-} from "react";
+import { useReducer, FC, useContext, Dispatch, createContext } from "react";
 import appReducer from "./reducer";
 
 interface IAppProviderProps {
