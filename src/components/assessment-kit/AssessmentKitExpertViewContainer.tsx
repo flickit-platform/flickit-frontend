@@ -6,7 +6,6 @@ import Alert from "@mui/material/Alert";
 import { useServiceContext } from "@providers/ServiceProvider";
 import { useParams } from "react-router-dom";
 import { useQuery } from "@utils/useQuery";
-import Title from "@common/TitleComponent";
 import { Trans } from "react-i18next";
 import Tab from "@mui/material/Tab";
 import TabList from "@mui/lab/TabList";
@@ -41,6 +40,7 @@ import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
 import LoadingButton from "@mui/lab/LoadingButton";
 import uniqueId from "@/utils/uniqueId";
 import showToast from "@utils/toastError";
+import NewTitle from "@common/newTitle";
 
 const AssessmentKitExpertViewContainer = () => {
   const { fetchAssessmentKitDetailsQuery, fetchAssessmentKitDownloadUrlQuery } =
@@ -116,7 +116,7 @@ const AssessmentKitExpertViewContainer = () => {
   return (
     <Box>
       <Box flexDirection={{ xs: "column", sm: "row" }}>
-        <Title
+        <NewTitle
           backLink={"/"}
           size="large"
           wrapperProps={{
@@ -185,7 +185,7 @@ const AssessmentKitExpertViewContainer = () => {
           }
         >
           {assessmentKitTitle}
-        </Title>
+        </NewTitle>
         <Box mt={3}>
           <AssessmentKitSectionGeneralInfo
             setExpertGroup={setExpertGroup}

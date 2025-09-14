@@ -1,10 +1,10 @@
 import { useEffect } from "react";
-import Title from "@common/TitleComponent";
 import SupTitleBreadcrumb from "@/components/common/SupTitleBreadcrumb";
 import setDocumentTitle from "@utils/setDocumentTitle";
 import { t } from "i18next";
 import { useConfigContext } from "@/providers/ConfgProvider";
 import { IKitVersion } from "@/types/index";
+import NewTitle from "@common/newTitle";
 
 const KitDesignerTitle = ({ kitVersion }: { kitVersion: IKitVersion }) => {
   const { config } = useConfigContext();
@@ -13,7 +13,7 @@ const KitDesignerTitle = ({ kitVersion }: { kitVersion: IKitVersion }) => {
   }, []);
 
   return (
-    <Title
+    <NewTitle
       backLink={"/"}
       size="large"
       wrapperProps={{
@@ -39,7 +39,7 @@ const KitDesignerTitle = ({ kitVersion }: { kitVersion: IKitVersion }) => {
           displayChip
         />
       }
-    ></Title>
+    ></NewTitle>
   );
 };
 

@@ -1,5 +1,5 @@
-import Title from "@common/TitleComponent";
 import SupTitleBreadcrumb from "@/components/common/SupTitleBreadcrumb";
+import NewTitle from "@common/newTitle";
 
 interface IAssessmentReportTitle {
   data: any;
@@ -10,7 +10,7 @@ const AssessmentTitle = (props: IAssessmentReportTitle) => {
   const { title } = data;
 
   return (
-    <Title
+    <NewTitle
       backLink="/spaces"
       wrapperProps={{
         sx: {
@@ -29,7 +29,7 @@ const AssessmentTitle = (props: IAssessmentReportTitle) => {
           displayChip
         />
       }
-    ></Title>
+    ></NewTitle>
   );
 };
 

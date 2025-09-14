@@ -1,10 +1,10 @@
-import Title from "@common/TitleComponent";
 import SupTitleBreadcrumb from "@/components/common/SupTitleBreadcrumb";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { Box, IconButton } from "@mui/material";
 import { styles } from "@styles";
 import { useAuthContext } from "@/providers/AuthProvider";
 import { ArrowForward } from "@mui/icons-material";
+import NewTitle from "@common/newTitle";
 
 const AssessmentReportTitle = (props: any) => {
   const { pathInfo, rtlLanguage, children } = props;
@@ -25,7 +25,7 @@ const AssessmentReportTitle = (props: any) => {
   };
 
   return (
-    <Title
+    <NewTitle
       backLink="/spaces"
       wrapperProps={{
         sx: {
@@ -37,7 +37,7 @@ const AssessmentReportTitle = (props: any) => {
       textTransform="none"
       variant="headlineLarge"
       color="primary"
-      sx={{ ...styles.rtlStyle(rtlLanguage), textAlign: "left" }}
+      sx={{ ...styles.rtlStyle(rtlLanguage), textAlign: "left", width: "100%" }}
       sup={
         <SupTitleBreadcrumb
           routes={[
@@ -67,7 +67,7 @@ const AssessmentReportTitle = (props: any) => {
         </Box>
         {children}
       </Box>
-    </Title>
+    </NewTitle>
   );
 };
 

@@ -15,7 +15,6 @@ import { useParams } from "react-router-dom";
 import { useServiceContext } from "@providers/ServiceProvider";
 import { useQuery } from "@utils/useQuery";
 import QueryData from "@common/QueryData";
-import Title from "@common/TitleComponent";
 import PeopleRoundedIcon from "@mui/icons-material/PeopleRounded";
 import { styles } from "@styles";
 import { Trans } from "react-i18next";
@@ -67,6 +66,7 @@ import { getReadableDate } from "@utils/readableDate";
 import flagsmith from "flagsmith";
 import showToast from "@utils/toastError";
 import { useTheme } from "@mui/material";
+import NewTitle from "@common/newTitle";
 
 const ExpertGroupContainer = () => {
   const { service } = useServiceContext();
@@ -158,7 +158,7 @@ const ExpertGroupContainer = () => {
           setDocTitle(`${t("expertGroups.expertGroup")}: ${title ?? ""}`);
           return (
             <Box>
-              <Title
+              <NewTitle
                 backLink="/"
                 borderBottom
                 pb={1}
@@ -200,14 +200,14 @@ const ExpertGroupContainer = () => {
                   {" "}
                   {title}
                 </span>
-              </Title>
+              </NewTitle>
               <Grid container spacing={3} sx={{ mt: 1 }}>
                 <Grid item xs={12} md={8}>
                   {about && (
                     <>
-                      <Title size="small">
+                      <NewTitle size="small">
                         <Trans i18nKey="common.about" />
-                      </Title>
+                      </NewTitle>
                       <Box
                         p={3}
                         mt={1}
@@ -1121,7 +1121,7 @@ const AssessmentKitsList = (props: any) => {
 
   return (
     <>
-      <Title
+      <NewTitle
         inPageLink="assessment_kits"
         size="small"
         toolbar={
@@ -1204,7 +1204,7 @@ const AssessmentKitsList = (props: any) => {
         }
       >
         <Trans i18nKey="assessmentKit.assessmentKits" />
-      </Title>
+      </NewTitle>
       <Box mt={2}>
         <QueryData
           {...assessmentKitQuery}
@@ -1309,13 +1309,13 @@ const ExpertGroupMembersDetail = (props: any) => {
   } = props;
   return (
     <>
-      <Title inPageLink="members" size="small">
+      <NewTitle inPageLink="members" size="small">
         <Trans i18nKey="expertGroups.members" />
-      </Title>
+      </NewTitle>
       <Box mt={2} p={3} borderRadius={2} bgcolor="background.containerLowest">
         {hasAccess && (
           <Box>
-            <Title
+            <NewTitle
               size="small"
               mb={2}
               titleProps={{
@@ -1325,7 +1325,7 @@ const ExpertGroupMembersDetail = (props: any) => {
               }}
             >
               <Trans i18nKey="common.addNewMember" />
-            </Title>
+            </NewTitle>
             <AddMember queryData={queryData} inviteeQuery={inviteeQueryData} />
           </Box>
         )}
@@ -1341,7 +1341,7 @@ const ExpertGroupMembersDetail = (props: any) => {
                 <Box>
                   <Box>
                     {hasAccess && (
-                      <Title
+                      <NewTitle
                         size="small"
                         titleProps={{
                           textTransform: "none",
@@ -1350,7 +1350,7 @@ const ExpertGroupMembersDetail = (props: any) => {
                         }}
                       >
                         <Trans i18nKey="expertGroups.members" />
-                      </Title>
+                      </NewTitle>
                     )}
                     <Grid container spacing={2}>
                       {users.map((member: any) => {
@@ -1420,7 +1420,7 @@ const ExpertGroupMembersDetail = (props: any) => {
                                     alt={displayName}
                                     src={pictureLink ?? "/"}
                                   />
-                                  <Title
+                                  <NewTitle
                                     titleProps={{
                                       sx: {
                                         textTransform: "none",
@@ -1454,7 +1454,7 @@ const ExpertGroupMembersDetail = (props: any) => {
                                     }
                                   >
                                     {displayName}
-                                  </Title>
+                                  </NewTitle>
                                 </Box>
                                 <Box mt={1} px={1} py={1} pb={3}>
                                   <Typography
@@ -1490,7 +1490,7 @@ const ExpertGroupMembersDetail = (props: any) => {
               return (
                 <Box mt={4}>
                   {hasInvitees && (
-                    <Title
+                    <NewTitle
                       size="small"
                       titleProps={{
                         textTransform: "none",
@@ -1498,7 +1498,7 @@ const ExpertGroupMembersDetail = (props: any) => {
                       }}
                     >
                       <Trans i18nKey="common.invitees" />
-                    </Title>
+                    </NewTitle>
                   )}
                   <Box mt={1}>
                     {items?.map((member: any) => {

@@ -20,12 +20,12 @@ import { Trans } from "react-i18next";
 import languageDetector from "@/utils/languageDetector";
 import AssessmentKitsStoreListCard from "./AssessmentKitsStoreListCard";
 import { useEffect, useRef } from "react";
-import Title from "@common/TitleComponent";
 import SupTitleBreadcrumb from "../common/SupTitleBreadcrumb";
 import AssessmentKitSubjects from "./AssessmentKitSubjects";
 import LoadingAssessmentKit from "../common/loadings/LoadingSkeletonAssessmentKit";
 import keycloakService from "@/service/keycloakService";
 import useScreenResize from "@/utils/useScreenResize";
+import NewTitle from "@common/newTitle";
 
 type PurchaseStatus = "free" | "paid" | "purchased";
 
@@ -190,7 +190,7 @@ const AssessmentKitBanner = (props: any) => {
       gap={2}
       px={{ xxl: 30, xl: 20, lg: 12, xs: 2, sm: 3 }}
     >
-      <Title
+      <NewTitle
         backLink={"/"}
         size="large"
         wrapperProps={{
@@ -211,7 +211,7 @@ const AssessmentKitBanner = (props: any) => {
             displayChip
           />
         }
-      ></Title>
+      ></NewTitle>
       <Box sx={{ ...styles.centerCV }} gap={2}>
         <Typography
           variant="headlineLarge"
