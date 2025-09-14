@@ -1,8 +1,8 @@
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import Skeleton from "@mui/material/Skeleton";
-import Title from "../Title";
 import { LoadingSkeleton } from "./LoadingSkeleton";
+import NewTitle from "@common/newTitle";
 
 const LoadingSkeletonOfAssessmentReport = () => {
   return (
@@ -26,9 +26,9 @@ const LoadingSkeletonOfAssessmentReport = () => {
         </Grid>
         <Grid item sm={14} xs={14} id="subjects">
           <Box mt={4}>
-            <Title borderBottom={true}>
+            <NewTitle borderBottom={true}>
               <Skeleton width="110px" />
-            </Title>
+            </NewTitle>
             <Box mt={3}>
               <Grid
                 container

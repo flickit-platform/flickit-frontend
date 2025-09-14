@@ -87,7 +87,9 @@ const Title: React.FC<TitleProps> = ({
             : (borderBottom as string),
         paddingBlockEnd: borderBottom ? "32px" : 0,
         ...(wrapperProps?.sx || {}),
+        width: "100%"
       }}
+
     >
       {avatar && (
         <Box alignSelf="center" sx={{ ...styles.centerV }}>

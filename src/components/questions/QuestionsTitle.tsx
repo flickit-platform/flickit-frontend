@@ -3,7 +3,6 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import { Trans } from "react-i18next";
 import { Link, useParams } from "react-router-dom";
-import Title from "@common/Title";
 import {
   questionActions,
   useQuestionContext,

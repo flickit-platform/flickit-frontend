@@ -29,6 +29,7 @@ import { useQuery } from "@/utils/useQuery";
 import useScreenResize from "@utils/useScreenResize";
 import LoadingAssessmentCards from "../common/loadings/LoadingAssessmentCards";
 import { useTheme } from "@mui/material";
+import NewTitle from "@common/newTitle";
 
 const AssessmentContainer = () => {
   const { service } = useServiceContext();
@@ -89,7 +90,7 @@ const AssessmentContainer = () => {
           </Typography>
         )}
         <Box sx={{ ...styles.centerVH, mb: "40px", mt: 1 }}>
-          <Title
+          <NewTitle
             borderBottom={true}
             size="large"
             sx={{ width: "100%" }}
@@ -155,7 +156,7 @@ const AssessmentContainer = () => {
             }
           >
             <Trans i18nKey="assessment.assessments" />
-          </Title>
+          </NewTitle>
           {}
         </Box>
         {isEmpty && !loading && (
