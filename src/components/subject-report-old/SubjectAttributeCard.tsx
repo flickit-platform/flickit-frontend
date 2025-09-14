@@ -31,7 +31,7 @@ import i18next, { t } from "i18next";
 import ScoreImpactBarChart from "./ScoreImpactBarChart";
 import DropDownContent from "./DropDownContent";
 import { useTheme } from "@mui/material";
-import NewTitle from "@common/newTitle";
+import Title from "@common/Title";
 
 const SubjectAttributeCard = (props: any) => {
   const {
@@ -238,7 +238,7 @@ const SubjectAttributeCard = (props: any) => {
             }}
           >
             <Grid item xs={12} sm={9} sx={{ p: 4 }}>
-              <NewTitle>
+              <Title>
                 <Typography
                   variant="headlineSmall"
                   sx={{
@@ -261,7 +261,7 @@ const SubjectAttributeCard = (props: any) => {
                   <Trans i18nKey="common.weight" />: {maturityLevel?.value}
                   {")"}
                 </Typography>
-              </NewTitle>
+              </Title>
               <Typography
                 variant="bodyMedium"
                 color="background.onVariant"

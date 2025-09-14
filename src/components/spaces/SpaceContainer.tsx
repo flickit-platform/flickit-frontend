@@ -27,7 +27,7 @@ import { AssessmentsList } from "../assessments/AssessmentList";
 import LoadingAssessmentCards from "../common/loadings/LoadingAssessmentCards";
 import EmptyState from "../kit-designer/common/EmptyState";
 import uniqueId from "@/utils/uniqueId";
-import NewTitle from "@common/newTitle";
+import Title from "@common/Title";
 
 const SpaceContainer = () => {
   const dialogProps = useDialog();
@@ -114,9 +114,9 @@ const SpaceContainer = () => {
 
   return (
     <Box pt={2}>
-      <NewTitle borderBottom size="large">
+      <Title borderBottom size="large">
         <Trans i18nKey="assessment.myAssessments" />
-      </NewTitle>
+      </Title>
 
       {/* Workspaces Section */}
       <ExpandableSection

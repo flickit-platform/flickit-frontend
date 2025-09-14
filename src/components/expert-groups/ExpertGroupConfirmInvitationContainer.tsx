@@ -9,7 +9,7 @@ import QueryData from "@common/QueryData";
 import ExpertGroupsItem from "./ExpertGroupsItem";
 import showToast from "@utils/toastError";
 import { HOME_URL } from "@/config/constants";
-import NewTitle from "@common/newTitle";
+import Title from "@common/Title";
 
 const ExpertGroupConfirmInvitationContainer = () => {
   const { service } = useServiceContext();
@@ -80,9 +80,9 @@ const ExpertGroupConfirmInvitationContainer = () => {
               m: "auto",
             }}
           >
-            <NewTitle size="small" textTransform={"none"}>
+            <Title size="small" textTransform={"none"}>
               <Trans i18nKey="expertGroups.youHaveBeenInvitedToExpertGroup" />
-            </NewTitle>
+            </Title>
             <Box my={3}>
               <ExpertGroupsItem data={data} disableActions={true} />
             </Box>

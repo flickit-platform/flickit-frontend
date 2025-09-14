@@ -4,7 +4,7 @@ import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import { styles } from "@styles";
 import { IconButton } from "@mui/material";
 import { useMemo } from "react";
-import NewTitle from "@common/newTitle";
+import Title from "@common/Title";
 
 const DashboardTitle = (props: any) => {
   const { pathInfo, title, permissions } = props;
@@ -15,7 +15,7 @@ const DashboardTitle = (props: any) => {
     return permissions?.grantUserAssessmentRole;
   }, [permissions]);
   return (
-    <NewTitle
+    <Title
       backLink="/spaces"
       sup={
         <SupTitleBreadcrumb
@@ -40,7 +40,7 @@ const DashboardTitle = (props: any) => {
           </IconButton>
         )
       }
-    ></NewTitle>
+    ></Title>
   );
 };
 

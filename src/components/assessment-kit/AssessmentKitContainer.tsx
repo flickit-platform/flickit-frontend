@@ -25,7 +25,7 @@ import AssessmentKitSubjects from "./AssessmentKitSubjects";
 import LoadingAssessmentKit from "../common/loadings/LoadingSkeletonAssessmentKit";
 import keycloakService from "@/service/keycloakService";
 import useScreenResize from "@/utils/useScreenResize";
-import NewTitle from "@common/newTitle";
+import Title from "@common/Title";
 
 type PurchaseStatus = "free" | "paid" | "purchased";
 
@@ -190,7 +190,7 @@ const AssessmentKitBanner = (props: any) => {
       gap={2}
       px={{ xxl: 30, xl: 20, lg: 12, xs: 2, sm: 3 }}
     >
-      <NewTitle
+      <Title
         backLink={"/"}
         size="large"
         wrapperProps={{
@@ -211,7 +211,7 @@ const AssessmentKitBanner = (props: any) => {
             displayChip
           />
         }
-      ></NewTitle>
+      ></Title>
       <Box sx={{ ...styles.centerCV }} gap={2}>
         <Typography
           variant="headlineLarge"

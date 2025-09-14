@@ -1,99 +1,133 @@
+import React from "react";
 import Typography, { TypographyProps } from "@mui/material/Typography";
+import Box, { BoxProps } from "@mui/material/Box";
 import { Link as RLink, To } from "react-router-dom";
 import Link from "@mui/material/Link";
-import Box, { BoxProps } from "@mui/material/Box";
 import ArrowBackRoundedIcon from "@mui/icons-material/ArrowBackRounded";
-import { SvgIconProps } from "@mui/material/SvgIcon";
-import AnchorRoundedIcon from "@mui/icons-material/AnchorRounded";
-import { styles } from "@styles";
 import HomeIcon from "@mui/icons-material/Home";
-interface ITitle extends Omit<TypographyProps, "borderBottom"> {
-  sup?: JSX.Element | string;
-  sub?: JSX.Element | string;
+import AnchorRoundedIcon from "@mui/icons-material/AnchorRounded";
+import { SvgIconProps } from "@mui/material/SvgIcon";
+import { styles } from "@styles";
+import { Trans } from "react-i18next";
+import i18next from "i18next";
+import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
+import languageDetector from "@utils/languageDetector";
+
+type TitleSize = "small" | "medium" | "large";
+
+interface TitleProps extends Omit<TypographyProps, "borderBottom"> {
+  sup?: React.ReactNode;
+  sub?: React.ReactNode;
   borderBottom?: string | boolean;
-  toolbar?: JSX.Element;
+  toolbar?: React.ReactNode;
   backLink?: To | -1;
   backIconProps?: SvgIconProps;
-  size?: "small" | "medium" | "large";
+  size?: TitleSize;
   wrapperProps?: BoxProps;
   toolbarProps?: BoxProps;
   inPageLink?: string;
-  avatar?: JSX.Element;
+  avatar?: React.ReactNode;
   titleProps?: TypographyProps;
   subProps?: TypographyProps;
+  appTitle?: string; // i18n key
 }
 
-const Title = (props: ITitle) => {
-  const {
-    sup,
-    children,
-    sub,
-    borderBottom,
-    toolbar,
-    size = "medium",
-    backLink,
-    backIconProps = {},
-    wrapperProps = {},
-    toolbarProps = {},
-    titleProps = {},
-    subProps = {},
-    inPageLink,
-    avatar,
-    ...rest
-  } = props;
+const isHomePath = (to?: To  | -1) =>
+  typeof to === "string" &&
+  (to === "/" || to === "/spaces" || to === "/assessment-kits");
+
+const pickFontFamily = (content: React.ReactNode) => {
+  const lang = i18next.language || "";
+  if (typeof content === "string") {
+    const isFaByContent = Boolean(languageDetector(content));
+    const isFaByLang = lang.startsWith("fa");
+    return isFaByContent || isFaByLang ? farsiFontFamily : primaryFontFamily;
+  }
+  return lang.startsWith("fa") ? farsiFontFamily : primaryFontFamily;
+};
+
+const Title: React.FC<TitleProps> = ({
+  sup,
+  children,
+  sub,
+  borderBottom,
+  toolbar,
+  size = "medium",
+  backLink,
+  backIconProps = {},
+  wrapperProps = {},
+  toolbarProps = {},
+  titleProps = {},
+  subProps = {},
+  inPageLink,
+  avatar,
+  appTitle,
+  ...typoRest
+}) => {
+  const titleVariant: TypographyProps["variant"] =
+    size === "small" ? "h6" : size === "large" ? "headlineLarge" : "h5";
+
+  const subVariant: TypographyProps["variant"] =
+    size === "small" ? "subSmall" : size === "large" ? "subLarge" : "subMedium";
+
+  const fontFamily = pickFontFamily(children);
 
   return (
     <Box
       display="flex"
       justifyContent="space-between"
-      alignItems="flex-end"
+      alignItems={backLink ? "flex-end" : "center"}
       paddingBottom="2px"
+      {...wrapperProps}
       sx={{
         "&:hover a.title-hash-link": { opacity: 1 },
         borderBottom:
           typeof borderBottom === "boolean" && borderBottom
             ? (theme) => `1px solid ${theme.palette.grey[300]}`
             : (borderBottom as string),
-        ...(rest.sx ?? {}),
-        ...wrapperProps,
         paddingBlockEnd: borderBottom ? "32px" : 0,
+        ...(wrapperProps?.sx || {}),
+        width: "100%"
       }}
-      {...wrapperProps}
+
     >
       {avatar && (
         <Box alignSelf="center" sx={{ ...styles.centerV }}>
           {avatar}
         </Box>
       )}
-      <Box sx={{ flex: 1 }} {...rest}>
+
+      <Box
+        flex={1}
+        width="100%"
+        alignItems="start"
+        display="flex"
+        flexDirection="column"
+        {...typoRest}
+      >
         {backLink ? (
-          <Box display="flex" justifyContent={"flex-start"}>
+          <Box display="flex" justifyContent="flex-start">
             <Box
               minWidth="40px"
+              mt="0.5rem"
               ml={sup ? { xs: 0, md: 0 } : "-4px"}
-              sx={{
-                ...styles.centerV,
-                textDecoration: "none",
-              }}
+              sx={{ ...styles.centerV, textDecoration: "none" }}
             >
               <Box
                 component={RLink}
                 to={backLink as To}
                 display="flex"
-                color="inherit"
-                sx={{ textDecoration: "none" }}
+                sx={{ textDecoration: "none", color: "inherit" }}
+                aria-label="Back"
               >
-                {backLink === "/" ||
-                backLink === "/spaces" ||
-                backLink === "/assessment-kits" ? (
+                {typeof backLink !== "number" && isHomePath(backLink) ? (
                   <HomeIcon
-                    sx={{ fontSize: "22px", color: "#9DA7B3" }}
+                    sx={{ fontSize: 22, color: "#9DA7B3" }}
                     {...backIconProps}
                   />
                 ) : (
                   <ArrowBackRoundedIcon
                     fontSize="small"
-                    color="inherit"
                     sx={{
                       opacity: 0.85,
                       color: "disabled.main",
@@ -103,19 +137,16 @@ const Title = (props: ITitle) => {
                     {...backIconProps}
                   />
                 )}
-                <span style={{ marginInline: "8px" }}>/</span>
+                <Box component="span" sx={{ mx: 1 }} aria-hidden>
+                  /
+                </Box>
               </Box>
               {sup && (
                 <Typography
                   textTransform="uppercase"
-                  variant={
-                    size === "small"
-                      ? "subSmall"
-                      : size === "large"
-                        ? "subLarge"
-                        : "subMedium"
-                  }
+                  variant={subVariant}
                   lineHeight={0}
+                  {...subProps}
                 >
                   {sup}
                 </Typography>
@@ -125,37 +156,45 @@ const Title = (props: ITitle) => {
         ) : sup ? (
           <Typography
             textTransform="uppercase"
-            variant={
-              size === "small"
-                ? "subSmall"
-                : size === "large"
-                  ? "subLarge"
-                  : "subMedium"
-            }
+            variant={subVariant}
             {...subProps}
           >
             {sup}
           </Typography>
-        ) : (
-          <></>
+        ) : null}
+
+        {appTitle && (
+          <Typography
+            color="#CED3D9"
+            fontWeight={500}
+            variant="subtitle1"
+            {...titleProps}
+            sx={{
+              ...styles.centerV,
+              display: { xs: "block", sm: "flex" },
+              ...(titleProps?.sx as any),
+            }}
+          >
+            <Trans i18nKey={appTitle} />
+          </Typography>
         )}
+
         <Typography
           textTransform={size === "large" ? "inherit" : "uppercase"}
-          fontWeight="Bold"
-          variant={
-            size === "small" ? "h6" : size === "large" ? "headlineLarge" : "h5"
-          }
+          fontWeight="bold"
+          variant={titleVariant}
           color={size === "large" ? "primary" : "inherit"}
           {...titleProps}
           sx={{
             ...styles.centerV,
             display: { xs: "block", sm: "flex" },
-
-            ...((titleProps?.sx ?? {}) as any),
-            ...(rest.sx ?? {}),
+            fontFamily,
+            ...(titleProps?.sx as any),
+            ...(typoRest.sx as any),
           }}
         >
           {children}
+
           {inPageLink && (
             <Link
               href={`#${inPageLink}`}
@@ -167,27 +206,23 @@ const Title = (props: ITitle) => {
                 transition: "opacity .1s ease",
                 position: "relative",
               }}
+              aria-label="Anchor link"
             >
               <AnchorRoundedIcon fontSize="small" />
               <Box id={inPageLink} position="absolute" top="-84px" />
             </Link>
           )}
         </Typography>
-        {sub && (
-          <Typography
-            variant={
-              size === "small"
-                ? "subSmall"
-                : size === "large"
-                  ? "subLarge"
-                  : "subMedium"
-            }
-          >
-            {sub}
-          </Typography>
-        )}
+
+        {sub && <Typography variant={subVariant}>{sub}</Typography>}
       </Box>
-      <Box marginInlineStart="autp" marginInlineEnd="unset" {...toolbarProps}>
+
+      <Box
+        ml="auto"
+        marginInlineStart="auto"
+        marginInlineEnd="unset"
+        {...toolbarProps}
+      >
         {toolbar}
       </Box>
     </Box>

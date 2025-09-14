@@ -21,7 +21,7 @@ import ArrowForward from "@mui/icons-material/ArrowForward";
 import { useQuestionnaire } from "../dashboard/dashboard-tab/questionnaires/QuestionnaireContainer";
 import OutlinedProgressButton from "../common/buttons/OutlinedProgressButton";
 import { Skeleton, useTheme } from "@mui/material";
-import NewTitle from "@common/newTitle";
+import Title from "@common/Title";
 
 const itemNames = [
   {
@@ -128,7 +128,7 @@ const QuestionsTitle = (props: { isReview?: boolean; pathInfo: any }) => {
 
   return (
     <Box>
-      <NewTitle
+      <Title
         size="large"
         wrapperProps={{
           sx: {
@@ -207,7 +207,7 @@ const QuestionsTitle = (props: { isReview?: boolean; pathInfo: any }) => {
             </Box>
           </>
         )}
-      </NewTitle>
+      </Title>
     </Box>
   );
 };

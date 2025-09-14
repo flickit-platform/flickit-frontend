@@ -9,7 +9,7 @@ import { t } from "i18next";
 import setDocumentTitle from "@utils/setDocumentTitle";
 import { useConfigContext } from "@/providers/ConfgProvider";
 import MemberList from "@/components/assessment-kit/AssessmentKitMemberList";
-import NewTitle from "@common/newTitle";
+import Title from "@common/Title";
 
 const AssessmentKitPermissionsContainer = () => {
   const { service } = useServiceContext();
@@ -86,7 +86,7 @@ const AssessmentKitPermisson = (props: any) => {
 
   return (
     <Box>
-      <NewTitle
+      <Title
         inPageLink="assessmentKitPermissions"
         size="large"
         letterSpacing=".08em"
@@ -117,7 +117,7 @@ const AssessmentKitPermisson = (props: any) => {
           i18nKey={"assessmentKit.assessmentKitPermissions"}
           values={{ assessmentKit: title }}
         />
-      </NewTitle>
+      </Title>
       <Box mt={2}>
         <MemberList
           title="expertGroups.members"

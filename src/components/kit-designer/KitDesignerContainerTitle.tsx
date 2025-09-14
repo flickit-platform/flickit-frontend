@@ -4,7 +4,7 @@ import setDocumentTitle from "@utils/setDocumentTitle";
 import { t } from "i18next";
 import { useConfigContext } from "@/providers/ConfgProvider";
 import { IKitVersion } from "@/types/index";
-import NewTitle from "@common/newTitle";
+import Title from "@common/Title";
 
 const KitDesignerTitle = ({ kitVersion }: { kitVersion: IKitVersion }) => {
   const { config } = useConfigContext();
@@ -13,7 +13,7 @@ const KitDesignerTitle = ({ kitVersion }: { kitVersion: IKitVersion }) => {
   }, []);
 
   return (
-    <NewTitle
+    <Title
       backLink={"/"}
       size="large"
       wrapperProps={{
@@ -39,7 +39,7 @@ const KitDesignerTitle = ({ kitVersion }: { kitVersion: IKitVersion }) => {
           displayChip
         />
       }
-    ></NewTitle>
+    ></Title>
   );
 };
 

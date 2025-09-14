@@ -4,7 +4,7 @@ import { Box, IconButton } from "@mui/material";
 import { styles } from "@styles";
 import { useAuthContext } from "@/providers/AuthProvider";
 import { ArrowForward } from "@mui/icons-material";
-import NewTitle from "@common/newTitle";
+import Title from "@common/Title";
 
 const AssessmentReportTitle = (props: any) => {
   const { pathInfo, rtlLanguage, children } = props;
@@ -25,7 +25,7 @@ const AssessmentReportTitle = (props: any) => {
   };
 
   return (
-    <NewTitle
+    <Title
       backLink="/spaces"
       wrapperProps={{
         sx: {
@@ -67,7 +67,7 @@ const AssessmentReportTitle = (props: any) => {
         </Box>
         {children}
       </Box>
-    </NewTitle>
+    </Title>
   );
 };
 

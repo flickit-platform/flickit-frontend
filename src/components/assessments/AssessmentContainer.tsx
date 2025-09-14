@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Trans } from "react-i18next";
-import Title from "@common/Title";
 import QueryData from "@common/QueryData";
 import ErrorEmptyData from "@common/errors/ErrorEmptyData";
 import AssessmentEmptyState from "@assets/svg/assessmentEmptyState.svg";
@@ -29,7 +28,7 @@ import { useQuery } from "@/utils/useQuery";
 import useScreenResize from "@utils/useScreenResize";
 import LoadingAssessmentCards from "../common/loadings/LoadingAssessmentCards";
 import { useTheme } from "@mui/material";
-import NewTitle from "@common/newTitle";
+import Title from "@common/Title";
 
 const AssessmentContainer = () => {
   const { service } = useServiceContext();
@@ -90,7 +89,7 @@ const AssessmentContainer = () => {
           </Typography>
         )}
         <Box sx={{ ...styles.centerVH, mb: "40px", mt: 1 }}>
-          <NewTitle
+          <Title
             borderBottom={true}
             size="large"
             sx={{ width: "100%" }}
@@ -156,7 +155,7 @@ const AssessmentContainer = () => {
             }
           >
             <Trans i18nKey="assessment.assessments" />
-          </NewTitle>
+          </Title>
           {}
         </Box>
         {isEmpty && !loading && (

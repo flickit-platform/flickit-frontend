@@ -37,7 +37,7 @@ import languageDetector from "@utils/languageDetector";
 import { getReadableDate } from "@utils/readableDate";
 import showToast from "@utils/toastError";
 import { DeleteConfirmationDialog } from "@common/dialogs/DeleteConfirmationDialog";
-import NewTitle from "@common/newTitle";
+import Title from "@common/Title";
 
 export const SpaceMembers = (props: any) => {
   const { editable } = props;
@@ -132,7 +132,7 @@ export const SpaceMembers = (props: any) => {
   return (
     <Box mt={1} p={3} borderRadius={1} bgcolor="background.containerLowest">
       <Box>
-        <NewTitle
+        <Title
           size="small"
           mb={2}
           titleProps={{
@@ -142,7 +142,7 @@ export const SpaceMembers = (props: any) => {
           }}
         >
           <Trans i18nKey="common.addNewMember" />
-        </NewTitle>
+        </Title>
         <form
           onSubmit={async (e) => {
             e.preventDefault();
@@ -185,7 +185,7 @@ export const SpaceMembers = (props: any) => {
         </form>
       </Box>
       <Box mt={6}>
-        <NewTitle
+        <Title
           mb={2}
           size="small"
           titleProps={{
@@ -209,7 +209,7 @@ export const SpaceMembers = (props: any) => {
           }
         >
           <Trans i18nKey="expertGroups.members" />
-        </NewTitle>
+        </Title>
         <QueryData
           {...spaceMembersQueryData}
           renderLoading={() => {
@@ -355,7 +355,7 @@ export const SpaceMembers = (props: any) => {
               <Box>
                 {items.length > 0 && (
                   <Box mt={4}>
-                    <NewTitle
+                    <Title
                       size="small"
                       titleProps={{
                         textTransform: "none",
@@ -363,7 +363,7 @@ export const SpaceMembers = (props: any) => {
                       }}
                     >
                       <Trans i18nKey="common.invitees" />
-                    </NewTitle>
+                    </Title>
                     <Box mt={1}>
                       {items.map((invitees: any) => {
                         const { id, email, expirationDate } = invitees;

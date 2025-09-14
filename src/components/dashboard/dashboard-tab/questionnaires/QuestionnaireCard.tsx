@@ -19,7 +19,7 @@ import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
 import Grid from "@mui/material/Grid";
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 import { useTheme } from "@mui/material";
-import NewTitle from "@common/newTitle";
+import Title from "@common/Title";
 
 interface IQuestionnaireCardProps {
   data: IQuestionnairesInfo;
@@ -67,9 +67,9 @@ const QuestionnaireCard = (props: IQuestionnaireCardProps) => {
       >
         <Box>
           <Box flex={1}>
-            <NewTitle size="small" sx={{width:"100%"}} fontWeight={"bold"}>
+            <Title size="small" sx={{width:"100%"}} fontWeight={"bold"}>
               <Box ref={mainBoxRef} flex="1" sx={{ ...styles.centerV }}>
-                <NewTitle
+                <Title
                   fontWeight={"bold"}
                   size="small"
                   sx={{
@@ -109,7 +109,7 @@ const QuestionnaireCard = (props: IQuestionnaireCardProps) => {
                       <InfoOutlined sx={{ width: "16px", height: "16px" }} />
                     </IconButton>
                   )}
-                </NewTitle>
+                </Title>
                 <Box
                   ref={boxRef}
                   display="inline-block"
@@ -128,7 +128,7 @@ const QuestionnaireCard = (props: IQuestionnaireCardProps) => {
                   />
                 </Box>
               </Box>
-            </NewTitle>
+            </Title>
             <QuestionDescription
               description={description}
               collapse={collapse}

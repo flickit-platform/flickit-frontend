@@ -40,7 +40,7 @@ import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
 import LoadingButton from "@mui/lab/LoadingButton";
 import uniqueId from "@/utils/uniqueId";
 import showToast from "@utils/toastError";
-import NewTitle from "@common/newTitle";
+import Title from "@common/Title";
 
 const AssessmentKitExpertViewContainer = () => {
   const { fetchAssessmentKitDetailsQuery, fetchAssessmentKitDownloadUrlQuery } =
@@ -116,7 +116,7 @@ const AssessmentKitExpertViewContainer = () => {
   return (
     <Box>
       <Box flexDirection={{ xs: "column", sm: "row" }}>
-        <NewTitle
+        <Title
           backLink={"/"}
           size="large"
           wrapperProps={{
@@ -185,7 +185,7 @@ const AssessmentKitExpertViewContainer = () => {
           }
         >
           {assessmentKitTitle}
-        </NewTitle>
+        </Title>
         <Box mt={3}>
           <AssessmentKitSectionGeneralInfo
             setExpertGroup={setExpertGroup}

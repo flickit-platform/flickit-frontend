@@ -25,7 +25,7 @@ import { styles } from "@styles";
 import languageDetector from "@/utils/languageDetector";
 import showToast from "@utils/toastError";
 import { useTheme } from "@mui/material";
-import NewTitle from "@common/newTitle";
+import Title from "@common/Title";
 
 const UserAccount = () => {
   const [hover, setHover] = useState(false);
@@ -188,7 +188,7 @@ const UserAccount = () => {
         </Box>
       </Box>
       <Box sx={{ marginInlineStart: "130px" }} mt={1}>
-        <NewTitle
+        <Title
           textTransform={"capitalize"}
           sub={<Box textTransform={"none"}>{userInfo?.email}</Box>}
           toolbar={
@@ -209,15 +209,15 @@ const UserAccount = () => {
           }
         >
           {userInfo?.displayName}
-        </NewTitle>
+        </Title>
       </Box>
       <Box mt={8}>
         <Box borderTop={"1px solid #d1d1d1"} px={1} py={3} m={1}>
           <Grid container spacing={3}>
             <Grid item md={3}>
-              <NewTitle size="small" textTransform={"none"}>
+              <Title size="small" textTransform={"none"}>
                 <Trans i18nKey="common.about" />
-              </NewTitle>
+              </Title>
             </Grid>
             <Grid item md={9}>
               <Box>

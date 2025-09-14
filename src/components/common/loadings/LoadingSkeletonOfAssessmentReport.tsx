@@ -2,7 +2,7 @@ import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import Skeleton from "@mui/material/Skeleton";
 import { LoadingSkeleton } from "./LoadingSkeleton";
-import NewTitle from "@common/newTitle";
+import Title from "@common/Title";
 
 const LoadingSkeletonOfAssessmentReport = () => {
   return (
@@ -26,9 +26,9 @@ const LoadingSkeletonOfAssessmentReport = () => {
         </Grid>
         <Grid item sm={14} xs={14} id="subjects">
           <Box mt={4}>
-            <NewTitle borderBottom={true}>
+            <Title borderBottom={true}>
               <Skeleton width="110px" />
-            </NewTitle>
+            </Title>
             <Box mt={3}>
               <Grid
                 container
