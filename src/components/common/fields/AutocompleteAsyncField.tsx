@@ -1,4 +1,4 @@
-import React, { ReactNode, useEffect, useMemo, useRef, useState } from "react";
+import { ReactNode, useEffect, useMemo, useRef, useState } from "react";
 import Autocomplete, { AutocompleteProps } from "@mui/material/Autocomplete";
 import throttle from "lodash/throttle";
 import TextField from "@mui/material/TextField";
@@ -30,7 +30,6 @@ import showToast from "@/utils/toastError";
 import { useTheme } from "@mui/material";
 import premiumIcon from "@/assets/svg/premium.svg";
 import HomeIcon from "@mui/icons-material/Home";
-import { useLocation } from "react-router-dom";
 import FolderOutlinedIcon from "@mui/icons-material/FolderOutlined";
 type TUnionAutocompleteAndAutocompleteAsyncFieldBase = Omit<
   IAutocompleteAsyncFieldBase,
@@ -168,7 +167,6 @@ const AutocompleteBaseField = (
   } = useFormContext();
   const isFirstFetchRef = useRef(true);
   const { hasError, errorMessage } = getFieldError(errors, name);
-  const { pathname } = useLocation();
   const [inputValue, setInputValue] = useState(
     () => getOptionLabel(defaultValue) ?? "",
   );

@@ -1,5 +1,4 @@
 import { useCallback, useMemo, ReactNode, ComponentProps } from "react";
-import { useParams } from "react-router-dom";
 import { Trans } from "react-i18next";
 import { useServiceContext } from "@providers/ServiceProvider";
 import { useQuery } from "@utils/useQuery";
@@ -34,10 +33,9 @@ export const SpaceField = ({
   disabled,
   defaultValue,
   onCreated,
-  ...rest // هر چی خواستی مثل sx, placeholder, size, fullWidth, data-cy و… رو از اینجا پاس بده
+  ...rest
 }: SpaceFieldProps) => {
   const { service } = useServiceContext();
-  const { spaceId } = useParams();
 
   const createSpaceQueryData = useQuery({
     service: (args, config) => service.space.create(args, config),

@@ -1,5 +1,5 @@
 import Box from "@mui/material/Box";
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import QueryData from "@common/QueryData";
 import { useServiceContext } from "@providers/ServiceProvider";

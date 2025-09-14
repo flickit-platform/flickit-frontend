@@ -60,7 +60,7 @@ export default function ChipsRow({
             onClick={
               isClickable
                 ? (e: any) => {
-                    if (it.anchorId) handleAnchor(e as any, it, it.anchorId);
+                    if (it.anchorId) handleAnchor(e, it, it.anchorId);
                   }
                 : undefined
             }

@@ -9,7 +9,7 @@ import AccordionSummary from "@mui/material/AccordionSummary";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import Divider from "@mui/material/Divider";
 import { farsiFontFamily, primaryFontFamily } from "@config/theme";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useQuery } from "@utils/useQuery";
 import { useParams } from "react-router-dom";
 import { useServiceContext } from "@providers/ServiceProvider";
@@ -50,10 +50,10 @@ const SubjectAttributeCard = (props: any) => {
   const { assessmentId = "" } = useParams();
 
   const [topTab, setTopTab] = useState(0);
-  const [TopNavValue, setTopNavValue] = React.useState<number>(
+  const [TopNavValue, setTopNavValue] = useState<number>(
     maturityScoreModels.findIndex((item: any) => item.score !== null) ?? 0,
   );
-  const [selectedMaturityLevel, setSelectedMaturityLevel] = React.useState<any>(
+  const [selectedMaturityLevel, setSelectedMaturityLevel] = useState<any>(
     maturityScoreModels.find((item: any) => item.score !== null)?.maturityLevel
       .id ?? null,
   );

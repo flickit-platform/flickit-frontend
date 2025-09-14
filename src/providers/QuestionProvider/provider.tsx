@@ -1,4 +1,4 @@
-import React, { useReducer, FC, useContext, useEffect } from "react";
+import { useReducer, FC, useContext, useEffect, createContext } from "react";
 import { useParams } from "react-router-dom";
 import { EAssessmentStatus, TQuestionsInfo } from "@/types/index";
 import { questionActions } from "./actions";
@@ -18,7 +18,7 @@ export interface IQuestionContext {
   selcetedConfidenceLevel: any;
 }
 
-export const QuestionContext = React.createContext<IQuestionContext>({
+export const QuestionContext = createContext<IQuestionContext>({
   questionIndex: 1,
   assessmentStatus: EAssessmentStatus.NOT_STARTED,
   questionsInfo: {
@@ -32,7 +32,7 @@ export const QuestionContext = React.createContext<IQuestionContext>({
   evidences: "",
 });
 
-const QuestionDispatchContext = React.createContext<any>({
+const QuestionDispatchContext = createContext<any>({
   dispatch: () => {},
 });
 

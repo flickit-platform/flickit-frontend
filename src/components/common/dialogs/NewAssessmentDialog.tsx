@@ -9,7 +9,6 @@ import { ICustomError } from "@utils/CustomError";
 import { useNavigate, useParams } from "react-router-dom";
 import { CEDialog, CEDialogActions } from "@common/dialogs/CEDialog";
 import FormProviderWithForm from "@common/FormProviderWithForm";
-import { useQuery } from "@utils/useQuery";
 import AutocompleteAsyncField from "@common/fields/AutocompleteAsyncField";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";

@@ -1,4 +1,4 @@
-import React, {
+import {
   useReducer,
   FC,
   useContext,
@@ -17,7 +17,9 @@ interface ILangContext extends LangState {}
 
 const LangContext = createContext<ILangContext>(initialLangState);
 
-const LangDispatchContext = createContext<Dispatch<LANG_ACTION_TYPES>>(() => {});
+const LangDispatchContext = createContext<Dispatch<LANG_ACTION_TYPES>>(
+  () => {},
+);
 
 export const LangProvider: FC<ILangProviderProps> = ({ children }) => {
   const [state, dispatch] = useReducer(langReducer, initialLangState);

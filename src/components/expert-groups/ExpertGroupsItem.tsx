@@ -25,7 +25,6 @@ import { farsiFontFamily, primaryFontFamily } from "@config/theme";
 import { FLAGS, TId } from "@/types";
 import flagsmith from "flagsmith";
 import showToast from "@utils/toastError";
-import React from "react";
 
 interface IExpertGroupsItemProps {
   data: any;

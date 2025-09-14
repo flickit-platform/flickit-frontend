@@ -1,4 +1,4 @@
-import React, { lazy, useEffect, useRef, useState } from "react";
+import { lazy, useEffect, useRef, useState } from "react";
 import { Trans } from "react-i18next";
 import { useParams, NavLink, useNavigate } from "react-router-dom";
 import { styles } from "@styles";
@@ -363,9 +363,9 @@ const Navbar = () => {
   }, [notificationCenterOpen]);
 
   const navigateToAssessments = () => {
-    navigate("/spaces")
-    if(!isAuthenticated){
-      keycloakService.doLogin()
+    navigate("/spaces");
+    if (!isAuthenticated) {
+      keycloakService.doLogin();
     }
   };
 
@@ -466,7 +466,9 @@ const Navbar = () => {
             variant="h6"
             component={NavLink}
             sx={{
-              display: isAuthenticated ? { xs: "none", md: "block" } : { xs: "block" } ,
+              display: isAuthenticated
+                ? { xs: "none", md: "block" }
+                : { xs: "block" },
               color: "grey",
               height: "42px",
               width: "110px",
@@ -540,71 +542,73 @@ const Navbar = () => {
 
           <Box gap={{ xs: 0.8, sm: 2 }} sx={{ ...styles.centerV }}>
             {MULTILINGUALITY.toString() == "true" ? <LanguageSelector /> : null}
-            {
-              isAuthenticated ? (
-                <IconButton onClick={toggleNotificationCenter} ref={bellButtonRef}>
-                  <Badge
-                    max={99}
-                    badgeContent={notificationCount}
-                    color="error"
-                    overlap="circular"
-                    sx={{
-                      "& .MuiBadge-badge": {
-                        backgroundColor: "secondary.main",
-                        minWidth: "16px",
-                        padding: 0,
-                        height: "16px",
-                      },
-                    }}
-                  >
-                    <NotificationsIcon sx={{ fontSize: 20, color: "white" }} />
-                  </Badge>
-                </IconButton>
-              ) : (
-                <Button
-                  variant="contained"
-                  size="medium"
-                  onClick={(e) => handleButtonClick(e, "Login")}
+            {isAuthenticated ? (
+              <IconButton
+                onClick={toggleNotificationCenter}
+                ref={bellButtonRef}
+              >
+                <Badge
+                  max={99}
+                  badgeContent={notificationCount}
+                  color="error"
+                  overlap="circular"
                   sx={{
-                    height: "32px",
-                    color: "primary.main",
-                    textTransform: "capitalize",
-                    bgcolor: "background.container",
-                    boxShadow: "0 1px 5px rgba(0,0,0,0.12)",
-                    "&:hover": { bgcolor: "background.container" },
+                    "& .MuiBadge-badge": {
+                      backgroundColor: "secondary.main",
+                      minWidth: "16px",
+                      padding: 0,
+                      height: "16px",
+                    },
                   }}
                 >
-                  <Trans i18nKey="common.loginOrSignup" />
-                </Button>
-              )
-            }
+                  <NotificationsIcon sx={{ fontSize: 20, color: "white" }} />
+                </Badge>
+              </IconButton>
+            ) : (
+              <Button
+                variant="contained"
+                size="medium"
+                onClick={(e) => handleButtonClick(e, "Login")}
+                sx={{
+                  height: "32px",
+                  color: "primary.main",
+                  textTransform: "capitalize",
+                  bgcolor: "background.container",
+                  boxShadow: "0 1px 5px rgba(0,0,0,0.12)",
+                  "&:hover": { bgcolor: "background.container" },
+                }}
+              >
+                <Trans i18nKey="common.loginOrSignup" />
+              </Button>
+            )}
 
-            {isAuthenticated && <AccountDropDownButton userInfo={userInfo} /> }
+            {isAuthenticated && <AccountDropDownButton userInfo={userInfo} />}
           </Box>
         </Toolbar>
       </AppBar>
 
       {/* کشوی موبایل */}
-      {isAuthenticated && <Box component="nav">
-        <Drawer
-          container={window.document.body}
-          variant="temporary"
-          open={mobileOpen}
-          onClose={handleDrawerToggle}
-          ModalProps={{ keepMounted: true }}
-          anchor={i18n.language == "fa" ? "right" : "left"}
-          sx={{
-            display: { xs: "block", md: "none" },
-            "& .MuiDrawer-paper": {
-              boxSizing: "border-box",
-              width: drawerWidth,
-            },
-          }}
-        >
-          {drawer}
-        </Drawer>
-      </Box>
-      }
+      {isAuthenticated && (
+        <Box component="nav">
+          <Drawer
+            container={window.document.body}
+            variant="temporary"
+            open={mobileOpen}
+            onClose={handleDrawerToggle}
+            ModalProps={{ keepMounted: true }}
+            anchor={i18n.language == "fa" ? "right" : "left"}
+            sx={{
+              display: { xs: "block", md: "none" },
+              "& .MuiDrawer-paper": {
+                boxSizing: "border-box",
+                width: drawerWidth,
+              },
+            }}
+          >
+            {drawer}
+          </Drawer>
+        </Box>
+      )}
       {notificationCenterOpen && isAuthenticated && (
         <Box
           ref={notificationCenterRef}
@@ -630,7 +634,7 @@ const Navbar = () => {
 };
 
 const AccountDropDownButton = ({ userInfo }: any) => {
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) =>
     setAnchorEl(event.currentTarget);
@@ -644,7 +648,7 @@ const AccountDropDownButton = ({ userInfo }: any) => {
         data-cy="spaces"
         onClick={(e) => {
           e.stopPropagation();
-          handleClick(e as any);
+          handleClick(e);
         }}
         sx={{
           ...styles.activeNavbarLink,

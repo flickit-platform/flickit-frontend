@@ -1,4 +1,3 @@
-import React from "react";
 import { Box, Tabs, Tab } from "@mui/material";
 import WorkspacePremiumIcon from "@mui/icons-material/WorkspacePremium";
 import DoneIcon from "@mui/icons-material/Done";

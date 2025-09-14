@@ -3,7 +3,7 @@ import { AxiosError } from "axios";
 import { ECustomErrorType } from "@/types/index";
 import { ICustomError } from "./CustomError";
 import { t } from "i18next";
-import React, { ReactNode } from "react";
+import { ReactNode, isValidElement } from "react";
 
 export interface IToastOptions {
   variant?: "error" | "success" | "info" | "warning";
@@ -15,10 +15,7 @@ export interface IToastOptions {
 
 type ToastInput = ICustomError | AxiosError | string | true | ReactNode;
 
-const showToast = (
-  err: ToastInput,
-  options?: IToastOptions,
-) => {
+const showToast = (err: ToastInput, options?: IToastOptions) => {
   const {
     variant = "error",
     filterByStatus = [],
@@ -27,7 +24,7 @@ const showToast = (
     toastOptions = {},
   } = options ?? {};
 
-  if (typeof err === "string" || React.isValidElement(err)) {
+  if (typeof err === "string" || isValidElement(err)) {
     toast[variant](err, toastOptions);
     return;
   }

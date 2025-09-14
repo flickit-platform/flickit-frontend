@@ -162,50 +162,48 @@ const QuestionsTitle = (props: { isReview?: boolean; pathInfo: any }) => {
             }}
           ></div>
         ) : (
-          <>
-            <Box display="block">
-              <Box sx={{ ...styles.centerVH }}>
-                <IconButton component={Link} to={isReview ? "./../.." : "./.."}>
-                  {theme.direction === "ltr" ? (
-                    <ArrowBack color="primary" />
-                  ) : (
-                    <ArrowForward color="primary" />
-                  )}
-                </IconButton>
-                <Typography
-                  display="inline-block"
-                  variant="h5"
-                  fontWeight={"bold"}
-                  style={{
-                    fontFamily: languageDetector(questionnaire.title)
-                      ? farsiFontFamily
-                      : primaryFontFamily,
-                  }}
-                >
-                  {questionnaire.title}
-                </Typography>{" "}
-                {assessmentTotalProgress.loading && percent == 0 ? (
-                  <Skeleton width={80} />
+          <Box display="block">
+            <Box sx={{ ...styles.centerVH }}>
+              <IconButton component={Link} to={isReview ? "./../.." : "./.."}>
+                {theme.direction === "ltr" ? (
+                  <ArrowBack color="primary" />
                 ) : (
-                  <OutlinedProgressButton
-                    label={`${answersCount} / ${questionsCount}`}
-                    progressPercent={percent}
-                    variant="outlined"
-                    fillColor="#D0E4FF"
-                    fullWidth={false}
-                    sx={{
-                      marginInlineStart: 1,
-                      mt: 0.5,
-                      p: 0,
-                      bgcolor: "primary.states.selected",
-                      cursor: "default",
-                    }}
-                    disabled
-                  />
+                  <ArrowForward color="primary" />
                 )}
-              </Box>
+              </IconButton>
+              <Typography
+                display="inline-block"
+                variant="h5"
+                fontWeight={"bold"}
+                style={{
+                  fontFamily: languageDetector(questionnaire.title)
+                    ? farsiFontFamily
+                    : primaryFontFamily,
+                }}
+              >
+                {questionnaire.title}
+              </Typography>{" "}
+              {assessmentTotalProgress.loading && percent == 0 ? (
+                <Skeleton width={80} />
+              ) : (
+                <OutlinedProgressButton
+                  label={`${answersCount} / ${questionsCount}`}
+                  progressPercent={percent}
+                  variant="outlined"
+                  fillColor="#D0E4FF"
+                  fullWidth={false}
+                  sx={{
+                    marginInlineStart: 1,
+                    mt: 0.5,
+                    p: 0,
+                    bgcolor: "primary.states.selected",
+                    cursor: "default",
+                  }}
+                  disabled
+                />
+              )}
             </Box>
-          </>
+          </Box>
         )}
       </Title>
     </Box>

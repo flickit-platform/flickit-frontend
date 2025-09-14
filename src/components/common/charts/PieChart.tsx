@@ -1,7 +1,6 @@
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { t } from "i18next";
 import uniqueId from "@/utils/uniqueId";
-import React from "react";
 import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
 import { useTheme } from "@mui/material";
 

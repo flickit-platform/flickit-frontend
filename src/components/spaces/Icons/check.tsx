@@ -1,5 +1,4 @@
 import { v3Tokens } from "@/config/tokens";
-import React from "react";
 
 export default function Check(props: any) {
   const { type, allowCreateBasic } = props;

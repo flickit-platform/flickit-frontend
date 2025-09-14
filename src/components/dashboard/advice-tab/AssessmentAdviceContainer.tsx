@@ -1,9 +1,7 @@
 import { useEffect, useState } from "react";
 import { Trans } from "react-i18next";
 import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
 import Skeleton from "@mui/material/Skeleton";
-import Tooltip from "@mui/material/Tooltip";
 import { useParams } from "react-router-dom";
 import { useQuery } from "@utils/useQuery";
 import { useServiceContext } from "@providers/ServiceProvider";
@@ -16,7 +14,6 @@ import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
 import { ErrorCodes } from "@/types/index";
 import useCalculate from "@/hooks/useCalculate";
-import FaWandMagicSparkles from "@/components/common/icons/FaWandMagicSparkles";
 import { useAssessmentContext } from "@/providers/AssessmentProvider";
 import useInsightPopup from "@/hooks/useAssessmentInsightPopup";
 import ActionPopup from "@/components/common/buttons/ActionPopup";
@@ -78,7 +75,6 @@ const AssessmentAdviceContainer = (props: any) => {
   }, [fetchPreAdviceInfo.errorObject]);
 
   const [expanded, setExpanded] = useState<boolean>(false);
-  const [isAIGenerated, setIsAIGenerated] = useState<boolean>(false);
   const [hasExpandedOnce, setHasExpandedOnce] = useState<boolean>(false);
 
   const { assessmentId = "" } = useParams();
@@ -96,10 +92,6 @@ const AssessmentAdviceContainer = (props: any) => {
   const handleClose = () => {
     setExpanded(false);
   };
-
-  useEffect(() => {
-    setIsAIGenerated(!!fetchAdviceNarration.data?.aiNarration);
-  }, [fetchAdviceNarration.data]);
 
   const approveAdvice = async (event: React.SyntheticEvent) => {
     try {

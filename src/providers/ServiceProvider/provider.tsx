@@ -1,4 +1,4 @@
-import React, { useReducer, FC, useContext, useMemo } from "react";
+import { useReducer, FC, useContext, useMemo, createContext } from "react";
 import { createService, TService } from "@service";
 import { authActions, useAuthContext } from "../AuthProvider";
 import serviceReducer from "./reducer";
@@ -11,7 +11,7 @@ export interface IServiceContext {
   service: TService;
 }
 
-export const ServiceContext = React.createContext<IServiceContext>({
+export const ServiceContext = createContext<IServiceContext>({
   service: {} as any,
 });
 

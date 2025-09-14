@@ -7,7 +7,6 @@ import { IQuestionnairesModel } from "@/types/index";
 import { useParams, useSearchParams } from "react-router-dom";
 import PermissionControl from "@common/PermissionControl";
 import { useMemo } from "react";
-import { blue } from "@/config/colors";
 
 const QuestionnaireContainer = () => {
   const { questionnaireQueryData, assessmentTotalProgress } =

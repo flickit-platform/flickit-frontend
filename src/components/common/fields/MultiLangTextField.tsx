@@ -120,7 +120,7 @@ const MultiLangTextField = ({
         onClick={(e) => e.stopPropagation()}
         sx={{
           "& .MuiOutlinedInput-root": {
-            bgcolor: bgcolor ? bgcolor : "background.containerLowest",
+            bgcolor: bgcolor ?? "background.containerLowest",
             fontSize: 14,
             ...(multiline ? {} : { height: 40 }),
           },

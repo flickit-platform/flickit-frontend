@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import { useState, useCallback } from "react";
 import { CEDialog, CEDialogActions } from "@common/dialogs/CEDialog";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
@@ -16,7 +16,7 @@ import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 import { Link } from "react-router-dom";
 import { useParams } from "react-router";
 import { IDialogContext, TId } from "@/types";
-import StickyNote2Icon from '@mui/icons-material/StickyNote2';
+import StickyNote2Icon from "@mui/icons-material/StickyNote2";
 
 interface IQuestionReportDialog {
   context: IDialogContext | undefined;
@@ -101,7 +101,14 @@ const InnerAccordion = ({
           ...styles.rtlStyle(lng == "fa"),
         }}
       >
-        ({data?.length} {t((lng == "fa" || data?.length == 1) ? "common.question" : "common.questions", { lng })})
+        ({data?.length}{" "}
+        {t(
+          lng == "fa" || data?.length == 1
+            ? "common.question"
+            : "common.questions",
+          { lng },
+        )}
+        )
       </Typography>
     </AccordionSummary>
 
@@ -126,11 +133,14 @@ const InnerAccordion = ({
                 .{item.question.index}
               </Typography>
             </Box>
-            <Typography variant="bodySmall"
-            sx={{
-              ...styles.rtlStyle(lng == "fa")
-            }}
-            >{item.question.title}</Typography>
+            <Typography
+              variant="bodySmall"
+              sx={{
+                ...styles.rtlStyle(lng == "fa"),
+              }}
+            >
+              {item.question.title}
+            </Typography>
           </Box>
 
           <Box
@@ -151,11 +161,14 @@ const InnerAccordion = ({
                 }}
               >
                 <CheckBoxIcon sx={{ color: "#6C8093" }} />
-                <Typography variant="bodySmall"
-                sx={{
-                  ...styles.rtlStyle(lng == "fa")
-                }}
-                >{item.answer.title}</Typography>
+                <Typography
+                  variant="bodySmall"
+                  sx={{
+                    ...styles.rtlStyle(lng == "fa"),
+                  }}
+                >
+                  {item.answer.title}
+                </Typography>
               </Box>
             ) : (
               <Box
@@ -168,10 +181,12 @@ const InnerAccordion = ({
                 }}
               >
                 <ErrorOutlineIcon sx={{ color: "error.main" }} />
-                <Typography variant="bodySmall" color={"error.main"}
-                sx={{
-                  ...styles.rtlStyle(lng == "fa")
-                }}
+                <Typography
+                  variant="bodySmall"
+                  color={"error.main"}
+                  sx={{
+                    ...styles.rtlStyle(lng == "fa"),
+                  }}
                 >
                   {t("subject.noQuestionHasBeenAnswered", { lng })}
                 </Typography>
@@ -186,7 +201,7 @@ const InnerAccordion = ({
               color="primary.main"
               sx={{
                 textDecoration: "none",
-                ...styles.rtlStyle(lng == "fa")
+                ...styles.rtlStyle(lng == "fa"),
               }}
             >
               {t("assessmentReport.goToQuestion", { lng })}
@@ -211,7 +226,6 @@ const AccordionSkeleton = () => (
 );
 
 const QuestionReportDialog = (props: IQuestionReportDialog) => {
-
   const { onClose, lng, context, ...rest } = props;
   const { assessmentId = "" } = useParams();
   const { measureId, attributeId } = context?.data ?? {};
@@ -237,17 +251,17 @@ const QuestionReportDialog = (props: IQuestionReportDialog) => {
       {...rest}
       closeDialog={onClose}
       title={
-      <Box sx={{ ...styles.centerV, gap: 0.7 }}>
-      <StickyNote2Icon fontSize={"small"} />
-        <Typography
-          variant="semiBoldXLarge"
-          sx={{
-            ...styles.rtlStyle(lng == "fa"),
-          }}
-        >
-          {t("assessmentReport.viewCodeQualityMeasure", { lng })}
-        </Typography>
-      </Box>
+        <Box sx={{ ...styles.centerV, gap: 0.7 }}>
+          <StickyNote2Icon fontSize={"small"} />
+          <Typography
+            variant="semiBoldXLarge"
+            sx={{
+              ...styles.rtlStyle(lng == "fa"),
+            }}
+          >
+            {t("assessmentReport.viewCodeQualityMeasure", { lng })}
+          </Typography>
+        </Box>
       }
       sx={{ direction: isRTL ? "rtl" : "ltr" }}
       contentStyle={{ p: "40px 32px !important" }}

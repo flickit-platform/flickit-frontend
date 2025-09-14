@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState, useMemo } from "react";
+import { useEffect, useRef, useState, useMemo, Fragment } from "react";
 import Box from "@mui/material/Box";
 import Checkbox from "@mui/material/Checkbox";
 import Paper from "@mui/material/Paper";
@@ -81,7 +81,6 @@ import { getReadableDate } from "@utils/readableDate";
 import { useAssessmentContext } from "@providers/AssessmentProvider";
 import showToast from "@utils/toastError";
 import uniqueId from "@/utils/uniqueId";
-import { blue } from "@/config/colors";
 
 interface IQuestionCardProps {
   questionInfo: IQuestionInfo;
@@ -189,10 +188,10 @@ export const QuestionCard = (props: IQuestionCardProps) => {
               }}
             >
               {title.split("\n").map((line) => (
-                <React.Fragment key={line}>
+                <Fragment key={line}>
                   {questionIndex}. {line}
                   <br />
-                </React.Fragment>
+                </Fragment>
               ))}
             </Typography>
 
@@ -522,7 +521,7 @@ export const QuestionTabsTemplate = (props: any) => {
   }, [currentPage]);
 
   useEffect(() => {
-    if(position == "dialog"){
+    if (position == "dialog") {
       if (counts.evidences) {
         setValue("evidences");
       } else if (counts.history) {
@@ -665,7 +664,8 @@ export const QuestionTabsTemplate = (props: any) => {
   );
 };
 
-const getArrowColor = (isActive: boolean) => (isActive ? "white" : "disabled.main");
+const getArrowColor = (isActive: boolean) =>
+  isActive ? "white" : "disabled.main";
 
 const NavigationButton = ({
   onClick,
@@ -2013,7 +2013,7 @@ const EvidenceDetail = (props: any) => {
   const { permissions }: { permissions: IPermissions } = props;
   const LIMITED = 500;
   const [valueCount, setValueCount] = useState("");
-  const [value, setValue] = React.useState<any>("POSITIVE");
+  const [value, setValue] = useState<any>("POSITIVE");
   const [expandedEvidenceBox, setExpandedEvidenceBox] =
     useState<boolean>(false);
   const addEvidence = useQuery({

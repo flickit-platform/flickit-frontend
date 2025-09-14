@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import { useMemo } from "react";
 import { CEDialog } from "@common/dialogs/CEDialog";
 import { Trans } from "react-i18next";
 import Box from "@mui/material/Box";

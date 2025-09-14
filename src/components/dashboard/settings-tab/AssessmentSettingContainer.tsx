@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import QueryBatchData from "@common/QueryBatchData";
 import { useQuery } from "@utils/useQuery";
 import { useServiceContext } from "@providers/ServiceProvider";
@@ -35,9 +35,7 @@ const AssessmentSettingContainer = () => {
   const [changeData, setChangeData] = useState(false);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [page, setPage] = useState(0);
-  const [kitInfo, setKitInfo] = useState<IAssessmentInfo | undefined>(
-    undefined,
-  );
+
   const { state } = useLocation();
   const fetchAssessmentsRoles = useQuery<RolesType>({
     service: (args, config) =>
@@ -74,7 +72,6 @@ const AssessmentSettingContainer = () => {
   });
 
   useEffect(() => {
-    setKitInfo(assessmentInfo);
     dispatch(kitActions.setMainLanguage(assessmentInfo?.language));
   }, [assessmentId]);
 

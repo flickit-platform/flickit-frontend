@@ -2,7 +2,7 @@ import Box, { BoxProps } from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import { lazy, Suspense, useMemo, useRef } from "react";
 import { Trans } from "react-i18next";
-import { getMaturityLevelColors } from "@styles";
+import { styles, getMaturityLevelColors } from "@styles";
 import SkeletonGauge from "@common/charts/SkeletonGauge";
 import CompletionRing from "@/components/common/charts/completion-ring/CompletionRing";
 import mlIndicator from "@/assets/svg/ml-indicator.svg";
@@ -10,7 +10,6 @@ import permissionRequired from "@/assets/svg/permission-required.svg";
 import languageDetector from "@/utils/languageDetector";
 import { t } from "i18next";
 import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
-import { styles } from "@styles";
 interface IGaugeProps extends BoxProps {
   maturity_level_number: number;
   maturity_level_status: string;
