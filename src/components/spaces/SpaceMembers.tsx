@@ -38,6 +38,7 @@ import languageDetector from "@utils/languageDetector";
 import { getReadableDate } from "@utils/readableDate";
 import showToast from "@utils/toastError";
 import { DeleteConfirmationDialog } from "@common/dialogs/DeleteConfirmationDialog";
+import NewTitle from "@common/newTitle";
 
 export const SpaceMembers = (props: any) => {
   const { editable } = props;
@@ -132,7 +133,7 @@ export const SpaceMembers = (props: any) => {
   return (
     <Box mt={1} p={3} borderRadius={1} bgcolor="background.containerLowest">
       <Box>
-        <Title
+        <NewTitle
           size="small"
           mb={2}
           titleProps={{
@@ -142,7 +143,7 @@ export const SpaceMembers = (props: any) => {
           }}
         >
           <Trans i18nKey="common.addNewMember" />
-        </Title>
+        </NewTitle>
         <form
           onSubmit={async (e) => {
             e.preventDefault();
@@ -185,7 +186,7 @@ export const SpaceMembers = (props: any) => {
         </form>
       </Box>
       <Box mt={6}>
-        <Title
+        <NewTitle
           mb={2}
           size="small"
           titleProps={{
@@ -209,7 +210,7 @@ export const SpaceMembers = (props: any) => {
           }
         >
           <Trans i18nKey="expertGroups.members" />
-        </Title>
+        </NewTitle>
         <QueryData
           {...spaceMembersQueryData}
           renderLoading={() => {

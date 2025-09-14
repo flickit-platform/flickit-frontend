@@ -19,6 +19,7 @@ import useDialog from "@utils/useDialog";
 import CreateSpaceDialog from "./CreateSpaceDialog";
 import LoadingButton from "@mui/lab/LoadingButton";
 import BorderColorRoundedIcon from "@mui/icons-material/BorderColorRounded";
+import NewTitle from "@common/newTitle";
 
 const SpaceSettingContainer = () => {
   const { spaceId = "" } = useParams();
@@ -37,7 +38,7 @@ const SpaceSettingContainer = () => {
 
   return (
     <Box maxWidth="1440px" m="auto">
-      <Title
+      <NewTitle
         size="large"
         sup={
           <SupTitleBreadcrumb
@@ -77,7 +78,7 @@ const SpaceSettingContainer = () => {
           )}{" "}
           <Trans i18nKey="common.settings" />
         </Box>
-      </Title>
+      </NewTitle>
       <Box pt={3}>{!loading && <SpaceSettings editable={editable} />}</Box>
     </Box>
   );
