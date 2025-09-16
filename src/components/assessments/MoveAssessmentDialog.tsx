@@ -64,7 +64,7 @@ const MoveAssessmentDialog = (props: IAssessmentCEFromDialogProps) => {
 
   const onSubmit = async () => {
     await AssessmentMoveTarget.query();
-    onSubmitForm && onSubmitForm();
+    onSubmitForm?.();
     close();
   };
   return (

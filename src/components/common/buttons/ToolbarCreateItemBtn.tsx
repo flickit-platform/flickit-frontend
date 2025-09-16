@@ -9,7 +9,7 @@ interface IToolbarCreateItemBtnProps extends ButtonProps {
   shouldAnimate?: boolean;
   text: string | JSX.Element;
   minWidth?: string;
-  variantType?: "text" | "outlined" | "contained" | undefined;
+  variantType?: "text" | "outlined" | "contained";
 }
 
 export const ToolbarCreateItemBtn = (props: IToolbarCreateItemBtnProps) => {
@@ -40,7 +40,7 @@ export const ToolbarCreateItemBtn = (props: IToolbarCreateItemBtnProps) => {
         "&:hover": {
           animation: `${animations.noPomp}`,
         },
-        ...rest.sx
+        ...rest.sx,
       }}
     >
       {typeof text === "string" ? <Trans i18nKey={text} /> : text}

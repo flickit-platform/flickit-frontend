@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import Box from "@mui/material/Box";
 import Slider from "@mui/material/Slider";
 import { styles } from "@styles";
@@ -7,46 +7,84 @@ import languageDetector from "@/utils/languageDetector";
 import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
 import Typography from "@mui/material/Typography";
 import { v3Tokens } from "@/config/tokens";
-const AdviceSlider = (props: any) => {
+
+type AdviceSliderProps = {
+  defaultValue: number;
+  attribute: { id: string; title: string };
+  subject: { title: string };
+  maturityLevels: Array<{ id: string; title: string }>;
+  setTarget: React.Dispatch<React.SetStateAction<any[]>>;
+  target: any[];
+  currentState?: { title?: string };
+};
+
+const clamp = (n: number, min: number, max: number) =>
+  Math.min(Math.max(n, min), max);
+
+const fontFor = (text?: string) =>
+  languageDetector(text) ? farsiFontFamily : primaryFontFamily;
+
+const AdviceSlider = (props: AdviceSliderProps) => {
   const {
     defaultValue,
     attribute,
     subject,
-    maturityLevels,
+    maturityLevels = [],
     setTarget,
     target,
     currentState,
   } = props;
-  const [value, setValue] = useState(defaultValue ?? 0);
-  const handleSliderChange = (event: Event, newValue: any) => {
-    if (newValue >= defaultValue) {
-      setValue(newValue);
+
+  const totalLevels = Math.max(1, maturityLevels.length || 5);
+  const defaultIdx = clamp((defaultValue ?? 1) - 1, 0, totalLevels - 1);
+
+  const [value, setValue] = useState<number>(defaultValue ?? 1);
+
+  const selectedIdx = useMemo(() => {
+    const chosenValue = value ?? defaultValue ?? 1;
+    return clamp(chosenValue - 1, 0, totalLevels - 1);
+  }, [value, defaultValue, totalLevels]);
+
+  const toLevel = maturityLevels[selectedIdx];
+  const toTitle = toLevel?.title;
+  const fromTitle = currentState?.title;
+
+  const fromIsFa = languageDetector(fromTitle);
+  const toIsFa = languageDetector(toTitle);
+
+  const currentPercent = totalLevels > 1 ? (defaultIdx * 99) / (totalLevels - 1) : 0;
+
+  const handleSliderChange = (_event: Event, newValue: number | number[]) => {
+    const next = Array.isArray(newValue) ? newValue[0] : newValue;
+
+    if (next >= defaultValue) {
+      setValue(next);
+
+      const nextIdx = clamp(next - 1, 0, totalLevels - 1);
+      const nextLevelId = maturityLevels[nextIdx]?.id;
+
       const existingIndex = target.findIndex(
         (item: any) => item.attributeId === attribute?.id,
       );
 
       if (existingIndex === -1) {
-        // If the attributeId doesn't exist, add a new object
-        setTarget((prev: any) => [
+        setTarget((prev: any[]) => [
           ...prev,
-          {
-            attributeId: attribute?.id,
-            maturityLevelId: maturityLevels[newValue - 1]?.id,
-          },
+          { attributeId: attribute?.id, maturityLevelId: nextLevelId },
         ]);
       } else {
-        // If the attributeId exists, update the existing object
-        setTarget((prev: any) => {
-          const updatedTarget = [...prev];
-          updatedTarget[existingIndex] = {
+        setTarget((prev: any[]) => {
+          const updated = [...prev];
+          updated[existingIndex] = {
             attributeId: attribute?.id,
-            maturityLevelId: maturityLevels[newValue - 1]?.id,
+            maturityLevelId: nextLevelId,
           };
-          return updatedTarget;
+          return updated;
         });
       }
     }
   };
+
   return (
     <Box
       justifyContent="space-between"
@@ -58,6 +96,7 @@ const AdviceSlider = (props: any) => {
       textAlign="start"
       sx={{ ...styles.centerH }}
     >
+      {/* عنوان و موضوع */}
       <Box sx={{ ...styles.centerVH }} gap={2} width="35%">
         <Box
           px="10px"
@@ -67,43 +106,37 @@ const AdviceSlider = (props: any) => {
           border="1px solid #D81E5B"
           borderRadius="8px"
           textAlign="center"
-          fontFamily={
-            languageDetector(subject?.title)
-              ? farsiFontFamily
-              : primaryFontFamily
-          }
+          fontFamily={fontFor(subject?.title)}
         >
           {subject.title}
         </Box>
+
         <Typography
           variant="semiBoldXLarge"
           width="100%"
           maxWidth="260px"
-          sx={{
-            fontFamily: languageDetector(attribute?.title)
-              ? farsiFontFamily
-              : primaryFontFamily,
-          }}
+          sx={{ fontFamily: fontFor(attribute?.title) }}
         >
           {attribute.title}
         </Typography>
       </Box>
+
+      {/* اسلایدر */}
       <Box width={{ xs: "100%", md: "37%" }} mt={4}>
         <Box px={2}>
           <Slider
-            defaultValue={defaultValue}
             min={1}
-            max={maturityLevels?.length ?? 5}
-            onChange={handleSliderChange}
-            value={value}
+            max={totalLevels}
             marks
+            defaultValue={defaultValue}
+            value={value}
+            onChange={handleSliderChange}
             sx={{
-              "& .MuiSlider-thumb": {
-                marginRight: "-20px",
-              },
+              "& .MuiSlider-thumb": { marginRight: "-20px" },
             }}
           />
         </Box>
+
         <Box
           display="flex"
           flexDirection="column"
@@ -112,17 +145,7 @@ const AdviceSlider = (props: any) => {
           marginInlineStart="2%"
           marginInlineEnd="4%"
         >
-          <Box
-            position={"relative"}
-            left={`${
-              ((defaultValue - 1) * 99) /
-              (maturityLevels?.length ? maturityLevels?.length - 1 : 4)
-            }%`}
-            right={`${
-              ((defaultValue - 1) * 99) /
-              (maturityLevels?.length ? maturityLevels?.length - 1 : 4)
-            }%`}
-          >
+          <Box position="relative" left={`${currentPercent}%`}>
             <svg
               width="20"
               height="9"
@@ -133,22 +156,16 @@ const AdviceSlider = (props: any) => {
               <path d="M20 9L10 0L0 9H20Z" fill="#F9A03F" />
             </svg>
           </Box>
+
           <Box
             sx={{
               position: "relative",
-              left: `${
-                ((defaultValue - 1) * 99) /
-                (maturityLevels?.length ? maturityLevels?.length - 1 : 4)
-              }%`,
-              right: `${
-                ((defaultValue - 1) * 99) /
-                (maturityLevels?.length ? maturityLevels?.length - 1 : 4)
-              }%`,
+              left: `${currentPercent}%`,
               marginInlineStart: "-20px",
               mt: "-5px",
               whiteSpace: "nowrap",
               fontSize: ".75rem",
-              fontWeight: "400",
+              fontWeight: 400,
               color: "#F9A03F",
             }}
           >
@@ -157,25 +174,20 @@ const AdviceSlider = (props: any) => {
         </Box>
       </Box>
 
+      {/* From → To */}
       <Box width={{ xs: "90%", sm: "28%" }} mt={1} sx={{ ...styles.centerVH }}>
         <Typography color="background.onVariant" variant="bodySmall">
           <Trans
             i18nKey="advice.fromTo"
-            values={{
-              fromTitle: currentState?.title,
-              toTitle:
-                maturityLevels[value ? value - 1 : defaultValue - 1]?.title,
-            }}
+            values={{ fromTitle: fromTitle, toTitle: toTitle }}
             components={{
               fromStyle: (
                 <span
                   style={{
                     fontSize: "14px",
                     color: v3Tokens.surface.on,
-                    fontWeight: "700",
-                    fontFamily: languageDetector(currentState?.title)
-                      ? farsiFontFamily
-                      : primaryFontFamily,
+                    fontWeight: 700,
+                    fontFamily: fromIsFa ? farsiFontFamily : primaryFontFamily,
                   }}
                 />
               ),
@@ -184,13 +196,8 @@ const AdviceSlider = (props: any) => {
                   style={{
                     fontSize: "14px",
                     color: v3Tokens.surface.on,
-                    fontWeight: "700",
-                    fontFamily: languageDetector(
-                      maturityLevels[value ? value - 1 : defaultValue - 1]
-                        ?.title,
-                    )
-                      ? farsiFontFamily
-                      : primaryFontFamily,
+                    fontWeight: 700,
+                    fontFamily: toIsFa ? farsiFontFamily : primaryFontFamily,
                   }}
                 />
               ),

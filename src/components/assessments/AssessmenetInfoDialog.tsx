@@ -8,6 +8,7 @@ import Button from "@mui/material/Button";
 import { DialogProps } from "@mui/material/Dialog";
 import { useTheme } from "@mui/material";
 import { styles } from "@styles";
+import uniqueId from "@/utils/uniqueId";
 
 interface IAssessmentCEFromDialogProps extends DialogProps {
   onClose: () => void;
@@ -62,7 +63,7 @@ const AssessmenetInfoDialog = (props: IAssessmentCEFromDialogProps) => {
         {listOfText.map((text: string, index: number) => {
           return (
             <Box
-              key={index}
+              key={uniqueId()}
               justifyContent="flex-start"
               color="text.primary"
               gap="2px"

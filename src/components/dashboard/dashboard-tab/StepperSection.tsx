@@ -344,13 +344,13 @@ const StepBox = (props: IStepBox) => {
     );
   };
 
-  const content = questions
-    ? renderQuestions()
-    : insights
-      ? renderInsights()
-      : advices
-        ? renderAdvices()
-        : renderReport();
+  const content = (() => {
+    if (questions) return renderQuestions();
+    if (insights) return renderInsights();
+    if (advices) return renderAdvices();
+    return renderReport();
+  })();
+  
 
   const titleMap: Record<string, string> = {
     questions: "dashboard.answeringQuestionsTitle",

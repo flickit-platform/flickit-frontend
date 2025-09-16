@@ -195,7 +195,7 @@ const renderMainLabel = (props: any, count: number) => {
     <g transform={`translate(${x},${y}) rotate(${rotate})`}>
       {lines.map((line, idx) => (
         <text
-          key={idx}
+          key={uniqueId()}
           x={0}
           y={idx * (fontSize + 3) - ((lines.length - 1) * (fontSize + 3)) / 2}
           fill={v3Tokens.surface.containerLowest}
