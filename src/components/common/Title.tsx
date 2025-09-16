@@ -62,7 +62,7 @@ const Title: React.FC<TitleProps> = ({
   avatar,
   appTitle,
   ...typoRest
-}) => {
+}: any) => {
   const titleVariant: TypographyProps["variant"] =
     size === "small" ? "h6" : size === "large" ? "headlineLarge" : "h5";
 
