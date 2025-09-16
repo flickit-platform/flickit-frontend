@@ -193,6 +193,7 @@ const NewAssessmentDialog = (props: IAssessmentCEFromDialogProps) => {
                 queryDataSpaces={queryDataSpaces}
                 spaces={spaceList}
                 sx={{ mt: "42px" }}
+                filterSelectedOptions={false}
               />
             </Grid>
             <Divider
