@@ -177,7 +177,7 @@ export default function ShareDialog({
                     ...(graphicalReportUsers?.invitees ?? []),
                   ].map((member) => {
                     const { displayName, id, pictureLink, email, deletable } = member;
-                    return (<Box  sx={{ ...styles.centerV, justifyContent: "space-between" }}>
+                    return (<Box key={id}  sx={{ ...styles.centerV, justifyContent: "space-between" }}>
                         <Box
                           key={String(id ?? email)}
                           sx={{ ...styles.centerV }}
