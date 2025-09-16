@@ -205,7 +205,7 @@ export default function ShareDialog({
       sx={{ ...styles.rtlStyle(isRTL) }}
       contentStyle={{
         p: "38px 64px 32px 64px !important",
-        overflowX: "hidden !important",
+        overflow: "hidden !important",
       }}
       titleStyle={{ mb: "0px !important" }}
     >
@@ -319,7 +319,7 @@ const UserSection = (props: any) => {
   const { invitees, users, deleteUserRoleHandler, lng } = props;
   const { t } = useTranslation();
   return (
-    <Box display="flex" flexDirection="column" my={1} gap={2}>
+    <Box display="flex" flexDirection="column" my={1} gap={2} sx={{ overflowY: "auto", maxHeight: "250px" }}>
       {[...(users ?? []), ...(invitees ?? [])].map((member) => {
         const { displayName, id, pictureLink, email, deletable } = member;
         return (
