@@ -6,6 +6,7 @@ import { VISIBILITY } from "@/utils/enumType";
 import { ICustomError } from "@/utils/CustomError";
 import showToast from "@/utils/toastError";
 import { getBasePath } from "@/utils/helpers";
+import { TId } from "@/types";
 
 // --- Types
 export interface ReportAccessUser {
@@ -13,6 +14,7 @@ export interface ReportAccessUser {
   email: string;
   displayName: string;
   pictureLink?: string | null;
+  deletable?: boolean;
 }
 
 export interface ReportAccessUsersResponse {
@@ -49,6 +51,12 @@ export function useShareDialog({
         { assessmentId, ...(args ?? {}) },
         config,
       ),
+    runOnMount: false,
+  });
+
+  const deleteUserRole = useQuery({
+    service: (args, config) =>
+      service.assessments.member.removeUserRole({ assessmentId, args }, config),
     runOnMount: false,
   });
 
@@ -130,6 +138,11 @@ export function useShareDialog({
     }
   }, []);
 
+  const deleteUserRoleHandler = async (id: TId) =>{
+    await deleteUserRole.query(id)
+    await fetchGraphicalReportUsers.query();
+  }
+
   const closeSnackbar = () => setSnackbarOpen(false);
 
   return {
@@ -146,5 +159,6 @@ export function useShareDialog({
     handleSelect,
     onInviteSubmit,
     handleCopyClick,
+    deleteUserRoleHandler,
   };
 }

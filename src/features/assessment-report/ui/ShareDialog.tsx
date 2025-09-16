@@ -25,6 +25,8 @@ import {
 } from "@/components/common/dialogs/CEDialog";
 import { InputFieldUC } from "@/components/common/fields/InputField";
 import QueryBatchData from "@/components/common/QueryBatchData";
+import DeleteForeverOutlinedIcon from '@mui/icons-material/DeleteForeverOutlined';
+import { IconButton } from "@mui/material";
 
 type ShareDialogProps = {
   open: boolean;
@@ -58,6 +60,7 @@ export default function ShareDialog({
     handleSelect,
     onInviteSubmit,
     handleCopyClick,
+    deleteUserRoleHandler
   } = useShareDialog({ open, visibility, linkHash });
 
   type AccessOptions = Record<
@@ -173,33 +176,39 @@ export default function ShareDialog({
                     ...(graphicalReportUsers?.users ?? []),
                     ...(graphicalReportUsers?.invitees ?? []),
                   ].map((member) => {
-                    const { displayName, id, pictureLink, email } = member;
-                    return (
-                      <Box
-                        key={String(id ?? email)}
-                        sx={{ ...styles.centerV }}
-                        gap={1}
-                      >
-                        <Avatar
-                          {...stringAvatar((displayName ?? "").toUpperCase())}
-                          src={pictureLink ?? undefined}
-                          sx={{ width: 24, height: 24, fontSize: 12 }}
-                        />
-                        {email}
-                        {(graphicalReportUsers?.invitees ?? []).includes(
-                          member,
-                        ) && (
-                          <Chip
-                            label={t("common.invited", { lng })}
-                            size="small"
-                            sx={{
-                              ".MuiChip-label": {
-                                ...styles.rtlStyle(lng === "fa"),
-                              },
-                            }}
+                    const { displayName, id, pictureLink, email, deletable } = member;
+                    return (<Box  sx={{ ...styles.centerV, justifyContent: "space-between" }}>
+                        <Box
+                          key={String(id ?? email)}
+                          sx={{ ...styles.centerV }}
+                          gap={1}
+                        >
+                          <Avatar
+                            {...stringAvatar((displayName ?? "").toUpperCase())}
+                            src={pictureLink ?? undefined}
+                            sx={{ width: 24, height: 24, fontSize: 12 }}
                           />
-                        )}
-                      </Box>
+                          {email}
+                          {(graphicalReportUsers?.invitees ?? []).includes(
+                            member,
+                          ) && (
+                            <Chip
+                              label={t("common.invited", { lng })}
+                              size="small"
+                              sx={{
+                                ".MuiChip-label": {
+                                  ...styles.rtlStyle(lng === "fa"),
+                                },
+                              }}
+                            />
+                          )}
+                        </Box>
+                        {deletable && (
+                          <IconButton onClick={()=>deleteUserRoleHandler(id)} >
+                            <DeleteForeverOutlinedIcon fontSize={"medium"} sx={{color: "background.onVariant" }} />
+                          </IconButton>
+                          )}
+                    </Box>
                     );
                   })}
                 </Box>
