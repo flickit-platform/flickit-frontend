@@ -346,7 +346,7 @@ const UserSection = (props: any) => {
                 />
               )}
             </Box>
-            {deletable && (
+            {deletable  && !(invitees ?? []).includes(member) && (
               <IconButton onClick={() => deleteUserRoleHandler(id)}>
                 <DeleteForeverOutlinedIcon
                   fontSize={"medium"}
