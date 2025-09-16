@@ -38,7 +38,7 @@ interface IQueryBatchDataProps<T> {
   errorObject?: ICustomError[];
 }
 
-const QueryBatchData = <T extends any = any>(
+const QueryBatchData = <T = any>(
   props: IQueryBatchDataProps<T>,
 ) => {
   const {
@@ -138,11 +138,11 @@ export const defaultRenderError = (
   return errorComponent;
 };
 
-const reduceData = <T extends any = any>(queryBatchData: IQueryData<T>[]) => {
+const reduceData = <T = any>(queryBatchData: IQueryData<T>[]) => {
   return queryBatchData.map((query) => query.data);
 };
 
-const reduceLoadings = <T extends any = any>(
+const reduceLoadings = <T = any>(
   queryBatchData: IQueryData<T>[],
 ) => {
   return queryBatchData.reduce(
@@ -154,7 +154,7 @@ const reduceLoadings = <T extends any = any>(
   ).loading;
 };
 
-const reduceLoaded = <T extends any = any>(queryBatchData: IQueryData<T>[]) => {
+const reduceLoaded = <T = any>(queryBatchData: IQueryData<T>[]) => {
   return queryBatchData.reduce(
     (prevQuery, currentQuery) => {
       return {
@@ -166,7 +166,7 @@ const reduceLoaded = <T extends any = any>(queryBatchData: IQueryData<T>[]) => {
   ).loaded;
 };
 
-const reduceError = <T extends any = any>(queryBatchData: IQueryData<T>[]) => {
+const reduceError = <T = any>(queryBatchData: IQueryData<T>[]) => {
   return queryBatchData.reduce(
     (prevQuery, currentQuery) => ({
       ...currentQuery,
@@ -176,7 +176,7 @@ const reduceError = <T extends any = any>(queryBatchData: IQueryData<T>[]) => {
   ).error;
 };
 
-const reduceErrorObject = <T extends any = any>(
+const reduceErrorObject = <T = any>(
   queryBatchData: IQueryData<any>[],
 ) => {
   return queryBatchData.map((query) => query.errorObject);

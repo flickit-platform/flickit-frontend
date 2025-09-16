@@ -63,11 +63,19 @@ const Title: React.FC<TitleProps> = ({
   appTitle,
   ...typoRest
 }: any) => {
-  const titleVariant: TypographyProps["variant"] =
-    size === "small" ? "h6" : size === "large" ? "headlineLarge" : "h5";
-
-  const subVariant: TypographyProps["variant"] =
-    size === "small" ? "subSmall" : size === "large" ? "subLarge" : "subMedium";
+  let titleVariant: TypographyProps["variant"];
+  let subVariant: TypographyProps["variant"];
+  
+  if (size === "small") {
+    titleVariant = "h6";
+    subVariant = "subSmall";
+  } else if (size === "large") {
+    titleVariant = "headlineLarge";
+    subVariant = "subLarge";
+  } else {
+    titleVariant = "h5";
+    subVariant = "subMedium";
+  }  
 
   const fontFamily = pickFontFamily(children);
 

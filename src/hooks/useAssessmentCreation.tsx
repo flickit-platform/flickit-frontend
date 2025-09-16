@@ -81,12 +81,12 @@ export function useAssessmentCreation({
       setLoading?: (flag: boolean) => void;
       queryDataSpacesArgs?: any;
     }) => {
-      setLoading && setLoading(true);
+      setLoading?.(true);
       let spaces: Space[] = [];
       try {
         spaces = await queryDataSpaces.query(queryDataSpacesArgs);
       } catch (err) {
-        setLoading && setLoading(false);
+        setLoading?.(false);
         openDialog({
           type: "limitExceeded",
           staticData: {
@@ -116,17 +116,17 @@ export function useAssessmentCreation({
             { signal: abortController.signal },
           );
           clearHash();
-          setLoading && setLoading(false);
+          setLoading?.(false);
           navigate(`/${spaceId}/assessments/1/${data?.id}/questionnaires`);
           return;
         } catch (e) {
-          setLoading && setLoading(false);
+          setLoading?.(false);
           showToast(e as ICustomError);
           return () => abortController.abort();
         }
       }
 
-      setLoading && setLoading(false);
+      setLoading?.(false);
       openDialog({
         type: "create",
         staticData: {

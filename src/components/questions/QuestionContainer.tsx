@@ -75,50 +75,6 @@ export const QuestionContainer = () => {
   );
 };
 
-export const SubmitOnSelectCheckBox = (props: any) => {
-  const { submitOnAnswerSelection } = useQuestionContext();
-  const dispatch = useQuestionDispatch();
-  const isSmallerScreen = useScreenResize("sm");
-
-  return (
-    <FormControlLabel
-      sx={{
-        mr: 0,
-        color: "background.containerLowest",
-        display: props?.disabled ? "none" : "block",
-      }}
-      data-cy="automatic-submit-check"
-      control={
-        <Checkbox
-          checked={submitOnAnswerSelection}
-          sx={{
-            color: "background.containerLowest",
-            "&.Mui-checked": {
-              color: "background.containerLowest",
-            },
-          }}
-          onChange={(e) => {
-            dispatch(
-              questionActions.setSubmitOnAnswerSelection(
-                e.target.checked || false,
-              ),
-            );
-          }}
-        />
-      }
-      label={
-        <Trans
-          i18nKey={
-            isSmallerScreen
-              ? "questions.submitAnswerAutomatically"
-              : "questions.submitAnswerAutomaticallyAndGoToNextQuestion"
-          }
-        />
-      }
-    />
-  );
-};
-
 const findQuestion = (
   questions: any[] = [],
   questionIndex?: string | number,
