@@ -8,7 +8,6 @@ import Divider from "@mui/material/Divider";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import Chip from "@mui/material/Chip";
-import { CircleRating } from "../MaturityLevelTable";
 import { styles, generateColorFromString } from "@styles";
 import QuestionAnswer from "@mui/icons-material/QuestionAnswer";
 import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
@@ -19,6 +18,7 @@ import { Link } from "react-router-dom";
 import AlertBox from "@/components/common/AlertBox";
 import NavigationButtons from "@/components/common/buttons/NavigationButtons";
 import { useTheme } from "@mui/material";
+import { CircleRating } from "../CircleRating";
 
 interface IQuestionDetailsDialogDialogProps extends DialogProps {
   onClose: () => void;

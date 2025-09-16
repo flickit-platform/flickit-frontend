@@ -5,7 +5,7 @@ import dataExist from "./dataExist";
 import showToast, { IToastOptions } from "./toastError";
 import get from "lodash/get";
 
-export type TQueryServiceFunction<T extends any = any, A extends any = any> = (
+export type TQueryServiceFunction<T = any, A = any> = (
   args?: A,
   config?: AxiosRequestConfig<any>,
 ) => Promise<AxiosResponse<T, any>>;
@@ -65,7 +65,7 @@ interface IUseQueryProps<T, A> {
  * - abortController: can be used for service clean up (canceling service call when component unmounts)
  *
  */
-export const useQuery = <T extends any = any, A extends any = any>(
+export const useQuery = <T = any, A = any>(
   props: IUseQueryProps<T, A>,
 ) => {
   const {
@@ -119,9 +119,10 @@ export const useQuery = <T extends any = any, A extends any = any>(
       return Promise.resolve(data);
     } catch (e) {
       const err = e as ICustomError;
-      if (typeof toastError === "function") {
-        showToast(err, toastErrorOptions);
-      } else if (typeof toastError === "boolean" && toastError) {
+      if (
+        typeof toastError === "function" ||
+        (typeof toastError === "boolean" && toastError)
+      ) {
         showToast(err, toastErrorOptions);
       }
       setErrorObject(err);

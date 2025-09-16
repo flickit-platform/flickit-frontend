@@ -34,19 +34,19 @@ const getQuestionnaireStatus = (
 };
 
 const AnswerStatusImage = ({ status }: { status: string }) => {
-  const imageSrc =
-    status === "complete"
-      ? doneSvg
-      : status === "empty"
-        ? noQuestionSvg
-        : someQuestionSvg;
+  let imageSrc: string;
+  let altText: string;
 
-  const altText =
-    status === "complete"
-      ? "questionnaire done"
-      : status === "empty"
-        ? "questionnaire empty"
-        : "questionnaire some answered";
+  if (status === "complete") {
+    imageSrc = doneSvg;
+    altText = "questionnaire done";
+  } else if (status === "empty") {
+    imageSrc = noQuestionSvg;
+    altText = "questionnaire empty";
+  } else {
+    imageSrc = someQuestionSvg;
+    altText = "questionnaire some answered";
+  }
 
   return <img style={{ width: "100%" }} src={imageSrc} alt={altText} />;
 };
@@ -321,7 +321,7 @@ export const Review = () => {
                 <Trans i18nKey="questions.allQuestionnaires" />
               </Button>
             )}
-            {nextQuestionnaire && nextQuestionnaire.id && (
+            {nextQuestionnaire?.id && (
               <Button
                 variant="contained"
                 component={Link}

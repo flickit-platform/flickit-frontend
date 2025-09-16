@@ -6,7 +6,7 @@ import { t } from "i18next";
 import { styles } from "@styles";
 import { useTreeMapSection } from "../../../model/hooks/useTreeMapSection";
 import languageDetector from "@/utils/languageDetector";
-import MeasuresTable from "./MeasureTable";
+import MeasuresTable, { rtlSx } from "./MeasureTable";
 import AIGenerated from "@/components/common/icons/AIGenerated";
 import FlatGauge from "@/components/common/charts/flatGauge/FlatGauge";
 import { IMaturityLevel, IUserPermissions } from "@/types";
@@ -36,7 +36,6 @@ type AttributeVM = {
   guidanceText: string;
 };
 
-export const rtlSx = (flag?: boolean) => styles.rtlStyle(flag);
 function toAttributeVM(
   attr: any,
   lng: string,

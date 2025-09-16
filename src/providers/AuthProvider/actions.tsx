@@ -1,6 +1,11 @@
 import axios from "axios";
 import { ISpaceInfo, IUserInfo } from "@/types/index";
-import { defaultUserInfo } from "./provider";
+export const defaultUserInfo = {
+  displayName: "",
+  id: "",
+  email: "",
+  subscriberHash: "",
+};
 export enum AUTH_ACTIONS_TYPE {
   SIGN_IN = "SIGN_IN",
   SIGN_UP = "SIGN_UP",

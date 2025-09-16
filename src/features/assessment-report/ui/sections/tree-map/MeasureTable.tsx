@@ -14,10 +14,12 @@ import {
 } from "@mui/material";
 import { t } from "i18next";
 import { StickyNote2Outlined } from "@mui/icons-material";
-import { rtlSx } from "./TreeMapSection";
 import languageDetector from "@/utils/languageDetector";
 import useDialog from "@utils/useDialog";
 import QuestionReportDialog from "@/features/assessment-report/ui/sections/questionReportDialog";
+import { styles } from "@styles";
+
+export const rtlSx = (flag?: boolean) => styles.rtlStyle(flag);
 
 type Measure = {
   id: number;
