@@ -153,6 +153,10 @@ const AssessmentKitSectionGeneralInfo = (
     }));
   };
 
+  const tagsAutocompleteProps = useConnectAutocompleteField({
+    service: (args, config) => service.assessmentKit.info.getTags(args, config),
+  });
+
   return (
     <QueryBatchData
       queryBatchData={[
@@ -179,7 +183,7 @@ const AssessmentKitSectionGeneralInfo = (
           mainLanguage,
           metadata,
           translations,
-          languages
+          languages,
         } = info as AssessmentKitInfoType;
         const {
           creationTime,
@@ -201,6 +205,24 @@ const AssessmentKitSectionGeneralInfo = (
           if (editable) {
             setEditableFields((prev) => new Set(prev).add(field));
           }
+        };
+
+        const updateAssessmentKitQuery = useQuery({
+          service: (args, config) =>
+            service.assessmentKit.info.updateStats(
+              args ?? {
+                assessmentKitId: assessmentKitId,
+                data: { isPrivate },
+              },
+              config,
+            ),
+          runOnMount: false,
+          toastError: true,
+        });
+        const updateAssessmentKit = async () => {
+          const res = await updateAssessmentKitQuery.query();
+          res.message && showToast(res.message, { variant: "success" });
+          await fetchAssessmentKitInfoQuery.query();
         };
 
         return (
@@ -230,15 +252,13 @@ const AssessmentKitSectionGeneralInfo = (
                   editable={editable}
                 />
                 <OnHoverStatus
-                  data={published}
                   title={<Trans i18nKey="common.status" />}
-                  infoQuery={fetchAssessmentKitInfoQuery.query}
+                  updateAssessmentKit={updateAssessmentKit}
                   editable={editable}
                 />
                 <OnHoverVisibilityStatus
-                  data={isPrivate}
+                  updateAssessmentKit={updateAssessmentKit}
                   title={<Trans i18nKey="common.visibility" />}
-                  infoQuery={fetchAssessmentKitInfoQuery.query}
                   editable={editable}
                 />
                 <Box height="38px" width="100%" sx={{ ...styles.centerV }}>
@@ -265,10 +285,7 @@ const AssessmentKitSectionGeneralInfo = (
                         sx={{ ...styles.centerV }}
                       >
                         <AutocompleteAsyncField
-                          {...useConnectAutocompleteField({
-                            service: (args, config) =>
-                              service.assessmentKit.info.getTags(args, config),
-                          })}
+                          {...tagsAutocompleteProps}
                           name="tags"
                           multiple={true}
                           defaultValue={tags}
@@ -313,7 +330,7 @@ const AssessmentKitSectionGeneralInfo = (
                           >
                             <CancelRoundedIcon
                               sx={{ color: "primary.contrastText" }}
-                              />
+                            />
                           </IconButton>
                         </Box>
                       </Box>
@@ -720,9 +737,8 @@ const OnHoverInput = (props: any) => {
 };
 
 const OnHoverStatus = (props: any) => {
-  const { data, title, infoQuery, editable } = props;
-  const { assessmentKitId } = useParams();
-  const { service } = useServiceContext();
+  const { data, title, updateAssessmentKit, editable } = props;
+
   const [selected, setSelected] = useState<boolean>(data);
   const handleToggle = async (status: boolean) => {
     if (editable) {
@@ -732,23 +748,7 @@ const OnHoverStatus = (props: any) => {
       }
     }
   };
-  const updateAssessmentKitQuery = useQuery({
-    service: (args, config) =>
-      service.assessmentKit.info.updateStats(
-        args ?? {
-          assessmentKitId: assessmentKitId,
-          data: { published: !data },
-        },
-        config,
-      ),
-    runOnMount: false,
-    toastError: true,
-  });
-  const updateAssessmentKit = async () => {
-    const res = await updateAssessmentKitQuery.query();
-    res.message && showToast(res.message, { variant: "success" });
-    await infoQuery();
-  };
+
   return (
     <Box>
       <Box my={1.5} sx={{ ...styles.centerV }}>
@@ -819,9 +819,8 @@ const OnHoverStatus = (props: any) => {
   );
 };
 const OnHoverVisibilityStatus = (props: any) => {
-  const { data, title, infoQuery, editable } = props;
+  const { data, title, updateAssessmentKit, editable } = props;
   const { assessmentKitId, expertGroupId } = useParams();
-  const { service } = useServiceContext();
   const [selected, setSelected] = useState<boolean>(data);
   const handleToggle = (status: boolean) => {
     if (editable) {
@@ -829,23 +828,7 @@ const OnHoverVisibilityStatus = (props: any) => {
       if (status !== data) updateAssessmentKit();
     }
   };
-  const updateAssessmentKitQuery = useQuery({
-    service: (args, config) =>
-      service.assessmentKit.info.updateStats(
-        args ?? {
-          assessmentKitId: assessmentKitId,
-          data: { isPrivate: !data },
-        },
-        config,
-      ),
-    runOnMount: false,
-    toastError: true,
-  });
-  const updateAssessmentKit = async () => {
-    const res = await updateAssessmentKitQuery.query();
-    res.message && showToast(res.message, { variant: "success" });
-    await infoQuery();
-  };
+
   return (
     <Box>
       <Box my={1.5} sx={{ ...styles.centerV }}>

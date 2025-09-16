@@ -10,6 +10,7 @@ import { useTheme } from "@mui/material";
 import Accordion from "@mui/material/Accordion";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
+import uniqueId from "@/utils/uniqueId";
 
 const DotsLoading = () => {
   const theme = useTheme();
@@ -270,7 +271,7 @@ const GraphicalReportSkeleton = ({ isAuthenticatedUser, lang }: any) => (
             }}
           >
             {Array.from({ length: 2 }).map((_, index) => (
-              <Accordion expanded={true} key={index}>
+              <Accordion expanded={true} key={uniqueId()}>
                 <AccordionSummary
                   aria-controls={`panel${index}-content`}
                   id={`panel${index}-header`}
