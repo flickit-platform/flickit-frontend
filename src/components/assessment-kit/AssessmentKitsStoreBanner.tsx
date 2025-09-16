@@ -85,7 +85,15 @@ const AssessmentKitsStoreBanner = (props: any) => {
 
   const goTo = (index: number) => {
     const last = banners.length - 1;
-    setCurrentIndex(index < 0 ? last : index > last ? 0 : index);
+
+    let nextIndex = index;
+    if (index < 0) {
+      nextIndex = last;
+    } else if (index > last) {
+      nextIndex = 0;
+    }
+
+    setCurrentIndex(nextIndex);
   };
 
   const goNext = () => goTo(currentIndex + 1);
