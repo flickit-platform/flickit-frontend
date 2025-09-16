@@ -1,18 +1,10 @@
 import { useRef } from "react";
-import Checkbox from "@mui/material/Checkbox";
 import Collapse from "@mui/material/Collapse";
-import FormControlLabel from "@mui/material/FormControlLabel";
 import Box from "@mui/material/Box";
-import {
-  questionActions,
-  useQuestionContext,
-  useQuestionDispatch,
-} from "@providers/QuestionProvider";
+import { useQuestionContext } from "@providers/QuestionProvider";
 import { QuestionCard } from "./QuestionCard";
-import { Trans } from "react-i18next";
 import { Review } from "./QuestionsReview";
 import { TransitionGroup } from "react-transition-group";
-import useScreenResize from "@utils/useScreenResize";
 import { styles } from "@styles";
 import { QuestionsProgress } from "./QuestionsProgress";
 import EmptyState from "../kit-designer/common/EmptyState";

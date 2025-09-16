@@ -50,7 +50,7 @@ export default function ContactExpertBox({ lng, rtl, onOpen }: Props) {
         }}
       >
         {points.map((item, idx) => (
-          <li key={idx}>• {item}</li>
+          <li key={item}>• {item}</li>
         ))}
       </ul>
 
