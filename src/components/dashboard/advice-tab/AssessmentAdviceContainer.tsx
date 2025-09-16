@@ -18,6 +18,8 @@ import { useAssessmentContext } from "@/providers/AssessmentProvider";
 import useInsightPopup from "@/hooks/useAssessmentInsightPopup";
 import ActionPopup from "@/components/common/buttons/ActionPopup";
 import { t } from "i18next";
+import showToast from "@/utils/toastError";
+import { ICustomError } from "@/utils/CustomError";
 
 const AssessmentAdviceContainer = (props: any) => {
   const { permissions } = useAssessmentContext();
@@ -99,7 +101,9 @@ const AssessmentAdviceContainer = (props: any) => {
       await ApproveAIAdvice.query().then(() => {
         fetchAdviceNarration.query();
       });
-    } catch (e) {}
+    } catch (e) {
+      showToast(e as ICustomError);
+    }
   };
 
   const ApproveAIAdvice = useQuery({
@@ -128,7 +132,7 @@ const AssessmentAdviceContainer = (props: any) => {
     approveAction: approveAdvice,
     approveLoading: ApproveAIAdvice.loading,
     AIEnabled: fetchAdviceNarration.data?.aiEnabled,
-    label: t("common.advice")
+    label: t("common.advice"),
   });
 
   return (

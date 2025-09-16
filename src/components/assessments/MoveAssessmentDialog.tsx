@@ -12,7 +12,6 @@ import { Grid } from "@mui/material";
 import { SpaceField } from "../common/fields/SpaceField";
 import { useServiceContext } from "@/providers/ServiceProvider";
 import { useQuery } from "@/utils/useQuery";
-import { useSearchParams } from "react-router-dom";
 
 interface IAssessmentCEFromDialogProps extends DialogProps {
   onClose: () => void;
@@ -65,7 +64,7 @@ const MoveAssessmentDialog = (props: IAssessmentCEFromDialogProps) => {
 
   const onSubmit = async () => {
     await AssessmentMoveTarget.query();
-    onSubmitForm && onSubmitForm();
+    onSubmitForm?.();
     close();
   };
   return (

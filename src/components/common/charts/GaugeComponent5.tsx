@@ -32,16 +32,8 @@ const GaugeComponent5: React.FC<IDynamicGaugeSVGProps> = ({
   colorPallet,
 }) => {
   const v = clamp15(Math.round(Number(value) || 1));
-  const INDICATOR_D =
-    v === 1
-      ? ARROW_1
-      : v === 2
-        ? ARROW_2
-        : v === 3
-          ? ARROW_3
-          : v === 4
-            ? ARROW_4
-            : ARROW_5;
+  const INDICATOR_MAP = [ARROW_1, ARROW_2, ARROW_3, ARROW_4, ARROW_5] as const;
+  const INDICATOR_D = INDICATOR_MAP[Math.min(Math.max(v, 1), 5) - 1];
 
   return (
     <svg

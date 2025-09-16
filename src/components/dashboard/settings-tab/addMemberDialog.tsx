@@ -24,6 +24,7 @@ import Settings from "@mui/icons-material/Settings";
 import showToast from "@utils/toastError";
 import { CEDialog } from "@/components/common/dialogs/CEDialog";
 import { useTheme } from "@mui/material";
+import { AxiosRequestConfig } from "axios";
 
 export enum EUserInfo {
   "NAME" = "displayName",
@@ -76,18 +77,20 @@ const AddMemberDialog = (props: {
       service.space.getMembers({ spaceId, page: 0, size: 100 }, config),
   });
   const fetchAssessmentMembers = useQuery({
-    service: (args, config) =>
-      service.assessments.member.getUsers(
-        {
-          assessmentId,
-          page: args?.page ?? 0,
-          size: args?.size ?? 10,
-        },
-        config,
-      ),
+    service: (
+      args?: any,
+      config?: AxiosRequestConfig, 
+    ) => {
+      const { page = 0, size = 10 } = args ?? {};
+      return service.assessments.member.getUsers(
+        { assessmentId, page, size },
+        config, 
+      );
+    },
     toastError: false,
     toastErrorOptions: { filterByStatus: [404] },
   });
+  
 
   const addRoleMemberQueryData = useQuery({
     service: (args, config) =>
