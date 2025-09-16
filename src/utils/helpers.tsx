@@ -3,11 +3,16 @@ import { useEffect } from "react";
 export const getBasePath = (path: string): string => {
   const baseRegex = /^(.*\/graphical-report)(?:\/.*)?$/;
   const baseMatch = baseRegex.exec(path);
-  return baseMatch?.[1]
-    ? baseMatch[1] + "/"
-    : path.endsWith("/")
-      ? path
-      : path + "/";
+
+  if (baseMatch?.[1]) {
+    return `${baseMatch[1]}/`;
+  }
+
+  if (path.endsWith("/")) {
+    return path;
+  }
+
+  return `${path}/`;
 };
 
 export const useIntersectOnce = (targetId: string, onHit: () => void) => {
