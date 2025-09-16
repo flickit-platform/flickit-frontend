@@ -113,8 +113,10 @@ const AssessmentCard = ({
           setShow(true);
         }
       }
-      const { answersCount, questionsCount } =
-        await assessmentTotalProgress.query();
+      const result = await assessmentTotalProgress?.query();
+
+      const answersCount = result?.answersCount ?? 0;
+      const questionsCount = result?.questionsCount ?? 0;
       if (questionsCount) {
         setProgressPercent(((answersCount / questionsCount) * 100).toFixed(2));
       }
@@ -176,6 +178,7 @@ const AssessmentCard = ({
           ":hover": { boxShadow: 9 },
         }}
         data-cy="assessment-card"
+        data-testid={"assessment-card"}
       >
         {permissions.canManageSettings && (
           <Actions
