@@ -1,18 +1,11 @@
 import { useReducer, FC, useContext, createContext } from "react";
 import authReducer from "./reducer";
 import { IAuthContext } from "@/types";
+import { defaultUserInfo } from "./actions";
 
 interface IAuthProviderProps {
   children?: JSX.Element | JSX.Element[];
 }
-
-
-export const defaultUserInfo = {
-  displayName: "",
-  id: "",
-  email: "",
-  subscriberHash: "",
-};
 
 const getAccessTokenFormStorage = () => {
   try {
