@@ -33,11 +33,8 @@ const AssessmentReportTitle = (props: any) => {
           alignItems: { xs: "flex-start", md: "flex-end" },
         },
       }}
-      width="100%"
-      textTransform="none"
-      variant="headlineLarge"
-      color="primary"
-      sx={{ ...styles.rtlStyle(rtlLanguage), textAlign: "left", width: "100%" }}
+     size={"large"}
+      sx={{ ...styles.rtlStyle(rtlLanguage), textAlign: "left", width: "100%", textTransform: "none", color: "primary.main" }}
       sup={
         <SupTitleBreadcrumb
           routes={[
