@@ -129,29 +129,34 @@ const AssessmentKitCEFromDialog = (props: IAssessmentKitCEFromDialogProps) => {
     }
     setLoading(true);
     try {
-      const { data: res } =
-        type === "update"
-          ? await service.assessmentKit.info.updateByDSL(
-              { data: formattedData, assessmentKitId: id },
-              { signal: abortController.signal },
-            )
-          : type === "create"
-            ? await service.assessmentKit.dsl.createKitFromDsl(
-                { data: formattedData },
-                { signal: abortController.signal },
-              )
-            : await service.assessmentKit.info.create(
-                { data: formattedData },
-                { signal: abortController.signal },
-              );
+      const opts = { signal: abortController.signal };
+      let requestPromise: Promise<{ data: any }>;
+
+      if (type === "update") {
+        requestPromise = service.assessmentKit.info.updateByDSL(
+          { data: formattedData, assessmentKitId: id },
+          opts,
+        );
+      } else if (type === "create") {
+        requestPromise = service.assessmentKit.dsl.createKitFromDsl(
+          { data: formattedData },
+          opts,
+        );
+      } else {
+        requestPromise = service.assessmentKit.info.create(
+          { data: formattedData },
+          opts,
+        );
+      }
+
+      const { data: res } = await requestPromise;
+
       setLoading(false);
       close();
-      assessmentKits.query({
-        id: expertGroupId,
-        size: 10,
-        page: 1,
-      });
-      shouldView && res?.kitId && navigate(`assessment-kits/${res.kitId}`);
+      assessmentKits.query({ id: expertGroupId, size: 10, page: 1 });
+      if (shouldView && res?.kitId) {
+        navigate(`assessment-kits/${res.kitId}`);
+      }
     } catch (e: any) {
       const err = e as ICustomError;
       showToast(err);
