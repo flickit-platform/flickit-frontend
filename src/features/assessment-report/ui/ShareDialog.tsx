@@ -25,7 +25,7 @@ import {
 } from "@/components/common/dialogs/CEDialog";
 import { InputFieldUC } from "@/components/common/fields/InputField";
 import QueryBatchData from "@/components/common/QueryBatchData";
-import DeleteForeverOutlinedIcon from '@mui/icons-material/DeleteForeverOutlined';
+import DeleteForeverOutlinedIcon from "@mui/icons-material/DeleteForeverOutlined";
 import { IconButton } from "@mui/material";
 
 type ShareDialogProps = {
@@ -60,7 +60,7 @@ export default function ShareDialog({
     handleSelect,
     onInviteSubmit,
     handleCopyClick,
-    deleteUserRoleHandler
+    deleteUserRoleHandler,
   } = useShareDialog({ open, visibility, linkHash });
 
   type AccessOptions = Record<
@@ -81,6 +81,51 @@ export default function ShareDialog({
     }),
     [lng, t],
   );
+
+  const UserSection = (props: any) => {
+    const { invitees, users } = props;
+    return (
+      <Box display="flex" flexDirection="column" my={1} gap={2}>
+        {[...(users ?? []), ...(invitees ?? [])].map((member) => {
+          const { displayName, id, pictureLink, email, deletable } = member;
+          return (
+            <Box
+              key={id}
+              sx={{ ...styles.centerV, justifyContent: "space-between" }}
+            >
+              <Box key={String(id ?? email)} sx={{ ...styles.centerV }} gap={1}>
+                <Avatar
+                  {...stringAvatar((displayName ?? "").toUpperCase())}
+                  src={pictureLink ?? undefined}
+                  sx={{ width: 24, height: 24, fontSize: 12 }}
+                />
+                {email}
+                {(invitees ?? []).includes(member) && (
+                  <Chip
+                    label={t("common.invited", { lng })}
+                    size="small"
+                    sx={{
+                      ".MuiChip-label": {
+                        ...styles.rtlStyle(lng === "fa"),
+                      },
+                    }}
+                  />
+                )}
+              </Box>
+              {deletable && (
+                <IconButton onClick={() => deleteUserRoleHandler(id)}>
+                  <DeleteForeverOutlinedIcon
+                    fontSize={"medium"}
+                    sx={{ color: "background.onVariant" }}
+                  />
+                </IconButton>
+              )}
+            </Box>
+          );
+        })}
+      </Box>
+    );
+  };
 
   const shareSection = () => {
     return isDefault ? (
@@ -171,47 +216,7 @@ export default function ShareDialog({
                 </>
               )}
               render={([graphicalReportUsers]) => (
-                <Box display="flex" flexDirection="column" my={1} gap={2}>
-                  {[
-                    ...(graphicalReportUsers?.users ?? []),
-                    ...(graphicalReportUsers?.invitees ?? []),
-                  ].map((member) => {
-                    const { displayName, id, pictureLink, email, deletable } = member;
-                    return (<Box key={id}  sx={{ ...styles.centerV, justifyContent: "space-between" }}>
-                        <Box
-                          key={String(id ?? email)}
-                          sx={{ ...styles.centerV }}
-                          gap={1}
-                        >
-                          <Avatar
-                            {...stringAvatar((displayName ?? "").toUpperCase())}
-                            src={pictureLink ?? undefined}
-                            sx={{ width: 24, height: 24, fontSize: 12 }}
-                          />
-                          {email}
-                          {(graphicalReportUsers?.invitees ?? []).includes(
-                            member,
-                          ) && (
-                            <Chip
-                              label={t("common.invited", { lng })}
-                              size="small"
-                              sx={{
-                                ".MuiChip-label": {
-                                  ...styles.rtlStyle(lng === "fa"),
-                                },
-                              }}
-                            />
-                          )}
-                        </Box>
-                        {deletable && (
-                          <IconButton onClick={()=>deleteUserRoleHandler(id)} >
-                            <DeleteForeverOutlinedIcon fontSize={"medium"} sx={{color: "background.onVariant" }} />
-                          </IconButton>
-                          )}
-                    </Box>
-                    );
-                  })}
-                </Box>
+                <UserSection {...graphicalReportUsers} />
               )}
             />
           </>
