@@ -8,6 +8,17 @@ declare global {
   namespace Cypress {
     interface Chainable {
       mount: typeof mount;
+      kcLoginUi(opts?: {
+        user?: string;
+        pass?: string;
+        fakePass?: string;
+        kcUrl?: string;
+        visitPath?: string | false;
+        clickAppSignInSelector?: string;
+        errorSelector?: string;
+        afterLoginUrlIncludes?: string | false;
+        onlySuccess?:boolean
+      }): Chainable<void>;
     }
   }
 }

@@ -1,13 +1,14 @@
 import { defineConfig } from "cypress";
 
 export default defineConfig({
+  projectId: 'yi84pu',
   e2e: {
     setupNodeEvents(on, config) {
       // implement node event listeners here
     },
     env: {
-      ROOT: "http://localhost:3000",
+      ROOT: "https://stage.flickit.org",
     },
-    baseUrl: "http://localhost:3000/",
+    baseUrl: "https://stage.flickit.org",
   },
 });
