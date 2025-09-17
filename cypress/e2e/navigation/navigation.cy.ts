@@ -2,11 +2,16 @@
 
 context("Navigation", () => {
   beforeEach(() => {
-    cy.loginByApi();
+    cy.kcLoginUi({
+      visitPath: "http://localhost:3000/",
+      kcUrl: "https://stage.flickit.org/accounts",
+      onlySuccess:true
+    });
   });
 
+
   it("cy.go() - navigate to spaces page", () => {
-    cy.get("[data-cy=nav-bar]").contains("spaces").click();
+    cy.get("[data-cy=spaces]").eq(0).click();
     cy.url().should("include", "/spaces");
   });
 
