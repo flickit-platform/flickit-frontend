@@ -52,7 +52,8 @@ const AdviceSlider = (props: AdviceSliderProps) => {
   const fromIsFa = languageDetector(fromTitle);
   const toIsFa = languageDetector(toTitle);
 
-  const currentPercent = totalLevels > 1 ? (defaultIdx * 99) / (totalLevels - 1) : 0;
+  const currentPercent =
+    totalLevels > 1 ? (defaultIdx * 99) / (totalLevels - 1) : 0;
 
   const handleSliderChange = (_event: Event, newValue: number | number[]) => {
     const next = Array.isArray(newValue) ? newValue[0] : newValue;
@@ -96,7 +97,6 @@ const AdviceSlider = (props: AdviceSliderProps) => {
       textAlign="start"
       sx={{ ...styles.centerH }}
     >
-      {/* عنوان و موضوع */}
       <Box sx={{ ...styles.centerVH }} gap={2} width="35%">
         <Box
           px="10px"
@@ -121,7 +121,6 @@ const AdviceSlider = (props: AdviceSliderProps) => {
         </Typography>
       </Box>
 
-      {/* اسلایدر */}
       <Box width={{ xs: "100%", md: "37%" }} mt={4}>
         <Box px={2}>
           <Slider
@@ -145,7 +144,13 @@ const AdviceSlider = (props: AdviceSliderProps) => {
           marginInlineStart="2%"
           marginInlineEnd="4%"
         >
-          <Box position="relative" left={`${currentPercent}%`}>
+          <Box
+            position="relative"
+            sx={(theme) => ({
+              [theme.direction === "rtl" ? "right" : "left"]:
+                `${currentPercent}%`,
+            })}
+          >
             <svg
               width="20"
               height="9"
@@ -158,23 +163,23 @@ const AdviceSlider = (props: AdviceSliderProps) => {
           </Box>
 
           <Box
-            sx={{
+            sx={(theme) => ({
               position: "relative",
-              left: `${currentPercent}%`,
+              [theme.direction === "rtl" ? "right" : "left"]:
+                `${currentPercent}%`,
               marginInlineStart: "-20px",
               mt: "-5px",
               whiteSpace: "nowrap",
               fontSize: ".75rem",
               fontWeight: 400,
               color: "#F9A03F",
-            }}
+            })}
           >
             <Trans i18nKey="advice.currentStage" />
           </Box>
         </Box>
       </Box>
 
-      {/* From → To */}
       <Box width={{ xs: "90%", sm: "28%" }} mt={1} sx={{ ...styles.centerVH }}>
         <Typography color="background.onVariant" variant="bodySmall">
           <Trans
