@@ -1,5 +1,6 @@
 import { IDynamicGaugeSVGProps } from "@/types/index";
 import "./style.css";
+import uniqueId from "@/utils/uniqueId";
 
 const BASE_PATHS = [
   "M9.67745 155.846C7.57643 156.529 5.31302 155.38 4.70076 153.258C1.25363 141.307 -0.314646 128.893 0.0522005 116.461C0.117358 114.253 2.02412 112.578 4.2289 112.716L26.1855 114.098C28.3903 114.236 30.0558 116.137 30.0152 118.345C29.856 127.002 30.9468 135.636 33.2538 143.981C33.8424 146.11 32.7017 148.365 30.6007 149.048L9.67745 155.846Z",
@@ -49,7 +50,7 @@ const GaugeComponent10: React.FC<IDynamicGaugeSVGProps> = ({
       aria-label={`gauge-${v}`}
     >
       {BASE_PATHS.map((d, i) => (
-        <path key={i} d={d} fill={colorPallet[i]} />
+        <path key={uniqueId()} d={d} fill={colorPallet[i]} />
       ))}
 
       <path d={POINTERS[v]} fill="#2466A8" />

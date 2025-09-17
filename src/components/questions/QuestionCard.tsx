@@ -36,7 +36,6 @@ import { InputFieldUC } from "@common/fields/InputField";
 import setDocumentTitle from "@utils/setDocumentTitle";
 import { t } from "i18next";
 import { useQuery } from "@utils/useQuery";
-import { SubmitOnSelectCheckBox } from "./QuestionContainer";
 import QueryData from "../common/QueryData";
 import languageDetector from "@utils/languageDetector";
 import WarningAmberRoundedIcon from "@mui/icons-material/WarningAmberRounded";
@@ -81,6 +80,7 @@ import { getReadableDate } from "@utils/readableDate";
 import { useAssessmentContext } from "@providers/AssessmentProvider";
 import showToast from "@utils/toastError";
 import uniqueId from "@/utils/uniqueId";
+import useScreenResize from "@/utils/useScreenResize";
 
 interface IQuestionCardProps {
   questionInfo: IQuestionInfo;
@@ -392,16 +392,13 @@ export const QuestionTabsTemplate = (props: any) => {
 
   const toggleTabs = () => {
     setIsExpanded((prev) => !prev);
+
     if (!value) {
-      setValue(
-        counts.evidences
-          ? "evidences"
-          : counts.history
-            ? "history"
-            : counts.comments
-              ? "comments"
-              : "",
-      );
+      const next =
+        (["evidences", "history", "comments"] as const).find(
+          (k) => counts[k],
+        ) ?? "";
+      setValue(next);
     }
   };
 
@@ -2646,5 +2643,49 @@ const FileIcon = (props: any): any => {
         )}
       </Box>
     </Tooltip>
+  );
+};
+
+export const SubmitOnSelectCheckBox = (props: any) => {
+  const { submitOnAnswerSelection } = useQuestionContext();
+  const dispatch = useQuestionDispatch();
+  const isSmallerScreen = useScreenResize("sm");
+
+  return (
+    <FormControlLabel
+      sx={{
+        mr: 0,
+        color: "background.containerLowest",
+        display: props?.disabled ? "none" : "block",
+      }}
+      data-cy="automatic-submit-check"
+      control={
+        <Checkbox
+          checked={submitOnAnswerSelection}
+          sx={{
+            color: "background.containerLowest",
+            "&.Mui-checked": {
+              color: "background.containerLowest",
+            },
+          }}
+          onChange={(e) => {
+            dispatch(
+              questionActions.setSubmitOnAnswerSelection(
+                e.target.checked || false,
+              ),
+            );
+          }}
+        />
+      }
+      label={
+        <Trans
+          i18nKey={
+            isSmallerScreen
+              ? "questions.submitAnswerAutomatically"
+              : "questions.submitAnswerAutomaticallyAndGoToNextQuestion"
+          }
+        />
+      }
+    />
   );
 };

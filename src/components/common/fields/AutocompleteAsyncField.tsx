@@ -484,7 +484,7 @@ const LoadingComponent = ({ options }: { options: readonly any[] }) => {
   );
 };
 
-export const useConnectAutocompleteField = <T extends any = any>(props: {
+export const useConnectAutocompleteField = <T = any>(props: {
   service: TQueryServiceFunction<T>;
   accessor?: string;
 }) => {

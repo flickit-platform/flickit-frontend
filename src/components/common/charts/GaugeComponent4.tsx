@@ -29,8 +29,14 @@ const GaugeComponent4: React.FC<IDynamicGaugeSVGProps> = ({
 }) => {
   const v = clamp14(Math.round(Number(value) || 1));
 
-  const INDICATOR_D =
-    v === 1 ? ARROW_1 : v === 2 ? ARROW_2 : v === 3 ? ARROW_3 : ARROW_4;
+  const INDICATOR_MAP = {
+    1: ARROW_1,
+    2: ARROW_2,
+    3: ARROW_3,
+    4: ARROW_4,
+  } as const;
+
+  const INDICATOR_D = INDICATOR_MAP[v as keyof typeof INDICATOR_MAP] ?? ARROW_4;
 
   return (
     <svg

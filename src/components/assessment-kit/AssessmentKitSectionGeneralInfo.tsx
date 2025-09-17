@@ -153,6 +153,10 @@ const AssessmentKitSectionGeneralInfo = (
     }));
   };
 
+  const tagsAutocompleteProps = useConnectAutocompleteField({
+    service: (args, config) => service.assessmentKit.info.getTags(args, config),
+  });
+
   return (
     <QueryBatchData
       queryBatchData={[
@@ -179,7 +183,7 @@ const AssessmentKitSectionGeneralInfo = (
           mainLanguage,
           metadata,
           translations,
-          languages
+          languages,
         } = info as AssessmentKitInfoType;
         const {
           creationTime,
@@ -265,10 +269,7 @@ const AssessmentKitSectionGeneralInfo = (
                         sx={{ ...styles.centerV }}
                       >
                         <AutocompleteAsyncField
-                          {...useConnectAutocompleteField({
-                            service: (args, config) =>
-                              service.assessmentKit.info.getTags(args, config),
-                          })}
+                          {...tagsAutocompleteProps}
                           name="tags"
                           multiple={true}
                           defaultValue={tags}
@@ -313,7 +314,7 @@ const AssessmentKitSectionGeneralInfo = (
                           >
                             <CancelRoundedIcon
                               sx={{ color: "primary.contrastText" }}
-                              />
+                            />
                           </IconButton>
                         </Box>
                       </Box>

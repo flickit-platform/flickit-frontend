@@ -57,8 +57,10 @@ const AssessmentContainer = () => {
   }
 
   const fetchSpaceInfo = useQuery({
-    service: (args = { spaceId }, config) =>
-      service.space.getById(args, config),
+    service: (args, config) => {
+      const payload = args?.spaceId ? args : { spaceId };
+      return service.space.getById(payload, config);
+    },
     runOnMount: false,
   });
 

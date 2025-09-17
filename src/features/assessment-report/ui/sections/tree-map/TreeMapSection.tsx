@@ -11,7 +11,7 @@ import AIGenerated from "@/components/common/icons/AIGenerated";
 import FlatGauge from "@/components/common/charts/flatGauge/FlatGauge";
 import { IMaturityLevel, IUserPermissions } from "@/types";
 
-type Props = {
+type Props = Readonly<{
   isQuickMode: boolean;
   assessment: any;
   subjects: any[];
@@ -20,7 +20,7 @@ type Props = {
   lng: string;
   rtl?: boolean;
   permissions: IUserPermissions;
-};
+}>;
 
 type AttributeVM = {
   title: string;

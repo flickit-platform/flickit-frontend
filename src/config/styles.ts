@@ -347,7 +347,6 @@ export const maturityLevelTextColorMap: any = {
   ML10: [C0, C1, C2, C3, C4Text, C6Text, C7, C8, C9, C10],
 };
 
-
 export const C1_PREV = "#B71515";
 export const C2_PREV = "#D74427";
 export const C3_PREV = "#F55C3D";
@@ -355,7 +354,14 @@ export const C4_PREV = "#F2995A";
 export const C8_PREV = "#4FB34C";
 export const C10_PREV = "#0A5C25";
 
-export const confidenceColor = [C1_PREV, C2_PREV, C4_PREV, C8_PREV, C10_PREV];
+export const confidenceColor = [
+  C1_PREV,
+  C2_PREV,
+  C4_PREV,
+  C8_PREV,
+  C10_PREV,
+  C10_PREV,
+];
 export const getMaturityLevelColors = (
   maturity_level_number: number,
   bg?: boolean,

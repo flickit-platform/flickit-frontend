@@ -197,8 +197,9 @@ const AdviceListNewForm = ({
                       paddingTop: "0px",
                     },
                   }}
+                  key={item}
                 >
-                  <FormControl key={item} sx={{ width: { xs: "100%" } }}>
+                  <FormControl sx={{ width: { xs: "100%" } }}>
                     <InputLabel id="demo-multiple-name-label">
                       {" "}
                       <Trans i18nKey={`common.${item}`} />
