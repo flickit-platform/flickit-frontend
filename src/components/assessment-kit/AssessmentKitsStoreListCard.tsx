@@ -1,11 +1,11 @@
 import Grid from "@mui/material/Grid";
 import AssessmentKitsStoreCard from "@components/assessment-kit/AssessmentKitsStoreCard";
-import { useQuery } from "@utils/useQuery";
+import { useQuery } from "@/hooks/useQuery";
 import { useServiceContext } from "@/providers/service-provider";
 import QueryData from "@common/QueryData";
-import useDialog from "@utils/useDialog";
+import useDialog from "@/hooks/useDialog";
 import { LoadingSkeleton } from "../common/loadings/LoadingSkeleton";
-import uniqueId from "@/utils/uniqueId";
+import uniqueId from "@/utils/unique-id";
 import { useParams } from "react-router-dom";
 import keycloakService from "@/service/keycloakService";
 import NewAssessmentDialog from "@/components/common/dialogs/NewAssessmentDialog";

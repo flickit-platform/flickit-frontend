@@ -11,7 +11,7 @@ import Chip from "@mui/material/Chip";
 import { styles, generateColorFromString } from "@styles";
 import QuestionAnswer from "@mui/icons-material/QuestionAnswer";
 import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
-import languageDetector from "@/utils/languageDetector";
+import languageDetector from "@/utils/language-detector";
 import { QuestionTabsTemplate } from "@/components/questions/QuestionCard";
 import LoadingButton from "@mui/lab/LoadingButton";
 import { Link } from "react-router-dom";

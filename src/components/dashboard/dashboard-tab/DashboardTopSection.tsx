@@ -6,18 +6,18 @@ import IconButton from "@mui/material/IconButton";
 import { Trans } from "react-i18next";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import Grid from "@mui/material/Grid";
-import uniqueId from "@/utils/uniqueId";
+import uniqueId from "@/utils/unique-id";
 import Tooltip from "@mui/material/Tooltip";
 import { useNavigate, useParams } from "react-router-dom";
 import { styles } from "@styles";
-import { useQuery } from "@utils/useQuery";
+import { useQuery } from "@/hooks/useQuery";
 import { useServiceContext } from "@/providers/service-provider";
-import { ICustomError } from "@utils/CustomError";
+import { ICustomError } from "@/utils/custom-error";
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 import LoadingButton from "@mui/lab/LoadingButton";
 import useCalculate from "@/hooks/useCalculate";
 import { ErrorCodes } from "@/types/index";
-import showToast from "@utils/toastError";
+import showToast from "@/utils/toast-error";
 import { useTheme } from "@mui/material";
 
 const TodoBox = (props: any) => {

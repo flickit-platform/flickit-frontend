@@ -3,11 +3,11 @@ import { Box, Button, Skeleton, useTheme } from "@mui/material";
 import ArrowForwardIosRounded from "@mui/icons-material/ArrowForwardIosRounded";
 import ArrowBackIosRounded from "@mui/icons-material/ArrowBackIosRounded";
 import { useServiceContext } from "@/providers/service-provider";
-import { useQuery } from "@utils/useQuery";
+import { useQuery } from "@/hooks/useQuery";
 import { styles } from "@styles";
 import { useNavigate } from "react-router-dom";
 import i18next from "i18next";
-import uniqueId from "@/utils/uniqueId";
+import uniqueId from "@/utils/unique-id";
 
 interface Banner {
   kitId: number;

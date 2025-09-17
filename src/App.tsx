@@ -1,6 +1,6 @@
 import Routes from "./routes";
 import "@config/i18n";
-import useGetSignedInUserInfo from "./utils/useGetSignedInUserInfo";
+import useGetSignedInUserInfo from "./hooks/useGetSignedInUserInfo";
 import { styles } from "@styles";
 import Box from "@mui/material/Box";
 import ErrorDataLoading from "@common/errors/ErrorDataLoading";

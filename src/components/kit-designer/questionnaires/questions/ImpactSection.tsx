@@ -5,12 +5,12 @@ import { Trans } from "react-i18next";
 import AttributeImpactList from "./ImpactList";
 import ImpactForm from "./ImpactForm";
 import EmptyState from "../../common/EmptyState";
-import { useQuery } from "@/utils/useQuery";
+import { useQuery } from "@/hooks/useQuery";
 import { useServiceContext } from "@/providers/service-provider";
 import { useParams } from "react-router-dom";
-import { ICustomError } from "@/utils/CustomError";
+import { ICustomError } from "@/utils/custom-error";
 import { t } from "i18next";
-import showToast from "@/utils/toastError";
+import showToast from "@/utils/toast-error";
 
 const ImpactSection: React.FC<{ question: any }> = ({ question }) => {
   const { kitVersionId = "" } = useParams();

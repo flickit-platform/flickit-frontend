@@ -14,9 +14,9 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import FilePresentRoundedIcon from "@mui/icons-material/FilePresentRounded";
 import { styles } from "@styles";
 import FileUploadRoundedIcon from "@mui/icons-material/FileUploadRounded";
-import { TQueryServiceFunction, useQuery } from "@utils/useQuery";
+import { TQueryServiceFunction, useQuery } from "@/hooks/useQuery";
 import { t } from "i18next";
-import { ICustomError } from "@utils/CustomError";
+import { ICustomError } from "@/utils/custom-error";
 import {
   Controller,
   ControllerRenderProps,
@@ -24,12 +24,12 @@ import {
   FieldValues,
   useFormContext,
 } from "react-hook-form";
-import formatBytes from "@utils/formatBytes";
-import getFieldError from "@utils/getFieldError";
+import formatBytes from "@/utils/format-bytes";
+import getFieldError from "@/utils/get-field-error";
 import { Trans } from "react-i18next";
-import getFileNameFromSrc from "@utils/getFileNameFromSrc";
+import getFileNameFromSrc from "@/utils/get-file-name-from-src";
 import { useServiceContext } from "@/providers/service-provider";
-import showToast from "@utils/toastError";
+import showToast from "@/utils/toast-error";
 
 const UploadField = (props: any) => {
   const { name, required, defaultValue, ...rest } = props;

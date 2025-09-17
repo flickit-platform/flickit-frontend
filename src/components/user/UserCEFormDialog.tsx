@@ -6,13 +6,13 @@ import { Trans } from "react-i18next";
 import { InputFieldUC } from "@common/fields/InputField";
 import { styles } from "@styles";
 import { useServiceContext } from "@/providers/service-provider";
-import setServerFieldErrors from "@utils/setServerFieldError";
+import setServerFieldErrors from "@/utils/set-server-field-error";
 import AccountBoxRoundedIcon from "@mui/icons-material/AccountBoxRounded";
-import { ICustomError } from "@utils/CustomError";
+import { ICustomError } from "@/utils/custom-error";
 import { CEDialog, CEDialogActions } from "@common/dialogs/CEDialog";
 import FormProviderWithForm from "@common/FormProviderWithForm";
-import languageDetector from "@utils/languageDetector";
-import showToast from "@utils/toastError";
+import languageDetector from "@/utils/language-detector";
+import showToast from "@/utils/toast-error";
 
 interface IUserCEFormDialogProps extends DialogProps {
   onClose: () => void;

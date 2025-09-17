@@ -1,7 +1,7 @@
 import { toast, ToastOptions } from "react-toastify";
 import { AxiosError } from "axios";
 import { ECustomErrorType } from "@/types/index";
-import { ICustomError } from "./CustomError";
+import { ICustomError } from "./custom-error";
 import { t } from "i18next";
 import { ReactNode, isValidElement } from "react";
 

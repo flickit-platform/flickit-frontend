@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import QueryBatchData from "@common/QueryBatchData";
-import { useQuery } from "@utils/useQuery";
+import { useQuery } from "@/hooks/useQuery";
 import { useServiceContext } from "@/providers/service-provider";
 import { useLocation, useParams } from "react-router-dom";
 import LoadingSkeletonOfAssessmentRoles from "@common/loadings/LoadingSkeletonOfAssessmentRoles";
@@ -18,7 +18,7 @@ import KitCustomization from "./KitCustomization";
 import PermissionControl from "@common/PermissionControl";
 import { kitActions, useKitDesignerContext } from "@/providers/kit-provider";
 import { useAssessmentContext } from "@/providers/assessment-provider";
-import { ASSESSMENT_MODE } from "@/utils/enumType";
+import { ASSESSMENT_MODE } from "@/utils/enum-type";
 
 const AssessmentSettingContainer = () => {
   const { service } = useServiceContext();

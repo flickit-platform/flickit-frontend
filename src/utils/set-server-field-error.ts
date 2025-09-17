@@ -1,5 +1,5 @@
 import { FieldErrorData } from "@/types";
-import { ICustomError } from "./CustomError";
+import { ICustomError } from "./custom-error";
 import { UseFormReturn } from "react-hook-form";
 
 const setServerFieldErrors = (e: unknown, formMethods: UseFormReturn<any>) => {

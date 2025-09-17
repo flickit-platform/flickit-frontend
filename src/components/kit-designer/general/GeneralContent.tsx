@@ -8,7 +8,7 @@ import { Trans } from "react-i18next";
 import { useServiceContext } from "@/providers/service-provider";
 import { IKitVersion, ILanguage } from "@/types/index";
 import { useState, useCallback, useMemo } from "react";
-import { useQuery } from "@/utils/useQuery";
+import { useQuery } from "@/hooks/useQuery";
 import QueryData from "@/components/common/QueryData";
 import PermissionControl from "@/components/common/PermissionControl";
 import LanguageSelectorChips from "./components/LanguageSelectorChips";

@@ -3,9 +3,9 @@ import { Trans } from "react-i18next";
 import Box from "@mui/material/Box";
 import Skeleton from "@mui/material/Skeleton";
 import { useParams } from "react-router-dom";
-import { useQuery } from "@utils/useQuery";
+import { useQuery } from "@/hooks/useQuery";
 import { useServiceContext } from "@/providers/service-provider";
-import { AssessmentReportNarrator } from "@/components/dashboard/advice-tab/assessmentReportNarrator";
+import { AssessmentReportNarrator } from "@/components/dashboard/advice-tab/AdviceNarrator";
 import AdviceDialog from "./AdviceDialog";
 import QueryBatchData from "@common/QueryBatchData";
 import AdviceItems from "./advice-items/AdviceItems";
@@ -18,8 +18,8 @@ import { useAssessmentContext } from "@/providers/assessment-provider";
 import useInsightPopup from "@/hooks/useAssessmentInsightPopup";
 import ActionPopup from "@/components/common/buttons/ActionPopup";
 import { t } from "i18next";
-import showToast from "@/utils/toastError";
-import { ICustomError } from "@/utils/CustomError";
+import showToast from "@/utils/toast-error";
+import { ICustomError } from "@/utils/custom-error";
 
 const AssessmentAdviceContainer = (props: any) => {
   const { permissions } = useAssessmentContext();

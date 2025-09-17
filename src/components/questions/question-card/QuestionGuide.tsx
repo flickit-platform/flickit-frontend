@@ -1,4 +1,4 @@
-import languageDetector from "@/utils/languageDetector";
+import languageDetector from "@/utils/language-detector";
 import InfoRounded from "@mui/icons-material/InfoRounded";
 import Collapse from "@mui/material/Collapse";
 import Box from "@mui/material/Box";

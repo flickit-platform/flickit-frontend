@@ -3,7 +3,7 @@ import Box from "@mui/material/Box";
 import Slider from "@mui/material/Slider";
 import { styles } from "@styles";
 import { Trans } from "react-i18next";
-import languageDetector from "@/utils/languageDetector";
+import languageDetector from "@/utils/language-detector";
 import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
 import Typography from "@mui/material/Typography";
 import { v3Tokens } from "@/config/tokens";

@@ -11,7 +11,7 @@ import { getMaturityLevelColors, styles } from "@styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useTheme, Box } from "@mui/material";
 import { v3Tokens } from "@/config/tokens";
-import FlatGaugeComponent from "@common/flatGaugeComponent";
+import FlatGaugeComponent from "@/components/common/FlatGaugeComponent";
 
 interface TreeMapNode {
   name: string;

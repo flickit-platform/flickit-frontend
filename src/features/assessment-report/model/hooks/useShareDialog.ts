@@ -1,10 +1,10 @@
 import { useEffect, useState, useCallback } from "react";
 import { useParams } from "react-router-dom";
 import { useServiceContext } from "@/providers/service-provider";
-import { useQuery } from "@/utils/useQuery";
-import { VISIBILITY } from "@/utils/enumType";
-import { ICustomError } from "@/utils/CustomError";
-import showToast from "@/utils/toastError";
+import { useQuery } from "@/hooks/useQuery";
+import { VISIBILITY } from "@/utils/enum-type";
+import { ICustomError } from "@/utils/custom-error";
+import showToast from "@/utils/toast-error";
 import { getBasePath } from "@/utils/helpers";
 import { TId } from "@/types";
 

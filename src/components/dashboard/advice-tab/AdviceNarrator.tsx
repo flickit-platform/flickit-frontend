@@ -6,7 +6,7 @@ import { useParams } from "react-router-dom";
 import { useEffect, useState, useRef } from "react";
 import { useServiceContext } from "@/providers/service-provider";
 import { EditableRichEditor } from "@/components/common/fields/EditableRichEditor";
-import { getReadableDate } from "@utils/readableDate";
+import { getReadableDate } from "@/utils/readable-date";
 import { styles } from "@styles";
 
 export const AssessmentReportNarrator = ({ fetchAdviceNarration }: any) => {

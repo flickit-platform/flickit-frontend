@@ -5,16 +5,16 @@ import { Trans } from "react-i18next";
 import { styles } from "@styles";
 import { useServiceContext } from "@/providers/service-provider";
 import { FLAGS, TId } from "@/types/index";
-import useMenu from "@utils/useMenu";
-import { useQuery } from "@utils/useQuery";
+import useMenu from "@/hooks/useMenu";
+import { useQuery } from "@/hooks/useQuery";
 import MoreActions from "@common/MoreActions";
 import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
 import { Link, useNavigate } from "react-router-dom";
 import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
 import Tooltip from "@mui/material/Tooltip";
 import LoadingButton from "@mui/lab/LoadingButton";
-import languageDetector from "@/utils/languageDetector";
-import { getReadableDate } from "@utils/readableDate";
+import languageDetector from "@/utils/language-detector";
+import { getReadableDate } from "@/utils/readable-date";
 import flagsmith from "flagsmith";
 interface IAssessmentKitListItemProps {
   data: {

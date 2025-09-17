@@ -4,7 +4,7 @@ import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import QueryBatchData from "@common/QueryBatchData";
 import { useParams } from "react-router-dom";
-import { useQuery } from "@utils/useQuery";
+import { useQuery } from "@/hooks/useQuery";
 import { AssessmentSubjectList } from "./AssessmentSubjectList";
 import { useServiceContext } from "@/providers/service-provider";
 import LoadingSkeletonOfAssessmentReport from "@common/loadings/LoadingSkeletonOfAssessmentReport";
@@ -15,8 +15,8 @@ import PermissionControl from "../../../common/PermissionControl";
 import { t } from "i18next";
 import { Gauge } from "../../../common/charts/Gauge";
 import { Trans } from "react-i18next";
-import { IssuesItem } from "../todoBox";
-import uniqueId from "@/utils/uniqueId";
+import { IssuesItem } from "../DashboardTopSection";
+import uniqueId from "@/utils/unique-id";
 import { LoadingSkeleton } from "../../../common/loadings/LoadingSkeleton";
 
 const AssessmentReportContainer = (props: any) => {

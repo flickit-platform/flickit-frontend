@@ -7,11 +7,11 @@ import TableCell from "@mui/material/TableCell";
 import TableBody from "@mui/material/TableBody";
 import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
-import { ICustomError } from "@/utils/CustomError";
+import { ICustomError } from "@/utils/custom-error";
 import { useServiceContext } from "@/providers/service-provider";
-import languageDetector from "@utils/languageDetector";
+import languageDetector from "@/utils/language-detector";
 import { farsiFontFamily, primaryFontFamily } from "@config/theme";
-import showToast from "@/utils/toastError";
+import showToast from "@/utils/toast-error";
 
 interface CompetencesTableProps {
   data: Array<{ id: number; title: string; competences: any[] }>;

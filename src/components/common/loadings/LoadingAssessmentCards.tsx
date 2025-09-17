@@ -1,4 +1,4 @@
-import uniqueId from "@/utils/uniqueId";
+import uniqueId from "@/utils/unique-id";
 import { Box, Grid, Skeleton } from "@mui/material";
 
 const LoadingAssessmentCards = () => {

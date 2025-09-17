@@ -5,7 +5,7 @@ import ManWithMagnifier from "@/assets/svg/man-with-magnifier.svg";
 import { t } from "i18next";
 import { styles } from "@styles";
 import { useTreeMapSection } from "../../../model/hooks/useTreeMapSection";
-import languageDetector from "@/utils/languageDetector";
+import languageDetector from "@/utils/language-detector";
 import MeasuresTable from "./MeasureTable";
 import AIGenerated from "@/components/common/icons/AIGenerated";
 import FlatGauge from "@/components/common/charts/flat-gauge/FlatGauge";

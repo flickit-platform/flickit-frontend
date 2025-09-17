@@ -4,7 +4,7 @@ import IconButton from "@mui/material/IconButton";
 import CheckCircleOutlineRoundedIcon from "@mui/icons-material/CheckCircleOutlineRounded";
 import CancelRoundedIcon from "@mui/icons-material/CancelRounded";
 import { styles } from "@styles";
-import languageDetector from "@/utils/languageDetector";
+import languageDetector from "@/utils/language-detector";
 
 const InputCustomEditor = (props: any) => {
   const {

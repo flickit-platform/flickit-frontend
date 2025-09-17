@@ -13,15 +13,15 @@ import SuccessCheck from "@/assets/svg/success-check.svg";
 import FailureEmoji from "@/assets/svg/failure-emoji.svg";
 import WarningEmptyState from "@/assets/svg/warning-empty-state.svg";
 import { useServiceContext } from "@/providers/service-provider";
-import { useQuery } from "@/utils/useQuery";
+import { useQuery } from "@/hooks/useQuery";
 import { useQuestionContext } from "@/providers/question-provider";
 import { useQuestionnaire } from "../dashboard/dashboard-tab/questionnaires/QuestionnaireContainer";
 import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
 import { styles } from "@styles";
-import languageDetector from "@/utils/languageDetector";
+import languageDetector from "@/utils/language-detector";
 import { IQuestionnaire } from "@/types";
-import { toCamelCase } from "@/utils/MakeCamelcaseString";
-import { ASSESSMENT_MODE } from "@/utils/enumType";
+import { toCamelCase } from "@/utils/make-camel-case-string";
+import { ASSESSMENT_MODE } from "@/utils/enum-type";
 
 const getQuestionnaireStatus = (
   answered: number,

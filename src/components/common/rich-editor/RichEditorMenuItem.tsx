@@ -1,7 +1,7 @@
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogTitle from "@mui/material/DialogTitle";
-import useDialog from "@utils/useDialog";
+import useDialog from "@/hooks/useDialog";
 import { IDialogProps } from "@/types/index";
 
 export interface IRichEditorMenuItem {

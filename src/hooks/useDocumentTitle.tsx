@@ -1,5 +1,5 @@
 import { useLayoutEffect } from "react";
-import setDocumentTitle from "./setDocumentTitle";
+import setDocumentTitle from "../utils/setDocumentTitle";
 import { useConfigContext } from "@/providers/config-provider";
 
 const useDocumentTitle = (title: string = "") => {

@@ -8,7 +8,7 @@ import Divider from "@mui/material/Divider";
 import Typography from "@mui/material/Typography";
 import TitleWithTranslation from "@/components/common/fields/TranslationText";
 import { useKitDesignerContext } from "@/providers/kit-provider";
-import useDialog from "@/utils/useDialog";
+import useDialog from "@/hooks/useDialog";
 
 const QuestionContain = (props: any) => {
   const { index } = props;

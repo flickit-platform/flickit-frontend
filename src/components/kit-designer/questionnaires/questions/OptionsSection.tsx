@@ -10,14 +10,14 @@ import { Trans } from "react-i18next";
 import OptionList from "./OptionsList";
 import OptionForm from "./OptionForm";
 import { useServiceContext } from "@/providers/service-provider";
-import { useQuery } from "@/utils/useQuery";
-import { ICustomError } from "@/utils/CustomError";
+import { useQuery } from "@/hooks/useQuery";
+import { ICustomError } from "@/utils/custom-error";
 import { dropdownStyle } from "./ImpactForm";
-import languageDetector from "@/utils/languageDetector";
+import languageDetector from "@/utils/language-detector";
 import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
 import EmptyState from "../../common/EmptyState";
 import { t } from "i18next";
-import showToast from "@/utils/toastError";
+import showToast from "@/utils/toast-error";
 import { styles } from "@styles";
 
 const OptionsSection = ({

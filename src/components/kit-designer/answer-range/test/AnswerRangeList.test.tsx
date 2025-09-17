@@ -1,7 +1,7 @@
 import { render, fireEvent, screen } from "@testing-library/react";
 import ListOfItems from "../AnswerRangeList";
 import { vi } from "vitest";
-import OptionContain from "@/components/kit-designer/answer-range/options/optionsContain";
+import OptionContain from "@/components/kit-designer/answer-range/options/OptionsContainer";
 import { ServiceProvider } from "@/providers/service-provider";
 import { KitLanguageProvider } from "@/providers/kit-provider";
 

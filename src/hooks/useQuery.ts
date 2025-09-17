@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import { AxiosRequestConfig, AxiosResponse } from "axios";
-import { ICustomError } from "./CustomError";
-import dataExist from "./dataExist";
-import showToast, { IToastOptions } from "./toastError";
+import { ICustomError } from "../utils/custom-error";
+import dataExist from "../utils/data-exist";
+import showToast, { IToastOptions } from "../utils/toast-error";
 import get from "lodash/get";
 
 export type TQueryServiceFunction<T = any, A = any> = (

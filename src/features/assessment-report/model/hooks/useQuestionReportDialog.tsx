@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useQuery } from "@utils/useQuery";
+import { useQuery } from "@/hooks/useQuery";
 import { useServiceContext } from "@/providers/service-provider";
 import { TId } from "@/types";
 

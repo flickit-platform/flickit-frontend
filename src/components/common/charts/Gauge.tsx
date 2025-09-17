@@ -7,7 +7,7 @@ import SkeletonGauge from "@common/charts/SkeletonGauge";
 import CompletionRing from "@/components/common/charts/completion-ring/CompletionRing";
 import HiddenMaturityLevel from "@/assets/svg/hidden-maturity-level.svg";
 import permissionRequired from "@/assets/svg/permission-required.svg";
-import languageDetector from "@/utils/languageDetector";
+import languageDetector from "@/utils/language-detector";
 import { t } from "i18next";
 import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
 interface IGaugeProps extends BoxProps {

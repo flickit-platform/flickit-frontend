@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import Grid from "@mui/material/Grid";
 import { useParams } from "react-router-dom";
-import { useQuery } from "@utils/useQuery";
+import { useQuery } from "@/hooks/useQuery";
 import { useServiceContext } from "@/providers/service-provider";
 import EmptyAdviceList from "@components/dashboard/advice-tab/advice-items/EmptyAdviceItems";
 import { LoadingSkeletonKitCard } from "@common/loadings/LoadingSkeletonKitCard";
@@ -11,12 +11,12 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Link from "@mui/material/Link";
 import Divider from "@mui/material/Divider";
-import { ICustomError } from "@utils/CustomError";
+import { ICustomError } from "@/utils/custom-error";
 import { styles } from "@styles";
 import { Trans } from "react-i18next";
 import AdviceListNewForm from "./AdviceListNewForm";
 import QueryData from "@/components/common/QueryData";
-import showToast from "@utils/toastError";
+import showToast from "@/utils/toast-error";
 
 const AdviceItems = () => {
   const { service } = useServiceContext();

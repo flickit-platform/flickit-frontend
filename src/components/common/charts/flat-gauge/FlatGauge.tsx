@@ -4,9 +4,9 @@ import { farsiFontFamily, primaryFontFamily } from "@config/theme";
 import Typography from "@mui/material/Typography";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { getMaturityLevelColors, styles } from "@styles";
-import { capitalizeFirstLetter } from "@/utils/filterLetter";
-import languageDetector from "@/utils/languageDetector";
-import FlatGaugeComponent from "@common/flatGaugeComponent";
+import { capitalizeFirstLetter } from "@/utils/filter-letter";
+import languageDetector from "@/utils/language-detector";
+import FlatGaugeComponent from "@/components/common/FlatGaugeComponent";
 import CompletionRing from "@/components/common/charts/completion-ring/CompletionRing";
 import Tooltip from "@mui/material/Tooltip";
 

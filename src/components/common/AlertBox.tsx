@@ -1,6 +1,6 @@
 import Alert, { AlertProps } from "@mui/material/Alert";
 import Box from "@mui/material/Box";
-import useScreenResize from "@utils/useScreenResize";
+import useScreenResize from "@/hooks/useScreenResize";
 
 interface IAlertBox extends AlertProps {}
 

@@ -7,12 +7,12 @@ import { useServiceContext } from "@/providers/service-provider";
 import { styles } from "@styles";
 import { t } from "i18next";
 import { Trans } from "react-i18next";
-import { useQuery } from "@/utils/useQuery";
-import { ICustomError } from "@/utils/CustomError";
+import { useQuery } from "@/hooks/useQuery";
+import { ICustomError } from "@/utils/custom-error";
 import { EditableRichEditor } from "../../../common/fields/EditableRichEditor";
 import ActionPopup from "../../../common/buttons/ActionPopup";
 import useInsightPopup from "@/hooks/useAssessmentInsightPopup";
-import showToast from "@/utils/toastError";
+import showToast from "@/utils/toast-error";
 
 export const AssessmentInsight = ({ defaultInsight, reloadQuery }: any) => {
   const { service } = useServiceContext();

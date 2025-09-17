@@ -18,12 +18,12 @@ import { DeleteConfirmationDialog } from "@common/dialogs/DeleteConfirmationDial
 import Impact from "@common/icons/Impact";
 import AdviceListNewForm from "./AdviceListNewForm";
 import { useParams } from "react-router-dom";
-import { useQuery } from "@utils/useQuery";
+import { useQuery } from "@/hooks/useQuery";
 import { useServiceContext } from "@/providers/service-provider";
-import { ICustomError } from "@utils/CustomError";
-import languageDetector from "@utils/languageDetector";
+import { ICustomError } from "@/utils/custom-error";
+import languageDetector from "@/utils/language-detector";
 import { farsiFontFamily, primaryFontFamily } from "@config/theme";
-import showToast from "@utils/toastError";
+import showToast from "@/utils/toast-error";
 import { useTheme } from "@mui/material";
 import { v3Tokens } from "@/config/tokens";
 import { styles } from "@styles";

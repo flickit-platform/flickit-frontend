@@ -1,7 +1,7 @@
 import { Outlet } from "react-router-dom";
 import QuestionsContainer from "@/components/questions/QuestionsContainer";
 import { QuestionProvider } from "@/providers/question-provider";
-import useDocumentTitle from "@utils/useDocumentTitle";
+import useDocumentTitle from "@/hooks/useDocumentTitle";
 
 const QuestionsScreen = () => {
   useDocumentTitle();

@@ -5,20 +5,20 @@ import Typography from "@mui/material/Typography";
 import PermissionControl from "../../common/PermissionControl";
 import QueryBatchData from "../../common/QueryBatchData";
 import { useServiceContext } from "@/providers/service-provider";
-import { useQuery } from "@/utils/useQuery";
+import { useQuery } from "@/hooks/useQuery";
 import { LoadingSkeleton } from "../../common/loadings/LoadingSkeleton";
 import MaturityLevelForm from "./MaturityLevelForm";
 import MaturityLevelList from "./MaturityLevelList";
 import CompetencesTable from "./CompetencesTable";
 import { Trans } from "react-i18next";
 import { useParams } from "react-router-dom";
-import { ICustomError } from "@/utils/CustomError";
+import { ICustomError } from "@/utils/custom-error";
 import debounce from "lodash/debounce";
 import { LoadingSkeletonKitCard } from "@/components/common/loadings/LoadingSkeletonKitCard";
 import { DeleteConfirmationDialog } from "@common/dialogs/DeleteConfirmationDialog";
 import KitDesignerHeader from "../common/KitHeader";
 import EmptyState from "../common/EmptyState";
-import showToast from "@/utils/toastError";
+import showToast from "@/utils/toast-error";
 
 const MaturityLevelsContent = () => {
   const { service } = useServiceContext();

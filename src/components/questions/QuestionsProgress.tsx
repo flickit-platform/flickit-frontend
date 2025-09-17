@@ -8,9 +8,9 @@ import Typography from "@mui/material/Typography";
 import { QuestionThumb } from "./QuestionThumb";
 import { QuestionPopover } from "./QuestionPopover";
 import Tooltip from "@mui/material/Tooltip";
-import uniqueId from "@/utils/uniqueId";
+import uniqueId from "@/utils/unique-id";
 import usePopover from "@/hooks/usePopover";
-import { ASSESSMENT_MODE } from "@/utils/enumType";
+import { ASSESSMENT_MODE } from "@/utils/enum-type";
 import { useAssessmentContext } from "@/providers/assessment-provider";
 import { EAssessmentStatus } from "@/types";
 

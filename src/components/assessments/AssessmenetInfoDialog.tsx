@@ -8,7 +8,7 @@ import Button from "@mui/material/Button";
 import { DialogProps } from "@mui/material/Dialog";
 import { useTheme } from "@mui/material";
 import { styles } from "@styles";
-import uniqueId from "@/utils/uniqueId";
+import uniqueId from "@/utils/unique-id";
 
 interface IAssessmentCEFromDialogProps extends DialogProps {
   onClose: () => void;

@@ -1,7 +1,7 @@
 import Box from "@mui/material/Box";
 import { useServiceContext } from "@/providers/service-provider";
 import { useParams } from "react-router-dom";
-import { useQuery } from "@utils/useQuery";
+import { useQuery } from "@/hooks/useQuery";
 import QueryBatchData from "@common/QueryBatchData";
 import { Trans } from "react-i18next";
 import SupTitleBreadcrumb from "@common/SupTitleBreadcrumb";

@@ -2,8 +2,8 @@ import Box from "@mui/material/Box";
 import { Trans } from "react-i18next";
 import Typography from "@mui/material/Typography";
 import { useEffect, useState } from "react";
-import { ICustomError } from "@utils/CustomError";
-import { useQuery } from "@utils/useQuery";
+import { ICustomError } from "@/utils/custom-error";
+import { useQuery } from "@/hooks/useQuery";
 import { useServiceContext } from "@/providers/service-provider";
 import { useParams } from "react-router-dom";
 import { styles } from "@styles";
@@ -12,7 +12,7 @@ import { t } from "i18next";
 import useInsightPopup from "@/hooks/useAssessmentInsightPopup";
 import ActionPopup from "@/components/common/buttons/ActionPopup";
 import { EditableRichEditor } from "@/components/common/fields/EditableRichEditor";
-import showToast from "@utils/toastError";
+import showToast from "@/utils/toast-error";
 
 const AttributeInsight = ({
   attributeId,

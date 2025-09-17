@@ -5,9 +5,9 @@ import Navbar from "@common/Navbar";
 import { styles } from "@styles";
 import { useLocation, useParams } from "react-router-dom";
 import FloatButton from "@/components/common/buttons/FloatButton";
-import useDialog from "@utils/useDialog";
+import useDialog from "@/hooks/useDialog";
 import ContactUsDialog from "@/components/common/dialogs/ContactUsDialog";
-import { isPathMatching } from "@/utils/pathMatcher";
+import { isPathMatching } from "@/utils/path-matcher";
 import PendingKitBanner from "@/components/common/dialogs/PendingKitBanner";
 
 const AppLayout = (props: PropsWithChildren<{}>) => {

@@ -4,10 +4,10 @@ import ExpertGroupsItem from "./ExpertGroupsItem";
 import { DeleteConfirmationDialog } from "@common/dialogs/DeleteConfirmationDialog";
 import { t } from "i18next";
 import { useState } from "react";
-import { ICustomError } from "@utils/CustomError";
-import showToast from "@utils/toastError";
+import { ICustomError } from "@/utils/custom-error";
+import showToast from "@/utils/toast-error";
 import { useQueryDataContext } from "@common/QueryData";
-import { useQuery } from "@utils/useQuery";
+import { useQuery } from "@/hooks/useQuery";
 import { useServiceContext } from "@/providers/service-provider";
 import { TId } from "@/types";
 

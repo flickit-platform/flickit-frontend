@@ -3,7 +3,7 @@ import Chip from "@mui/material/Chip";
 import Typography from "@mui/material/Typography";
 import { styles } from "@styles";
 import Box from "@mui/material/Box";
-import uniqueId from "@/utils/uniqueId";
+import uniqueId from "@/utils/unique-id";
 
 interface IInfoItems {
   renderMap?: Record<string, (...args: any) => JSX.Element>;

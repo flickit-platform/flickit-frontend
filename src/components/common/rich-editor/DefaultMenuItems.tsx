@@ -33,7 +33,7 @@ import TableRowDeleteIcon from "@atlaskit/icon/core/table-row-delete";
 import TableCellClearIcon from "@atlaskit/icon/core/table-cell-clear";
 import TableCellMergeIcon from "@atlaskit/icon/core/table-cell-merge";
 import TableCellSplitIcon from "@atlaskit/icon/core/table-cell-split";
-import showToast from "@utils/toastError";
+import showToast from "@/utils/toast-error";
 
 const defaultGetMenuItems = (
   editor: Editor,

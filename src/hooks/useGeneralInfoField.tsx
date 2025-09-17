@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
-import showToast from "@utils/toastError";
-import { useQuery } from "@utils/useQuery";
+import showToast from "@/utils/toast-error";
+import { useQuery } from "@/hooks/useQuery";
 import { useServiceContext } from "@/providers/service-provider";
 import { ILanguage } from "@/types";
 import { kitActions, useKitDesignerContext } from "@/providers/kit-provider";

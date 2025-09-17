@@ -24,7 +24,7 @@ import SidebarQuickMode from "./sections/header/SidebarQuickMode";
 import ContactUsDialog from "@/components/common/dialogs/ContactUsDialog";
 import ReportActionsRow from "./ReportActionsRow";
 import HowIsItMade from "@/features/assessment-report/ui/sections/howIsItMade";
-import { ASSESSMENT_MODE } from "@utils/enumType";
+import { ASSESSMENT_MODE } from "@/utils/enum-type";
 import AIGenerated from "@/components/common/icons/AIGenerated";
 
 export default function AssessmentReportPage() {

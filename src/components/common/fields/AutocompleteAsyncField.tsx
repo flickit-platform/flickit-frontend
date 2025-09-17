@@ -2,31 +2,31 @@ import { ReactNode, useEffect, useMemo, useRef, useState } from "react";
 import Autocomplete, { AutocompleteProps } from "@mui/material/Autocomplete";
 import throttle from "lodash/throttle";
 import TextField from "@mui/material/TextField";
-import { TQueryServiceFunction, useQuery } from "@utils/useQuery";
+import { TQueryServiceFunction, useQuery } from "@/hooks/useQuery";
 import {
   Controller,
   ControllerRenderProps,
   RegisterOptions,
   useFormContext,
 } from "react-hook-form";
-import getFieldError from "@utils/getFieldError";
+import getFieldError from "@/utils/get-field-error";
 import Box from "@mui/material/Box";
 import { LoadingSkeleton } from "../loadings/LoadingSkeleton";
-import forLoopComponent from "@utils/forLoopComponent";
+import forLoopComponent from "@/utils/for-loop-component";
 import ErrorDataLoading from "../errors/ErrorDataLoading";
 import { styles } from "@styles";
 import { SPACE_LEVELS, TQueryProps } from "@/types/index";
 import LoadingButton from "@mui/lab/LoadingButton";
 import { farsiFontFamily, primaryFontFamily } from "@config/theme";
-import uniqueId from "@/utils/uniqueId";
+import uniqueId from "@/utils/unique-id";
 import Chip from "@mui/material/Chip";
 import { t } from "i18next";
 import Typography from "@mui/material/Typography";
 import { Trans } from "react-i18next";
-import languageDetector from "@utils/languageDetector";
+import languageDetector from "@/utils/language-detector";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import ArrowDropDownOutlinedIcon from "@mui/icons-material/ArrowDropDownOutlined";
-import showToast from "@/utils/toastError";
+import showToast from "@/utils/toast-error";
 import { useTheme } from "@mui/material";
 import premiumIcon from "@/assets/svg/premium.svg";
 import HomeIcon from "@mui/icons-material/Home";

@@ -7,14 +7,14 @@ import IconButton from "@mui/material/IconButton";
 import CancelRounded from "@mui/icons-material/CancelRounded";
 import CheckCircleOutlineRounded from "@mui/icons-material/CheckCircleOutlineRounded";
 import EditRounded from "@mui/icons-material/EditRounded";
-import { ICustomError } from "@utils/CustomError";
+import { ICustomError } from "@/utils/custom-error";
 import FormProviderWithForm from "@common/FormProviderWithForm";
 import RichEditorField from "@common/fields/RichEditorField";
 import { farsiFontFamily, primaryFontFamily } from "@config/theme";
 import { Trans, useTranslation } from "react-i18next";
-import languageDetector from "@utils/languageDetector";
+import languageDetector from "@/utils/language-detector";
 import { CEDialog, CEDialogActions } from "../dialogs/CEDialog";
-import showToast from "@/utils/toastError";
+import showToast from "@/utils/toast-error";
 import { useTheme } from "@mui/material";
 import { styles } from "@styles";
 

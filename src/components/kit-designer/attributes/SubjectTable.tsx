@@ -13,7 +13,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import AttributeForm from "./AttributeForm";
 import { Trans } from "react-i18next";
-import languageDetector from "@utils/languageDetector";
+import languageDetector from "@/utils/language-detector";
 import { styles } from "@styles";
 import { farsiFontFamily, primaryFontFamily } from "@config/theme";
 import { useKitDesignerContext } from "@/providers/kit-provider";

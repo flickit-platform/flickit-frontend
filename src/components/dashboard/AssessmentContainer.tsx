@@ -3,14 +3,14 @@ import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import { useServiceContext } from "@/providers/service-provider";
-import DashboardTitle from "@components/dashboard/dashboardContainerTitle";
+import DashboardTitle from "@/components/dashboard/AssessmentTitle";
 import QueryBatchData from "@common/QueryBatchData";
 import LoadingSkeletonOfAssessmentRoles from "@common/loadings/LoadingSkeletonOfAssessmentRoles";
-import { useQuery } from "@utils/useQuery";
+import { useQuery } from "@/hooks/useQuery";
 import { ICustomError, PathInfo } from "@/types/index";
 import { Link, useLocation, useOutlet, useParams } from "react-router-dom";
 import MainTabs from "@/components/dashboard/MainTabs";
-import languageDetector from "@/utils/languageDetector";
+import languageDetector from "@/utils/language-detector";
 import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
 import { styles } from "@styles";
 import { t } from "i18next";
@@ -20,9 +20,9 @@ import {
   assessmentActions,
   useAssessmentContext,
 } from "@/providers/assessment-provider";
-import { ASSESSMENT_MODE } from "@/utils/enumType";
+import { ASSESSMENT_MODE } from "@/utils/enum-type";
 import InputCustomEditor from "../common/fields/InputCustomEditor";
-import showToast from "@/utils/toastError";
+import showToast from "@/utils/toast-error";
 
 const maxLength = 40;
 

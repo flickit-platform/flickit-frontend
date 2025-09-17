@@ -2,7 +2,7 @@ import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import AssessmentCard from "./AssessmentCard";
 import { IAssessment, TId, TQueryFunction } from "@/types/index";
-import { TDialogProps } from "@utils/useDialog";
+import { TDialogProps } from "@/hooks/useDialog";
 interface IAssessmentListProps {
   data: IAssessment[];
   space: any;

@@ -7,8 +7,8 @@ import { InputFieldUC } from "@common/fields/InputField";
 import { CEDialog, CEDialogActions } from "@common/dialogs/CEDialog";
 import FormProviderWithForm from "@common/FormProviderWithForm";
 import { useServiceContext } from "@/providers/service-provider";
-import { ICustomError } from "@utils/CustomError";
-import setServerFieldErrors from "@utils/setServerFieldError";
+import { ICustomError } from "@/utils/custom-error";
+import setServerFieldErrors from "@/utils/set-server-field-error";
 import CreateNewFolderRoundedIcon from "@mui/icons-material/CreateNewFolderRounded";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
@@ -16,13 +16,13 @@ import Box from "@mui/material/Box";
 import { t } from "i18next";
 import Check from "@/components/spaces/icons/check";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
-import { SpaceSmallIcon } from "@common/icons/spaceSmallIcon";
-import UniqueId from "@utils/uniqueId";
+import { SpaceSmallIcon } from "@/components/common/icons/Space";
+import UniqueId from "@/utils/unique-id";
 import {
   assessmentActions,
   useAssessmentContext,
 } from "@/providers/assessment-provider";
-import showToast from "@utils/toastError";
+import showToast from "@/utils/toast-error";
 import { v3Tokens } from "@/config/tokens";
 import { styles } from "@styles";
 

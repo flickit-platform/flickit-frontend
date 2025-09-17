@@ -12,7 +12,7 @@ import { Close } from "@mui/icons-material";
 import { useLocation, useParams } from "react-router-dom";
 import { setSurveyBox, useConfigContext } from "@/providers/config-provider";
 import { authActions, useAuthContext } from "@/providers/auth-provider";
-import { useQuery } from "@utils/useQuery";
+import { useQuery } from "@/hooks/useQuery";
 import { useServiceContext } from "@/providers/service-provider";
 
 const SurveyBoxSection = (props: any) => {

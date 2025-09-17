@@ -8,7 +8,7 @@ import Divider from "@mui/material/Divider";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { t } from "i18next";
 import { ISubject } from "@/types";
-import uniqueId from "@utils/uniqueId";
+import uniqueId from "@/utils/unique-id";
 import { getMaturityLevelColors, styles } from "@styles";
 import { v3Tokens } from "@config/tokens";
 

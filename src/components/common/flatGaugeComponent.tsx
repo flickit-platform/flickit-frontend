@@ -2,7 +2,7 @@ import { useMemo } from "react";
 import { Box, Typography } from "@mui/material";
 import { styles } from "@styles";
 import i18next, { t } from "i18next";
-import uniqueId from "@utils/uniqueId";
+import uniqueId from "@/utils/unique-id";
 import { v3Tokens } from "@/config/tokens";
 
 interface Props {

@@ -1,5 +1,5 @@
 import Box from "@mui/material/Box";
-import useDialog from "@/utils/useDialog";
+import useDialog from "@/hooks/useDialog";
 import { t } from "i18next";
 import { useMediaQuery } from "@mui/material";
 import TeamworkBlocks from "@/assets/svg/teamwork-blocks.svg";

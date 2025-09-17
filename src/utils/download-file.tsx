@@ -1,5 +1,5 @@
-import { ICustomError } from "@utils/CustomError";
-import showToast from "@utils/toastError";
+import { ICustomError } from "@/utils/custom-error";
+import showToast from "@/utils/toast-error";
 
 export const downloadFile = async ({ link }: { link: string }) => {
   try {

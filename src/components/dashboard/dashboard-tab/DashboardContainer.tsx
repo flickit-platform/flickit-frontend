@@ -3,11 +3,11 @@ import StepperSection from "./StepperSection";
 import QueryData from "@/components/common/QueryData";
 import PermissionControl from "@/components/common/PermissionControl";
 import Box from "@mui/material/Box";
-import TodoBox from "./todoBox";
+import TodoBox from "./DashboardTopSection";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useServiceContext } from "@/providers/service-provider";
-import { useQuery } from "@/utils/useQuery";
+import { useQuery } from "@/hooks/useQuery";
 
 const DashboardTab = () => {
   const [activeStep, setActiveStep] = useState(0);

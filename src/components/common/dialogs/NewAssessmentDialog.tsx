@@ -4,15 +4,15 @@ import { useForm } from "react-hook-form";
 import { Trans } from "react-i18next";
 import { styles } from "@styles";
 import { useServiceContext } from "@/providers/service-provider";
-import setServerFieldErrors from "@utils/setServerFieldError";
-import { ICustomError } from "@utils/CustomError";
+import setServerFieldErrors from "@/utils/set-server-field-error";
+import { ICustomError } from "@/utils/custom-error";
 import { useNavigate, useParams } from "react-router-dom";
 import { CEDialog, CEDialogActions } from "@common/dialogs/CEDialog";
 import FormProviderWithForm from "@common/FormProviderWithForm";
 import AutocompleteAsyncField from "@common/fields/AutocompleteAsyncField";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import NewAssessmentIcon from "@/assets/icons/newAssessment";
+import NewAssessmentIcon from "@/components/common/icons/NewAssessment";
 import LanguageIcon from "@mui/icons-material/Language";
 import FolderOutlinedIcon from "@mui/icons-material/FolderOutlined";
 import ErrorOutlinedIcon from "@mui/icons-material/ErrorOutline";
@@ -24,7 +24,7 @@ import {
   useAssessmentContext,
 } from "@/providers/assessment-provider";
 import i18next from "i18next";
-import showToast from "@utils/toastError";
+import showToast from "@/utils/toast-error";
 import { SpaceField } from "../fields/SpaceField";
 
 interface IAssessmentCEFromDialogProps extends DialogProps {

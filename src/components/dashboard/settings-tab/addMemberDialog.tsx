@@ -1,11 +1,11 @@
 import { useEffect, useRef, useState } from "react";
 import { useServiceContext } from "@/providers/service-provider";
 import { useParams } from "react-router-dom";
-import { useQuery } from "@utils/useQuery";
+import { useQuery } from "@/hooks/useQuery";
 import Typography from "@mui/material/Typography";
 import FormControl from "@mui/material/FormControl";
-import { ICustomError } from "@utils/CustomError";
-import { SelectHeight } from "@utils/selectHeight";
+import { ICustomError } from "@/utils/custom-error";
+import { SelectHeight } from "@/utils/select-height";
 import Box from "@mui/material/Box";
 import { Trans } from "react-i18next";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
@@ -19,9 +19,9 @@ import AutocompleteAsyncField, {
   useConnectAutocompleteField,
 } from "@common/fields/AutocompleteAsyncField";
 import LoadingButton from "@mui/lab/LoadingButton";
-import useScreenResize from "@/utils/useScreenResize";
+import useScreenResize from "@/hooks/useScreenResize";
 import Settings from "@mui/icons-material/Settings";
-import showToast from "@utils/toastError";
+import showToast from "@/utils/toast-error";
 import { CEDialog } from "@/components/common/dialogs/CEDialog";
 import { useTheme } from "@mui/material";
 import { AxiosRequestConfig } from "axios";

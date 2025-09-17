@@ -11,7 +11,7 @@ import DriveFileMoveOutlinedIcon from "@mui/icons-material/DriveFileMoveOutlined
 import { Grid } from "@mui/material";
 import { SpaceField } from "../common/fields/SpaceField";
 import { useServiceContext } from "@/providers/service-provider";
-import { useQuery } from "@/utils/useQuery";
+import { useQuery } from "@/hooks/useQuery";
 
 interface IAssessmentCEFromDialogProps extends DialogProps {
   onClose: () => void;

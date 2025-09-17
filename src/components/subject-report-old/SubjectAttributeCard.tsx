@@ -10,10 +10,10 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import Divider from "@mui/material/Divider";
 import { farsiFontFamily, primaryFontFamily } from "@config/theme";
 import { useEffect, useState } from "react";
-import { useQuery } from "@utils/useQuery";
+import { useQuery } from "@/hooks/useQuery";
 import { useParams } from "react-router-dom";
 import { useServiceContext } from "@/providers/service-provider";
-import languageDetector from "@utils/languageDetector";
+import languageDetector from "@/utils/language-detector";
 import FlatGauge from "@/components/common/charts/flat-gauge/FlatGauge";
 import WorkspacePremiumIcon from "@mui/icons-material/WorkspacePremium";
 import DoneIcon from "@mui/icons-material/Done";
@@ -23,7 +23,7 @@ import MaturityLevelTable, {
   ItemServerFieldsColumnMapping,
 } from "./MaturityLevelTable";
 import TableSkeleton from "../common/loadings/TableSkeleton";
-import uniqueId from "@/utils/uniqueId";
+import uniqueId from "@/utils/unique-id";
 import QueryBatchData from "../common/QueryBatchData";
 import { useAssessmentContext } from "@/providers/assessment-provider";
 import AttributeInsight from "./AttributeInsight";

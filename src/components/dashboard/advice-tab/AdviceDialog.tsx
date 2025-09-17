@@ -10,13 +10,13 @@ import { styles } from "@/config/styles";
 import Setting from "@/assets/svg/setting.svg";
 import AdviceSlider from "@/components/common/AdviceSlider";
 import { useEffect, useState } from "react";
-import { ICustomError } from "@/utils/CustomError";
-import { useQuery } from "@/utils/useQuery";
+import { ICustomError } from "@/utils/custom-error";
+import { useQuery } from "@/hooks/useQuery";
 import { useServiceContext } from "@/providers/service-provider";
 import { useParams } from "react-router-dom";
 import AdviceQuestionTable from "./AdviceQuestionTable";
 import { LoadingSkeletonKitCard } from "@/components/common/loadings/LoadingSkeletonKitCard";
-import showToast from "@/utils/toastError";
+import showToast from "@/utils/toast-error";
 import { IconButton } from "@mui/material";
 import { Close } from "@mui/icons-material";
 

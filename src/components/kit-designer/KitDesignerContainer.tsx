@@ -4,7 +4,7 @@ import { Trans } from "react-i18next";
 import { useParams } from "react-router-dom";
 
 import KitDesignerTitle from "./KitDesignerContainerTitle";
-import MaturityLevelsContent from "./maturityLevels/MaturityLevelsContent";
+import MaturityLevelsContent from "./maturity-levels/MaturityLevelsContent";
 import SubjectsContent from "./subjects/SubjectsContent";
 import AttributesContent from "./attributes/AttributeContent";
 import AnaweRangeContent from "./answer-range/AnswerRangeContent";
@@ -15,7 +15,7 @@ import GeneralContent from "./general/GeneralContent";
 
 import QueryBatchData from "../common/QueryBatchData";
 import { useServiceContext } from "@/providers/service-provider";
-import { useQuery } from "@/utils/useQuery";
+import { useQuery } from "@/hooks/useQuery";
 import { IKitVersion, ILanguage } from "@/types";
 import { useKitDesignerContext, kitActions } from "@/providers/kit-provider";
 

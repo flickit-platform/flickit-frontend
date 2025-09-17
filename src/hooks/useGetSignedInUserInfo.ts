@@ -1,11 +1,11 @@
 import axios from "axios";
-import { ICustomError } from "./CustomError";
+import { ICustomError } from "../utils/custom-error";
 import { useEffect, useRef, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { useServiceContext } from "@/providers/service-provider";
 import { authActions, useAuthContext } from "@/providers/auth-provider";
 import keycloakService from "@/service//keycloakService";
-import showToast from "@utils/toastError";
+import showToast from "@/utils/toast-error";
 /**
  * Checks if any token is available and then checks if the user with the founded token is still authenticated or not.
  *

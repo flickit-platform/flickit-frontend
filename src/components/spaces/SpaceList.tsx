@@ -6,15 +6,15 @@ import Box from "@mui/material/Box";
 import { Trans } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { useServiceContext } from "@/providers/service-provider";
-import { useQuery } from "@utils/useQuery";
+import { useQuery } from "@/hooks/useQuery";
 import SettingsIcon from "@mui/icons-material/Settings";
 import ExitToAppRoundedIcon from "@mui/icons-material/ExitToAppRounded";
-import useMenu from "@utils/useMenu";
-import { ICustomError } from "@utils/CustomError";
-import toastError from "@utils/toastError";
+import useMenu from "@/hooks/useMenu";
+import { ICustomError } from "@/utils/custom-error";
+import toastError from "@/utils/toast-error";
 import MoreActions from "@common/MoreActions";
 import { styles } from "@styles";
-import { TDialogProps } from "@utils/useDialog";
+import { TDialogProps } from "@/hooks/useDialog";
 import {
   ISpaceModel,
   ISpacesModel,
@@ -23,7 +23,7 @@ import {
 } from "@/types/index";
 import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
 import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
-import languageDetector from "@/utils/languageDetector";
+import languageDetector from "@/utils/language-detector";
 import premium from "@/assets/svg/premium.svg";
 import i18next, { t } from "i18next";
 import Grid from "@mui/material/Grid";
