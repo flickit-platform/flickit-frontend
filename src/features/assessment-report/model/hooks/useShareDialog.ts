@@ -60,6 +60,15 @@ export function useShareDialog({
     runOnMount: false,
   });
 
+  const RemoveMembersInvitees = useQuery({
+    service: (args, config) =>
+      service.assessments.member.removeInvitee(
+        args ?? { invitedId: "" },
+        config,
+      ),
+    runOnMount: false,
+  });
+
   const PublishReportStatus = useQuery<UpdateVisibilityResponse>({
     service: (args, config) =>
       service.assessments.report.updateVisibilityStatus(args, config),
@@ -140,6 +149,7 @@ export function useShareDialog({
 
   const deleteUserRoleHandler = async (id: TId) =>{
     await deleteUserRole.query(id)
+    // await RemoveMembersInvitees.query({ invitedId });
     await fetchGraphicalReportUsers.query();
   }
 
