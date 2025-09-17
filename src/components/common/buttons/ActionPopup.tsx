@@ -198,8 +198,8 @@ const ConfirmDialog = ({
     <Typography
       color={colorScheme.main}
       textAlign="justify"
-      variant="bodySmall"
       mb={1}
+      sx={(theme) => ({ ...theme.typography.bodySmall })}
     >
       {texts.confirmMessage}
     </Typography>
