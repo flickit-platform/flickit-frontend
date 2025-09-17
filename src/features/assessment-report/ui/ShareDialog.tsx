@@ -26,8 +26,7 @@ import {
 import { InputFieldUC } from "@/components/common/fields/InputField";
 import QueryBatchData from "@/components/common/QueryBatchData";
 import DeleteForeverOutlinedIcon from "@mui/icons-material/DeleteForeverOutlined";
-import { Button, IconButton } from "@mui/material";
-import Tooltip from "@mui/material/Tooltip";
+import { IconButton } from "@mui/material";
 
 type ShareDialogProps = {
   open: boolean;
