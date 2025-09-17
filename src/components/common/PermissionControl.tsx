@@ -2,7 +2,7 @@ import { PropsWithChildren } from "react";
 import { ECustomErrorType } from "@/types/index";
 import { ICustomError } from "@utils/CustomError";
 import { ErrorNotFoundOrAccessDenied } from "./errors/ErrorNotFoundOrAccessDenied";
-import { useConfigContext } from "@/providers/ConfgProvider";
+import { useConfigContext } from "@/providers/config-provider";
 import keycloakService from "@/service/keycloakService";
 
 const PermissionControl = (props: PropsWithChildren<any>) => {

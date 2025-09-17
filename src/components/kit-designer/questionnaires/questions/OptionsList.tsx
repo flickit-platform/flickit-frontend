@@ -15,7 +15,7 @@ import { Trans } from "react-i18next";
 import { t } from "i18next";
 import OptionForm from "./OptionForm";
 import Add from "@mui/icons-material/Add";
-import { useKitDesignerContext } from "@providers/KitProvider";
+import { useKitDesignerContext } from "@/providers/kit-provider";
 import TitleWithTranslation from "@/components/common/fields/TranslationText";
 
 interface OptionListProps {

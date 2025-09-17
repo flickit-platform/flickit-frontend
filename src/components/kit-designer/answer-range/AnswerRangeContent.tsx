@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import Box from "@mui/material/Box";
 import Divider from "@mui/material/Divider";
 import PermissionControl from "../../common/PermissionControl";
-import { useServiceContext } from "@/providers/ServiceProvider";
+import { useServiceContext } from "@/providers/service-provider";
 import { useQuery } from "@/utils/useQuery";
 import ListOfItems from "./AnswerRangeList";
 import EmptyState from "../common/EmptyState";

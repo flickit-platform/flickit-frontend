@@ -10,7 +10,7 @@ import Typography from "@mui/material/Typography";
 import DriveFileMoveOutlinedIcon from "@mui/icons-material/DriveFileMoveOutlined";
 import { Grid } from "@mui/material";
 import { SpaceField } from "../common/fields/SpaceField";
-import { useServiceContext } from "@/providers/ServiceProvider";
+import { useServiceContext } from "@/providers/service-provider";
 import { useQuery } from "@/utils/useQuery";
 
 interface IAssessmentCEFromDialogProps extends DialogProps {

@@ -4,7 +4,7 @@ import { describe, it, vi, expect } from "vitest";
 import { I18nextProvider } from "react-i18next";
 import i18n from "i18next";
 import userEvent from "@testing-library/user-event";
-import { KitLanguageProvider } from "@/providers/KitProvider";
+import { KitLanguageProvider } from "@/providers/kit-provider";
 
 describe("MaturityLevelForm", () => {
   const newMaturityLevel = {

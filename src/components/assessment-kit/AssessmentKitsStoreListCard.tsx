@@ -1,7 +1,7 @@
 import Grid from "@mui/material/Grid";
 import AssessmentKitsStoreCard from "@components/assessment-kit/AssessmentKitsStoreCard";
 import { useQuery } from "@utils/useQuery";
-import { useServiceContext } from "@providers/ServiceProvider";
+import { useServiceContext } from "@/providers/service-provider";
 import QueryData from "@common/QueryData";
 import useDialog from "@utils/useDialog";
 import { LoadingSkeleton } from "../common/loadings/LoadingSkeleton";

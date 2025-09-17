@@ -6,7 +6,7 @@ import QueryBatchData from "@common/QueryBatchData";
 import { useParams } from "react-router-dom";
 import { useQuery } from "@utils/useQuery";
 import { AssessmentSubjectList } from "./AssessmentSubjectList";
-import { useServiceContext } from "@providers/ServiceProvider";
+import { useServiceContext } from "@/providers/service-provider";
 import LoadingSkeletonOfAssessmentReport from "@common/loadings/LoadingSkeletonOfAssessmentReport";
 import { RolesType } from "@/types/index";
 import { styles } from "@styles";

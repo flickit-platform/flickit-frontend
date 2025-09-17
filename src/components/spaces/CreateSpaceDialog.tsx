@@ -6,7 +6,7 @@ import { Trans } from "react-i18next";
 import { InputFieldUC } from "@common/fields/InputField";
 import { CEDialog, CEDialogActions } from "@common/dialogs/CEDialog";
 import FormProviderWithForm from "@common/FormProviderWithForm";
-import { useServiceContext } from "@providers/ServiceProvider";
+import { useServiceContext } from "@/providers/service-provider";
 import { ICustomError } from "@utils/CustomError";
 import setServerFieldErrors from "@utils/setServerFieldError";
 import CreateNewFolderRoundedIcon from "@mui/icons-material/CreateNewFolderRounded";
@@ -14,14 +14,14 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import { t } from "i18next";
-import Check from "@components/spaces/Icons/check";
+import Check from "@/components/spaces/icons/check";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import { SpaceSmallIcon } from "@common/icons/spaceSmallIcon";
 import UniqueId from "@utils/uniqueId";
 import {
   assessmentActions,
   useAssessmentContext,
-} from "@/providers/AssessmentProvider";
+} from "@/providers/assessment-provider";
 import showToast from "@utils/toastError";
 import { v3Tokens } from "@/config/tokens";
 import { styles } from "@styles";

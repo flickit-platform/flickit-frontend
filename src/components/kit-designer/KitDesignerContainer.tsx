@@ -7,17 +7,17 @@ import KitDesignerTitle from "./KitDesignerContainerTitle";
 import MaturityLevelsContent from "./maturityLevels/MaturityLevelsContent";
 import SubjectsContent from "./subjects/SubjectsContent";
 import AttributesContent from "./attributes/AttributeContent";
-import AnaweRangeContent from "./answerRange/AnswerRangeContent";
+import AnaweRangeContent from "./answer-range/AnswerRangeContent";
 import MeasuresContent from "./measures/MeasuresContent";
 import QuestionnairesContent from "./questionnaires/QuestionnairesContent";
 import PublishContent from "./publish/PublishContent";
 import GeneralContent from "./general/GeneralContent";
 
 import QueryBatchData from "../common/QueryBatchData";
-import { useServiceContext } from "@/providers/ServiceProvider";
+import { useServiceContext } from "@/providers/service-provider";
 import { useQuery } from "@/utils/useQuery";
 import { IKitVersion, ILanguage } from "@/types";
-import { useKitDesignerContext, kitActions } from "@/providers/KitProvider";
+import { useKitDesignerContext, kitActions } from "@/providers/kit-provider";
 
 const tabMap = [
   { key: "General", title: "common.general", Component: GeneralContent },

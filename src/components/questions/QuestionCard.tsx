@@ -12,7 +12,7 @@ import {
   questionActions,
   useQuestionContext,
   useQuestionDispatch,
-} from "@/providers/QuestionProvider";
+} from "@/providers/question-provider";
 import {
   EAssessmentStatus,
   IAnswerHistory,
@@ -25,7 +25,7 @@ import {
 import { Trans } from "react-i18next";
 import TabPanel from "@mui/lab/TabPanel";
 import LoadingButton from "@mui/lab/LoadingButton";
-import { useServiceContext } from "@providers/ServiceProvider";
+import { useServiceContext } from "@/providers/service-provider";
 import { ICustomError } from "@utils/CustomError";
 import useDialog from "@utils/useDialog";
 import Divider from "@mui/material/Divider";
@@ -50,13 +50,13 @@ import Tab from "@mui/material/Tab";
 import TabContext from "@mui/lab/TabContext";
 import TabList from "@mui/lab/TabList";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
-import { useConfigContext } from "@/providers/ConfgProvider";
+import { useConfigContext } from "@/providers/config-provider";
 import DoneIcon from "@mui/icons-material/Done";
 import ClearIcon from "@mui/icons-material/Clear";
 import { useTheme } from "@mui/material/styles";
 import arrowBtn from "../../assets/svg/arrow.svg";
-import PreAttachment from "@components/questions/iconFiles/preAttachments";
-import FileSvg from "@components/questions/iconFiles/fileSvg";
+import PreAttachment from "@/components/questions/icon-files/preAttachments";
+import FileSvg from "@/components/questions/icon-files/fileSvg";
 import Tooltip from "@mui/material/Tooltip";
 import Skeleton from "@mui/material/Skeleton";
 import { farsiFontFamily, primaryFontFamily } from "@config/theme";
@@ -72,12 +72,12 @@ import ExpandMore from "@mui/icons-material/ExpandMore";
 import EmptyState from "../kit-designer/common/EmptyState";
 import convertLinksToClickable from "@utils/convertTextToClickableLink";
 import { DeleteConfirmationDialog } from "../common/dialogs/DeleteConfirmationDialog";
-import { QuestionGuide } from "./QuestionCard/QuestionGuide";
-import { EvidenceAttachmentsDialogs } from "./QuestionCard/EvidenceAttachmentsDialogs";
+import { QuestionGuide } from "./question-card/QuestionGuide";
+import { EvidenceAttachmentsDialogs } from "./question-card/EvidenceAttachmentsDialogs";
 import Stack from "@mui/material/Stack";
 import Pagination from "@mui/material/Pagination";
 import { getReadableDate } from "@utils/readableDate";
-import { useAssessmentContext } from "@providers/AssessmentProvider";
+import { useAssessmentContext } from "@/providers/assessment-provider";
 import showToast from "@utils/toastError";
 import uniqueId from "@/utils/uniqueId";
 import useScreenResize from "@/utils/useScreenResize";

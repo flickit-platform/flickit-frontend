@@ -1,8 +1,8 @@
 import { describe, it, vi, expect } from "vitest";
 import { fireEvent, render, screen } from "@testing-library/react";
-import QuestionDetailsContainer from "@components/subject-report-old/questionDetails-dialog/QuestionDetailsContainer";
+import QuestionDetailsContainer from "@/components/subject-report-old/question-details/QuestionDetailsContainer";
 import { BrowserRouter } from "react-router-dom";
-import { ServiceProvider } from "@providers/ServiceProvider";
+import { ServiceProvider } from "@/providers/service-provider";
 
 describe("open detail dialog test", () => {
   const data = {

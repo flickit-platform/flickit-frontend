@@ -2,7 +2,7 @@ import { useCallback } from "react";
 import Typography from "@mui/material/Typography";
 import { t } from "i18next";
 import { styles } from "@styles";
-import { useConfigContext } from "@/providers/ConfgProvider";
+import { useConfigContext } from "@/providers/config-provider";
 import FaWandMagicSparkles from "@/components/common/icons/FaWandMagicSparkles";
 import { useTheme } from "@mui/material";
 

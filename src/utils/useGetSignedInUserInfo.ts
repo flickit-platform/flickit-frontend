@@ -2,8 +2,8 @@ import axios from "axios";
 import { ICustomError } from "./CustomError";
 import { useEffect, useRef, useState } from "react";
 import { useLocation } from "react-router-dom";
-import { useServiceContext } from "@providers/ServiceProvider";
-import { authActions, useAuthContext } from "@providers/AuthProvider";
+import { useServiceContext } from "@/providers/service-provider";
+import { authActions, useAuthContext } from "@/providers/auth-provider";
 import keycloakService from "@/service//keycloakService";
 import showToast from "@utils/toastError";
 /**

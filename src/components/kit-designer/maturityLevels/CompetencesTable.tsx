@@ -8,7 +8,7 @@ import TableBody from "@mui/material/TableBody";
 import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
 import { ICustomError } from "@/utils/CustomError";
-import { useServiceContext } from "@/providers/ServiceProvider";
+import { useServiceContext } from "@/providers/service-provider";
 import languageDetector from "@utils/languageDetector";
 import { farsiFontFamily, primaryFontFamily } from "@config/theme";
 import showToast from "@/utils/toastError";

@@ -5,7 +5,7 @@ import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import { Trans } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-import { useServiceContext } from "@providers/ServiceProvider";
+import { useServiceContext } from "@/providers/service-provider";
 import { useQuery } from "@utils/useQuery";
 import SettingsIcon from "@mui/icons-material/Settings";
 import ExitToAppRoundedIcon from "@mui/icons-material/ExitToAppRounded";

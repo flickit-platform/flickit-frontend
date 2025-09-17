@@ -7,7 +7,7 @@ import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import { Trans } from "react-i18next";
 import { styles } from "@/config/styles";
 import MultiLangTextField from "@/components/common/fields/MultiLangTextField";
-import { useKitDesignerContext } from "@/providers/KitProvider";
+import { useKitDesignerContext } from "@/providers/kit-provider";
 import { useTranslationUpdater } from "@/hooks/useTranslationUpdater";
 
 interface MaturityLevelFormProps {

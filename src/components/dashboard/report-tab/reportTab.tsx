@@ -6,7 +6,7 @@ import { Trans } from "react-i18next";
 import { Link, useParams } from "react-router-dom";
 import { t } from "i18next";
 import { useQuery } from "@utils/useQuery";
-import { useServiceContext } from "@providers/ServiceProvider";
+import { useServiceContext } from "@/providers/service-provider";
 import QueryData from "@common/QueryData";
 import uniqueId from "@/utils/uniqueId";
 import { LoadingSkeleton } from "@common/loadings/LoadingSkeleton";

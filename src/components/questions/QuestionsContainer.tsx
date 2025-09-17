@@ -4,8 +4,8 @@ import { useNavigate, useParams } from "react-router-dom";
 import {
   questionActions,
   useQuestionDispatch,
-} from "@/providers/QuestionProvider";
-import { useServiceContext } from "@providers/ServiceProvider";
+} from "@/providers/question-provider";
+import { useServiceContext } from "@/providers/service-provider";
 import { useQuery } from "@utils/useQuery";
 import LoadingSkeletonOfQuestions from "@common/loadings/LoadingSkeletonOfQuestions";
 import QuestionsTitle from "./QuestionsTitle";

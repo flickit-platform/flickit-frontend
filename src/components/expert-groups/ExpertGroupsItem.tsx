@@ -12,7 +12,7 @@ import { styles } from "@styles";
 import useMenu from "@utils/useMenu";
 import MoreActions from "@common/MoreActions";
 import { useQueryDataContext } from "@common/QueryData";
-import { useServiceContext } from "@providers/ServiceProvider";
+import { useServiceContext } from "@/providers/service-provider";
 import { useQuery } from "@utils/useQuery";
 import { Trans } from "react-i18next";
 import useDialog from "@utils/useDialog";

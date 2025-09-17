@@ -6,7 +6,7 @@ import { farsiFontFamily, primaryFontFamily } from "@config/theme";
 import Typography from "@mui/material/Typography";
 import { Trans } from "react-i18next";
 import { Link, NavLink, useParams } from "react-router-dom";
-import { useServiceContext } from "@/providers/ServiceProvider";
+import { useServiceContext } from "@/providers/service-provider";
 import { useQuery } from "@/utils/useQuery";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { LoadingSkeleton } from "../common/loadings/LoadingSkeleton";
@@ -15,7 +15,7 @@ import {
   assessmentActions,
   useAssessmentContext,
   useAssessmentDispatch,
-} from "@/providers/AssessmentProvider";
+} from "@/providers/assessment-provider";
 import { ASSESSMENT_MODE } from "@utils/enumType";
 import { styles } from "@styles";
 import { Button, ListItemText, Menu, MenuItem, useTheme } from "@mui/material";

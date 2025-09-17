@@ -16,7 +16,7 @@ import { farsiFontFamily, primaryFontFamily } from "@config/theme";
 import languageDetector from "@utils/languageDetector";
 import MultiLangTextField from "@common/fields/MultiLangTextField";
 import { useTranslationUpdater } from "@/hooks/useTranslationUpdater";
-import { useKitDesignerContext } from "@/providers/KitProvider";
+import { useKitDesignerContext } from "@/providers/kit-provider";
 import TitleWithTranslation from "@/components/common/fields/TranslationText";
 
 interface ListOfItemsProps {

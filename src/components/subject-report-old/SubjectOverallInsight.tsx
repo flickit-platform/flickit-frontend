@@ -4,7 +4,7 @@ import Typography from "@mui/material/Typography";
 import { useEffect, useRef, useState } from "react";
 import { ICustomError } from "@utils/CustomError";
 import { useQuery } from "@utils/useQuery";
-import { useServiceContext } from "@providers/ServiceProvider";
+import { useServiceContext } from "@/providers/service-provider";
 import { useParams } from "react-router-dom";
 import { styles } from "@styles";
 import CircularProgress from "@mui/material/CircularProgress";

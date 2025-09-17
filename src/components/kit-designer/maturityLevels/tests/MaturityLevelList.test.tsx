@@ -3,7 +3,7 @@ import MaturityLevelList from "../MaturityLevelList";
 import { IMaturityLevel } from "@/types/index";
 import { vi } from "vitest";
 import { DeleteConfirmationDialog } from "@common/dialogs/DeleteConfirmationDialog";
-import { KitLanguageProvider } from "@/providers/KitProvider";
+import { KitLanguageProvider } from "@/providers/kit-provider";
 
 // Mock data for maturity levels
 const mockMaturityLevels: IMaturityLevel[] = [

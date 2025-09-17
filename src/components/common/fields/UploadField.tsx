@@ -28,7 +28,7 @@ import formatBytes from "@utils/formatBytes";
 import getFieldError from "@utils/getFieldError";
 import { Trans } from "react-i18next";
 import getFileNameFromSrc from "@utils/getFileNameFromSrc";
-import { useServiceContext } from "@/providers/ServiceProvider";
+import { useServiceContext } from "@/providers/service-provider";
 import showToast from "@utils/toastError";
 
 const UploadField = (props: any) => {

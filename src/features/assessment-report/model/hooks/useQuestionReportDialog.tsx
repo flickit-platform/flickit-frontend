@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useQuery } from "@utils/useQuery";
-import { useServiceContext } from "@providers/ServiceProvider";
+import { useServiceContext } from "@/providers/service-provider";
 import { TId } from "@/types";
 
 export function useQuestionReportDialog(measureId: TId, attributeId: TId, assessmentId: TId) {

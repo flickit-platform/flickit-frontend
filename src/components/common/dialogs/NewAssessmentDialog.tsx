@@ -3,7 +3,7 @@ import { DialogProps } from "@mui/material/Dialog";
 import { useForm } from "react-hook-form";
 import { Trans } from "react-i18next";
 import { styles } from "@styles";
-import { useServiceContext } from "@providers/ServiceProvider";
+import { useServiceContext } from "@/providers/service-provider";
 import setServerFieldErrors from "@utils/setServerFieldError";
 import { ICustomError } from "@utils/CustomError";
 import { useNavigate, useParams } from "react-router-dom";
@@ -22,7 +22,7 @@ import AssessmentErrorIcon from "@/assets/svg/assessment-error.svg";
 import {
   assessmentActions,
   useAssessmentContext,
-} from "@/providers/AssessmentProvider";
+} from "@/providers/assessment-provider";
 import i18next from "i18next";
 import showToast from "@utils/toastError";
 import { SpaceField } from "../fields/SpaceField";

@@ -11,7 +11,7 @@ import Tooltip from "@mui/material/Tooltip";
 import { useNavigate, useParams } from "react-router-dom";
 import { styles } from "@styles";
 import { useQuery } from "@utils/useQuery";
-import { useServiceContext } from "@providers/ServiceProvider";
+import { useServiceContext } from "@/providers/service-provider";
 import { ICustomError } from "@utils/CustomError";
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 import LoadingButton from "@mui/lab/LoadingButton";

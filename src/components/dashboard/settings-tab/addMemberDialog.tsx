@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { useServiceContext } from "@providers/ServiceProvider";
+import { useServiceContext } from "@/providers/service-provider";
 import { useParams } from "react-router-dom";
 import { useQuery } from "@utils/useQuery";
 import Typography from "@mui/material/Typography";

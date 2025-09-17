@@ -21,7 +21,7 @@ import languageDetector from "@/utils/languageDetector";
 import uniqueId from "@/utils/uniqueId";
 import { t } from "i18next";
 import useDialog from "@/utils/useDialog";
-import QuestionDetailsContainer from "./questionDetails-dialog/QuestionDetailsContainer";
+import QuestionDetailsContainer from "./question-details/QuestionDetailsContainer";
 import PopoverContent from "./PopoverContent";
 import ScoreDisplay from "./ScoreDisplay";
 import usePopover from "@/hooks/usePopover";

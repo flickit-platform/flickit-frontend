@@ -1,6 +1,6 @@
 import { useCallback, useMemo, ReactNode, ComponentProps } from "react";
 import { Trans } from "react-i18next";
-import { useServiceContext } from "@providers/ServiceProvider";
+import { useServiceContext } from "@/providers/service-provider";
 import { useQuery } from "@utils/useQuery";
 import AutocompleteAsyncField from "@common/fields/AutocompleteAsyncField";
 import { t } from "i18next";

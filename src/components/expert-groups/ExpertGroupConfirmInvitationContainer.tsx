@@ -2,7 +2,7 @@ import LoadingButton from "@mui/lab/LoadingButton";
 import Box from "@mui/material/Box";
 import { Trans } from "react-i18next";
 import { useNavigate, useParams } from "react-router-dom";
-import { useServiceContext } from "@providers/ServiceProvider";
+import { useServiceContext } from "@/providers/service-provider";
 import { ICustomError } from "@utils/CustomError";
 import { useQuery } from "@utils/useQuery";
 import QueryData from "@common/QueryData";

@@ -19,7 +19,7 @@ import Grid from "@mui/material/Grid";
 import FormProviderWithForm from "@common/FormProviderWithForm";
 import { useForm } from "react-hook-form";
 import { useQuery } from "@utils/useQuery";
-import { useServiceContext } from "@providers/ServiceProvider";
+import { useServiceContext } from "@/providers/service-provider";
 import { useEffect, useState } from "react";
 import { ICustomError } from "@utils/CustomError";
 import AttachMoneyOutlinedIcon from "@mui/icons-material/AttachMoneyOutlined";

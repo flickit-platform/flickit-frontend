@@ -10,7 +10,7 @@ import { styles } from "@/config/styles";
 import { IMaturityLevel, TId } from "@/types/index";
 import { Trans } from "react-i18next";
 import MultiLangTextField from "@/components/common/fields/MultiLangTextField";
-import { useKitDesignerContext } from "@/providers/KitProvider";
+import { useKitDesignerContext } from "@/providers/kit-provider";
 import { useTranslationUpdater } from "@/hooks/useTranslationUpdater";
 import TitleWithTranslation from "@/components/common/fields/TranslationText";
 

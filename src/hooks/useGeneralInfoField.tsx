@@ -1,9 +1,9 @@
 import { useCallback, useEffect, useState } from "react";
 import showToast from "@utils/toastError";
 import { useQuery } from "@utils/useQuery";
-import { useServiceContext } from "@providers/ServiceProvider";
+import { useServiceContext } from "@/providers/service-provider";
 import { ILanguage } from "@/types";
-import { kitActions, useKitDesignerContext } from "@providers/KitProvider";
+import { kitActions, useKitDesignerContext } from "@/providers/kit-provider";
 
 export default function useGeneralInfoField(props: any){
 

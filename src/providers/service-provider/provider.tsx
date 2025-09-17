@@ -1,6 +1,6 @@
 import { useReducer, FC, useContext, useMemo, createContext } from "react";
 import { createService, TService } from "@service";
-import { authActions, useAuthContext } from "../AuthProvider";
+import { authActions, useAuthContext } from "../auth-provider";
 import serviceReducer from "./reducer";
 
 interface IServiceProviderProps {

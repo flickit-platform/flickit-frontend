@@ -8,7 +8,7 @@ import { Trans } from "react-i18next";
 import languageDetector from "@utils/languageDetector";
 import { farsiFontFamily, primaryFontFamily } from "@config/theme";
 import MultiLangTextField from "@common/fields/MultiLangTextField";
-import { useKitDesignerContext } from "@/providers/KitProvider";
+import { useKitDesignerContext } from "@/providers/kit-provider";
 import { useTranslationUpdater } from "@/hooks/useTranslationUpdater";
 import { styles } from "@styles";
 

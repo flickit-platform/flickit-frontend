@@ -4,7 +4,7 @@ import Typography from "@mui/material/Typography";
 import CircularProgress from "@mui/material/CircularProgress";
 import { useParams } from "react-router-dom";
 import { useEffect, useState, useRef } from "react";
-import { useServiceContext } from "@providers/ServiceProvider";
+import { useServiceContext } from "@/providers/service-provider";
 import { EditableRichEditor } from "@/components/common/fields/EditableRichEditor";
 import { getReadableDate } from "@utils/readableDate";
 import { styles } from "@styles";

@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
-import { useAuthContext } from "@/providers/AuthProvider";
-import { setSurveyBox, useConfigContext } from "@providers/ConfgProvider";
+import { useAuthContext } from "@/providers/auth-provider";
+import { setSurveyBox, useConfigContext } from "@/providers/config-provider";
 import { useGraphicalReport } from "./useGraphicalReport";
 import { useReportChips } from "@/features/assessment-report/model/hooks/useReportChips";
 import { useIntersectOnce } from "@/utils/helpers";

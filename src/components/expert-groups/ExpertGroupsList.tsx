@@ -8,7 +8,7 @@ import { ICustomError } from "@utils/CustomError";
 import showToast from "@utils/toastError";
 import { useQueryDataContext } from "@common/QueryData";
 import { useQuery } from "@utils/useQuery";
-import { useServiceContext } from "@providers/ServiceProvider";
+import { useServiceContext } from "@/providers/service-provider";
 import { TId } from "@/types";
 
 interface IExpertGroupsListProps {

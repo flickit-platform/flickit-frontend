@@ -10,7 +10,7 @@ import {
 } from "@mui/material";
 import { Trans } from "react-i18next";
 import { useForm } from "react-hook-form";
-import { useServiceContext } from "@/providers/ServiceProvider";
+import { useServiceContext } from "@/providers/service-provider";
 import { ICustomError } from "@/utils/CustomError";
 import { useQuery } from "@/utils/useQuery";
 import { styles } from "@styles";
@@ -26,7 +26,7 @@ import ImpactSection from "./ImpactSection";
 import AutocompleteAsyncField, {
   useConnectAutocompleteField,
 } from "@/components/common/fields/AutocompleteAsyncField";
-import { kitActions, useKitDesignerContext } from "@providers/KitProvider";
+import { kitActions, useKitDesignerContext } from "@/providers/kit-provider";
 import { useTranslationUpdater } from "@/hooks/useTranslationUpdater";
 import MultiLangTextField from "@common/fields/MultiLangTextField";
 import NavigationButtons from "@/components/common/buttons/NavigationButtons";

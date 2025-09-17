@@ -12,7 +12,7 @@ import AdviceSlider from "@/components/common/AdviceSlider";
 import { useEffect, useState } from "react";
 import { ICustomError } from "@/utils/CustomError";
 import { useQuery } from "@/utils/useQuery";
-import { useServiceContext } from "@/providers/ServiceProvider";
+import { useServiceContext } from "@/providers/service-provider";
 import { useParams } from "react-router-dom";
 import AdviceQuestionTable from "./AdviceQuestionTable";
 import { LoadingSkeletonKitCard } from "@/components/common/loadings/LoadingSkeletonKitCard";

@@ -3,7 +3,7 @@ import type { AxiosRequestConfig, AxiosResponse } from "axios";
 import { ICustomError } from "@utils/CustomError";
 import { useConnectAutocompleteField } from "@/components/common/fields/AutocompleteAsyncField";
 import { useNavigate } from "react-router-dom";
-import { useServiceContext } from "@/providers/ServiceProvider";
+import { useServiceContext } from "@/providers/service-provider";
 import showToast from "@utils/toastError";
 
 type Space = { id: string; [k: string]: any };

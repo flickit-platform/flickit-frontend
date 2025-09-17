@@ -12,9 +12,9 @@ import RadioButtonUncheckedRounded from "@mui/icons-material/RadioButtonUnchecke
 import SuccessCheck from "@/assets/svg/success-check.svg";
 import FailureEmoji from "@/assets/svg/failure-emoji.svg";
 import WarningEmptyState from "@/assets/svg/warning-empty-state.svg";
-import { useServiceContext } from "@/providers/ServiceProvider";
+import { useServiceContext } from "@/providers/service-provider";
 import { useQuery } from "@/utils/useQuery";
-import { useQuestionContext } from "@/providers/QuestionProvider";
+import { useQuestionContext } from "@/providers/question-provider";
 import { useQuestionnaire } from "../dashboard/dashboard-tab/questionnaires/QuestionnaireContainer";
 import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
 import { styles } from "@styles";

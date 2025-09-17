@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import Divider from "@mui/material/Divider";
 import Grid from "@mui/material/Grid";
 import { useParams } from "react-router";
-import { useServiceContext } from "@providers/ServiceProvider";
+import { useServiceContext } from "@/providers/service-provider";
 import { useQuery } from "@utils/useQuery";
 import firstCharDetector from "@utils/firstCharDetector";
 import EditRoundedIcon from "@mui/icons-material/EditRounded";

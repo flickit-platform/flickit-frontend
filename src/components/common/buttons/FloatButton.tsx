@@ -10,10 +10,10 @@ import Checkbox from "@mui/material/Checkbox";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import { Close } from "@mui/icons-material";
 import { useLocation, useParams } from "react-router-dom";
-import { setSurveyBox, useConfigContext } from "@providers/ConfgProvider";
-import { authActions, useAuthContext } from "@providers/AuthProvider";
+import { setSurveyBox, useConfigContext } from "@/providers/config-provider";
+import { authActions, useAuthContext } from "@/providers/auth-provider";
 import { useQuery } from "@utils/useQuery";
-import { useServiceContext } from "@providers/ServiceProvider";
+import { useServiceContext } from "@/providers/service-provider";
 
 const SurveyBoxSection = (props: any) => {
   const [showFeedback, setShowFeedback] = useState(true);

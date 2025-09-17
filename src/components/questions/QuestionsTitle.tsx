@@ -7,10 +7,10 @@ import {
   questionActions,
   useQuestionContext,
   useQuestionDispatch,
-} from "@/providers/QuestionProvider";
+} from "@/providers/question-provider";
 import { t } from "i18next";
 import setDocumentTitle from "@utils/setDocumentTitle";
-import { useConfigContext } from "@/providers/ConfgProvider";
+import { useConfigContext } from "@/providers/config-provider";
 import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
 import { styles } from "@styles";
 import languageDetector from "@/utils/languageDetector";

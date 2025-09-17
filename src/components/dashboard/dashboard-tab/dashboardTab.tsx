@@ -6,7 +6,7 @@ import Box from "@mui/material/Box";
 import TodoBox from "./todoBox";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { useServiceContext } from "@/providers/ServiceProvider";
+import { useServiceContext } from "@/providers/service-provider";
 import { useQuery } from "@/utils/useQuery";
 
 const DashboardTab = () => {

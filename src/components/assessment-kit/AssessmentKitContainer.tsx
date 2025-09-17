@@ -1,9 +1,9 @@
 import Box from "@mui/material/Box";
 import { farsiFontFamily, primaryFontFamily } from "@config/theme";
 import Typography from "@mui/material/Typography";
-import { useServiceContext } from "@providers/ServiceProvider";
+import { useServiceContext } from "@/providers/service-provider";
 import { useQuery } from "@utils/useQuery";
-import { useConfigContext } from "@providers/ConfgProvider";
+import { useConfigContext } from "@/providers/config-provider";
 import QueryData from "@common/QueryData";
 import setDocumentTitle from "@utils/setDocumentTitle";
 import { t } from "i18next";

@@ -16,7 +16,7 @@ import { Trans } from "react-i18next";
 import languageDetector from "@utils/languageDetector";
 import { styles } from "@styles";
 import { farsiFontFamily, primaryFontFamily } from "@config/theme";
-import { useKitDesignerContext } from "@providers/KitProvider";
+import { useKitDesignerContext } from "@/providers/kit-provider";
 import { useTranslationUpdater } from "@/hooks/useTranslationUpdater";
 import { MultiLangs } from "@/types";
 import TitleWithTranslation from "@common/fields/TranslationText";

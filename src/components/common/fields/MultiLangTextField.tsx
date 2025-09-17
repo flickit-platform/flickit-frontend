@@ -11,7 +11,7 @@ import AddLanguage from "@/assets/svg/add-language.svg";
 import RemoveLanguage from "@/assets/svg/remove-language.svg";
 import RichEditor from "../rich-editor/RichEditor";
 import firstCharDetector from "@utils/firstCharDetector";
-import { useKitDesignerContext } from "@/providers/KitProvider";
+import { useKitDesignerContext } from "@/providers/kit-provider";
 import languageDetector from "@/utils/languageDetector";
 import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
 import { t } from "i18next";

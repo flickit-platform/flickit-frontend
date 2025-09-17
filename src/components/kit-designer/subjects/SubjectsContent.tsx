@@ -4,7 +4,7 @@ import Divider from "@mui/material/Divider";
 import Typography from "@mui/material/Typography";
 import PermissionControl from "../../common/PermissionControl";
 import QueryBatchData from "../../common/QueryBatchData";
-import { useServiceContext } from "@/providers/ServiceProvider";
+import { useServiceContext } from "@/providers/service-provider";
 import { useQuery } from "@/utils/useQuery";
 import ListOfItems from "../common/GeneralList";
 import EmptyState from "../common/EmptyState";

@@ -7,7 +7,7 @@ import {
 } from "react";
 import reducer, { initialState, AppState } from "./reducer";
 import { ActionTypes } from "./actions";
-import { useServiceContext } from "../ServiceProvider";
+import { useServiceContext } from "../service-provider";
 import keycloakService from "@/service/keycloakService";
 
 interface AppContextType {

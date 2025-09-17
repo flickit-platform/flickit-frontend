@@ -16,7 +16,7 @@ import keycloakService from "@/service/keycloakService";
 import { useEffect, useState } from "react";
 import LoadingButton from "@mui/lab/LoadingButton";
 import { useAssessmentCreation } from "@/hooks/useAssessmentCreation";
-import { useConfigContext } from "@/providers/ConfgProvider";
+import { useConfigContext } from "@/providers/config-provider";
 import { ILanguage } from "@/types";
 import PaidOutlinedIcon from "@mui/icons-material/PaidOutlined";
 import PurchasedIcon from "@/assets/icons/purchasedIcon";

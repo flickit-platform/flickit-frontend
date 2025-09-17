@@ -16,7 +16,7 @@ import Accordion from "@mui/material/Accordion";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import { useQuery } from "@utils/useQuery";
-import { useServiceContext } from "@providers/ServiceProvider";
+import { useServiceContext } from "@/providers/service-provider";
 import { useParams } from "react-router-dom";
 import { ICustomError } from "@utils/CustomError";
 import Button from "@mui/material/Button";
@@ -28,7 +28,7 @@ import Add from "@mui/icons-material/Add";
 import QuestionForm from "./questions/QuestionForm";
 import MultiLangTextField from "@common/fields/MultiLangTextField";
 import { useTranslationUpdater } from "@/hooks/useTranslationUpdater";
-import { kitActions, useKitDesignerContext } from "@/providers/KitProvider";
+import { kitActions, useKitDesignerContext } from "@/providers/kit-provider";
 import TitleWithTranslation from "@/components/common/fields/TranslationText";
 import showToast from "@utils/toastError";
 

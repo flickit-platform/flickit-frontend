@@ -3,7 +3,7 @@ import { Gauge } from "@common/charts/Gauge";
 import LoadingGauge from "@common/charts/LoadingGauge";
 import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
 import useMenu from "@utils/useMenu";
-import { useServiceContext } from "@providers/ServiceProvider";
+import { useServiceContext } from "@/providers/service-provider";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import { Trans } from "react-i18next";
 import { styles } from "@styles";
@@ -42,7 +42,7 @@ import DriveFileMoveOutlinedIcon from "@mui/icons-material/DriveFileMoveOutlined
 import MoveAssessmentDialog from "./MoveAssessmentDialog";
 import { useAssessmentCreation } from "@/hooks/useAssessmentCreation";
 import keycloakService from "@/service/keycloakService";
-import { useAuthContext } from "@/providers/AuthProvider";
+import { useAuthContext } from "@/providers/auth-provider";
 
 interface IAssessmentCardProps {
   item: IAssessment & { space: any };

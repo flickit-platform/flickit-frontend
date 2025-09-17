@@ -6,7 +6,7 @@ import AttributeImpactList from "./ImpactList";
 import ImpactForm from "./ImpactForm";
 import EmptyState from "../../common/EmptyState";
 import { useQuery } from "@/utils/useQuery";
-import { useServiceContext } from "@/providers/ServiceProvider";
+import { useServiceContext } from "@/providers/service-provider";
 import { useParams } from "react-router-dom";
 import { ICustomError } from "@/utils/CustomError";
 import { t } from "i18next";

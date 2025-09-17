@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
-import { useServiceContext } from "@/providers/ServiceProvider";
+import { useServiceContext } from "@/providers/service-provider";
 import DashboardTitle from "@components/dashboard/dashboardContainerTitle";
 import QueryBatchData from "@common/QueryBatchData";
 import LoadingSkeletonOfAssessmentRoles from "@common/loadings/LoadingSkeletonOfAssessmentRoles";
@@ -19,7 +19,7 @@ import { ArrowForward, EditOutlined } from "@mui/icons-material";
 import {
   assessmentActions,
   useAssessmentContext,
-} from "@/providers/AssessmentProvider";
+} from "@/providers/assessment-provider";
 import { ASSESSMENT_MODE } from "@/utils/enumType";
 import InputCustomEditor from "../common/fields/InputCustomEditor";
 import showToast from "@/utils/toastError";

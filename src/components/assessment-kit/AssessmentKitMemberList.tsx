@@ -24,7 +24,7 @@ import { useForm } from "react-hook-form";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import { ICustomError } from "@utils/CustomError";
 import { t } from "i18next";
-import { useServiceContext } from "@providers/ServiceProvider";
+import { useServiceContext } from "@/providers/service-provider";
 import { useParams } from "react-router-dom";
 import { useQuery } from "@utils/useQuery";
 import Avatar from "@mui/material/Avatar";

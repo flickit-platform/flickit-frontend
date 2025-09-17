@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import { Trans } from "react-i18next";
 import { InputFieldUC } from "@common/fields/InputField";
 import { styles } from "@styles";
-import { useServiceContext } from "@providers/ServiceProvider";
+import { useServiceContext } from "@/providers/service-provider";
 import setServerFieldErrors from "@utils/setServerFieldError";
 import NoteAddRoundedIcon from "@mui/icons-material/NoteAddRounded";
 import { ICustomError } from "@utils/CustomError";
@@ -20,7 +20,7 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import showToast from "@utils/toastError";
-import { useAuthContext } from "@/providers/AuthProvider";
+import { useAuthContext } from "@/providers/auth-provider";
 import { t } from "i18next";
 
 interface IAssessmentCEFromDialogProps extends DialogProps {

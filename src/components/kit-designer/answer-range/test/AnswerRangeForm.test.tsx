@@ -1,10 +1,10 @@
 import { describe, it, vi, expect } from "vitest";
-import AnswerRangeForm from "@components/kit-designer/answerRange/AnswerRangeForm";
+import AnswerRangeForm from "@/components/kit-designer/answer-range/AnswerRangeForm";
 import { fireEvent, render, screen } from "@testing-library/react";
 import { I18nextProvider } from "react-i18next";
 import i18n from "i18next";
 import userEvent from "@testing-library/user-event";
-import { KitLanguageProvider } from "@/providers/KitProvider";
+import { KitLanguageProvider } from "@/providers/kit-provider";
 
 describe("answer range test form", () => {
   const mockHandleInputChange = vi.fn();

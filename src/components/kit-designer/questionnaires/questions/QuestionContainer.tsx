@@ -7,7 +7,7 @@ import QuestionDialog from "./QuestionDialog";
 import Divider from "@mui/material/Divider";
 import Typography from "@mui/material/Typography";
 import TitleWithTranslation from "@/components/common/fields/TranslationText";
-import { useKitDesignerContext } from "@/providers/KitProvider";
+import { useKitDesignerContext } from "@/providers/kit-provider";
 import useDialog from "@/utils/useDialog";
 
 const QuestionContain = (props: any) => {

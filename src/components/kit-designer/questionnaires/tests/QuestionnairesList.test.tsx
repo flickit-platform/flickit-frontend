@@ -1,7 +1,7 @@
 import { render, fireEvent, screen } from "@testing-library/react";
 import { vi } from "vitest";
 import ListOfItems from "@/components/kit-designer/questionnaires/QuestionnaireList";
-import { KitLanguageProvider } from "@/providers/KitProvider";
+import { KitLanguageProvider } from "@/providers/kit-provider";
 
 const mockQuestionnaires = [
   {

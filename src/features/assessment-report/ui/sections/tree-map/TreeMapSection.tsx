@@ -8,7 +8,7 @@ import { useTreeMapSection } from "../../../model/hooks/useTreeMapSection";
 import languageDetector from "@/utils/languageDetector";
 import MeasuresTable from "./MeasureTable";
 import AIGenerated from "@/components/common/icons/AIGenerated";
-import FlatGauge from "@/components/common/charts/flatGauge/FlatGauge";
+import FlatGauge from "@/components/common/charts/flat-gauge/FlatGauge";
 import { IMaturityLevel, IUserPermissions } from "@/types";
 
 type Props = Readonly<{

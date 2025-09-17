@@ -4,7 +4,7 @@ import Divider from "@mui/material/Divider";
 import Box from "@mui/material/Box";
 import PermissionControl from "../../common/PermissionControl";
 import { Trans } from "react-i18next";
-import { useServiceContext } from "@/providers/ServiceProvider";
+import { useServiceContext } from "@/providers/service-provider";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { ICustomError } from "@/utils/CustomError";
 import { IKitVersion } from "@/types/index";

@@ -8,7 +8,7 @@ import { Trans } from "react-i18next";
 import Typography from "@mui/material/Typography";
 import { t } from "i18next";
 import MultiLangTextField from "@common/fields/MultiLangTextField";
-import { useKitDesignerContext } from "@providers/KitProvider";
+import { useKitDesignerContext } from "@/providers/kit-provider";
 import { useTranslationUpdater } from "@/hooks/useTranslationUpdater";
 import { MultiLangs } from "@/types";
 import { styles } from "@styles";

@@ -7,7 +7,7 @@ import TabPanel from "@mui/lab/TabPanel";
 import GroupsRoundedIcon from "@mui/icons-material/GroupsRounded";
 import { SpaceMembers } from "./SpaceMembers";
 import { useQuery } from "@utils/useQuery";
-import { useServiceContext } from "@providers/ServiceProvider";
+import { useServiceContext } from "@/providers/service-provider";
 import { useParams } from "react-router-dom";
 import Skeleton from "@mui/material/Skeleton";
 import { styles } from "@styles";

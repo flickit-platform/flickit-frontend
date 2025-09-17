@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import { Trans } from "react-i18next";
 import { InputFieldUC } from "@common/fields/InputField";
 import { styles } from "@styles";
-import { useServiceContext } from "@providers/ServiceProvider";
+import { useServiceContext } from "@/providers/service-provider";
 import setServerFieldErrors from "@utils/setServerFieldError";
 import AccountBoxRoundedIcon from "@mui/icons-material/AccountBoxRounded";
 import { ICustomError } from "@utils/CustomError";

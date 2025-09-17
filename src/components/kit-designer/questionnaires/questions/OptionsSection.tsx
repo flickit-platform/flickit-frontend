@@ -9,7 +9,7 @@ import Grid from "@mui/material/Grid";
 import { Trans } from "react-i18next";
 import OptionList from "./OptionsList";
 import OptionForm from "./OptionForm";
-import { useServiceContext } from "@/providers/ServiceProvider";
+import { useServiceContext } from "@/providers/service-provider";
 import { useQuery } from "@/utils/useQuery";
 import { ICustomError } from "@/utils/CustomError";
 import { dropdownStyle } from "./ImpactForm";

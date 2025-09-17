@@ -6,7 +6,7 @@ import { Trans } from "react-i18next";
 import {
   assessmentActions,
   useAssessmentContext,
-} from "@/providers/AssessmentProvider";
+} from "@/providers/assessment-provider";
 import { useNavigate } from "react-router-dom";
 import { styles } from "@styles";
 import languageDetector from "@/utils/languageDetector";

@@ -1,4 +1,4 @@
-import { useServiceContext } from "@/providers/ServiceProvider";
+import { useServiceContext } from "@/providers/service-provider";
 import { useQuery } from "@/utils/useQuery";
 import { useCallback } from "react";
 import { useParams } from "react-router-dom";

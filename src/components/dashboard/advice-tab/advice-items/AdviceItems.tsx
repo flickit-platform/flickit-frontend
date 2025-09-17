@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import Grid from "@mui/material/Grid";
 import { useParams } from "react-router-dom";
 import { useQuery } from "@utils/useQuery";
-import { useServiceContext } from "@providers/ServiceProvider";
+import { useServiceContext } from "@/providers/service-provider";
 import EmptyAdviceList from "@components/dashboard/advice-tab/advice-items/EmptyAdviceItems";
 import { LoadingSkeletonKitCard } from "@common/loadings/LoadingSkeletonKitCard";
 import AdviceItemsAccordion from "./AdviceItemsAccordions";

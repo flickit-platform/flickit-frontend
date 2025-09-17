@@ -14,7 +14,7 @@ import Button from "@mui/material/Button";
 import AddIcon from "@mui/icons-material/Add";
 import { useForm } from "react-hook-form";
 import { useParams } from "react-router";
-import { useServiceContext } from "@providers/ServiceProvider";
+import { useServiceContext } from "@/providers/service-provider";
 import { useQuery } from "@utils/useQuery";
 import { ICustomError } from "@utils/CustomError";
 import firstCharDetector from "@utils/firstCharDetector";
@@ -50,7 +50,7 @@ import useDialog from "@/utils/useDialog";
 import {
   assessmentActions,
   useAssessmentContext,
-} from "@/providers/AssessmentProvider";
+} from "@/providers/assessment-provider";
 import showToast from "@utils/toastError";
 
 type InfoField = "creator" | "assessmentKit" | "created" | "lastModified";

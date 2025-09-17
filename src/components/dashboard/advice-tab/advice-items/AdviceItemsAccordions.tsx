@@ -19,7 +19,7 @@ import Impact from "@common/icons/Impact";
 import AdviceListNewForm from "./AdviceListNewForm";
 import { useParams } from "react-router-dom";
 import { useQuery } from "@utils/useQuery";
-import { useServiceContext } from "@providers/ServiceProvider";
+import { useServiceContext } from "@/providers/service-provider";
 import { ICustomError } from "@utils/CustomError";
 import languageDetector from "@utils/languageDetector";
 import { farsiFontFamily, primaryFontFamily } from "@config/theme";

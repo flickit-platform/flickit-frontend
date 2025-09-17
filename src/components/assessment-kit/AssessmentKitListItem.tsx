@@ -3,7 +3,7 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import { Trans } from "react-i18next";
 import { styles } from "@styles";
-import { useServiceContext } from "@providers/ServiceProvider";
+import { useServiceContext } from "@/providers/service-provider";
 import { FLAGS, TId } from "@/types/index";
 import useMenu from "@utils/useMenu";
 import { useQuery } from "@utils/useQuery";

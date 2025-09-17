@@ -12,9 +12,9 @@ import ThumbUpOffAltOutlinedIcon from "@mui/icons-material/ThumbUpOffAltOutlined
 import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 import { useQuery } from "@utils/useQuery";
 import { useParams } from "react-router-dom";
-import { useServiceContext } from "@providers/ServiceProvider";
+import { useServiceContext } from "@/providers/service-provider";
 import { formatLanguageCodes } from "@/utils/languageUtils";
-import { useConfigContext } from "@providers/ConfgProvider";
+import { useConfigContext } from "@/providers/config-provider";
 import keycloakService from "@/service/keycloakService";
 import { useEffect, useState } from "react";
 import NewAssessmentDialog from "@/components/common/dialogs/NewAssessmentDialog";

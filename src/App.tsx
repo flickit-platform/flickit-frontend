@@ -11,7 +11,7 @@ import flagsmith from "flagsmith";
 import { useLocation, useSearchParams } from "react-router-dom";
 import keycloakService, { isPublicRoute } from "@/service/keycloakService";
 import i18next from "i18next";
-import { useLangDispatch } from "./providers/LangProvider";
+import { useLangDispatch } from "./providers/lang-provider";
 import { initClarity } from "./utils/clarity";
 
 function getLangFromHash() {
