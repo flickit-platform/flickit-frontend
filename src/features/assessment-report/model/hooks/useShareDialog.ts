@@ -148,8 +148,11 @@ export function useShareDialog({
   }, []);
 
   const deleteUserRoleHandler = async (id: TId) =>{
-    await deleteUserRole.query(id)
-    // await RemoveMembersInvitees.query({ invitedId });
+    await deleteUserRole.query(id);
+    await fetchGraphicalReportUsers.query();
+  }
+  const deleteInviteeHandler = async (id: TId) =>{
+    await RemoveMembersInvitees.query({invitedId: id});
     await fetchGraphicalReportUsers.query();
   }
 
@@ -170,5 +173,6 @@ export function useShareDialog({
     onInviteSubmit,
     handleCopyClick,
     deleteUserRoleHandler,
+    deleteInviteeHandler
   };
 }
