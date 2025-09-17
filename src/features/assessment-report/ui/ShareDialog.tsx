@@ -26,7 +26,8 @@ import {
 import { InputFieldUC } from "@/components/common/fields/InputField";
 import QueryBatchData from "@/components/common/QueryBatchData";
 import DeleteForeverOutlinedIcon from "@mui/icons-material/DeleteForeverOutlined";
-import { IconButton } from "@mui/material";
+import { Button, IconButton } from "@mui/material";
+import Tooltip from "@mui/material/Tooltip";
 
 type ShareDialogProps = {
   open: boolean;
@@ -225,51 +226,69 @@ export default function ShareDialog({
           const k = key as VISIBILITY;
           const isSelected = access === k;
           return (
-            <Box
-              key={k}
-              sx={{
-                display: "flex",
-                justifyContent: "flex-start",
-                background: isSelected ? "#2466A814" : "inherit",
-                width: "100%",
-                height: "fit-content",
-                borderRadius: "8%",
-                cursor: "pointer",
-              }}
-              onClick={() => handleSelect(k)}
-              role="button"
+            <Tooltip
+              title={
+                  <span style={{ unicodeBidi: "plaintext" }}>
+                    {t("assessmentReport.YouDoNotHavePermission", {lng})}
+                  </span>
+                }
+              disableHoverListener={permissions.canManageVisibility}
+              disableFocusListener={permissions.canManageVisibility}
+              disableInteractive={permissions.canManageVisibility}
+              disableTouchListener={permissions.canManageVisibility}
             >
-              <Box sx={{ ...styles.centerVH }} width="38px" height="38px">
-                <Radio
-                  checked={isSelected}
-                  color="primary"
-                  size="small"
-                  sx={{ padding: "9px", "&.Mui-checked": { color: "#2466A8" } }}
-                />
-              </Box>
-              <Box
-                sx={{ ...styles.centerCV }}
-                padding="8px 0"
-                gap="4px"
-                width="398px"
-                height="59px"
-              >
-                <Typography
-                  fontFamily="inherit"
-                  variant="bodyMedium"
-                  sx={{ color: "#2B333B" }}
+              <div>
+                <Button
+                  key={k}
+                  sx={{
+                    display: "flex",
+                    justifyContent: "flex-start",
+                    background: isSelected ? "#2466A814" : "inherit",
+                    width: "100%",
+                    height: "fit-content",
+                    borderRadius: "8px",
+                    cursor: "pointer",
+                    textAlign: isRTL ? "right" : "left",
+                  }}
+                  disabled={!permissions.canManageVisibility}
+                  onClick={() => handleSelect(k)}
                 >
-                  {accessOptionsNew[k].title}
-                </Typography>
-                <Typography
-                  variant="bodySmall"
-                  color="background.onVariant"
-                  fontFamily="inherit"
-                >
-                  {accessOptionsNew[k].description}
-                </Typography>
-              </Box>
-            </Box>
+                  <Box sx={{ ...styles.centerVH }} width="38px" height="38px">
+                    <Radio
+                      checked={isSelected}
+                      color="primary"
+                      size="small"
+                      sx={{
+                        padding: "9px",
+                        "&.Mui-checked": { color: "#2466A8" },
+                      }}
+                    />
+                  </Box>
+                  <Box
+                    sx={{ ...styles.centerCV }}
+                    padding="8px 0"
+                    gap="4px"
+                    width="398px"
+                    height="59px"
+                  >
+                    <Typography
+                      fontFamily="inherit"
+                      variant="bodyMedium"
+                      sx={{ color: "#2B333B" }}
+                    >
+                      {accessOptionsNew[k].title}
+                    </Typography>
+                    <Typography
+                      variant="bodySmall"
+                      color="background.onVariant"
+                      fontFamily="inherit"
+                    >
+                      {accessOptionsNew[k].description}
+                    </Typography>
+                  </Box>
+                </Button>
+              </div>
+            </Tooltip>
           );
         })}
       </Box>
