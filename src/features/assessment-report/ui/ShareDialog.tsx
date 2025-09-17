@@ -50,9 +50,9 @@ export default function ShareDialog({
   const { reset, handleSubmit } = methods;
 
   const isRTL = lng === "fa";
-  const {
-    space: { isDefault },
-  } = assessment;
+  const { space } = assessment ?? {};
+  const isDefault = space?.isDefault ?? false;
+
   const {
     access,
     snackbarOpen,
@@ -99,7 +99,7 @@ export default function ShareDialog({
       <>
         {access === VISIBILITY.RESTRICTED && permissions.canShareReport && (
           <>
-            <Box mt={3}>
+            <Box mt={permissions.canManageVisibility ? 3 : 0}>
               <Typography
                 variant="bodyMedium"
                 color="rgba(61, 77, 92, 0.5)"
@@ -210,7 +210,7 @@ export default function ShareDialog({
       }}
       titleStyle={{ mb: "0px !important" }}
     >
-      <Box mt={0}>
+      <Box sx={{ display: permissions.canManageVisibility ? "flex" : "none", mt: 0 }}>
         <Typography
           variant="bodyMedium"
           color="rgba(61, 77, 92, 0.5)"
@@ -221,24 +221,12 @@ export default function ShareDialog({
         <Divider sx={{ my: 1 }} />
       </Box>
 
-      <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
+      <Box sx={{ display: permissions.canManageVisibility ? "flex" : "none", flexDirection: "column", gap: 1 }}>
         {Object.values(VISIBILITY).map((key) => {
           const k = key as VISIBILITY;
           const isSelected = access === k;
           return (
-            <Tooltip
-              title={
-                  <span style={{ unicodeBidi: "plaintext" }}>
-                    {t("assessmentReport.YouDoNotHavePermission", {lng})}
-                  </span>
-                }
-              disableHoverListener={permissions.canManageVisibility}
-              disableFocusListener={permissions.canManageVisibility}
-              disableInteractive={permissions.canManageVisibility}
-              disableTouchListener={permissions.canManageVisibility}
-            >
-              <div>
-                <Button
+                <Box
                   key={k}
                   sx={{
                     display: "flex",
@@ -248,9 +236,7 @@ export default function ShareDialog({
                     height: "fit-content",
                     borderRadius: "8px",
                     cursor: "pointer",
-                    textAlign: isRTL ? "right" : "left",
                   }}
-                  disabled={!permissions.canManageVisibility}
                   onClick={() => handleSelect(k)}
                 >
                   <Box sx={{ ...styles.centerVH }} width="38px" height="38px">
@@ -286,9 +272,7 @@ export default function ShareDialog({
                       {accessOptionsNew[k].description}
                     </Typography>
                   </Box>
-                </Button>
-              </div>
-            </Tooltip>
+                </Box>
           );
         })}
       </Box>
