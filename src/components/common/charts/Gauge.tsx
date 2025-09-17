@@ -5,7 +5,7 @@ import { Trans } from "react-i18next";
 import { styles, getMaturityLevelColors } from "@styles";
 import SkeletonGauge from "@common/charts/SkeletonGauge";
 import CompletionRing from "@/components/common/charts/completion-ring/CompletionRing";
-import mlIndicator from "@/assets/svg/ml-indicator.svg";
+import HiddenMaturityLevel from "@/assets/svg/hidden-maturity-level.svg";
 import permissionRequired from "@/assets/svg/permission-required.svg";
 import languageDetector from "@/utils/languageDetector";
 import { t } from "i18next";
@@ -62,7 +62,12 @@ const Gauge = ({
               className={className}
             />
           ) : (
-            <img alt="empty" width="100%" height={height} src={mlIndicator} />
+            <img
+              alt="empty"
+              width="100%"
+              height={height}
+              src={HiddenMaturityLevel}
+            />
           )}
         </Suspense>
       </Box>

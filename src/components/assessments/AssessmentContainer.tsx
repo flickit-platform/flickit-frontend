@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { Trans } from "react-i18next";
 import QueryData from "@common/QueryData";
 import ErrorEmptyData from "@common/errors/ErrorEmptyData";
-import AssessmentEmptyState from "@assets/svg/assessmentEmptyState.svg";
+import AssessmentEmptyState from "@/assets/svg/assessment-empty-state.svg";
 import { useServiceContext } from "@providers/ServiceProvider";
 import useDialog from "@utils/useDialog";
 import { AssessmentsList } from "./AssessmentList";

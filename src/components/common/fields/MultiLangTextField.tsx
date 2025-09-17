@@ -7,8 +7,8 @@ import {
   TextFieldProps,
 } from "@mui/material";
 import LanguageIcon from "@mui/icons-material/LanguageRounded";
-import GlobePlus from "@/assets/svg/globePlus.svg";
-import GlobeSub from "@/assets/svg/globeSub.svg";
+import AddLanguage from "@/assets/svg/add-language.svg";
+import RemoveLanguage from "@/assets/svg/remove-language.svg";
 import RichEditor from "../rich-editor/RichEditor";
 import firstCharDetector from "@utils/firstCharDetector";
 import { useKitDesignerContext } from "@/providers/KitProvider";
@@ -154,7 +154,7 @@ const MultiLangTextField = ({
             >
               <Box
                 component="img"
-                src={showTranslation ? GlobeSub : GlobePlus}
+                src={showTranslation ? RemoveLanguage : AddLanguage}
                 alt="Toggle Translation"
                 sx={{ width: "100%", height: "100%", objectFit: "contain" }}
               />

@@ -3,7 +3,7 @@ import { CEDialog } from "@common/dialogs/CEDialog";
 import { Trans } from "react-i18next";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import AssessmentError from "@/assets/svg/AssessmentError.svg";
+import AssessmentLimitExceeded from "@/assets/svg/assessment-limit-exceeded.svg";
 import Button from "@mui/material/Button";
 import { DialogProps } from "@mui/material/Dialog";
 import { useTheme } from "@mui/material";
@@ -50,8 +50,8 @@ const AssessmenetInfoDialog = (props: IAssessmentCEFromDialogProps) => {
         <>
           <img
             style={{ marginInlineEnd: "6px" }}
-            src={AssessmentError}
-            alt={"AssessmentError"}
+            src={AssessmentLimitExceeded}
+            alt={"AssessmentLimitExceeded"}
           />
           <Typography variant="semiBoldXLarge">
             <Trans i18nKey="assessment.assessmentLimitExceeded" />

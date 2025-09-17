@@ -17,7 +17,7 @@ const ErrorEmptyData = (props: IErrorEmptyDataProps) => {
     emptyMessage = <Trans i18nKey="errors.thisPlaceIsEmpty" />,
     useIllustration = false,
     img = useIllustration ? (
-      <img src="/assets/svg/noData.svg" alt="noData" />
+      <img src="/assets/svg/no-content-empty-state.svg" alt="no-content-empty-state" />
     ) : (
       <HourglassEmptyRoundedIcon
         sx={{ fontSize: "4rem", mb: "16px", opacity: 0.8 }}

@@ -1,8 +1,8 @@
 import { useEffect, useMemo, useState } from "react";
 import Box from "@mui/material/Box";
 import IconButton from "@mui/material/IconButton";
-import ContactSupport from "@assets/svg/ContactSupport.svg";
-import polygon from "@assets/svg/dialogPolygon.svg";
+import ContactSupport from "@/assets/svg/contact-support.svg";
+import ArrowDown from "@/assets/svg/arrow-down.svg";
 import Typography from "@mui/material/Typography";
 import { Trans } from "react-i18next";
 import Button from "@mui/material/Button";
@@ -156,7 +156,7 @@ const SurveyBoxSection = (props: any) => {
         />
         <Box
           component={"img"}
-          src={polygon}
+          src={ArrowDown}
           position="absolute"
           bottom="-10px"
           right="20px"

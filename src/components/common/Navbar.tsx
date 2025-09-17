@@ -35,7 +35,7 @@ import { IMessage } from "@novu/notification-center";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import ArrowBackIos from "@mui/icons-material/ArrowBackIos";
 import ArrowForwardIos from "@mui/icons-material/ArrowForwardIos";
-import NotificationEmptyState from "@/assets/svg/notificationEmptyState.svg";
+import NotificationEmptyState from "@/assets/svg/notification-empty-state.svg";
 import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
 import LanguageSelector from "./LangSelector";
 import i18n from "i18next";

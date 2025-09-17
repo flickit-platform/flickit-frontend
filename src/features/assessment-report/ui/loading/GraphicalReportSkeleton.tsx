@@ -4,7 +4,7 @@ import Skeleton from "@mui/material/Skeleton";
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
 import { styles } from "@styles";
-import MatirytySkeleton from "@assets/svg/matirytySkeleton.svg";
+import MaturityLevelSkeleton from "@/assets/svg/maturity-level-skeleton.svg";
 import { t } from "i18next";
 import { useTheme } from "@mui/material";
 import Accordion from "@mui/material/Accordion";
@@ -133,7 +133,7 @@ const GraphicalReportSkeleton = ({ isAuthenticatedUser, lang }: any) => (
                 </Grid>
                 <Grid item xs={12} sm={6} md={4} mt={{ xs: 2, md: 5 }}>
                   <img
-                    src={MatirytySkeleton}
+                    src={MaturityLevelSkeleton}
                     alt="MatirytySkeleton"
                     width={200}
                     height={140}

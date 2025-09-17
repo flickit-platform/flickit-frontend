@@ -7,7 +7,7 @@ import Typography from "@mui/material/Typography";
 import LoadingButton from "@mui/lab/LoadingButton";
 import { Trans } from "react-i18next";
 import { styles } from "@/config/styles";
-import Setting from "@assets/svg/setting.svg";
+import Setting from "@/assets/svg/setting.svg";
 import AdviceSlider from "@/components/common/AdviceSlider";
 import { useEffect, useState } from "react";
 import { ICustomError } from "@/utils/CustomError";
