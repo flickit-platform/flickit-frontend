@@ -61,6 +61,7 @@ export default function ShareDialog({
     onInviteSubmit,
     handleCopyClick,
     deleteUserRoleHandler,
+    deleteInviteeHandler
   } = useShareDialog({ open, visibility, linkHash });
 
   type AccessOptions = Record<
@@ -175,6 +176,7 @@ export default function ShareDialog({
                   {...graphicalReportUsers}
                   lng={lng}
                   deleteUserRoleHandler={deleteUserRoleHandler}
+                  deleteInviteeHandler={deleteInviteeHandler}
                 />
               )}
             />
@@ -316,12 +318,15 @@ export default function ShareDialog({
 }
 
 const UserSection = (props: any) => {
-  const { invitees, users, deleteUserRoleHandler, lng } = props;
+  const { invitees, users, deleteUserRoleHandler, deleteInviteeHandler, lng } = props;
   const { t } = useTranslation();
   return (
     <Box display="flex" flexDirection="column" my={1} gap={2} sx={{ overflowY: "auto", maxHeight: "250px" }}>
-      {[...(users ?? []), ...(invitees ?? [])].map((member) => {
-        const { displayName, id, pictureLink, email, deletable } = member;
+      {[
+        ...(users ?? []).map((u: any) => ({ ...u, isInvitee: false })),
+        ...(invitees ?? []).map((i: any) => ({ ...i, isInvitee: true })),
+      ].map((member) => {
+        const { displayName, id, pictureLink, email, deletable, isInvitee } = member;
         return (
           <Box
             key={id}
@@ -347,7 +352,13 @@ const UserSection = (props: any) => {
               )}
             </Box>
             {deletable && (
-              <IconButton onClick={() => deleteUserRoleHandler(id)}>
+              <IconButton
+                onClick={() =>
+                  isInvitee
+                    ? deleteInviteeHandler(id)
+                    : deleteUserRoleHandler(id)
+                }
+              >
                 <DeleteForeverOutlinedIcon
                   fontSize={"medium"}
                   sx={{ color: "background.onVariant" }}
