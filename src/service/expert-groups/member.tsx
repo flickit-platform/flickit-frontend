@@ -18,7 +18,7 @@ export const member = {
     args: { id: TId; userId: TId },
     config?: AxiosRequestConfig<any>,
   ) {
-    return axios.delete(`/api/v1/expert-groups/${args.id}/members/${args.userId}`, {
+    return axios.delete(`/api/v1/expert-groups/${args.id}/members/${args.userId}/`, {
       ...(config ?? {}),
     });
   },

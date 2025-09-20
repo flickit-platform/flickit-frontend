@@ -363,6 +363,8 @@ export const IssuesItem = ({
   } as any;
 
   const colorPalette = (theme.palette as any)[color] ?? theme.palette.primary;
+  const isUnapproved = name === "unapproved" || name === "unapprovedAdvices";
+  const isExpired = name === "expired" || name === "expiredAdvices";
 
   return (
     <Box
@@ -400,28 +402,24 @@ export const IssuesItem = ({
         {issueTextMap[name] && <Trans i18nKey={issueTextMap[name]} />}
       </Typography>
 
-      {name === "unapproved" ||
-        (name === "unapprovedAdvices" && (
-          <Button
-            onClick={() =>
-              handleApproveAll(name === "unapproved" ? "insight" : "advice")
-            }
-            sx={{
-              padding: "4px 10px",
-              marginInlineStart: "auto",
-            }}
-            color={color === "info" ? "primary" : color}
-            variant="outlined"
-          >
-            <Typography variant="labelMedium">
-              <Trans
-                i18nKey={
-                  name === "unapproved" ? "common.approveAll" : "common.approve"
-                }
-              />
-            </Typography>
-          </Button>
-        ))}
+      {isUnapproved && (
+        <Button
+          onClick={() =>
+            handleApproveAll(name === "unapproved" ? "insight" : "advice")
+          }
+          sx={{ padding: "4px 10px", marginInlineStart: "auto" }}
+          color={color === "info" ? "primary" : color}
+          variant="outlined"
+        >
+          <Typography variant="labelMedium">
+            <Trans
+              i18nKey={
+                name === "unapproved" ? "common.approveAll" : "common.approve"
+              }
+            />
+          </Typography>
+        </Button>
+      )}
 
       {name === "notGenerated" && (
         <Tooltip
@@ -446,75 +444,69 @@ export const IssuesItem = ({
           </div>
         </Tooltip>
       )}
-      {name == "expired" ||
-        (name == "expiredAdvices" && (
-          <>
-            <Tooltip
-              disableHoverListener={issues?.unanswered < 1}
-              title={
-                name == "expired" ? (
-                  <Trans i18nKey="dashboard.allQuestonsMustBeAnsweredFirst" />
-                ) : (
-                  ""
-                )
-              }
+      {isExpired && (
+        <>
+          <Tooltip
+            disableHoverListener={issues?.unanswered < 1}
+            title={
+              name === "expired" ? (
+                <Trans i18nKey="dashboard.allQuestonsMustBeAnsweredFirst" />
+              ) : (
+                ""
+              )
+            }
+          >
+            <div
+              style={{
+                marginInlineStart: "auto",
+                color: theme.palette.primary.main,
+              }}
             >
-              <div
-                style={{
-                  marginInlineStart: "auto",
-                  color: theme.palette.primary.main,
-                }}
-              >
-                <LoadingButton
-                  onClick={regeneratedAll}
-                  variant={"outlined"}
-                  disabled={
-                    name == "expired"
-                      ? issues?.unanswered > 0 || disableGenerateButtons
-                      : false
-                  }
-                  loading={regenerateInsights.loading}
-                  color={color === "info" ? "primary" : color}
-                >
-                  <Typography
-                    variant="labelMedium"
-                    sx={{ whiteSpace: "nowrap" }}
-                  >
-                    {name == "expired" && (
-                      <Trans i18nKey={"common.regenerateAll"} />
-                    )}
-                    {name == "expiredAdvices" && (
-                      <Trans i18nKey={"common.regenerate"} />
-                    )}
-                  </Typography>
-                </LoadingButton>
-              </div>
-            </Tooltip>
-            <Box>
               <LoadingButton
-                onClick={() =>
-                  handleApproveAllExpired(
-                    name === "unapproved" ? "insight" : "advice",
-                  )
-                }
-                loading={approveExpiredInsights.loading}
-                sx={{
-                  padding: "4px 10px",
-                  marginInlineStart: "auto",
-                }}
-                color={color === "info" ? "primary" : color}
+                onClick={regeneratedAll}
                 variant="outlined"
+                disabled={
+                  name === "expired"
+                    ? issues?.unanswered > 0 || disableGenerateButtons
+                    : false
+                }
+                loading={regenerateInsights.loading}
+                color={color === "info" ? "primary" : color}
               >
                 <Typography variant="labelMedium" sx={{ whiteSpace: "nowrap" }}>
-                  {name == "expired" && <Trans i18nKey={"common.approveAll"} />}
-                  {name == "expiredAdvices" && (
-                    <Trans i18nKey={"common.approve"} />
+                  {name === "expired" && (
+                    <Trans i18nKey="common.regenerateAll" />
+                  )}
+                  {name === "expiredAdvices" && (
+                    <Trans i18nKey="common.regenerate" />
                   )}
                 </Typography>
               </LoadingButton>
-            </Box>
-          </>
-        ))}
+            </div>
+          </Tooltip>
+
+          <Box>
+            <LoadingButton
+              onClick={() =>
+                handleApproveAllExpired(
+                  name === "expired" ? "insight" : "advice",
+                )
+              }
+              loading={approveExpiredInsights.loading}
+              sx={{ padding: "4px 10px", marginInlineStart: "auto" }}
+              color={color === "info" ? "primary" : color}
+              variant="outlined"
+            >
+              <Typography variant="labelMedium" sx={{ whiteSpace: "nowrap" }}>
+                {name === "expired" && <Trans i18nKey="common.approveAll" />}
+                {name === "expiredAdvices" && (
+                  <Trans i18nKey="common.approve" />
+                )}
+              </Typography>
+            </LoadingButton>
+          </Box>
+        </>
+      )}
       {name === "unresolvedComments" && (
         <Button
           onClick={(event) => handleSolvedComments(event)}

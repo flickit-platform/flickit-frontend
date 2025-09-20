@@ -95,7 +95,6 @@ export default function ScoreSection({
           maturity_level_number={gaugeProps.maturity_level_number}
           confidence_value={gaugeProps.confidence_value}
           confidence_text={gaugeProps.confidence_text}
-          hideGuidance
           status_font_variant="headlineMedium"
           maxWidth="240px"
           confidence_text_variant="semiBoldSmall"

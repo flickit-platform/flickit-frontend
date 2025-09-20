@@ -17,7 +17,6 @@ interface IGaugeProps extends BoxProps {
   confidence_value?: number | null;
   height?: number | string;
   className?: string;
-  hideGuidance?: boolean;
   confidence_text?: string | null;
   maturity_status_guide?: string | null;
   confidence_text_variant?: any;
