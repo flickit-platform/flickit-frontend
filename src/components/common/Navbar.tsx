@@ -362,13 +362,6 @@ const Navbar = () => {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [notificationCenterOpen]);
 
-  const navigateToAssessments = () => {
-    navigate("/spaces");
-    if (!isAuthenticated) {
-      keycloakService.doLogin();
-    }
-  };
-
   const handleButtonClick = (e: any, name: string) => {
     keycloakService.doLogin();
     (window as any).dataLayer?.push?.({
@@ -504,7 +497,16 @@ const Navbar = () => {
             }}
           >
             <Button
-              onClick={navigateToAssessments}
+              component={NavLink}
+              to="/spaces"
+              onClick={(e) => {
+                if (!isAuthenticated) {
+                  e.preventDefault();
+                  keycloakService.doLogin({
+                    redirectUri: `${window.location.origin}/spaces`,
+                  });
+                }
+              }}
               data-cy="spaces"
               sx={{
                 ...styles.activeNavbarLink,
