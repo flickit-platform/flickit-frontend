@@ -13,7 +13,7 @@ import { ISubjectInfo, IMaturityLevel } from "@/types/index";
 import CompletionRing from "@/components/common/charts/completion-ring/CompletionRing";
 import languageDetector from "@/utils/language-detector";
 import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
-import SubjectContainer from "../../../subject-report-old/SubjectContainer";
+import SubjectContainer from "../../../subject-report/SubjectContainer";
 import FlatGaugeComponent from "@/components/common/FlatGaugeComponent";
 
 interface IAssessmentSubjectCardProps extends ISubjectInfo {
