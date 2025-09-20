@@ -187,7 +187,6 @@ const AssessmentReportContainer = (props: any) => {
                     level_value={maturityLevel?.index ?? 0}
                     confidence_value={confidenceValue}
                     confidence_text={t("common.confidence") + ":"}
-                    hideGuidance
                     confidence_text_variant="semiBoldSmall"
                     maxWidth="240px"
                     height="156px"
