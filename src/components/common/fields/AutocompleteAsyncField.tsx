@@ -356,7 +356,9 @@ const AutocompleteBaseField = (
           label={label}
           fullWidth
           inputRef={ref}
-          error={!inputValue && (hasError || errorObject?.response?.data.message)}
+          error={
+            !inputValue && (hasError || errorObject?.response?.data.message)
+          }
           helperText={
             (errorMessage as ReactNode) ||
             (errorObject?.response?.data.message &&
@@ -366,10 +368,6 @@ const AutocompleteBaseField = (
           sx={{
             "& .MuiOutlinedInput-root": {
               fontFamily: farsiFontFamily,
-              "& .MuiAutocomplete-endAdornment": {
-                left: theme.direction == "rtl" ? "9px" : "unset",
-                right: theme.direction == "ltr" ? "9px" : "unset",
-              },
             },
           }}
           name={name}
@@ -404,8 +402,8 @@ const AutocompleteBaseField = (
               gap="4.5px"
               sx={{ ...styles.centerVH }}
             >
-              {showIconBeforeOption && (
-                option?.isDefault ? (
+              {showIconBeforeOption &&
+                (option?.isDefault ? (
                   <HomeIcon
                     sx={{ fontSize: "20px", color: "surface.onVariant" }}
                   />
@@ -413,8 +411,7 @@ const AutocompleteBaseField = (
                   <FolderOutlinedIcon
                     sx={{ color: "surface.onVariant", fontSize: "20px" }}
                   />
-                )
-              )}
+                ))}
               {option?.[filterFields[0]]}
             </Box>
             {!!option?.[filterFields[1]] && (
@@ -484,7 +481,7 @@ const LoadingComponent = ({ options }: { options: readonly any[] }) => {
   );
 };
 
-export const useConnectAutocompleteField = <T = any>(props: {
+export const useConnectAutocompleteField = <T = any,>(props: {
   service: TQueryServiceFunction<T>;
   accessor?: string;
 }) => {
