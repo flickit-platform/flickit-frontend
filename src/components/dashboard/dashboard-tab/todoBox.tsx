@@ -494,7 +494,7 @@ export const IssuesItem = ({
               }
               loading={approveExpiredInsights.loading}
               sx={{ padding: "4px 10px", marginInlineStart: "auto" }}
-              color="primary"
+              color={color === "info" ? "primary" : color}
               variant="outlined"
             >
               <Typography variant="labelMedium" sx={{ whiteSpace: "nowrap" }}>
