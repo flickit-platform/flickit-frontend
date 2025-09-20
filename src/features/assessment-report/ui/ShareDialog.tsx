@@ -49,9 +49,9 @@ export default function ShareDialog({
   const { reset, handleSubmit } = methods;
 
   const isRTL = lng === "fa";
-  const {
-    space: { isDefault },
-  } = assessment;
+  const { space } = assessment ?? {};
+  const isDefault = space?.isDefault ?? false;
+
   const {
     access,
     snackbarOpen,
@@ -99,7 +99,7 @@ export default function ShareDialog({
       <>
         {access === VISIBILITY.RESTRICTED && permissions.canShareReport && (
           <>
-            <Box mt={3}>
+            <Box mt={permissions.canManageVisibility ? 3 : 0}>
               <Typography
                 variant="bodyMedium"
                 color="rgba(61, 77, 92, 0.5)"
@@ -211,7 +211,7 @@ export default function ShareDialog({
       }}
       titleStyle={{ mb: "0px !important" }}
     >
-      <Box mt={0}>
+      <Box sx={{ display: permissions.canManageVisibility ? "flex" : "none", mt: 0 }}>
         <Typography
           variant="bodyMedium"
           color="rgba(61, 77, 92, 0.5)"
@@ -222,56 +222,58 @@ export default function ShareDialog({
         <Divider sx={{ my: 1 }} />
       </Box>
 
-      <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
+      <Box sx={{ display: permissions.canManageVisibility ? "flex" : "none", flexDirection: "column", gap: 1 }}>
         {Object.values(VISIBILITY).map((key) => {
           const k = key as VISIBILITY;
           const isSelected = access === k;
           return (
-            <Box
-              key={k}
-              sx={{
-                display: "flex",
-                justifyContent: "flex-start",
-                background: isSelected ? "#2466A814" : "inherit",
-                width: "100%",
-                height: "fit-content",
-                borderRadius: "8%",
-                cursor: "pointer",
-              }}
-              onClick={() => handleSelect(k)}
-              role="button"
-            >
-              <Box sx={{ ...styles.centerVH }} width="38px" height="38px">
-                <Radio
-                  checked={isSelected}
-                  color="primary"
-                  size="small"
-                  sx={{ padding: "9px", "&.Mui-checked": { color: "#2466A8" } }}
-                />
-              </Box>
-              <Box
-                sx={{ ...styles.centerCV }}
-                padding="8px 0"
-                gap="4px"
-                width="398px"
-                height="59px"
-              >
-                <Typography
-                  fontFamily="inherit"
-                  variant="bodyMedium"
-                  sx={{ color: "#2B333B" }}
+                <Box
+                  key={k}
+                  sx={{
+                    display: "flex",
+                    justifyContent: "flex-start",
+                    background: isSelected ? "#2466A814" : "inherit",
+                    width: "100%",
+                    height: "fit-content",
+                    borderRadius: "8px",
+                    cursor: "pointer",
+                  }}
+                  onClick={() => handleSelect(k)}
                 >
-                  {accessOptionsNew[k].title}
-                </Typography>
-                <Typography
-                  variant="bodySmall"
-                  color="background.onVariant"
-                  fontFamily="inherit"
-                >
-                  {accessOptionsNew[k].description}
-                </Typography>
-              </Box>
-            </Box>
+                  <Box sx={{ ...styles.centerVH }} width="38px" height="38px">
+                    <Radio
+                      checked={isSelected}
+                      color="primary"
+                      size="small"
+                      sx={{
+                        padding: "9px",
+                        "&.Mui-checked": { color: "#2466A8" },
+                      }}
+                    />
+                  </Box>
+                  <Box
+                    sx={{ ...styles.centerCV }}
+                    padding="8px 0"
+                    gap="4px"
+                    width="398px"
+                    height="59px"
+                  >
+                    <Typography
+                      fontFamily="inherit"
+                      variant="bodyMedium"
+                      sx={{ color: "#2B333B" }}
+                    >
+                      {accessOptionsNew[k].title}
+                    </Typography>
+                    <Typography
+                      variant="bodySmall"
+                      color="background.onVariant"
+                      fontFamily="inherit"
+                    >
+                      {accessOptionsNew[k].description}
+                    </Typography>
+                  </Box>
+                </Box>
           );
         })}
       </Box>
