@@ -118,7 +118,7 @@ const ExpertGroupContainer = () => {
     status: boolean;
     id: string;
   }>({ status: false, id: "" });
-  const handelRemoveMember = async (userId: any) => {
+  const handelRemoveMember = async () => {
     try {
       await removeExpertGroupMembers.query({
         id: expertGroupId,
@@ -456,7 +456,7 @@ const ExpertGroupContainer = () => {
         onClose={() =>
           setRemoveMemberDialog({ ...removeMemberDialog, status: false })
         }
-        onConfirm={() => handelRemoveMember}
+        onConfirm={handelRemoveMember}
         title="common.warning"
         content="expertGroups.removeMemberExpertGroup"
       />
