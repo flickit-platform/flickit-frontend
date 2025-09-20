@@ -605,7 +605,7 @@ export const getTheme = (lang: any) => {
         styleOverrides: {
           paper: {
             borderRadius: "8px",
-            background: grayBlue[96]
+            background: grayBlue[96],
           },
         },
       },
@@ -744,6 +744,12 @@ export const getTheme = (lang: any) => {
             textAlign: is_farsi ? "right" : "left",
             left: 0,
             right: 0,
+          },
+          root: {
+            "& .MuiAutocomplete-endAdornment": {
+              left: is_farsi ? "9px !important" : "unset !important",
+              right: !is_farsi ? "9px !important" : "unset !important",
+            },
           },
         },
       },
