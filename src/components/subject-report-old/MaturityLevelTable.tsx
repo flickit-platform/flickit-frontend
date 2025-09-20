@@ -391,7 +391,7 @@ const MaturityLevelTable = ({
                 textOverflow: "ellipsis",
                 whiteSpace: "nowrap",
                 boxShadow: `inset 0 1px 0 0 #C7CCD1, inset 0 -1px 0 0 #C7CCD1`,
-                "&:first-child": {
+                "&:first-of-type": {
                   borderEndStartRadius: "8px !important",
                   borderStartStartRadius: "8px !important",
                 },
@@ -470,7 +470,6 @@ const MaturityLevelTable = ({
           return (
             <TableRow
               key={uniqueId()}
-              component="div"
               onClick={() => handleQuestionClick(index)}
               data-testid="open-question-details-dialog"
               sx={{
@@ -505,15 +504,17 @@ const MaturityLevelTable = ({
           );
         })
       ) : (
-        <TableCell
-          colSpan={columns.length}
-          align="center"
-          sx={{ textAlign: "center" }}
-        >
-          <Typography>
-            <Trans i18nKey="subject.noQuestionAvailableForThisMaturity" />
-          </Typography>
-        </TableCell>
+        <TableRow>
+          <TableCell
+            colSpan={columns.length}
+            align="center"
+            sx={{ textAlign: "center" }}
+          >
+            <Typography>
+              <Trans i18nKey="subject.noQuestionAvailableForThisMaturity" />
+            </Typography>
+          </TableCell>
+        </TableRow>
       )}
     </TableBody>
   );
