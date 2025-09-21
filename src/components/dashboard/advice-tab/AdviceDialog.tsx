@@ -8,7 +8,6 @@ import { useParams } from "react-router-dom";
 import { styles } from "@/config/styles";
 import AdviceSlider from "@/components/dashboard/advice-tab/AdviceSlider";
 import AdviceQuestionTable from "./AdviceQuestionTable";
-import { LoadingSkeletonKitCard } from "@/components/common/loadings/LoadingSkeletonKitCard";
 import AIGenerated from "@/components/common/icons/AIGenerated";
 
 import { ICustomError } from "@/utils/custom-error";
@@ -20,6 +19,7 @@ import {
   CEDialog,
   CEDialogActions,
 } from "@/components/common/dialogs/CEDialog";
+import { LoadingAdviceTargetsSkeleton } from "@/components/common/loadings/LoadingAdviceTargetsSkeleton";
 
 type AdviceDialogProps = {
   open: boolean;
@@ -145,7 +145,7 @@ const AdviceDialog = ({
           />
         </Typography>
 
-        {(fetchPreAdviceInfo.loading || loading) && <LoadingSkeletonKitCard />}
+        {(fetchPreAdviceInfo.loading || loading) && <LoadingAdviceTargetsSkeleton />}
 
         {/* Step 1: Targets */}
         <Grid
