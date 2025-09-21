@@ -9,7 +9,7 @@ import { DialogProps } from "@mui/material/Dialog";
 import { useForm as useFormSpree } from "@formspree/react";
 import { FormProvider, useForm } from "react-hook-form";
 import { InputFieldUC } from "../fields/InputField";
-import telegramIcon from "@/assets/svg/telegram-icon.svg";
+import telegramIcon from "@/assets/svg/telegram-logo.svg";
 import splusIcon from "@/assets/svg/splus-logo.svg";
 import { styles } from "@styles";
 import { toast } from "react-toastify";
