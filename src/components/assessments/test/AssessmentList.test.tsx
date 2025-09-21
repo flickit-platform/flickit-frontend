@@ -66,27 +66,33 @@ describe("AssessmentsList", () => {
     fetchAssessments: vi.fn(),
   };
 
-  beforeEach(() => {
+  const AssessmentListRender = (singleItem?: string) => {
+     let props = !!singleItem ? {...defaultProps, data:[mockData[0]] } : defaultProps
+
     render(
       <MemoryRouter>
         <MockServiceProvider>
-          <AssessmentsList {...defaultProps} />
+          <AssessmentsList {...props} />
         </MockServiceProvider>
       </MemoryRouter>,
     );
-  });
+  };
 
   it("renders correct number of AssessmentCards", () => {
+    AssessmentListRender()
     const items = screen.getAllByTestId("assessment-card");
     expect(items).toHaveLength(mockData.length);
   });
 
   it("renders assessment titles", () => {
+    AssessmentListRender()
     expect(screen.getByText(/title1/)).toBeInTheDocument();
     expect(screen.getByText(/title2/)).toBeInTheDocument();
   });
 
+
   it("renders kit titles along with assessments", () => {
+    AssessmentListRender()
     expect(
       screen.getByText(/Software Performance Evaluation1/),
     ).toBeInTheDocument();
@@ -96,6 +102,7 @@ describe("AssessmentsList", () => {
   });
 
   it("renders permissions correctly", () => {
+    AssessmentListRender()
     mockData.forEach((assessment) => {
       const {
         canManageSettings,
@@ -108,11 +115,12 @@ describe("AssessmentsList", () => {
       expect(canViewDashboard).toBe(true);
       expect(canViewQuestionnaires).toBe(false);
     });
-
-
-
   });
 
+  it("check canManageSettings",()=>{
+    AssessmentListRender("renderSingleItem")
+    expect(screen.getByTestId("more-action-btn")).toBeInTheDocument()
+  })
 
 
 });
