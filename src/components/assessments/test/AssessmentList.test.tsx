@@ -126,9 +126,7 @@ describe("AssessmentsList", () => {
         ],
       };
     }
-
-
-
+    
     render(
       <MemoryRouter>
         <MockServiceProvider>
