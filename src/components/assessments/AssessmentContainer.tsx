@@ -149,6 +149,7 @@ const AssessmentContainer = () => {
                         mx: isSmallScreen ? "0px !important" : "unset",
                       },
                     }}
+                    data-testid="assessmentDialogOnClk"
                   />
                 </Box>
               ) : (
