@@ -67,7 +67,67 @@ describe("AssessmentsList", () => {
   };
 
   const AssessmentListRender = (singleItem?: string) => {
-     let props = !!singleItem ? {...defaultProps, data:[mockData[0]] } : defaultProps
+
+    let props = defaultProps;
+
+    if (singleItem === "canManageSettings") {
+      props = { ...defaultProps, data: [mockData[0]] };
+    }
+
+    if (singleItem === "canViewReport") {
+      props = {
+        ...defaultProps,
+        data: [
+          {
+            ...mockData[0],
+            hasReport: true,
+            mode: { code: "QUICK" },
+            permissions : {
+              ...mockData[0].permissions,
+              canViewReport: true
+            }
+          },
+        ],
+      };
+    }
+
+    if (singleItem === "canViewDashboard") {
+      props = {
+        ...defaultProps,
+        data: [
+          {
+            ...mockData[0],
+            hasReport: true,
+            mode: { code: "ADVANCE" },
+            permissions : {
+              ...mockData[0].permissions,
+              canViewReport: false,
+              canViewDashboard: true
+            }
+          },
+        ],
+      };
+    }
+    if (singleItem === "canViewQuestionnaires") {
+      props = {
+        ...defaultProps,
+        data: [
+          {
+            ...mockData[0],
+            hasReport: true,
+            mode: { code: "QUICK" },
+            permissions : {
+              ...mockData[0].permissions,
+              canViewReport: false,
+              canViewDashboard: false,
+              canViewQuestionnaires: true
+            }
+          },
+        ],
+      };
+    }
+
+
 
     render(
       <MemoryRouter>
@@ -118,9 +178,34 @@ describe("AssessmentsList", () => {
   });
 
   it("check canManageSettings",()=>{
-    AssessmentListRender("renderSingleItem")
+    AssessmentListRender("canManageSettings")
     expect(screen.getByTestId("more-action-btn")).toBeInTheDocument()
   })
-
-
+  it("check canViewReport",()=>{
+    AssessmentListRender("canViewReport")
+    const assessmentCardHeader = screen.getByTestId("assessmentCard-header")
+    const assessmentCardBtn = screen.getByTestId("assessment-card-btn")
+    expect(assessmentCardHeader).toBeInTheDocument()
+    expect(assessmentCardBtn).toBeInTheDocument()
+    expect(assessmentCardHeader).toHaveAttribute("href", `/space-1/assessments/id-1/graphical-report/`)
+    expect(assessmentCardBtn).toHaveAttribute("href", `/space-1/assessments/id-1/graphical-report/`)
+  })
+  it("check canViewDashboard",()=>{
+    AssessmentListRender("canViewDashboard")
+    const assessmentCardHeader = screen.getByTestId("assessmentCard-header")
+    const assessmentCardBtn = screen.getByTestId("assessment-card-btn")
+    expect(assessmentCardHeader).toBeInTheDocument()
+    expect(assessmentCardBtn).toBeInTheDocument()
+    expect(assessmentCardHeader).toHaveAttribute("href", `/space-1/assessments/1/id-1/dashboard`)
+    expect(assessmentCardBtn).toHaveAttribute("href", `/space-1/assessments/1/id-1/dashboard`)
+  })
+  it("check canViewQuestionnaires",()=>{
+    AssessmentListRender("canViewQuestionnaires")
+    const assessmentCardHeader = screen.getByTestId("assessmentCard-header")
+    const assessmentCardBtn = screen.getByTestId("assessment-card-btn")
+    expect(assessmentCardHeader).toBeInTheDocument()
+    expect(assessmentCardBtn).toBeInTheDocument()
+    expect(assessmentCardHeader).toHaveAttribute("href", `/space-1/assessments/1/id-1/questionnaires`)
+    expect(assessmentCardBtn).toHaveAttribute("href", `/space-1/assessments/1/id-1/questionnaires`)
+  })
 });
