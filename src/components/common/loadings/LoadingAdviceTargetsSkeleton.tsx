@@ -2,6 +2,7 @@ import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import Skeleton from "@mui/material/Skeleton";
 import { alpha, useTheme } from "@mui/material/styles";
+import uniqueId from "@/utils/unique-id";
 
 type AdviceSliderSkeletonItemProps = {
   levels?: number;
@@ -77,7 +78,7 @@ const AdviceSliderSkeletonItem = ({
               const pct = total > 1 ? (i / (total - 1)) * 100 : 0;
               return (
                 <Box
-                  key={i}
+                  key={uniqueId()}
                   sx={{
                     position: "absolute",
                     left: `${pct}%`,
@@ -164,7 +165,7 @@ export const LoadingAdviceTargetsSkeleton = ({
       }}
     >
       {Array.from({ length: count }).map((_, i) => (
-        <Grid key={i} item xs={12} sm={6}>
+        <Grid key={uniqueId()} item xs={12} sm={6}>
           <Box
             sx={{
               borderRadius: "8px",

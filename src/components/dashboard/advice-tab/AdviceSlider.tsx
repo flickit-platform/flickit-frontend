@@ -14,7 +14,6 @@ type AdviceSliderProps = {
   maturityLevels: Array<{ id: string; title: string }>;
   setTarget: React.Dispatch<React.SetStateAction<any[]>>;
   target: any[];
-  currentState?: { title?: string };
 };
 
 const clamp = (n: number, min: number, max: number) =>
