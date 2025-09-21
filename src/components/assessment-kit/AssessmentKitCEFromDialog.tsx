@@ -235,7 +235,7 @@ const AssessmentKitCEFromDialog = (props: IAssessmentKitCEFromDialogProps) => {
           {type === "convert" && buttonStep == 0 && !convertData && (
             <Box pb="10px">
               <Box
-                bgcolor="background.containerHigher"
+                bgcolor="background.containerHighest"
                 width="fit-content"
                 px={1}
                 sx={{ ...styles.centerV }}
@@ -261,7 +261,7 @@ const AssessmentKitCEFromDialog = (props: IAssessmentKitCEFromDialogProps) => {
           {type === "convert" && buttonStep == 1 && (
             <Box pb="10px">
               <Box
-                bgcolor="background.containerHigher"
+                bgcolor="background.containerHighest"
                 width="fit-content"
                 px={1}
                 sx={{ ...styles.centerV }}

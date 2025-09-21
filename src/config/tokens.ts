@@ -53,7 +53,7 @@ export const v3Tokens = {
     containerLow: grayBlue[98],
     container: grayBlue[96],
     containerHigh: grayBlue[94],
-    containerHigher: grayBlue[92],
+    containerHighest: grayBlue[92],
   },
   states: {
     hover: 0.08,          

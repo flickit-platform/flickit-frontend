@@ -398,18 +398,18 @@ const AutocompleteBaseField = (
                   ? farsiFontFamily
                   : primaryFontFamily
               }
-              color="surface.onVariant"
+              color="background.onVariant"
               gap="4.5px"
               sx={{ ...styles.centerVH }}
             >
               {showIconBeforeOption &&
                 (option?.isDefault ? (
                   <HomeIcon
-                    sx={{ fontSize: "20px", color: "surface.onVariant" }}
+                    sx={{ fontSize: "20px", color: "background.onVariant" }}
                   />
                 ) : (
                   <FolderOutlinedIcon
-                    sx={{ color: "surface.onVariant", fontSize: "20px" }}
+                    sx={{ color: "background.onVariant", fontSize: "20px" }}
                   />
                 ))}
               {option?.[filterFields[0]]}

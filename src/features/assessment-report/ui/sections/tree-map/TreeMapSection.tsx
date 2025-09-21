@@ -77,7 +77,7 @@ const HeaderStrip: React.FC<{
   assessment: any;
 }> = ({ vm, levels, lng, isQuickMode, assessment }) => (
   <Box
-    bgcolor="background.containerHigher"
+    bgcolor="background.containerHighest"
     borderRadius="16px 16px 0 0"
     p={{ xs: 2, md: 2 }}
     mx={{ xs: 2, md: 4 }}
