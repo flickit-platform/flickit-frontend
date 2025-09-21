@@ -186,8 +186,8 @@ const AdviceDialog = ({
           mt={2}
           sx={{
             borderRadius: { xs: 0, sm: "8px" },
-            bgcolor: "background.containerLowest",
-            maxHeight: "40vh",
+            bgcolor: "background.containerHighest",
+            maxHeight: { xs: "60vh", md: "40vh" },
             overflow: "hidden",
             overflowX: "auto",
             display: step === 2 ? "block" : "none",
@@ -195,10 +195,6 @@ const AdviceDialog = ({
         >
           <AdviceQuestionTable
             adviceResult={adviceResult}
-            setAdviceResult={setAdviceResult}
-            handleClose={handleClose}
-            target={target}
-            permissions={permissions}
           />
         </Box>
 
