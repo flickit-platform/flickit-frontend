@@ -92,21 +92,6 @@ const AdviceQuestionTable = ({
   const theme = useTheme();
   const isMediumScreen = useMediaQuery(theme.breakpoints.up("md"));
 
-  const [currentPage, setCurrentPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(10);
-
-  const paginatedData = useMemo(() => {
-    const startIndex = currentPage * rowsPerPage;
-    return adviceResult.slice(startIndex, startIndex + rowsPerPage);
-  }, [adviceResult, currentPage, rowsPerPage]);
-
-  useEffect(() => {
-    setCurrentPage(0);
-  }, [rowsPerPage]);
-
-  const getAbsoluteIndex = (rowIndex: number) =>
-    rowIndex + 1 + currentPage * rowsPerPage;
-
   const renderIndexCell = (
     _row: AdviceRow,
     _index: number,
@@ -300,8 +285,8 @@ const AdviceQuestionTable = ({
     <>
       <TableContainer
         sx={{
-          height:"100%",
-          maxHeight: { xs: "unset", md: 280 },
+          height: "100%",
+          maxHeight: { xs: "unset", md: 320 },
           width: { xs: 600, sm: "unset" },
           overflow: "auto",
           borderRadius: 1,
@@ -349,16 +334,12 @@ const AdviceQuestionTable = ({
           </TableHead>
 
           <TableBody>
-            {paginatedData.map((row, rowIndex) => {
-              const absoluteIndex = getAbsoluteIndex(rowIndex);
-              const isLastRow = rowIndex === paginatedData.length - 1;
+            {adviceResult.map((row, rowIndex) => {
+              const isLastRow = rowIndex === adviceResult.length - 1;
 
               return (
                 <TableRow
-                  key={
-                    row.id ??
-                    `${row.question?.index}-${currentPage}-${rowIndex}`
-                  }
+                  key={row.id}
                   sx={{
                     "& td": {
                       borderBottom: isLastRow
@@ -381,7 +362,7 @@ const AdviceQuestionTable = ({
                           : "table-cell",
                       }}
                     >
-                      {column.render(row, rowIndex, absoluteIndex)}
+                      {column.render(row, rowIndex, rowIndex)}
                     </TableCell>
                   ))}
                 </TableRow>
@@ -390,22 +371,6 @@ const AdviceQuestionTable = ({
           </TableBody>
         </Table>
       </TableContainer>
-
-      <Box
-        sx={{
-          position: "sticky",
-          bottom: 0,
-          bgcolor: "background.containerHighest",
-          borderTop: `1px solid ${HEADER_BORDER_COLOR}`,
-          zIndex: 1,
-        }}
-      >
-        <CustomTablePagination
-          data={adviceResult}
-          onPageChange={setCurrentPage}
-          onRowsPerPageChange={setRowsPerPage}
-        />
-      </Box>
     </>
   );
 };

@@ -187,7 +187,7 @@ const AdviceDialog = ({
           sx={{
             borderRadius: { xs: 0, sm: "8px" },
             bgcolor: "background.containerHighest",
-            maxHeight: { xs: "60vh", md: "40vh" },
+            maxHeight: { xs: "70vh", md: "40vh" },
             overflow: "hidden",
             overflowX: "auto",
             display: step === 2 ? "block" : "none",
