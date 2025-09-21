@@ -221,15 +221,17 @@ const AdviceSlider = (props: AdviceSliderProps) => {
         </ThemeProvider>
       </Grid>
 
-      <Grid item xs={1.5} sm={1.5}>
+      <Grid item xs={1.7} sm={1.7}>
         <Box display="flex" alignItems="center" justifyContent="flex-end">
           <Typography
-            color="background.onVariant"
-            variant="bodySmall"
+            color="primary"
+            variant="semiBoldSmall"
             sx={(theme) => ({ direction: theme.direction })}
           >
             <Trans
-              i18nKey="common.level"
+              i18nKey={
+                value - defaultValue > 1 ? "common.levels" : "common.level"
+              }
               values={{ count: value - defaultValue }}
             />
           </Typography>
