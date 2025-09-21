@@ -2,6 +2,7 @@ import { useState, useMemo } from "react";
 import Box from "@mui/material/Box";
 import Slider from "@mui/material/Slider";
 import Typography from "@mui/material/Typography";
+import Tooltip from "@mui/material/Tooltip";
 import { Grid, ThemeProvider, createTheme } from "@mui/material";
 import { useTheme, alpha } from "@mui/material/styles";
 import { Trans } from "react-i18next";
@@ -14,11 +15,11 @@ type AdviceSliderProps = {
   maturityLevels: Array<{ id: string; title: string }>;
   setTarget: React.Dispatch<React.SetStateAction<any[]>>;
   target: any[];
+  currentState?: { title?: string };
 };
 
 const clamp = (n: number, min: number, max: number) =>
   Math.min(Math.max(n, min), max);
-
 const fontFor = (text?: string) =>
   languageDetector(text) ? farsiFontFamily : primaryFontFamily;
 
@@ -29,6 +30,7 @@ const AdviceSlider = (props: AdviceSliderProps) => {
     maturityLevels = [],
     setTarget,
     target,
+    currentState,
   } = props;
 
   const totalLevels = Math.max(1, maturityLevels.length || 5);
@@ -38,14 +40,12 @@ const AdviceSlider = (props: AdviceSliderProps) => {
     const next = Array.isArray(newValue) ? newValue[0] : newValue;
     if (next >= defaultValue) {
       setValue(next);
-
       const nextIdx = clamp(next - 1, 0, totalLevels - 1);
       const nextLevelId = maturityLevels[nextIdx]?.id;
 
       const existingIndex = target.findIndex(
         (item: any) => item.attributeId === attribute?.id,
       );
-
       if (existingIndex === -1) {
         setTarget((prev: any[]) => [
           ...prev,
@@ -72,6 +72,15 @@ const AdviceSlider = (props: AdviceSliderProps) => {
 
   const defaultPct =
     totalLevels > 1 ? ((defaultValue - 1) / (totalLevels - 1)) * 100 : 0;
+
+  const selectedIdx = useMemo(() => {
+    const chosenValue = value ?? defaultValue ?? 1;
+    return clamp(chosenValue - 1, 0, totalLevels - 1);
+  }, [value, defaultValue, totalLevels]);
+
+  const toLevel = maturityLevels[selectedIdx];
+  const toTitle = toLevel?.title;
+  const fromTitle = currentState?.title;
 
   return (
     <Grid
@@ -114,17 +123,14 @@ const AdviceSlider = (props: AdviceSliderProps) => {
                 borderRadius: 999,
                 backgroundRepeat: "no-repeat, no-repeat",
                 backgroundImage: `
-                    linear-gradient(90deg, ${alpha(theme.palette.primary.main, 0.25)}, ${alpha(theme.palette.primary.main, 0.25)}),
-                    linear-gradient(90deg, ${theme.palette.primary.main}, ${theme.palette.primary.main})
-                  `,
+                  linear-gradient(90deg, ${alpha(theme.palette.primary.main, 0.25)}, ${alpha(theme.palette.primary.main, 0.25)}),
+                  linear-gradient(90deg, ${theme.palette.primary.main}, ${theme.palette.primary.main})
+                `,
                 backgroundSize: `
-                    100% 100%,
-                    ${defaultPct}% 100%
-                  `,
-                backgroundPosition: `
-                    0% 0%,
-                    0% 0%
-                  `,
+                  100% 100%,
+                  ${defaultPct}% 100%
+                `,
+                backgroundPosition: `0% 0%, 0% 0%`,
                 zIndex: 1,
               })}
             />
@@ -141,11 +147,7 @@ const AdviceSlider = (props: AdviceSliderProps) => {
                       : "0%",
                   height: 2,
                   transform: "translateY(-50%)",
-                  backgroundImage: `repeating-linear-gradient(
-                90deg,
-                ${theme.palette.primary.main} 0 4px,
-                transparent 4px 8px
-              )`,
+                  backgroundImage: `repeating-linear-gradient(90deg, ${theme.palette.primary.main} 0 4px, transparent 4px 8px)`,
                   backgroundRepeat: "repeat-x",
                   borderRadius: 999,
                   zIndex: 2,
@@ -165,6 +167,8 @@ const AdviceSlider = (props: AdviceSliderProps) => {
               marks
               value={value}
               onChange={handleSliderChange}
+              valueLabelDisplay="auto"
+              valueLabelFormat={() => toTitle || ""}
               sx={(theme) => ({
                 mt: 1,
                 height: 2,
@@ -172,7 +176,6 @@ const AdviceSlider = (props: AdviceSliderProps) => {
                 zIndex: 3,
                 "& .MuiSlider-rail": { opacity: 0 },
                 "& .MuiSlider-track": { opacity: 0, border: "none" },
-
                 "& .MuiSlider-mark": {
                   width: 1.5,
                   height: 12,
@@ -181,7 +184,6 @@ const AdviceSlider = (props: AdviceSliderProps) => {
                   transform: "translate(-1px, -6px)",
                   opacity: 0.35,
                 },
-
                 "& .MuiSlider-thumb": {
                   width: 12,
                   height: 12,
@@ -189,26 +191,32 @@ const AdviceSlider = (props: AdviceSliderProps) => {
                 },
               })}
             />
-
-            <Box
-              sx={(theme) => ({
-                position: "absolute",
-                top: "50%",
-                left: `calc(${defaultPct}% )`,
-                transform: "translate(-50%, -50%)",
-                zIndex: 2,
-                "&::before": {
-                  content: '""',
+            <Tooltip
+              arrow
+              placement="top"
+              title={fromTitle || ""}
+              disableHoverListener={!fromTitle}
+            >
+              <Box
+                sx={(theme) => ({
                   position: "absolute",
+                  top: "50%",
+                  left: `calc(${defaultPct}% )`,
+                  transform: "translate(-50%, -50%)",
+                  zIndex: 2,
+                  "&::before": {
+                    content: '""',
+                    position: "absolute",
+                    borderRadius: "50%",
+                    backgroundColor: alpha(theme.palette.primary.main, 0.7),
+                  },
+                  width: 12,
+                  height: 12,
                   borderRadius: "50%",
-                  backgroundColor: alpha(theme.palette.primary.main, 0.7),
-                },
-                width: 12,
-                height: 12,
-                borderRadius: "50%",
-                backgroundColor: alpha(theme.palette.primary.main, 0.5),
-              })}
-            />
+                  backgroundColor: alpha(theme.palette.primary.main, 0.5),
+                })}
+              ></Box>
+            </Tooltip>
           </Box>
         </ThemeProvider>
       </Grid>
