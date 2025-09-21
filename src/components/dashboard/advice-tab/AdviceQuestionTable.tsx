@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState, memo } from "react";
+import { useMemo, memo } from "react";
 import {
   Table,
   TableHead,
@@ -15,7 +15,6 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import { useTheme } from "@mui/material/styles";
 import { Trans } from "react-i18next";
 
-import CustomTablePagination from "@components/common/CustomTablePagination";
 import languageDetector from "@/utils/language-detector";
 import { farsiFontFamily, primaryFontFamily } from "@config/theme";
 
