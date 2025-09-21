@@ -14,7 +14,7 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import { t } from "i18next";
-import Check from "@/components/spaces/icons/check";
+import Check from "@/components/common/icons/Check";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import { SpaceSmallIcon } from "@/components/common/icons/Space";
 import UniqueId from "@/utils/unique-id";
