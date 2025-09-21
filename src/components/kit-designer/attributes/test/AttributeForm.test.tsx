@@ -4,7 +4,7 @@ import { I18nextProvider } from "react-i18next";
 import i18n from "i18next";
 import userEvent from "@testing-library/user-event";
 import AttributeForm from "@components/kit-designer/attributes/AttributeForm";
-import { KitLanguageProvider } from "@providers/KitProvider";
+import { KitLanguageProvider } from "@/providers/kit-provider";
 
 describe("AttributeForm", () => {
   const newAttributeForm = {

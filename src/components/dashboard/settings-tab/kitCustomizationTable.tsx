@@ -14,7 +14,7 @@ import CheckIcon from "@mui/icons-material/Check";
 import CloseIcon from "@mui/icons-material/Close";
 import { Trans } from "react-i18next";
 import TitleWithTranslation from "@/components/common/fields/TranslationText";
-import { useKitDesignerContext } from "@/providers/KitProvider";
+import { useKitDesignerContext } from "@/providers/kit-provider";
 
 interface Attribute {
   id: string | number;

@@ -5,7 +5,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import { Trans } from "react-i18next";
 import MultiLangTextField from "@/components/common/fields/MultiLangTextField";
 import { styles } from "@/config/styles";
-import { useKitDesignerContext } from "@/providers/KitProvider";
+import { useKitDesignerContext } from "@/providers/kit-provider";
 import { MultiLangs } from "@/types";
 import { useTranslationUpdater } from "@/hooks/useTranslationUpdater";
 

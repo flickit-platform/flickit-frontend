@@ -1,11 +1,11 @@
 import { useCallback, useEffect } from "react";
 import { useLocation, useParams } from "react-router-dom";
-import { useQuery } from "@/utils/useQuery";
+import { useQuery } from "@/hooks/useQuery";
 import { ErrorCodes, IGraphicalReport, PathInfo, ISubject } from "@/types";
-import { VISIBILITY } from "@/utils/enumType";
+import { VISIBILITY } from "@/utils/enum-type";
 import { getBasePath } from "@/utils/helpers";
-import { useAuthContext } from "@/providers/AuthProvider";
-import { useServiceContext } from "@/providers/ServiceProvider";
+import { useAuthContext } from "@/providers/auth-provider";
+import { useServiceContext } from "@/providers/service-provider";
 import useCalculate from "@/hooks/useCalculate";
 
 export const useGraphicalReport = () => {

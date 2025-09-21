@@ -1,5 +1,5 @@
 import { t } from "i18next";
-import useDocumentTitle from "@utils/useDocumentTitle";
+import useDocumentTitle from "@/hooks/useDocumentTitle";
 import AssessmentSettingContainer from "@/components/dashboard/settings-tab/AssessmentSettingContainer";
 
 const AssessmentSettingScreen = () => {

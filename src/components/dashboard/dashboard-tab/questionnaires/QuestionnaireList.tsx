@@ -17,8 +17,8 @@ import { useEffect, useMemo, useState } from "react";
 import { styles } from "@styles";
 import { Link, useLocation, useParams } from "react-router-dom";
 import Button from "@mui/material/Button";
-import { useAssessmentContext } from "@providers/AssessmentProvider";
-import { ASSESSMENT_MODE } from "@utils/enumType";
+import { useAssessmentContext } from "@/providers/assessment-provider";
+import { ASSESSMENT_MODE } from "@/utils/enum-type";
 import { useTheme } from "@mui/material";
 
 interface IQuestionnaireListProps {

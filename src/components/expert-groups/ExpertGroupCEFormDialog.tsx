@@ -5,18 +5,18 @@ import { useForm } from "react-hook-form";
 import { Trans } from "react-i18next";
 import { InputFieldUC } from "@common/fields/InputField";
 import { styles } from "@styles";
-import { useServiceContext } from "@providers/ServiceProvider";
-import setServerFieldErrors from "@utils/setServerFieldError";
+import { useServiceContext } from "@/providers/service-provider";
+import setServerFieldErrors from "@/utils/set-server-field-error";
 import NoteAddRoundedIcon from "@mui/icons-material/NoteAddRounded";
-import { ICustomError } from "@utils/CustomError";
+import { ICustomError } from "@/utils/custom-error";
 import { useNavigate } from "react-router-dom";
 import { CEDialog, CEDialogActions } from "@common/dialogs/CEDialog";
 import FormProviderWithForm from "@common/FormProviderWithForm";
 import RichEditorField from "@common/fields/RichEditorField";
 import UploadField from "@common/fields/UploadField";
-import convertToBytes from "@/utils/convertToBytes";
-import { useQuery } from "@utils/useQuery";
-import showToast from "@utils/toastError";
+import convertToBytes from "@/utils/convert-to-bytes";
+import { useQuery } from "@/hooks/useQuery";
+import showToast from "@/utils/toast-error";
 import { v3Tokens } from "@/config/tokens";
 
 interface IExpertGroupCEFromDialogProps extends DialogProps {

@@ -1,10 +1,10 @@
 import { useCallback, useMemo } from "react";
 import type { AxiosRequestConfig, AxiosResponse } from "axios";
-import { ICustomError } from "@utils/CustomError";
+import { ICustomError } from "@/utils/custom-error";
 import { useConnectAutocompleteField } from "@/components/common/fields/AutocompleteAsyncField";
 import { useNavigate } from "react-router-dom";
-import { useServiceContext } from "@/providers/ServiceProvider";
-import showToast from "@utils/toastError";
+import { useServiceContext } from "@/providers/service-provider";
+import showToast from "@/utils/toast-error";
 
 type Space = { id: string; [k: string]: any };
 

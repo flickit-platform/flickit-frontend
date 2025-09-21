@@ -14,10 +14,10 @@ import Button from "@mui/material/Button";
 import AddIcon from "@mui/icons-material/Add";
 import { useForm } from "react-hook-form";
 import { useParams } from "react-router";
-import { useServiceContext } from "@providers/ServiceProvider";
-import { useQuery } from "@utils/useQuery";
-import { ICustomError } from "@utils/CustomError";
-import firstCharDetector from "@utils/firstCharDetector";
+import { useServiceContext } from "@/providers/service-provider";
+import { useQuery } from "@/hooks/useQuery";
+import { ICustomError } from "@/utils/custom-error";
+import firstCharDetector from "@/utils/first-char-detector";
 import Grid from "@mui/material/Grid";
 import TableContainer from "@mui/material/TableContainer";
 import Table from "@mui/material/Table";
@@ -26,32 +26,32 @@ import TableRow from "@mui/material/TableRow";
 import TableCell from "@mui/material/TableCell";
 import TableBody from "@mui/material/TableBody";
 import Avatar from "@mui/material/Avatar";
-import stringAvatar from "@utils/stringAvatar";
+import stringAvatar from "@/utils/string-avatar";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
 import { Link } from "react-router-dom";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
-import { SelectHeight } from "@utils/selectHeight";
+import { SelectHeight } from "@/utils/select-height";
 import InfoOutlined from "@mui/icons-material/InfoOutlined";
 import { farsiFontFamily, primaryFontFamily } from "@config/theme";
-import languageDetector from "@/utils/languageDetector";
+import languageDetector from "@/utils/language-detector";
 import TablePagination from "@mui/material/TablePagination";
 import { t } from "i18next";
 import InputCustomEditor from "@common/fields/InputCustomEditor";
-import { getReadableDate } from "@utils/readableDate";
+import { getReadableDate } from "@/utils/readable-date";
 import { FormControlLabel, Switch } from "@mui/material";
-import { ASSESSMENT_MODE } from "@/utils/enumType";
+import { ASSESSMENT_MODE } from "@/utils/enum-type";
 import {
   CEDialog,
   CEDialogActions,
 } from "@/components/common/dialogs/CEDialog";
-import useDialog from "@/utils/useDialog";
+import useDialog from "@/hooks/useDialog";
 import {
   assessmentActions,
   useAssessmentContext,
-} from "@/providers/AssessmentProvider";
-import showToast from "@utils/toastError";
+} from "@/providers/assessment-provider";
+import showToast from "@/utils/toast-error";
 
 type InfoField = "creator" | "assessmentKit" | "created" | "lastModified";
 

@@ -2,7 +2,7 @@ import SupTitleBreadcrumb from "@/components/common/SupTitleBreadcrumb";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { Box, IconButton } from "@mui/material";
 import { styles } from "@styles";
-import { useAuthContext } from "@/providers/AuthProvider";
+import { useAuthContext } from "@/providers/auth-provider";
 import { ArrowForward } from "@mui/icons-material";
 import Title from "@common/Title";
 

@@ -2,7 +2,7 @@ import { PropsWithChildren } from "react";
 import { styles } from "@styles";
 import DialogTitle from "@mui/material/DialogTitle";
 import DialogContent from "@mui/material/DialogContent";
-import useScreenResize from "@utils/useScreenResize";
+import useScreenResize from "@/hooks/useScreenResize";
 import Dialog, { DialogProps } from "@mui/material/Dialog";
 import DialogActions, { DialogActionsProps } from "@mui/material/DialogActions";
 import Grid from "@mui/material/Grid";
@@ -13,7 +13,7 @@ import { TDialogContextType } from "@/types/index";
 import { t } from "i18next";
 import { Box, IconButton } from "@mui/material";
 import { Close } from "@mui/icons-material";
-import languageDetector from "@utils/languageDetector";
+import languageDetector from "@/utils/language-detector";
 import { farsiFontFamily, secondaryFontFamily } from "@config/theme";
 
 interface ICEDialogProps extends Omit<DialogProps, "title"> {

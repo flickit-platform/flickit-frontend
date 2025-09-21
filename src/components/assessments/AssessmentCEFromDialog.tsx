@@ -5,10 +5,10 @@ import { useForm } from "react-hook-form";
 import { Trans } from "react-i18next";
 import { InputFieldUC } from "@common/fields/InputField";
 import { styles } from "@styles";
-import { useServiceContext } from "@providers/ServiceProvider";
-import setServerFieldErrors from "@utils/setServerFieldError";
+import { useServiceContext } from "@/providers/service-provider";
+import setServerFieldErrors from "@/utils/set-server-field-error";
 import NoteAddRoundedIcon from "@mui/icons-material/NoteAddRounded";
-import { ICustomError } from "@utils/CustomError";
+import { ICustomError } from "@/utils/custom-error";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { CEDialog, CEDialogActions } from "@common/dialogs/CEDialog";
 import FormProviderWithForm from "@common/FormProviderWithForm";
@@ -19,8 +19,8 @@ import CheckmarkGif from "../common/success/Checkmark";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
-import showToast from "@utils/toastError";
-import { useAuthContext } from "@/providers/AuthProvider";
+import showToast from "@/utils/toast-error";
+import { useAuthContext } from "@/providers/auth-provider";
 import { t } from "i18next";
 
 interface IAssessmentCEFromDialogProps extends DialogProps {

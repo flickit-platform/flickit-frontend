@@ -1,8 +1,8 @@
 import Box from "@mui/material/Box";
-import useDialog from "@/utils/useDialog";
+import useDialog from "@/hooks/useDialog";
 import { t } from "i18next";
 import { useMediaQuery } from "@mui/material";
-import contactUs from "@/assets/svg/contactUs.svg";
+import TeamworkBlocks from "@/assets/svg/teamwork-blocks.svg";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import ContactUsDialog from "@/components/common/dialogs/ContactUsDialog";
@@ -27,8 +27,8 @@ const AssessmentKitsContactUs = () => {
     >
       <Box
         component={"img"}
-        src={contactUs}
-        alt="Contact Us"
+        src={TeamworkBlocks}
+        alt="Teamwork Blocks"
         width={{ xs: "100%", md: "495px" }}
         height={{ xs: "256px", md: "291px" }}
         onClick={() => dialogProps.openDialog({})}

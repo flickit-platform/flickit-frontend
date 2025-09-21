@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from "recharts";
 import { farsiFontFamily, primaryFontFamily } from "@config/theme";
-import languageDetector from "@/utils/languageDetector";
+import languageDetector from "@/utils/language-detector";
 import ChartTooltip from "./ChartTooltip";
-import uniqueId from "@/utils/uniqueId";
+import uniqueId from "@/utils/unique-id";
 import { v3Tokens } from "@/config/tokens";
 
 interface SemiCircleChartProps {

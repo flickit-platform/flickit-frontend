@@ -1,4 +1,4 @@
-import useDialog from "@utils/useDialog";
+import useDialog from "@/hooks/useDialog";
 import { t } from "i18next";
 import keycloakService from "@/service/keycloakService";
 import Box from "@mui/material/Box";

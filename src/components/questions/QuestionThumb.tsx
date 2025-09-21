@@ -4,7 +4,7 @@ import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import { Trans } from "react-i18next";
 import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
-import languageDetector from "@utils/languageDetector";
+import languageDetector from "@/utils/language-detector";
 
 export const QuestionThumb = (props: any) => {
   const {

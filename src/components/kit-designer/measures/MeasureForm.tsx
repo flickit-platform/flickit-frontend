@@ -3,7 +3,7 @@ import { Box, IconButton, Link } from "@mui/material";
 import { Trans } from "react-i18next";
 import CheckIcon from "@mui/icons-material/Check";
 import CloseIcon from "@mui/icons-material/Close";
-import { useKitDesignerContext } from "@/providers/KitProvider";
+import { useKitDesignerContext } from "@/providers/kit-provider";
 import MultiLangTextField from "@/components/common/fields/MultiLangTextField";
 import { useTranslationUpdater } from "@/hooks/useTranslationUpdater";
 import { styles } from "@styles";

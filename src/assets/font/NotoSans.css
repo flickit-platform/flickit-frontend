@@ -2,56 +2,56 @@
   font-family: "NotoSans";
   font-style: normal;
   font-weight: 300;
-  src: url("./Noto_Sans/static/NotoSans-Light.ttf") format("truetype");
+  src: url("./noto-sans/static/NotoSans-Light.ttf") format("truetype");
 }
 
 @font-face {
   font-family: "NotoSans";
   font-style: italic;
   font-weight: 300;
-  src: url("./Noto_Sans/static/NotoSans-Light.ttf") format("truetype");
+  src: url("./noto-sans/static/NotoSans-Light.ttf") format("truetype");
 }
 
 @font-face {
   font-family: "NotoSans";
   font-style: normal;
   font-weight: 400;
-  src: url("./Noto_Sans/static/NotoSans-Regular.ttf") format("truetype");
+  src: url("./noto-sans/static/NotoSans-Regular.ttf") format("truetype");
 }
 
 @font-face {
   font-family: "NotoSans";
   font-style: italic;
   font-weight: 400;
-  src: url("./Noto_Sans/static/NotoSans-Regular.ttf") format("truetype");
+  src: url("./noto-sans/static/NotoSans-Regular.ttf") format("truetype");
 }
 
 @font-face {
   font-family: "NotoSans";
   font-style: normal;
   font-weight: 500;
-  src: url("./Noto_Sans/static/NotoSans-Medium.ttf") format("truetype");
+  src: url("./noto-sans/static/NotoSans-Medium.ttf") format("truetype");
 }
 
 @font-face {
   font-family: "NotoSans";
   font-style: italic;
   font-weight: 500;
-  src: url("./Noto_Sans/static/NotoSans-Medium.ttf") format("truetype");
+  src: url("./noto-sans/static/NotoSans-Medium.ttf") format("truetype");
 }
 
 @font-face {
   font-family: "NotoSans";
   font-style: normal;
   font-weight: 700;
-  src: url("./Noto_Sans/static/NotoSans-Bold.ttf") format("truetype");
+  src: url("./noto-sans/static/NotoSans-Bold.ttf") format("truetype");
 }
 
 @font-face {
   font-family: "NotoSans";
   font-style: italic;
   font-weight: 700;
-  src: url("./Noto_Sans/static/NotoSans-Bold.ttf") format("truetype");
+  src: url("./noto-sans/static/NotoSans-Bold.ttf") format("truetype");
 }
 
 
@@ -59,12 +59,12 @@
   font-family: "NotoSans";
   font-style: normal;
   font-weight: 900;
-  src: url("./Noto_Sans/static/NotoSans-ExtraBold.ttf") format("truetype");
+  src: url("./noto-sans/static/NotoSans-ExtraBold.ttf") format("truetype");
 }
 
 @font-face {
   font-family: "NotoSans";
   font-style: italic;
   font-weight: 900;
-  src: url("./Noto_Sans/static/NotoSans-ExtraBold.ttf") format("truetype");
+  src: url("./noto-sans/static/NotoSans-ExtraBold.ttf") format("truetype");
 }

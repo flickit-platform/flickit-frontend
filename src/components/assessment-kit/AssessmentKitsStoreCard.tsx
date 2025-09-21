@@ -5,21 +5,21 @@ import { farsiFontFamily, secondaryFontFamily } from "@config/theme";
 import Chip from "@mui/material/Chip";
 import { styles } from "@styles";
 import { Link, useNavigate } from "react-router-dom";
-import PriceIcon from "@/assets/icons/priceIcon";
+import PriceIcon from "@/components/common/icons/Price";
 import LanguageIcon from "@mui/icons-material/Language";
-import languageDetector from "@utils/languageDetector";
+import languageDetector from "@/utils/language-detector";
 import i18next from "i18next";
 import { Avatar, useTheme } from "@mui/material";
-import stringAvatar from "@/utils/stringAvatar";
-import { formatLanguageCodes } from "@/utils/languageUtils";
+import stringAvatar from "@/utils/string-avatar";
+import { formatLanguageCodes } from "@/utils/language-utils";
 import keycloakService from "@/service/keycloakService";
 import { useEffect, useState } from "react";
 import LoadingButton from "@mui/lab/LoadingButton";
 import { useAssessmentCreation } from "@/hooks/useAssessmentCreation";
-import { useConfigContext } from "@/providers/ConfgProvider";
+import { useConfigContext } from "@/providers/config-provider";
 import { ILanguage } from "@/types";
 import PaidOutlinedIcon from "@mui/icons-material/PaidOutlined";
-import PurchasedIcon from "@/assets/icons/purchasedIcon";
+import PurchasedIcon from "@/components/common/icons/Purchased";
 
 const AssessmentKitsStoreCard = (props: any) => {
   const {

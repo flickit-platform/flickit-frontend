@@ -8,7 +8,7 @@ import {
 } from "@mui/icons-material";
 import { t } from "i18next";
 import { IGraphicalReport } from "@/types";
-import { getReadableDate } from "@/utils/readableDate";
+import { getReadableDate } from "@/utils/readable-date";
 import { ChipItem } from "@/components/common/fields/ChipsRow";
 import { blue } from "@/config/colors";
 

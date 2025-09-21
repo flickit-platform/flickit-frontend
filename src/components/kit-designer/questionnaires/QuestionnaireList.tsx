@@ -15,10 +15,10 @@ import QuestionContainer from "@components/kit-designer/questionnaires/questions
 import Accordion from "@mui/material/Accordion";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import AccordionSummary from "@mui/material/AccordionSummary";
-import { useQuery } from "@utils/useQuery";
-import { useServiceContext } from "@providers/ServiceProvider";
+import { useQuery } from "@/hooks/useQuery";
+import { useServiceContext } from "@/providers/service-provider";
 import { useParams } from "react-router-dom";
-import { ICustomError } from "@utils/CustomError";
+import { ICustomError } from "@/utils/custom-error";
 import Button from "@mui/material/Button";
 import CircularProgress from "@mui/material/CircularProgress";
 import { alpha, useTheme } from "@mui/material/styles";
@@ -28,9 +28,9 @@ import Add from "@mui/icons-material/Add";
 import QuestionForm from "./questions/QuestionForm";
 import MultiLangTextField from "@common/fields/MultiLangTextField";
 import { useTranslationUpdater } from "@/hooks/useTranslationUpdater";
-import { kitActions, useKitDesignerContext } from "@/providers/KitProvider";
+import { kitActions, useKitDesignerContext } from "@/providers/kit-provider";
 import TitleWithTranslation from "@/components/common/fields/TranslationText";
-import showToast from "@utils/toastError";
+import showToast from "@/utils/toast-error";
 
 interface ListOfItemsProps {
   items: Array<KitDesignListItems>;

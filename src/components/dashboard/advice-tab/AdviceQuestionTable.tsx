@@ -4,10 +4,10 @@ import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import Tooltip from "@mui/material/Tooltip";
 import { farsiFontFamily, primaryFontFamily } from "@config/theme";
-import languageDetector from "@/utils/languageDetector";
+import languageDetector from "@/utils/language-detector";
 import Typography from "@mui/material/Typography";
 import CustomTablePagination from "@components/common/CustomTablePagination";
-import uniqueId from "@/utils/uniqueId";
+import uniqueId from "@/utils/unique-id";
 import { styles } from "@styles";
 
 const AdviceQuestionTable = ({ adviceResult }: any) => {

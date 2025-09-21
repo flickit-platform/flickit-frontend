@@ -12,7 +12,7 @@ import {
   questionActions,
   useQuestionContext,
   useQuestionDispatch,
-} from "@/providers/QuestionProvider";
+} from "@/providers/question-provider";
 import {
   EAssessmentStatus,
   IAnswerHistory,
@@ -25,9 +25,9 @@ import {
 import { Trans } from "react-i18next";
 import TabPanel from "@mui/lab/TabPanel";
 import LoadingButton from "@mui/lab/LoadingButton";
-import { useServiceContext } from "@providers/ServiceProvider";
-import { ICustomError } from "@utils/CustomError";
-import useDialog from "@utils/useDialog";
+import { useServiceContext } from "@/providers/service-provider";
+import { ICustomError } from "@/utils/custom-error";
+import useDialog from "@/hooks/useDialog";
 import Divider from "@mui/material/Divider";
 import Grid from "@mui/material/Grid";
 import { FormProvider, useForm } from "react-hook-form";
@@ -35,52 +35,52 @@ import { styles } from "@styles";
 import { InputFieldUC } from "@common/fields/InputField";
 import setDocumentTitle from "@utils/setDocumentTitle";
 import { t } from "i18next";
-import { useQuery } from "@utils/useQuery";
+import { useQuery } from "@/hooks/useQuery";
 import QueryData from "../common/QueryData";
-import languageDetector from "@utils/languageDetector";
+import languageDetector from "@/utils/language-detector";
 import WarningAmberRoundedIcon from "@mui/icons-material/WarningAmberRounded";
 import Rating from "@mui/material/Rating";
 import RadioButtonUncheckedRoundedIcon from "@mui/icons-material/RadioButtonUncheckedRounded";
 import RadioButtonCheckedRoundedIcon from "@mui/icons-material/RadioButtonCheckedRounded";
 import Avatar from "@mui/material/Avatar";
-import stringAvatar from "@utils/stringAvatar";
+import stringAvatar from "@/utils/string-avatar";
 import EditRoundedIcon from "@mui/icons-material/EditRounded";
 import IconButton from "@mui/material/IconButton";
 import Tab from "@mui/material/Tab";
 import TabContext from "@mui/lab/TabContext";
 import TabList from "@mui/lab/TabList";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
-import { useConfigContext } from "@/providers/ConfgProvider";
+import { useConfigContext } from "@/providers/config-provider";
 import DoneIcon from "@mui/icons-material/Done";
 import ClearIcon from "@mui/icons-material/Clear";
 import { useTheme } from "@mui/material/styles";
 import arrowBtn from "../../assets/svg/arrow.svg";
-import PreAttachment from "@components/questions/iconFiles/preAttachments";
-import FileSvg from "@components/questions/iconFiles/fileSvg";
+import PreAttachment from "@/components/common/icons/preAttachments";
+import FileSvg from "@/components/common/icons/FileSvg";
 import Tooltip from "@mui/material/Tooltip";
 import Skeleton from "@mui/material/Skeleton";
 import { farsiFontFamily, primaryFontFamily } from "@config/theme";
-import { ASSESSMENT_MODE, evidenceAttachmentType } from "@utils/enumType";
-import { downloadFile } from "@utils/downloadFile";
+import { ASSESSMENT_MODE, evidenceAttachmentType } from "@/utils/enum-type";
+import { downloadFile } from "@/utils/download-file";
 import CircularProgress from "@mui/material/CircularProgress";
-import { toCamelCase } from "@/utils/MakeCamelcaseString";
+import { toCamelCase } from "@/utils/make-camel-case-string";
 import ArrowBack from "@mui/icons-material/ArrowBack";
 import ArrowForward from "@mui/icons-material/ArrowForward";
 import CheckOutlined from "@mui/icons-material/CheckOutlined";
 import ExpandLess from "@mui/icons-material/ExpandLess";
 import ExpandMore from "@mui/icons-material/ExpandMore";
 import EmptyState from "../kit-designer/common/EmptyState";
-import convertLinksToClickable from "@utils/convertTextToClickableLink";
+import convertLinksToClickable from "@/utils/convert-text-to-clickable-link";
 import { DeleteConfirmationDialog } from "../common/dialogs/DeleteConfirmationDialog";
-import { QuestionGuide } from "./QuestionCard/QuestionGuide";
-import { EvidenceAttachmentsDialogs } from "./QuestionCard/EvidenceAttachmentsDialogs";
+import { QuestionGuide } from "./question-card/QuestionGuide";
+import { EvidenceAttachmentsDialogs } from "./question-card/EvidenceAttachmentsDialogs";
 import Stack from "@mui/material/Stack";
 import Pagination from "@mui/material/Pagination";
-import { getReadableDate } from "@utils/readableDate";
-import { useAssessmentContext } from "@providers/AssessmentProvider";
-import showToast from "@utils/toastError";
-import uniqueId from "@/utils/uniqueId";
-import useScreenResize from "@/utils/useScreenResize";
+import { getReadableDate } from "@/utils/readable-date";
+import { useAssessmentContext } from "@/providers/assessment-provider";
+import showToast from "@/utils/toast-error";
+import uniqueId from "@/utils/unique-id";
+import useScreenResize from "@/hooks/useScreenResize";
 
 interface IQuestionCardProps {
   questionInfo: IQuestionInfo;

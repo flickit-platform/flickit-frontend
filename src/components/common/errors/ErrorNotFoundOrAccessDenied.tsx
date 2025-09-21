@@ -1,6 +1,6 @@
 import Box from "@mui/material/Box";
 import { styles } from "@styles";
-import ErrorNotFoundOrAccessDeniedImage from "@assets/svg/notFoundOrAccessDenied.svg";
+import AccessDeniedImage from "@/assets/svg/404-access-denied.svg";
 import Button from "@mui/material/Button";
 import { Trans } from "react-i18next";
 import { HOME_URL } from "@/config/constants";
@@ -15,7 +15,7 @@ export const ErrorNotFoundOrAccessDenied = () => {
     >
       <Box sx={{ width: { xs: "100vw", md: "70vw", lg: "60vw" } }}>
         <img
-          src={ErrorNotFoundOrAccessDeniedImage}
+          src={AccessDeniedImage}
           alt={"not found or access denied"}
           width="100%"
         />

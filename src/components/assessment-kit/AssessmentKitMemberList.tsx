@@ -22,14 +22,14 @@ import FormProviderWithForm from "@common/FormProviderWithForm";
 import { styles } from "@styles";
 import { useForm } from "react-hook-form";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
-import { ICustomError } from "@utils/CustomError";
+import { ICustomError } from "@/utils/custom-error";
 import { t } from "i18next";
-import { useServiceContext } from "@providers/ServiceProvider";
+import { useServiceContext } from "@/providers/service-provider";
 import { useParams } from "react-router-dom";
-import { useQuery } from "@utils/useQuery";
+import { useQuery } from "@/hooks/useQuery";
 import Avatar from "@mui/material/Avatar";
-import stringAvatar from "@utils/stringAvatar";
-import showToast from "@utils/toastError";
+import stringAvatar from "@/utils/string-avatar";
+import showToast from "@/utils/toast-error";
 
 const tableCellStyles = {
   minWidth: {

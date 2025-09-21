@@ -6,20 +6,20 @@ import Stack from "@mui/material/Stack";
 import { t } from "i18next";
 import { Trans } from "react-i18next";
 import { styles } from "@styles";
-import { useAuthContext } from "@providers/AuthProvider";
-import { useServiceContext } from "@providers/ServiceProvider";
+import { useAuthContext } from "@/providers/auth-provider";
+import { useServiceContext } from "@/providers/service-provider";
 import { FLAGS, TQueryFunction } from "@/types/index";
-import forLoopComponent from "@utils/forLoopComponent";
-import useDialog from "@utils/useDialog";
-import useDocumentTitle from "@utils/useDocumentTitle";
-import { useQuery } from "@utils/useQuery";
+import forLoopComponent from "@/utils/for-loop-component";
+import useDialog from "@/hooks/useDialog";
+import useDocumentTitle from "@/hooks/useDocumentTitle";
+import { useQuery } from "@/hooks/useQuery";
 import { LoadingSkeleton } from "@common/loadings/LoadingSkeleton";
 import QueryData from "@common/QueryData";
 import ExpertGroupCEFormDialog from "./ExpertGroupCEFormDialog";
 import ExpertGroupsList from "./ExpertGroupsList";
 import { useEffect, useState } from "react";
 import flagsmith from "flagsmith";
-import uniqueId from "@/utils/uniqueId";
+import uniqueId from "@/utils/unique-id";
 
 const ExpertGroupsContainer = () => {
   const { service } = useServiceContext();

@@ -9,7 +9,7 @@ import ListItemText from "@mui/material/ListItemText";
 
 import { styles } from "@styles";
 import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
-import languageDetector from "@/utils/languageDetector";
+import languageDetector from "@/utils/language-detector";
 import { useTheme } from "@mui/material";
 
 interface Attribute {

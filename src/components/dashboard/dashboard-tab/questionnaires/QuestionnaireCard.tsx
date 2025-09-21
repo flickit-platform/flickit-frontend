@@ -12,7 +12,7 @@ import Chip from "@mui/material/Chip";
 import Collapse from "@mui/material/Collapse";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
-import languageDetector from "@/utils/languageDetector";
+import languageDetector from "@/utils/language-detector";
 import { useRef, useState } from "react";
 import InfoOutlined from "@mui/icons-material/InfoOutlined";
 import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
