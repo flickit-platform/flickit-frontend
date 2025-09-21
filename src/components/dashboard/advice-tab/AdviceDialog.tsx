@@ -152,7 +152,7 @@ const AdviceDialog = ({
           container
           rowSpacing={2}
           sx={{
-            my: 2,
+            mt: 2,
             px: 2,
             borderRadius: { xs: 0, sm: "8px" },
             maxHeight: { xs: "60vh", md: "40vh" },
