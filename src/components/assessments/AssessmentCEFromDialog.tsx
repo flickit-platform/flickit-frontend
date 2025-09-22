@@ -34,7 +34,6 @@ const AssessmentCEFromDialog = (props: IAssessmentCEFromDialogProps) => {
   const [loading, setLoading] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [submittedTitle, setSubmittedTitle] = useState("");
-  const [isFocused, setIsFocused] = useState(true);
   const [createdKitId, setCreatedKitId] = useState("");
   const [createdKitSpaceId, setCreatedKitSpaceId] = useState(undefined);
   const { service } = useServiceContext();
@@ -49,7 +48,11 @@ const AssessmentCEFromDialog = (props: IAssessmentCEFromDialogProps) => {
   const { id: assessmentId } = data;
   const defaultValues = type === "update" ? data : {};
   const { spaceId } = useParams();
-  const formMethods = useForm({ shouldUnregister: true });
+  const formMethods = useForm({
+    shouldUnregister: true,
+    mode: "onSubmit",
+    reValidateMode: "onSubmit",
+  });
   const abortController = useMemo(() => new AbortController(), [rest.open]);
   const navigate = useNavigate();
   const close = () => {
@@ -132,28 +135,6 @@ const AssessmentCEFromDialog = (props: IAssessmentCEFromDialogProps) => {
     };
   }, []);
 
-  useEffect(() => {
-    if (openDialog) {
-      const handleKeyDown = (e: KeyboardEvent) => {
-        if (e.key === "Enter") {
-          setIsFocused(false);
-          setTimeout(() => {
-            setIsFocused(true);
-          }, 500);
-          formMethods.handleSubmit((data) =>
-            onSubmit(formMethods.getValues(), e),
-          )();
-        }
-      };
-
-      document.addEventListener("keydown", handleKeyDown);
-
-      return () => {
-        document.removeEventListener("keydown", handleKeyDown);
-        abortController.abort();
-      };
-    }
-  }, [openDialog, formMethods, abortController]);
   const [languages, setLanguages] = useState<any[]>([]);
 
   useEffect(() => {
@@ -189,17 +170,20 @@ const AssessmentCEFromDialog = (props: IAssessmentCEFromDialogProps) => {
       }
     >
       {!isSubmitted ? (
-        <FormProviderWithForm formMethods={formMethods}>
+        <FormProviderWithForm
+          formMethods={formMethods}
+          onSubmit={formMethods.handleSubmit(onSubmit)}
+        >
           <Grid container spacing={2} sx={styles.formGrid}>
             <Grid item xs={12} md={12}>
               <InputFieldUC
                 autoFocus={true}
                 defaultValue={defaultValues.title ?? ""}
                 name="title"
-                required={true}
+                required
                 label={<Trans i18nKey="common.title" />}
                 data-cy="title"
-                isFocused={isFocused}
+                isFocused
               />
             </Grid>
             <Grid item xs={12} md={12}>

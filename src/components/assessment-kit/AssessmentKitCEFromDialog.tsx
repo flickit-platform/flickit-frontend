@@ -70,7 +70,11 @@ const AssessmentKitCEFromDialog = (props: IAssessmentKitCEFromDialogProps) => {
   const { id, expertGroupId = fallbackExpertGroupId, languages } = data;
   const [lang, setLang] = useState({ code: "", title: "" });
   const defaultValues = type === "update" ? data : {};
-  const formMethods = useForm({ shouldUnregister: true });
+  const formMethods = useForm({
+    shouldUnregister: true,
+    mode: "onSubmit",
+    reValidateMode: "onSubmit",
+  });
   const abortController = useMemo(() => new AbortController(), [rest.open]);
   const navigate = useNavigate();
   const close = () => {
@@ -331,6 +335,7 @@ const AssessmentKitCEFromDialog = (props: IAssessmentKitCEFromDialogProps) => {
             label={<Trans i18nKey="common.title" />}
             required
             defaultValue={defaultValues.title ?? ""}
+            isFocused
           />
         </Grid>
         <Grid

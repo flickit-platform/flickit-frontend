@@ -34,7 +34,11 @@ const MoveAssessmentDialog = (props: IAssessmentCEFromDialogProps) => {
   const { service } = useServiceContext();
   const { type, staticData = {} } = context;
   const { spaceList, queryDataSpaces } = staticData;
-  const formMethods = useForm({ shouldUnregister: true });
+  const formMethods = useForm({
+    shouldUnregister: true,
+    mode: "onSubmit",
+    reValidateMode: "onSubmit",
+  });
   const abortController = useMemo(() => new AbortController(), [rest.open]);
 
   const close = () => {

@@ -43,7 +43,11 @@ const ExpertGroupCEFormDialog = (props: IExpertGroupCEFromDialogProps) => {
   const { type, data = {} } = context;
   const { id } = data;
   const defaultValues = type === "update" ? data : {};
-  const formMethods = useForm({ shouldUnregister: true });
+  const formMethods = useForm({
+    shouldUnregister: true,
+    mode: "onSubmit",
+    reValidateMode: "onSubmit",
+  });
   const abortController = useMemo(() => new AbortController(), [rest.open]);
   const navigate = useNavigate();
   const close = () => {
@@ -144,6 +148,7 @@ const ExpertGroupCEFormDialog = (props: IExpertGroupCEFromDialogProps) => {
               name="title"
               label={<Trans i18nKey="common.title" />}
               required
+              isFocused
             />
           </Grid>
           <Grid item xs={12} md={8}>
