@@ -3,6 +3,7 @@ import Box from "@mui/material/Box";
 import Skeleton from "@mui/material/Skeleton";
 import { alpha, useTheme } from "@mui/material/styles";
 import uniqueId from "@/utils/unique-id";
+import { styles } from "@styles";
 
 type AdviceSliderSkeletonItemProps = {
   levels?: number;
@@ -27,7 +28,7 @@ const AdviceSliderSkeletonItem = ({
       padding={{ xs: 0.5, md: 2 }}
     >
       <Grid item xs={4} sm={4}>
-        <Box display="flex" alignItems="center" gap={2}>
+        <Box sx={{ ...styles.centerV }} gap={2}>
           <Box sx={{ width: "100%" }}>
             <Skeleton variant="text" height={20} width="70%" sx={{ mb: 0.5 }} />
             <Skeleton variant="text" height={16} width="50%" />

@@ -829,6 +829,8 @@ export const getTheme = (lang: any) => {
           select: {
             paddingLeft: is_farsi ? "32px" : "10px",
             paddingRight: !is_farsi ? "32px !important" : "10px !important",
+            display: "flex",
+            alignItems: "center",
           },
         },
       },
@@ -855,7 +857,6 @@ export const getTheme = (lang: any) => {
             lineHeight: "1rem",
             letterSpacing: "0px",
           },
-        
         },
       },
       //@ts-expect-error
