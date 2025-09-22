@@ -5,38 +5,6 @@ import { FormProvider, useForm } from "react-hook-form";
 import { SpaceField } from "@common/fields/SpaceField";
 import userEvent from "@testing-library/user-event";
 
-const mockAssessmentMoveTarget = vi.fn().mockResolvedValue({});
-
-vi.mock("@/hooks/useQuery", () => ({
-  useQuery: (opts: any) => {
-    return {
-      query: async (args?: any, config?: any) => {
-        if (typeof opts?.service === "function") {
-          return await opts.service(args, config);
-        }
-        return null;
-      },
-      data: opts?.initialData ?? [],
-      loaded: true,
-      loading: false,
-      error: false,
-      errorObject: null,
-    };
-  },
-}));
-
-vi.mock("@/providers/service-provider", () => ({
-  useServiceContext: () => ({
-    service: {
-      assessments: {
-        info: {
-          AssessmentMoveTarget: mockAssessmentMoveTarget,
-        },
-      },
-    },
-  }),
-}));
-
 describe("test for move assessment", () => {
   const SubmitForm = vi.fn();
   let methodsRef: any;
@@ -114,14 +82,13 @@ describe("test for move assessment", () => {
   });
 
 
-  it("submit move",async ()=>{
+  it("show space",async ()=>{
     renderMoveDialog()
       const inputBox = within(screen.getByTestId("moveSpaceField")).getByRole("combobox");
       await userEvent.click(inputBox);
 
       const option = await screen.findByText("space");
       await userEvent.click(option);
-
       expect(screen.getByDisplayValue("space")).toBeInTheDocument();
   })
 
