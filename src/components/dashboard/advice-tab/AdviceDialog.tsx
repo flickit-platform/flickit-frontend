@@ -1,24 +1,34 @@
 import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
-import Dialog from "@mui/material/Dialog";
-import DialogContent from "@mui/material/DialogContent";
-import DialogTitle from "@mui/material/DialogTitle";
 import Typography from "@mui/material/Typography";
-import LoadingButton from "@mui/lab/LoadingButton";
+import { Grid } from "@mui/material";
 import { Trans } from "react-i18next";
-import { styles } from "@/config/styles";
-import Setting from "@/assets/svg/setting.svg";
-import AdviceSlider from "@/components/common/AdviceSlider";
 import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+
+import { styles } from "@/config/styles";
+import AdviceSlider from "@/components/dashboard/advice-tab/AdviceSlider";
+import AdviceQuestionTable from "./AdviceQuestionTable";
+import AIGenerated from "@/components/common/icons/AIGenerated";
+
 import { ICustomError } from "@/utils/custom-error";
+import showToast from "@/utils/toast-error";
 import { useQuery } from "@/hooks/useQuery";
 import { useServiceContext } from "@/providers/service-provider";
-import { useParams } from "react-router-dom";
-import AdviceQuestionTable from "./AdviceQuestionTable";
-import { LoadingSkeletonKitCard } from "@/components/common/loadings/LoadingSkeletonKitCard";
-import showToast from "@/utils/toast-error";
-import { IconButton } from "@mui/material";
-import { Close } from "@mui/icons-material";
+
+import {
+  CEDialog,
+  CEDialogActions,
+} from "@/components/common/dialogs/CEDialog";
+import { LoadingAdviceTargetsSkeleton } from "@/components/common/loadings/LoadingAdviceTargetsSkeleton";
+
+type AdviceDialogProps = {
+  open: boolean;
+  handleClose: () => void;
+  fetchPreAdviceInfo: any;
+  permissions: any;
+  fetchAdviceNarration: any;
+  loading?: boolean;
+};
 
 const AdviceDialog = ({
   open,
@@ -27,9 +37,9 @@ const AdviceDialog = ({
   permissions,
   fetchAdviceNarration,
   loading,
-}: any) => {
+}: AdviceDialogProps) => {
   const [adviceResult, setAdviceResult] = useState<any>([]);
-  const [step, setStep] = useState<number>(1); // Step state
+  const [step, setStep] = useState<number>(1);
   const { assessmentId = "" } = useParams();
   const { service } = useServiceContext();
   const [target, setTarget] = useState<any>([]);
@@ -46,23 +56,25 @@ const AdviceDialog = ({
   });
 
   useEffect(() => {
-    setAdviceResult([]);
-    setStep(1);
+    if (open) {
+      setAdviceResult([]);
+      setStep(1);
+      setTarget([]);
+    }
   }, [open]);
 
   const createAdvice = async () => {
     try {
       if (target) {
         const data = await createAdviceQueryData.query({
-          assessmentId: assessmentId,
+          assessmentId,
           attributeLevelTargets: target,
         });
         setAdviceResult(data?.items);
         setStep(2);
       }
     } catch (e) {
-      const err = e as ICustomError;
-      showToast(err);
+      showToast(e as ICustomError);
     }
   };
 
@@ -70,7 +82,7 @@ const AdviceDialog = ({
     try {
       if (target) {
         await createAINarrationQueryData.query({
-          assessmentId: assessmentId,
+          assessmentId,
           attributeLevelTargets: target,
           adviceListItems: adviceResult,
         });
@@ -79,176 +91,125 @@ const AdviceDialog = ({
         handleClose();
       }
     } catch (e) {
-      const err = e as ICustomError;
-      showToast(err);
+      showToast(e as ICustomError);
     }
   };
 
-  const handleBack = () => {
-    if (step === 2) {
-      setStep(1);
-    }
+  const onSubmit = async () => {
+    if (step === 1) return createAdvice();
+    return generateAdviceViaAI();
   };
+
+  const onBack = () => setStep(1);
+
+  const isLoading =
+    step === 1
+      ? createAdviceQueryData.loading
+      : createAINarrationQueryData.loading;
 
   return (
-    <Dialog
+    <CEDialog
       open={open}
-      onClose={handleClose}
-      fullWidth
+      closeDialog={handleClose}
       maxWidth="md"
-      fullScreen={false}
-      sx={{ overflowY: "auto" }}
-    >
-      <DialogTitle sx={{ ...styles.centerV, justifyContent: "space-between" }}>
-        <Box sx={{ ...styles.centerV }}>
-          <img
-            src={Setting}
-            alt="settings"
-            width="24px"
-            style={{
-              marginInlineStart: "unset",
-              marginInlineEnd: "6px",
-            }}
-          />
+      fullWidth
+      title={
+        <Box sx={{ ...styles.centerV, gap: "6px" }}>
+          <AIGenerated styles={{ width: "24px", color: "white" }} />
           <Trans i18nKey="advice.adviceAssistant" />
         </Box>
-        <IconButton
-          aria-label="close"
-          onClick={handleClose}
-          edge="end"
-          size="small"
-          sx={{ ml: 2, color: "primary.contrastText" }}
-        >
-          <Close />
-        </IconButton>
-      </DialogTitle>
-
+      }
+      contentStyle={{
+        padding: "unset",
+        overflow: "hidden",
+        textAlign: "center",
+        marginInline: { xs: 1, md: 4 },
+        alignItems: { xs: "stretch", md: "center" },
+      }}
+    >
       <Box
-        sx={{
-          ...styles.centerV,
-          bgcolor: "rgba(36, 102, 168, 0.08)",
-          color: "#6C7B8E",
-          paddingY: 1,
-          paddingX: 4,
-          maxWidth: "100%",
-          marginTop: "-8px",
-        }}
+        width="100%"
+        sx={{ ...styles.centerCV }}
+        pt={{ xs: 0, md: 3 }}
+        pb={2}
       >
-        <Typography variant="titleMedium" fontWeight={400}>
+        <Typography
+          variant="bodyMedium"
+          color="background.onVariant"
+          textAlign="justify"
+        >
           <Trans
             i18nKey={
-              step === 1 ? "advice.whichAttYouWant" : "advice.reviewAdvice"
+              step === 1 ? "advice.adviceAssistantDesc" : "advice.reviewAdvice"
             }
           />
         </Typography>
-      </Box>
 
-      <DialogContent
-        sx={{
-          ...styles.centerCVH,
-          padding: "unset",
-          bgcolor: "background.containerLowest",
-          overflow: "hidden",
-          textAlign: "center",
-          gap: 3,
-        }}
-      >
-        <Box width="100%" margin="0 auto" sx={{ ...styles.centerCV }}>
-          {(fetchPreAdviceInfo.loading || loading) && (
-            <LoadingSkeletonKitCard />
-          )}
-          <Box
-            mt={2}
-            px={2}
-            sx={{
-              borderRadius: { xs: 0, sm: "0 0 12px 12px" },
-              bgcolor: "background.containerLowest",
-              height: "300px",
-              overflow: "auto",
-              overflowX: "hidden",
-              display: step === 1 ? "block" : "none",
-            }}
-          >
-            {fetchPreAdviceInfo.data?.attributes?.map((attribute: any) => (
-              <AdviceSlider
-                key={attribute.id}
-                defaultValue={
-                  fetchPreAdviceInfo.data?.maturityLevels.find(
-                    (maturityLevel: any) =>
-                      maturityLevel.id == attribute?.maturityLevel.id,
-                  )?.value ?? 0
-                }
-                currentState={fetchPreAdviceInfo.data?.maturityLevels.find(
-                  (maturityLevel: any) =>
-                    maturityLevel.id == attribute?.maturityLevel.id,
-                )}
-                attribute={attribute}
-                subject={attribute.subject}
-                maturityLevels={fetchPreAdviceInfo.data?.maturityLevels}
-                target={target}
-                setTarget={setTarget}
-              />
-            ))}
-          </Box>
-          <Box
-            mt={2}
-            sx={{
-              borderRadius: { xs: 0, sm: "0 0 12px 12px" },
-              bgcolor: "background.containerLowest",
-              maxHeight: "70vh",
-              overflow: "hidden",
-              overflowX: "auto",
-              display: step === 2 ? "block" : "none",
-            }}
-          >
-            <AdviceQuestionTable
-              adviceResult={adviceResult}
-              setAdviceResult={setAdviceResult}
-              handleClose={handleClose}
-              target={target}
-              permissions={permissions}
-            />
-          </Box>
-          <Box
-            sx={{
-              width: "100%",
-              display: "flex",
-              gap: 2,
-              padding: "16px",
-              justifyContent: "flex-end",
-            }}
-          >
-            {step === 2 && (
-              <Button
-                onClick={handleBack}
-                sx={{ mr: "auto" }}
-                variant="outlined"
-              >
-                <Trans i18nKey="common.back" />
-              </Button>
-            )}
-            <Button onClick={handleClose}>
-              <Trans i18nKey="common.cancel" />
-            </Button>
+        {(fetchPreAdviceInfo.loading || loading) && (
+          <LoadingAdviceTargetsSkeleton />
+        )}
 
-            <LoadingButton
-              variant="contained"
-              color="primary"
-              onClick={step === 1 ? createAdvice : generateAdviceViaAI}
-              loading={
-                step === 1
-                  ? createAdviceQueryData.loading
-                  : createAINarrationQueryData.loading
-              }
-            >
-              <Trans
-                i18nKey={step === 1 ? "common.continue" : "common.finish"}
-              />
-            </LoadingButton>
-          </Box>
+        {/* Step 1: Targets */}
+        <Grid
+          container
+          rowSpacing={2}
+          sx={{
+            mt: 2,
+            paddingInlineStart: 2,
+            borderRadius: { xs: 0, sm: "8px" },
+            maxHeight: { xs: "60vh", md: "40vh" },
+            overflow: "auto",
+            overflowX: "hidden",
+            display: step === 1 ? "flex" : "none",
+            bgcolor: "background.containerHighest",
+          }}
+        >
+          {fetchPreAdviceInfo.data?.attributes?.map((attribute: any) => {
+            const current = fetchPreAdviceInfo.data?.maturityLevels.find(
+              (m: any) => m.id == attribute?.maturityLevel.id,
+            );
+            return (
+              <Grid item xs={12} sm={6} key={attribute.id}>
+                <AdviceSlider
+                  defaultValue={current?.value ?? 0}
+                  currentState={current}
+                  attribute={attribute}
+                  maturityLevels={fetchPreAdviceInfo.data?.maturityLevels}
+                  setTarget={setTarget}
+                />
+              </Grid>
+            );
+          })}
+        </Grid>
+
+        {/* Step 2: Review Table */}
+        <Box
+          mt={2}
+          sx={{
+            borderRadius: { xs: 0, sm: "8px" },
+            bgcolor: "background.containerHighest",
+            maxHeight: { xs: "70vh", md: "40vh" },
+            overflow: "hidden",
+            overflowX: "auto",
+            display: step === 2 ? "block" : "none",
+          }}
+        >
+          <AdviceQuestionTable adviceResult={adviceResult} />
         </Box>
-      </DialogContent>
-    </Dialog>
+
+        {/* Actions */}
+        <CEDialogActions
+          loading={isLoading}
+          onClose={handleClose}
+          onSubmit={onSubmit}
+          hasBackBtn={step === 2}
+          onBack={onBack}
+          submitButtonLabel={step === 1 ? "common.continue" : "common.generate"}
+          submitButtonColor={step === 1 ? "primary" : "success"}
+          disablePrimaryButton={step === 1 && (!target || target.length === 0)}
+        />
+      </Box>
+    </CEDialog>
   );
 };
 

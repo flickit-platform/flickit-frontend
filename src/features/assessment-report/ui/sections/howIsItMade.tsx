@@ -34,7 +34,7 @@ function InnerAccordion({ title, children, lng }: Props) {
     >
       <AccordionSummary
         sx={{
-          bgcolor: "background.containerHigher",
+          bgcolor: "background.containerHighest",
           borderRadius: 1,
           flexDirection: "row-reverse",
           px: 0,

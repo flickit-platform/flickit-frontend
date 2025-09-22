@@ -63,7 +63,7 @@ const FlatGauge = (props: IGaugeProps) => {
             }}
           >
             <Typography
-              color={"surface.on"}
+              color="text.primary"
               sx={{
                 fontSize: "1.25rem",
                 fontWeight: "bold",
@@ -98,7 +98,7 @@ const FlatGauge = (props: IGaugeProps) => {
           </Box>
           <Typography
             variant="bodyMedium"
-            color={"surface.onVariant"}
+            color="background.onVariant"
             sx={{
               ...styles.centerVH,
               gap: "5px",

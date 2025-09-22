@@ -355,7 +355,7 @@ const MeasuresTable: React.FC<Props> = ({
       >
         <Table size="small" aria-label="measures table">
           <TableHead>
-            <TableRow sx={{ bgcolor: "background.containerHigher" }}>
+            <TableRow sx={{ bgcolor: "background.containerHighest" }}>
               {tableColumns.map((col) => (
                 <TableCell
                   key={col.id}
@@ -400,7 +400,7 @@ const MeasuresTable: React.FC<Props> = ({
           <TableFooter>
             <TableRow
               sx={{
-                bgcolor: "background.containerHigher",
+                bgcolor: "background.containerHighest",
                 "& td": {
                   textAlign: "center",
                   verticalAlign: "middle",

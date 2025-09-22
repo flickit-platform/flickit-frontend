@@ -82,12 +82,12 @@ const InnerAccordion = ({
     sx={accordionBaseStyle}
   >
     <AccordionSummary
-      expandIcon={<ExpandMoreIcon sx={{ color: "surface.onVariant" }} />}
+      expandIcon={<ExpandMoreIcon sx={{ color: "background.onVariant" }} />}
       sx={accordionSummaryStyle}
     >
       <Typography
         variant="titleSmall"
-        color={"surface.inverse"}
+        color={"background.inverse"}
         sx={{
           ...styles.rtlStyle(lng == "fa"),
         }}
@@ -96,7 +96,7 @@ const InnerAccordion = ({
       </Typography>
       <Typography
         variant="bodyMedium"
-        color={"surface.onVariant"}
+        color="background.onVariant"
         sx={{
           ...styles.rtlStyle(lng == "fa"),
         }}

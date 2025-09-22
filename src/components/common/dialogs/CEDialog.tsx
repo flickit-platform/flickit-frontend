@@ -99,6 +99,7 @@ interface ICEDialogActionsProps extends PropsWithChildren<DialogActionsProps> {
   cancelLabel?: string | null;
   disablePrimaryButton?: boolean;
   hasContinueBtn?: boolean;
+  submitButtonColor?: any;
 }
 
 export const CEDialogActions = (props: ICEDialogActionsProps) => {
@@ -121,6 +122,7 @@ export const CEDialogActions = (props: ICEDialogActionsProps) => {
     backType = "contained",
     cancelType = "outline",
     disablePrimaryButton = false,
+    submitButtonColor = "primary",
     hasContinueBtn,
     children,
   } = props;
@@ -134,20 +136,24 @@ export const CEDialogActions = (props: ICEDialogActionsProps) => {
       sx={{
         flexDirection: { xs: "column", sm: "row" },
         gap: { xs: 4, sm: "unset" },
-        marginTop: fullScreen ? "auto" : 3,
+        marginTop: fullScreen ? "auto" : 1,
         marginLeft: 0,
         fontFamily: "inherit",
-        marginInlineEnd: "-16px",
       }}
     >
-      <Grid container spacing={2} justifyContent="flex-end">
+      <Grid container columnSpacing={2} justifyContent="flex-end">
         {!hideCancelButton && (
           <Grid item>
             <Button
               onClick={onClose}
               data-cy="cancel"
               data-testid="cancel"
-              sx={{ fontFamily: languageDetector(cancelLabel) ? farsiFontFamily : secondaryFontFamily }}
+              sx={{
+                fontFamily: languageDetector(cancelLabel)
+                  ? farsiFontFamily
+                  : secondaryFontFamily,
+                color: "primary.main",
+              }}
               variant={cancelType}
             >
               {cancelLabel}
@@ -176,6 +182,7 @@ export const CEDialogActions = (props: ICEDialogActionsProps) => {
                 e.preventDefault();
                 onSubmit?.(e);
               }}
+              color={submitButtonColor ?? "primary"}
               sx={{ fontFamily: "inherit" }}
               disabled={disablePrimaryButton}
             >
