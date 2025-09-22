@@ -1324,6 +1324,7 @@ const OnHoverInputTitleSetting = (props: any) => {
                   : primaryFontFamily,
               }}
               variant="semiBoldLarge"
+              data-testid={`${type}-assessmentInfo`}
             >
               {type == "title" && data?.replace(/<\/?p>/g, "")}
               {type == "shortTitle" &&
