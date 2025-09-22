@@ -76,7 +76,7 @@ const COLUMN_WIDTHS = {
     questionnaire: 2,
     question: 3.5,
     currentState: 2,
-    recommendedState: 2.1,
+    recommendedState: 2.2,
     attributes: 2.2,
   },
 } as const;
