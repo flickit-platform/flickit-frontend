@@ -1,6 +1,6 @@
 import { describe, it, vi, expect } from "vitest";
 import MoveAssessmentDialog from "../MoveAssessmentDialog";
-import {fireEvent, render, screen, waitFor, within} from "@testing-library/react";
+import {render, screen, within} from "@testing-library/react";
 import { FormProvider, useForm } from "react-hook-form";
 import { SpaceField } from "@common/fields/SpaceField";
 import userEvent from "@testing-library/user-event";
