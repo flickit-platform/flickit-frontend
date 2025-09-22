@@ -125,18 +125,14 @@ export function useShareDialog({
     [PublishReportStatus, assessmentId, linkHash],
   );
 
-  const onInviteSubmit = useCallback(
-    async (data: InviteFormData, reset: () => void) => {
-      try {
-        await grantReportAccess.query({ email: data.email, assessmentId });
-        fetchGraphicalReportUsers.query();
-        reset();
-      } catch (error) {
-        showToast(error as ICustomError);
-      }
-    },
-    [grantReportAccess, assessmentId, fetchGraphicalReportUsers],
-  );
+  const onInviteSubmit = async (data: any) => {
+    try {
+      await grantReportAccess.query({ email: data.email, assessmentId });
+      fetchGraphicalReportUsers.query();
+    } catch (error) {
+      showToast(error as ICustomError);
+    }
+  };
 
   const handleCopyClick = useCallback(async () => {
     try {
@@ -147,14 +143,14 @@ export function useShareDialog({
     }
   }, []);
 
-  const deleteUserRoleHandler = async (id: TId) =>{
+  const deleteUserRoleHandler = async (id: TId) => {
     await deleteUserRole.query(id);
     await fetchGraphicalReportUsers.query();
-  }
-  const deleteInviteeHandler = async (id: TId) =>{
-    await RemoveMembersInvitees.query({invitedId: id});
+  };
+  const deleteInviteeHandler = async (id: TId) => {
+    await RemoveMembersInvitees.query({ invitedId: id });
     await fetchGraphicalReportUsers.query();
-  }
+  };
 
   const closeSnackbar = () => setSnackbarOpen(false);
 
@@ -173,6 +169,6 @@ export function useShareDialog({
     onInviteSubmit,
     handleCopyClick,
     deleteUserRoleHandler,
-    deleteInviteeHandler
+    deleteInviteeHandler,
   };
 }

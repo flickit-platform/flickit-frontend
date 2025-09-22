@@ -14,11 +14,11 @@ import LoadingButton from "@mui/lab/LoadingButton";
 import stringAvatar from "@/utils/string-avatar";
 import { VISIBILITY } from "@/utils/enum-type";
 import { IGraphicalReport } from "@/types";
-import { FormProvider, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { styles } from "@styles";
 import Radio from "@mui/material/Radio";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
-import { InviteFormData, useShareDialog } from "../model/hooks/useShareDialog";
+import { useShareDialog } from "../model/hooks/useShareDialog";
 import {
   CEDialog,
   CEDialogActions,
@@ -27,6 +27,7 @@ import { InputFieldUC } from "@/components/common/fields/InputField";
 import QueryBatchData from "@/components/common/QueryBatchData";
 import DeleteForeverOutlinedIcon from "@mui/icons-material/DeleteForeverOutlined";
 import { IconButton } from "@mui/material";
+import FormProviderWithForm from "@/components/common/FormProviderWithForm";
 
 type ShareDialogProps = {
   open: boolean;
@@ -45,8 +46,11 @@ export default function ShareDialog({
   assessment,
 }: ShareDialogProps) {
   const { t } = useTranslation();
-  const methods = useForm<InviteFormData>();
-  const { reset, handleSubmit } = methods;
+  const formMethods = useForm({
+    shouldUnregister: true,
+    mode: "onSubmit",
+    reValidateMode: "onSubmit",
+  });
 
   const isRTL = lng === "fa";
   const { space } = assessment ?? {};
@@ -61,7 +65,7 @@ export default function ShareDialog({
     onInviteSubmit,
     handleCopyClick,
     deleteUserRoleHandler,
-    deleteInviteeHandler
+    deleteInviteeHandler,
   } = useShareDialog({ open, visibility, linkHash });
 
   type AccessOptions = Record<
@@ -83,92 +87,104 @@ export default function ShareDialog({
     [lng, t],
   );
 
+  const handleInviteSubmit = formMethods.handleSubmit(async (data, e) => {
+    await onInviteSubmit(data);
+    formMethods.reset({ email: "" });
+  });
+
   const shareSection = () => {
     return isDefault ? (
       <>
-        <Divider sx={{ my: 1 }} />
+        {" "}
+        <Divider sx={{ my: 1 }} />{" "}
         <Typography
           color="background.onVariant"
           variant={"bodySmall"}
           fontFamily="inherit"
         >
-          {t("assessmentReport.isDraftSpaceReport", { lng })}
-        </Typography>
+          {" "}
+          {t("assessmentReport.isDraftSpaceReport", { lng })}{" "}
+        </Typography>{" "}
       </>
     ) : (
       <>
+        {" "}
         {access === VISIBILITY.RESTRICTED && permissions.canShareReport && (
           <>
+            {" "}
             <Box mt={permissions.canManageVisibility ? 3 : 0}>
+              {" "}
               <Typography
                 variant="bodyMedium"
                 color="rgba(61, 77, 92, 0.5)"
                 fontFamily="inherit"
               >
-                {t("assessmentReport.peopleWithAccess", { lng })}
-              </Typography>
-              <Divider sx={{ my: 1 }} />
-            </Box>
-
-            <FormProvider {...methods}>
-              <form
-                onSubmit={handleSubmit((data) => onInviteSubmit(data, reset))}
+                {" "}
+                {t("assessmentReport.peopleWithAccess", { lng })}{" "}
+              </Typography>{" "}
+              <Divider sx={{ my: 1 }} />{" "}
+            </Box>{" "}
+            <FormProviderWithForm
+              formMethods={formMethods}
+              onSubmit={handleInviteSubmit}
+            >
+              {" "}
+              <Grid
+                container
+                display="flex"
+                alignItems="flex-start"
+                sx={{ ...styles.formGrid, mt: 0, mb: 1, gap: 1 }}
               >
-                <Grid
-                  container
-                  display="flex"
-                  alignItems="flex-start"
-                  sx={{ ...styles.formGrid, mt: 0, mb: 1, gap: 1 }}
-                >
-                  <Grid item flex={1}>
-                    <InputFieldUC
-                      lng={lng}
-                      name="email"
-                      size="small"
-                      placeholder={t("assessmentReport.shareReportViaEmail", {
-                        lng,
-                      })}
-                      fullWidth
-                      required
-                      stylesProps={{
-                        input: {
-                          padding: "4px 12px",
-                          "::placeholder": {
-                            ...styles.rtlStyle(lng === "fa"),
-                          },
-                        },
-                      }}
-                    />
-                  </Grid>
-                  <Grid item>
-                    <LoadingButton
-                      variant="outlined"
-                      type="submit"
-                      sx={{
-                        fontFamily: "inherit",
-                        minWidth: "inherit",
-                        padding: "5px",
-                        height: "100%",
-                      }}
-                    >
-                      <PersonAddIcon fontSize="small" />
-                    </LoadingButton>
-                  </Grid>
-                </Grid>
-              </form>
-            </FormProvider>
-
+                {" "}
+                <Grid item flex={1}>
+                  {" "}
+                  <InputFieldUC
+                    lng={lng}
+                    name="email"
+                    size="small"
+                    placeholder={t("assessmentReport.shareReportViaEmail", {
+                      lng,
+                    })}
+                    fullWidth
+                    required
+                    stylesProps={{
+                      input: {
+                        padding: "4px 12px",
+                        "::placeholder": { ...styles.rtlStyle(lng === "fa") },
+                      },
+                    }}
+                  />{" "}
+                </Grid>{" "}
+                <Grid item>
+                  {" "}
+                  <LoadingButton
+                    variant="outlined"
+                    type="submit"
+                    sx={{
+                      fontFamily: "inherit",
+                      minWidth: "inherit",
+                      padding: "5px",
+                      height: "100%",
+                    }}
+                  >
+                    {" "}
+                    <PersonAddIcon fontSize="small" />{" "}
+                  </LoadingButton>{" "}
+                </Grid>{" "}
+              </Grid>{" "}
+            </FormProviderWithForm>{" "}
             <QueryBatchData
               queryBatchData={[fetchGraphicalReportUsers]}
               renderLoading={() => (
                 <>
+                  {" "}
                   {[1, 2].map((n) => (
                     <Skeleton
                       key={n}
                       variant="rectangular"
                       sx={{ borderRadius: 2, height: "30px", mb: 1 }}
                     />
-                  ))}
+                  ))}{" "}
                 </>
               )}
               render={([graphicalReportUsers]) => (
@@ -179,9 +195,9 @@ export default function ShareDialog({
                   deleteInviteeHandler={deleteInviteeHandler}
                 />
               )}
-            />
+            />{" "}
           </>
-        )}
+        )}{" "}
       </>
     );
   };
@@ -211,7 +227,12 @@ export default function ShareDialog({
       }}
       titleStyle={{ mb: "0px !important" }}
     >
-      <Box sx={{ display: permissions.canManageVisibility ? "flex" : "none", mt: 0 }}>
+      <Box
+        sx={{
+          display: permissions.canManageVisibility ? "flex" : "none",
+          mt: 0,
+        }}
+      >
         <Typography
           variant="bodyMedium"
           color="rgba(61, 77, 92, 0.5)"
@@ -222,58 +243,64 @@ export default function ShareDialog({
         <Divider sx={{ my: 1 }} />
       </Box>
 
-      <Box sx={{ display: permissions.canManageVisibility ? "flex" : "none", flexDirection: "column", gap: 1 }}>
+      <Box
+        sx={{
+          display: permissions.canManageVisibility ? "flex" : "none",
+          flexDirection: "column",
+          gap: 1,
+        }}
+      >
         {Object.values(VISIBILITY).map((key) => {
           const k = key as VISIBILITY;
           const isSelected = access === k;
           return (
-                <Box
-                  key={k}
+            <Box
+              key={k}
+              sx={{
+                display: "flex",
+                justifyContent: "flex-start",
+                background: isSelected ? "#2466A814" : "inherit",
+                width: "100%",
+                height: "fit-content",
+                borderRadius: "8px",
+                cursor: "pointer",
+              }}
+              onClick={() => handleSelect(k)}
+            >
+              <Box sx={{ ...styles.centerVH }} width="38px" height="38px">
+                <Radio
+                  checked={isSelected}
+                  color="primary"
+                  size="small"
                   sx={{
-                    display: "flex",
-                    justifyContent: "flex-start",
-                    background: isSelected ? "#2466A814" : "inherit",
-                    width: "100%",
-                    height: "fit-content",
-                    borderRadius: "8px",
-                    cursor: "pointer",
+                    padding: "9px",
+                    "&.Mui-checked": { color: "#2466A8" },
                   }}
-                  onClick={() => handleSelect(k)}
+                />
+              </Box>
+              <Box
+                sx={{ ...styles.centerCV }}
+                padding="8px 0"
+                gap="4px"
+                width="398px"
+                height="59px"
+              >
+                <Typography
+                  fontFamily="inherit"
+                  variant="bodyMedium"
+                  sx={{ color: "#2B333B" }}
                 >
-                  <Box sx={{ ...styles.centerVH }} width="38px" height="38px">
-                    <Radio
-                      checked={isSelected}
-                      color="primary"
-                      size="small"
-                      sx={{
-                        padding: "9px",
-                        "&.Mui-checked": { color: "#2466A8" },
-                      }}
-                    />
-                  </Box>
-                  <Box
-                    sx={{ ...styles.centerCV }}
-                    padding="8px 0"
-                    gap="4px"
-                    width="398px"
-                    height="59px"
-                  >
-                    <Typography
-                      fontFamily="inherit"
-                      variant="bodyMedium"
-                      sx={{ color: "#2B333B" }}
-                    >
-                      {accessOptionsNew[k].title}
-                    </Typography>
-                    <Typography
-                      variant="bodySmall"
-                      color="background.onVariant"
-                      fontFamily="inherit"
-                    >
-                      {accessOptionsNew[k].description}
-                    </Typography>
-                  </Box>
-                </Box>
+                  {accessOptionsNew[k].title}
+                </Typography>
+                <Typography
+                  variant="bodySmall"
+                  color="background.onVariant"
+                  fontFamily="inherit"
+                >
+                  {accessOptionsNew[k].description}
+                </Typography>
+              </Box>
+            </Box>
           );
         })}
       </Box>
@@ -320,15 +347,23 @@ export default function ShareDialog({
 }
 
 const UserSection = (props: any) => {
-  const { invitees, users, deleteUserRoleHandler, deleteInviteeHandler, lng } = props;
+  const { invitees, users, deleteUserRoleHandler, deleteInviteeHandler, lng } =
+    props;
   const { t } = useTranslation();
   return (
-    <Box display="flex" flexDirection="column" my={1} gap={2} sx={{ overflowY: "auto", maxHeight: "250px" }}>
+    <Box
+      display="flex"
+      flexDirection="column"
+      my={1}
+      gap={2}
+      sx={{ overflowY: "auto", maxHeight: "250px" }}
+    >
       {[
         ...(users ?? []).map((u: any) => ({ ...u, isInvitee: false })),
         ...(invitees ?? []).map((i: any) => ({ ...i, isInvitee: true })),
       ].map((member) => {
-        const { displayName, id, pictureLink, email, deletable, isInvitee } = member;
+        const { displayName, id, pictureLink, email, deletable, isInvitee } =
+          member;
         return (
           <Box
             key={id}

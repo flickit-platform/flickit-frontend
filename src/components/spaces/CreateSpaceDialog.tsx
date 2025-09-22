@@ -72,7 +72,11 @@ const CreateSpaceDialog = (props: any) => {
   const { type: spaceDefaultType } = data;
   const defaultValues =
     type === "update" ? data : { title: "", code: nanoid(5) };
-  const formMethods = useForm({ shouldUnregister: true });
+  const formMethods = useForm({
+    shouldUnregister: true,
+    mode: "onSubmit",
+    reValidateMode: "onSubmit",
+  });
   const abortController = useMemo(() => new AbortController(), [rest.open]);
   const { dispatch, pendingKitData } = useAssessmentContext();
 
@@ -136,22 +140,6 @@ const CreateSpaceDialog = (props: any) => {
       } else if (type === "create" && step !== 3) {
         setSelectedType("PREMIUM");
       }
-      const handleKeyDown = (e: KeyboardEvent) => {
-        if (e.key === "Enter") {
-          setIsFocused(false);
-          setTimeout(() => {
-            setIsFocused(true);
-          }, 500);
-          formMethods.handleSubmit((data) => onSubmit(data, e))();
-        }
-      };
-
-      document.addEventListener("keydown", handleKeyDown);
-
-      return () => {
-        document.removeEventListener("keydown", handleKeyDown);
-        abortController.abort();
-      };
     }
   }, [openDialog]);
 

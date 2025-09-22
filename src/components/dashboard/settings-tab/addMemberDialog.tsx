@@ -77,20 +77,16 @@ const AddMemberDialog = (props: {
       service.space.getMembers({ spaceId, page: 0, size: 100 }, config),
   });
   const fetchAssessmentMembers = useQuery({
-    service: (
-      args?: any,
-      config?: AxiosRequestConfig, 
-    ) => {
+    service: (args?: any, config?: AxiosRequestConfig) => {
       const { page = 0, size = 10 } = args ?? {};
       return service.assessments.member.getUsers(
         { assessmentId, page, size },
-        config, 
+        config,
       );
     },
     toastError: false,
     toastErrorOptions: { filterByStatus: [404] },
   });
-  
 
   const addRoleMemberQueryData = useQuery({
     service: (args, config) =>
@@ -135,7 +131,7 @@ const AddMemberDialog = (props: {
       }
 
       const filteredItem = spaceItems.filter((item: any) =>
-        member.some((userListItem: any) => item.id === userListItem.id)
+        member.some((userListItem: any) => item.id === userListItem.id),
       );
 
       setMemberOfSpace(filteredItem);
@@ -143,7 +139,6 @@ const AddMemberDialog = (props: {
       showToast(e as ICustomError);
     }
   };
-
 
   useEffect(() => {
     if (!expanded) return;
@@ -393,7 +388,7 @@ const AddMemberDialog = (props: {
               marginInlineEnd: 1,
             }}
           />
-          <Typography variant="bodyLarge" textAlign="left">
+          <Typography variant="bodyLarge">
             {addedEmailType === EUserType.EXISTED ? (
               <Trans i18nKey="user.emailExistsInApp" />
             ) : (
