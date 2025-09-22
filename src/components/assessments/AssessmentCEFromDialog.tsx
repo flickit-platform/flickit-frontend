@@ -45,7 +45,6 @@ const AssessmentCEFromDialog = (props: IAssessmentCEFromDialogProps) => {
     openDialog,
     ...rest
   } = props;
-  console.log(props,"test props")
   const { type, data = {}, staticData = {} } = context;
   const { id: assessmentId } = data;
   const defaultValues = type === "update" ? data : {};
