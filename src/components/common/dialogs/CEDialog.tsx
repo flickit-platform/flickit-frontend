@@ -136,12 +136,12 @@ export const CEDialogActions = (props: ICEDialogActionsProps) => {
       sx={{
         flexDirection: { xs: "column", sm: "row" },
         gap: { xs: 4, sm: "unset" },
-        marginTop: fullScreen ? "auto" : 3,
+        marginTop: fullScreen ? "auto" : 1,
         marginLeft: 0,
         fontFamily: "inherit",
       }}
     >
-      <Grid container spacing={2} justifyContent="flex-end">
+      <Grid container columnSpacing={2} justifyContent="flex-end">
         {!hideCancelButton && (
           <Grid item>
             <Button

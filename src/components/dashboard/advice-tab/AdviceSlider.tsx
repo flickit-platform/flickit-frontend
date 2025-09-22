@@ -88,9 +88,10 @@ const AdviceSlider = (props: AdviceSliderProps) => {
       alignItems="center"
       justifyContent="space-between"
       sx={{ width: "100%", direction: "ltr" }}
-      padding={{ xs: 0.5, md: 2 }}
+      py={{ xs: 0.5, md: 2 }}
+      columnSpacing={2}
     >
-      <Grid item xs={4} sm={4}>
+      <Grid item xs={4.1} sm={4.1}>
         <Box display="flex" alignItems="center" gap={2}>
           <Typography
             variant="semiBoldLarge"
@@ -221,8 +222,8 @@ const AdviceSlider = (props: AdviceSliderProps) => {
         </ThemeProvider>
       </Grid>
 
-      <Grid item xs={1.7} sm={1.7}>
-        <Box display="flex" alignItems="center" justifyContent="flex-end">
+      <Grid item xs={1.9} sm={1.9}>
+        <Box display="flex" alignItems="center" justifyContent="center">
           <Typography
             color="primary"
             variant="semiBoldSmall"

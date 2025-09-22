@@ -130,7 +130,7 @@ const AdviceDialog = ({
       <Box
         width="100%"
         sx={{ ...styles.centerCV }}
-        pt={{ xs: 0, md: 4 }}
+        pt={{ xs: 0, md: 3 }}
         pb={2}
       >
         <Typography
@@ -153,7 +153,7 @@ const AdviceDialog = ({
           rowSpacing={2}
           sx={{
             mt: 2,
-            px: 2,
+            paddingInlineStart: 2,
             borderRadius: { xs: 0, sm: "8px" },
             maxHeight: { xs: "60vh", md: "40vh" },
             overflow: "auto",

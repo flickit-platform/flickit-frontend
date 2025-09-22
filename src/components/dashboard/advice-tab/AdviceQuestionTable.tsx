@@ -161,7 +161,7 @@ const AdviceQuestionTable = ({
     <Box
       sx={{
         display: "flex",
-        gap: 0.5,
+        gap: 1,
         flexWrap: "wrap",
         justifyContent: "center",
       }}
@@ -172,7 +172,7 @@ const AdviceQuestionTable = ({
           label={attribute.title}
           size="small"
           sx={(theme) => ({
-            height: 24,
+            height: 20,
             borderRadius: "8px",
             px: 1,
             color: ATTRIBUTE_COLORS[index % 3],
@@ -345,7 +345,7 @@ const AdviceQuestionTable = ({
                         ? "none"
                         : `1px solid ${ROW_BORDER_COLOR}`,
                       verticalAlign: "top",
-                      py: 1,
+                      py: 2,
                     },
                   }}
                 >
