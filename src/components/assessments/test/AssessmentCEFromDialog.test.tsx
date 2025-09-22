@@ -1,28 +1,51 @@
 import AssessmentCEFromDialog from "../AssessmentCEFromDialog";
 import { describe, it, vi, expect } from "vitest";
-import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import {render, screen, waitFor, within} from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
-import {ServiceProvider, useServiceContext} from "@providers/ServiceProvider";
+import {ServiceProvider} from "@providers/ServiceProvider";
 import { AppProvider } from "@providers/AppProvider";
 import userEvent from "@testing-library/user-event";
-import {useAuthContext} from "@providers/AuthProvider";
-import axios from "axios";
 
-const mockCreate = vi.fn();
-const mockUpdate = vi.fn();
-const SubmitForm = vi.fn();
+const mockCreate = vi.fn().mockResolvedValue({});
+const mockUpdate = vi.fn().mockResolvedValue({});
+const SubmitForm = vi.fn()
+
+
+vi.mock("@providers/ServiceProvider", () => {
+    return {
+        useServiceContext: () => ({
+            service: {
+                assessments: {
+                    info: {
+                        create: mockCreate,
+                        update: mockUpdate,
+                    },
+                },
+            },
+        }),
+    };
+});
+
 
 let usedDialog = {
     openDialog: () => {},
     onClose: () => {},
-    context: { type: "create" },
+    context: {
+        type: "create",
+        space: {
+            id: "6",
+            title: "admin"
+        },
+    },
     open: true,
 };
 
 const MockProviders = ({ children }: any) => (
     <MemoryRouter>
         <AppProvider>
-            <ServiceProvider>{children}</ServiceProvider>
+            <ServiceProvider>
+                {children}
+            </ServiceProvider>
         </AppProvider>
     </MemoryRouter>
 );
@@ -35,13 +58,19 @@ const renderDialog = () => {
     );
 };
 
-
-
 describe("create new assessment by dialog", () => {
 
-    beforeEach(() => {
+    afterEach(() => {
         vi.clearAllMocks();
     });
+
+    // {
+    //     "title": "test 1 ",
+    //     "shortTitle": "testy",
+    //     "assessment_kit": {"id": 463, "title": "Maziyar - Paid kits Test", "isPrivate": false, "mainLanguage": {"code": "EN", "title": "English"},
+    //     "languages": [{"code": "EN", "title": "English"}]},
+    //     "language": {"code": "EN", "title": "English"}
+    // }
 
   it("open dialog", () => {
     renderDialog();
@@ -52,32 +81,24 @@ describe("create new assessment by dialog", () => {
     expect(shortTitle).toBeInTheDocument();
   });
 
-
-
     it("submits assessment form and calls axios.post", async () => {
-        const data = {
-            spaceId: "space-1",
-            assessmentKitId: "assessment_kit-1",
-            title: "create title",
-            shortTitle: "cst",
-            colorId: "red",
-            lang: "fa",
-        };
+        renderDialog();
 
-        // Spy on the correct instance
-        const postSpy = vi.spyOn(axios, "post").mockResolvedValue({data});
+        const inputBox = within(screen.getByTestId("input-title")).getByRole("textbox");
+        await userEvent.type(inputBox, "My New Assessment");
 
-        render(
-            <MockProviders>
-                <AssessmentCEFromDialog {...usedDialog} context={{type: "create"}}/>
-            </MockProviders>
-        );
+        const shortTitleBox = within(screen.getByTestId("input-shortTitle")).getByRole("textbox");
+        await userEvent.type(shortTitleBox, "MNA");
 
-        // Fill in the form
-        await userEvent.type(screen.getByTestId("input-title"), "My New Assessment");
-        await userEvent.type(screen.getByTestId("input-shortTitle"), "MNA");
+        const languageInput = screen.getByTestId("inputLanguage");
+        await userEvent.type(languageInput, "fa");
 
-        // Submit
+        expect(screen.getByTestId("submit")).toBeInTheDocument();
         await userEvent.click(screen.getByTestId("submit"));
+
+        await waitFor(() => {
+       expect(mockCreate).toHaveBeenCalled()
+        });
     });
+
 });

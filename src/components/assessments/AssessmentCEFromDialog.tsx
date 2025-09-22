@@ -45,6 +45,7 @@ const AssessmentCEFromDialog = (props: IAssessmentCEFromDialogProps) => {
     openDialog,
     ...rest
   } = props;
+  console.log(props,"test props")
   const { type, data = {}, staticData = {} } = context;
   const { id: assessmentId } = data;
   const defaultValues = type === "update" ? data : {};
@@ -72,6 +73,7 @@ const AssessmentCEFromDialog = (props: IAssessmentCEFromDialogProps) => {
 
   const onSubmit = async (data: any, event: any, shouldView?: boolean) => {
     const { space, assessment_kit, title, color, shortTitle, language } = data;
+
     setLoading(true);
     try {
       type === "update"
@@ -228,6 +230,7 @@ const AssessmentCEFromDialog = (props: IAssessmentCEFromDialogProps) => {
                 }
                 options={languages}
                 data-cy="language"
+                data-testid="inputLanguage"
                 disabled={languages.length === 1}
                 required
                 helperText={
