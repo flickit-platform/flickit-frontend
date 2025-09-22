@@ -145,7 +145,9 @@ const AdviceDialog = ({
           />
         </Typography>
 
-        {(fetchPreAdviceInfo.loading || loading) && <LoadingAdviceTargetsSkeleton />}
+        {(fetchPreAdviceInfo.loading || loading) && (
+          <LoadingAdviceTargetsSkeleton />
+        )}
 
         {/* Step 1: Targets */}
         <Grid
@@ -173,7 +175,6 @@ const AdviceDialog = ({
                   currentState={current}
                   attribute={attribute}
                   maturityLevels={fetchPreAdviceInfo.data?.maturityLevels}
-                  target={target}
                   setTarget={setTarget}
                 />
               </Grid>
@@ -193,9 +194,7 @@ const AdviceDialog = ({
             display: step === 2 ? "block" : "none",
           }}
         >
-          <AdviceQuestionTable
-            adviceResult={adviceResult}
-          />
+          <AdviceQuestionTable adviceResult={adviceResult} />
         </Box>
 
         {/* Actions */}

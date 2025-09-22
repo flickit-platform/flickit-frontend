@@ -25,7 +25,6 @@ type AdviceSliderProps = {
   attribute: { id: string; title: string };
   maturityLevels: MaturityLevel[];
   setTarget: React.Dispatch<React.SetStateAction<TargetItem[]>>;
-  target: TargetItem[];
   currentState?: { title?: string };
 };
 
@@ -41,7 +40,6 @@ const AdviceSlider = (props: AdviceSliderProps) => {
     attribute,
     maturityLevels = [],
     setTarget,
-    target,
     currentState,
   } = props;
 
