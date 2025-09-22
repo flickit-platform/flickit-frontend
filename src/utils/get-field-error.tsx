@@ -6,8 +6,8 @@ export type TFieldKind = "email" | "url" | "phone";
 
 export const FIELD_PATTERNS: Record<TFieldKind, RegExp> = {
   email: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
-  url: /^(https?:\/\/)?([^\s.]+\.[^\s]{2,}|localhost)(\/\S*)?$/i,
-  phone: /^\+?[0-9()\-\s]{7,}$/,
+  url: /^(https?:\/\/)?([\w.-]+\.[a-zA-Z]{2,})(\/\S*)?$/,
+  phone: /^\+?[\d\s\-()]{7,}$/,
 };
 
 type TErrorTypes =
