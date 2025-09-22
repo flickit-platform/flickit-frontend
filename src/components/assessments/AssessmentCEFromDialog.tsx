@@ -72,6 +72,7 @@ const AssessmentCEFromDialog = (props: IAssessmentCEFromDialogProps) => {
 
   const onSubmit = async (data: any, event: any, shouldView?: boolean) => {
     const { space, assessment_kit, title, color, shortTitle, language } = data;
+
     setLoading(true);
     try {
       type === "update"
@@ -228,6 +229,7 @@ const AssessmentCEFromDialog = (props: IAssessmentCEFromDialogProps) => {
                 }
                 options={languages}
                 data-cy="language"
+                data-testid="inputLanguage"
                 disabled={languages.length === 1}
                 required
                 helperText={
