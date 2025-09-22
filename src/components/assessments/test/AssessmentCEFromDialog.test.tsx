@@ -1,31 +1,12 @@
 import AssessmentCEFromDialog from "../AssessmentCEFromDialog";
 import { describe, it, vi, expect } from "vitest";
-import {render, screen, waitFor, within} from "@testing-library/react";
+import {render, screen, within} from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 import {ServiceProvider} from "@providers/ServiceProvider";
 import { AppProvider } from "@providers/AppProvider";
 import userEvent from "@testing-library/user-event";
 
-const mockCreate = vi.fn().mockResolvedValue({});
-const mockUpdate = vi.fn().mockResolvedValue({});
 const SubmitForm = vi.fn()
-
-
-vi.mock("@providers/ServiceProvider", () => {
-    return {
-        useServiceContext: () => ({
-            service: {
-                assessments: {
-                    info: {
-                        create: mockCreate,
-                        update: mockUpdate,
-                    },
-                },
-            },
-        }),
-    };
-});
-
 
 let usedDialog = {
     openDialog: () => {},
