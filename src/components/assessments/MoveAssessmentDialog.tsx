@@ -108,6 +108,7 @@ const MoveAssessmentDialog = (props: IAssessmentCEFromDialogProps) => {
               sx={{ mt: "24px" }}
               label={<Trans i18nKey="spaces.targetSpace" />}
               filterSelectedOptions={false}
+              data-testid={"moveSpaceField"}
             />{" "}
           </Grid>
         </Grid>
