@@ -7,7 +7,6 @@ import { t } from "i18next";
 
 type SpaceOption = { id: number | string; title: string; selected?: boolean };
 
-// تمام پراپ‌های AutocompleteAsyncField بجز این چند مورد
 type AutoProps = Omit<
   ComponentProps<typeof AutocompleteAsyncField>,
   "options" | "name" | "defaultValue" | "createItemQuery" | "label"
@@ -76,6 +75,8 @@ export const SpaceField = ({
       label={label ?? <Trans i18nKey="spaces.space" />}
       createItemQuery={createItemQuery}
       showIconBeforeOption={true}
+      disableClearable
+      isFocused
       {...rest}
     />
   );
