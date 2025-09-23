@@ -55,7 +55,7 @@ const ImpactSection: React.FC<{ question: any }> = ({ question }) => {
 
   const deleteImpact = useQuery({
     service: (args, config) =>
-      service.kitVersions.questionImpacts.update(args, config),
+      service.kitVersions.questionImpacts.remove(args, config),
   });
 
   const handleSave = async () => {
