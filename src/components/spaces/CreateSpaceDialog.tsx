@@ -55,7 +55,6 @@ const BasicBox = [
 
 const CreateSpaceDialog = (props: any) => {
   const [loading, setLoading] = useState(false);
-  const [isFocused, setIsFocused] = useState(true);
   const [selectedType, setSelectedType] = useState<string>("");
   const [step, setStep] = useState(1);
   const { service } = useServiceContext();
@@ -143,6 +142,39 @@ const CreateSpaceDialog = (props: any) => {
     }
   }, [openDialog]);
 
+  useEffect(() => {
+    if (!openDialog || step !== 1) return;
+  
+    const controller = new AbortController();
+  
+    const isEditable = (el: EventTarget | null) => {
+      const node = el as HTMLElement | null;
+      if (!node) return false;
+      const tag = node.tagName?.toLowerCase();
+      const editableTags = ["input", "textarea", "select", "button"];
+      return (
+        editableTags.includes(tag) ||
+        (node as HTMLElement).isContentEditable
+      );
+    };
+  
+    const onEnterUp = (e: KeyboardEvent) => {
+      // فقط وقتی Enter رها میشه، تریگر کن؛ نه روی نگه‌داشتن کلید
+      if (e.key !== "Enter" || e.repeat) return;
+      // اگر فوکوس در فیلد نوشتنیه، کاری نکن
+      if (isEditable(e.target)) return;
+      if (!selectedType) return;
+  
+      e.preventDefault();
+      setStep(2);
+    };
+  
+    // keyup + capture → بعد از بسته‌شدن دیالوگ اول، همین Enter رها شده عمل می‌کنه
+    window.addEventListener("keyup", onEnterUp, { signal: controller.signal, capture: true });
+    return () => controller.abort();
+  }, [openDialog, step, selectedType]);
+  
+
   const renderStepOne = () => (
     <Box sx={{ pt: 4, px: 4, pb: 0, height: "100%" }}>
       <Typography variant="semiBoldLarge" color="text.primary">
@@ -210,7 +242,7 @@ const CreateSpaceDialog = (props: any) => {
               placeholder={t("spaces.spaceName") ?? ""}
               required
               label={<Trans i18nKey="user.name" />}
-              isFocused={isFocused}
+              isFocused
             />
           </Grid>
           <Box

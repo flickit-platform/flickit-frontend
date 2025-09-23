@@ -107,6 +107,52 @@ const AdviceDialog = ({
       ? createAdviceQueryData.loading
       : createAINarrationQueryData.loading;
 
+  useEffect(() => {
+    if (!open) return;
+    const ac = new AbortController();
+
+    const isRangeOrSlider = (el: HTMLElement | null) => {
+      if (!el) return false;
+      const tag = el.tagName?.toLowerCase();
+      const isRangeInput =
+        tag === "input" && (el as HTMLInputElement).type === "range";
+      const isAriaSlider =
+        el.getAttribute?.("role") === "slider" ||
+        el.closest?.('[role="slider"]');
+      return Boolean(isRangeInput || isAriaSlider);
+    };
+
+    const onUp = (e: KeyboardEvent) => {
+      if (e.key !== "Enter" || e.repeat) return;
+
+      const el = e.target as HTMLElement | null;
+      const disabled =
+        (step === 1 && (!target || target.length === 0)) || isLoading;
+
+      if (isRangeOrSlider(el)) {
+        e.preventDefault();
+        (el as HTMLElement)?.blur();
+        if (!disabled) onSubmit();
+        return;
+      }
+
+      if (
+        el &&
+        (el.isContentEditable ||
+          /^(input|textarea|select|button)$/i.test(el.tagName))
+      )
+        return;
+
+      if (!disabled) onSubmit();
+    };
+
+    window.addEventListener("keyup", onUp, {
+      signal: ac.signal,
+      capture: true,
+    });
+    return () => ac.abort();
+  }, [open, step, target, isLoading, onSubmit]);
+
   return (
     <CEDialog
       open={open}
