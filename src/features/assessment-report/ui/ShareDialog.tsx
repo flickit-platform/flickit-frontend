@@ -322,10 +322,10 @@ export default function ShareDialog({
               }
               sx={{ fontFamily: "inherit" }}
             >
-              <Typography>{t("assessmentReport.moveTheAssessment")}</Typography>
+              <Typography variant={"bodyLarge"} >{t("assessmentReport.moveTheAssessment")}</Typography>
             </Button>
             <Button variant={"contained"} sx={{ fontFamily: "inherit" }}>
-              <Typography>{t("assessmentReport.makeItPublic")}</Typography>
+              <Typography variant={"bodyLarge"}>{t("assessmentReport.makeItPublic")}</Typography>
             </Button>
           </Box>
         ) : (
