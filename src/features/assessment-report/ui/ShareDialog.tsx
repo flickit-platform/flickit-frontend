@@ -359,11 +359,13 @@ const UserSection = (props: any) => {
       sx={{ overflowY: "auto", maxHeight: "250px" }}
     >
       {[
-        ...(users ?? []).map((u: any) => ({ ...u, isInvitee: false })),
-        ...(invitees ?? []).map((i: any) => ({ ...i, isInvitee: true })),
+        ...users.map((u: any) => ({ ...u, isInvitee: false })),
+        ...invitees.map((i: any) => ({ ...i, isInvitee: true })),
       ].map((member) => {
         const { displayName, id, pictureLink, email, deletable, isInvitee } =
           member;
+        const isInvited = !!invitees?.some((inv: any) => inv.id === member.id);
+
         return (
           <Box
             key={id}
@@ -376,7 +378,7 @@ const UserSection = (props: any) => {
                 sx={{ width: 24, height: 24, fontSize: 12 }}
               />
               {email}
-              {(invitees ?? []).includes(member) && (
+              {isInvited && (
                 <Chip
                   label={t("common.invited", { lng })}
                   size="small"
