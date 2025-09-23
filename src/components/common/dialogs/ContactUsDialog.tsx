@@ -116,6 +116,7 @@ const ContactUsDialog = ({
 
       <Box sx={{ mt: 2 }}>
         <InputFieldUC
+          isFocused
           name="mobile"
           label={t("user.yourPhoneNumber", { lng })}
           placeholder={t("user.pleaseEnterYourPhoneNumber", { lng })}
