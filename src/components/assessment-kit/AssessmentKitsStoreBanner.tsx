@@ -20,7 +20,11 @@ interface GradientArrowProps {
   Icon: React.ReactNode;
 }
 
-const GradientArrow: React.FC<GradientArrowProps> = ({ onClick, side, Icon }) => (
+const GradientArrow: React.FC<GradientArrowProps> = ({
+  onClick,
+  side,
+  Icon,
+}) => (
   <Button
     onClick={onClick}
     sx={{
@@ -54,7 +58,7 @@ const useAutoplay = (enabled: boolean, delayMs: number, onTick: () => void) => {
   useEffect(() => {
     if (!enabled) return;
     const loop = (ts: number) => {
-      if (startRef.current == null) startRef.current = ts;
+      startRef.current ??= ts;
       if (ts - startRef.current >= delayMs) {
         onTick();
         startRef.current = ts;
@@ -77,7 +81,10 @@ const decodeImage = (src: string) =>
     // @ts-ignore
     if (img.decode) {
       // @ts-ignore
-      img.decode().then(() => resolve()).catch(() => resolve());
+      img
+        .decode()
+        .then(() => resolve())
+        .catch(() => resolve());
     } else {
       img.onload = () => resolve();
       img.onerror = () => resolve();
@@ -105,19 +112,23 @@ const AssessmentKitsStoreBanner = (props: any) => {
     service: (args, config) =>
       service.assessmentKit.info.getAllBanners(
         args ?? { lang: i18next.language.toUpperCase() },
-        config
+        config,
       ),
   });
 
   const banners: Banner[] = data;
   const images = useMemo(
     () =>
-      banners.map((b) => (mobileScreen ? b.smallBanner : b.largeBanner)).filter(Boolean),
-    [banners, mobileScreen]
+      banners
+        .map((b) => (mobileScreen ? b.smallBanner : b.largeBanner))
+        .filter(Boolean),
+    [banners, mobileScreen],
   );
 
   useEffect(() => {
-    setLoaded(Array(images.length).fill(false));
+    setLoaded((prev) =>
+      Array.from({ length: images.length }, (_, i) => prev[i] ?? false),
+    );
     setAllReady(false);
   }, [images.length]);
 
@@ -129,7 +140,7 @@ const AssessmentKitsStoreBanner = (props: any) => {
       (currentIndex - 1 + images.length) % images.length,
     ]);
     toPreload.forEach(async (i) => {
-      await decodeImage(images[i]!);
+      await decodeImage(images[i]);
       setLoaded((prev) => {
         if (prev[i]) return prev;
         const next = [...prev];
@@ -148,7 +159,7 @@ const AssessmentKitsStoreBanner = (props: any) => {
   const DIRECTION = theme.direction === "rtl" ? "+" : "-";
   const basePct = images.length ? currentIndex * (100 / images.length) : 0;
   const appliedPct =
-    (DIRECTION === "+" ? 1 : -1) * (basePct + (dragging ? dragPct : 0)); 
+    (DIRECTION === "+" ? 1 : -1) * (basePct + (dragging ? dragPct : 0));
 
   const clampIndex = useCallback(
     (idx: number) => {
@@ -157,13 +168,26 @@ const AssessmentKitsStoreBanner = (props: any) => {
       if (idx > last) return 0;
       return idx;
     },
-    [images.length]
+    [images.length],
   );
-  const goTo = useCallback((idx: number) => setCurrentIndex(() => clampIndex(idx)), [clampIndex]);
-  const goNext = useCallback(() => goTo(currentIndex + 1), [currentIndex, goTo]);
-  const goPrev = useCallback(() => goTo(currentIndex - 1), [currentIndex, goTo]);
+  const goTo = useCallback(
+    (idx: number) => setCurrentIndex(() => clampIndex(idx)),
+    [clampIndex],
+  );
+  const goNext = useCallback(
+    () => goTo(currentIndex + 1),
+    [currentIndex, goTo],
+  );
+  const goPrev = useCallback(
+    () => goTo(currentIndex - 1),
+    [currentIndex, goTo],
+  );
 
-  useAutoplay(images.length > 1 && !loading && !dragging, AUTOPLAY_DELAY, goNext);
+  useAutoplay(
+    images.length > 1 && !loading && !dragging,
+    AUTOPLAY_DELAY,
+    goNext,
+  );
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -195,7 +219,7 @@ const AssessmentKitsStoreBanner = (props: any) => {
       if (!tracking) return;
       dx = e.clientX - startX;
       const width = root.clientWidth || 1;
-      const pctViewport = (dx / width) * 100; 
+      const pctViewport = (dx / width) * 100;
       setDragPct((DIRECTION === "+" ? 1 : -1) * pctViewport);
     };
 
