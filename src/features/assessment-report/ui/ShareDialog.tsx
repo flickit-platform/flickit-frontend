@@ -8,7 +8,6 @@ import Divider from "@mui/material/Divider";
 import Typography from "@mui/material/Typography";
 import Chip from "@mui/material/Chip";
 import Share from "@mui/icons-material/Share";
-import DriveFileMoveOutlinedIcon from "@mui/icons-material/DriveFileMoveOutlined";
 import { useMemo } from "react";
 import LoadingButton from "@mui/lab/LoadingButton";
 import stringAvatar from "@/utils/string-avatar";
