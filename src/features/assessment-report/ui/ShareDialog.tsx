@@ -70,7 +70,12 @@ export default function ShareDialog({
 
   type AccessOptions = Record<
     VISIBILITY,
-    { title: string; description: string }
+    {
+      title: string;
+      description: string;
+      titleDefault?: string | null;
+      descriptionDefault?: string | null;
+    }
   >;
 
   const accessOptionsNew: AccessOptions = useMemo(
@@ -78,6 +83,13 @@ export default function ShareDialog({
       [VISIBILITY.RESTRICTED]: {
         title: t("assessmentReport.restrictedShareTitle", { lng }),
         description: t("assessmentReport.restrictedShareDescription", { lng }),
+        titleDefault: t("assessmentReport.restrictedShareTitleDefault", {
+          lng,
+        }),
+        descriptionDefault: t(
+          "assessmentReport.restrictedShareDescriptionDefault",
+          { lng },
+        ),
       },
       [VISIBILITY.PUBLIC]: {
         title: t("assessmentReport.publicShareTitle", { lng }),
@@ -92,23 +104,41 @@ export default function ShareDialog({
     formMethods.reset({ email: "" });
   });
 
+  const getBackgroundColor = ({
+    k,
+    isSelected,
+    isDefault,
+  }: {
+    k: string;
+    isSelected: boolean;
+    isDefault: boolean;
+  }) => {
+    if (isSelected && isDefault && k === "RESTRICTED") return "#8A0F2414";
+    if (isSelected) return "#2466A814";
+    return "inherit";
+  };
+
   const shareSection = () => {
-    return isDefault ? (
-      <Box sx={{ background: "#8A0F240A", borderRadius: "4px", p: "8px 16px" }}>
-        <Typography
-          color="error.main"
-          variant={"bodyMedium"}
-          fontFamily="inherit"
-        >
-          {" "}
-          {t("assessmentReport.isDraftSpaceReport", { lng })}{" "}
-        </Typography>{" "}
-      </Box>
-    ) : (
+    return (
       <>
         {" "}
         {access === VISIBILITY.RESTRICTED && permissions.canShareReport && (
           <>
+            {" "}
+            <Box mt={permissions.canManageVisibility ? 3 : 0}>
+              {" "}
+              <Typography
+                variant="bodyMedium"
+                color="rgba(61, 77, 92, 0.5)"
+                fontFamily="inherit"
+              >
+                {" "}
+                {isDefault
+                  ? t("assessmentReport.WhoHasAccessReport", { lng })
+                  : t("assessmentReport.peopleWithAccess", { lng })}
+              </Typography>{" "}
+              <Divider sx={{ my: 1 }} />{" "}
+            </Box>{" "}
             <FormProviderWithForm
               formMethods={formMethods}
               onSubmit={handleInviteSubmit}
@@ -243,7 +273,7 @@ export default function ShareDialog({
               sx={{
                 display: "flex",
                 justifyContent: "flex-start",
-                background: isSelected ? "#2466A814" : "inherit",
+                background: getBackgroundColor({ k, isSelected, isDefault }),
                 width: "100%",
                 height: "fit-content",
                 borderRadius: "8px",
@@ -258,7 +288,10 @@ export default function ShareDialog({
                   size="small"
                   sx={{
                     padding: "9px",
-                    "&.Mui-checked": { color: "#2466A8" },
+                    "&.Mui-checked": {
+                      color:
+                        isDefault && k == "RESTRICTED" ? "#8A0F24" : "#2466A8",
+                    },
                   }}
                 />
               </Box>
@@ -266,43 +299,50 @@ export default function ShareDialog({
                 sx={{ ...styles.centerCV }}
                 padding="8px 0"
                 gap="4px"
-                width="398px"
-                height="59px"
+                flex={"1"}
+                height="fit-content"
               >
                 <Typography
                   fontFamily="inherit"
                   variant="bodyMedium"
                   sx={{ color: "#2B333B" }}
                 >
-                  {accessOptionsNew[k].title}
+                  {isDefault && k == "RESTRICTED"
+                    ? accessOptionsNew[k].titleDefault
+                    : accessOptionsNew[k].title}
                 </Typography>
                 <Typography
                   variant="bodySmall"
                   color="background.onVariant"
                   fontFamily="inherit"
                 >
-                  {accessOptionsNew[k].description}
+                  {isDefault && k == "RESTRICTED"
+                    ? accessOptionsNew[k].descriptionDefault
+                    : accessOptionsNew[k].description}
                 </Typography>
+              </Box>
+              <Box sx={{ ...styles.centerV, paddingInlineEnd: "16px" }}>
+                {isDefault && k == "RESTRICTED" && (
+                  <Button
+                    variant={"outlined"}
+                    color={"error"}
+                    sx={{
+                      height: "fit-content",
+                      width: "fit-content",
+                      p: "4px 10px",
+                    }}
+                  >
+                    <Typography variant={"labelLarge"}>
+                      {t("assessmentReport.moveAssessment")}
+                    </Typography>
+                  </Button>
+                )}
               </Box>
             </Box>
           );
         })}
-      </Box>{" "}
-      <Box mt={permissions.canManageVisibility ? 3 : 0}>
-        {" "}
-        <Typography
-          variant="bodyMedium"
-          color="rgba(61, 77, 92, 0.5)"
-          fontFamily="inherit"
-        >
-          {" "}
-          {isDefault
-            ? t("assessmentReport.WhoHasAccessReport", { lng })
-            : t("assessmentReport.peopleWithAccess", { lng })}
-        </Typography>{" "}
-        <Divider sx={{ my: 1 }} />{" "}
-      </Box>{" "}
-      {shareSection()}
+      </Box>
+      {!isDefault && shareSection()}
       <CEDialogActions
         type="delete"
         loading={false}
@@ -310,33 +350,13 @@ export default function ShareDialog({
         hideSubmitButton
         hideCancelButton
       >
-        {isDefault ? (
-          <Box display={"flex"} gap={2}>
-            <Button
-              variant={"outlined"}
-              startIcon={
-                <DriveFileMoveOutlinedIcon
-                  fontSize="small"
-                  sx={{ ...styles.iconDirectionStyle(lng) }}
-                />
-              }
-              sx={{ fontFamily: "inherit" }}
-            >
-              <Typography variant={"bodyLarge"} >{t("assessmentReport.moveTheAssessment")}</Typography>
-            </Button>
-            <Button variant={"contained"} sx={{ fontFamily: "inherit" }}>
-              <Typography variant={"bodyLarge"}>{t("assessmentReport.makeItPublic")}</Typography>
-            </Button>
-          </Box>
-        ) : (
-          <LoadingButton
-            variant="contained"
-            onClick={onClose}
-            sx={{ marginInlineStart: 1, fontFamily: "inherit" }}
-          >
-            {t("common.done", { lng })}
-          </LoadingButton>
-        )}
+        <LoadingButton
+          variant="contained"
+          onClick={onClose}
+          sx={{ marginInlineStart: 1, fontFamily: "inherit" }}
+        >
+          {t("common.it’sDone", { lng })}
+        </LoadingButton>
       </CEDialogActions>
 
       <Snackbar
