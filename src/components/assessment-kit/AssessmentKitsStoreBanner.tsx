@@ -1,5 +1,5 @@
-import { useEffect, useRef, useState } from "react";
-import { Box, Button, Skeleton, useTheme } from "@mui/material";
+import { useEffect, useRef, useState, useMemo, useCallback } from "react";
+import { Box, Button, CircularProgress, useTheme } from "@mui/material";
 import ArrowForwardIosRounded from "@mui/icons-material/ArrowForwardIosRounded";
 import ArrowBackIosRounded from "@mui/icons-material/ArrowBackIosRounded";
 import { useServiceContext } from "@/providers/service-provider";
@@ -7,7 +7,6 @@ import { useQuery } from "@/hooks/useQuery";
 import { styles } from "@styles";
 import { useNavigate } from "react-router-dom";
 import i18next from "i18next";
-import uniqueId from "@/utils/unique-id";
 
 interface Banner {
   kitId: number;
@@ -21,11 +20,7 @@ interface GradientArrowProps {
   Icon: React.ReactNode;
 }
 
-const GradientArrow: React.FC<GradientArrowProps> = ({
-  onClick,
-  side,
-  Icon,
-}) => (
+const GradientArrow: React.FC<GradientArrowProps> = ({ onClick, side, Icon }) => (
   <Button
     onClick={onClick}
     sx={{
@@ -36,7 +31,7 @@ const GradientArrow: React.FC<GradientArrowProps> = ({
       width: "10%",
       height: "100%",
       background: `linear-gradient(to ${side === "left" ? "right" : "left"}, rgba(27, 77, 126, 0.3), transparent)`,
-      zIndex: 2,
+      zIndex: 3,
       borderRadius: 0,
       "&:hover": {
         background: `linear-gradient(to ${side === "left" ? "right" : "left"}, rgba(27, 77, 126, 0.4), transparent)`,
@@ -53,159 +48,288 @@ const GradientArrow: React.FC<GradientArrowProps> = ({
   </Button>
 );
 
+const useAutoplay = (enabled: boolean, delayMs: number, onTick: () => void) => {
+  const rafRef = useRef<number | null>(null);
+  const startRef = useRef<number | null>(null);
+  useEffect(() => {
+    if (!enabled) return;
+    const loop = (ts: number) => {
+      if (startRef.current == null) startRef.current = ts;
+      if (ts - startRef.current >= delayMs) {
+        onTick();
+        startRef.current = ts;
+      }
+      rafRef.current = requestAnimationFrame(loop);
+    };
+    rafRef.current = requestAnimationFrame(loop);
+    return () => {
+      if (rafRef.current) cancelAnimationFrame(rafRef.current);
+      rafRef.current = null;
+      startRef.current = null;
+    };
+  }, [enabled, delayMs, onTick]);
+};
+
+const decodeImage = (src: string) =>
+  new Promise<void>((resolve) => {
+    const img = new Image();
+    img.src = src;
+    // @ts-ignore
+    if (img.decode) {
+      // @ts-ignore
+      img.decode().then(() => resolve()).catch(() => resolve());
+    } else {
+      img.onload = () => resolve();
+      img.onerror = () => resolve();
+    }
+  });
+
 const AssessmentKitsStoreBanner = (props: any) => {
   const { service } = useServiceContext();
   const navigate = useNavigate();
   const { mobileScreen } = props;
-  const [currentIndex, setCurrentIndex] = useState<number>(0);
-  const [loadedImages, setLoadedImages] = useState<boolean[]>([]);
-  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
-  const startXRef = useRef<number | null>(null);
-  const delay = 10000;
+
+  const theme = useTheme();
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [loaded, setLoaded] = useState<boolean[]>([]);
+  const [allReady, setAllReady] = useState(false);
+
+  const [dragging, setDragging] = useState(false);
+  const [dragPct, setDragPct] = useState(0);
+
+  const carouselRef = useRef<HTMLDivElement | null>(null);
+
+  const AUTOPLAY_DELAY = 8000;
 
   const { data = [], loading } = useQuery<Banner[]>({
     service: (args, config) =>
       service.assessmentKit.info.getAllBanners(
         args ?? { lang: i18next.language.toUpperCase() },
-        config,
+        config
       ),
   });
 
-  const banners = data;
+  const banners: Banner[] = data;
+  const images = useMemo(
+    () =>
+      banners.map((b) => (mobileScreen ? b.smallBanner : b.largeBanner)).filter(Boolean),
+    [banners, mobileScreen]
+  );
 
   useEffect(() => {
-    setLoadedImages(new Array(banners.length).fill(false));
-  }, [banners.length]);
-
-  const resetTimeout = () => {
-    if (timeoutRef.current) {
-      clearTimeout(timeoutRef.current);
-    }
-  };
-
-  const goTo = (index: number) => {
-    const last = banners.length - 1;
-
-    let nextIndex = index;
-    if (index < 0) {
-      nextIndex = last;
-    } else if (index > last) {
-      nextIndex = 0;
-    }
-
-    setCurrentIndex(nextIndex);
-  };
-
-  const goNext = () => goTo(currentIndex + 1);
-  const goPrev = () => goTo(currentIndex - 1);
+    setLoaded(Array(images.length).fill(false));
+    setAllReady(false);
+  }, [images.length]);
 
   useEffect(() => {
-    resetTimeout();
-    if (banners.length > 0) {
-      timeoutRef.current = setTimeout(goNext, delay);
-    }
-    return resetTimeout;
-  }, [currentIndex, banners.length]);
+    if (!images.length) return;
+    const toPreload = new Set<number>([
+      currentIndex,
+      (currentIndex + 1) % images.length,
+      (currentIndex - 1 + images.length) % images.length,
+    ]);
+    toPreload.forEach(async (i) => {
+      await decodeImage(images[i]!);
+      setLoaded((prev) => {
+        if (prev[i]) return prev;
+        const next = [...prev];
+        next[i] = true;
+        return next;
+      });
+    });
+  }, [currentIndex, images]);
 
   useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
+    if (!images.length) return;
+    const loadedCount = loaded.filter(Boolean).length;
+    if (loadedCount >= Math.min(2, images.length)) setAllReady(true);
+  }, [loaded, images.length]);
+
+  const DIRECTION = theme.direction === "rtl" ? "+" : "-";
+  const basePct = images.length ? currentIndex * (100 / images.length) : 0;
+  const appliedPct =
+    (DIRECTION === "+" ? 1 : -1) * (basePct + (dragging ? dragPct : 0)); 
+
+  const clampIndex = useCallback(
+    (idx: number) => {
+      const last = images.length - 1;
+      if (idx < 0) return last;
+      if (idx > last) return 0;
+      return idx;
+    },
+    [images.length]
+  );
+  const goTo = useCallback((idx: number) => setCurrentIndex(() => clampIndex(idx)), [clampIndex]);
+  const goNext = useCallback(() => goTo(currentIndex + 1), [currentIndex, goTo]);
+  const goPrev = useCallback(() => goTo(currentIndex - 1), [currentIndex, goTo]);
+
+  useAutoplay(images.length > 1 && !loading && !dragging, AUTOPLAY_DELAY, goNext);
+
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
       if (e.key === "ArrowLeft") goPrev();
       if (e.key === "ArrowRight") goNext();
     };
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [banners.length]);
+    window.addEventListener("keydown", onKey as any, { passive: true } as any);
+    return () => window.removeEventListener("keydown", onKey as any);
+  }, [goNext, goPrev]);
 
-  const handleSwipe = (startX: number, endX: number) => {
-    const diff = endX - startX;
-    if (diff > 50) goPrev();
-    else if (diff < -50) goNext();
-  };
+  useEffect(() => {
+    const root = carouselRef.current;
+    if (!root) return;
 
-  const handleMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
-    startXRef.current = e.clientX;
-  };
+    let startX = 0;
+    let dx = 0;
+    let tracking = false;
 
-  const handleMouseUp = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (startXRef.current !== null) {
-      handleSwipe(startXRef.current, e.clientX);
-      startXRef.current = null;
-    }
-  };
-  const theme = useTheme();
-  const DIRECTION = theme.direction === "rtl" ? "+" : "-";
+    const onDown = (e: PointerEvent) => {
+      tracking = true;
+      startX = e.clientX;
+      dx = 0;
+      setDragging(true);
+      setDragPct(0);
+      (e.target as Element).setPointerCapture?.(e.pointerId);
+    };
 
-  const handleImageLoad = (index: number) => {
-    setLoadedImages((prev) => {
-      const newLoaded = [...prev];
-      newLoaded[index] = true;
-      return newLoaded;
-    });
-  };
+    const onMove = (e: PointerEvent) => {
+      if (!tracking) return;
+      dx = e.clientX - startX;
+      const width = root.clientWidth || 1;
+      const pctViewport = (dx / width) * 100; 
+      setDragPct((DIRECTION === "+" ? 1 : -1) * pctViewport);
+    };
 
-  if (mobileScreen && !banners.some((kit) => !!kit.smallBanner)) return null;
-  if (!mobileScreen && !banners.some((kit) => !!kit.largeBanner)) return null;
+    const onUp = () => {
+      if (!tracking) return;
+      tracking = false;
+      const width = root.clientWidth || 1;
+      const swiped = Math.abs(dx) > width * 0.15;
+      setDragging(false);
+      setDragPct(0);
+      if (swiped) {
+        const swipedLeft = dx < 0;
+        swipedLeft ? goNext() : goPrev();
+      }
+    };
+
+    root.addEventListener("pointerdown", onDown);
+    root.addEventListener("pointermove", onMove);
+    root.addEventListener("pointerup", onUp);
+    root.addEventListener("pointercancel", onUp);
+    return () => {
+      root.removeEventListener("pointerdown", onDown);
+      root.removeEventListener("pointermove", onMove);
+      root.removeEventListener("pointerup", onUp);
+      root.removeEventListener("pointercancel", onUp);
+    };
+  }, [DIRECTION, goNext, goPrev]);
+
+  if (!loading && (!banners.length || !images.length)) return null;
+
+  const goToKit = (kitId: number) => navigate(`/assessment-kits/${kitId}/`);
 
   return (
     <Box
-      onMouseDown={handleMouseDown}
-      onMouseUp={handleMouseUp}
-      sx={styles.carousel}
+      ref={carouselRef}
+      sx={{
+        position: "relative",
+        overflow: "hidden",
+        borderRadius: 2,
+        backgroundColor: "action.hover",
+        willChange: "transform",
+        contain: "content",
+      }}
     >
-      {loading ||
-      !banners.length ||
-      (loadedImages.length > 0 && !loadedImages[currentIndex]) ? (
-        <Skeleton
-          variant="rectangular"
-          width="100%"
-          height="34vh"
-          sx={{ borderRadius: 2 }}
-        />
-      ) : null}
-
       <Box
-        display="flex"
-        width={{
-          xs: `${banners.length * 95}%`,
-          sm: `${banners.length * 100}%`,
-        }}
-        height="100%"
         sx={{
-          transition: "transform 0.5s ease-in-out",
-          transform: `translateX(${DIRECTION}${currentIndex * (100 / banners.length)}%)`,
+          display: "flex",
+          width: {
+            xs: `${images.length * 100}%`,
+            sm: `${images.length * 100}%`,
+          },
+          height: "100%",
+          transition: dragging ? "none" : "transform 420ms ease",
+          transform: `translate3d(${appliedPct}%, 0, 0)`,
+          willChange: "transform",
+          userSelect: "none",
+          touchAction: "pan-y",
         }}
       >
-        {banners.map((item, i) => (
-          <Box
-            key={item.kitId}
-            component="button"
-            type="button"
-            onClick={() => navigate(`/assessment-kits/${item.kitId}/`)}
-            width="100%"
-            height="100%"
-            display="block"
-            paddingInlineStart={2}
-            sx={{
-              all: "unset",
-              cursor: "pointer",
-            }}
-          >
-            <img
-              src={mobileScreen ? item.smallBanner : item.largeBanner}
-              alt={`Slide ${i + 1}`}
-              onLoad={() => handleImageLoad(i)}
-              style={{
-                width: "100%",
-                height: "100%",
-                objectFit: "cover",
-                display: loadedImages[i] ? "block" : "none",
-              }}
-            />
-          </Box>
-        ))}
+        {banners.map((item, i) => {
+          const src = mobileScreen ? item.smallBanner : item.largeBanner;
+          const isLoaded = loaded[i];
+          return (
+            <Box
+              key={item.kitId}
+              component="button"
+              type="button"
+              onClick={() => goToKit(item.kitId)}
+              width="100%"
+              height="100%"
+              paddingInlineStart={2}
+              sx={{ all: "unset", cursor: "pointer", position: "relative" }}
+            >
+              <img
+                src={src}
+                alt={`Slide ${i + 1}`}
+                loading={i === 0 ? "eager" : "lazy"}
+                onLoad={() =>
+                  setLoaded((prev) => {
+                    if (prev[i]) return prev;
+                    const next = [...prev];
+                    next[i] = true;
+                    return next;
+                  })
+                }
+                style={{
+                  width: "100%",
+                  height: "100%",
+                  objectFit: "cover",
+                  display: "block",
+                  opacity: isLoaded ? 1 : 0,
+                  transition: "opacity 260ms ease",
+                }}
+              />
+              {!isLoaded && (
+                <Box
+                  sx={{
+                    position: "absolute",
+                    inset: 0,
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    backdropFilter: "blur(2px)",
+                    background:
+                      "linear-gradient(180deg, rgba(0,0,0,0.06), rgba(0,0,0,0.16))",
+                  }}
+                >
+                  <CircularProgress size={28} />
+                </Box>
+              )}
+            </Box>
+          );
+        })}
       </Box>
 
-      {!mobileScreen && (
+      {(loading || !allReady) && (
+        <Box
+          sx={{
+            position: "absolute",
+            inset: 0,
+            zIndex: 4,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            pointerEvents: "none",
+            background:
+              "linear-gradient(180deg, rgba(0,0,0,0.06), rgba(0,0,0,0.16))",
+          }}
+        >
+          <CircularProgress />
+        </Box>
+      )}
+
+      {!mobileScreen && images.length > 1 && (
         <>
           <GradientArrow
             onClick={goPrev}
@@ -217,27 +341,43 @@ const AssessmentKitsStoreBanner = (props: any) => {
             side="right"
             Icon={<ArrowForwardIosRounded fontSize="large" />}
           />
-          <Box sx={styles.dots}>
-            {banners.map((_, i) => (
+        </>
+      )}
+
+      {images.length > 1 && (
+        <Box
+          sx={{
+            position: "absolute",
+            left: 0,
+            right: 0,
+            bottom: 10,
+            display: "flex",
+            gap: 1,
+            justifyContent: "center",
+            zIndex: 5,
+          }}
+        >
+          {banners.map((_b, i) => {
+            const active = i === currentIndex;
+            return (
               <Box
-                key={uniqueId()}
-                width={currentIndex === i ? "2rem" : "1rem"}
-                height="0.75rem"
-                bgcolor={
-                  currentIndex === i ? "background.onVariant" : "#668099"
-                }
-                borderRadius={currentIndex === i ? "20px" : "50%"}
+                key={banners[i]?.kitId ?? i}
+                component="span"
+                onClick={() => setCurrentIndex(i)}
                 sx={{
+                  width: active ? "2rem" : "1rem",
+                  height: "0.75rem",
+                  bgcolor: active ? "background.onVariant" : "#668099",
+                  borderRadius: active ? "20px" : "50%",
                   cursor: "pointer",
                   transition: "all 0.3s ease",
-                  opacity: currentIndex === i ? 1 : 0.7,
-                  transform: currentIndex === i ? "scale(1.3)" : "scale(1)",
+                  opacity: active ? 1 : 0.7,
+                  transform: active ? "scale(1.3)" : "scale(1)",
                 }}
-                onClick={() => setCurrentIndex(i)}
               />
-            ))}
-          </Box>
-        </>
+            );
+          })}
+        </Box>
       )}
     </Box>
   );
