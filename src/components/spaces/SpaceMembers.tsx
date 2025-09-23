@@ -39,8 +39,6 @@ import showToast from "@/utils/toast-error";
 import { DeleteConfirmationDialog } from "@common/dialogs/DeleteConfirmationDialog";
 import Title from "@common/Title";
 import FormProviderWithForm from "../common/FormProviderWithForm";
-import { useForm } from "react-hook-form";
-import { InputFieldUC } from "../common/fields/InputField";
 
 export const SpaceMembers = (props: any) => {
   const { editable } = props;
@@ -81,7 +79,6 @@ export const SpaceMembers = (props: any) => {
       showToast(err);
     }
   };
-  const formMethods = useForm();
 
   const dialogProps = useDialog();
   const {
@@ -147,8 +144,7 @@ export const SpaceMembers = (props: any) => {
         >
           <Trans i18nKey="common.addNewMember" />
         </Title>
-        <FormProviderWithForm
-          formMethods={formMethods}
+        <form
           onSubmit={async (e) => {
             e.preventDefault();
             if (!user_id_ref.current?.value) {
@@ -175,10 +171,11 @@ export const SpaceMembers = (props: any) => {
             }
           }}
         >
-          <InputFieldUC
+          <TextField
             fullWidth
             type="email"
             size="small"
+            variant="outlined"
             inputRef={user_id_ref}
             placeholder={t("user.enterEmailOfTheUserYouWantToAdd") as string}
             label={<Trans i18nKey="user.userEmail" />}
@@ -187,7 +184,7 @@ export const SpaceMembers = (props: any) => {
             }}
             required
           />
-        </FormProviderWithForm>
+        </form>
       </Box>
       <Box mt={6}>
         <Title
