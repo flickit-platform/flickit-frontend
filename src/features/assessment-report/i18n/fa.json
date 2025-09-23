@@ -28,7 +28,7 @@
   "howCanTheCurrentSituationBeImproved": "چطور می‌توان وضعیت فعلی را بهبود داد؟",
   "introduction": "مقدمه",
   "introductionReport": "مقدمه گزارش",
-  "isDraftSpaceReport": "برای به اشتراک‌گذاری این گزارش یا باید دسترسی آن را عمومی کنید و یا ارزیابی مربوطه را به یک فضای کاری منتقل کنید.",
+  "isDraftSpaceReport": "در حال حاضر فقط شما به گزارش ارزیابی دسترسی دارید. برای به اشتراک‌گذاری با دیگران یا باید دسترسی آن را عمومی کنید و یا ارزیابی را به یک فضای کاری منتقل کنید.",
   "lowScoringQuestions": "سوالات با امتیاز کسب‌شده پایین",
   "highScoringQuestions": "سوالات با امتیاز کسب‌شده بالا",
   "kitWithTitle": "کیت {{title}}",
@@ -45,6 +45,8 @@
   "measureTitle": "نام سنجه",
   "measureMaturityLevel": "برای اندازه‌گیری سطح بلوغ هر موضوع و ویژگی‌های آن، {{QuestionnairesCount}} پرسشنامه شامل مجموع {{QuestionCount}} سؤال تهیه شده است. در طول فرآیند ارزیابی، هر سؤال امتیازدهی خواهد شد. هر سؤال ممکن است بر امتیاز یک یا چند ویژگی موضوع تأثیر بگذارد. جدول زیر این پرسشنامه‌ها را ارائه می‌دهد.",
   "missedScore": "امتیاز از‌دست‌رفته (٪)",
+  "makeItPublic": "عمومی کردن گزارش",
+  "moveTheAssessment": "انتقال ارزیابی به فضای کاری",
   "reportIssues": "موارد گزارش‌",
   "report": "گزارش",
   "reportTitle": "گزارش",
@@ -65,5 +67,6 @@
   "writeIntroduction": "مقدمه گزارش ارزیابی را بنویسید...",
   "writeStepsForAssessment": "گام‌های طی‌شده در ارزیابی را شرح دهید...",
   "writeStrengthAndAreas": "نقاط قوت و فضاهای قابل بهبود را ذکر کنید...",
-  "writeYourInsightsOfTheAssessmentResultsHere": "تحلیل خود را از نتایج ارزیابی اینجا بنویسید..."
+  "writeYourInsightsOfTheAssessmentResultsHere": "تحلیل خود را از نتایج ارزیابی اینجا بنویسید...",
+  "WhoHasAccessReport": "چه کسانی میتوانند گزارش را ببینند؟"
 }

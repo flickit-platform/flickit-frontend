@@ -8,7 +8,7 @@ import Divider from "@mui/material/Divider";
 import Typography from "@mui/material/Typography";
 import Chip from "@mui/material/Chip";
 import Share from "@mui/icons-material/Share";
-import LinkIcon from "@mui/icons-material/Link";
+import DriveFileMoveOutlinedIcon from "@mui/icons-material/DriveFileMoveOutlined";
 import { useMemo } from "react";
 import LoadingButton from "@mui/lab/LoadingButton";
 import stringAvatar from "@/utils/string-avatar";
@@ -26,7 +26,7 @@ import {
 import { InputFieldUC } from "@/components/common/fields/InputField";
 import QueryBatchData from "@/components/common/QueryBatchData";
 import DeleteForeverOutlinedIcon from "@mui/icons-material/DeleteForeverOutlined";
-import { IconButton } from "@mui/material";
+import { Button, IconButton } from "@mui/material";
 import FormProviderWithForm from "@/components/common/FormProviderWithForm";
 
 type ShareDialogProps = {
@@ -94,36 +94,21 @@ export default function ShareDialog({
 
   const shareSection = () => {
     return isDefault ? (
-      <>
-        {" "}
-        <Divider sx={{ my: 1 }} />{" "}
+      <Box sx={{ background: "#8A0F240A", borderRadius: "4px", p: "8px 16px" }}>
         <Typography
-          color="background.onVariant"
-          variant={"bodySmall"}
+          color="error.main"
+          variant={"bodyMedium"}
           fontFamily="inherit"
         >
           {" "}
           {t("assessmentReport.isDraftSpaceReport", { lng })}{" "}
         </Typography>{" "}
-      </>
+      </Box>
     ) : (
       <>
         {" "}
         {access === VISIBILITY.RESTRICTED && permissions.canShareReport && (
           <>
-            {" "}
-            <Box mt={permissions.canManageVisibility ? 3 : 0}>
-              {" "}
-              <Typography
-                variant="bodyMedium"
-                color="rgba(61, 77, 92, 0.5)"
-                fontFamily="inherit"
-              >
-                {" "}
-                {t("assessmentReport.peopleWithAccess", { lng })}{" "}
-              </Typography>{" "}
-              <Divider sx={{ my: 1 }} />{" "}
-            </Box>{" "}
             <FormProviderWithForm
               formMethods={formMethods}
               onSubmit={handleInviteSubmit}
@@ -222,7 +207,7 @@ export default function ShareDialog({
       maxWidth="sm"
       sx={{ ...styles.rtlStyle(isRTL) }}
       contentStyle={{
-        p: "38px 64px 32px 64px !important",
+        p: "16px 32px !important",
         overflow: "hidden !important",
       }}
       titleStyle={{ mb: "0px !important" }}
@@ -242,7 +227,6 @@ export default function ShareDialog({
         </Typography>
         <Divider sx={{ my: 1 }} />
       </Box>
-
       <Box
         sx={{
           display: permissions.canManageVisibility ? "flex" : "none",
@@ -303,7 +287,21 @@ export default function ShareDialog({
             </Box>
           );
         })}
-      </Box>
+      </Box>{" "}
+      <Box mt={permissions.canManageVisibility ? 3 : 0}>
+        {" "}
+        <Typography
+          variant="bodyMedium"
+          color="rgba(61, 77, 92, 0.5)"
+          fontFamily="inherit"
+        >
+          {" "}
+          {isDefault
+            ? t("assessmentReport.WhoHasAccessReport", { lng })
+            : t("assessmentReport.peopleWithAccess", { lng })}
+        </Typography>{" "}
+        <Divider sx={{ my: 1 }} />{" "}
+      </Box>{" "}
       {shareSection()}
       <CEDialogActions
         type="delete"
@@ -312,27 +310,33 @@ export default function ShareDialog({
         hideSubmitButton
         hideCancelButton
       >
-        <LoadingButton
-          startIcon={
-            <LinkIcon
-              fontSize="small"
-              sx={{ ...styles.iconDirectionStyle(lng) }}
-            />
-          }
-          onClick={handleCopyClick}
-          variant="outlined"
-          sx={{ fontFamily: "inherit" }}
-        >
-          {t("assessmentReport.copyReportLink", { lng })}
-        </LoadingButton>
-
-        <LoadingButton
-          variant="contained"
-          onClick={onClose}
-          sx={{ marginInlineStart: 1, fontFamily: "inherit" }}
-        >
-          {t("common.done", { lng })}
-        </LoadingButton>
+        {isDefault ? (
+          <Box display={"flex"} gap={2}>
+            <Button
+              variant={"outlined"}
+              startIcon={
+                <DriveFileMoveOutlinedIcon
+                  fontSize="small"
+                  sx={{ ...styles.iconDirectionStyle(lng) }}
+                />
+              }
+              sx={{ fontFamily: "inherit" }}
+            >
+              <Typography>{t("assessmentReport.moveTheAssessment")}</Typography>
+            </Button>
+            <Button variant={"contained"} sx={{ fontFamily: "inherit" }}>
+              <Typography>{t("assessmentReport.makeItPublic")}</Typography>
+            </Button>
+          </Box>
+        ) : (
+          <LoadingButton
+            variant="contained"
+            onClick={onClose}
+            sx={{ marginInlineStart: 1, fontFamily: "inherit" }}
+          >
+            {t("common.done", { lng })}
+          </LoadingButton>
+        )}
       </CEDialogActions>
 
       <Snackbar
