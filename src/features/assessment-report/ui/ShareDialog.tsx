@@ -133,15 +133,15 @@ export default function ShareDialog({
   });
 
   const getBackgroundColor = ({
-    k,
+    status,
     isSelected,
     isDefault,
   }: {
-    k: string;
+    status: string;
     isSelected: boolean;
     isDefault: boolean;
   }) => {
-    if (isSelected && isDefault && k === "RESTRICTED") return "#8A0F2414";
+    if (isSelected && isDefault && status === VISIBILITY.RESTRICTED) return "#8A0F2414";
     if (isSelected) return "#2466A814";
     return "inherit";
   };
@@ -272,7 +272,7 @@ export default function ShareDialog({
     >
       <Box
         sx={{
-          display: permissions.canManageVisibility ? "flex" : "none",
+          display: permissions.canManageVisibility ? "flex-column" : "none",
           mt: 0,
         }}
       >
@@ -287,27 +287,26 @@ export default function ShareDialog({
       </Box>
       <Box
         sx={{
-          display: permissions.canManageVisibility ? "flex" : "none",
-          flexDirection: "column",
+          display: permissions.canManageVisibility ? "flex-column" : "none",
           gap: 1,
         }}
       >
         {Object.values(VISIBILITY).map((key) => {
-          const k = key as VISIBILITY;
-          const isSelected = access === k;
+          const status = key as VISIBILITY;
+          const isSelected = access === status;
           return (
             <Box
-              key={k}
+              key={status}
               sx={{
                 display: "flex",
                 justifyContent: "flex-start",
-                background: getBackgroundColor({ k, isSelected, isDefault }),
+                background: getBackgroundColor({ status, isSelected, isDefault }),
                 width: "100%",
                 height: "fit-content",
                 borderRadius: "8px",
                 cursor: "pointer",
               }}
-              onClick={() => handleSelect(k)}
+              onClick={() => handleSelect(status)}
             >
               <Box sx={{ ...styles.centerVH }} width="38px" height="38px">
                 <Radio
@@ -318,7 +317,7 @@ export default function ShareDialog({
                     padding: "9px",
                     "&.Mui-checked": {
                       color:
-                        isDefault && k == "RESTRICTED" ? "#8A0F24" : "#2466A8",
+                        isDefault && status == VISIBILITY.RESTRICTED ? "#8A0F24" : "#2466A8",
                     },
                   }}
                 />
@@ -335,22 +334,22 @@ export default function ShareDialog({
                   variant="bodyMedium"
                   sx={{ color: "#2B333B" }}
                 >
-                  {isDefault && k == "RESTRICTED"
-                    ? accessOptionsNew[k].titleDefault
-                    : accessOptionsNew[k].title}
+                  {isDefault && status == VISIBILITY.RESTRICTED
+                    ? accessOptionsNew[status].titleDefault
+                    : accessOptionsNew[status].title}
                 </Typography>
                 <Typography
                   variant="bodySmall"
-                  color="background.onVariant"
+                  color="background.secondaryDark"
                   fontFamily="inherit"
                 >
-                  {isDefault && k == "RESTRICTED"
-                    ? accessOptionsNew[k].descriptionDefault
-                    : accessOptionsNew[k].description}
+                  {isDefault && status == VISIBILITY.RESTRICTED
+                    ? accessOptionsNew[status].descriptionDefault
+                    : accessOptionsNew[status].description}
                 </Typography>
               </Box>
               <Box sx={{ ...styles.centerV, paddingInlineEnd: "16px" }}>
-                {isDefault && k == "RESTRICTED" && (
+                {isDefault && status == VISIBILITY.RESTRICTED && (
                   <Button
                     variant={"outlined"}
                     color={"error"}
@@ -360,8 +359,11 @@ export default function ShareDialog({
                       p: "4px 10px",
                     }}
                   >
-                    <Typography variant={"labelLarge"}>
-                      {t("assessmentReport.moveAssessment")}
+                    <Typography
+                      variant= {"labelLarge"}
+                      sx= {{ ...styles.rtlStyle(lng === "fa")}}
+                    >
+                      {t("assessmentReport.moveAssessment", {lng})}
                     </Typography>
                   </Button>
                 )}
@@ -383,7 +385,7 @@ export default function ShareDialog({
           onClick={onClose}
           sx={{ marginInlineStart: 1, fontFamily: "inherit" }}
         >
-          {t("common.it’sDone", { lng })}
+          {t("assessmentReport.done", { lng })}
         </LoadingButton>
       </CEDialogActions>
 
