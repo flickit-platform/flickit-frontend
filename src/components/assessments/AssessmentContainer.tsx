@@ -271,7 +271,7 @@ const AssessmentContainer = () => {
   );
 };
 
-export const useFetchAssessments = (page: any, spaceId: any) => {
+export const useFetchAssessments = (page: any, spaceId: any, defaultSpaceId?: any) => {
   const [data, setData] = useState<any>({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
@@ -280,6 +280,14 @@ export const useFetchAssessments = (page: any, spaceId: any) => {
   );
   const { service } = useServiceContext();
   const abortController = useRef(new AbortController());
+
+  const fetchSpaceInfo = useQuery({
+    service: (args, config) => {
+      const payload = args?.spaceId ? args : { spaceId : defaultSpaceId };
+      return service.space.getById(payload, config);
+    },
+    runOnMount: false,
+  });
 
   useEffect(() => {
     if (spaceId) {
@@ -328,6 +336,10 @@ export const useFetchAssessments = (page: any, spaceId: any) => {
     }
   };
 
+  useEffect(() => {
+    fetchSpaceInfo.query({spaceId})
+  }, [data?.items?.length]);
+
   return {
     data: data.items ?? [],
     page: data.page ?? 0,
@@ -340,6 +352,7 @@ export const useFetchAssessments = (page: any, spaceId: any) => {
     errorObject,
     fetchAssessments,
     deleteAssessment,
+    fetchSpaceInfo
   };
 };
 
