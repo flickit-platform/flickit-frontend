@@ -8,7 +8,7 @@ import Divider from "@mui/material/Divider";
 import Typography from "@mui/material/Typography";
 import Chip from "@mui/material/Chip";
 import Share from "@mui/icons-material/Share";
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import LoadingButton from "@mui/lab/LoadingButton";
 import stringAvatar from "@/utils/string-avatar";
 import { VISIBILITY } from "@/utils/enum-type";
@@ -27,6 +27,11 @@ import QueryBatchData from "@/components/common/QueryBatchData";
 import DeleteForeverOutlinedIcon from "@mui/icons-material/DeleteForeverOutlined";
 import { Button, IconButton } from "@mui/material";
 import FormProviderWithForm from "@/components/common/FormProviderWithForm";
+import SpaceFieldForm from "@common/spaceFieldForm";
+import { useAssessmentCreation } from "@/hooks/useAssessmentCreation";
+import { useServiceContext } from "@providers/service-provider";
+import { useConnectAutocompleteField } from "@common/fields/AutocompleteAsyncField";
+import { useParams } from "react-router-dom";
 
 type ShareDialogProps = {
   open: boolean;
@@ -50,6 +55,30 @@ export default function ShareDialog({
     mode: "onSubmit",
     reValidateMode: "onSubmit",
   });
+  const { service } = useServiceContext();
+  const {assessmentId =""} = useParams()
+  const queryDataSpaces = useConnectAutocompleteField({
+    service: (args, config) =>
+      service.assessments.info.getTargetSpaces(args, config),
+    accessor: "items",
+  });
+
+  const [spaceList, setSpaceList] = useState<any[]>([]);
+
+  useEffect(() => {
+    const fetchSpaces = async () => {
+      const data = await queryDataSpaces.query({ assessmentId });
+      setSpaceList(data);
+    };
+
+    fetchSpaces();
+  }, [assessmentId, queryDataSpaces]);
+
+
+  const staticData = {
+    queryDataSpaces,
+    spaceList
+  };
 
   const isRTL = lng === "fa";
   const { space } = assessment ?? {};
@@ -121,7 +150,7 @@ export default function ShareDialog({
     return (
       <>
         {" "}
-        {access === VISIBILITY.RESTRICTED && permissions.canShareReport && (
+        { permissions.canShareReport && (
           <>
             {" "}
             <Box mt={permissions.canManageVisibility ? 3 : 0}>
@@ -341,7 +370,7 @@ export default function ShareDialog({
           );
         })}
       </Box>
-      {!isDefault && shareSection()}
+      {!isDefault && access === VISIBILITY.RESTRICTED ? shareSection() : <SpaceFieldForm formMethods={formMethods} staticData={staticData}  />}
       <CEDialogActions
         type="delete"
         loading={false}
