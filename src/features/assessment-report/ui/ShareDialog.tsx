@@ -289,7 +289,7 @@ export default function ShareDialog({
                     padding: "9px",
                     "&.Mui-checked": {
                       color:
-                        isDefault && status == "RESTRICTED" ? "#8A0F24" : "#2466A8",
+                        isDefault && status == VISIBILITY.RESTRICTED ? "#8A0F24" : "#2466A8",
                     },
                   }}
                 />
@@ -332,7 +332,7 @@ export default function ShareDialog({
                     }}
                   >
                     <Typography variant={"labelLarge"}>
-                      {t("assessmentReport.moveAssessment")}
+                      {t("assessmentReport.moveAssessment", {lng})}
                     </Typography>
                   </Button>
                 )}
