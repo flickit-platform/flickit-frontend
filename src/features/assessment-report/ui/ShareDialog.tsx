@@ -112,7 +112,7 @@ export default function ShareDialog({
     isSelected: boolean;
     isDefault: boolean;
   }) => {
-    if (isSelected && isDefault && status === "RESTRICTED") return "#8A0F2414";
+    if (isSelected && isDefault && status === VISIBILITY.RESTRICTED) return "#8A0F2414";
     if (isSelected) return "#2466A814";
     return "inherit";
   };
@@ -243,7 +243,7 @@ export default function ShareDialog({
     >
       <Box
         sx={{
-          display: permissions.canManageVisibility ? "flex" : "none",
+          display: permissions.canManageVisibility ? "flex-column" : "none",
           mt: 0,
         }}
       >
@@ -258,8 +258,7 @@ export default function ShareDialog({
       </Box>
       <Box
         sx={{
-          display: permissions.canManageVisibility ? "flex" : "none",
-          flexDirection: "column",
+          display: permissions.canManageVisibility ? "flex-column" : "none",
           gap: 1,
         }}
       >
@@ -306,22 +305,22 @@ export default function ShareDialog({
                   variant="bodyMedium"
                   sx={{ color: "#2B333B" }}
                 >
-                  {isDefault && status == "RESTRICTED"
+                  {isDefault && status == VISIBILITY.RESTRICTED
                     ? accessOptionsNew[status].titleDefault
                     : accessOptionsNew[status].title}
                 </Typography>
                 <Typography
                   variant="bodySmall"
-                  color="background.onVariant"
+                  color="background.secondaryDark"
                   fontFamily="inherit"
                 >
-                  {isDefault && status == "RESTRICTED"
+                  {isDefault && status == VISIBILITY.RESTRICTED
                     ? accessOptionsNew[status].descriptionDefault
                     : accessOptionsNew[status].description}
                 </Typography>
               </Box>
               <Box sx={{ ...styles.centerV, paddingInlineEnd: "16px" }}>
-                {isDefault && status == "RESTRICTED" && (
+                {isDefault && status == VISIBILITY.RESTRICTED && (
                   <Button
                     variant={"outlined"}
                     color={"error"}
@@ -331,7 +330,10 @@ export default function ShareDialog({
                       p: "4px 10px",
                     }}
                   >
-                    <Typography variant={"labelLarge"}>
+                    <Typography
+                      variant= {"labelLarge"}
+                      sx= {{ ...styles.rtlStyle(lng === "fa")}}
+                    >
                       {t("assessmentReport.moveAssessment", {lng})}
                     </Typography>
                   </Button>
