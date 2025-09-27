@@ -12,6 +12,7 @@ import { Grid } from "@mui/material";
 import { SpaceField } from "../common/fields/SpaceField";
 import { useServiceContext } from "@/providers/service-provider";
 import { useQuery } from "@/hooks/useQuery";
+import SpaceFieldForm from "@common/spaceFiledForm";
 
 interface IAssessmentCEFromDialogProps extends DialogProps {
   onClose: () => void;
@@ -98,25 +99,7 @@ const MoveAssessmentDialog = (props: IAssessmentCEFromDialogProps) => {
         },
       }}
     >
-      <FormProviderWithForm formMethods={formMethods}>
-        <Grid container>
-          <Grid item lg={12} md={12} sm={12} xs={12}>
-            <Typography variant="bodyMedium">
-              <Trans i18nKey="assessment.chooseTargetSpace" />
-            </Typography>
-          </Grid>
-          <Grid item lg={6} md={6} sm={12} xs={12}>
-            <SpaceField
-              queryDataSpaces={queryDataSpaces}
-              spaces={spaceList}
-              sx={{ mt: "24px" }}
-              label={<Trans i18nKey="spaces.targetSpace" />}
-              filterSelectedOptions={false}
-            />{" "}
-          </Grid>
-        </Grid>
-      </FormProviderWithForm>
-
+      <SpaceFieldForm formMethods={formMethods} staticData={staticData} />
       <CEDialogActions
         closeDialog={close}
         submitButtonLabel="common.move"
