@@ -99,9 +99,7 @@ const AssessmentCEFromDialog = (props: IAssessmentCEFromDialogProps) => {
       if (onSubmitForm !== undefined) {
         onSubmitForm();
       }
-      if (type === "update") {
-        close();
-      }
+      close();
       setCreatedKitSpaceId(spaceId ?? space?.id ?? defaultSpaceId);
     } catch (e) {
       const err = e as ICustomError;

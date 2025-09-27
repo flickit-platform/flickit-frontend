@@ -60,6 +60,7 @@ const SpaceContainer = () => {
     errorObject: assessmentsErrorObject,
     deleteAssessment,
     fetchAssessments,
+    fetchSpaceInfo
   } = useFetchAssessments(assessmentPage - 1, defaultSpaceId);
 
   const handleChangePage = (_: unknown, newPage: number) => {
@@ -191,6 +192,7 @@ const SpaceContainer = () => {
         }
         endButtonIcon={<NewAssessmentIcon width={20} />}
         sx={{ mt: 4 }}
+        disabled={!fetchSpaceInfo.data?.canCreateAssessment}
       >
         <QueryData
           data={assessments}
@@ -207,6 +209,7 @@ const SpaceContainer = () => {
                   title="assessment.noAssesmentHere"
                   SubTitle="assessment.createAnAssessmentWith"
                   onAddNewRow={handleAddNewAssessment}
+                  disabled={!fetchSpaceInfo.data?.canCreateAssessment}
                 />
               ) : (
                 <>
