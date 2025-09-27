@@ -12,6 +12,7 @@ interface ExpandableSectionProps {
   endButtonIcon?: React.ReactNode;
   defaultExpanded?: boolean;
   sx?: any;
+  disabled?: boolean;
 }
 
 const CustomAccordion = styled(Box)(() => ({
@@ -27,6 +28,7 @@ const ExpandableSection: React.FC<ExpandableSectionProps> = ({
   endButtonText = "افزودن",
   endButtonIcon = <AddRoundedIcon fontSize="small" />,
   defaultExpanded = true,
+  disabled,
   ...rest
 }) => {
   const [expanded, setExpanded] = useState(defaultExpanded);
@@ -61,6 +63,7 @@ const ExpandableSection: React.FC<ExpandableSectionProps> = ({
               endIcon={endButtonIcon}
               variant="contained"
               onClick={onEndButtonClick}
+              disabled={disabled}
             >
               {endButtonText}
             </Button>
