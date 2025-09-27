@@ -17,6 +17,7 @@
     "outro": "Feel free to contact the expert group that developed the kit used in this assessment."
   },
   "contributionToAttribute": "Contribution to attribute (%)",
+  "done": "Done",
   "YouDoNotHavePermission": "You do not have permission to make changes.",
   "disclaimerDescription": "This report was produced with an evidence-based evaluation approach and partially relies on the information provided by the interviewees. The findings of this report are not 100% certain. If the managers approve, the evaluation process will continue to examine the evidence more deeply and increase the confidence factor.",
   "disclaimer": "Clarification and disclaimer",
@@ -28,7 +29,7 @@
   "howCanTheCurrentSituationBeImproved": "How can the current situation be improved?",
   "introduction": "Introduction",
   "introductionReport": "Report introduction",
-  "isDraftSpaceReport": "To share this report, you can either make it public or move the related assessment to a space.",
+  "isDraftSpaceReport": "Only you can access this assessment report right now. To share it, make it public or move the assessment to a workspace",
   "lowScoringQuestions": "Low-scoring questions",
   "highScoringQuestions": "High-scoring questions",
   "kitWithTitle": "{{title}} kit",
@@ -45,13 +46,18 @@
   "measureTitle": "Measure",
   "measureMaturityLevel": "To measure the maturity level of each subject and its attributes {{QuestionnairesCount}} questionnaires, including a total of {{QuestionCount}} questions, are prepared. During the assessment process, each question will be scored. Each question may affect the score of one or more subject attributes. The following table presents these questionnaires.",
   "missedScore": "Missed score (%)",
+  "makeItPublic": "Make it public",
+  "moveTheAssessment": "Move the assessment",
+  "moveAssessment": "Move assessment",
   "reportIssues": "Report issues",
   "report": "report",
   "reportTitle": "Report",
   "requestAnExpertReview": "Request an expert review",
   "requestAnExpertReviewContent": "We can share your questionnaire responses with a team of experienced assessors who have domain-specific expertise aligned with your software. Their involvement can result in an assessment with greater accuracy, depth, and quality than the current AI-assisted report. <br/>Our specialists will be in direct contact with you throughout the process. <br/>Please note that this is a paid service. To explore a potential collaboration, please share your contact details and brief information about your software—such as business domain, brand name, and other relevant context.",
   "restrictedShareTitle": "Restricted access (Only users with access) ",
+  "restrictedShareTitleDefault": "Restricted access (Only you) ",
   "restrictedShareDescription": "Accessible only to users who’ve been given access.",
+  "restrictedShareDescriptionDefault": "To share this assessment with others, move it to a workspace.",
   "shareReport": "Share report",
   "shareReportViaEmail": "Share the report with new people via email",
   "shareOptions": "Sharing options",
@@ -65,5 +71,6 @@
   "writeIntroduction": "Write the introduction of the report here...",
   "writeStepsForAssessment": "Write about the steps taken in this assessment here...",
   "writeStrengthAndAreas": "Write about strengths and areas for improvement here...",
-  "writeYourInsightsOfTheAssessmentResultsHere": "Write your insights of the assessment results here..."
+  "writeYourInsightsOfTheAssessmentResultsHere": "Write your insights of the assessment results here...",
+  "WhoHasAccessReport": "Who can see this report?"
 }
