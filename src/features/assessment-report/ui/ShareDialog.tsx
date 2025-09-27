@@ -58,7 +58,7 @@ export default function ShareDialog({
   const isRTL = lng === "fa";
   const { space } = assessment ?? {};
   const isDefault = space?.isDefault ?? false;
-
+  const [pageNumber, setPageNumber] = useState(0)
   const {
     access,
     snackbarOpen,
@@ -147,6 +147,10 @@ export default function ShareDialog({
     if (isSelected) return "#2466A814";
     return "inherit";
   };
+
+  const changeStatus = (pageNumber: number)=>{
+    setPageNumber(pageNumber)
+  }
 
   const shareSection = () => {
     return (
@@ -272,123 +276,165 @@ export default function ShareDialog({
       }}
       titleStyle={{ mb: "0px !important" }}
     >
-      <Box
-        sx={{
-          display: permissions.canManageVisibility ? "flex-column" : "none",
-          mt: 0,
-        }}
-      >
-        <Typography
-          variant="bodyMedium"
-          color="rgba(61, 77, 92, 0.5)"
-          fontFamily="inherit"
+      {pageNumber == 0 && <>
+        <Box
+            sx={{
+              display: permissions.canManageVisibility ? "flex-column" : "none",
+              mt: 0,
+            }}
         >
-          {t("assessmentReport.shareOptions", { lng })}
-        </Typography>
-        <Divider sx={{ my: 1 }} />
-      </Box>
-      <Box
-        sx={{
-          display: permissions.canManageVisibility ? "flex-column" : "none",
-          gap: 1,
-        }}
-      >
-        {Object.values(VISIBILITY).map((key) => {
-          const status = key as VISIBILITY;
-          const isSelected = access === status;
-          return (
-            <Box
-              key={status}
-              sx={{
-                display: "flex",
-                justifyContent: "flex-start",
-                background: getBackgroundColor({ status, isSelected, isDefault }),
-                width: "100%",
-                height: "fit-content",
-                borderRadius: "8px",
-                cursor: "pointer",
-              }}
-              onClick={() => handleSelect(status)}
-            >
-              <Box sx={{ ...styles.centerVH }} width="38px" height="38px">
-                <Radio
-                  checked={isSelected}
-                  color="primary"
-                  size="small"
-                  sx={{
-                    padding: "9px",
-                    "&.Mui-checked": {
-                      color:
-                        isDefault && status == VISIBILITY.RESTRICTED ? "#8A0F24" : "#2466A8",
-                    },
-                  }}
-                />
-              </Box>
-              <Box
-                sx={{ ...styles.centerCV }}
-                padding="8px 0"
-                gap="4px"
-                flex={"1"}
-                height="fit-content"
-              >
-                <Typography
-                  fontFamily="inherit"
-                  variant="bodyMedium"
-                  sx={{ color: "#2B333B" }}
-                >
-                  {isDefault && status == VISIBILITY.RESTRICTED
-                    ? accessOptionsNew[status].titleDefault
-                    : accessOptionsNew[status].title}
-                </Typography>
-                <Typography
-                  variant="bodySmall"
-                  color="background.secondaryDark"
-                  fontFamily="inherit"
-                >
-                  {isDefault && status == VISIBILITY.RESTRICTED
-                    ? accessOptionsNew[status].descriptionDefault
-                    : accessOptionsNew[status].description}
-                </Typography>
-              </Box>
-              <Box sx={{ ...styles.centerV, paddingInlineEnd: "16px" }}>
-                {isDefault && status == VISIBILITY.RESTRICTED && (
-                  <Button
-                    variant={"outlined"}
-                    color={"error"}
+          <Typography
+              variant="bodyMedium"
+              color="rgba(61, 77, 92, 0.5)"
+              fontFamily="inherit"
+          >
+            {t("assessmentReport.shareOptions", { lng })}
+          </Typography>
+          <Divider sx={{ my: 1 }} />
+        </Box>
+        <Box
+            sx={{
+              display: permissions.canManageVisibility ? "flex-column" : "none",
+              gap: 1,
+            }}
+        >
+          {Object.values(VISIBILITY).map((key) => {
+            const status = key as VISIBILITY;
+            const isSelected = access === status;
+            return (
+                <Box
+                    key={status}
                     sx={{
+                      display: "flex",
+                      justifyContent: "flex-start",
+                      background: getBackgroundColor({ status, isSelected, isDefault }),
+                      width: "100%",
                       height: "fit-content",
-                      width: "fit-content",
-                      p: "4px 10px",
+                      borderRadius: "8px",
+                      cursor: "pointer",
                     }}
+                    onClick={() => handleSelect(status)}
+                >
+                  <Box sx={{ ...styles.centerVH }} width="38px" height="38px">
+                    <Radio
+                        checked={isSelected}
+                        color="primary"
+                        size="small"
+                        sx={{
+                          padding: "9px",
+                          "&.Mui-checked": {
+                            color:
+                                isDefault && status == VISIBILITY.RESTRICTED ? "#8A0F24" : "#2466A8",
+                          },
+                        }}
+                    />
+                  </Box>
+                  <Box
+                      sx={{ ...styles.centerCV }}
+                      padding="8px 0"
+                      gap="4px"
+                      flex={"1"}
+                      height="fit-content"
                   >
                     <Typography
-                      variant= {"labelLarge"}
-                      sx= {{ ...styles.rtlStyle(lng === "fa")}}
+                        fontFamily="inherit"
+                        variant="bodyMedium"
+                        sx={{ color: "#2B333B" }}
                     >
-                      {t("assessmentReport.moveAssessment", {lng})}
+                      {isDefault && status == VISIBILITY.RESTRICTED
+                          ? accessOptionsNew[status].titleDefault
+                          : accessOptionsNew[status].title}
                     </Typography>
-                  </Button>
-                )}
-              </Box>
-            </Box>
-          );
-        })}
-      </Box>
-      {!isDefault && access === VISIBILITY.RESTRICTED ? shareSection() : <SpaceFieldForm formMethods={formMethods} staticData={staticData}  />}
+                    <Typography
+                        variant="bodySmall"
+                        color="background.secondaryDark"
+                        fontFamily="inherit"
+                    >
+                      {isDefault && status == VISIBILITY.RESTRICTED
+                          ? accessOptionsNew[status].descriptionDefault
+                          : accessOptionsNew[status].description}
+                    </Typography>
+                  </Box>
+                  <Box sx={{ ...styles.centerV, paddingInlineEnd: "16px" }}>
+                    {isDefault && status == VISIBILITY.RESTRICTED && (
+                        <Button
+                            variant={"outlined"}
+                            color={"error"}
+                            sx={{
+                              height: "fit-content",
+                              width: "fit-content",
+                              p: "4px 10px",
+                            }}
+                            onClick={()=>changeStatus(1)}
+                        >
+                          <Typography
+                              variant= {"labelLarge"}
+                              sx= {{ ...styles.rtlStyle(lng === "fa")}}
+                          >
+                            {t("assessmentReport.moveAssessment", {lng})}
+                          </Typography>
+                        </Button>
+                    )}
+                  </Box>
+                </Box>
+            );
+          })}
+        </Box>
+        {access === VISIBILITY.PUBLIC && <Box>hi public</Box>}
+        {!isDefault && access === VISIBILITY.RESTRICTED && shareSection()}
+      </>}
+      {pageNumber == 1 && <>
+        <Box
+            sx={{
+              display: permissions.canManageVisibility ? "flex-column" : "none",
+              mt: 0,
+            }}
+        >
+          <Typography
+              variant="bodyMedium"
+              color="rgba(61, 77, 92, 0.5)"
+              fontFamily="inherit"
+          >
+            {t("assessmentReport.moveTheAssessment", { lng })}
+          </Typography>
+          <Divider sx={{ my: 1 }} />
+        </Box>
+        {isDefault && access === VISIBILITY.RESTRICTED && <SpaceFieldForm formMethods={formMethods} staticData={staticData}  />}
+      </>
+      }
       <CEDialogActions
         type="delete"
         loading={false}
         onClose={onClose}
         hideSubmitButton
         hideCancelButton
-      >
-        <LoadingButton
-          variant="contained"
-          onClick={onClose}
-          sx={{ marginInlineStart: 1, fontFamily: "inherit" }}
-        >
-          {t("assessmentReport.done", { lng })}
-        </LoadingButton>
+      >{
+        pageNumber === 0 &&   <LoadingButton
+              variant="contained"
+              onClick={onClose}
+              sx={{ marginInlineStart: 1, fontFamily: "inherit" }}
+          >
+            {t("assessmentReport.done", { lng })}
+          </LoadingButton>
+      }
+        {
+            pageNumber === 1 && <>
+            <Button
+                variant="outlined"
+                sx={{ marginInlineStart: 1, fontFamily: "inherit" }}
+                onClick={()=>changeStatus(0)}
+            >
+
+              {t("common.back", { lng })}
+            </Button>
+            <Button
+                variant="contained"
+                sx={{ marginInlineStart: 1, fontFamily: "inherit" }}
+            >
+              {t("common.continue", { lng })}
+            </Button>
+            </>
+        }
       </CEDialogActions>
 
       <Snackbar
