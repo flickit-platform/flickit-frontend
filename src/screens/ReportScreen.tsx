@@ -1,6 +1,6 @@
 import { t } from "i18next";
-import useDocumentTitle from "@utils/useDocumentTitle";
-import ReportTab from "@components/dashboard/report-tab/reportTab";
+import useDocumentTitle from "@/hooks/useDocumentTitle";
+import ReportTab from "@/components/dashboard/report-tab/MetadataContainer";
 
 const ReportScreen = () => {
     useDocumentTitle(`${t("assessmentReport.report")}`);

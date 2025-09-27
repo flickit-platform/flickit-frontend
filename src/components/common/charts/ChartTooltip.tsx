@@ -1,6 +1,6 @@
 import { Box, Typography, useTheme } from "@mui/material";
 import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
-import languageDetector from "@/utils/languageDetector";
+import languageDetector from "@/utils/language-detector";
 import { styles } from "@styles";
 
 interface ChartTooltipProps {

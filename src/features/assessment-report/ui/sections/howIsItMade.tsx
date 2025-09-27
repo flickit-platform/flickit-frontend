@@ -8,7 +8,7 @@ import Divider from "@mui/material/Divider";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { t } from "i18next";
 import { ISubject } from "@/types";
-import uniqueId from "@utils/uniqueId";
+import uniqueId from "@/utils/unique-id";
 import { getMaturityLevelColors, styles } from "@styles";
 import { v3Tokens } from "@config/tokens";
 
@@ -34,7 +34,7 @@ function InnerAccordion({ title, children, lng }: Props) {
     >
       <AccordionSummary
         sx={{
-          bgcolor: "background.containerHigher",
+          bgcolor: "background.containerHighest",
           borderRadius: 1,
           flexDirection: "row-reverse",
           px: 0,

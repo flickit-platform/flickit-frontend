@@ -5,10 +5,10 @@ import { useForm } from "react-hook-form";
 import { Trans } from "react-i18next";
 import { InputFieldUC } from "@common/fields/InputField";
 import { styles } from "@styles";
-import { useServiceContext } from "@providers/ServiceProvider";
-import setServerFieldErrors from "@utils/setServerFieldError";
+import { useServiceContext } from "@/providers/service-provider";
+import setServerFieldErrors from "@/utils/set-server-field-error";
 import NoteAddRoundedIcon from "@mui/icons-material/NoteAddRounded";
-import { ICustomError } from "@utils/CustomError";
+import { ICustomError } from "@/utils/custom-error";
 import { useNavigate, useParams } from "react-router-dom";
 import { CEDialog, CEDialogActions } from "@common/dialogs/CEDialog";
 import FormProviderWithForm from "@common/FormProviderWithForm";
@@ -23,13 +23,13 @@ import Typography from "@mui/material/Typography";
 import Alert from "@mui/material/Alert";
 import Divider from "@mui/material/Divider";
 import { keyframes } from "@emotion/react";
-import convertToBytes from "@/utils/convertToBytes";
-import { useQuery } from "@utils/useQuery";
+import convertToBytes from "@/utils/convert-to-bytes";
+import { useQuery } from "@/hooks/useQuery";
 import LoadingButton from "@mui/lab/LoadingButton";
-import SelectLanguage from "@utils/selectLanguage";
-import uniqueId from "@/utils/uniqueId";
+import SelectLanguage from "@/utils/select-language";
+import uniqueId from "@/utils/unique-id";
 import i18n from "i18next";
-import showToast from "@utils/toastError";
+import showToast from "@/utils/toast-error";
 import { v3Tokens } from "@/config/tokens";
 
 interface IAssessmentKitCEFromDialogProps extends DialogProps {
@@ -70,7 +70,11 @@ const AssessmentKitCEFromDialog = (props: IAssessmentKitCEFromDialogProps) => {
   const { id, expertGroupId = fallbackExpertGroupId, languages } = data;
   const [lang, setLang] = useState({ code: "", title: "" });
   const defaultValues = type === "update" ? data : {};
-  const formMethods = useForm({ shouldUnregister: true });
+  const formMethods = useForm({
+    shouldUnregister: true,
+    mode: "onSubmit",
+    reValidateMode: "onSubmit",
+  });
   const abortController = useMemo(() => new AbortController(), [rest.open]);
   const navigate = useNavigate();
   const close = () => {
@@ -235,7 +239,7 @@ const AssessmentKitCEFromDialog = (props: IAssessmentKitCEFromDialogProps) => {
           {type === "convert" && buttonStep == 0 && !convertData && (
             <Box pb="10px">
               <Box
-                bgcolor="background.containerHigher"
+                bgcolor="background.containerHighest"
                 width="fit-content"
                 px={1}
                 sx={{ ...styles.centerV }}
@@ -261,7 +265,7 @@ const AssessmentKitCEFromDialog = (props: IAssessmentKitCEFromDialogProps) => {
           {type === "convert" && buttonStep == 1 && (
             <Box pb="10px">
               <Box
-                bgcolor="background.containerHigher"
+                bgcolor="background.containerHighest"
                 width="fit-content"
                 px={1}
                 sx={{ ...styles.centerV }}
@@ -331,6 +335,7 @@ const AssessmentKitCEFromDialog = (props: IAssessmentKitCEFromDialogProps) => {
             label={<Trans i18nKey="common.title" />}
             required
             defaultValue={defaultValues.title ?? ""}
+            isFocused
           />
         </Grid>
         <Grid

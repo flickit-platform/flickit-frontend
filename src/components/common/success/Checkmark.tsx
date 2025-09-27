@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import GreenCheckmark from "@/assets/img/greenCheckmark.gif";
-import GreenCheckmarkPng from "@/assets/img/greenCheckmark.png";
+import GreenCheckmark from "@/assets/img/green-checkmark.gif";
+import GreenCheckmarkPng from "@/assets/img/green-checkmark.png";
 
 const CheckmarkGif = () => {
   const [showGif, setShowGif] = useState(true);

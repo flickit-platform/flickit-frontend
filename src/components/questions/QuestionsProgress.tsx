@@ -3,15 +3,15 @@ import LinearProgress from "@mui/material/LinearProgress";
 import { Trans } from "react-i18next";
 import { useParams } from "react-router-dom";
 import { styles } from "@styles";
-import { useQuestionContext } from "@/providers/QuestionProvider";
+import { useQuestionContext } from "@/providers/question-provider";
 import Typography from "@mui/material/Typography";
 import { QuestionThumb } from "./QuestionThumb";
 import { QuestionPopover } from "./QuestionPopover";
 import Tooltip from "@mui/material/Tooltip";
-import uniqueId from "@/utils/uniqueId";
+import uniqueId from "@/utils/unique-id";
 import usePopover from "@/hooks/usePopover";
-import { ASSESSMENT_MODE } from "@/utils/enumType";
-import { useAssessmentContext } from "@/providers/AssessmentProvider";
+import { ASSESSMENT_MODE } from "@/utils/enum-type";
+import { useAssessmentContext } from "@/providers/assessment-provider";
 import { EAssessmentStatus } from "@/types";
 
 const QuestionsProgress = () => {

@@ -2,35 +2,36 @@ import { ReactNode, useEffect, useMemo, useRef, useState } from "react";
 import Autocomplete, { AutocompleteProps } from "@mui/material/Autocomplete";
 import throttle from "lodash/throttle";
 import TextField from "@mui/material/TextField";
-import { TQueryServiceFunction, useQuery } from "@utils/useQuery";
+import { TQueryServiceFunction, useQuery } from "@/hooks/useQuery";
 import {
   Controller,
   ControllerRenderProps,
   RegisterOptions,
   useFormContext,
 } from "react-hook-form";
-import getFieldError from "@utils/getFieldError";
+import getFieldError from "@/utils/get-field-error";
 import Box from "@mui/material/Box";
 import { LoadingSkeleton } from "../loadings/LoadingSkeleton";
-import forLoopComponent from "@utils/forLoopComponent";
+import forLoopComponent from "@/utils/for-loop-component";
 import ErrorDataLoading from "../errors/ErrorDataLoading";
 import { styles } from "@styles";
 import { SPACE_LEVELS, TQueryProps } from "@/types/index";
 import LoadingButton from "@mui/lab/LoadingButton";
 import { farsiFontFamily, primaryFontFamily } from "@config/theme";
-import uniqueId from "@/utils/uniqueId";
+import uniqueId from "@/utils/unique-id";
 import Chip from "@mui/material/Chip";
 import { t } from "i18next";
 import Typography from "@mui/material/Typography";
 import { Trans } from "react-i18next";
-import languageDetector from "@utils/languageDetector";
+import languageDetector from "@/utils/language-detector";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import ArrowDropDownOutlinedIcon from "@mui/icons-material/ArrowDropDownOutlined";
-import showToast from "@/utils/toastError";
+import showToast from "@/utils/toast-error";
 import { useTheme } from "@mui/material";
 import premiumIcon from "@/assets/svg/premium.svg";
 import HomeIcon from "@mui/icons-material/Home";
 import FolderOutlinedIcon from "@mui/icons-material/FolderOutlined";
+import { useTypingCaret } from "@/hooks/useTypingCaret";
 type TUnionAutocompleteAndAutocompleteAsyncFieldBase = Omit<
   IAutocompleteAsyncFieldBase,
   "serviceQueryData" | "field"
@@ -45,6 +46,7 @@ interface IAutocompleteAsyncFieldProps
   filterFields?: any;
   createItemQuery?: any;
   setError?: any;
+  isFocused?: boolean;
 }
 
 const AutocompleteAsyncField = (props: any) => {
@@ -61,6 +63,7 @@ const AutocompleteAsyncField = (props: any) => {
     setError,
     searchable,
     disabled,
+    isFocused,
     ...rest
   } = props;
   const { control } = useFormContext();
@@ -87,6 +90,7 @@ const AutocompleteAsyncField = (props: any) => {
             setError={setError}
             searchable={searchable}
             disabled={disabled}
+            isFocused={isFocused}
           />
         );
       }}
@@ -112,6 +116,7 @@ interface IAutocompleteAsyncFieldBase
   setError?: any;
   searchable?: boolean;
   showIconBeforeOption?: boolean;
+  isFocused?: boolean;
 }
 
 const AutocompleteBaseField = (
@@ -158,9 +163,12 @@ const AutocompleteBaseField = (
     disabled,
     filterSelectedOptions = true,
     showIconBeforeOption,
+    isFocused,
     ...rest
   } = props;
   const theme = useTheme();
+  const inputRef = useRef<HTMLInputElement | null>(null);
+
   const { name, onChange, ref, value, ...restFields } = field;
   const {
     formState: { errors },
@@ -236,24 +244,7 @@ const AutocompleteBaseField = (
   };
 
   const loadingButtonRef = useRef<HTMLButtonElement | null>(null);
-  useEffect(() => {
-    const handleKeyDown = (event: any) => {
-      if (event?.key === "Enter") {
-        event.preventDefault();
 
-        if (loadingButtonRef.current && inputValue && hasAddBtn) {
-          loadingButtonRef.current.click();
-          setOpen(false);
-        }
-      }
-    };
-
-    window.addEventListener("keydown", handleKeyDown);
-
-    return () => {
-      window.removeEventListener("keydown", handleKeyDown);
-    };
-  }, [inputValue, hasAddBtn]);
   const [open, setOpen] = useState(false);
 
   const handleOpen = () => {
@@ -274,6 +265,37 @@ const AutocompleteBaseField = (
 
     setOpen(false);
   };
+
+  useEffect(() => {
+    if (!hasAddBtn) return;
+    const handleKeyDown = (event: any) => {
+      if (event?.key === "Enter") {
+        event.preventDefault();
+
+        if (loadingButtonRef.current && inputValue && hasAddBtn) {
+          loadingButtonRef.current.click();
+          setOpen(false);
+        }
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [inputValue, hasAddBtn]);
+
+  useEffect(() => {
+    if (isFocused && inputRef.current) {
+      inputRef.current.focus();
+    } else {
+      inputRef.current?.blur();
+    }
+  }, [isFocused]);
+
+  const { isTyping, inputBind } = useTypingCaret(100000);
+
   return (
     <Autocomplete
       {...restFields}
@@ -352,15 +374,14 @@ const AutocompleteBaseField = (
       renderInput={(params) => (
         <TextField
           {...params}
+          {...inputBind}
           InputLabelProps={{ required, ...params.InputLabelProps }}
           label={label}
           fullWidth
-          inputRef={ref}
-          error={
-            !inputValue && (hasError || errorObject?.response?.data.message)
-          }
+          inputRef={inputRef}
+          error={hasError || errorObject?.response?.data.message}
           helperText={
-            (errorMessage as ReactNode) ||
+            (hasError && (errorMessage as ReactNode)) ||
             (errorObject?.response?.data.message &&
               t(`${errorObject?.response?.data.message}`)) ||
             helperText
@@ -368,6 +389,9 @@ const AutocompleteBaseField = (
           sx={{
             "& .MuiOutlinedInput-root": {
               fontFamily: farsiFontFamily,
+            },
+            "& .MuiInputBase-input": {
+              caretColor: isFocused && !isTyping ? "transparent" : undefined,
             },
           }}
           name={name}
@@ -398,18 +422,18 @@ const AutocompleteBaseField = (
                   ? farsiFontFamily
                   : primaryFontFamily
               }
-              color="surface.onVariant"
+              color="background.onVariant"
               gap="4.5px"
               sx={{ ...styles.centerVH }}
             >
               {showIconBeforeOption &&
                 (option?.isDefault ? (
                   <HomeIcon
-                    sx={{ fontSize: "20px", color: "surface.onVariant" }}
+                    sx={{ fontSize: "20px", color: "background.onVariant" }}
                   />
                 ) : (
                   <FolderOutlinedIcon
-                    sx={{ color: "surface.onVariant", fontSize: "20px" }}
+                    sx={{ color: "background.onVariant", fontSize: "20px" }}
                   />
                 ))}
               {option?.[filterFields[0]]}

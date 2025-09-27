@@ -9,16 +9,16 @@ import {
 import { Trans } from "react-i18next";
 import { useSearchParams } from "react-router-dom";
 import QueryData from "@common/QueryData";
-import useDialog from "@utils/useDialog";
+import useDialog from "@/hooks/useDialog";
 import CreateSpaceDialog from "./CreateSpaceDialog";
 import { SpacesList } from "./SpaceList";
-import { useServiceContext } from "@providers/ServiceProvider";
-import { ICustomError } from "@utils/CustomError";
-import toastError from "@utils/toastError";
+import { useServiceContext } from "@/providers/service-provider";
+import { ICustomError } from "@/utils/custom-error";
+import toastError from "@/utils/toast-error";
 import CreateNewFolderRoundedIcon from "@mui/icons-material/CreateNewFolderRounded";
-import NewAssessmentIcon from "@/assets/icons/newAssessment";
+import NewAssessmentIcon from "@/components/common/icons/NewAssessment";
 import ExpandableSection from "../common/buttons/ExpandableSection";
-import { useAuthContext } from "@providers/AuthProvider";
+import { useAuthContext } from "@/providers/auth-provider";
 import AssessmentCEFromDialog from "../assessments/AssessmentCEFromDialog";
 import AssessmenetInfoDialog from "../assessments/AssessmenetInfoDialog";
 import { useFetchAssessments } from "../assessments/AssessmentContainer";
@@ -26,7 +26,7 @@ import { t } from "i18next";
 import { AssessmentsList } from "../assessments/AssessmentList";
 import LoadingAssessmentCards from "../common/loadings/LoadingAssessmentCards";
 import EmptyState from "../kit-designer/common/EmptyState";
-import uniqueId from "@/utils/uniqueId";
+import uniqueId from "@/utils/unique-id";
 import Title from "@common/Title";
 
 const SpaceContainer = () => {
@@ -60,6 +60,7 @@ const SpaceContainer = () => {
     errorObject: assessmentsErrorObject,
     deleteAssessment,
     fetchAssessments,
+    fetchSpaceInfo
   } = useFetchAssessments(assessmentPage - 1, defaultSpaceId);
 
   const handleChangePage = (_: unknown, newPage: number) => {
@@ -191,6 +192,7 @@ const SpaceContainer = () => {
         }
         endButtonIcon={<NewAssessmentIcon width={20} />}
         sx={{ mt: 4 }}
+        disabled={!fetchSpaceInfo.data?.canCreateAssessment}
       >
         <QueryData
           data={assessments}
@@ -207,6 +209,7 @@ const SpaceContainer = () => {
                   title="assessment.noAssesmentHere"
                   SubTitle="assessment.createAnAssessmentWith"
                   onAddNewRow={handleAddNewAssessment}
+                  disabled={!fetchSpaceInfo.data?.canCreateAssessment}
                 />
               ) : (
                 <>

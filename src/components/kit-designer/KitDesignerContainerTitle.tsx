@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import SupTitleBreadcrumb from "@/components/common/SupTitleBreadcrumb";
 import setDocumentTitle from "@utils/setDocumentTitle";
 import { t } from "i18next";
-import { useConfigContext } from "@/providers/ConfgProvider";
+import { useConfigContext } from "@/providers/config-provider";
 import { IKitVersion } from "@/types/index";
 import Title from "@common/Title";
 

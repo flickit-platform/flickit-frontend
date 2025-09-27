@@ -6,8 +6,8 @@ import Box from "@mui/material/Box";
 import { LoadingSkeleton } from "./loadings/LoadingSkeleton";
 import Chip from "@mui/material/Chip";
 import { useTheme } from "@mui/material/styles";
-import uniqueId from "@/utils/uniqueId";
-import languageDetector from "@/utils/languageDetector";
+import uniqueId from "@/utils/unique-id";
+import languageDetector from "@/utils/language-detector";
 import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
 
 interface ISupTitleBreadcrumbProps {

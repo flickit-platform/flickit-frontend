@@ -5,10 +5,10 @@ import ManWithMagnifier from "@/assets/svg/man-with-magnifier.svg";
 import { t } from "i18next";
 import { styles } from "@styles";
 import { useTreeMapSection } from "../../../model/hooks/useTreeMapSection";
-import languageDetector from "@/utils/languageDetector";
+import languageDetector from "@/utils/language-detector";
 import MeasuresTable from "./MeasureTable";
 import AIGenerated from "@/components/common/icons/AIGenerated";
-import FlatGauge from "@/components/common/charts/flatGauge/FlatGauge";
+import FlatGauge from "@/components/common/charts/flat-gauge/FlatGauge";
 import { IMaturityLevel, IUserPermissions } from "@/types";
 
 type Props = Readonly<{
@@ -77,7 +77,7 @@ const HeaderStrip: React.FC<{
   assessment: any;
 }> = ({ vm, levels, lng, isQuickMode, assessment }) => (
   <Box
-    bgcolor="background.containerHigher"
+    bgcolor="background.containerHighest"
     borderRadius="16px 16px 0 0"
     p={{ xs: 2, md: 2 }}
     mx={{ xs: 2, md: 4 }}

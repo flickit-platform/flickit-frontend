@@ -4,9 +4,9 @@ import { useNavigate, useParams } from "react-router-dom";
 import {
   questionActions,
   useQuestionDispatch,
-} from "@/providers/QuestionProvider";
-import { useServiceContext } from "@providers/ServiceProvider";
-import { useQuery } from "@utils/useQuery";
+} from "@/providers/question-provider";
+import { useServiceContext } from "@/providers/service-provider";
+import { useQuery } from "@/hooks/useQuery";
 import LoadingSkeletonOfQuestions from "@common/loadings/LoadingSkeletonOfQuestions";
 import QuestionsTitle from "./QuestionsTitle";
 import QueryBatchData from "@common/QueryBatchData";
@@ -16,9 +16,9 @@ import {
   IQuestionnaireModel,
   IQuestionsModel,
 } from "@/types/index";
-import { ICustomError } from "@/utils/CustomError";
+import { ICustomError } from "@/utils/custom-error";
 import { useQuestion } from "./QuestionContainer";
-import showToast from "@/utils/toastError";
+import showToast from "@/utils/toast-error";
 import { styles } from "@styles";
 
 const QuestionsContainer = (

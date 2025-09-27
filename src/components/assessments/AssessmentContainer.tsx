@@ -2,36 +2,35 @@ import { useEffect, useRef, useState } from "react";
 import { Trans } from "react-i18next";
 import QueryData from "@common/QueryData";
 import ErrorEmptyData from "@common/errors/ErrorEmptyData";
-import AssessmentEmptyState from "@assets/svg/assessmentEmptyState.svg";
-import { useServiceContext } from "@providers/ServiceProvider";
-import useDialog from "@utils/useDialog";
+import AssessmentEmptyState from "@/assets/svg/assessment-empty-state.svg";
+import { useServiceContext } from "@/providers/service-provider";
+import useDialog from "@/hooks/useDialog";
 import { AssessmentsList } from "./AssessmentList";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
-import { ICustomError } from "@utils/CustomError";
+import { ICustomError } from "@/utils/custom-error";
 import { useParams, useNavigate } from "react-router-dom";
-import toastError from "@utils/toastError";
+import toastError from "@/utils/toast-error";
 import { ToolbarCreateItemBtn } from "@common/buttons/ToolbarCreateItemBtn";
 import AddRoundedIcon from "@mui/icons-material/AddRounded";
 import { styles, animations } from "@styles";
 import AssessmentCEFromDialog from "./AssessmentCEFromDialog";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
-import { useAuthContext } from "@providers/AuthProvider";
+import { useAuthContext } from "@/providers/auth-provider";
 import AssessmentTitle from "./AssessmentTitle";
 import PermissionControl from "../common/PermissionControl";
-import SettingIcon from "@/assets/icons/settingIcon";
-import NewAssessmentIcon from "@/assets/icons/newAssessment";
+import SettingIcon from "@/components/common/icons/Settings";
+import NewAssessmentIcon from "@/components/common/icons/NewAssessment";
 import AssessmenetInfoDialog from "@components/assessments/AssessmenetInfoDialog";
-import { useQuery } from "@/utils/useQuery";
-import useScreenResize from "@utils/useScreenResize";
+import { useQuery } from "@/hooks/useQuery";
+import useScreenResize from "@/hooks/useScreenResize";
 import LoadingAssessmentCards from "../common/loadings/LoadingAssessmentCards";
 import { useTheme } from "@mui/material";
 import Title from "@common/Title";
 
 const AssessmentContainer = () => {
-  const { service } = useServiceContext();
   const dialogProps = useDialog();
   const infoDialogProps = useDialog();
   const { currentSpace } = useAuthContext();
@@ -41,7 +40,7 @@ const AssessmentContainer = () => {
     Number(page) - 1,
     Number(spaceId),
   );
-  const { data, errorObject, size, total, loading } = rest;
+  const { data, errorObject, size, total, loading, fetchSpaceInfo } = rest;
   const isEmpty = data.length === 0;
   const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
     if (
@@ -56,17 +55,7 @@ const AssessmentContainer = () => {
     navigate(`/${spaceId}/assessments/${pageCount}`);
   }
 
-  const fetchSpaceInfo = useQuery({
-    service: (args, config) => {
-      const payload = args?.spaceId ? args : { spaceId };
-      return service.space.getById(payload, config);
-    },
-    runOnMount: false,
-  });
 
-  useEffect(() => {
-    fetchSpaceInfo.query();
-  }, [data.length]);
   const isSmallScreen = useScreenResize("sm");
 
   const theme = useTheme();
@@ -312,6 +301,18 @@ export const useFetchAssessments = (page: any, spaceId: any) => {
     }
   };
 
+  const fetchSpaceInfo = useQuery({
+    service: (args, config) => {
+      const payload = args?.spaceId ? args : { spaceId };
+      return service.space.getById(payload, config);
+    },
+    runOnMount: false,
+  });
+
+  useEffect(() => {
+    fetchSpaceInfo.query();
+  }, [data?.items?.length]);
+
   const deleteAssessment = async (id: any) => {
     setLoading(true);
     try {
@@ -340,6 +341,7 @@ export const useFetchAssessments = (page: any, spaceId: any) => {
     errorObject,
     fetchAssessments,
     deleteAssessment,
+    fetchSpaceInfo
   };
 };
 

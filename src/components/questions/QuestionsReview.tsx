@@ -9,20 +9,19 @@ import Hidden from "@mui/material/Hidden";
 import Rating from "@mui/material/Rating";
 import RadioButtonCheckedRounded from "@mui/icons-material/RadioButtonCheckedRounded";
 import RadioButtonUncheckedRounded from "@mui/icons-material/RadioButtonUncheckedRounded";
-import doneSvg from "@assets/svg/Done.svg";
-import noQuestionSvg from "@assets/svg/noQuestion.svg";
-import someQuestionSvg from "@assets/svg/someQuestion.svg";
-
-import { useServiceContext } from "@/providers/ServiceProvider";
-import { useQuery } from "@/utils/useQuery";
-import { useQuestionContext } from "@/providers/QuestionProvider";
+import SuccessCheck from "@/assets/svg/success-check.svg";
+import FailureEmoji from "@/assets/svg/failure-emoji.svg";
+import WarningEmptyState from "@/assets/svg/warning-empty-state.svg";
+import { useServiceContext } from "@/providers/service-provider";
+import { useQuery } from "@/hooks/useQuery";
+import { useQuestionContext } from "@/providers/question-provider";
 import { useQuestionnaire } from "../dashboard/dashboard-tab/questionnaires/QuestionnaireContainer";
 import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
 import { styles } from "@styles";
-import languageDetector from "@/utils/languageDetector";
+import languageDetector from "@/utils/language-detector";
 import { IQuestionnaire } from "@/types";
-import { toCamelCase } from "@/utils/MakeCamelcaseString";
-import { ASSESSMENT_MODE } from "@/utils/enumType";
+import { toCamelCase } from "@/utils/make-camel-case-string";
+import { ASSESSMENT_MODE } from "@/utils/enum-type";
 
 const getQuestionnaireStatus = (
   answered: number,
@@ -38,13 +37,13 @@ const AnswerStatusImage = ({ status }: { status: string }) => {
   let altText: string;
 
   if (status === "complete") {
-    imageSrc = doneSvg;
+    imageSrc = SuccessCheck;
     altText = "questionnaire done";
   } else if (status === "empty") {
-    imageSrc = noQuestionSvg;
+    imageSrc = FailureEmoji;
     altText = "questionnaire empty";
   } else {
-    imageSrc = someQuestionSvg;
+    imageSrc = WarningEmptyState;
     altText = "questionnaire some answered";
   }
 

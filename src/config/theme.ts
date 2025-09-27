@@ -18,10 +18,9 @@ declare module "@mui/material/styles/createPalette" {
     containerLow: string;
     container: string;
     containerHigh: string;
-    containerHigher: string;
+    containerHighest: string;
   }
   interface PaletteOptions {
-    md3?: any;
     grayBlue?: any;
     gray?: any;
     disabled?: { main: string; on: string };
@@ -97,7 +96,6 @@ declare module "@mui/material/styles" {
   }
 
   interface Palette {
-    md3: any;
     grayBlue: any;
     gray: any;
     disabled?: { main: string; on: string };
@@ -280,18 +278,17 @@ export const getTheme = (lang: any) => {
         containerLow: v3Tokens.surface.containerLow,
         container: v3Tokens.surface.container,
         containerHigh: v3Tokens.surface.containerHigh,
-        containerHigher: v3Tokens.surface.containerHigher,
+        containerHighest: v3Tokens.surface.containerHighest,
       },
 
       text: { primary: v3Tokens.surface.on, secondary: grayBlue[50] },
 
       disabled: { main: gray[40], on: gray[60] },
       outline: {
-        outline: v3Tokens.outline.variant,
+        outline: v3Tokens.outline.outline,
         variant: v3Tokens.outline.variant,
       },
       semantics: v3Tokens.semantics,
-      md3: v3Tokens,
       grayBlue,
       gray,
     },
@@ -559,7 +556,7 @@ export const getTheme = (lang: any) => {
         .nc-header {
           font-family: ${is_farsi ? farsiFontFamily : primaryFontFamily};
           direction:${is_farsi ? "rtl" : "ltr"};
-          background: ${v3Tokens.surface.containerHigher};
+          background: ${v3Tokens.surface.containerHighest};
           border-radius: 7px 7px 0px 0px;
           box-shadow: 0px 3px 2px rgba(0, 0, 0, 0.2);
         }
@@ -832,6 +829,8 @@ export const getTheme = (lang: any) => {
           select: {
             paddingLeft: is_farsi ? "32px" : "10px",
             paddingRight: !is_farsi ? "32px !important" : "10px !important",
+            display: "flex",
+            alignItems: "center",
           },
         },
       },
@@ -842,6 +841,21 @@ export const getTheme = (lang: any) => {
           },
           root: {
             fontSize: "16px",
+          },
+        },
+      },
+
+      MuiSlider: {
+        styleOverrides: {
+          valueLabel: {
+            color: v3Tokens.surface.containerLowest,
+            backgroundColor: "#576675E6 !important",
+            borderRadius: "4px",
+            fontFamily: is_farsi ? farsiFontFamily : secondaryFontFamily,
+            fontWeight: "600",
+            fontSize: "0.68rem",
+            lineHeight: "1rem",
+            letterSpacing: "0px",
           },
         },
       },

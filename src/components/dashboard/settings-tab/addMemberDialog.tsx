@@ -1,11 +1,11 @@
 import { useEffect, useRef, useState } from "react";
-import { useServiceContext } from "@providers/ServiceProvider";
+import { useServiceContext } from "@/providers/service-provider";
 import { useParams } from "react-router-dom";
-import { useQuery } from "@utils/useQuery";
+import { useQuery } from "@/hooks/useQuery";
 import Typography from "@mui/material/Typography";
 import FormControl from "@mui/material/FormControl";
-import { ICustomError } from "@utils/CustomError";
-import { SelectHeight } from "@utils/selectHeight";
+import { ICustomError } from "@/utils/custom-error";
+import { SelectHeight } from "@/utils/select-height";
 import Box from "@mui/material/Box";
 import { Trans } from "react-i18next";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
@@ -19,9 +19,9 @@ import AutocompleteAsyncField, {
   useConnectAutocompleteField,
 } from "@common/fields/AutocompleteAsyncField";
 import LoadingButton from "@mui/lab/LoadingButton";
-import useScreenResize from "@/utils/useScreenResize";
+import useScreenResize from "@/hooks/useScreenResize";
 import Settings from "@mui/icons-material/Settings";
-import showToast from "@utils/toastError";
+import showToast from "@/utils/toast-error";
 import { CEDialog } from "@/components/common/dialogs/CEDialog";
 import { useTheme } from "@mui/material";
 import { AxiosRequestConfig } from "axios";
@@ -77,20 +77,16 @@ const AddMemberDialog = (props: {
       service.space.getMembers({ spaceId, page: 0, size: 100 }, config),
   });
   const fetchAssessmentMembers = useQuery({
-    service: (
-      args?: any,
-      config?: AxiosRequestConfig, 
-    ) => {
+    service: (args?: any, config?: AxiosRequestConfig) => {
       const { page = 0, size = 10 } = args ?? {};
       return service.assessments.member.getUsers(
         { assessmentId, page, size },
-        config, 
+        config,
       );
     },
     toastError: false,
     toastErrorOptions: { filterByStatus: [404] },
   });
-  
 
   const addRoleMemberQueryData = useQuery({
     service: (args, config) =>
@@ -135,7 +131,7 @@ const AddMemberDialog = (props: {
       }
 
       const filteredItem = spaceItems.filter((item: any) =>
-        member.some((userListItem: any) => item.id === userListItem.id)
+        member.some((userListItem: any) => item.id === userListItem.id),
       );
 
       setMemberOfSpace(filteredItem);
@@ -143,7 +139,6 @@ const AddMemberDialog = (props: {
       showToast(e as ICustomError);
     }
   };
-
 
   useEffect(() => {
     if (!expanded) return;
@@ -393,7 +388,7 @@ const AddMemberDialog = (props: {
               marginInlineEnd: 1,
             }}
           />
-          <Typography variant="bodyLarge" textAlign="left">
+          <Typography variant="bodyLarge">
             {addedEmailType === EUserType.EXISTED ? (
               <Trans i18nKey="user.emailExistsInApp" />
             ) : (

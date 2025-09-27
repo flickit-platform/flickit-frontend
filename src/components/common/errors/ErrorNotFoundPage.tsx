@@ -1,5 +1,5 @@
 import Box from "@mui/material/Box";
-import PageNotFoundImage from "@assets/svg/404.svg";
+import PageNotFoundImage from "@/assets/svg/404-not-found.svg";
 import { styles } from "@styles";
 import Navbar from "@common/Navbar";
 import Button from "@mui/material/Button";

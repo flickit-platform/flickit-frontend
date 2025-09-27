@@ -4,20 +4,20 @@ import Divider from "@mui/material/Divider";
 import Box from "@mui/material/Box";
 import PermissionControl from "../../common/PermissionControl";
 import { Trans } from "react-i18next";
-import { useServiceContext } from "@/providers/ServiceProvider";
+import { useServiceContext } from "@/providers/service-provider";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { ICustomError } from "@/utils/CustomError";
+import { ICustomError } from "@/utils/custom-error";
 import { IKitVersion } from "@/types/index";
 import { DeleteConfirmationDialog } from "@/components/common/dialogs/DeleteConfirmationDialog";
 import { useState } from "react";
 import Tooltip from "@mui/material/Tooltip";
-import { useQuery } from "@/utils/useQuery";
+import { useQuery } from "@/hooks/useQuery";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import ErrorIcon from "@mui/icons-material/Error";
 import CircularProgress from "@mui/material/CircularProgress";
-import languageDetector from "@utils/languageDetector";
+import languageDetector from "@/utils/language-detector";
 import { farsiFontFamily, primaryFontFamily } from "@config/theme";
-import showToast from "@/utils/toastError";
+import showToast from "@/utils/toast-error";
 import { styles } from "@styles";
 
 const PublishContent = ({ kitVersion }: { kitVersion: IKitVersion }) => {

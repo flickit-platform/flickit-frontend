@@ -1,6 +1,6 @@
 import { keyframes, SxProps, Theme } from "@mui/material/styles";
 import { TStatus } from "@/types/index";
-import hasStatus from "@utils/hasStatus";
+import hasStatus from "@/utils/has-status";
 import { farsiFontFamily, primaryFontFamily } from "./theme";
 import i18next from "i18next";
 import { v3Tokens } from "./tokens";

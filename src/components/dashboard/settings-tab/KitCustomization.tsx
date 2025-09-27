@@ -5,19 +5,19 @@ import { useEffect, useState } from "react";
 import Divider from "@mui/material/Divider";
 import Grid from "@mui/material/Grid";
 import { useParams } from "react-router";
-import { useServiceContext } from "@providers/ServiceProvider";
-import { useQuery } from "@utils/useQuery";
-import firstCharDetector from "@utils/firstCharDetector";
+import { useServiceContext } from "@/providers/service-provider";
+import { useQuery } from "@/hooks/useQuery";
+import firstCharDetector from "@/utils/first-char-detector";
 import EditRoundedIcon from "@mui/icons-material/EditRounded";
 import { useForm } from "react-hook-form";
 import KitCustomizationTable from "./kitCustomizationTable";
 import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import LoadingButton from "@mui/lab/LoadingButton";
-import { ICustomError } from "@/utils/CustomError";
+import { ICustomError } from "@/utils/custom-error";
 import { styles } from "@styles";
 import InputCustomEditor from "@common/fields/InputCustomEditor";
-import showToast from "@/utils/toastError";
+import showToast from "@/utils/toast-error";
 
 const KitCustomization = (props: any) => {
   const { kitInfo } = props;

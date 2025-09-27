@@ -1,12 +1,12 @@
 import { Suspense, lazy, useMemo } from "react";
 import { BrowserRouter } from "react-router-dom";
 import { toastDefaultConfig } from "@config/toastConfigs";
-import { ServiceProvider } from "./providers/ServiceProvider";
+import { ServiceProvider } from "./providers/service-provider";
 import { ThemeProvider } from "@mui/material/styles";
 import { farsiFontFamily, primaryFontFamily, getTheme } from "@config/theme";
-import { AppProvider } from "./providers/AppProvider";
-import { AuthProvider, useAuthContext } from "./providers/AuthProvider";
-import { ConfigProvider } from "./providers/ConfgProvider";
+import { AppProvider } from "./providers/app-provider";
+import { AuthProvider, useAuthContext } from "./providers/auth-provider";
+import { ConfigProvider } from "./providers/config-provider";
 import CssBaseline from "@mui/material/CssBaseline";
 import "react-toastify/dist/ReactToastify.css";
 import App from "./App";
@@ -15,10 +15,10 @@ import keycloakService from "@/service/keycloakService";
 import "./assets/font/fonts.css";
 import "./components/common/charts/style.css";
 import "@utils/richEditorStyles.css";
-import { AssessmentProvider } from "./providers/AssessmentProvider";
+import { AssessmentProvider } from "./providers/assessment-provider";
 import i18next from "i18next";
-import { KitLanguageProvider } from "./providers/KitProvider";
-import { LangProvider, useLangContext } from "./providers/LangProvider";
+import { KitLanguageProvider } from "./providers/kit-provider";
+import { LangProvider, useLangContext } from "./providers/lang-provider";
 import "./globals.css"
 
 // Lazy load non-critical components

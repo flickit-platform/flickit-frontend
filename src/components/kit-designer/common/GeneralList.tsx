@@ -13,10 +13,10 @@ import { styles } from "@styles";
 import { KitDesignListItems } from "@/types/index";
 import { Trans } from "react-i18next";
 import { farsiFontFamily, primaryFontFamily } from "@config/theme";
-import languageDetector from "@utils/languageDetector";
+import languageDetector from "@/utils/language-detector";
 import MultiLangTextField from "@common/fields/MultiLangTextField";
 import { useTranslationUpdater } from "@/hooks/useTranslationUpdater";
-import { useKitDesignerContext } from "@/providers/KitProvider";
+import { useKitDesignerContext } from "@/providers/kit-provider";
 import TitleWithTranslation from "@/components/common/fields/TranslationText";
 
 interface ListOfItemsProps {

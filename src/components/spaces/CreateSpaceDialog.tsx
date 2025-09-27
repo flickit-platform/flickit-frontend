@@ -6,23 +6,23 @@ import { Trans } from "react-i18next";
 import { InputFieldUC } from "@common/fields/InputField";
 import { CEDialog, CEDialogActions } from "@common/dialogs/CEDialog";
 import FormProviderWithForm from "@common/FormProviderWithForm";
-import { useServiceContext } from "@providers/ServiceProvider";
-import { ICustomError } from "@utils/CustomError";
-import setServerFieldErrors from "@utils/setServerFieldError";
+import { useServiceContext } from "@/providers/service-provider";
+import { ICustomError } from "@/utils/custom-error";
+import setServerFieldErrors from "@/utils/set-server-field-error";
 import CreateNewFolderRoundedIcon from "@mui/icons-material/CreateNewFolderRounded";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import { t } from "i18next";
-import Check from "@components/spaces/Icons/check";
+import Check from "@/components/common/icons/Check";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
-import { SpaceSmallIcon } from "@common/icons/spaceSmallIcon";
-import UniqueId from "@utils/uniqueId";
+import { SpaceSmallIcon } from "@/components/common/icons/Space";
+import UniqueId from "@/utils/unique-id";
 import {
   assessmentActions,
   useAssessmentContext,
-} from "@/providers/AssessmentProvider";
-import showToast from "@utils/toastError";
+} from "@/providers/assessment-provider";
+import showToast from "@/utils/toast-error";
 import { v3Tokens } from "@/config/tokens";
 import { styles } from "@styles";
 
@@ -55,7 +55,6 @@ const BasicBox = [
 
 const CreateSpaceDialog = (props: any) => {
   const [loading, setLoading] = useState(false);
-  const [isFocused, setIsFocused] = useState(true);
   const [selectedType, setSelectedType] = useState<string>("");
   const [step, setStep] = useState(1);
   const { service } = useServiceContext();
@@ -72,7 +71,11 @@ const CreateSpaceDialog = (props: any) => {
   const { type: spaceDefaultType } = data;
   const defaultValues =
     type === "update" ? data : { title: "", code: nanoid(5) };
-  const formMethods = useForm({ shouldUnregister: true });
+  const formMethods = useForm({
+    shouldUnregister: true,
+    mode: "onSubmit",
+    reValidateMode: "onSubmit",
+  });
   const abortController = useMemo(() => new AbortController(), [rest.open]);
   const { dispatch, pendingKitData } = useAssessmentContext();
 
@@ -136,24 +139,41 @@ const CreateSpaceDialog = (props: any) => {
       } else if (type === "create" && step !== 3) {
         setSelectedType("PREMIUM");
       }
-      const handleKeyDown = (e: KeyboardEvent) => {
-        if (e.key === "Enter") {
-          setIsFocused(false);
-          setTimeout(() => {
-            setIsFocused(true);
-          }, 500);
-          formMethods.handleSubmit((data) => onSubmit(data, e))();
-        }
-      };
-
-      document.addEventListener("keydown", handleKeyDown);
-
-      return () => {
-        document.removeEventListener("keydown", handleKeyDown);
-        abortController.abort();
-      };
     }
   }, [openDialog]);
+
+  useEffect(() => {
+    if (!openDialog || step !== 1) return;
+  
+    const controller = new AbortController();
+  
+    const isEditable = (el: EventTarget | null) => {
+      const node = el as HTMLElement | null;
+      if (!node) return false;
+      const tag = node.tagName?.toLowerCase();
+      const editableTags = ["input", "textarea", "select", "button"];
+      return (
+        editableTags.includes(tag) ||
+        (node as HTMLElement).isContentEditable
+      );
+    };
+  
+    const onEnterUp = (e: KeyboardEvent) => {
+      // فقط وقتی Enter رها میشه، تریگر کن؛ نه روی نگه‌داشتن کلید
+      if (e.key !== "Enter" || e.repeat) return;
+      // اگر فوکوس در فیلد نوشتنیه، کاری نکن
+      if (isEditable(e.target)) return;
+      if (!selectedType) return;
+  
+      e.preventDefault();
+      setStep(2);
+    };
+  
+    // keyup + capture → بعد از بسته‌شدن دیالوگ اول، همین Enter رها شده عمل می‌کنه
+    window.addEventListener("keyup", onEnterUp, { signal: controller.signal, capture: true });
+    return () => controller.abort();
+  }, [openDialog, step, selectedType]);
+  
 
   const renderStepOne = () => (
     <Box sx={{ pt: 4, px: 4, pb: 0, height: "100%" }}>
@@ -222,7 +242,7 @@ const CreateSpaceDialog = (props: any) => {
               placeholder={t("spaces.spaceName") ?? ""}
               required
               label={<Trans i18nKey="user.name" />}
-              isFocused={isFocused}
+              isFocused
             />
           </Grid>
           <Box

@@ -14,8 +14,8 @@ import {
 } from "@mui/material";
 import { t } from "i18next";
 import { StickyNote2Outlined } from "@mui/icons-material";
-import languageDetector from "@/utils/languageDetector";
-import useDialog from "@utils/useDialog";
+import languageDetector from "@/utils/language-detector";
+import useDialog from "@/hooks/useDialog";
 import QuestionReportDialog from "@/features/assessment-report/ui/sections/questionReportDialog";
 import { styles } from "@styles";
 
@@ -355,7 +355,7 @@ const MeasuresTable: React.FC<Props> = ({
       >
         <Table size="small" aria-label="measures table">
           <TableHead>
-            <TableRow sx={{ bgcolor: "background.containerHigher" }}>
+            <TableRow sx={{ bgcolor: "background.containerHighest" }}>
               {tableColumns.map((col) => (
                 <TableCell
                   key={col.id}
@@ -400,7 +400,7 @@ const MeasuresTable: React.FC<Props> = ({
           <TableFooter>
             <TableRow
               sx={{
-                bgcolor: "background.containerHigher",
+                bgcolor: "background.containerHighest",
                 "& td": {
                   textAlign: "center",
                   verticalAlign: "middle",

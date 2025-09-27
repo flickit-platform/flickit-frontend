@@ -1,7 +1,7 @@
-import { VISIBILITY } from "@/utils/enumType";
+import { VISIBILITY } from "@/utils/enum-type";
 import { TId, TStatus, IColor, IDefaultModel } from "./common";
-import { IExpertGroup } from "./expertGroup";
-import { ILanguage } from "./kitDesigner";
+import { IExpertGroup } from "./expert-group";
+import { ILanguage } from "./kit-designer";
 import { IMaturityLevel } from "./maturity";
 import { IAssessmentPermissions } from "./permissions";
 import { IQuestionnaire } from "./questionnaire";

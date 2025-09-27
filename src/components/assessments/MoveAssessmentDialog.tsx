@@ -10,8 +10,8 @@ import Typography from "@mui/material/Typography";
 import DriveFileMoveOutlinedIcon from "@mui/icons-material/DriveFileMoveOutlined";
 import { Grid } from "@mui/material";
 import { SpaceField } from "../common/fields/SpaceField";
-import { useServiceContext } from "@/providers/ServiceProvider";
-import { useQuery } from "@/utils/useQuery";
+import { useServiceContext } from "@/providers/service-provider";
+import { useQuery } from "@/hooks/useQuery";
 
 interface IAssessmentCEFromDialogProps extends DialogProps {
   onClose: () => void;
@@ -34,7 +34,11 @@ const MoveAssessmentDialog = (props: IAssessmentCEFromDialogProps) => {
   const { service } = useServiceContext();
   const { type, staticData = {} } = context;
   const { spaceList, queryDataSpaces } = staticData;
-  const formMethods = useForm({ shouldUnregister: true });
+  const formMethods = useForm({
+    shouldUnregister: true,
+    mode: "onSubmit",
+    reValidateMode: "onSubmit",
+  });
   const abortController = useMemo(() => new AbortController(), [rest.open]);
 
   const close = () => {

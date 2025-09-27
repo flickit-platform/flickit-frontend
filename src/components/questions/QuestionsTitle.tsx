@@ -7,13 +7,13 @@ import {
   questionActions,
   useQuestionContext,
   useQuestionDispatch,
-} from "@/providers/QuestionProvider";
+} from "@/providers/question-provider";
 import { t } from "i18next";
 import setDocumentTitle from "@utils/setDocumentTitle";
-import { useConfigContext } from "@/providers/ConfgProvider";
+import { useConfigContext } from "@/providers/config-provider";
 import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
 import { styles } from "@styles";
-import languageDetector from "@/utils/languageDetector";
+import languageDetector from "@/utils/language-detector";
 import { QuestionsFilteringDropdown } from "../dashboard/dashboard-tab/questionnaires/QuestionnaireList";
 import IconButton from "@mui/material/IconButton";
 import ArrowBack from "@mui/icons-material/ArrowBack";

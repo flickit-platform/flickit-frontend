@@ -8,10 +8,10 @@ import Grid from "@mui/material/Grid";
 import Chip from "@mui/material/Chip";
 import { t } from "i18next";
 import { styles } from "@styles";
-import uniqueId from "@/utils/uniqueId";
+import uniqueId from "@/utils/unique-id";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
-import useScreenResize from "@utils/useScreenResize";
+import useScreenResize from "@/hooks/useScreenResize";
 import { useTheme } from "@mui/material";
 
 interface IStepperSection {

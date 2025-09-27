@@ -1,5 +1,5 @@
 import { QuestionContainer } from "@/components/questions/QuestionContainer";
-import useDocumentTitle from "@utils/useDocumentTitle";
+import useDocumentTitle from "@/hooks/useDocumentTitle";
 
 const QuestionScreen = () => {
   useDocumentTitle();

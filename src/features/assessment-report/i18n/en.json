@@ -53,7 +53,7 @@
   "restrictedShareTitle": "Restricted access (Only users with access) ",
   "restrictedShareDescription": "Accessible only to users who’ve been given access.",
   "shareReport": "Share report",
-  "shareReportViaEmail": "Share the report with new people via email...",
+  "shareReportViaEmail": "Share the report with new people via email",
   "shareOptions": "Sharing options",
   "subjectsAndAttributes": "Subjects and attributes",
   "treemapEmptyState": "Click on any attribute in the chart to view details",
