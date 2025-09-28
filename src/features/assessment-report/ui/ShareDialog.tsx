@@ -475,6 +475,7 @@ export default function ShareDialog({
               variant="contained"
               sx={{ marginInlineStart: 1, fontFamily: "inherit" }}
               onClick={onSubmit}
+              disabled={spaceList.length <= 0}
             >
               {t("common.continue", { lng })}
             </Button>
