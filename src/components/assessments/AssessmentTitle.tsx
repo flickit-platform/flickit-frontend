@@ -1,5 +1,6 @@
 import SupTitleBreadcrumb from "@/components/common/SupTitleBreadcrumb";
 import Title from "@common/Title";
+import FolderOutlinedIcon from "@mui/icons-material/FolderOutlined";
 
 interface IAssessmentReportTitle {
   data: any;
@@ -23,7 +24,7 @@ const AssessmentTitle = (props: IAssessmentReportTitle) => {
           routes={[
             {
               title: title ?? "",
-              to: `/`,
+              icon: <FolderOutlinedIcon fontSize="small" />,
             },
           ]}
           displayChip

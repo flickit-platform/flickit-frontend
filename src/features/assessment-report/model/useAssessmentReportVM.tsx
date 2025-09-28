@@ -71,40 +71,32 @@ export function useAssessmentReportVM() {
     };
   }, []);
 
-  const handleGoToQuestionnaire = () => {
-    navigate(`/${spaceId}/assessments/1/${assessmentId}/questionnaires`);
+  const handleNavigation = (
+    permission: { canViewDashboard?: boolean } | undefined,
+  ) => {
+    const to = permission?.canViewDashboard
+      ? `/${spaceId}/assessments/1/${assessmentId}/dashboard`
+      : `/${spaceId}/assessments/1/${assessmentId}/questionnaires`;
+    navigate(to);
   };
 
   return {
-    // fetchers
     fetchGraphicalReport,
     fetchPathInfo,
     reload,
-
-    // flags & i18n
     isAuthenticatedUser,
     lng,
     rtl,
     isQuickMode: !!isQuickMode,
     hasInvalidReport,
-
-    // chips
     infoItems,
     gotoItems,
-
-    // selection state shared between sections
     selectedId,
     setSelectedId,
-
-    // raw
     report,
-
-    // dialogs
     shareDialog,
     expertDialog,
     expertContext,
-
-    //buttons
-    handleGoToQuestionnaire,
+    handleNavigation,
   };
 }
