@@ -78,7 +78,7 @@ const CreateSpaceDialog = (props: any) => {
     reValidateMode: "onSubmit",
   });
   const abortController = useMemo(() => new AbortController(), [rest.open]);
-  const { dispatch, pendingKitData } = useAssessmentContext();
+  const { dispatch, pendingKitData, pendingReportData } = useAssessmentContext();
 
   useEffect(() => {
     if (!spaceDefaultType?.code) {
@@ -96,6 +96,14 @@ const CreateSpaceDialog = (props: any) => {
             ...pendingKitData,
             display: true,
           }),
+        );
+      }
+      if (pendingReportData?.spaceId) {
+        dispatch(
+            assessmentActions.setPendingShareReport({
+              ...pendingReportData,
+              display: true,
+            }),
         );
       }
     }

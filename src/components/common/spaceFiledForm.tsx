@@ -11,8 +11,21 @@ import ClickAwayListener from "@mui/material/ClickAwayListener";
 import Button from "@mui/material/Button";
 import CreateNewFolderOutlinedIcon from '@mui/icons-material/CreateNewFolderOutlined';
 import {styles} from "@styles";
+import {useNavigate} from "react-router-dom";
+import {assessmentActions, useAssessmentContext} from "@providers/assessment-provider";
+import {useParams} from "react-router";
 
-const CreateSpacePopUp = ({onClose}: { onClose: () => void }) => {
+const CreateSpacePopUp = ({onClose, handleCloseDialog, ReportTitle}: { onClose: () => void, handleCloseDialog: () => void, ReportTitle: string}) => {
+
+    const {spaceId, assessmentId} = useParams()
+    const navigate = useNavigate()
+    const { dispatch } = useAssessmentContext();
+    const handelCreateSpace = () =>{
+        onClose()
+        handleCloseDialog()
+        dispatch(assessmentActions.setPendingShareReport({spaceId, assessmentId, title: ReportTitle}));
+        navigate("/spaces/#createSpace")
+    }
 
     return (<Box
         sx={{
@@ -70,7 +83,7 @@ const CreateSpacePopUp = ({onClose}: { onClose: () => void }) => {
                     {t("common.refuse")}
                 </Typography>
             </Button>
-            <Button variant={"contained"} sx={{...styles.centerV, gap: 1}}>
+            <Button onClick={handelCreateSpace} variant={"contained"} sx={{...styles.centerV, gap: 1}}>
                 <Typography variant={"labelMedium"}>
                     {t("assessmentReport.newSpace")}
                 </Typography>
@@ -82,16 +95,20 @@ const CreateSpacePopUp = ({onClose}: { onClose: () => void }) => {
 
 
 const SpaceFieldForm = (props: any) => {
-    const {formMethods, staticData, lng, shareDialog} = props
+    const {formMethods, staticData, lng, shareDialog, closeShareDialog, setStep, ReportTitle} = props
     const {spaceList, queryDataSpaces} = staticData;
     const popperRef = React.useRef<HTMLDivElement | null>(null);
-
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
     const togglePopOver = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorEl(anchorEl ? null : event.currentTarget);
     };
     const handleClose = () => setAnchorEl(null);
+    const handleCloseDialog = () =>{
+        closeShareDialog()
+        setStep(0)
+    }
+
     return (
         <FormProviderWithForm formMethods={formMethods}>
             <Grid container>
@@ -129,7 +146,7 @@ const SpaceFieldForm = (props: any) => {
                                     }}
                                 >
                                     <Box ref={popperRef}>
-                                        <CreateSpacePopUp onClose={handleClose}/>
+                                        <CreateSpacePopUp ReportTitle={ReportTitle} onClose={handleClose} handleCloseDialog={handleCloseDialog}/>
                                     </Box>
                                 </ClickAwayListener>
                             </Popper>

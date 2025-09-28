@@ -88,7 +88,9 @@ const SpaceContainer = () => {
   useEffect(() => {
     if (window.location.hash === "#createSpace") {
       dialogProps.openDialog({ type: "create" });
-      window.location.hash = "";
+      // window.location.href = "";
+      const cleanUrl = window.location.href.split('#')[0];
+      window.history.replaceState(null, document.title, cleanUrl);
     }
   }, []);
 

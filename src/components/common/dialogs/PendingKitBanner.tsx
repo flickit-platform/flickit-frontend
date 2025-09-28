@@ -19,8 +19,8 @@ const RADIUS = (SIZE - STROKE) / 2;
 const CIRCUMFERENCE = 2 * Math.PI * RADIUS;
 
 const PendingKitBanner: React.FC<{ seconds?: number }> = ({ seconds = 10 }) => {
-  const { pendingKitData, dispatch } = useAssessmentContext();
-  const [kit, setKit] = useState<any>(null);
+  const { pendingKitData, pendingReportData, dispatch } = useAssessmentContext();
+  const [data, setData] = useState<any>(null);
   const [show, setShow] = useState(false);
   const [counter, setCounter] = useState(seconds);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
@@ -29,8 +29,8 @@ const PendingKitBanner: React.FC<{ seconds?: number }> = ({ seconds = 10 }) => {
 
   useEffect(() => {
     const check = () => {
-      if (pendingKitData?.display) {
-        setKit(pendingKitData);
+      if (pendingKitData?.display || pendingReportData?.display) {
+        setData(pendingKitData || pendingReportData);
         setShow(true);
         setCounter(seconds);
       } else {
@@ -38,10 +38,10 @@ const PendingKitBanner: React.FC<{ seconds?: number }> = ({ seconds = 10 }) => {
       }
     };
     check();
-  }, [pendingKitData, seconds]);
+  }, [pendingKitData,pendingReportData, seconds]);
 
   useEffect(() => {
-    if (!show || !kit) return;
+    if (!show || !data) return;
     if (counter <= 0) {
       handleCancel();
       return;
@@ -50,12 +50,13 @@ const PendingKitBanner: React.FC<{ seconds?: number }> = ({ seconds = 10 }) => {
     return () => {
       if (timerRef.current) clearTimeout(timerRef.current);
     };
-  }, [show, kit, counter]);
+  }, [show, data, counter]);
 
   const clearAll = useCallback(() => {
     dispatch(assessmentActions.setPendingKit({}));
+    dispatch(assessmentActions.setPendingShareReport({}));
     setShow(false);
-    setKit(null);
+    setData(null);
     setCounter(seconds);
     if (timerRef.current) clearTimeout(timerRef.current);
   }, [dispatch, seconds]);
@@ -65,13 +66,15 @@ const PendingKitBanner: React.FC<{ seconds?: number }> = ({ seconds = 10 }) => {
   }, [clearAll]);
 
   const handleContinue = useCallback(() => {
-    if (kit?.id) {
-      navigate(`/assessment-kits#createAssessment?id=${kit.id}`);
+    if (data?.id) {
+      navigate(`/assessment-kits#createAssessment?id=${data.id}`);
+    } else if (data?.spaceId) {
+      navigate(`/${data?.spaceId}/assessments/${data?.assessmentId}/graphical-report/#shareDialog`);
     }
     clearAll();
-  }, [kit, clearAll]);
+  }, [data, clearAll]);
 
-  if (!show || !kit) return null;
+  if (!show || !data) return null;
 
   const progress = counter / seconds;
   const dashoffset = CIRCUMFERENCE * (1 - progress);
@@ -152,25 +155,25 @@ const PendingKitBanner: React.FC<{ seconds?: number }> = ({ seconds = 10 }) => {
           <Trans
             i18nKey="assessmentKit.continueAssessmentKitMessage"
             values={{
-              kitName: kit?.title ?? "",
+              kitName: data?.title ?? "",
             }}
             components={{
               name: (
                 <a
-                  href={`/assessment-kits/${kit?.id}`}
+                  href={data?.id ? `/assessment-kits/${data?.id}` : `/${data?.spaceId}/assessments/${data?.assessmentId}/graphical-report/`}
                   style={{
                     textDecoration: "none",
                     color: theme.palette.primary.main,
                     fontWeight: 600,
                     cursor: "pointer",
-                    fontFamily: languageDetector(kit?.title)
+                    fontFamily: languageDetector(data?.title)
                       ? farsiFontFamily
                       : primaryFontFamily,
                   }}
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  {kit?.title}
+                  {data?.title}
                 </a>
               ),
             }}

@@ -8,7 +8,7 @@ import GraphicalReportSkeleton from "@/features/assessment-report/ui/loading/Gra
 import { styles } from "@styles";
 import { t } from "i18next";
 import type { PathInfo } from "@/types";
-import { useCallback } from "react";
+import {useCallback, useEffect} from "react";
 
 import { useAssessmentReportVM } from "../../assessment-report/model/useAssessmentReportVM";
 import AssessmentReportTitle from "./AssessmentReportTitle";
@@ -56,6 +56,14 @@ export default function AssessmentReportPage() {
   const onQuestionnaires = useCallback(handleGoToQuestionnaire, [
     handleGoToQuestionnaire,
   ]);
+
+  useEffect(() => {
+    if (window.location.hash === "#shareDialog") {
+      shareDialog.openDialog({ type: "create" });
+      const cleanUrl = window.location.href.split('#')[0];
+      window.history.replaceState(null, document.title, cleanUrl);
+    }
+  }, []);
 
   return (
     <PermissionControl error={[fetchGraphicalReport.errorObject]}>

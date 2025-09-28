@@ -56,9 +56,9 @@ export default function ShareDialog({
   });
 
   const isRTL = lng === "fa";
-  const { space } = assessment ?? {};
+  const { space, title } = assessment ?? {};
   const isDefault = space?.isDefault ?? false;
-  const [pageNumber, setPageNumber] = useState(0)
+  const [step, setStep] = useState(0)
   const {
     access,
     snackbarOpen,
@@ -95,7 +95,10 @@ export default function ShareDialog({
     spaceList
   };
 
-
+const closeShareDialog = () =>{
+  onClose()
+  setStep(0)
+}
 
   type AccessOptions = Record<
     VISIBILITY,
@@ -148,7 +151,7 @@ export default function ShareDialog({
   };
 
   const changeStatus = (pageNumber: number)=>{
-    setPageNumber(pageNumber)
+    setStep(pageNumber)
   }
 
   const shareSection = () => {
@@ -253,7 +256,7 @@ export default function ShareDialog({
   return (
     <CEDialog
       open={open}
-      closeDialog={onClose}
+      closeDialog={closeShareDialog}
       title={
         <Box sx={{ ...styles.centerV }} gap={1}>
           <Share />
@@ -275,7 +278,7 @@ export default function ShareDialog({
       }}
       titleStyle={{ mb: "0px !important" }}
     >
-      {pageNumber == 0 && <>
+      {step == 0 && <>
         <Box
             sx={{
               display: permissions.canManageVisibility ? "flex-column" : "none",
@@ -382,7 +385,7 @@ export default function ShareDialog({
         {access === VISIBILITY.PUBLIC && <Box>hi public</Box>}
         {!isDefault && access === VISIBILITY.RESTRICTED && shareSection()}
       </>}
-      {pageNumber == 1 && <>
+      {step == 1 && <>
         <Box
             sx={{
               display: permissions.canManageVisibility ? "flex-column" : "none",
@@ -398,7 +401,7 @@ export default function ShareDialog({
           </Typography>
           <Divider sx={{ my: 1 }} />
         </Box>
-        {isDefault && access === VISIBILITY.RESTRICTED && <SpaceFieldForm formMethods={formMethods} staticData={staticData} lng={lng} shareDialog={true} />}
+        {isDefault && access === VISIBILITY.RESTRICTED && <SpaceFieldForm formMethods={formMethods} staticData={staticData} lng={lng} shareDialog={true} closeShareDialog={onClose} setStep={setStep} ReportTitle={title} />}
       </>
       }
       <CEDialogActions
@@ -408,7 +411,7 @@ export default function ShareDialog({
         hideSubmitButton
         hideCancelButton
       >{
-        pageNumber === 0 &&   <LoadingButton
+          step === 0 &&   <LoadingButton
               variant="contained"
               onClick={onClose}
               sx={{ marginInlineStart: 1, fontFamily: "inherit" }}
@@ -417,7 +420,7 @@ export default function ShareDialog({
           </LoadingButton>
       }
         {
-            pageNumber === 1 && <>
+            step === 1 && <>
             <Button
                 variant="outlined"
                 sx={{ marginInlineStart: 1, fontFamily: "inherit" }}
