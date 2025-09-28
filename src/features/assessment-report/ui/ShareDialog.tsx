@@ -31,12 +31,14 @@ import SpaceFieldForm from "@common/spaceFiledForm";
 import { useServiceContext } from "@providers/service-provider";
 import { useConnectAutocompleteField } from "@common/fields/AutocompleteAsyncField";
 import { useParams } from "react-router-dom";
+import { useQuery } from "@/hooks/useQuery";
 
 type ShareDialogProps = {
   open: boolean;
   onClose: () => void;
   assessment: any;
   lng: string;
+  fetchGraphicalReport: any;
 } & Pick<IGraphicalReport, "visibility" | "permissions" | "linkHash" | "lang">;
 
 export default function ShareDialog({
@@ -47,6 +49,7 @@ export default function ShareDialog({
   linkHash,
   lng,
   assessment,
+  fetchGraphicalReport,
 }: ShareDialogProps) {
   const { t } = useTranslation();
   const formMethods = useForm({
@@ -58,7 +61,7 @@ export default function ShareDialog({
   const isRTL = lng === "fa";
   const { space, title } = assessment ?? {};
   const isDefault = space?.isDefault ?? false;
-  const [step, setStep] = useState(0)
+  const [step, setStep] = useState(0);
   const {
     access,
     snackbarOpen,
@@ -72,12 +75,31 @@ export default function ShareDialog({
   } = useShareDialog({ open, visibility, linkHash });
 
   const { service } = useServiceContext();
-  const {assessmentId =""} = useParams()
+  const { assessmentId = "" } = useParams();
   const queryDataSpaces = useConnectAutocompleteField({
     service: (args, config) =>
-        service.assessments.info.getTargetSpaces(args, config),
+      service.assessments.info.getTargetSpaces(args, config),
     accessor: "items",
   });
+
+  const AssessmentMoveTarget = useQuery({
+    service: (args, config) =>
+      service.assessments.info.AssessmentMoveTarget(
+        args ?? {
+          id: assessmentId,
+          targetSpaceId: formMethods?.getValues("space")?.id,
+        },
+        config,
+      ),
+    runOnMount: false,
+    toastError: true,
+  });
+
+  const onSubmit = async () => {
+    await AssessmentMoveTarget.query();
+    await fetchGraphicalReport.query();
+    closeShareDialog();
+  };
 
   const [spaceList, setSpaceList] = useState<any[]>([]);
   const fetchSpaces = async () => {
@@ -89,16 +111,15 @@ export default function ShareDialog({
     fetchSpaces();
   }, [assessmentId]);
 
-
   const staticData = {
     queryDataSpaces,
-    spaceList
+    spaceList,
   };
 
-const closeShareDialog = () =>{
-  onClose()
-  setStep(0)
-}
+  const closeShareDialog = () => {
+    onClose();
+    setStep(0);
+  };
 
   type AccessOptions = Record<
     VISIBILITY,
@@ -145,14 +166,15 @@ const closeShareDialog = () =>{
     isSelected: boolean;
     isDefault: boolean;
   }) => {
-    if (isSelected && isDefault && status === VISIBILITY.RESTRICTED) return "#8A0F2414";
+    if (isSelected && isDefault && status === VISIBILITY.RESTRICTED)
+      return "#8A0F2414";
     if (isSelected) return "#2466A814";
     return "inherit";
   };
 
-  const changeStatus = (pageNumber: number)=>{
-    setStep(pageNumber)
-  }
+  const changeStatus = (pageNumber: number) => {
+    setStep(pageNumber);
+  };
 
   const shareSection = () => {
     return (
@@ -278,165 +300,186 @@ const closeShareDialog = () =>{
       }}
       titleStyle={{ mb: "0px !important" }}
     >
-      {step == 0 && <>
-        <Box
+      {step == 0 && (
+        <>
+          <Box
             sx={{
               display: permissions.canManageVisibility ? "flex-column" : "none",
               mt: 0,
             }}
-        >
-          <Typography
+          >
+            <Typography
               variant="bodyMedium"
               color="rgba(61, 77, 92, 0.5)"
               fontFamily="inherit"
-          >
-            {t("assessmentReport.shareOptions", { lng })}
-          </Typography>
-          <Divider sx={{ my: 1 }} />
-        </Box>
-        <Box
+            >
+              {t("assessmentReport.shareOptions", { lng })}
+            </Typography>
+            <Divider sx={{ my: 1 }} />
+          </Box>
+          <Box
             sx={{
               display: permissions.canManageVisibility ? "flex-column" : "none",
               gap: 1,
             }}
-        >
-          {Object.values(VISIBILITY).map((key) => {
-            const status = key as VISIBILITY;
-            const isSelected = access === status;
-            return (
+          >
+            {Object.values(VISIBILITY).map((key) => {
+              const status = key as VISIBILITY;
+              const isSelected = access === status;
+              return (
                 <Box
-                    key={status}
-                    sx={{
-                      display: "flex",
-                      justifyContent: "flex-start",
-                      background: getBackgroundColor({ status, isSelected, isDefault }),
-                      width: "100%",
-                      height: "fit-content",
-                      borderRadius: "8px",
-                      cursor: "pointer",
-                    }}
-                    onClick={() => handleSelect(status)}
+                  key={status}
+                  sx={{
+                    display: "flex",
+                    justifyContent: "flex-start",
+                    background: getBackgroundColor({
+                      status,
+                      isSelected,
+                      isDefault,
+                    }),
+                    width: "100%",
+                    height: "fit-content",
+                    borderRadius: "8px",
+                    cursor: "pointer",
+                  }}
+                  onClick={() => handleSelect(status)}
                 >
                   <Box sx={{ ...styles.centerVH }} width="38px" height="38px">
                     <Radio
-                        checked={isSelected}
-                        color="primary"
-                        size="small"
-                        sx={{
-                          padding: "9px",
-                          "&.Mui-checked": {
-                            color:
-                                isDefault && status == VISIBILITY.RESTRICTED ? "#8A0F24" : "#2466A8",
-                          },
-                        }}
+                      checked={isSelected}
+                      color="primary"
+                      size="small"
+                      sx={{
+                        padding: "9px",
+                        "&.Mui-checked": {
+                          color:
+                            isDefault && status == VISIBILITY.RESTRICTED
+                              ? "#8A0F24"
+                              : "#2466A8",
+                        },
+                      }}
                     />
                   </Box>
                   <Box
-                      sx={{ ...styles.centerCV }}
-                      padding="8px 0"
-                      gap="4px"
-                      flex={"1"}
-                      height="fit-content"
+                    sx={{ ...styles.centerCV }}
+                    padding="8px 0"
+                    gap="4px"
+                    flex={"1"}
+                    height="fit-content"
                   >
                     <Typography
-                        fontFamily="inherit"
-                        variant="bodyMedium"
-                        sx={{ color: "#2B333B" }}
+                      fontFamily="inherit"
+                      variant="bodyMedium"
+                      sx={{ color: "#2B333B" }}
                     >
                       {isDefault && status == VISIBILITY.RESTRICTED
-                          ? accessOptionsNew[status].titleDefault
-                          : accessOptionsNew[status].title}
+                        ? accessOptionsNew[status].titleDefault
+                        : accessOptionsNew[status].title}
                     </Typography>
                     <Typography
-                        variant="bodySmall"
-                        color="background.secondaryDark"
-                        fontFamily="inherit"
+                      variant="bodySmall"
+                      color="background.secondaryDark"
+                      fontFamily="inherit"
                     >
                       {isDefault && status == VISIBILITY.RESTRICTED
-                          ? accessOptionsNew[status].descriptionDefault
-                          : accessOptionsNew[status].description}
+                        ? accessOptionsNew[status].descriptionDefault
+                        : accessOptionsNew[status].description}
                     </Typography>
                   </Box>
                   <Box sx={{ ...styles.centerV, paddingInlineEnd: "16px" }}>
                     {isDefault && status == VISIBILITY.RESTRICTED && (
-                        <Button
-                            variant={"outlined"}
-                            color={"error"}
-                            sx={{
-                              height: "fit-content",
-                              width: "fit-content",
-                              p: "4px 10px",
-                            }}
-                            onClick={()=>changeStatus(1)}
+                      <Button
+                        variant={"outlined"}
+                        color={"error"}
+                        sx={{
+                          height: "fit-content",
+                          width: "fit-content",
+                          p: "4px 10px",
+                        }}
+                        onClick={() => changeStatus(1)}
+                      >
+                        <Typography
+                          variant={"labelLarge"}
+                          sx={{ ...styles.rtlStyle(lng === "fa") }}
                         >
-                          <Typography
-                              variant= {"labelLarge"}
-                              sx= {{ ...styles.rtlStyle(lng === "fa")}}
-                          >
-                            {t("assessmentReport.moveAssessment", {lng})}
-                          </Typography>
-                        </Button>
+                          {t("assessmentReport.moveAssessment", { lng })}
+                        </Typography>
+                      </Button>
                     )}
                   </Box>
                 </Box>
-            );
-          })}
-        </Box>
-        {access === VISIBILITY.PUBLIC && <Box>hi public</Box>}
-        {!isDefault && access === VISIBILITY.RESTRICTED && shareSection()}
-      </>}
-      {step == 1 && <>
-        <Box
+              );
+            })}
+          </Box>
+          {access === VISIBILITY.PUBLIC && <Box>hi public</Box>}
+          {!isDefault && access === VISIBILITY.RESTRICTED && shareSection()}
+        </>
+      )}
+      {step == 1 && (
+        <>
+          <Box
             sx={{
               display: permissions.canManageVisibility ? "flex-column" : "none",
               mt: 0,
             }}
-        >
-          <Typography
+          >
+            <Typography
               variant="bodyMedium"
               color="rgba(61, 77, 92, 0.5)"
               fontFamily="inherit"
-          >
-            {t("assessmentReport.moveTheAssessment", { lng })}
-          </Typography>
-          <Divider sx={{ my: 1 }} />
-        </Box>
-        {isDefault && access === VISIBILITY.RESTRICTED && <SpaceFieldForm formMethods={formMethods} staticData={staticData} lng={lng} shareDialog={true} closeShareDialog={onClose} setStep={setStep} ReportTitle={title} />}
-      </>
-      }
+            >
+              {t("assessmentReport.moveTheAssessment", { lng })}
+            </Typography>
+            <Divider sx={{ my: 1 }} />
+          </Box>
+          {isDefault && access === VISIBILITY.RESTRICTED && (
+            <SpaceFieldForm
+              formMethods={formMethods}
+              staticData={staticData}
+              lng={lng}
+              shareDialog={true}
+              closeShareDialog={onClose}
+              setStep={setStep}
+              ReportTitle={title}
+              onSubmit={onSubmit}
+            />
+          )}
+        </>
+      )}
       <CEDialogActions
         type="delete"
         loading={false}
         onClose={onClose}
         hideSubmitButton
         hideCancelButton
-      >{
-          step === 0 &&   <LoadingButton
-              variant="contained"
-              onClick={onClose}
-              sx={{ marginInlineStart: 1, fontFamily: "inherit" }}
+      >
+        {step === 0 && (
+          <LoadingButton
+            variant="contained"
+            onClick={onClose}
+            sx={{ marginInlineStart: 1, fontFamily: "inherit" }}
           >
             {t("assessmentReport.done", { lng })}
           </LoadingButton>
-      }
-        {
-            step === 1 && <>
+        )}
+        {step === 1 && (
+          <>
             <Button
-                variant="outlined"
-                sx={{ marginInlineStart: 1, fontFamily: "inherit" }}
-                onClick={()=>changeStatus(0)}
+              variant="outlined"
+              sx={{ marginInlineStart: 1, fontFamily: "inherit" }}
+              onClick={() => changeStatus(0)}
             >
-
               {t("common.back", { lng })}
             </Button>
             <Button
-                variant="contained"
-                sx={{ marginInlineStart: 1, fontFamily: "inherit" }}
+              variant="contained"
+              sx={{ marginInlineStart: 1, fontFamily: "inherit" }}
+              onClick={onSubmit}
             >
               {t("common.continue", { lng })}
             </Button>
-            </>
-        }
+          </>
+        )}
       </CEDialogActions>
 
       <Snackbar

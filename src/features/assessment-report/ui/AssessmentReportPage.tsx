@@ -8,7 +8,7 @@ import GraphicalReportSkeleton from "@/features/assessment-report/ui/loading/Gra
 import { styles } from "@styles";
 import { t } from "i18next";
 import type { PathInfo } from "@/types";
-import {useCallback, useEffect} from "react";
+import { useCallback, useEffect } from "react";
 
 import { useAssessmentReportVM } from "../../assessment-report/model/useAssessmentReportVM";
 import AssessmentReportTitle from "./AssessmentReportTitle";
@@ -60,7 +60,7 @@ export default function AssessmentReportPage() {
   useEffect(() => {
     if (window.location.hash === "#shareDialog") {
       shareDialog.openDialog({ type: "create" });
-      const cleanUrl = window.location.href.split('#')[0];
+      const cleanUrl = window.location.href.split("#")[0];
       window.history.replaceState(null, document.title, cleanUrl);
     }
   }, []);
@@ -258,7 +258,12 @@ export default function AssessmentReportPage() {
                   <SidebarQuickMode {...sidebarProps} />
                 </Box>
 
-                <ShareDialog {...shareDialog} {...report} lng={lng} />
+                <ShareDialog
+                  {...shareDialog}
+                  {...report}
+                  lng={lng}
+                  fetchGraphicalReport={fetchGraphicalReport}
+                />
                 <ContactUsDialog
                   {...expertDialog}
                   context={expertContext}

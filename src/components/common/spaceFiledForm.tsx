@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {Grid, IconButton} from "@mui/material";
 import Typography from "@mui/material/Typography";
-import i18n, {t} from "i18next";
+import {t} from "i18next";
 import {SpaceField} from "@common/fields/SpaceField";
 import FormProviderWithForm from "@common/FormProviderWithForm";
 import Box from "@mui/material/Box";
@@ -124,6 +124,7 @@ const SpaceFieldForm = (props: any) => {
                             spaces={spaceList}
                             sx={{mt: "24px"}}
                             label={t("spaces.targetSpace", {lng})}
+                            noOptionsText={t("spaces.noSpaceHere",{lng})}
                             filterSelectedOptions={false}
                         />{" "}
                     </Grid>
