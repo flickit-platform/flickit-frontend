@@ -111,6 +111,7 @@ export default function AssessmentReportPage() {
                       <AssessmentReportTitle
                         pathInfo={pathInfo}
                         rtlLanguage={rtl}
+                        lng={lng}
                       >
                         {!isQuickMode && (
                           <Box sx={{ ...styles.centerVH }} gap={2}>

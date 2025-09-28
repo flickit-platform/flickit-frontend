@@ -59,27 +59,35 @@ const SupTitleBreadcrumb = (
               }}
               variant="bodyLarge"
             >
-              {icon}
               {(
                 <Chip
+                  icon={icon}
                   label={title}
                   size="small"
                   sx={{
                     cursor: isActive ? mouseCursor : "pointer",
                     alignSelf: "flex-start",
-                    bgcolor: isActive ? "#D0E4FF" : "rgba(206, 211, 217, 0.4)",
+                    bgcolor: isActive ? "#D0E4FF" : "rgba(206,211,217,0.4)",
                     color: isActive ? "#2466A8" : "outline.outline",
                     textTransform: "none",
                     borderRadius: "8px",
-                    padding: "4px",
+                    py: "16px",
+                    px: "8px",
+                    display: "inline-flex",
+                    gap: 0.75,
+                    "& .MuiChip-icon": {
+                      color: "currentColor",
+                      mr: 0,
+                      fontSize: 18,
+                    },
+
                     "& .MuiChip-label": {
                       ...theme.typography.bodyLarge,
                       fontFamily: languageDetector(title as string)
                         ? farsiFontFamily
                         : primaryFontFamily,
-                      fontWeight: languageDetector(title as string)
-                        ? "light"
-                        : "lighter",
+                      fontWeight: languageDetector(title as string) ? 300 : 300,
+                      px: 0,
                     },
                   }}
                 />
