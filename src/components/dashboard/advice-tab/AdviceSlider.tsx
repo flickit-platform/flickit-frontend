@@ -362,7 +362,7 @@ const BaselineMarker = ({
 }) => (
   <Tooltip
     arrow
-    placement="top"
+    placement="bottom"
     title={fromTitle || ""}
     disableHoverListener={!fromTitle}
     componentsProps={{
