@@ -1,95 +1,156 @@
-import { describe, it, vi, expect } from "vitest";
-import MoveAssessmentDialog from "../MoveAssessmentDialog";
-import {render, screen, within} from "@testing-library/react";
-import { FormProvider, useForm } from "react-hook-form";
-import { SpaceField } from "@common/fields/SpaceField";
+import React from "react";
+import { describe, it, expect, vi, beforeEach } from "vitest";
+import { render, screen, within, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { MemoryRouter } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
 
-describe("test for move assessment", () => {
-  const SubmitForm = vi.fn();
-  let methodsRef: any;
-  const moveAssessmentDialogProps = {
-    context: {
-      type: "create",
-      staticData: {
-        assessment_kit: { id: undefined, title: undefined },
-        langList: [],
-        queryDataSpaces: vi.fn(),
-        spaceList: [
-          {
-            id: 1,
-            isDefault: false,
-            selected: false,
-            title: "space",
-            type: { code: "BASIC", title: "پایه" },
-          },
-        ],
+
+const assessmentMoveTargetSpy = vi.fn().mockResolvedValue({ ok: true });
+
+vi.mock("@/providers/service-provider", () => ({
+  useServiceContext: () => ({
+    service: {
+      assessments: {
+        info: { AssessmentMoveTarget: assessmentMoveTargetSpy },
       },
     },
-    onClose: vi.fn(),
+  }),
+  ServiceProvider: ({ children }: any) => <>{children}</>,
+}));
+
+vi.mock("@providers/service-provider", () => ({
+  useServiceContext: () => ({
+    service: {
+      assessments: {
+        info: { AssessmentMoveTarget: assessmentMoveTargetSpy },
+      },
+    },
+  }),
+  ServiceProvider: ({ children }: any) => <>{children}</>,
+}));
+
+
+vi.mock("../../../providers/service-provider", () => ({
+  useServiceContext: () => ({
+    service: {
+      assessments: {
+        info: { AssessmentMoveTarget: assessmentMoveTargetSpy },
+      },
+    },
+  }),
+  ServiceProvider: ({ children }: any) => <>{children}</>,
+}));
+
+const useQueryMockImpl = (opts: any) => ({
+  query: vi.fn((args?: any, config?: any) => opts.service(args, config)),
+  loading: false,
+  data: undefined,
+  error: undefined,
+});
+vi.mock("@/hooks/useQuery", () => ({ useQuery: useQueryMockImpl }));
+vi.mock("../../../hooks/useQuery", () => ({ useQuery: useQueryMockImpl }));
+
+
+let MoveAssessmentDialog: any;
+beforeEach(async () => {
+  assessmentMoveTargetSpy.mockClear();
+  ({ default: MoveAssessmentDialog } = await import("../MoveAssessmentDialog"));
+});
+
+
+describe("MoveAssessmentDialog", () => {
+  const onClose = vi.fn();
+  const onSubmitForm = vi.fn();
+
+  const staticData = {
+    assessment_kit: { id: undefined, title: undefined },
+    langList: [],
+    queryDataSpaces: vi.fn(),
+    spaceList: [
+      {
+        id: 1,
+        isDefault: false,
+        selected: false,
+        title: "space",
+        type: { code: "BASIC", title: "پایه" },
+      },
+    ],
+  };
+
+  const baseProps = {
     open: true,
+    onClose,
+    onSubmitForm,
     openDialog: vi.fn(),
+    context: { type: "create", staticData },
+    assessmentId: "assessmentId",
+    titleStyle: { mb: 0 },
+    contentStyle: { p: 0 },
   };
 
-  const renderMoveDialog = () => {
-    render(
-      <MoveAssessmentDialog
-        {...moveAssessmentDialogProps}
-        assessmentId={"assessmentId"}
-        onSubmitForm={SubmitForm}
-      />,
+  const renderDialog = (override?: Partial<typeof baseProps>) => {
+    const props = { ...baseProps, ...(override ?? {}) };
+    return render(
+      <MemoryRouter>
+        <MoveAssessmentDialog {...(props as any)} />
+        <ToastContainer />
+      </MemoryRouter>,
     );
   };
 
-  const Wrapper = () => {
-    const methods = useForm({ defaultValues: { space: null } });
-    methodsRef = methods;
-    return (
-        <FormProvider {...methods}>
-          <SpaceField
-              spaces={moveAssessmentDialogProps.context.staticData.spaceList}
-              name="space"
-              data-testid={"moveSpaceField"}
-          />
-        </FormProvider>
-    );
-  };
-
-  it("open move dialog", () => {
-    renderMoveDialog();
-    const spaceField = screen.getByTestId("moveSpaceField");
-    expect(spaceField).toBeInTheDocument();
+  it("renders the target space field when dialog opens", () => {
+    renderDialog();
+    expect(screen.getByTestId("target-space-field")).toBeInTheDocument();
   });
 
-  it("should update value when user selects a space", async () => {
+  it("lets user pick a space and shows the selection", async () => {
+    renderDialog();
+    const u = userEvent.setup();
 
-    render(<Wrapper />);
-    const inputBox = within(screen.getByTestId("moveSpaceField")).getByRole(
+    const combo = within(screen.getByTestId("target-space-field")).getByRole(
       "combobox",
     );
-    await userEvent.click(inputBox);
-    const option = await screen.findByText("space");
-    await userEvent.click(option);
+    await u.click(combo);
+    await u.click(await screen.findByText("space"));
 
-    const value = methodsRef.getValues("space");
-    expect(value).toEqual({
-      id: 1,
-      isDefault: false,
-      selected: false,
-      title: "space",
-      type: { code: "BASIC", title: "پایه" },
-    });
+    expect(screen.getByDisplayValue("space")).toBeInTheDocument();
   });
 
+  it("calls onClose when cancel button is clicked", async () => {
+    renderDialog();
+    const u = userEvent.setup();
 
-  it("show space",async ()=>{
-    renderMoveDialog()
-      const inputBox = within(screen.getByTestId("moveSpaceField")).getByRole("combobox");
-      await userEvent.click(inputBox);
+    const cancelBtn = screen.getByTestId("close-btn");
+    expect(cancelBtn).toBeInTheDocument();
 
-      const option = await screen.findByText("space");
-      await userEvent.click(option);
-      expect(screen.getByDisplayValue("space")).toBeInTheDocument();
-  })
+    await u.click(cancelBtn);
+    await waitFor(() => expect(onClose).toHaveBeenCalledTimes(1));
+  });
 
+  it("submits and calls the API with correct payload, then triggers onSubmitForm and onClose", async () => {
+    renderDialog();
+    const u = userEvent.setup();
+
+    const combo = within(screen.getByTestId("target-space-field")).getByRole(
+      "combobox",
+    );
+    await u.click(combo);
+    await u.click(await screen.findByText("space"));
+
+    const submitBtn = screen.getByTestId("submit");
+    expect(submitBtn).toBeInTheDocument();
+    await u.click(submitBtn);
+
+    await waitFor(() => {
+      expect(assessmentMoveTargetSpy).toHaveBeenCalledTimes(1);
+
+      expect(assessmentMoveTargetSpy).toHaveBeenCalledWith(
+        { id: "assessmentId", targetSpaceId: 1 },
+        undefined,
+      );
+      expect(onSubmitForm).toHaveBeenCalledTimes(1);
+      expect(onClose).toHaveBeenCalled();
+    });
+  });
 });
