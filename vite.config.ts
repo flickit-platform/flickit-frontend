@@ -68,6 +68,10 @@ export default defineConfig({
         find: "@config",
         replacement: `${path.resolve(__dirname, "src/config")}/`,
       },
+      {
+        find: /^@mui\/icons-material\/(.*)/,
+        replacement: "@mui/icons-material/esm/$1",
+      },
     ],
   },
   server: {
