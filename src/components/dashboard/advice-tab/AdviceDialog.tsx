@@ -176,12 +176,11 @@ const AdviceDialog = ({
       <Box
         width="100%"
         sx={{ ...styles.centerCV }}
-        pt={{ xs: 0, md: 3 }}
+        pt={{ xs: 0, md: 1 }}
         pb={2}
       >
         <Typography
           variant="bodyMedium"
-          color="background.onVariant"
           textAlign="justify"
         >
           <Trans
