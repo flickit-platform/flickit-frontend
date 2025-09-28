@@ -1,29 +1,140 @@
-import React from 'react';
-import {Grid} from "@mui/material";
+import React, {useState} from 'react';
+import {Grid, IconButton} from "@mui/material";
 import Typography from "@mui/material/Typography";
-import {Trans} from "react-i18next";
+import i18n, {t} from "i18next";
 import {SpaceField} from "@common/fields/SpaceField";
 import FormProviderWithForm from "@common/FormProviderWithForm";
+import Box from "@mui/material/Box";
+import {Close} from "@mui/icons-material";
+import Popper from "@mui/material/Popper";
+import ClickAwayListener from "@mui/material/ClickAwayListener";
+import Button from "@mui/material/Button";
+import CreateNewFolderOutlinedIcon from '@mui/icons-material/CreateNewFolderOutlined';
+import {styles} from "@styles";
+
+const CreateSpacePopUp = ({onClose}: { onClose: () => void }) => {
+
+    return (<Box
+        sx={{
+            width: 270,
+            bgcolor: "background.paper",
+            color: "white",
+            p: 1,
+            borderRadius: 1,
+            textAlign: "inherit",
+            zIndex: 10,
+            "&::before": {
+                content: '""',
+                position: "absolute",
+                top: "-8px",
+                left: "50%",
+                transform: "translateX(-50%)",
+                width: 0,
+                height: 0,
+                borderLeft: "12px solid transparent",
+                borderRight: "12px solid transparent",
+                borderBottom: "12px solid #f9fafb",
+            },
+        }}
+    >
+        <Box sx={{display: "flex", flexDirection: "column", mb: "12px"}}>
+            <Box sx={{display: "flex", justifyContent: "space-between", alignItems: "start", mb: 1}}>
+                <Typography
+                    variant={"bodyMedium"}
+                    color={"background.secondaryDark"}
+                >
+                    {t("assessmentReport.leaveAndCreateSpaceTitle")}
+                </Typography>
+                <IconButton
+                    aria-label="close"
+                    onClick={onClose}
+                    edge="end"
+                    size="small"
+                    sx={{marginInlineStart: 2, width: "10%", color: "primary.main"}}
+                    data-testid="close-box"
+                >
+                    <Close/>
+                </IconButton>
+            </Box>
+            <Typography
+                variant={"bodySmall"}
+                color={"background.secondaryDark"}
+                sx={{textAlign: "right"}}
+            >
+                {t("assessmentReport.leaveAndCreateSpaceDescription")}
+            </Typography>
+        </Box>
+        <Box sx={{display: "flex", justifyContent: "center", gap: 1}}>
+            <Button onClick={onClose} variant={"outlined"} sx={{color: "primary.main"}}>
+                <Typography variant={"labelMedium"}>
+                    {t("common.refuse")}
+                </Typography>
+            </Button>
+            <Button variant={"contained"} sx={{...styles.centerV, gap: 1}}>
+                <Typography variant={"labelMedium"}>
+                    {t("assessmentReport.newSpace")}
+                </Typography>
+                <CreateNewFolderOutlinedIcon/>
+            </Button>
+        </Box>
+    </Box>)
+}
+
 
 const SpaceFieldForm = (props: any) => {
-    const {formMethods, staticData} = props
-    const { spaceList, queryDataSpaces } = staticData ;
+    const {formMethods, staticData, lng, shareDialog} = props
+    const {spaceList, queryDataSpaces} = staticData;
+    const popperRef = React.useRef<HTMLDivElement | null>(null);
+
+    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+
+    const togglePopOver = (event: React.MouseEvent<HTMLElement>) => {
+        setAnchorEl(anchorEl ? null : event.currentTarget);
+    };
+    const handleClose = () => setAnchorEl(null);
     return (
         <FormProviderWithForm formMethods={formMethods}>
             <Grid container>
                 <Grid item lg={12} md={12} sm={12} xs={12}>
                     <Typography variant="bodyMedium">
-                        <Trans i18nKey="assessment.chooseTargetSpace" />
+                        {t("assessment.chooseTargetSpace", {lng})}
                     </Typography>
                 </Grid>
-                <Grid item lg={6} md={6} sm={12} xs={12}>
-                    <SpaceField
-                        queryDataSpaces={queryDataSpaces}
-                        spaces={spaceList}
-                        sx={{ mt: "24px" }}
-                        label={<Trans i18nKey="spaces.targetSpace" />}
-                        filterSelectedOptions={false}
-                    />{" "}
+                <Grid spacing={2} alignItems={"center"} container>
+                    <Grid item lg={6} md={6} sm={12} xs={12}>
+                        <SpaceField
+                            queryDataSpaces={queryDataSpaces}
+                            spaces={spaceList}
+                            sx={{mt: "24px"}}
+                            label={t("spaces.targetSpace", {lng})}
+                            filterSelectedOptions={false}
+                        />{" "}
+                    </Grid>
+                    {shareDialog && <Grid item lg={6} md={6} sm={12} xs={12} mt={"24px"}>
+                        <Typography sx={{position: "relative", cursor: "pointer"}} variant={"labelMedium"}
+                                    color={"primary.main"}
+                                    onClick={(e) => togglePopOver(e)}
+                        >
+                            {t("assessmentReport.newSpace", {lng})}
+                        </Typography>
+                        {anchorEl && (
+                            <Popper sx={{zIndex: 1400}} open={Boolean(anchorEl)} anchorEl={anchorEl}
+                                    placement="bottom"
+                            >
+                                <ClickAwayListener
+                                    onClickAway={(event) => {
+                                        if (anchorEl && anchorEl.contains(event.target as Node)) return;
+                                        if (popperRef.current && popperRef.current.contains(event.target as Node)) return;
+                                        handleClose();
+                                    }}
+                                >
+                                    <Box ref={popperRef}>
+                                        <CreateSpacePopUp onClose={handleClose}/>
+                                    </Box>
+                                </ClickAwayListener>
+                            </Popper>
+                        )}
+                    </Grid>}
                 </Grid>
             </Grid>
         </FormProviderWithForm>

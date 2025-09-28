@@ -80,15 +80,14 @@ export default function ShareDialog({
   });
 
   const [spaceList, setSpaceList] = useState<any[]>([]);
+  const fetchSpaces = async () => {
+    const data = await queryDataSpaces.query({ assessmentId });
+    setSpaceList(data);
+  };
 
   useEffect(() => {
-    const fetchSpaces = async () => {
-      const data = await queryDataSpaces.query({ assessmentId });
-      setSpaceList(data);
-    };
-
     fetchSpaces();
-  }, [assessmentId, queryDataSpaces]);
+  }, [assessmentId]);
 
 
   const staticData = {
@@ -399,7 +398,7 @@ export default function ShareDialog({
           </Typography>
           <Divider sx={{ my: 1 }} />
         </Box>
-        {isDefault && access === VISIBILITY.RESTRICTED && <SpaceFieldForm formMethods={formMethods} staticData={staticData}  />}
+        {isDefault && access === VISIBILITY.RESTRICTED && <SpaceFieldForm formMethods={formMethods} staticData={staticData} lng={lng} shareDialog={true} />}
       </>
       }
       <CEDialogActions
