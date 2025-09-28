@@ -71,10 +71,9 @@ export default function AssessmentReportPage() {
           const { assessment, advice, subjects, permissions } = report;
           const isAdvancedMode =
             report?.assessment?.mode?.code === ASSESSMENT_MODE.ADVANCED;
-          const navigate = useCallback(() => {
+          const navigate = () => {
             handleNavigation(permissions);
-          }, [handleNavigation, permissions]);
-
+          };
           const sidebarProps = {
             show: isAuthenticatedUser && isQuickMode,
             lng,

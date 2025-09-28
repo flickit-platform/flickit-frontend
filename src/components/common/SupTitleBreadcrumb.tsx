@@ -86,7 +86,7 @@ const SupTitleBreadcrumb = (
                       fontFamily: languageDetector(title as string)
                         ? farsiFontFamily
                         : primaryFontFamily,
-                      fontWeight: languageDetector(title as string) ? 300 : 300,
+                      fontWeight: 300,
                       px: 0,
                     },
                   }}
