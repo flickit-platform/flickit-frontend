@@ -59,10 +59,10 @@ export default function AssessmentReportPage() {
   );
 
   useEffect(() => {
-    if (window.location.hash === "#shareDialog") {
+    if (globalThis.location.hash === "#shareDialog") {
       shareDialog.openDialog({ type: "create" });
-      const cleanUrl = window.location.href.split("#")[0];
-      window.history.replaceState(null, document.title, cleanUrl);
+      const cleanUrl = globalThis.location?.href?.split('#')[0] ?? '';
+      globalThis.history.replaceState(null, globalThis.document.title, cleanUrl);
       setStep(1)
     }
   }, []);

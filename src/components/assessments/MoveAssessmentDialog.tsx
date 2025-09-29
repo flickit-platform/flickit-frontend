@@ -4,12 +4,8 @@ import { useForm } from "react-hook-form";
 import { Trans } from "react-i18next";
 import { styles } from "@styles";
 import { CEDialog, CEDialogActions } from "@common/dialogs/CEDialog";
-import FormProviderWithForm from "@common/FormProviderWithForm";
 import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
 import DriveFileMoveOutlinedIcon from "@mui/icons-material/DriveFileMoveOutlined";
-import { Grid } from "@mui/material";
-import { SpaceField } from "../common/fields/SpaceField";
 import { useServiceContext } from "@/providers/service-provider";
 import { useQuery } from "@/hooks/useQuery";
 import SpaceFieldForm from "@common/spaceFiledForm";
@@ -34,7 +30,6 @@ const MoveAssessmentDialog = (props: IAssessmentCEFromDialogProps) => {
 
   const { service } = useServiceContext();
   const { type, staticData = {} } = context;
-  const { spaceList, queryDataSpaces } = staticData;
   const formMethods = useForm({
     shouldUnregister: true,
     mode: "onSubmit",

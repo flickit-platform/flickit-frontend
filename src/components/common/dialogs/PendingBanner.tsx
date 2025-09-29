@@ -18,7 +18,7 @@ const STROKE = 4;
 const RADIUS = (SIZE - STROKE) / 2;
 const CIRCUMFERENCE = 2 * Math.PI * RADIUS;
 
-const PendingKitBanner: React.FC<{ seconds?: number }> = ({ seconds = 10 }) => {
+const PendingBanner: React.FC<{ seconds?: number }> = ({ seconds = 10 }) => {
   const { pendingKitData, pendingReportData, dispatch } = useAssessmentContext();
   const [data, setData] = useState<any>(null);
   const [show, setShow] = useState(false);
@@ -103,7 +103,7 @@ const PendingKitBanner: React.FC<{ seconds?: number }> = ({ seconds = 10 }) => {
           minWidth: 400,
           pointerEvents: "auto",
         }}
-        data-testid="pending-kit-banner"
+        data-testid="pending-banner"
       >
         <Box
           sx={{
@@ -153,7 +153,7 @@ const PendingKitBanner: React.FC<{ seconds?: number }> = ({ seconds = 10 }) => {
         </Box>
         <Typography variant="semiBoldLarge">
           <Trans
-            i18nKey={data.report ? "assessmentReport.continueShareReportMessage" : "assessmentKit.continueAssessmentKitMessage"}
+            i18nKey={data?.report ? "assessmentReport.continueShareReportMessage" : "assessmentKit.continueAssessmentKitMessage"}
             values={{
               title: data?.title ?? "",
             }}
@@ -190,4 +190,4 @@ const PendingKitBanner: React.FC<{ seconds?: number }> = ({ seconds = 10 }) => {
   );
 };
 
-export default PendingKitBanner;
+export default PendingBanner;

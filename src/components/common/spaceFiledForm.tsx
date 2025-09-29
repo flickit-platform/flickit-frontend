@@ -191,14 +191,9 @@ const SpaceFieldForm = (props: any) => {
                 >
                   <ClickAwayListener
                     onClickAway={(event) => {
-                      if (anchorEl && anchorEl.contains(event.target as Node))
-                        return;
-                      if (
-                        popperRef.current &&
-                        popperRef.current.contains(event.target as Node)
-                      )
-                        return;
-                      handleClose();
+                        if (anchorEl?.contains(event.target as Node)) return;
+                        if (popperRef.current?.contains(event.target as Node)) return;
+                        handleClose();
                     }}
                   >
                     <Box ref={popperRef}>

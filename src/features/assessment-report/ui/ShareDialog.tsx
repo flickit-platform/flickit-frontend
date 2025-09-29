@@ -217,7 +217,7 @@ export default function ShareDialog({
             color="primary.main"
             sx={{ ...styles.ellipsis, width: "100%", display: "inline-block" }}
           >
-            {window.location.href}
+            {globalThis.location.href}
           </Typography>
           <Tooltip title={t("assessmentReport.copyReportLink", {lng})} >
             <Button
