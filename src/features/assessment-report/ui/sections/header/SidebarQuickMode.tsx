@@ -12,7 +12,7 @@ type SidebarQuickModeProps = Readonly<{
   rtl: boolean;
   canShare: boolean;
   onShare: () => void;
-  navigate: () => void;
+  navigate: any;
   ContactBox: React.ReactNode;
   canViewQuestionnaires: boolean;
 }>;
@@ -56,7 +56,7 @@ export default function SidebarQuickMode({
               <ChecklistRtlRoundedIcon fontSize="small" />
             )
           }
-          onClick={navigate}
+          onClick={() => navigate("questionnaire")}
           sx={{
             ...styles.rtlStyle(rtl),
           }}

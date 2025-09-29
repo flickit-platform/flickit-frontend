@@ -45,7 +45,8 @@ export default function AssessmentReportPage() {
     selectedId,
     setSelectedId,
     report,
-    handleNavigation,
+    navigateDashboard,
+    navigateQuestionnaire,
     expertContext,
     expertDialog,
     shareDialog,
@@ -71,16 +72,14 @@ export default function AssessmentReportPage() {
           const { assessment, advice, subjects, permissions } = report;
           const isAdvancedMode =
             report?.assessment?.mode?.code === ASSESSMENT_MODE.ADVANCED;
-          const navigate = () => {
-            handleNavigation(permissions);
-          };
+
           const sidebarProps = {
             show: isAuthenticatedUser && isQuickMode,
             lng,
             rtl,
             canShare:
               permissions.canShareReport || permissions.canManageVisibility,
-            navigate,
+            navigate: navigateQuestionnaire,
             canViewQuestionnaires: permissions.canViewQuestionnaires,
             onShare,
             ContactBox: (
@@ -122,17 +121,37 @@ export default function AssessmentReportPage() {
                                 startIcon={
                                   rtl ? (
                                     permissions.canViewDashboard ? (
-                                      <Dashboard fontSize="small" />
+                                      <Dashboard
+                                        fontSize="small"
+                                        sx={{
+                                          ...styles.iconDirectionStyle(lng),
+                                        }}
+                                      />
                                     ) : (
-                                      <ChecklistRoundedIcon fontSize="small" />
+                                      <ChecklistRoundedIcon
+                                        fontSize="small"
+                                        sx={{
+                                          ...styles.iconDirectionStyle(lng),
+                                        }}
+                                      />
                                     )
                                   ) : permissions.canViewDashboard ? (
-                                    <Dashboard fontSize="small" />
+                                    <Dashboard
+                                      fontSize="small"
+                                      sx={{ ...styles.iconDirectionStyle(lng) }}
+                                    />
                                   ) : (
-                                    <ChecklistRtlRoundedIcon fontSize="small" />
+                                    <ChecklistRtlRoundedIcon
+                                      fontSize="small"
+                                      sx={{ ...styles.iconDirectionStyle(lng) }}
+                                    />
                                   )
                                 }
-                                onClick={navigate}
+                                onClick={
+                                  permissions.canViewDashboard
+                                    ? navigateDashboard
+                                    : navigateQuestionnaire
+                                }
                                 sx={{
                                   ...styles.rtlStyle(rtl),
                                   height: "100%",
@@ -275,7 +294,7 @@ export default function AssessmentReportPage() {
                     isQuickMode={isQuickMode}
                     onShare={onShare}
                     onExpert={onExpert}
-                    onQuestionnaires={navigate}
+                    onQuestionnaires={navigateQuestionnaire}
                     canViewQuestionnaire={permissions.canViewQuestionnaires}
                   />
 
