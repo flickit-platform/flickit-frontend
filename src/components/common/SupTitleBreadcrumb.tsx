@@ -77,6 +77,7 @@ const SupTitleBreadcrumb = (
                     gap: 0.75,
                     "& .MuiChip-icon": {
                       color: "currentColor",
+                      marginInlineEnd: -1,
                       marginInlineStart: 0,
                       fontSize: 18,
                     },
