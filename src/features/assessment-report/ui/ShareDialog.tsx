@@ -558,7 +558,7 @@ const UserSection = (props: any) => {
       flexDirection="column"
       my={1}
       gap={2}
-      sx={{ overflowY: "auto", maxHeight: "250px" }}
+      sx={{ maxHeight: "250px" }}
     >
       {[
         ...(users ?? []).map((u: any) => ({ ...u, isInvitee: false })),
