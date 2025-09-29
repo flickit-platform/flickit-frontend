@@ -32,6 +32,8 @@ import { useServiceContext } from "@providers/service-provider";
 import { useConnectAutocompleteField } from "@common/fields/AutocompleteAsyncField";
 import { useParams } from "react-router-dom";
 import { useQuery } from "@/hooks/useQuery";
+import ContentCopyIcon from "@mui/icons-material/ContentCopy";
+import Tooltip from "@mui/material/Tooltip";
 
 type ShareDialogProps = {
   open: boolean;
@@ -174,6 +176,58 @@ export default function ShareDialog({
 
   const changeStatus = (pageNumber: number) => {
     setStep(pageNumber);
+  };
+
+  const publicSection = () => {
+    return (
+      <>
+        <Box mt={2}>
+          <Typography
+            variant="bodyMedium"
+            color="rgba(61, 77, 92, 0.5)"
+            fontFamily="inherit"
+          >
+            {t("assessmentReport.WhoHasAccessReport", { lng })}
+          </Typography>{" "}
+          <Divider sx={{ my: 1 }} />{" "}
+        </Box>
+        <Typography variant={"bodyMedium"} color={"background.secondaryDark"}>
+          {t("assessmentReport.anyoneCanAccessReport", { lng })}
+        </Typography>
+        <Box
+          bgcolor={"primary.states.hover"}
+          sx={{
+            ...styles.centerV,
+            gap: "24px",
+            width: "100%",
+            borderRadius: 1,
+            p: 2,
+            mt: 2,
+          }}
+        >
+          <Typography
+            variant="bodyMedium"
+            color="primary.main"
+            sx={{ ...styles.ellipsis, width: "100%", display: "inline-block" }}
+          >
+            {window.location.href}
+          </Typography>
+          <Tooltip title={t("assessmentReport.copyReportLink", {lng})} >
+            <Button
+                onClick={handleCopyClick}
+                sx={{
+                  background: "primary.states.selected",
+                  minWidth: "unset",
+                  width: "36px",
+                  height: "36px",
+                }}
+            >
+              <ContentCopyIcon fontSize={"small"} sx={{color: "primary.main"}} />
+            </Button>
+          </Tooltip>
+        </Box>
+      </>
+    );
   };
 
   const shareSection = () => {
@@ -411,7 +465,7 @@ export default function ShareDialog({
               );
             })}
           </Box>
-          {access === VISIBILITY.PUBLIC && <Box>hi public</Box>}
+          {access === VISIBILITY.PUBLIC && publicSection()}
           {!isDefault && access === VISIBILITY.RESTRICTED && shareSection()}
         </>
       )}

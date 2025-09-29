@@ -6,6 +6,7 @@
   "assessmentKitEvaluatesMaturity": "This assessment kit evaluates the maturity of subjects and attributes across multiple levels.",
   "assessmentStructured": "This assessment is structured around {{count}} key attributes. Below, these attributes are listed and briefly explained. Ask ChatGPT",
   "attributesStatus": "Attributes status",
+  "anyoneCanAccessReport": "Anyone with the link below can access this assessment report.",
   "copyReportLink": "Copy report link",
   "contactExpertGroup": "Contact expert group",
   "contactExpertBoxText": {
