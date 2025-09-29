@@ -41,6 +41,8 @@ type ShareDialogProps = {
   assessment: any;
   lng: string;
   fetchGraphicalReport: any;
+  setStep: React.Dispatch<React.SetStateAction<number>>;
+  step: any;
 } & Pick<IGraphicalReport, "visibility" | "permissions" | "linkHash" | "lang">;
 
 export default function ShareDialog({
@@ -52,6 +54,8 @@ export default function ShareDialog({
   lng,
   assessment,
   fetchGraphicalReport,
+  setStep,
+  step
 }: ShareDialogProps) {
   const { t } = useTranslation();
   const formMethods = useForm({
@@ -63,7 +67,7 @@ export default function ShareDialog({
   const isRTL = lng === "fa";
   const { space, title } = assessment ?? {};
   const isDefault = space?.isDefault ?? false;
-  const [step, setStep] = useState(0);
+
   const {
     access,
     snackbarOpen,
@@ -191,13 +195,16 @@ export default function ShareDialog({
           </Typography>{" "}
           <Divider sx={{ my: 1 }} />{" "}
         </Box>
-        <Typography variant={"bodyMedium"} color={"background.secondaryDark"}>
+        <Typography variant={"bodyMedium"} color={"background.secondaryDark"}
+        sx={{fontFamily: "inherit"}}
+        >
           {t("assessmentReport.anyoneCanAccessReport", { lng })}
         </Typography>
         <Box
           bgcolor={"primary.states.hover"}
           sx={{
             ...styles.centerV,
+            direction: "ltr",
             gap: "24px",
             width: "100%",
             borderRadius: 1,

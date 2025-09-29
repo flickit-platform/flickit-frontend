@@ -38,6 +38,7 @@ const CreateSpacePopUp = ({
         spaceId,
         assessmentId,
         title: ReportTitle,
+        report: true
       }),
     );
     navigate("/spaces/#createSpace");

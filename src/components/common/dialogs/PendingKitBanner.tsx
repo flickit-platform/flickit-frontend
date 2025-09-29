@@ -153,9 +153,9 @@ const PendingKitBanner: React.FC<{ seconds?: number }> = ({ seconds = 10 }) => {
         </Box>
         <Typography variant="semiBoldLarge">
           <Trans
-            i18nKey="assessmentKit.continueAssessmentKitMessage"
+            i18nKey={data.report ? "assessmentReport.continueShareReportMessage" : "assessmentKit.continueAssessmentKitMessage"}
             values={{
-              kitName: data?.title ?? "",
+              title: data?.title ?? "",
             }}
             components={{
               name: (

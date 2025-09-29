@@ -23,6 +23,7 @@ export const setPendingShareReport = function (payload: {
   spaceId?: string;
   title?: string;
   display?: boolean;
+  report?: boolean;
 }) {
   return { payload, type: ASSESSMENT_ACTIONS_TYPE.SET_PENDING_REPORT_SHARE };
 };

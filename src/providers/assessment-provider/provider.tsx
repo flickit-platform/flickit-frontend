@@ -17,7 +17,7 @@ export interface IAssessmentContext {
   permissions: any;
   assessmentInfo?: IAssessmentInfo;
   pendingKitData?: { id?: string; title?: string; display?: boolean };
-  pendingReportData?: { spaceId?: string; assessmentId?: string; title?: string, display?: boolean };
+  pendingReportData?: { spaceId?: string; assessmentId?: string; title?: string, display?: boolean, report?: boolean };
   dispatch: Dispatch<any>;
 }
 
