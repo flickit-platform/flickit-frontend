@@ -162,6 +162,7 @@ const SpaceFieldForm = (props: any) => {
               label={t("spaces.targetSpace", { lng })}
               noOptionsText={t("spaces.noSpaceHere", { lng })}
               filterSelectedOptions={false}
+              data-testid="target-space-field"
               style={{
                   "& .MuiInputLabel-root": { transform: "unset", transformOrigin: "unset" },
                   "& .MuiOutlinedInput-notchedOutline": { textAlign: "unset" },
