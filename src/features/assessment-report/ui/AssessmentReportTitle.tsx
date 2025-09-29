@@ -51,16 +51,31 @@ const AssessmentReportTitle = (props: any) => {
             {
               title: space?.title,
               to: `/${spaceId}/assessments/1`,
-              icon: <FolderOutlinedIcon fontSize="small" />,
+              icon: (
+                <FolderOutlinedIcon
+                  fontSize="small"
+                  sx={{ ...styles.iconDirectionStyle(lng) }}
+                />
+              ),
             },
             {
               title: assessment?.title,
               to: `/${spaceId}/assessments/1/${assessment.id}/dashboard`,
-              icon: <AssignmentOutlinedIcon fontSize="small" />,
+              icon: (
+                <AssignmentOutlinedIcon
+                  fontSize="small"
+                  sx={{ ...styles.iconDirectionStyle(lng) }}
+                />
+              ),
             },
             {
               title: t("assessmentReport.assessmentReport", { lng }) ?? "",
-              icon: <DescriptionOutlinedIcon fontSize="small" />,
+              icon: (
+                <DescriptionOutlinedIcon
+                  fontSize="small"
+                  sx={{ ...styles.iconDirectionStyle(lng) }}
+                />
+              ),
             },
           ]}
           displayChip
