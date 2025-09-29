@@ -7,7 +7,7 @@ import { Trans } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { useServiceContext } from "@/providers/service-provider";
 import { useQuery } from "@/hooks/useQuery";
-import SettingsIcon from "@mui/icons-material/Settings";
+import EditRoundedIcon from "@mui/icons-material/EditRounded";
 import ExitToAppRoundedIcon from "@mui/icons-material/ExitToAppRounded";
 import useMenu from "@/hooks/useMenu";
 import { ICustomError } from "@/utils/custom-error";
@@ -275,8 +275,8 @@ const Actions = (props: any) => {
       loading={loading || editLoading || leaveSpaceQuery.loading}
       items={[
         isOwner && {
-          icon: <SettingsIcon fontSize="small" />,
-          text: <Trans i18nKey="common.settings" />,
+          icon: <EditRoundedIcon fontSize="small" />,
+          text: <Trans i18nKey="common.edit" />,
           onClick: openEditDialog,
         },
         isOwner && {

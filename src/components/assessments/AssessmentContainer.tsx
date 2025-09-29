@@ -31,7 +31,6 @@ import { useTheme } from "@mui/material";
 import Title from "@common/Title";
 
 const AssessmentContainer = () => {
-  const { service } = useServiceContext();
   const dialogProps = useDialog();
   const infoDialogProps = useDialog();
   const { currentSpace } = useAuthContext();
@@ -41,7 +40,7 @@ const AssessmentContainer = () => {
     Number(page) - 1,
     Number(spaceId),
   );
-  const { data, errorObject, size, total, loading } = rest;
+  const { data, errorObject, size, total, loading, fetchSpaceInfo } = rest;
   const isEmpty = data.length === 0;
   const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
     if (
@@ -56,17 +55,7 @@ const AssessmentContainer = () => {
     navigate(`/${spaceId}/assessments/${pageCount}`);
   }
 
-  const fetchSpaceInfo = useQuery({
-    service: (args, config) => {
-      const payload = args?.spaceId ? args : { spaceId };
-      return service.space.getById(payload, config);
-    },
-    runOnMount: false,
-  });
 
-  useEffect(() => {
-    fetchSpaceInfo.query();
-  }, [data.length]);
   const isSmallScreen = useScreenResize("sm");
 
   const theme = useTheme();
@@ -312,6 +301,18 @@ export const useFetchAssessments = (page: any, spaceId: any) => {
     }
   };
 
+  const fetchSpaceInfo = useQuery({
+    service: (args, config) => {
+      const payload = args?.spaceId ? args : { spaceId };
+      return service.space.getById(payload, config);
+    },
+    runOnMount: false,
+  });
+
+  useEffect(() => {
+    fetchSpaceInfo.query();
+  }, [data?.items?.length]);
+
   const deleteAssessment = async (id: any) => {
     setLoading(true);
     try {
@@ -340,6 +341,7 @@ export const useFetchAssessments = (page: any, spaceId: any) => {
     errorObject,
     fetchAssessments,
     deleteAssessment,
+    fetchSpaceInfo
   };
 };
 

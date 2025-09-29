@@ -45,7 +45,7 @@ const AdviceSliderSkeletonItem = ({
               top: "50%",
               height: 2,
               transform: "translateY(-50%)",
-              borderRadius: 999,
+              borderRadius: "2px",
               backgroundRepeat: "no-repeat, no-repeat",
               backgroundImage: `
                 linear-gradient(90deg, ${alpha(theme.palette.primary.main, 0.25)}, ${alpha(
