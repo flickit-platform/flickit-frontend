@@ -162,6 +162,12 @@ const SpaceFieldForm = (props: any) => {
               label={t("spaces.targetSpace", { lng })}
               noOptionsText={t("spaces.noSpaceHere", { lng })}
               filterSelectedOptions={false}
+              style={{
+                  "& .MuiInputLabel-root": { transform: "unset", transformOrigin: "unset" },
+                  "& .MuiOutlinedInput-notchedOutline": { textAlign: "unset" },
+                  "& .MuiOutlinedInput-root .MuiAutocomplete-endAdornment": { all: "unset" },
+                  "& .MuiAutocomplete-inputRoot": {paddingRight: "8px !important", paddingLeft:"8px !important" },
+              }}
             />{" "}
           </Grid>
           {shareDialog && (
