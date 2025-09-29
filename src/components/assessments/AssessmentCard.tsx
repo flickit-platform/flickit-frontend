@@ -81,6 +81,7 @@ const AssessmentCard = ({
     hasReport,
     color,
     title,
+    space: propSpaceId
   } = item;
 
   const calculateMaturityLevelQuery = useQuery({
@@ -113,8 +114,10 @@ const AssessmentCard = ({
           setShow(true);
         }
       }
-      const { answersCount, questionsCount } =
-        await assessmentTotalProgress.query();
+        const result = await assessmentTotalProgress?.query();
+
+        const answersCount = result?.answersCount ?? 0;
+        const questionsCount = result?.questionsCount ?? 0;
       if (questionsCount) {
         setProgressPercent(((answersCount / questionsCount) * 100).toFixed(2));
       }
@@ -134,18 +137,18 @@ const AssessmentCard = ({
 
   const pathRoute = (checkItem: boolean): string => {
     if (permissions.canViewReport && hasReport && isQuickMode) {
-      return `/${spaceId ?? defaultSpaceId}/assessments/${id}/graphical-report/`;
+      return `/${spaceId ?? defaultSpaceId ?? propSpaceId.id}/assessments/${id}/graphical-report/`;
     }
     if (checkItem && permissions.canViewDashboard) {
       return isQuickMode
-        ? `/${spaceId ?? defaultSpaceId}/assessments/1/${id}/questionnaires`
-        : `/${spaceId ?? defaultSpaceId}/assessments/1/${id}/dashboard`;
+        ? `/${spaceId ?? defaultSpaceId ?? propSpaceId.id}/assessments/1/${id}/questionnaires`
+        : `/${spaceId ?? defaultSpaceId ?? propSpaceId.id}/assessments/1/${id}/dashboard`;
     }
     if (permissions.canViewReport && hasReport) {
-      return `/${spaceId ?? defaultSpaceId}/assessments/${id}/graphical-report/`;
+      return `/${spaceId ?? defaultSpaceId ?? propSpaceId.id}/assessments/${id}/graphical-report/`;
     }
     if (permissions.canViewQuestionnaires && isQuickMode) {
-      return `/${spaceId ?? defaultSpaceId}/assessments/1/${id}/questionnaires`;
+      return `/${spaceId ?? defaultSpaceId ?? propSpaceId.id}/assessments/1/${id}/questionnaires`;
     }
     return "";
   };
@@ -176,6 +179,7 @@ const AssessmentCard = ({
           ":hover": { boxShadow: 9 },
         }}
         data-cy="assessment-card"
+        data-testid={"assessment-card"}
       >
         {permissions.canManageSettings && (
           <Actions
@@ -269,7 +273,7 @@ const AssessmentCard = ({
                   progressPercent={progressPercent}
                   location={location}
                   language={language}
-                  spaceId={spaceId ?? defaultSpaceId}
+                  spaceId={spaceId ?? defaultSpaceId ?? propSpaceId.id}
                   type={type}
                 />
               ))}
@@ -304,6 +308,7 @@ const Header = ({
     }}
     component={Link}
     to={pathRoute(isCalculateValid)}
+    data-testid="assessmentCard-header"
   >
     <Tooltip title={kit?.title}>
       <Chip
@@ -462,6 +467,7 @@ const CardButton = ({
       state={{ location, language }}
       to={to}
       data-cy="assessment-card-btn"
+      data-testid="assessment-card-btn"
       variant={
         key === "reportTitle" || key === "dashboard" ? "contained" : "outlined"
       }

@@ -38,6 +38,7 @@ import { getReadableDate } from "@/utils/readable-date";
 import showToast from "@/utils/toast-error";
 import { DeleteConfirmationDialog } from "@common/dialogs/DeleteConfirmationDialog";
 import Title from "@common/Title";
+import FormProviderWithForm from "../common/FormProviderWithForm";
 
 export const SpaceMembers = (props: any) => {
   const { editable } = props;
@@ -181,6 +182,7 @@ export const SpaceMembers = (props: any) => {
             InputProps={{
               endAdornment: <AddMemberButton loading={loading} />,
             }}
+            required
           />
         </form>
       </Box>

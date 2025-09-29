@@ -848,14 +848,13 @@ export const getTheme = (lang: any) => {
       MuiSlider: {
         styleOverrides: {
           valueLabel: {
-            color: v3Tokens.surface.containerLowest,
-            backgroundColor: "#576675E6 !important",
-            borderRadius: "4px",
             fontFamily: is_farsi ? farsiFontFamily : secondaryFontFamily,
-            fontWeight: "600",
-            fontSize: "0.68rem",
-            lineHeight: "1rem",
-            letterSpacing: "0px",
+          },
+          thumb: {
+            height: "13px !important",
+            width: "16px !important",
+            borderRadius: "2px",
+            zIndex: 3,
           },
         },
       },

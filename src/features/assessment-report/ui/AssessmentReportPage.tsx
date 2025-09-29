@@ -26,6 +26,9 @@ import ReportActionsRow from "./ReportActionsRow";
 import HowIsItMade from "@/features/assessment-report/ui/sections/howIsItMade";
 import { ASSESSMENT_MODE } from "@/utils/enum-type";
 import AIGenerated from "@/components/common/icons/AIGenerated";
+import ChecklistRtlRoundedIcon from "@mui/icons-material/ChecklistRtlRounded";
+import ChecklistRoundedIcon from "@mui/icons-material/ChecklistRounded";
+import { Dashboard } from "@mui/icons-material";
 
 export default function AssessmentReportPage() {
   const {
@@ -42,7 +45,7 @@ export default function AssessmentReportPage() {
     selectedId,
     setSelectedId,
     report,
-    handleGoToQuestionnaire,
+    handleNavigation,
     expertContext,
     expertDialog,
     shareDialog,
@@ -54,9 +57,6 @@ export default function AssessmentReportPage() {
     () => expertDialog.openDialog({}),
     [expertDialog],
   );
-  const onQuestionnaires = useCallback(handleGoToQuestionnaire, [
-    handleGoToQuestionnaire,
-  ]);
 
   useEffect(() => {
     if (window.location.hash === "#shareDialog") {
@@ -81,13 +81,17 @@ export default function AssessmentReportPage() {
           const { assessment, advice, subjects, permissions } = report;
           const isAdvancedMode =
             report?.assessment?.mode?.code === ASSESSMENT_MODE.ADVANCED;
-
+          const navigate = () => {
+            handleNavigation(permissions);
+          };
           const sidebarProps = {
             show: isAuthenticatedUser && isQuickMode,
             lng,
             rtl,
             canShare:
               permissions.canShareReport || permissions.canManageVisibility,
+            navigate,
+            canViewQuestionnaires: permissions.canViewQuestionnaires,
             onShare,
             ContactBox: (
               <ContactExpertBox lng={lng} rtl={rtl} onOpen={onExpert} />
@@ -116,30 +120,61 @@ export default function AssessmentReportPage() {
                       <AssessmentReportTitle
                         pathInfo={pathInfo}
                         rtlLanguage={rtl}
+                        lng={lng}
                       >
                         {!isQuickMode && (
-                          <LoadingButton
-                            variant="contained"
-                            startIcon={
+                          <Box sx={{ ...styles.centerVH }} gap={2}>
+                            {(permissions.canViewDashboard ||
+                              permissions.canViewQuestionnaires) && (
+                              <LoadingButton
+                                variant="outlined"
+                                size="small"
+                                startIcon={
+                                  rtl ? (
+                                    permissions.canViewDashboard ? (
+                                      <Dashboard fontSize="small" />
+                                    ) : (
+                                      <ChecklistRoundedIcon fontSize="small" />
+                                    )
+                                  ) : permissions.canViewDashboard ? (
+                                    <Dashboard fontSize="small" />
+                                  ) : (
+                                    <ChecklistRtlRoundedIcon fontSize="small" />
+                                  )
+                                }
+                                onClick={navigate}
+                                sx={{
+                                  ...styles.rtlStyle(rtl),
+                                  height: "100%",
+                                }}
+                              >
+                                {permissions.canViewDashboard
+                                  ? t("dashboard.dashboard", { lng })
+                                  : t("common.questionnaires", { lng })}
+                              </LoadingButton>
+                            )}
+                            <LoadingButton
+                              variant="contained"
+                              size="small"
+                              onClick={onShare}
+                              disabled={
+                                !permissions.canShareReport &&
+                                !permissions.canManageVisibility
+                              }
+                              sx={{
+                                ...styles.rtlStyle(rtl),
+                                minWidth: "30px",
+                                py: 0.5,
+                                px: 0,
+                              }}
+                            >
+                              {" "}
                               <ShareIcon
                                 fontSize="small"
-                                sx={{ ...styles.iconDirectionStyle(lng) }}
+                                sx={{ paddingY: 0.2 }}
                               />
-                            }
-                            size="small"
-                            onClick={onShare}
-                            disabled={
-                              !permissions.canShareReport &&
-                              !permissions.canManageVisibility
-                            }
-                            sx={{
-                              ...styles.rtlStyle(rtl),
-                              height: "100%",
-                              width: 290,
-                            }}
-                          >
-                            {t("assessmentReport.shareReport", { lng })}
-                          </LoadingButton>
+                            </LoadingButton>
+                          </Box>
                         )}
                       </AssessmentReportTitle>
                     )}
@@ -250,7 +285,8 @@ export default function AssessmentReportPage() {
                     isQuickMode={isQuickMode}
                     onShare={onShare}
                     onExpert={onExpert}
-                    onQuestionnaires={onQuestionnaires}
+                    onQuestionnaires={navigate}
+                    canViewQuestionnaire={permissions.canViewQuestionnaires}
                   />
 
                   {isAdvancedMode && <HowIsItMade report={report} lng={lng} />}

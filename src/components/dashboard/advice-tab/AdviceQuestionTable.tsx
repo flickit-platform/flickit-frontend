@@ -96,15 +96,15 @@ const AdviceQuestionTable = ({
     _index: number,
     absoluteIndex: number,
   ) => (
-    <Typography variant="semiBoldMedium" textAlign="center">
-      {absoluteIndex}
+    <Typography variant="bodyMedium" textAlign="center">
+      {absoluteIndex + 1}
     </Typography>
   );
 
   const renderQuestionnaireCell = (row: AdviceRow) => (
     <Box>
       <Typography
-        variant="semiBoldMedium"
+        variant="bodyMedium"
         sx={{
           fontFamily: getFontFamily(row.questionnaire?.title),
           textDecoration: "underline",
@@ -129,7 +129,7 @@ const AdviceQuestionTable = ({
       }
     >
       <Typography
-        variant="semiBoldMedium"
+        variant="bodyMedium"
         sx={{
           fontFamily: getFontFamily(row.question?.title),
           display: "-webkit-box",

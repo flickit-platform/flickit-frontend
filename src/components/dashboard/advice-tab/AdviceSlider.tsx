@@ -3,24 +3,18 @@ import Box from "@mui/material/Box";
 import Slider from "@mui/material/Slider";
 import Typography from "@mui/material/Typography";
 import Tooltip from "@mui/material/Tooltip";
-import { Grid, ThemeProvider, createTheme } from "@mui/material";
+import { Grid, ThemeProvider, createTheme, IconButton } from "@mui/material";
 import { useTheme, alpha } from "@mui/material/styles";
-import { Trans } from "react-i18next";
+import ArrowLeftIcon from "@mui/icons-material/ArrowLeft";
+import ArrowRightIcon from "@mui/icons-material/ArrowRight";
 import languageDetector from "@/utils/language-detector";
 import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
 import { styles } from "@styles";
 
-type MaturityLevel = {
-  id: string;
-  title: string;
-};
+type MaturityLevel = { id: string; title: string };
+type TargetItem = { attributeId: string; maturityLevelId: string };
 
-type TargetItem = {
-  attributeId: string;
-  maturityLevelId: string;
-};
-
-type AdviceSliderProps = {
+type MaturitySliderProps = {
   defaultValue: number;
   attribute: { id: string; title: string };
   maturityLevels: MaturityLevel[];
@@ -34,7 +28,7 @@ const clamp = (n: number, min: number, max: number) =>
 const fontFor = (text?: string) =>
   languageDetector(text) ? farsiFontFamily : primaryFontFamily;
 
-const AdviceSlider = (props: AdviceSliderProps) => {
+const MaturitySlider = (props: MaturitySliderProps) => {
   const {
     defaultValue,
     attribute,
@@ -56,14 +50,13 @@ const AdviceSlider = (props: AdviceSliderProps) => {
     return clamp(chosenValue - MIN_VALUE, 0, totalLevels - 1);
   }, [value, defaultValue, totalLevels]);
 
-  const currentMaturityLevel = maturityLevels[selectedIdx];
-  const toTitle = currentMaturityLevel?.title;
+  const currentLevel = maturityLevels[selectedIdx];
+  const toTitle = currentLevel?.title;
   const fromTitle = currentState?.title;
 
-  const handleSliderChange = useCallback(
+  const handleChange = useCallback(
     (_event: Event, newValue: number | number[]) => {
       const nextValue = Array.isArray(newValue) ? newValue[0] : newValue;
-
       if (nextValue < defaultValue) return;
 
       setValue(nextValue);
@@ -71,26 +64,27 @@ const AdviceSlider = (props: AdviceSliderProps) => {
       const nextIdx = clamp(nextValue - MIN_VALUE, 0, totalLevels - 1);
       const nextLevelId = maturityLevels[nextIdx]?.id;
 
-      setTarget((prevTarget) => {
-        const existingIndex = prevTarget.findIndex(
-          (item) => item.attributeId === attribute.id,
+      setTarget((prev) => {
+        const existingIndex = prev.findIndex(
+          (i) => i.attributeId === attribute.id,
         );
-
+        if (nextValue <= defaultValue) {
+          if (existingIndex === -1) return prev;
+          const clone = [...prev];
+          clone.splice(existingIndex, 1);
+          return clone;
+        }
         const newItem = {
           attributeId: attribute.id,
           maturityLevelId: nextLevelId,
         };
-
-        if (existingIndex === -1) {
-          return [...prevTarget, newItem];
-        }
-
-        const updated = [...prevTarget];
+        if (existingIndex === -1) return [...prev, newItem];
+        const updated = [...prev];
         updated[existingIndex] = newItem;
         return updated;
       });
     },
-    [defaultValue, totalLevels, maturityLevels, setTarget, attribute.id],
+    [attribute.id, defaultValue, maturityLevels, setTarget, totalLevels],
   );
 
   const baseTheme = useTheme();
@@ -115,33 +109,29 @@ const AdviceSlider = (props: AdviceSliderProps) => {
     >
       <Grid item xs={4.1} sm={4.1}>
         <Box sx={styles.centerV} gap={2}>
-          <AttributeTitle title={attribute.title} />
+          <TitleCell title={attribute.title} />
         </Box>
       </Grid>
 
-      <Grid item xs={6} sm={6}>
+      <Grid item xs={7.9} sm={7.9}>
         <ThemeProvider theme={ltrTheme}>
-          <SliderContainer
+          <SliderRow
             defaultValue={defaultValue}
             defaultPct={defaultPct}
             value={value}
             totalLevels={totalLevels}
             fromTitle={fromTitle}
-            onSliderChange={handleSliderChange}
+            onSliderChange={handleChange}
             marks={marks}
             toTitle={toTitle}
           />
         </ThemeProvider>
       </Grid>
-
-      <Grid item xs={1.9} sm={1.9}>
-        <LevelIndicator value={value} defaultValue={defaultValue} />
-      </Grid>
     </Grid>
   );
 };
 
-const AttributeTitle = ({ title }: { title: string }) => (
+const TitleCell = ({ title }: { title: string }) => (
   <Typography
     variant="semiBoldLarge"
     sx={{
@@ -159,7 +149,7 @@ const AttributeTitle = ({ title }: { title: string }) => (
   </Typography>
 );
 
-interface SliderContainerProps {
+interface SliderRowProps {
   defaultValue: number;
   defaultPct: number;
   value: number;
@@ -170,7 +160,9 @@ interface SliderContainerProps {
   toTitle?: string;
 }
 
-const SliderContainer = (props: SliderContainerProps) => {
+const STEP = 1;
+
+const SliderRow = (props: SliderRowProps) => {
   const {
     defaultValue,
     defaultPct,
@@ -182,67 +174,157 @@ const SliderContainer = (props: SliderContainerProps) => {
     toTitle,
   } = props;
 
+  const isMax = defaultValue === totalLevels;
+  const minAllowed = Math.max(MIN_VALUE, defaultValue);
+  const canDec = value > minAllowed;
+  const canInc = value < totalLevels;
+
+  const nudge = (dir: -1 | 1) => {
+    const next = clamp(value + dir * STEP, minAllowed, totalLevels);
+    onSliderChange({} as any, next);
+  };
+
   return (
-    <Box dir="ltr" position="relative">
-      <BackgroundTrack defaultPct={defaultPct} />
+    <Box dir="ltr" sx={{ width: "100%" }}>
+      <Box
+        sx={{
+          display: "grid",
+          gridTemplateColumns: "auto 1fr auto",
+          alignItems: "center",
+          columnGap: 2,
+          width: "100%",
+        }}
+      >
+        <StepButton
+          ariaLabel="decrease"
+          disabled={!canDec}
+          onClick={() => nudge(-1)}
+        >
+          <ArrowLeftIcon fontSize="small" />
+        </StepButton>
 
-      {value > defaultValue && (
-        <ImprovementIndicator
-          defaultValue={defaultValue}
-          value={value}
-          totalLevels={totalLevels}
-          defaultPct={defaultPct}
-        />
-      )}
+        <Box position="relative" width="100%">
+          <TrackBackground defaultPct={defaultPct} isMax={isMax} />
 
-      <Slider
-        min={1}
-        max={totalLevels}
-        marks={marks}
-        value={value}
-        onChange={onSliderChange}
-        valueLabelDisplay="auto"
-        valueLabelFormat={() => toTitle || ""}
-        sx={sliderStyles}
-      />
+          {value > defaultValue && !isMax && (
+            <GainStripe
+              defaultValue={defaultValue}
+              value={value}
+              totalLevels={totalLevels}
+              defaultPct={defaultPct}
+            />
+          )}
 
-      <DefaultValueIndicator defaultPct={defaultPct} fromTitle={fromTitle} />
+          <Slider
+            min={1}
+            max={totalLevels}
+            marks={marks}
+            value={value}
+            onChange={onSliderChange}
+            valueLabelDisplay="auto"
+            valueLabelFormat={() => toTitle || ""}
+            sx={(theme) => sliderStyles(theme, isMax)}
+          />
+
+          <BaselineMarker defaultPct={defaultPct} fromTitle={fromTitle} />
+        </Box>
+
+        <StepButton
+          ariaLabel="increase"
+          disabled={!canInc}
+          onClick={() => nudge(1)}
+        >
+          <ArrowRightIcon fontSize="small" />
+        </StepButton>
+      </Box>
     </Box>
   );
 };
 
-const BackgroundTrack = ({ defaultPct }: { defaultPct: number }) => (
+function StepButton({
+  children,
+  onClick,
+  disabled,
+  ariaLabel,
+}: {
+  children: React.ReactNode;
+  onClick: () => void;
+  disabled?: boolean;
+  ariaLabel: string;
+}) {
+  return (
+    <IconButton
+      aria-label={ariaLabel}
+      size="small"
+      onClick={onClick}
+      disabled={disabled}
+      color="primary"
+      sx={(theme) => ({
+        width: 20,
+        height: 20,
+        borderRadius: "50%",
+        backgroundColor: "#2466A808",
+        transition: "background-color 120ms ease",
+        "&:hover": { backgroundColor: "#2466A818" },
+        "&.Mui-disabled": {
+          backgroundColor: "#C2CCD650",
+          color: "#3D4D5C50",
+          opacity: 1,
+        },
+        "&.Mui-disabled:hover": { backgroundColor: "#C2CCD650" },
+        "&.Mui-disabled .MuiSvgIcon-root": {
+          color: theme.palette.action.disabled,
+        },
+      })}
+    >
+      {children}
+    </IconButton>
+  );
+}
+
+const TrackBackground = ({
+  defaultPct,
+  isMax = false,
+}: {
+  defaultPct: number;
+  isMax?: boolean;
+}) => (
   <Box
-    sx={(theme) => ({
-      position: "absolute",
-      inset: 0,
-      top: "50%",
-      height: 2,
-      transform: "translateY(-50%)",
-      borderRadius: 999,
-      backgroundRepeat: "no-repeat, no-repeat",
-      backgroundImage: `
-        linear-gradient(90deg, ${alpha(theme.palette.primary.main, 0.25)}, ${alpha(theme.palette.primary.main, 0.25)}),
-        linear-gradient(90deg, ${theme.palette.primary.main}, ${theme.palette.primary.main})
-      `,
-      backgroundSize: `
-        100% 100%,
-        ${defaultPct}% 100%
-      `,
-      backgroundPosition: `0% 0%, 0% 0%`,
-      zIndex: 1,
-    })}
+    sx={(theme) => {
+      const base = theme.palette.primary.main;
+      const success = theme.palette.success.main;
+      const color = isMax ? success : base;
+      return {
+        position: "absolute",
+        inset: 0,
+        top: "50%",
+        height: 2,
+        transform: "translateY(-50%)",
+        borderRadius: 999,
+        backgroundRepeat: "no-repeat, no-repeat",
+        backgroundImage: `
+          linear-gradient(90deg, ${alpha(color, 0.25)}, ${alpha(color, 0.25)}),
+          linear-gradient(90deg, ${color}, ${color})
+        `,
+        backgroundSize: `
+          100% 100%,
+          ${isMax ? "100%" : `${defaultPct}%`} 100%
+        `,
+        backgroundPosition: `0% 0%, 0% 0%`,
+        zIndex: 1,
+      };
+    }}
   />
 );
 
-interface ImprovementIndicatorProps {
+interface GainStripeProps {
   defaultValue: number;
   value: number;
   totalLevels: number;
   defaultPct: number;
 }
 
-const ImprovementIndicator = (props: ImprovementIndicatorProps) => {
+const GainStripe = (props: GainStripeProps) => {
   const { defaultValue, value, totalLevels, defaultPct } = props;
   const widthPct =
     totalLevels > 1 ? ((value - defaultValue) / (totalLevels - 1)) * 100 : 0;
@@ -259,7 +341,7 @@ const ImprovementIndicator = (props: ImprovementIndicatorProps) => {
         backgroundImage: `repeating-linear-gradient(90deg, ${theme.palette.primary.main} 0 4px, transparent 4px 8px)`,
         backgroundRepeat: "repeat-x",
         borderRadius: 999,
-        zIndex: 2,
+        zIndex: 0,
         opacity: 0.7,
         boxShadow: `0 0 0 5.5px ${
           theme.palette.mode === "dark"
@@ -271,7 +353,7 @@ const ImprovementIndicator = (props: ImprovementIndicatorProps) => {
   );
 };
 
-const DefaultValueIndicator = ({
+const BaselineMarker = ({
   defaultPct,
   fromTitle,
 }: {
@@ -280,79 +362,114 @@ const DefaultValueIndicator = ({
 }) => (
   <Tooltip
     arrow
-    placement="top"
+    placement="bottom"
     title={fromTitle || ""}
     disableHoverListener={!fromTitle}
+    componentsProps={{
+      tooltip: {
+        sx: {
+          bgcolor: "#66809920",
+          color: (t) => t.palette.text.primary,
+          fontWeight: 400,
+          fontSize: "11px",
+        },
+      },
+      arrow: { sx: { color: "#66809920" } },
+    }}
   >
     <Box
-      sx={(theme) => ({
+      sx={() => ({
         position: "absolute",
         top: "50%",
         left: `calc(${defaultPct}% )`,
         transform: "translate(-50%, -50%)",
-        zIndex: 2,
-        "&::before": {
+        zIndex: 1,
+        "&::before, &::after": {
           content: '""',
           position: "absolute",
-          borderRadius: "50%",
-          backgroundColor: alpha(theme.palette.primary.main, 0.7),
+          top: "50%",
+          transform: "translateY(-50%)",
+          width: 1.1,
+          height: "70%",
+          borderRadius: 0,
+          backgroundColor: "#2466A850",
         },
-        width: 12,
-        height: 12,
-        borderRadius: "50%",
-        backgroundColor: alpha(theme.palette.primary.main, 0.5),
+        "&::before": { left: "calc(50% - 2px)" },
+        "&::after": { left: "calc(50% + 1px)" },
+        width: 16,
+        height: 13,
+        borderRadius: "2px",
+        backgroundColor: "#86A8CB",
       })}
     />
   </Tooltip>
 );
 
-const LevelIndicator = ({
-  value,
-  defaultValue,
-}: {
-  value: number;
-  defaultValue: number;
-}) => {
-  const levelDifference = value - defaultValue;
-  const isPlural = levelDifference > 1;
+const sliderStyles = (theme: any, isMax: boolean) => {
+  const success = theme.palette.success.main;
+  const thumbBg = isMax ? success : theme.palette.primary.main;
+  const labelBg = isMax ? alpha(success, 0.08) : "#66809920";
+  const labelArrow = labelBg;
 
-  return (
-    <Box display="flex" alignItems="center" justifyContent="center">
-      <Typography
-        color="primary"
-        variant="semiBoldSmall"
-        sx={(theme) => ({ direction: theme.direction })}
-      >
-        <Trans
-          i18nKey={isPlural ? "common.levels" : "common.level"}
-          values={{ count: levelDifference }}
-        />
-      </Typography>
-    </Box>
-  );
+  return {
+    height: 12,
+    position: "relative",
+    "& .MuiSlider-rail": { opacity: 0 },
+    "& .MuiSlider-track": { opacity: 0, border: "none" },
+    "& .MuiSlider-mark": {
+      width: 2,
+      height: 10,
+      borderRadius: 1,
+      backgroundColor: isMax ? success : theme.palette.primary.main,
+      transform: "translate(-1px, -4px)",
+      opacity: 0.15,
+    },
+    "& .MuiSlider-thumb": {
+      zIndex: 3,
+      width: 16,
+      height: 12,
+      borderRadius: "2px",
+      backgroundColor: thumbBg,
+      position: "relative",
+      boxShadow: "none",
+      "&::before, &::after": {
+        content: '""',
+        position: "absolute",
+        top: "50%",
+        transform: "translateY(-50%)",
+        width: 1.1,
+        height: "70%",
+        borderRadius: 0,
+        backgroundColor: theme.palette.primary.contrastText,
+      },
+      "&::before": { left: "calc(50% - 2px)" },
+      "&::after": { left: "calc(50% + 1px)" },
+    },
+    "& .MuiSlider-valueLabel": {
+      position: "relative",
+      overflow: "visible",
+      color: isMax ? success : theme.palette.text.primary,
+      backgroundColor: labelBg,
+      borderRadius: "4px",
+      fontWeight: 400,
+      fontSize: "0.68rem",
+      lineHeight: "1rem",
+      letterSpacing: 0,
+      padding: "4px",
+    },
+    "& .MuiSlider-valueLabel::before": { display: "none" },
+    "& .MuiSlider-valueLabel::after": {
+      content: '""',
+      position: "absolute",
+      left: "50%",
+      transform: "translateX(-50%)",
+      bottom: -6,
+      width: 10,
+      height: 6,
+      clipPath: "polygon(50% 100%, 0 0, 100% 0)",
+      backgroundColor: labelArrow,
+    },
+  };
 };
 
-// Styles
-const sliderStyles = (theme: any) => ({
-  mt: 1,
-  height: 2,
-  position: "relative",
-  zIndex: 3,
-  "& .MuiSlider-rail": { opacity: 0 },
-  "& .MuiSlider-track": { opacity: 0, border: "none" },
-  "& .MuiSlider-mark": {
-    width: 1.5,
-    height: 12,
-    borderRadius: 1,
-    backgroundColor: theme.palette.primary.main,
-    transform: "translate(-1px, -6px)",
-    opacity: 0.35,
-  },
-  "& .MuiSlider-thumb": {
-    width: 12,
-    height: 12,
-    "&:before": { boxShadow: "none" },
-  },
-});
-
-export default AdviceSlider;
+export default MaturitySlider;

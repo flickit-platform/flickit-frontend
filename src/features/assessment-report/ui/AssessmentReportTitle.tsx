@@ -5,16 +5,20 @@ import { styles } from "@styles";
 import { useAuthContext } from "@/providers/auth-provider";
 import { ArrowForward } from "@mui/icons-material";
 import Title from "@common/Title";
+import { t } from "i18next";
+import DescriptionOutlinedIcon from "@mui/icons-material/DescriptionOutlined";
+import AssignmentOutlinedIcon from "@mui/icons-material/AssignmentOutlined";
+import FolderOutlinedIcon from "@mui/icons-material/FolderOutlined";
 
 const AssessmentReportTitle = (props: any) => {
-  const { pathInfo, rtlLanguage, children } = props;
+  const { pathInfo, rtlLanguage, lng, children } = props;
   const { spaceId } = useParams();
   const { space, assessment } = pathInfo;
   const { state } = useLocation();
   const navigate = useNavigate();
   const { isAuthenticatedUser } = useAuthContext();
 
-  const from = state?.location?.from;
+  const from = state?.location?.pathname || state?.from;
 
   const handleBack = () => {
     if (from) {
@@ -33,22 +37,43 @@ const AssessmentReportTitle = (props: any) => {
           alignItems: { xs: "flex-start", md: "flex-end" },
         },
       }}
-     size={"large"}
-      sx={{ ...styles.rtlStyle(rtlLanguage), textAlign: "left", width: "100%", textTransform: "none", color: "primary.main" }}
+      size={"large"}
+      sx={{
+        ...styles.rtlStyle(rtlLanguage),
+        textAlign: "left",
+        width: "100%",
+        textTransform: "none",
+        color: "primary.main",
+      }}
       sup={
         <SupTitleBreadcrumb
           routes={[
             {
               title: space?.title,
               to: `/${spaceId}/assessments/1`,
+              icon: <FolderOutlinedIcon fontSize="small" />,
             },
-            { title: assessment?.title },
+            {
+              title: assessment?.title,
+              to: `/${spaceId}/assessments/1/${assessment.id}/dashboard`,
+              icon: <AssignmentOutlinedIcon fontSize="small" />,
+            },
+            {
+              title: t("assessmentReport.assessmentReport", { lng }) ?? "",
+              icon: <DescriptionOutlinedIcon fontSize="small" />,
+            },
           ]}
           displayChip
         />
       }
     >
-      <Box mt={4} display="flex" justifyContent="space-between" width="100%" alignItems="flex-end">
+      <Box
+        mt={4}
+        display="flex"
+        justifyContent="space-between"
+        width="100%"
+        alignItems="flex-end"
+      >
         <Box>
           {isAuthenticatedUser && (
             <IconButton color="primary" onClick={handleBack} size="small">
