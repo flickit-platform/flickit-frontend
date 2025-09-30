@@ -29,14 +29,8 @@ export function hasNoFaOrEnLetters(input: unknown): boolean {
 function stripHtml(html: string): string {
   const withoutTags = html
     .replaceAll(/<style[^>]*>[\s\S]*?<\/style>/gi, "")
-    .replaceAll(/<script[^>]*>[\s\S]*?<\/script>/gi, "")
-  return withoutTags
-    .replaceAll(/&nbsp;/g, " ")
-    .replaceAll(/&amp;/g, "&")
-    .replaceAll(/&lt;/g, "<")
-    .replaceAll(/&gt;/g, ">")
-    .replaceAll(/\s+/g, " ")
-    .trim();
+    .replaceAll(/<script[^>]*>[\s\S]*?<\/script>/gi, "");
+  return withoutTags;
 }
 
 function extractText(node: React.ReactNode): string | undefined {

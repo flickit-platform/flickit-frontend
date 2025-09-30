@@ -31,9 +31,9 @@ const AssessmentReportTitle = (props: any) => {
   const canViewSecond =
     !!permissions?.canViewDashboard || !!permissions?.canViewQuestionnaires;
 
-  const secondTo = permissions?.canViewDashboard
-    ? `/${spaceId}/assessments/1/${assessment?.id}/dashboard`
-    : `/${spaceId}/assessments/1/${assessment?.id}/questionnaires`;
+  const secondTo = permissions?.canViewQuestionnaires
+    ? `/${spaceId}/assessments/1/${assessment?.id}/questionnaires`
+    : `/${spaceId}/assessments/1/${assessment?.id}/dashboard`;
 
   const routes = [
     {
