@@ -334,11 +334,11 @@ const StepBox = (props: IStepBox) => {
             sx={{ direction: "ltr" }}
             variant="headlineLarge"
           >{`${providedMetadata} / ${totalMetadata} `}</Typography>
-          <Box sx={{ ...styles.centerCVH, gap: 1 }}>
+          {(hasIssues || completed || !completed && localStep === 3 ) && <Box sx={{ ...styles.centerCVH, gap: 1 }}>
             {completed && completedTag}
             {!completed && localStep === 3 && currentTag}
             {hasIssues && issuesTag("report")}
-          </Box>
+          </Box>}
         </Box>
       </Box>
     );
@@ -395,7 +395,7 @@ const StepBox = (props: IStepBox) => {
       <Typography
         variant="semiBoldLarge"
         color="background.onVariant"
-        sx={{ mb: "36px", textAlign: "center" }}
+        sx={{ mb: "36px", textAlign: "center", display: "inline-block" }}
       >
         <Typography variant="semiBoldXLarge">
           <Trans i18nKey={titleMap[category]} />
