@@ -127,21 +127,21 @@ const AssessmentKitsStoreCard = (props: any) => {
     <Box
       to={small ? `./../${id}/` : `${id}/`}
       component={Link}
-      borderRadius={2}
-      height="100%"
-      borderLeft={`4px solid ${
-        isPrivate ? theme.palette.secondary.main : theme.palette.primary.main
-      }`}
-      display="flex"
-      flexDirection="column"
-      justifyContent="space-between"
-      color="inherit"
-      p={small ? "12px 24px" : { xs: "24px", sm: "32px" }}
       sx={{
         ...styles.shadowStyle,
         cursor: "pointer",
         textDecoration: "unset",
-        mb: small ? "8px !important" : { xs: "12px", sm: "40px  !important" },
+        mb: small ? "8px !important" : { xs: "12px", sm: "40px !important" },
+        borderRadius: 2,
+        height: "100%",
+        borderLeft: `4px solid ${
+          isPrivate ? theme.palette.secondary.main : theme.palette.primary.main
+        }`,
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "space-between",
+        color: "inherit",
+        p: small ? "12px 24px" : { xs: "24px", sm: "32px" },
       }}
     >
       <Box>

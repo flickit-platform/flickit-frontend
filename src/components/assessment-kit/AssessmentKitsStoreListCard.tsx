@@ -46,7 +46,7 @@ const AssessmentKitsStoreListCard = ({ small = false }: any) => {
       render={(data) => {
         const { items = [] } = data;
         return (
-          <Grid container spacing={{ xs: 2, sm: small ? 2.5 : 4 }}>
+          <Grid container sx={{ gap: { xs: 2, sm: small ? 2.5 : 4 } }}>
             {items
               .filter((item: any) => item.id != assessmentKitId)
               .map((item: any) => (

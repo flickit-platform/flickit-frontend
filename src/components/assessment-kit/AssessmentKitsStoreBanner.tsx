@@ -288,10 +288,7 @@ const AssessmentKitsStoreBanner = (props: any) => {
               component="button"
               type="button"
               onClick={() => goToKit(item.kitId)}
-              width="100%"
-              height="100%"
-              paddingInlineStart={2}
-              sx={{ all: "unset", cursor: "pointer", position: "relative" }}
+              sx={{ all: "unset", cursor: "pointer", position: "relative", width: "100%", height:"100%", paddingInlineStart: 2 }}
             >
               <img
                 src={src}
