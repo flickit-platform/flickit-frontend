@@ -21,22 +21,21 @@ type Props = TypographyProps & ExtraProps;
 export function hasNoFaOrEnLetters(input: unknown): boolean {
   const s =
     typeof input === "string" ? input : input == null ? "" : String(input);
-  const sanitized = s.replace(/[%\u066A]/g, ""); // % و ٪
+  const sanitized = s.replaceAll(/[%\u066A]/g, ""); // % و ٪
   const letters = /[\p{Script=Latin}\p{Script=Arabic}]/u;
   return !letters.test(sanitized);
 }
 
 function stripHtml(html: string): string {
   const withoutTags = html
-    .replace(/<style[^>]*>[\s\S]*?<\/style>/gi, "")
-    .replace(/<script[^>]*>[\s\S]*?<\/script>/gi, "")
-    .replace(/<[^>]+>/g, " ");
+    .replaceAll(/<style[^>]*>[\s\S]*?<\/style>/gi, "")
+    .replaceAll(/<script[^>]*>[\s\S]*?<\/script>/gi, "")
   return withoutTags
-    .replace(/&nbsp;/g, " ")
-    .replace(/&amp;/g, "&")
-    .replace(/&lt;/g, "<")
-    .replace(/&gt;/g, ">")
-    .replace(/\s+/g, " ")
+    .replaceAll(/&nbsp;/g, " ")
+    .replaceAll(/&amp;/g, "&")
+    .replaceAll(/&lt;/g, "<")
+    .replaceAll(/&gt;/g, ">")
+    .replaceAll(/\s+/g, " ")
     .trim();
 }
 
@@ -57,7 +56,6 @@ function extractText(node: React.ReactNode): string | undefined {
       const ns = anyProps.ns;
       const defaults = anyProps.defaults;
 
-      // تبدیل خروجی i18next.t به string
       const translationResult = i18next.t(key, {
         ...values,
         ns,
