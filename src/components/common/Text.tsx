@@ -18,6 +18,14 @@ type ExtraProps = {
 
 type Props = TypographyProps & ExtraProps;
 
+export function hasNoFaOrEnLetters(input: unknown): boolean {
+  const s =
+    typeof input === "string" ? input : input == null ? "" : String(input);
+  const sanitized = s.replace(/[%\u066A]/g, ""); // % و ٪
+  const letters = /[\p{Script=Latin}\p{Script=Arabic}]/u;
+  return !letters.test(sanitized);
+}
+
 function stripHtml(html: string): string {
   const withoutTags = html
     .replace(/<style[^>]*>[\s\S]*?<\/style>/gi, "")
@@ -107,7 +115,11 @@ export const Text = React.forwardRef<any, Props>(function Text(
       color={color}
       sx={{
         display: "inline-block",
-        fontFamily: isFa ? farsiFontFamily : primaryFontFamily,
+        fontFamily:
+          isFa ||
+          (hasNoFaOrEnLetters(content as string) && i18next.language === "fa")
+            ? farsiFontFamily
+            : primaryFontFamily,
         ...clampSx,
         ...sx,
       }}
