@@ -307,9 +307,9 @@ const ItemAccordion = ({
               sx={{
                 backgroundColor: getAccordionBgColor(),
                 borderRadius:
-                  questionnaireLogic.kitState.questions.length !== 0
-                    ? "8px"
-                    : "8px 8px 0 0",
+                  questionnaireLogic.kitState.questions.length === 0
+                    ? "8px 8px 0 0"
+                    : "8px",
                 border: "0.3px solid #73808c30",
                 display: "flex",
                 position: "relative",
@@ -346,9 +346,9 @@ const ItemAccordion = ({
                 margin: 0,
                 padding: 0,
                 py:
-                  questionnaireLogic.kitState.questions.length !== 0
-                    ? "20px"
-                    : "unset",
+                  questionnaireLogic.kitState.questions.length === 0
+                    ? "unset"
+                    : "20px",
               }}
             >
               <QuestionsSection
@@ -697,7 +697,7 @@ const QuestionsSection = ({
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    const parsedValue = name === "value" ? parseInt(value) || 1 : value;
+    const parsedValue = name === "value" ? Number.parseInt(value) || 1 : value;
     setNewQuestion((prev) => ({ ...prev, [name]: parsedValue }));
   };
 

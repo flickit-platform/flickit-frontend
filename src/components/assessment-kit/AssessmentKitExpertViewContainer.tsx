@@ -916,7 +916,6 @@ const SubjectQuestionList = (props: any) => {
         </Box>
       )}
       {questions.map((question: any, index: number) => {
-        const is_farsi = languageDetector(question.title);
         const isExpanded = expanded === question.title;
         return (
           <Accordion

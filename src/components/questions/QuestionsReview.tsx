@@ -333,9 +333,7 @@ export const Review = () => {
       <Box mt={2}>
         {questionsInfo.questions.map((q) => {
           const is_farsi_title = languageDetector(q.title);
-          const is_farsi_option = languageDetector(
-            q?.answer?.selectedOption?.title,
-          );
+
           return (
             <Paper
               key={q.id}
