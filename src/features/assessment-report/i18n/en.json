@@ -6,6 +6,7 @@
   "assessmentKitEvaluatesMaturity": "This assessment kit evaluates the maturity of subjects and attributes across multiple levels.",
   "assessmentStructured": "This assessment is structured around {{count}} key attributes. Below, these attributes are listed and briefly explained. Ask ChatGPT",
   "attributesStatus": "Attributes status",
+  "anyoneCanAccessReport": "Anyone with the link below can access this assessment report.",
   "copyReportLink": "Copy report link",
   "contactExpertGroup": "Contact expert group",
   "contactExpertBoxText": {
@@ -17,6 +18,7 @@
     "outro": "Feel free to contact the expert group that developed the kit used in this assessment."
   },
   "contributionToAttribute": "Contribution to attribute (%)",
+  "continueShareReportMessage": "Would you like to continue the sharing process for the report <name>{{title}}</name>?",
   "done": "Done",
   "YouDoNotHavePermission": "You do not have permission to make changes.",
   "disclaimerDescription": "This report was produced with an evidence-based evaluation approach and partially relies on the information provided by the interviewees. The findings of this report are not 100% certain. If the managers approve, the evaluation process will continue to examine the evidence more deeply and increase the confidence factor.",
@@ -31,6 +33,8 @@
   "introductionReport": "Report introduction",
   "isDraftSpaceReport": "Only you can access this assessment report right now. To share it, make it public or move the assessment to a workspace",
   "lowScoringQuestions": "Low-scoring questions",
+  "leaveAndCreateSpaceTitle": "To create a new space, you will leave this page.",
+  "leaveAndCreateSpaceDescription": "After the space is created, you can resume the evaluation transfer process.",
   "highScoringQuestions": "High-scoring questions",
   "kitWithTitle": "{{title}} kit",
   "peopleWithAccess": "People with access",
@@ -49,6 +53,7 @@
   "makeItPublic": "Make it public",
   "moveTheAssessment": "Move the assessment",
   "moveAssessment": "Move assessment",
+  "newSpace": "New space",
   "reportIssues": "Report issues",
   "report": "report",
   "reportTitle": "Report",

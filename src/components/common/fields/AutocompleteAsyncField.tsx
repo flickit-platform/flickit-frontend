@@ -117,6 +117,7 @@ interface IAutocompleteAsyncFieldBase
   searchable?: boolean;
   showIconBeforeOption?: boolean;
   isFocused?: boolean;
+  style?: any;
 }
 
 const AutocompleteBaseField = (
@@ -164,6 +165,7 @@ const AutocompleteBaseField = (
     filterSelectedOptions = true,
     showIconBeforeOption,
     isFocused,
+    style,
     ...rest
   } = props;
   const theme = useTheme();
@@ -393,6 +395,7 @@ const AutocompleteBaseField = (
             "& .MuiInputBase-input": {
               caretColor: isFocused && !isTyping ? "transparent" : undefined,
             },
+            ...style
           }}
           name={name}
           onBlur={handleBlur}
