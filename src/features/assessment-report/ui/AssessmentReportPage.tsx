@@ -8,7 +8,7 @@ import GraphicalReportSkeleton from "@/features/assessment-report/ui/loading/Gra
 import { styles } from "@styles";
 import { t } from "i18next";
 import type { PathInfo } from "@/types";
-import { useCallback } from "react";
+import {useCallback, useEffect, useState} from "react";
 
 import { useAssessmentReportVM } from "../../assessment-report/model/useAssessmentReportVM";
 import AssessmentReportTitle from "./AssessmentReportTitle";
@@ -53,11 +53,21 @@ export default function AssessmentReportPage() {
     shareDialog,
   } = useAssessmentReportVM();
 
+  const [step, setStep] = useState(0);
   const onShare = useCallback(() => shareDialog.openDialog({}), [shareDialog]);
   const onExpert = useCallback(
     () => expertDialog.openDialog({}),
     [expertDialog],
   );
+
+  useEffect(() => {
+    if (globalThis.location.hash === "#shareDialog") {
+      shareDialog.openDialog({ type: "create" });
+      setStep(0)
+      const cleanUrl = globalThis.location?.href?.split('#')[0] ?? '';
+      globalThis.history.replaceState(null, globalThis.document.title, cleanUrl);
+    }
+  }, []);
 
   return (
     <PermissionControl error={[fetchGraphicalReport.errorObject]}>
@@ -307,7 +317,14 @@ export default function AssessmentReportPage() {
                   <SidebarQuickMode {...sidebarProps} />
                 </Box>
 
-                <ShareDialog {...shareDialog} {...report} lng={lng} />
+                <ShareDialog
+                  {...shareDialog}
+                  {...report}
+                  lng={lng}
+                  fetchGraphicalReport={fetchGraphicalReport}
+                  setStep={setStep}
+                  step={step}
+                />
                 <ContactUsDialog
                   {...expertDialog}
                   context={expertContext}

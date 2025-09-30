@@ -12,7 +12,7 @@
   "attributesCount": "Attributes count",
   "assessmentLanguage": "Assessment language",
   "assessmentSupportsMultipleLanguages": "This assessment kit supports multiple languages. A preferred language is selected, but you can change it. Your choice will set the language for the questions and the final report.",
-  "continueAssessmentKitMessage": "Would you like to continue creating the assessment using the <name>{{kitName}}</name> kit?",
+  "continueAssessmentKitMessage": "Would you like to continue creating the assessment using the <name>{{title}}</name> kit?",
   "convertExcelToDsl": "Convert Excel to DSL",
   "convertToDsl": "Convert to DSL",
   "createAssessmentKit": "New assessment kit",

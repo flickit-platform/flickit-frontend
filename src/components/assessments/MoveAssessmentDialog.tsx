@@ -4,14 +4,11 @@ import { useForm } from "react-hook-form";
 import { Trans } from "react-i18next";
 import { styles } from "@styles";
 import { CEDialog, CEDialogActions } from "@common/dialogs/CEDialog";
-import FormProviderWithForm from "@common/FormProviderWithForm";
 import Box from "@mui/material/Box";
 import DriveFileMoveOutlinedIcon from "@mui/icons-material/DriveFileMoveOutlined";
-import { Grid } from "@mui/material";
-import { SpaceField } from "../common/fields/SpaceField";
 import { useServiceContext } from "@/providers/service-provider";
 import { useQuery } from "@/hooks/useQuery";
-import { Text } from "../common/Text";
+import SpaceFieldForm from "@/components/common/SpaceFiledForm";
 
 interface IAssessmentCEFromDialogProps extends DialogProps {
   onClose: () => void;
@@ -33,7 +30,6 @@ const MoveAssessmentDialog = (props: IAssessmentCEFromDialogProps) => {
 
   const { service } = useServiceContext();
   const { type, staticData = {} } = context;
-  const { spaceList, queryDataSpaces } = staticData;
   const formMethods = useForm({
     shouldUnregister: true,
     mode: "onSubmit",
@@ -98,26 +94,7 @@ const MoveAssessmentDialog = (props: IAssessmentCEFromDialogProps) => {
         },
       }}
     >
-      <FormProviderWithForm formMethods={formMethods}>
-        <Grid container>
-          <Grid item lg={12} md={12} sm={12} xs={12}>
-            <Text variant="bodyMedium">
-              <Trans i18nKey="assessment.chooseTargetSpace" />
-            </Text>
-          </Grid>
-          <Grid item lg={6} md={6} sm={12} xs={12}>
-            <SpaceField
-              queryDataSpaces={queryDataSpaces}
-              spaces={spaceList}
-              sx={{ mt: "24px" }}
-              label={<Trans i18nKey="spaces.targetSpace" />}
-              filterSelectedOptions={false}
-              data-testid="target-space-field"
-            />{" "}
-          </Grid>
-        </Grid>
-      </FormProviderWithForm>
-
+      <SpaceFieldForm formMethods={formMethods} staticData={staticData} />
       <CEDialogActions
         closeDialog={close}
         submitButtonLabel="common.move"

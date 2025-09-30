@@ -264,11 +264,13 @@ const StepBox = (props: IStepBox) => {
             sx={{ direction: "ltr" }}
             variant="headlineLarge"
           >{`${result} / ${expected}`}</Text>
-          <Box sx={{ ...styles.centerCVH, gap: 1 }}>
-            {completed && completedTag}
-            {!completed && localStep === 1 && currentTag}
-            {!!hasIssues && issuesTag("insights")}
-          </Box>
+          {(completed || (!completed && localStep === 1) || !!hasIssues) && (
+            <Box sx={{ ...styles.centerCVH, gap: 1 }}>
+              {completed && completedTag}
+              {!completed && localStep === 1 && currentTag}
+              {!!hasIssues && issuesTag("insights")}
+            </Box>
+          )}
         </Box>
         <Box sx={{ ...styles.centerVH, gap: "4px" }}>
           <Text variant="labelMedium" color="#2D80D2">
@@ -297,11 +299,15 @@ const StepBox = (props: IStepBox) => {
       >
         <Box sx={{ display: "flex", justifyContent: "space-evenly" }}>
           <Text variant="headlineLarge">{total}</Text>
-          <Box sx={{ ...styles.centerCVH, gap: 1 }}>
-            {completed && completedTag}
-            {!completed && localStep === 2 && currentTag}
-            {hasIssues && !completed && issuesTag("advices")}
-          </Box>
+          {(completed ||
+            (!completed && localStep === 2) ||
+            (hasIssues && !completed)) && (
+            <Box sx={{ ...styles.centerCVH, gap: 1 }}>
+              {completed && completedTag}
+              {!completed && localStep === 2 && currentTag}
+              {hasIssues && !completed && issuesTag("advices")}
+            </Box>
+          )}
         </Box>
       </Box>
     );
@@ -334,11 +340,13 @@ const StepBox = (props: IStepBox) => {
             sx={{ direction: "ltr" }}
             variant="headlineLarge"
           >{`${providedMetadata} / ${totalMetadata} `}</Text>
-          <Box sx={{ ...styles.centerCVH, gap: 1 }}>
-            {completed && completedTag}
-            {!completed && localStep === 3 && currentTag}
-            {hasIssues && issuesTag("report")}
-          </Box>
+          {(hasIssues || completed || (!completed && localStep === 3)) && (
+            <Box sx={{ ...styles.centerCVH, gap: 1 }}>
+              {completed && completedTag}
+              {!completed && localStep === 3 && currentTag}
+              {hasIssues && issuesTag("report")}
+            </Box>
+          )}
         </Box>
       </Box>
     );
@@ -394,7 +402,7 @@ const StepBox = (props: IStepBox) => {
       <Text
         variant="semiBoldLarge"
         color="background.onVariant"
-        sx={{ mb: "36px", textAlign: "center" }}
+        sx={{ mb: "36px", textAlign: "center", display: "inline-block" }}
       >
         <Text variant="semiBoldXLarge">
           <Trans i18nKey={titleMap[category]} />
