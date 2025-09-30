@@ -201,7 +201,7 @@ const SubjectAttributeCard = (props: any) => {
           },
         }}
         expanded={
-          permissions.viewAttributeScoreDetail && expandedAttribute === id
+          permissions?.viewAttributeScoreDetail && expandedAttribute === id
         }
         onChange={handleChange(id)}
       >
@@ -309,7 +309,7 @@ const SubjectAttributeCard = (props: any) => {
                       expandedAttribute == id ? "0 8px 0 0" : "0 8px 8px 0",
                   }}
                 />
-                {permissions.viewAttributeScoreDetail && (
+                {permissions?.viewAttributeScoreDetail && (
                   <ExpandMoreIcon
                     sx={{
                       position: "absolute",

@@ -18,6 +18,60 @@ type ExtraProps = {
 
 type Props = TypographyProps & ExtraProps;
 
+export function hasNoFaOrEnLetters(input: unknown): boolean {
+  let string: string;
+
+  if (typeof input === "string") {
+    string = input;
+  } else if (input == null) {
+    string = "";
+  } else {
+    string = String(input);
+  }
+
+  const sanitized = string.replaceAll(/[%\u066A]/g, "");
+  const letters = /[\p{Script=Latin}\p{Script=Arabic}]/u;
+  return !letters.test(sanitized);
+}
+
+function stripHtml(html: string): string {
+  const withoutTags = html
+    .replaceAll(/<style[^>]*>[\s\S]*?<\/style>/gi, "")
+    .replaceAll(/<script[^>]*>[\s\S]*?<\/script>/gi, "");
+  return withoutTags;
+}
+
+function extractText(node: React.ReactNode): string | undefined {
+  if (typeof node === "string") return node;
+  if (typeof node === "number") return String(node);
+  if (Array.isArray(node)) {
+    const parts = node.map(extractText).filter(Boolean) as string[];
+    return parts.length ? parts.join(" ") : undefined;
+  }
+  if (React.isValidElement(node)) {
+    const anyProps: any = node.props ?? {};
+
+    const hasI18nKey = typeof anyProps.i18nKey === "string";
+    if (hasI18nKey) {
+      const key = anyProps.i18nKey as string;
+      const values = anyProps.values || {};
+      const ns = anyProps.ns;
+      const defaults = anyProps.defaults;
+
+      const translationResult = i18next.t(key, {
+        ...values,
+        ns,
+        defaultValue: defaults,
+      });
+      return typeof translationResult === "string"
+        ? translationResult
+        : String(translationResult);
+    }
+    return extractText(anyProps.children);
+  }
+  return undefined;
+}
+
 export const Text = React.forwardRef<any, Props>(function Text(
   {
     text,
@@ -34,11 +88,20 @@ export const Text = React.forwardRef<any, Props>(function Text(
 ) {
   const content = children ?? text;
 
-  const contentDetector = content ?? rest?.dangerouslySetInnerHTML?.__html;
+  const htmlText =
+    typeof (rest as any)?.dangerouslySetInnerHTML?.__html === "string"
+      ? stripHtml((rest as any).dangerouslySetInnerHTML.__html)
+      : undefined;
 
-  const isFa = detectLang
-    ? languageDetector(contentDetector as string)
-    : (i18next.language || "").toLowerCase().startsWith("fa");
+  const sourceForDetection =
+    extractText(children) ??
+    (typeof text === "string" ? text : extractText(text)) ??
+    htmlText;
+
+  const isFa =
+    detectLang && sourceForDetection
+      ? languageDetector(sourceForDetection)
+      : (i18next.language || "").toLowerCase().startsWith("fa");
 
   const clampSx: SxProps<Theme> =
     lines && lines > 0
@@ -58,7 +121,11 @@ export const Text = React.forwardRef<any, Props>(function Text(
       color={color}
       sx={{
         display: "inline-block",
-        fontFamily: isFa ? farsiFontFamily : primaryFontFamily,
+        fontFamily:
+          isFa ||
+          (hasNoFaOrEnLetters(content as string) && i18next.language === "fa")
+            ? farsiFontFamily
+            : primaryFontFamily,
         ...clampSx,
         ...sx,
       }}

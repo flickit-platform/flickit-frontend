@@ -28,6 +28,50 @@ const AssessmentReportTitle = (props: any) => {
     }
   };
 
+  const canViewSecond =
+    !!permissions?.canViewDashboard || !!permissions?.canViewQuestionnaires;
+
+  const secondTo = permissions?.canViewQuestionnaires
+    ? `/${spaceId}/assessments/1/${assessment?.id}/questionnaires`
+    : `/${spaceId}/assessments/1/${assessment?.id}/dashboard`;
+
+  const routes = [
+    {
+      title: space?.title,
+      to: `/${spaceId}/assessments/1`,
+      icon: (
+        <FolderOutlinedIcon
+          fontSize="small"
+          sx={{ ...styles.iconDirectionStyle(lng) }}
+        />
+      ),
+    },
+    ...(canViewSecond
+      ? [
+          {
+            title: assessment?.title,
+            to: secondTo,
+            icon: (
+              <AssignmentOutlinedIcon
+                fontSize="small"
+                sx={{ ...styles.iconDirectionStyle(lng) }}
+              />
+            ),
+          },
+        ]
+      : []),
+    {
+      title: t("assessmentReport.assessmentReport", { lng }) ?? "",
+      icon: (
+        <DescriptionOutlinedIcon
+          fontSize="small"
+          sx={{ ...styles.iconDirectionStyle(lng) }}
+        />
+      ),
+    },
+  ];
+  // === END NEW
+
   return (
     <Title
       backLink="/spaces"
@@ -37,7 +81,7 @@ const AssessmentReportTitle = (props: any) => {
           alignItems: { xs: "flex-start", md: "flex-end" },
         },
       }}
-      size={"large"}
+      size="large"
       sx={{
         ...styles.rtlStyle(rtlLanguage),
         textAlign: "left",
@@ -45,42 +89,7 @@ const AssessmentReportTitle = (props: any) => {
         textTransform: "none",
         color: "primary.main",
       }}
-      sup={
-        <SupTitleBreadcrumb
-          routes={[
-            {
-              title: space?.title,
-              to: `/${spaceId}/assessments/1`,
-              icon: (
-                <FolderOutlinedIcon
-                  fontSize="small"
-                  sx={{ ...styles.iconDirectionStyle(lng) }}
-                />
-              ),
-            },
-            {
-              title: assessment?.title,
-              to: `/${spaceId}/assessments/1/${assessment.id}/${permissions.canViewDashboard ? "dashboard" : "questionnaires"}`,
-              icon: (
-                <AssignmentOutlinedIcon
-                  fontSize="small"
-                  sx={{ ...styles.iconDirectionStyle(lng) }}
-                />
-              ),
-            },
-            {
-              title: t("assessmentReport.assessmentReport", { lng }) ?? "",
-              icon: (
-                <DescriptionOutlinedIcon
-                  fontSize="small"
-                  sx={{ ...styles.iconDirectionStyle(lng) }}
-                />
-              ),
-            },
-          ]}
-          displayChip
-        />
-      }
+      sup={<SupTitleBreadcrumb routes={routes} displayChip />}
     >
       <Box
         mt={4}
