@@ -18,6 +18,46 @@ type ExtraProps = {
 
 type Props = TypographyProps & ExtraProps;
 
+function stripHtml(html: string): string {
+  const withoutTags = html
+    .replace(/<style[^>]*>[\s\S]*?<\/style>/gi, "")
+    .replace(/<script[^>]*>[\s\S]*?<\/script>/gi, "")
+    .replace(/<[^>]+>/g, " ");
+  return withoutTags
+    .replace(/&nbsp;/g, " ")
+    .replace(/&amp;/g, "&")
+    .replace(/&lt;/g, "<")
+    .replace(/&gt;/g, ">")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function extractText(node: React.ReactNode): string | undefined {
+  if (typeof node === "string") return node;
+  if (typeof node === "number") return String(node);
+  if (Array.isArray(node)) {
+    const parts = node.map(extractText).filter(Boolean) as string[];
+    return parts.length ? parts.join(" ") : undefined;
+  }
+  if (React.isValidElement(node)) {
+    const anyProps: any = node.props ?? {};
+
+    const hasI18nKey = typeof anyProps.i18nKey === "string";
+    if (hasI18nKey) {
+      const key = anyProps.i18nKey as string;
+      const values = anyProps.values || {};
+      const ns = anyProps.ns;
+      const defaults = anyProps.defaults;
+      return i18next
+        .t(key, { ...values, ns, defaultValue: defaults })
+        .toString();
+    }
+
+    return extractText(anyProps.children);
+  }
+  return undefined;
+}
+
 export const Text = React.forwardRef<any, Props>(function Text(
   {
     text,
@@ -34,11 +74,20 @@ export const Text = React.forwardRef<any, Props>(function Text(
 ) {
   const content = children ?? text;
 
-  const contentDetector = content ?? rest?.dangerouslySetInnerHTML?.__html;
+  const htmlText =
+    typeof (rest as any)?.dangerouslySetInnerHTML?.__html === "string"
+      ? stripHtml((rest as any).dangerouslySetInnerHTML.__html)
+      : undefined;
 
-  const isFa = detectLang
-    ? languageDetector(contentDetector as string)
-    : (i18next.language || "").toLowerCase().startsWith("fa");
+  const sourceForDetection =
+    extractText(children) ??
+    (typeof text === "string" ? text : extractText(text)) ??
+    htmlText;
+
+  const isFa =
+    detectLang && sourceForDetection
+      ? languageDetector(sourceForDetection)
+      : (i18next.language || "").toLowerCase().startsWith("fa");
 
   const clampSx: SxProps<Theme> =
     lines && lines > 0
