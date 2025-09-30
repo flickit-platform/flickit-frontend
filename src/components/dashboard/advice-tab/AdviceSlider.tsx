@@ -1,13 +1,13 @@
 import { useState, useMemo, useCallback } from "react";
+import { Grid, ThemeProvider, createTheme, IconButton } from "@mui/material";
 import Box from "@mui/material/Box";
 import Slider from "@mui/material/Slider";
 import Tooltip from "@mui/material/Tooltip";
-import { Grid, ThemeProvider, createTheme, IconButton } from "@mui/material";
 import { useTheme, alpha } from "@mui/material/styles";
 import ArrowLeftIcon from "@mui/icons-material/ArrowLeft";
 import ArrowRightIcon from "@mui/icons-material/ArrowRight";
-import { styles } from "@styles";
 import { Text } from "@/components/common/Text";
+import { styles } from "@styles";
 
 type MaturityLevel = { id: string; title: string };
 type TargetItem = { attributeId: string; maturityLevelId: string };
@@ -20,78 +20,78 @@ type MaturitySliderProps = {
   currentState?: { title?: string };
 };
 
-const MIN_VALUE = 1;
+const MIN = 1;
 const clamp = (n: number, min: number, max: number) =>
   Math.min(Math.max(n, min), max);
 
-const MaturitySlider = (props: MaturitySliderProps) => {
-  const {
-    defaultValue,
-    attribute,
-    maturityLevels = [],
-    setTarget,
-    currentState,
-  } = props;
-
-  const totalLevels = Math.max(MIN_VALUE, maturityLevels.length);
-  const defaultPct =
-    totalLevels > MIN_VALUE
-      ? ((defaultValue - MIN_VALUE) / (totalLevels - MIN_VALUE)) * 100
-      : 0;
-
-  const [value, setValue] = useState<number>(defaultValue ?? MIN_VALUE);
-
-  const selectedIdx = useMemo(() => {
-    const chosenValue = value ?? defaultValue ?? MIN_VALUE;
-    return clamp(chosenValue - MIN_VALUE, 0, totalLevels - 1);
-  }, [value, defaultValue, totalLevels]);
-
-  const currentLevel = maturityLevels[selectedIdx];
-  const toTitle = currentLevel?.title;
-  const fromTitle = currentState?.title;
-
-  const handleChange = useCallback(
-    (_event: Event, newValue: number | number[]) => {
-      const nextValue = Array.isArray(newValue) ? newValue[0] : newValue;
-      if (nextValue < defaultValue) return;
-
-      setValue(nextValue);
-
-      const nextIdx = clamp(nextValue - MIN_VALUE, 0, totalLevels - 1);
-      const nextLevelId = maturityLevels[nextIdx]?.id;
-
-      setTarget((prev) => {
-        const existingIndex = prev.findIndex(
-          (i) => i.attributeId === attribute.id,
-        );
-        if (nextValue <= defaultValue) {
-          if (existingIndex === -1) return prev;
-          const clone = [...prev];
-          clone.splice(existingIndex, 1);
-          return clone;
-        }
-        const newItem = {
-          attributeId: attribute.id,
-          maturityLevelId: nextLevelId,
-        };
-        if (existingIndex === -1) return [...prev, newItem];
-        const updated = [...prev];
-        updated[existingIndex] = newItem;
-        return updated;
-      });
-    },
-    [attribute.id, defaultValue, maturityLevels, setTarget, totalLevels],
-  );
-
+export default function MaturitySlider({
+  defaultValue,
+  attribute,
+  maturityLevels = [],
+  setTarget,
+  currentState,
+}: Readonly<MaturitySliderProps>) {
   const baseTheme = useTheme();
   const ltrTheme = useMemo(
     () => createTheme({ ...baseTheme, direction: "ltr" }),
     [baseTheme],
   );
 
+  const total = Math.max(MIN, maturityLevels.length);
+  const defaultPct = useMemo(
+    () => (total > MIN ? ((defaultValue - MIN) / (total - MIN)) * 100 : 0),
+    [defaultValue, total],
+  );
+  const [value, setValue] = useState<number>(defaultValue ?? MIN);
+
+  const idx = useMemo(
+    () => clamp((value ?? defaultValue ?? MIN) - MIN, 0, total - 1),
+    [value, defaultValue, total],
+  );
+  const toTitle = maturityLevels[idx]?.title;
+  const fromTitle = currentState?.title;
   const marks = useMemo(
-    () => Array.from({ length: totalLevels }, (_, i) => ({ value: i + 1 })),
-    [totalLevels],
+    () => Array.from({ length: total }, (_, i) => ({ value: i + 1 })),
+    [total],
+  );
+  const markTitles = useMemo(
+    () => maturityLevels.map((m) => m.title),
+    [maturityLevels],
+  );
+
+  const applyValue = useCallback(
+    (next: number) => {
+      if (next < defaultValue) return;
+      setValue(next);
+
+      const nextIdx = clamp(next - MIN, 0, total - 1);
+      const nextLevelId = maturityLevels[nextIdx]?.id;
+
+      setTarget((prev) => {
+        const i = prev.findIndex((x) => x.attributeId === attribute.id);
+        if (next <= defaultValue) {
+          if (i === -1) return prev;
+          const copy = [...prev];
+          copy.splice(i, 1);
+          return copy;
+        }
+        const item = {
+          attributeId: attribute.id,
+          maturityLevelId: nextLevelId,
+        };
+        if (i === -1) return [...prev, item];
+        const copy = [...prev];
+        copy[i] = item;
+        return copy;
+      });
+    },
+    [attribute.id, defaultValue, maturityLevels, setTarget, total],
+  );
+
+  const onChange = useCallback(
+    (_e: unknown, v: number | number[]) =>
+      applyValue(Array.isArray(v) ? v[0] : v),
+    [applyValue],
   );
 
   return (
@@ -105,7 +105,20 @@ const MaturitySlider = (props: MaturitySliderProps) => {
     >
       <Grid item xs={4.1} sm={4.1}>
         <Box sx={styles.centerV} gap={2}>
-          <TitleCell title={attribute.title} />
+          <Text
+            variant="semiBoldLarge"
+            sx={{
+              maxWidth: { xs: 260, lg: 124 },
+              width: "100%",
+              overflow: "hidden",
+              display: "-webkit-box",
+              WebkitLineClamp: 3,
+              WebkitBoxOrient: "vertical",
+              textOverflow: "ellipsis",
+            }}
+          >
+            {attribute.title}
+          </Text>
         </Box>
       </Grid>
 
@@ -115,69 +128,53 @@ const MaturitySlider = (props: MaturitySliderProps) => {
             defaultValue={defaultValue}
             defaultPct={defaultPct}
             value={value}
-            totalLevels={totalLevels}
+            total={total}
             fromTitle={fromTitle}
-            onSliderChange={handleChange}
-            marks={marks}
+            onChange={onChange}
             toTitle={toTitle}
+            marks={marks}
+            markTitles={markTitles}
+            onSelectMark={applyValue}
           />
         </ThemeProvider>
       </Grid>
     </Grid>
   );
-};
-
-const TitleCell = ({ title }: { title: string }) => (
-  <Text
-    variant="semiBoldLarge"
-    sx={{
-      maxWidth: { xs: 260, lg: 124 },
-      width: "100%",
-      overflow: "hidden",
-      display: "-webkit-box",
-      WebkitLineClamp: 3,
-      WebkitBoxOrient: "vertical",
-      textOverflow: "ellipsis",
-    }}
-  >
-    {title}
-  </Text>
-);
-
-interface SliderRowProps {
-  defaultValue: number;
-  defaultPct: number;
-  value: number;
-  totalLevels: number;
-  fromTitle?: string;
-  onSliderChange: (event: Event, value: number | number[]) => void;
-  marks: Array<{ value: number }>;
-  toTitle?: string;
 }
 
 const STEP = 1;
-
-const SliderRow = (props: SliderRowProps) => {
-  const {
-    defaultValue,
-    defaultPct,
-    value,
-    totalLevels,
-    fromTitle,
-    onSliderChange,
-    marks,
-    toTitle,
-  } = props;
-
-  const isMax = defaultValue === totalLevels;
-  const minAllowed = Math.max(MIN_VALUE, defaultValue);
+function SliderRow({
+  defaultValue,
+  defaultPct,
+  value,
+  total,
+  fromTitle,
+  onChange,
+  toTitle,
+  marks,
+  markTitles,
+  onSelectMark,
+}: Readonly<{
+  defaultValue: number;
+  defaultPct: number;
+  value: number;
+  total: number;
+  fromTitle?: string;
+  toTitle?: string;
+  marks: Array<{ value: number }>;
+  markTitles: string[];
+  onChange: (e: unknown, v: number | number[]) => void;
+  onSelectMark: (next: number) => void;
+}>) {
+  const isMax = defaultValue === total;
+  const minAllowed = Math.max(MIN, defaultValue);
   const canDec = value > minAllowed;
-  const canInc = value < totalLevels;
+  const canInc = value < total;
 
-  const nudge = (dir: -1 | 1) => {
-    const next = clamp(value + dir * STEP, minAllowed, totalLevels);
-    onSliderChange({} as any, next);
-  };
+  const nudge = (dir: -1 | 1) =>
+    onSelectMark(clamp(value + dir * STEP, minAllowed, total));
+  const defaultIdx = Math.max(0, defaultValue - 1);
+  const currentIdx = Math.max(0, value - 1);
 
   return (
     <Box dir="ltr" sx={{ width: "100%" }}>
@@ -190,63 +187,74 @@ const SliderRow = (props: SliderRowProps) => {
           width: "100%",
         }}
       >
-        <StepButton
+        <StepBtn
           ariaLabel="decrease"
           disabled={!canDec}
           onClick={() => nudge(-1)}
         >
           <ArrowLeftIcon fontSize="small" />
-        </StepButton>
+        </StepBtn>
 
         <Box position="relative" width="100%">
-          <TrackBackground defaultPct={defaultPct} isMax={isMax} />
+          <Track defaultPct={defaultPct} isMax={isMax} />
 
           {value > defaultValue && !isMax && (
             <GainStripe
               defaultValue={defaultValue}
               value={value}
-              totalLevels={totalLevels}
+              total={total}
               defaultPct={defaultPct}
             />
           )}
 
           <Slider
             min={1}
-            max={totalLevels}
+            max={total}
             marks={marks}
             value={value}
-            onChange={onSliderChange}
-            valueLabelDisplay="auto"
+            onChange={onChange}
+            valueLabelDisplay="on"
             valueLabelFormat={() => toTitle || ""}
-            sx={(theme) => sliderStyles(theme, isMax)}
+            sx={(t) => sliderSX(t, isMax)}
           />
 
-          <BaselineMarker defaultPct={defaultPct} fromTitle={fromTitle} />
+          <MarkHoverLabels
+            total={total}
+            titles={markTitles}
+            hideAt={[defaultIdx, currentIdx]}
+            onSelect={(i) => onSelectMark(i + 1)}
+          />
+
+          <BaselineMarker
+            defaultPct={defaultPct}
+            fromTitle={fromTitle}
+            display={defaultValue !== value}
+          />
         </Box>
 
-        <StepButton
+        <StepBtn
           ariaLabel="increase"
           disabled={!canInc}
           onClick={() => nudge(1)}
         >
           <ArrowRightIcon fontSize="small" />
-        </StepButton>
+        </StepBtn>
       </Box>
     </Box>
   );
-};
+}
 
-function StepButton({
+function StepBtn({
   children,
   onClick,
   disabled,
   ariaLabel,
-}: {
+}: Readonly<{
   children: React.ReactNode;
   onClick: () => void;
   disabled?: boolean;
   ariaLabel: string;
-}) {
+}>) {
   return (
     <IconButton
       aria-label={ariaLabel}
@@ -254,7 +262,7 @@ function StepButton({
       onClick={onClick}
       disabled={disabled}
       color="primary"
-      sx={(theme) => ({
+      sx={(t) => ({
         width: 20,
         height: 20,
         borderRadius: "50%",
@@ -267,9 +275,7 @@ function StepButton({
           opacity: 1,
         },
         "&.Mui-disabled:hover": { backgroundColor: "#C2CCD650" },
-        "&.Mui-disabled .MuiSvgIcon-root": {
-          color: theme.palette.action.disabled,
-        },
+        "&.Mui-disabled .MuiSvgIcon-root": { color: t.palette.action.disabled },
       })}
     >
       {children}
@@ -277,18 +283,16 @@ function StepButton({
   );
 }
 
-const TrackBackground = ({
+const Track = ({
   defaultPct,
   isMax = false,
-}: {
+}: Readonly<{
   defaultPct: number;
   isMax?: boolean;
-}) => (
+}>) => (
   <Box
-    sx={(theme) => {
-      const base = theme.palette.primary.main;
-      const success = theme.palette.success.main;
-      const color = isMax ? success : base;
+    sx={(t) => {
+      const color = isMax ? t.palette.success.main : t.palette.primary.main;
       return {
         position: "absolute",
         inset: 0,
@@ -297,14 +301,8 @@ const TrackBackground = ({
         transform: "translateY(-50%)",
         borderRadius: 999,
         backgroundRepeat: "no-repeat, no-repeat",
-        backgroundImage: `
-          linear-gradient(90deg, ${alpha(color, 0.25)}, ${alpha(color, 0.25)}),
-          linear-gradient(90deg, ${color}, ${color})
-        `,
-        backgroundSize: `
-          100% 100%,
-          ${isMax ? "100%" : `${defaultPct}%`} 100%
-        `,
+        backgroundImage: `linear-gradient(90deg, ${alpha(color, 0.25)}, ${alpha(color, 0.25)}), linear-gradient(90deg, ${color}, ${color})`,
+        backgroundSize: `100% 100%, ${isMax ? "100%" : `${defaultPct}%`} 100%`,
         backgroundPosition: `0% 0%, 0% 0%`,
         zIndex: 1,
       };
@@ -312,37 +310,33 @@ const TrackBackground = ({
   />
 );
 
-interface GainStripeProps {
+const GainStripe = ({
+  defaultValue,
+  value,
+  total,
+  defaultPct,
+}: {
   defaultValue: number;
   value: number;
-  totalLevels: number;
+  total: number;
   defaultPct: number;
-}
-
-const GainStripe = (props: GainStripeProps) => {
-  const { defaultValue, value, totalLevels, defaultPct } = props;
-  const widthPct =
-    totalLevels > 1 ? ((value - defaultValue) / (totalLevels - 1)) * 100 : 0;
-
+}) => {
+  const widthPct = total > 1 ? ((value - defaultValue) / (total - 1)) * 100 : 0;
   return (
     <Box
-      sx={(theme) => ({
+      sx={(t) => ({
         position: "absolute",
         top: "50%",
         left: `${defaultPct}%`,
         width: `${widthPct}%`,
         height: 2,
         transform: "translateY(-50%)",
-        backgroundImage: `repeating-linear-gradient(90deg, ${theme.palette.primary.main} 0 4px, transparent 4px 8px)`,
+        backgroundImage: `repeating-linear-gradient(90deg, ${t.palette.primary.main} 0 4px, transparent 4px 8px)`,
         backgroundRepeat: "repeat-x",
         borderRadius: 999,
         zIndex: 0,
         opacity: 0.7,
-        boxShadow: `0 0 0 5.5px ${
-          theme.palette.mode === "dark"
-            ? "rgba(36,102,168,0.20)"
-            : "rgba(36,102,168,0.15)"
-        }`,
+        boxShadow: `0 0 0 5.5px ${t.palette.mode === "dark" ? "rgba(36,102,168,0.20)" : "rgba(36,102,168,0.15)"}`,
       })}
     />
   );
@@ -351,15 +345,17 @@ const GainStripe = (props: GainStripeProps) => {
 const BaselineMarker = ({
   defaultPct,
   fromTitle,
+  display,
 }: {
   defaultPct: number;
   fromTitle?: string;
+  display: boolean;
 }) => (
   <Tooltip
     arrow
+    open={display}
     placement="bottom"
     title={fromTitle || ""}
-    disableHoverListener={!fromTitle}
     componentsProps={{
       tooltip: {
         sx: {
@@ -367,13 +363,14 @@ const BaselineMarker = ({
           color: (t) => t.palette.text.primary,
           fontWeight: 400,
           fontSize: "11px",
+          px: 0.5,
         },
       },
       arrow: { sx: { color: "#66809920" } },
     }}
   >
     <Box
-      sx={() => ({
+      sx={{
         position: "absolute",
         top: "50%",
         left: `calc(${defaultPct}% )`,
@@ -395,16 +392,76 @@ const BaselineMarker = ({
         height: 13,
         borderRadius: "2px",
         backgroundColor: "#86A8CB",
-      })}
+      }}
     />
   </Tooltip>
 );
 
-const sliderStyles = (theme: any, isMax: boolean) => {
-  const success = theme.palette.success.main;
-  const thumbBg = isMax ? success : theme.palette.primary.main;
+function MarkHoverLabels({
+  total,
+  titles,
+  hideAt = [],
+  onSelect,
+}: {
+  total: number;
+  titles: string[];
+  hideAt?: number[];
+  onSelect: (idx: number) => void;
+}) {
+  if (total <= 1) return null;
+  return (
+    <Box
+      sx={{ position: "absolute", inset: 0, zIndex: 2, pointerEvents: "none" }}
+    >
+      {Array.from({ length: total }, (_, i) => {
+        if (hideAt.includes(i)) return null;
+        const pct = total > 1 ? (i / (total - 1)) * 100 : 0;
+        const title = titles[i] ?? String(i + 1);
+        return (
+          <Tooltip
+            key={i}
+            title={title}
+            placement="top"
+            arrow
+            componentsProps={{
+              tooltip: {
+                sx: {
+                  bgcolor: "#66809920",
+                  color: (t) => t.palette.text.primary,
+                  fontWeight: 400,
+                  fontSize: "11px",
+                  px: 0.5,
+                },
+              },
+              arrow: { sx: { color: "#66809920" } },
+            }}
+          >
+            <Box
+              sx={{
+                position: "absolute",
+                left: `calc(${pct}% )`,
+                top: "60%",
+                transform: "translate(-50%, -50%)",
+                width: 18,
+                height: 24,
+                pointerEvents: "auto",
+              }}
+              onMouseDown={(e) => {
+                e.preventDefault();
+                onSelect(i);
+              }}
+            />
+          </Tooltip>
+        );
+      })}
+    </Box>
+  );
+}
+
+const sliderSX = (t: any, isMax: boolean) => {
+  const success = t.palette.success.main;
+  const thumbBg = isMax ? success : t.palette.primary.main;
   const labelBg = isMax ? alpha(success, 0.08) : "#66809920";
-  const labelArrow = labelBg;
 
   return {
     height: 12,
@@ -415,7 +472,7 @@ const sliderStyles = (theme: any, isMax: boolean) => {
       width: 2,
       height: 10,
       borderRadius: 1,
-      backgroundColor: isMax ? success : theme.palette.primary.main,
+      backgroundColor: isMax ? success : t.palette.primary.main,
       transform: "translate(-1px, -4px)",
       opacity: 0.15,
     },
@@ -435,7 +492,7 @@ const sliderStyles = (theme: any, isMax: boolean) => {
         width: 1.1,
         height: "70%",
         borderRadius: 0,
-        backgroundColor: theme.palette.primary.contrastText,
+        backgroundColor: t.palette.primary.contrastText,
       },
       "&::before": { left: "calc(50% - 2px)" },
       "&::after": { left: "calc(50% + 1px)" },
@@ -443,7 +500,7 @@ const sliderStyles = (theme: any, isMax: boolean) => {
     "& .MuiSlider-valueLabel": {
       position: "relative",
       overflow: "visible",
-      color: isMax ? success : theme.palette.text.primary,
+      color: isMax ? success : t.palette.text.primary,
       backgroundColor: labelBg,
       borderRadius: "4px",
       fontWeight: 400,
@@ -451,20 +508,18 @@ const sliderStyles = (theme: any, isMax: boolean) => {
       lineHeight: "1rem",
       letterSpacing: 0,
       padding: "4px",
-    },
-    "& .MuiSlider-valueLabel::before": { display: "none" },
-    "& .MuiSlider-valueLabel::after": {
-      content: '""',
-      position: "absolute",
-      left: "50%",
-      transform: "translateX(-50%)",
-      bottom: -6,
-      width: 10,
-      height: 6,
-      clipPath: "polygon(50% 100%, 0 0, 100% 0)",
-      backgroundColor: labelArrow,
+      "&::before": { display: "none" },
+      "&::after": {
+        content: '""',
+        position: "absolute",
+        left: "50%",
+        transform: "translateX(-50%)",
+        bottom: -6,
+        width: 10,
+        height: 6,
+        clipPath: "polygon(50% 100%, 0 0, 100% 0)",
+        backgroundColor: labelBg,
+      },
     },
   };
 };
-
-export default MaturitySlider;
