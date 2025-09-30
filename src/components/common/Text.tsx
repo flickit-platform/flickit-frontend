@@ -13,7 +13,7 @@ type ExtraProps = {
   component?: React.ElementType;
   to?: string;
   href?: string;
-  target?: string
+  target?: string;
 };
 
 type Props = TypographyProps & ExtraProps;
@@ -34,10 +34,11 @@ export const Text = React.forwardRef<any, Props>(function Text(
 ) {
   const content = children ?? text;
 
-  const isFa =
-    detectLang && typeof content === "string"
-      ? languageDetector(content)
-      : (i18next.language || "").toLowerCase().startsWith("fa");
+  const contentDetector = content ?? rest?.dangerouslySetInnerHTML?.__html;
+
+  const isFa = detectLang
+    ? languageDetector(contentDetector as string)
+    : (i18next.language || "").toLowerCase().startsWith("fa");
 
   const clampSx: SxProps<Theme> =
     lines && lines > 0

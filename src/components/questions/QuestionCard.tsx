@@ -166,12 +166,12 @@ export const QuestionCard = (props: IQuestionCardProps) => {
         <Box>
           <Box sx={{ px: 6, ...styles.rtlStyle(languageDetector(title)) }}>
             <Text
-              component="div"
               variant="semiBoldSmall"
               color="background.onVariant"
               sx={{
                 opacity: 0.65,
                 textAlign: [is_farsi ? "right" : "left"],
+                display: "block",
               }}
             >
               <Trans i18nKey="common.question" />

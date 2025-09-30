@@ -108,6 +108,7 @@ export default function AssessmentReportPage() {
                     {...fetchPathInfo}
                     render={(pathInfo: PathInfo) => (
                       <AssessmentReportTitle
+                        permissions={permissions}
                         pathInfo={pathInfo}
                         rtlLanguage={rtl}
                         lng={lng}

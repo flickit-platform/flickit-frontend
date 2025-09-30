@@ -219,7 +219,7 @@ const UserAccount = () => {
             </Grid>
             <Grid item md={9}>
               <Box>
-                <Text variant="subLarge">
+                <Text variant="subLarge" sx={{ display: "block" }}>
                   <Trans i18nKey="common.linkedin" />
                 </Text>
                 <Text
@@ -232,7 +232,7 @@ const UserAccount = () => {
                 </Text>
               </Box>
               <Box mt={2.5}>
-                <Text variant="subLarge">¸
+                <Text variant="subLarge" sx={{ display: "block" }}>
                   <Trans i18nKey="common.bio" />
                 </Text>
                 <Text

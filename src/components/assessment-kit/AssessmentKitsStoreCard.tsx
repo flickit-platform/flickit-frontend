@@ -200,7 +200,12 @@ const AssessmentKitsStoreCard = (props: any) => {
                 >
                   <Trans i18nKey="assessmentKit.designedBy" />
                 </span>{" "}
-                {expertGroup.title}
+                <Text
+                  variant={small ? "labelSmall" : "semiBoldLarge"}
+                  color="background.onVariant"
+                >
+                  {expertGroup.title}
+                </Text>
               </Text>
             </Box>
           </Box>
@@ -346,9 +351,7 @@ const CheckStatus: React.FC<CheckStatusProps> = ({
   return (
     <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
       {statusIcons[status]}
-      <Text variant={typographyVariant}>
-        {statusLabels[status]}
-      </Text>
+      <Text variant={typographyVariant}>{statusLabels[status]}</Text>
     </div>
   );
 };

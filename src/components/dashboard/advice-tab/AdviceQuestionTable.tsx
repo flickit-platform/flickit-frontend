@@ -103,7 +103,7 @@ const AdviceQuestionTable = ({
 
   const renderQuestionnaireCell = (row: AdviceRow) => (
     <Box>
-      <Text variant="bodyMedium" sx={{ textDecoration: "underline" }}>
+      <Text variant="bodyMedium" sx={{ textDecoration: "underline", display:"block" }}>
         {row.questionnaire?.title}
       </Text>
       <Text

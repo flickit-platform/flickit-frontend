@@ -124,9 +124,7 @@ const CustomChip: React.FC<{
   );
   const Icon =
     type === "impact" ? (
-      <Impact
-        styles={{ color: iconColor, px: 2, width: readOnly ? "14px" : "20px" }}
-      />
+      <Impact styles={{ color: iconColor, px: 2, width: "14px" }} />
     ) : (
       <AttachMoneyOutlinedIcon fontSize="small" />
     );
@@ -312,10 +310,10 @@ const AdviceItemAccordion: React.FC<{
     <>
       <Accordion
         sx={{
-          borderInlineStart: readOnly ? `4px solid #6C8093` : "",
-          border: readOnly ? "" : `1px solid #E0E0E0"`,
-          boxShadow: !readOnly ? "none" : "0 1px 4px rgba(0,0,0,25%)",
-          bgcolor: !readOnly ? "background.containerLow" : "initial",
+          borderInlineStart: `4px solid #6C8093`,
+          border: "",
+          boxShadow: "0 1px 4px rgba(0,0,0,25%)",
+          bgcolor: "initial",
           "&:before": { content: "none" },
           mb: "8px",
         }}
@@ -351,7 +349,7 @@ const AdviceItemAccordion: React.FC<{
                       marginInline: "8px",
                       fontWeight: 500,
                       letterSpacing: "0.15px",
-                      fontSize: readOnly ? "1rem" : "1.25rem",
+                      fontSize: "1rem",
                     }}
                     title={item.title}
                     dir={languageDetector(item.title) ? "rtl" : "ltr"}
@@ -455,7 +453,7 @@ const AdviceItemAccordion: React.FC<{
           <Divider sx={{ marginBottom: "8px" }} />
           <Text
             textAlign="justify"
-            variant={readOnly ? "bodyMedium" : "body1"}
+            variant={"bodyMedium"}
             component="div"
             dangerouslySetInnerHTML={{ __html: item.description }}
             dir={languageDetector(item.description) ? "rtl" : "ltr"}

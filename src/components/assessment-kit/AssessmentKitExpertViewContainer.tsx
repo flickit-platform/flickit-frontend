@@ -941,15 +941,10 @@ const SubjectQuestionList = (props: any) => {
               aria-controls="panel1bh-content"
               id="panel1bh-header"
             >
-              <Text
-                flex={1}
-                fontWeight="bold"
-                display="flex"
-                flexWrap="wrap"
-                sx={{ ...styles.rtlStyle(is_farsi) }}
-                variant="body2"
-              >
-                {index + 1}.{question.title}
+              <Box flex={1} display="flex" flexWrap="wrap" fontWeight="bold">
+                <Text variant="body2" fontWeight="bold">
+                  {index + 1}.{question.title}
+                </Text>
                 {question.mayNotBeApplicable && (
                   <Box
                     borderRadius="8px"
@@ -961,7 +956,9 @@ const SubjectQuestionList = (props: any) => {
                     height="24px"
                     sx={{ ...styles.centerVH }}
                   >
-                    <Trans i18nKey="common.na" />
+                    <Text variant="body2" fontWeight="bold">
+                      <Trans i18nKey="common.na" />
+                    </Text>
                   </Box>
                 )}
                 <Box
@@ -974,7 +971,9 @@ const SubjectQuestionList = (props: any) => {
                   height="24px"
                   sx={{ ...styles.centerVH }}
                 >
-                  {question.questionnaire}
+                  <Text variant="body2" fontWeight="bold">
+                    {question.questionnaire}
+                  </Text>
                 </Box>
                 <Box
                   borderRadius="8px"
@@ -986,10 +985,12 @@ const SubjectQuestionList = (props: any) => {
                   height="24px"
                   sx={{ ...styles.centerVH }}
                 >
-                  <Trans
-                    i18nKey="advice.weightValue"
-                    values={{ weight: question.weight }}
-                  />
+                  <Text variant="body2" fontWeight="bold">
+                    <Trans
+                      i18nKey="advice.weightValue"
+                      values={{ weight: question.weight }}
+                    />{" "}
+                  </Text>
                 </Box>
                 {question.advisable && (
                   <Box
@@ -1002,10 +1003,12 @@ const SubjectQuestionList = (props: any) => {
                     height="24px"
                     sx={{ ...styles.centerVH }}
                   >
-                    <Trans i18nKey="advice.advisable" />
+                    <Text variant="body2" fontWeight="bold">
+                      <Trans i18nKey="advice.advisable" />
+                    </Text>
                   </Box>
                 )}
-              </Text>
+              </Box>
             </AccordionSummary>
             <AccordionDetails>
               <Box sx={{ maxWidth: "max-content" }}>

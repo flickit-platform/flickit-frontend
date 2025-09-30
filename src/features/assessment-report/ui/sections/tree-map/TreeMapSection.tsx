@@ -111,7 +111,8 @@ const HeaderStrip: React.FC<{
         <Text
           variant="semiBoldSmall"
           color="Background.onVariant"
-          sx={rtlSx(vm.rtl)}
+          mt={1}
+          sx={{ ...rtlSx(vm.rtl), display: "block" }}
         >
           {vm.weightText}
         </Text>
@@ -184,11 +185,7 @@ const InsightBlock: React.FC<{
             }}
           />
         )}
-        <Text
-          color="text.primary"
-          variant="semiBoldLarge"
-          sx={rtlSx(rtl)}
-        >
+        <Text color="text.primary" variant="semiBoldLarge" sx={rtlSx(rtl)}>
           {title}
         </Text>
       </Box>

@@ -175,6 +175,7 @@ export const QuestionProgressItem = (props: any) => {
               lineHeight: "13px",
               opacity: question.index == questionIndex ? 1 : 0.6,
               transition: "opacity .1s ease",
+              display:"grid"
             }}
             className="i-p-i-n"
           >
