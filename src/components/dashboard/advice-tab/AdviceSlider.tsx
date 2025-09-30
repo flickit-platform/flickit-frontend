@@ -30,7 +30,7 @@ export default function MaturitySlider({
   maturityLevels = [],
   setTarget,
   currentState,
-}: MaturitySliderProps) {
+}: Readonly<MaturitySliderProps>) {
   const baseTheme = useTheme();
   const ltrTheme = useMemo(
     () => createTheme({ ...baseTheme, direction: "ltr" }),
@@ -154,7 +154,7 @@ function SliderRow({
   marks,
   markTitles,
   onSelectMark,
-}: {
+}: Readonly<{
   defaultValue: number;
   defaultPct: number;
   value: number;
@@ -165,7 +165,7 @@ function SliderRow({
   markTitles: string[];
   onChange: (e: unknown, v: number | number[]) => void;
   onSelectMark: (next: number) => void;
-}) {
+}>) {
   const isMax = defaultValue === total;
   const minAllowed = Math.max(MIN, defaultValue);
   const canDec = value > minAllowed;
@@ -249,12 +249,12 @@ function StepBtn({
   onClick,
   disabled,
   ariaLabel,
-}: {
+}: Readonly<{
   children: React.ReactNode;
   onClick: () => void;
   disabled?: boolean;
   ariaLabel: string;
-}) {
+}>) {
   return (
     <IconButton
       aria-label={ariaLabel}
@@ -286,10 +286,10 @@ function StepBtn({
 const Track = ({
   defaultPct,
   isMax = false,
-}: {
+}: Readonly<{
   defaultPct: number;
   isMax?: boolean;
-}) => (
+}>) => (
   <Box
     sx={(t) => {
       const color = isMax ? t.palette.success.main : t.palette.primary.main;
