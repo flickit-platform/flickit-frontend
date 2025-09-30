@@ -9,6 +9,7 @@ import Typography from "@mui/material/Typography";
 import Chip from "@mui/material/Chip";
 import Share from "@mui/icons-material/Share";
 import { useEffect, useMemo, useState } from "react";
+
 import LoadingButton from "@mui/lab/LoadingButton";
 import stringAvatar from "@/utils/string-avatar";
 import { VISIBILITY } from "@/utils/enum-type";
@@ -172,8 +173,7 @@ export default function ShareDialog({
     isSelected: boolean;
     isDefault: boolean;
   }) => {
-    if (isSelected && isDefault && status === VISIBILITY.RESTRICTED)
-      return "#8A0F2414";
+    if (isSelected && isDefault && status === VISIBILITY.RESTRICTED) return "#8A0F2414";
     if (isSelected) return "#2466A814";
     return "inherit";
   };
@@ -361,6 +361,7 @@ export default function ShareDialog({
       }}
       titleStyle={{ mb: "0px !important" }}
     >
+
       {step == 0 && (
         <>
           <Box
