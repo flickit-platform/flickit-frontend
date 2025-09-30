@@ -71,13 +71,12 @@ export function useAssessmentReportVM() {
     };
   }, []);
 
-  const handleNavigation = (
-    permission: { canViewDashboard?: boolean } | undefined,
-  ) => {
-    const to = permission?.canViewDashboard
-      ? `/${spaceId}/assessments/1/${assessmentId}/dashboard`
-      : `/${spaceId}/assessments/1/${assessmentId}/questionnaires`;
-    navigate(to);
+  const navigateDashboard = () => {
+    navigate(`/${spaceId}/assessments/1/${assessmentId}/dashboard`);
+  };
+
+  const navigateQuestionnaire = () => {
+    navigate(`/${spaceId}/assessments/1/${assessmentId}/questionnaires`);
   };
 
   return {
@@ -97,6 +96,7 @@ export function useAssessmentReportVM() {
     shareDialog,
     expertDialog,
     expertContext,
-    handleNavigation,
+    navigateDashboard,
+    navigateQuestionnaire
   };
 }

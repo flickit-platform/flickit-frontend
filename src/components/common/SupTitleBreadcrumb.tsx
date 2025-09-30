@@ -77,7 +77,8 @@ const SupTitleBreadcrumb = (
                     gap: 0.75,
                     "& .MuiChip-icon": {
                       color: "currentColor",
-                      mr: 0,
+                      marginInlineEnd: -1,
+                      marginInlineStart: 0,
                       fontSize: 18,
                     },
 
@@ -87,7 +88,6 @@ const SupTitleBreadcrumb = (
                         ? farsiFontFamily
                         : primaryFontFamily,
                       fontWeight: 300,
-                      px: 0,
                     },
                   }}
                 />
