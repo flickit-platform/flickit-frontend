@@ -19,9 +19,17 @@ type ExtraProps = {
 type Props = TypographyProps & ExtraProps;
 
 export function hasNoFaOrEnLetters(input: unknown): boolean {
-  const s =
-    typeof input === "string" ? input : input == null ? "" : String(input);
-  const sanitized = s.replaceAll(/[%\u066A]/g, ""); // % و ٪
+  let string: string;
+
+  if (typeof input === "string") {
+    string = input;
+  } else if (input == null) {
+    string = "";
+  } else {
+    string = String(input);
+  }
+
+  const sanitized = string.replaceAll(/[%\u066A]/g, "");
   const letters = /[\p{Script=Latin}\p{Script=Arabic}]/u;
   return !letters.test(sanitized);
 }
