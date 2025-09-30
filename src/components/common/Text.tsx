@@ -56,9 +56,7 @@ function extractText(node: React.ReactNode): string | undefined {
       const values = anyProps.values || {};
       const ns = anyProps.ns;
       const defaults = anyProps.defaults;
-      return i18next
-        .t(key, { ...values, ns, defaultValue: defaults })
-        .toString();
+      return i18next.t(key, { ...values, ns, defaultValue: defaults });
     }
 
     return extractText(anyProps.children);
