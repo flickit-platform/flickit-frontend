@@ -11,7 +11,6 @@ import { CEDialog, CEDialogActions } from "@common/dialogs/CEDialog";
 import FormProviderWithForm from "@common/FormProviderWithForm";
 import AutocompleteAsyncField from "@common/fields/AutocompleteAsyncField";
 import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
 import NewAssessmentIcon from "@/components/common/icons/NewAssessment";
 import LanguageIcon from "@mui/icons-material/Language";
 import FolderOutlinedIcon from "@mui/icons-material/FolderOutlined";
@@ -26,6 +25,7 @@ import {
 import i18next from "i18next";
 import showToast from "@/utils/toast-error";
 import { SpaceField } from "../fields/SpaceField";
+import { Text } from "../Text";
 
 interface IAssessmentCEFromDialogProps extends DialogProps {
   onClose: () => void;
@@ -167,9 +167,9 @@ const NewAssessmentDialog = (props: IAssessmentCEFromDialogProps) => {
       <FormProviderWithForm formMethods={formMethods}>
         {type === "create" ? (
           <>
-            <Typography variant="semiBoldLarge" color="text.primary" pb={4}>
+            <Text variant="semiBoldLarge" color="text.primary" pb={4}>
               <Trans i18nKey="assessment.createAssessmentConfirmSettings" />
-            </Typography>
+            </Text>
             <Grid container display="flex" alignItems="start">
               <Grid
                 xs={12}
@@ -190,13 +190,13 @@ const NewAssessmentDialog = (props: IAssessmentCEFromDialogProps) => {
                       background: "transparent",
                     }}
                   />
-                  <Typography>
+                  <Text>
                     <Trans i18nKey="spaces.targetSpace" />
-                  </Typography>
+                  </Text>
                 </Box>
-                <Typography variant="bodySmall" color="text.primary">
+                <Text variant="bodySmall" color="text.primary">
                   <Trans i18nKey="assessment.chooseSpace" />
-                </Typography>
+                </Text>
                 <SpaceField
                   queryDataSpaces={queryDataSpaces}
                   spaces={spaceList}
@@ -228,13 +228,13 @@ const NewAssessmentDialog = (props: IAssessmentCEFromDialogProps) => {
                       background: "transparent",
                     }}
                   />
-                  <Typography>
+                  <Text>
                     <Trans i18nKey="assessmentKit.assessmentLanguage" />
-                  </Typography>
+                  </Text>
                 </Box>
-                <Typography variant="bodySmall" color="text.primary">
+                <Text variant="bodySmall" color="text.primary">
                   <Trans i18nKey="assessmentKit.assessmentSupportsMultipleLanguages" />
-                </Typography>
+                </Text>
                 <LangField lang={langList} />
               </Grid>
             </Grid>
@@ -249,9 +249,9 @@ const NewAssessmentDialog = (props: IAssessmentCEFromDialogProps) => {
             }}
           >
             <ErrorOutlinedIcon color="error" />
-            <Typography>
+            <Text>
               <Trans i18nKey="spaces.limitExceededSpacesDesc" />
-            </Typography>
+            </Text>
           </Box>
         )}
 

@@ -1,4 +1,4 @@
-import Typography from "@mui/material/Typography";
+import { Text } from "../Text";
 
 export default function FileType() {
   return (
@@ -66,7 +66,7 @@ export default function FileType() {
           fill="#243342"
         />
       </svg>
-      <Typography sx={{ position: "absolute" }}></Typography>
+      <Text sx={{ position: "absolute" }}></Text>
     </section>
   );
 }

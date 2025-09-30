@@ -1,9 +1,9 @@
 import Divider from "@mui/material/Divider";
 import Tooltip from "@mui/material/Tooltip";
-import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import { Trans } from "react-i18next";
 import { styles } from "@styles";
+import { Text } from "../common/Text";
 
 const ScoreDisplay = ({ data }: any) => {
   const {
@@ -45,18 +45,18 @@ const ScoreDisplay = ({ data }: any) => {
             }}
           >
             <Box sx={{ ...styles.centerCVH }}>
-              <Typography
+              <Text
                 variant="semiBoldSmall"
                 color="background.containerLowest"
               >
                 {missedScore} ({missedScorePercentage}%)
-              </Typography>
-              <Typography
+              </Text>
+              <Text
                 variant="bodySmall"
                 color="background.containerLowest"
               >
                 <Trans i18nKey="subject.missedScore" />
-              </Typography>
+              </Text>
             </Box>
             <Divider
               orientation="vertical"
@@ -64,18 +64,18 @@ const ScoreDisplay = ({ data }: any) => {
               sx={{ mx: "8px", bgcolor: "background.containerLowest" }}
             />
             <Box sx={{ ...styles.centerCVH }}>
-              <Typography
+              <Text
                 variant="semiBoldSmall"
                 color="background.containerLowest"
               >
                 {gainedScore} ({gainedScorePercentage}%)
-              </Typography>
-              <Typography
+              </Text>
+              <Text
                 variant="bodySmall"
                 color="background.containerLowest"
               >
                 <Trans i18nKey="subject.gainedScore" />
-              </Typography>
+              </Text>
             </Box>
           </Box>
         </Box>

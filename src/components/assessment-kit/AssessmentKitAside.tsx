@@ -1,5 +1,4 @@
 import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
 import LanguageIcon from "@mui/icons-material/Language";
 import PriceIcon from "@/components/common/icons/Price";
 import { Trans } from "react-i18next";
@@ -25,6 +24,7 @@ import PaidOutlinedIcon from "@mui/icons-material/PaidOutlined";
 import { usePurchaseDialog } from "@/hooks/usePurchaseDialog";
 import { useTheme } from "@mui/material";
 import uniqueId from "@/utils/unique-id";
+import { Text } from "../common/Text";
 
 interface IlistOfItems {
   field: boolean;
@@ -199,10 +199,10 @@ const AssessmentKitAside = (props: any) => {
               />
             </LoadingButton>
             <Box mt={1} gap={1} sx={{ ...styles.centerVH }}>
-              <Typography color="text.primary" variant="bodySmall">
+              <Text color="text.primary" variant="bodySmall">
                 <Trans i18nKey="assessmentKit.haveAnyQuestions" />
-              </Typography>
-              <Typography
+              </Text>
+              <Text
                 variant="bodySmall"
                 color="primary.main"
                 sx={{
@@ -214,11 +214,11 @@ const AssessmentKitAside = (props: any) => {
                 }
               >
                 <Trans i18nKey="common.contactUs" />
-              </Typography>
+              </Text>
             </Box>
           </Box>
           {isAuthenticated && (
-            <Typography
+            <Text
               color="text.primary"
               variant="bodySmall"
               textAlign="center"
@@ -252,7 +252,7 @@ const AssessmentKitAside = (props: any) => {
                   <ThumbUpOffAltOutlinedIcon color="primary" fontSize="small" />
                 )}
               </IconButton>
-            </Typography>
+            </Text>
           )}
         </Box>
       </Box>
@@ -274,17 +274,17 @@ const InfoBox = (props: any) => {
       {icon}
       <Box display="flex" flexDirection="column" gap={0.5}>
         {title && (
-          <Typography variant="semiBoldSmall" color="background.onVariant">
+          <Text variant="semiBoldSmall" color="background.onVariant">
             {t(`${title}`)}
-          </Typography>
+          </Text>
         )}
-        <Typography
+        <Text
           variant="bodyLarge"
           color="text.primary"
           textAlign="justify"
         >
           {t(`${description}`)}
-        </Typography>
+        </Text>
       </Box>
     </Box>
   );

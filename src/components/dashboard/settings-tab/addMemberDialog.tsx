@@ -2,7 +2,6 @@ import { useEffect, useRef, useState } from "react";
 import { useServiceContext } from "@/providers/service-provider";
 import { useParams } from "react-router-dom";
 import { useQuery } from "@/hooks/useQuery";
-import Typography from "@mui/material/Typography";
 import FormControl from "@mui/material/FormControl";
 import { ICustomError } from "@/utils/custom-error";
 import { SelectHeight } from "@/utils/select-height";
@@ -25,6 +24,7 @@ import showToast from "@/utils/toast-error";
 import { CEDialog } from "@/components/common/dialogs/CEDialog";
 import { useTheme } from "@mui/material";
 import { AxiosRequestConfig } from "axios";
+import { Text } from "@/components/common/Text";
 
 export enum EUserInfo {
   "NAME" = "displayName",
@@ -249,9 +249,9 @@ const AddMemberDialog = (props: {
         width="100%"
         mt={1}
       >
-        <Typography sx={{ whiteSpace: "noWrap" }}>
+        <Text sx={{ whiteSpace: "noWrap" }}>
           <Trans i18nKey="common.add" />
-        </Typography>
+        </Text>
         <Box width="50%">
           <FormProviderWithForm formMethods={formMethods}>
             <EmailField
@@ -260,9 +260,9 @@ const AddMemberDialog = (props: {
             />
           </FormProviderWithForm>
         </Box>
-        <Typography sx={{ whiteSpace: "nowrap" }}>
+        <Text sx={{ whiteSpace: "nowrap" }}>
           <Trans i18nKey="common.as" />
-        </Typography>
+        </Text>
         <FormControl sx={{ width: "40%" }}>
           <Select
             labelId="demo-multiple-name-label"
@@ -303,9 +303,9 @@ const AddMemberDialog = (props: {
                 borderBottom: "1px solid #9DA7B3",
               }}
             >
-              <Typography sx={{ fontSize: "0.875rem" }}>
+              <Text sx={{ fontSize: "0.875rem" }}>
                 <Trans i18nKey="settings.chooseARole" />
-              </Typography>
+              </Text>
             </Box>
             {listOfRoles?.map((role: any, index: number) => {
               return (
@@ -339,7 +339,7 @@ const AddMemberDialog = (props: {
                       paddingY: "1rem",
                     }}
                   >
-                    <Typography>{role.title}</Typography>
+                    <Text>{role.title}</Text>
                     <div
                       style={{
                         color: theme.palette.text.primary,
@@ -388,13 +388,13 @@ const AddMemberDialog = (props: {
               marginInlineEnd: 1,
             }}
           />
-          <Typography variant="bodyLarge">
+          <Text variant="bodyLarge">
             {addedEmailType === EUserType.EXISTED ? (
               <Trans i18nKey="user.emailExistsInApp" />
             ) : (
               <Trans i18nKey="user.emailDoesNotExistInApp" />
             )}
-          </Typography>
+          </Text>
         </Box>
       )}
       <Box

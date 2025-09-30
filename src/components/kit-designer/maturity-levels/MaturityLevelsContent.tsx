@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import Box from "@mui/material/Box";
 import Divider from "@mui/material/Divider";
-import Typography from "@mui/material/Typography";
 import PermissionControl from "../../common/PermissionControl";
 import QueryBatchData from "../../common/QueryBatchData";
 import { useServiceContext } from "@/providers/service-provider";
@@ -19,6 +18,7 @@ import { DeleteConfirmationDialog } from "@common/dialogs/DeleteConfirmationDial
 import KitDesignerHeader from "../common/KitHeader";
 import EmptyState from "../common/EmptyState";
 import showToast from "@/utils/toast-error";
+import { Text } from "@/components/common/Text";
 
 const MaturityLevelsContent = () => {
   const { service } = useServiceContext();
@@ -207,9 +207,9 @@ const MaturityLevelsContent = () => {
           description="kitDesigner.maturityLevelsKitDesignerDescription"
         />
         {maturityLevels.loaded && maturityLevels.data.items.length !== 0 && (
-          <Typography variant="bodyMedium" mt={1}>
+          <Text variant="bodyMedium" mt={1}>
             <Trans i18nKey="kitDesigner.changeOrderHelper" />
-          </Typography>
+          </Text>
         )}
         <Divider sx={{ my: 1 }} />
 
@@ -267,9 +267,9 @@ const MaturityLevelsContent = () => {
 
         {maturityLevels.loaded && maturityLevels.data.items.length !== 0 && (
           <Box mt={4}>
-            <Typography variant="headlineSmall" fontWeight="bold">
+            <Text variant="headlineSmall" fontWeight="bold">
               <Trans i18nKey="common.competences" />
-            </Typography>
+            </Text>
             <Divider sx={{ my: 1 }} />
             <QueryBatchData
               queryBatchData={[maturityLevelsCompetences]}

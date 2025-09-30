@@ -10,7 +10,6 @@ import IconButton from "@mui/material/IconButton";
 import InputAdornment from "@mui/material/InputAdornment";
 import MLink from "@mui/material/Link";
 import TextField from "@mui/material/TextField";
-import Typography from "@mui/material/Typography";
 import { useParams } from "react-router-dom";
 import { useServiceContext } from "@/providers/service-provider";
 import { useQuery } from "@/hooks/useQuery";
@@ -67,6 +66,7 @@ import flagsmith from "flagsmith";
 import showToast from "@/utils/toast-error";
 import { useTheme } from "@mui/material";
 import Title from "@common/Title";
+import { Text } from "../common/Text";
 
 const ExpertGroupContainer = () => {
   const { service } = useServiceContext();
@@ -275,24 +275,12 @@ const ExpertGroupContainer = () => {
                     bgcolor="background.containerLowest"
                   >
                     <Box>
-                      <Typography
-                        variant="h6"
-                        mb={1.5}
-                        sx={{ ...styles.centerV }}
-                      >
+                      <Text variant="h6" mb={1.5} sx={{ ...styles.centerV }}>
                         <Trans i18nKey="expertGroups.groupSummary" />
-                      </Typography>
+                      </Text>
                       {bio && (
                         <Box mt={1}>
-                          <Typography
-                            sx={{
-                              fontFamily: languageDetector(bio)
-                                ? farsiFontFamily
-                                : primaryFontFamily,
-                            }}
-                          >
-                            {bio}
-                          </Typography>
+                          <Text>{bio}</Text>
                         </Box>
                       )}
                       {website && (
@@ -332,7 +320,7 @@ const ExpertGroupContainer = () => {
                           }}
                         />
 
-                        <Typography
+                        <Text
                           sx={{
                             opacity: 0.9,
                             fontSize: "inherit",
@@ -340,7 +328,7 @@ const ExpertGroupContainer = () => {
                         >
                           {numberOfMembers}{" "}
                           {t("expertGroups.members").toLowerCase()}
-                        </Typography>
+                        </Text>
                       </Box>
                       <Box
                         mt={1}
@@ -362,7 +350,7 @@ const ExpertGroupContainer = () => {
                           }}
                         />
 
-                        <Typography
+                        <Text
                           sx={{
                             opacity: 0.9,
                             fontSize: "inherit",
@@ -376,7 +364,7 @@ const ExpertGroupContainer = () => {
                                 (item: any) => item.published,
                               ).length
                             } ${t("expertGroups.publishedAssessmentKits").toLowerCase()}`}
-                        </Typography>
+                        </Text>
                         {editable && (
                           <Box marginInlineStart="auto" marginInlineEnd="unset">
                             <IconButton
@@ -415,7 +403,7 @@ const ExpertGroupContainer = () => {
                             }}
                           />
 
-                          <Typography
+                          <Text
                             sx={{
                               opacity: 0.9,
                               fontSize: "inherit",
@@ -429,7 +417,7 @@ const ExpertGroupContainer = () => {
                                   (item: any) => !item.published,
                                 ).length
                               } ${t("expertGroups.unpublishedAssessmentKits").toLowerCase()}`}
-                          </Typography>
+                          </Text>
                         </Box>
                       )}
                     </Box>
@@ -724,7 +712,7 @@ const ExpertGroupMembers = (props: any) => {
           const users = items.filter((user: any) => user.status === "ACTIVE");
           return (
             <Box>
-              <Typography
+              <Text
                 variant="h6"
                 component="a"
                 href="#members"
@@ -736,7 +724,7 @@ const ExpertGroupMembers = (props: any) => {
                 }}
               >
                 <Trans i18nKey="expertGroups.members" />
-              </Typography>
+              </Text>
               {hasAccess && showGroups && (
                 <AddingNewMember
                   queryData={query}
@@ -793,7 +781,7 @@ const Invitees = (props: any) => {
   return (
     <Box>
       {hasInvitees && (
-        <Typography
+        <Text
           variant="h6"
           fontSize="0.9rem"
           sx={{
@@ -815,7 +803,7 @@ const Invitees = (props: any) => {
               <AddRoundedIcon fontSize="small" />
             )}
           </Box>
-        </Typography>
+        </Text>
       )}
       <Collapse in={openInvitees}>
         <Box display="flex" flexWrap="wrap" my={1}>
@@ -847,9 +835,9 @@ const Invitees = (props: any) => {
                           opacity: 0.9,
                         }}
                       />
-                      <Typography variant="body2">
+                      <Text variant="body2">
                         {getReadableDate(inviteExpirationDate)}
-                      </Typography>
+                      </Text>
                     </Box>
                   </Box>
                 </Box>
@@ -948,7 +936,7 @@ const AddingNewMember = (props: any) => {
 
   return (
     <Box>
-      <Typography
+      <Text
         variant="h6"
         marginBottom={2}
         fontSize="0.9rem"
@@ -971,7 +959,7 @@ const AddingNewMember = (props: any) => {
             <AddRoundedIcon fontSize="small" />
           )}
         </Box>
-      </Typography>
+      </Text>
       <Collapse in={openAddMembers}>
         <AddMember queryData={queryData} inviteeQuery={inviteeQuery} />
       </Collapse>
@@ -1071,7 +1059,10 @@ const AssessmentKitsList = (props: any) => {
     languages,
   } = props;
   const { expertGroupId } = useParams();
-  const [openDeleteDialog, setOpenDeleteDialog] = useState<{status: boolean, id: TId}>({ status: false, id: "" });
+  const [openDeleteDialog, setOpenDeleteDialog] = useState<{
+    status: boolean;
+    id: TId;
+  }>({ status: false, id: "" });
   const { service } = useServiceContext();
 
   const kitDesignerDialogProps = useDialog({
@@ -1082,21 +1073,20 @@ const AssessmentKitsList = (props: any) => {
   const open = Boolean(anchorEl);
 
   const deleteAssessmentKitQuery = useQuery({
-    service: (args, config) =>
-      service.assessmentKit.info.remove(args, config),
+    service: (args, config) => service.assessmentKit.info.remove(args, config),
     runOnMount: false,
   });
 
   const deleteItem = async () => {
     try {
-      const id = openDeleteDialog.id
-      await deleteAssessmentKitQuery.query({id});
+      const id = openDeleteDialog.id;
+      await deleteAssessmentKitQuery.query({ id });
       await assessmentKitQuery?.query({
         id: expertGroupId,
         size: 10,
         page: 1,
       });
-      setOpenDeleteDialog({ status: false, id: "" })
+      setOpenDeleteDialog({ status: false, id: "" });
     } catch (e) {
       const err = e as ICustomError;
       showToast(err);
@@ -1457,17 +1447,9 @@ const ExpertGroupMembersDetail = (props: any) => {
                                   </Title>
                                 </Box>
                                 <Box mt={1} px={1} py={1} pb={3}>
-                                  <Typography
-                                    variant="body2"
-                                    textAlign={"center"}
-                                    sx={{
-                                      fontFamily: languageDetector(bio)
-                                        ? farsiFontFamily
-                                        : primaryFontFamily,
-                                    }}
-                                  >
+                                  <Text variant="body2" textAlign={"center"}>
                                     {bio}
-                                  </Typography>
+                                  </Text>
                                 </Box>
                               </Box>
                             </Box>
@@ -1544,9 +1526,9 @@ const ExpertGroupMembersDetail = (props: any) => {
                                   marginInlineEnd: 0.5,
                                 }}
                               />
-                              <Typography variant="body2">
+                              <Text variant="body2">
                                 {getReadableDate(inviteExpirationDate)}
-                              </Typography>
+                              </Text>
                             </Box>
                             <MemberActions
                               query={queryData.query}

@@ -1,6 +1,5 @@
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
 import { Trans } from "react-i18next";
 import { getMaturityLevelColors, styles } from "@styles";
 import Accordion from "@mui/material/Accordion";
@@ -32,6 +31,7 @@ import ScoreImpactBarChart from "./ScoreImpactBarChart";
 import DropDownContent from "./DropDownContent";
 import { useTheme } from "@mui/material";
 import Title from "@common/Title";
+import { Text } from "../common/Text";
 
 const SubjectAttributeCard = (props: any) => {
   const {
@@ -239,18 +239,15 @@ const SubjectAttributeCard = (props: any) => {
           >
             <Grid item xs={12} sm={9} sx={{ p: 4 }}>
               <Title>
-                <Typography
+                <Text
                   variant="headlineSmall"
                   sx={{
                     textTransform: "none",
-                    fontFamily: languageDetector(title)
-                      ? farsiFontFamily
-                      : primaryFontFamily,
                   }}
                 >
                   {title}
-                </Typography>
-                <Typography
+                </Text>
+                <Text
                   variant="bodyMedium"
                   sx={{
                     textTransform: "none",
@@ -260,20 +257,17 @@ const SubjectAttributeCard = (props: any) => {
                   {"("}
                   <Trans i18nKey="common.weight" />: {maturityLevel?.value}
                   {")"}
-                </Typography>
+                </Text>
               </Title>
-              <Typography
+              <Text
                 variant="bodyMedium"
                 color="background.onVariant"
                 sx={{
                   mt: 1,
-                  fontFamily: languageDetector(description)
-                    ? farsiFontFamily
-                    : primaryFontFamily,
                 }}
               >
                 {description}
-              </Typography>
+              </Text>
             </Grid>
             <Grid item xs={12} sm={3} height={{ sm: "100%", xs: "unset" }}>
               {" "}

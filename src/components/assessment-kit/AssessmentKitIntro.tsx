@@ -1,10 +1,11 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { Box, Typography, Button, useTheme } from "@mui/material";
+import { Box, Button, useTheme } from "@mui/material";
 import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
 import languageDetector from "@/utils/language-detector";
 import { Trans } from "react-i18next";
 import { styles } from "@styles";
 import { t } from "i18next";
+import { Text } from "../common/Text";
 
 const MAX_HEIGHT = 200;
 
@@ -129,14 +130,14 @@ const AssessmentKitIntro = ({ about, metadata }: Props) => {
 
       {/* Content */}
       <Box flex={1} p={4}>
-        <Typography variant="titleLarge" color="text.primary">
+        <Text variant="titleLarge" color="text.primary">
           <Trans
             i18nKey={currentSection.title}
             components={{
               primary: <Box component="span" color="primary.main" />,
             }}
           />
-        </Typography>
+        </Text>
 
         {/* Main content with fade mask */}
         <Box

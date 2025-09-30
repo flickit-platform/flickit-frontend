@@ -6,7 +6,6 @@ import Box from "@mui/material/Box";
 import QANumberIndicator from "@common/QANumberIndicator";
 import Divider from "@mui/material/Divider";
 import MenuItem from "@mui/material/MenuItem";
-import Typography from "@mui/material/Typography";
 import { Trans } from "react-i18next";
 import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
@@ -20,6 +19,7 @@ import Button from "@mui/material/Button";
 import { useAssessmentContext } from "@/providers/assessment-provider";
 import { ASSESSMENT_MODE } from "@/utils/enum-type";
 import { useTheme } from "@mui/material";
+import { Text } from "@/components/common/Text";
 
 interface IQuestionnaireListProps {
   questionnaireQueryData: any;
@@ -98,15 +98,15 @@ export const QuestionsFilteringDropdown = (props: any) => {
 
     if (selected.length == 0) {
       return (
-        <Typography variant="semiBoldMedium" color="#333333">
+        <Text variant="semiBoldMedium" color="#333333">
           <Trans i18nKey="common.none" />
-        </Typography>
+        </Text>
       );
     } else if (isAllSelected) {
       return (
-        <Typography variant="semiBoldMedium" color="#333333">
+        <Text variant="semiBoldMedium" color="#333333">
           <Trans i18nKey="common.all" />
-        </Typography>
+        </Text>
       );
     } else if (selected.length == 1) {
       return selected.join(", ");
@@ -121,7 +121,7 @@ export const QuestionsFilteringDropdown = (props: any) => {
           }}
         >
           <Trans i18nKey="dashboard.selectedIssuesType" />:
-          <Typography>{selected.length}</Typography>
+          <Text>{selected.length}</Text>
         </Box>
       );
     }
@@ -138,11 +138,11 @@ export const QuestionsFilteringDropdown = (props: any) => {
         gap: 2,
       }}
     >
-      <Typography variant="semiBoldLarge">
+      <Text variant="semiBoldLarge">
         {dropdownLabel ?? (
           <Trans i18nKey="dashboard.filterQuestionsWithIssues" />
         )}
-      </Typography>
+      </Text>
       <FormControl sx={{ m: 1, width: 250 }}>
         <Select
           labelId="demo-multiple-checkbox-label-kit-container"
@@ -233,7 +233,7 @@ const ProgressButton = (props: any) => {
 
             <Trans i18nKey="assessmentReport.viewReport" />
           </Button>
-          <Typography
+          <Text
             variant="labelMedium"
             color="tertiary.light"
             sx={{
@@ -244,7 +244,7 @@ const ProgressButton = (props: any) => {
               i18nKey="dashboard.moreAnswersNeeded"
               values={{ count: leftQuestions }}
             />
-          </Typography>
+          </Text>
         </Box>
       ) : leftQuestions === 0 ? (
         <Button
@@ -263,9 +263,9 @@ const ProgressButton = (props: any) => {
             },
           }}
         >
-          <Typography color="primary.main">
+          <Text color="primary.main">
             <Trans i18nKey="assessmentReport.viewReport" />
-          </Typography>
+          </Text>
         </Button>
       ) : (
         <></>
@@ -317,7 +317,7 @@ export const QuestionnaireList = (props: IQuestionnaireListProps) => {
             },
           }}
         >
-          <Typography variant="titleLarge" color="white">
+          <Text variant="titleLarge" color="white">
             <Trans i18nKey="common.questionnaires" />
             {"  "}(
             <QANumberIndicator
@@ -326,7 +326,7 @@ export const QuestionnaireList = (props: IQuestionnaireListProps) => {
               variant={"titleLarge"}
             />
             )
-          </Typography>
+          </Text>
         </Box>
 
         {isQuickMode ? (
@@ -375,14 +375,14 @@ export const QuestionnaireList = (props: IQuestionnaireListProps) => {
                     })
                   ) : (
                     <Box sx={{ ...styles.centerVH, width: "100%" }}>
-                      <Typography variant="headlineLarge" color="#C2CCD680">
+                      <Text variant="headlineLarge" color="#C2CCD680">
                         {originalItem.length == 1 && (
                           <Trans i18nKey="dashboard.noIssueFound" />
                         )}
                         {originalItem.length > 1 && (
                           <Trans i18nKey="dashboard.noIssuesFound" />
                         )}
-                      </Typography>
+                      </Text>
                     </Box>
                   )}
                 </Grid>

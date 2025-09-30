@@ -1,7 +1,6 @@
 import Box from "@mui/material/Box";
 import IconButton from "@mui/material/IconButton";
 import { Trans } from "react-i18next";
-import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
 import InfoItem from "@common/InfoItem";
 import { t } from "i18next";
@@ -30,8 +29,6 @@ import { keyframes } from "@emotion/react";
 import { Link } from "react-router-dom";
 import { LoadingSkeleton } from "@common/loadings/LoadingSkeleton";
 import { AssessmentKitStatsType, AssessmentKitInfoType } from "@/types/index";
-import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
-import languageDetector from "@/utils/language-detector";
 import SelectLanguage from "@/utils/select-language";
 import { useConfigContext } from "@/providers/config-provider";
 import uniqueId from "@/utils/unique-id";
@@ -41,6 +38,7 @@ import { RenderGeneralField } from "@common/RenderGeneralField";
 import useGeneralInfoField from "@/hooks/useGeneralInfoField";
 import { useTranslationUpdater } from "@/hooks/useTranslationUpdater";
 import { styles } from "@styles";
+import { Text } from "../common/Text";
 
 interface IAssessmentKitSectionAuthorInfo {
   setExpertGroup: any;
@@ -246,21 +244,21 @@ const AssessmentKitSectionGeneralInfo = (
                   editable={editable}
                 />
                 <Box height="38px" width="100%" sx={{ ...styles.centerV }}>
-                  <Typography variant="body2" mr={4} minWidth="64px !important">
+                  <Text variant="body2" mr={4} minWidth="64px !important">
                     <Trans i18nKey="common.price" />
-                  </Typography>
-                  <Typography variant="body2" fontWeight="700" mr={4} ml={1}>
+                  </Text>
+                  <Text variant="body2" fontWeight="700" mr={4} ml={1}>
                     <Trans i18nKey="common.free" />
-                  </Typography>
+                  </Text>
                 </Box>
                 <Box
                   my={1.5}
                   justifyContent="space-between"
                   sx={{ ...styles.centerV }}
                 >
-                  <Typography variant="body2" mr={4} minWidth="64px !important">
+                  <Text variant="body2" mr={4} minWidth="64px !important">
                     <Trans i18nKey="common.tags" />
-                  </Typography>
+                  </Text>
                   {editable && show ? (
                     <FormProviderWithForm formMethods={formMethods}>
                       <Box
@@ -348,9 +346,9 @@ const AssessmentKitSectionGeneralInfo = (
                               mr={1}
                               px={1}
                             >
-                              <Typography variant="body2" fontWeight="700">
+                              <Text variant="body2" fontWeight="700">
                                 {tag.title}
-                              </Typography>
+                              </Text>
                             </Box>
                           );
                         })}
@@ -389,13 +387,9 @@ const AssessmentKitSectionGeneralInfo = (
                         justifyContent="space-between"
                         sx={{ ...styles.centerV }}
                       >
-                        <Typography
-                          variant="body2"
-                          mr={4}
-                          minWidth="64px !important"
-                        >
+                        <Text variant="body2" mr={4} minWidth="64px !important">
                           <Trans i18nKey={label} />:
-                        </Typography>
+                        </Text>
                         <RenderGeneralField
                           field={name}
                           data={data}
@@ -422,9 +416,9 @@ const AssessmentKitSectionGeneralInfo = (
                   justifyContent="space-between"
                   sx={{ ...styles.centerV }}
                 >
-                  <Typography variant="body2" mr={4} minWidth="64px !important">
+                  <Text variant="body2" mr={4} minWidth="64px !important">
                     <Trans i18nKey="common.language" />
-                  </Typography>
+                  </Text>
                   <SelectLanguage
                     handleChange={handleLanguageChange}
                     mainLanguage={mainLanguage}
@@ -515,15 +509,15 @@ const AssessmentKitSectionGeneralInfo = (
                 <Box display="flex" px={1} mt={4}>
                   <Box display="flex" mr={4}>
                     <FavoriteRoundedIcon color="primary" />
-                    <Typography color="primary" ml={1}>
+                    <Text color="primary" ml={1}>
                       {likes}
-                    </Typography>
+                    </Text>
                   </Box>
                   <Box display="flex">
                     <ShoppingCartRoundedIcon color="primary" />
-                    <Typography color="primary" ml={1}>
+                    <Text color="primary" ml={1}>
                       {assessmentCounts}
-                    </Typography>
+                    </Text>
                   </Box>
                 </Box>
               </Box>
@@ -598,9 +592,9 @@ const OnHoverInput = (props: any) => {
         sx={{ ...styles.centerV }}
         width="100%"
       >
-        <Typography variant="body2" mr={4} minWidth="64px !important">
+        <Text variant="body2" mr={4} minWidth="64px !important">
           {title}
-        </Typography>
+        </Text>
 
         {editable && show ? (
           <Box display="flex" flexDirection="column" width="100%">
@@ -660,9 +654,9 @@ const OnHoverInput = (props: any) => {
               }
             />
             {hasError && (
-              <Typography color="#ba000d" variant="caption">
+              <Text color="#ba000d" variant="caption">
                 {error?.data?.[type]}
-              </Typography>
+              </Text>
             )}
           </Box>
         ) : (
@@ -685,17 +679,9 @@ const OnHoverInput = (props: any) => {
             onMouseOver={handleMouseOver}
             onMouseOut={handleMouseOut}
           >
-            <Typography
-              sx={{
-                fontFamily: languageDetector(data)
-                  ? farsiFontFamily
-                  : primaryFontFamily,
-              }}
-              variant="body2"
-              fontWeight="700"
-            >
+            <Text variant="body2" fontWeight="700">
               {data?.replace(/<\/?p>/g, "")}
-            </Typography>
+            </Text>
             {isHovering && (
               <IconButton
                 title="Edit"
@@ -753,9 +739,9 @@ const OnHoverStatus = (props: any) => {
   return (
     <Box>
       <Box my={1.5} sx={{ ...styles.centerV }}>
-        <Typography variant="body2" mr={4} minWidth="64px !important">
+        <Text variant="body2" mr={4} minWidth="64px !important">
           {title}
-        </Typography>
+        </Text>
         <Box
           display="flex"
           bgcolor="#00000014"
@@ -780,7 +766,7 @@ const OnHoverStatus = (props: any) => {
               animation: `${fadeIn} 0.5s ease`,
             }}
           >
-            <Typography
+            <Text
               variant="body2"
               fontWeight="700"
               textTransform="uppercase"
@@ -788,7 +774,7 @@ const OnHoverStatus = (props: any) => {
               fontSize="0.75rem"
             >
               <Trans i18nKey="common.published" />
-            </Typography>
+            </Text>
           </Box>
           <Box
             onClick={() => handleToggle(false)}
@@ -804,7 +790,7 @@ const OnHoverStatus = (props: any) => {
               animation: `${fadeIn} 0.5s ease`,
             }}
           >
-            <Typography
+            <Text
               variant="body2"
               fontWeight="700"
               textTransform="uppercase"
@@ -812,7 +798,7 @@ const OnHoverStatus = (props: any) => {
               fontSize=".75rem"
             >
               <Trans i18nKey="common.unpublished" />
-            </Typography>
+            </Text>
           </Box>
         </Box>
       </Box>
@@ -850,9 +836,9 @@ const OnHoverVisibilityStatus = (props: any) => {
   return (
     <Box>
       <Box my={1.5} sx={{ ...styles.centerV }}>
-        <Typography variant="body2" mr={4} sx={{ minWidth: "64px !important" }}>
+        <Text variant="body2" mr={4} sx={{ minWidth: "64px !important" }}>
           {title}
-        </Typography>
+        </Text>
         <Box display="flex" width="100%">
           <Box
             display="flex"
@@ -878,7 +864,7 @@ const OnHoverVisibilityStatus = (props: any) => {
                 animation: `${fadeIn} 0.5s ease`,
               }}
             >
-              <Typography
+              <Text
                 variant="body2"
                 fontWeight="700"
                 textTransform="uppercase"
@@ -886,7 +872,7 @@ const OnHoverVisibilityStatus = (props: any) => {
                 fontSize=".75rem"
               >
                 <Trans i18nKey="common.private" />
-              </Typography>
+              </Text>
             </Box>
             <Box
               onClick={() => handleToggle(false)}
@@ -902,7 +888,7 @@ const OnHoverVisibilityStatus = (props: any) => {
                 animation: `${fadeIn} 0.5s ease`,
               }}
             >
-              <Typography
+              <Text
                 variant="body2"
                 fontWeight="700"
                 textTransform="uppercase"
@@ -910,7 +896,7 @@ const OnHoverVisibilityStatus = (props: any) => {
                 fontSize=".75rem"
               >
                 <Trans i18nKey="common.public" />
-              </Typography>
+              </Text>
             </Box>
           </Box>
           {editable && selected && (

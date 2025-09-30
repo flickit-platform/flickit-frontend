@@ -1,7 +1,7 @@
 import Box, { BoxProps } from "@mui/material/Box";
 import LinearProgress from "@mui/material/LinearProgress";
-import Typography from "@mui/material/Typography";
 import { Trans } from "react-i18next";
+import { Text } from "../Text";
 
 interface IGettingThingsReadyLoadingProps extends BoxProps {}
 
@@ -19,9 +19,9 @@ const GettingThingsReadyLoading = (props: IGettingThingsReadyLoadingProps) => {
         ...(rest.sx ?? {}),
       }}
     >
-      <Typography variant="h5">
+      <Text variant="h5">
         <Trans i18nKey="notification.gettingThingsReady" />
-      </Typography>
+      </Text>
       <LinearProgress color="inherit" sx={{ marginTop: "12px" }} />
     </Box>
   );

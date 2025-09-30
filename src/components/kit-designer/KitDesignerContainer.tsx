@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Box, Grid, Typography, Tabs, Tab } from "@mui/material";
+import { Box, Grid, Tabs, Tab } from "@mui/material";
 import { Trans } from "react-i18next";
 import { useParams } from "react-router-dom";
 
@@ -18,6 +18,7 @@ import { useServiceContext } from "@/providers/service-provider";
 import { useQuery } from "@/hooks/useQuery";
 import { IKitVersion, ILanguage } from "@/types";
 import { useKitDesignerContext, kitActions } from "@/providers/kit-provider";
+import { Text } from "../common/Text";
 
 const tabMap = [
   { key: "General", title: "common.general", Component: GeneralContent },
@@ -104,13 +105,13 @@ const KitDesignerContainer = () => {
 
             <Grid container spacing={1} columns={12}>
               <Grid item sm={12} xs={12} mt={1}>
-                <Typography
+                <Text
                   color="primary"
                   textAlign="left"
                   variant="headlineLarge"
                 >
                   <Trans i18nKey="kitDesigner.kitDesigner" />
-                </Typography>
+                </Text>
               </Grid>
 
               <Grid container sm={12} xs={12} mt={6}>
@@ -151,9 +152,9 @@ const KitDesignerContainer = () => {
                         key={tab.key}
                         sx={{ alignItems: "flex-start", textTransform: "none" }}
                         label={
-                          <Typography variant="semiBoldLarge">
+                          <Text variant="semiBoldLarge">
                             <Trans i18nKey={tab.title} />
-                          </Typography>
+                          </Text>
                         }
                       />
                     ))}

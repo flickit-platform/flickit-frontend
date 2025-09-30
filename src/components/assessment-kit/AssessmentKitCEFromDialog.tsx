@@ -19,7 +19,6 @@ import UploadField from "@common/fields/UploadField";
 import RichEditorField from "@common/fields/RichEditorField";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
 import Alert from "@mui/material/Alert";
 import Divider from "@mui/material/Divider";
 import { keyframes } from "@emotion/react";
@@ -31,6 +30,7 @@ import uniqueId from "@/utils/unique-id";
 import i18n from "i18next";
 import showToast from "@/utils/toast-error";
 import { v3Tokens } from "@/config/tokens";
+import { Text } from "../common/Text";
 
 interface IAssessmentKitCEFromDialogProps extends DialogProps {
   onClose: () => void;
@@ -453,9 +453,9 @@ const AssessmentKitCEFromDialog = (props: IAssessmentKitCEFromDialogProps) => {
   );
   const syntaxErrorContent = (
     <Box>
-      <Typography ml={1} variant="h6">
+      <Text ml={1} variant="h6">
         <Trans i18nKey="errors.youveGotSyntaxErrorsInYourDslFile" />
-      </Typography>
+      </Text>
       <Divider />
       <Box mt={4} maxHeight="260px" overflow="scroll">
         {syntaxErrorObject?.map((e: any) => {
@@ -463,7 +463,7 @@ const AssessmentKitCEFromDialog = (props: IAssessmentKitCEFromDialogProps) => {
             <Box ml={1} key={uniqueId()}>
               <Alert severity="error" sx={{ my: 2 }}>
                 <Box display="flex" flexDirection="column">
-                  <Typography variant="subtitle2" color="error">
+                  <Text variant="subtitle2" color="error">
                     <Trans
                       i18nKey="errors.errorAtLine"
                       values={{
@@ -473,15 +473,15 @@ const AssessmentKitCEFromDialog = (props: IAssessmentKitCEFromDialogProps) => {
                         column: e.column,
                       }}
                     />
-                  </Typography>
-                  <Typography variant="subtitle2" color="error">
+                  </Text>
+                  <Text variant="subtitle2" color="error">
                     <Trans
                       i18nKey="errors.errorLine"
                       values={{
                         errorLine: e.errorLine,
                       }}
                     />
-                  </Typography>
+                  </Text>
                 </Box>
               </Alert>
             </Box>
@@ -572,7 +572,7 @@ const IsPrivateSwitch = (props: any) => {
               ...styles.centerVH,
             }}
           >
-            <Typography
+            <Text
               variant="body2"
               fontWeight="700"
               textTransform={"uppercase"}
@@ -580,7 +580,7 @@ const IsPrivateSwitch = (props: any) => {
               fontSize="0.825rem"
             >
               <Trans i18nKey="common.private" />
-            </Typography>
+            </Text>
           </Box>
           <Box
             onClick={() => handleToggle(false)}
@@ -596,7 +596,7 @@ const IsPrivateSwitch = (props: any) => {
               ...styles.centerVH,
             }}
           >
-            <Typography
+            <Text
               variant="body2"
               fontWeight="700"
               textTransform="uppercase"
@@ -604,7 +604,7 @@ const IsPrivateSwitch = (props: any) => {
               fontSize="0.825rem"
             >
               <Trans i18nKey="common.public" />
-            </Typography>
+            </Text>
           </Box>
         </Box>
       </Box>

@@ -6,12 +6,12 @@ import { styles } from "@styles";
 import { CEDialog, CEDialogActions } from "@common/dialogs/CEDialog";
 import FormProviderWithForm from "@common/FormProviderWithForm";
 import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
 import DriveFileMoveOutlinedIcon from "@mui/icons-material/DriveFileMoveOutlined";
 import { Grid } from "@mui/material";
 import { SpaceField } from "../common/fields/SpaceField";
 import { useServiceContext } from "@/providers/service-provider";
 import { useQuery } from "@/hooks/useQuery";
+import { Text } from "../common/Text";
 
 interface IAssessmentCEFromDialogProps extends DialogProps {
   onClose: () => void;
@@ -101,9 +101,9 @@ const MoveAssessmentDialog = (props: IAssessmentCEFromDialogProps) => {
       <FormProviderWithForm formMethods={formMethods}>
         <Grid container>
           <Grid item lg={12} md={12} sm={12} xs={12}>
-            <Typography variant="bodyMedium">
+            <Text variant="bodyMedium">
               <Trans i18nKey="assessment.chooseTargetSpace" />
-            </Typography>
+            </Text>
           </Grid>
           <Grid item lg={6} md={6} sm={12} xs={12}>
             <SpaceField

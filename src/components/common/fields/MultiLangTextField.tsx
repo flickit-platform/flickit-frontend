@@ -1,11 +1,5 @@
 import { useState } from "react";
-import {
-  Box,
-  IconButton,
-  Typography,
-  TextField,
-  TextFieldProps,
-} from "@mui/material";
+import { Box, IconButton, TextField, TextFieldProps } from "@mui/material";
 import LanguageIcon from "@mui/icons-material/LanguageRounded";
 import AddLanguage from "@/assets/svg/add-language.svg";
 import RemoveLanguage from "@/assets/svg/remove-language.svg";
@@ -18,6 +12,7 @@ import { t } from "i18next";
 import { styles } from "@styles";
 import CheckRoundedIcon from "@mui/icons-material/CheckRounded";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
+import { Text } from "../Text";
 
 interface MultiLangTextFieldProps extends Omit<TextFieldProps, "variant"> {
   name: string;
@@ -197,9 +192,9 @@ const MultiLangTextField = ({
             sx={{ ...styles.centerCVH }}
           >
             <LanguageIcon fontSize="small" color="info" />
-            <Typography variant="caption" fontSize={10}>
+            <Text variant="caption" fontSize={10}>
               {langCode.toUpperCase()}
-            </Typography>
+            </Text>
           </Box>
 
           <Box sx={{ flexGrow: 1, width: "100%" }}>

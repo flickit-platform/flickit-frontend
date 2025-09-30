@@ -5,7 +5,6 @@ import Grid from "@mui/material/Grid";
 import Skeleton from "@mui/material/Skeleton";
 import Snackbar from "@mui/material/Snackbar";
 import Divider from "@mui/material/Divider";
-import Typography from "@mui/material/Typography";
 import Chip from "@mui/material/Chip";
 import Share from "@mui/icons-material/Share";
 import LinkIcon from "@mui/icons-material/Link";
@@ -28,6 +27,7 @@ import QueryBatchData from "@/components/common/QueryBatchData";
 import DeleteForeverOutlinedIcon from "@mui/icons-material/DeleteForeverOutlined";
 import { IconButton } from "@mui/material";
 import FormProviderWithForm from "@/components/common/FormProviderWithForm";
+import { Text } from "@/components/common/Text";
 
 type ShareDialogProps = {
   open: boolean;
@@ -97,14 +97,14 @@ export default function ShareDialog({
       <>
         {" "}
         <Divider sx={{ my: 1 }} />{" "}
-        <Typography
+        <Text
           color="background.onVariant"
           variant={"bodySmall"}
           fontFamily="inherit"
         >
           {" "}
           {t("assessmentReport.isDraftSpaceReport", { lng })}{" "}
-        </Typography>{" "}
+        </Text>{" "}
       </>
     ) : (
       <>
@@ -114,14 +114,14 @@ export default function ShareDialog({
             {" "}
             <Box mt={permissions.canManageVisibility ? 3 : 0}>
               {" "}
-              <Typography
+              <Text
                 variant="bodyMedium"
                 color="rgba(61, 77, 92, 0.5)"
-                fontFamily="inherit"
+                sx={{ ...styles.rtlStyle(lng === "fa") }}
               >
                 {" "}
                 {t("assessmentReport.peopleWithAccess", { lng })}{" "}
-              </Typography>{" "}
+              </Text>{" "}
               <Divider sx={{ my: 1 }} />{" "}
             </Box>{" "}
             <FormProviderWithForm
@@ -209,14 +209,14 @@ export default function ShareDialog({
       title={
         <Box sx={{ ...styles.centerV }} gap={1}>
           <Share />
-          <Typography
+          <Text
             variant={"semiBoldXLarge"}
             sx={{
               ...styles.rtlStyle(lng === "fa"),
             }}
           >
             {t("assessmentReport.shareReport", { lng })}
-          </Typography>
+          </Text>
         </Box>
       }
       maxWidth="sm"
@@ -233,13 +233,13 @@ export default function ShareDialog({
           mt: 0,
         }}
       >
-        <Typography
+        <Text
           variant="bodyMedium"
           color="rgba(61, 77, 92, 0.5)"
           fontFamily="inherit"
         >
           {t("assessmentReport.shareOptions", { lng })}
-        </Typography>
+        </Text>
         <Divider sx={{ my: 1 }} />
       </Box>
 
@@ -285,20 +285,20 @@ export default function ShareDialog({
                 width="398px"
                 height="59px"
               >
-                <Typography
+                <Text
                   fontFamily="inherit"
                   variant="bodyMedium"
                   sx={{ color: "#2B333B" }}
                 >
                   {accessOptionsNew[k].title}
-                </Typography>
-                <Typography
+                </Text>
+                <Text
                   variant="bodySmall"
                   color="background.onVariant"
                   fontFamily="inherit"
                 >
                   {accessOptionsNew[k].description}
-                </Typography>
+                </Text>
               </Box>
             </Box>
           );

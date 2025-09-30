@@ -7,7 +7,6 @@ import IconButton from "@mui/material/IconButton";
 import CheckIcon from "@mui/icons-material/Check";
 import CloseIcon from "@mui/icons-material/Close";
 import CircularProgress from "@mui/material/CircularProgress";
-import Typography from "@mui/material/Typography";
 import FormHelperText from "@mui/material/FormHelperText";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
@@ -30,6 +29,7 @@ import { t } from "i18next";
 import RichEditorField from "@/components/common/fields/RichEditorField";
 import showToast from "@/utils/toast-error";
 import { useTheme } from "@mui/material";
+import { Text } from "@/components/common/Text";
 
 interface IAdviceListProps {
   newAdvice: any;
@@ -226,7 +226,7 @@ const AdviceListNewForm = ({
                       }}
                     >
                       <MenuItem disabled value="">
-                        <Typography
+                        <Text
                           color="primary"
                           variant="labelMedium"
                           sx={{
@@ -237,7 +237,7 @@ const AdviceListNewForm = ({
                           {getIcon(item)}
 
                           <Trans i18nKey={item.toLowerCase()} />
-                        </Typography>
+                        </Text>
                       </MenuItem>
                       {adviceOption[item]?.map((option: any, index: number) => (
                         <MenuItem key={option} value={option.code}>

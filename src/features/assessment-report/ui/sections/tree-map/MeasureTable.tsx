@@ -1,7 +1,6 @@
 import { useCallback, useMemo } from "react";
 import {
   Box,
-  Typography,
   Table,
   TableBody,
   TableCell,
@@ -18,6 +17,7 @@ import languageDetector from "@/utils/language-detector";
 import useDialog from "@/hooks/useDialog";
 import QuestionReportDialog from "@/features/assessment-report/ui/sections/questionReportDialog";
 import { styles } from "@styles";
+import { Text } from "@/components/common/Text";
 
 export const rtlSx = (flag?: boolean) => styles.rtlStyle(flag);
 
@@ -64,9 +64,9 @@ const SignedPercent: React.FC<{
   const text = isRTL ? `${rounded}${pct}${sign}` : `${sign}${rounded}${pct}`;
 
   return (
-    <Typography variant="bodySmall" sx={rtlSx(isRTL)} color={color}>
+    <Text variant="bodySmall" sx={rtlSx(isRTL)} color={color}>
       {text}
-    </Typography>
+    </Text>
   );
 };
 
@@ -146,68 +146,68 @@ function buildColumns(args: {
       id: "measureTitle",
       align: isRTL ? "right" : "left",
       header: (
-        <Typography
+        <Text
           variant="labelMedium"
           color="text.primary"
           sx={rtlSx(isRTL)}
         >
           {t("assessmentReport.measureTitle", { lng: locale })}
-        </Typography>
+        </Text>
       ),
       body: (m) => (
-        <Typography
+        <Text
           variant="bodySmall"
           sx={rtlSx(languageDetector(m.title))}
           noWrap
           title={m.title}
         >
           {m.title}
-        </Typography>
+        </Text>
       ),
       footer: (
-        <Typography
+        <Text
           variant="labelMedium"
           color="text.primary"
           sx={rtlSx(isRTL)}
         >
           {t("assessmentReport.total", { lng: locale })}
-        </Typography>
+        </Text>
       ),
     },
     {
       id: "contributionToAttribute",
       align: "center",
       header: (
-        <Typography
+        <Text
           variant="labelMedium"
           color="text.primary"
           sx={rtlSx(isRTL)}
         >
           {t("assessmentReport.contributionToAttribute", { lng: locale })}
-        </Typography>
+        </Text>
       ),
       body: (m) => (
-        <Typography variant="bodySmall" sx={rtlSx(isRTL)}>
+        <Text variant="bodySmall" sx={rtlSx(isRTL)}>
           {formatRoundedPercent(m.impactPercentage, isRTL)}
-        </Typography>
+        </Text>
       ),
       footer: (
-        <Typography
+        <Text
           variant="labelMedium"
           color="text.primary"
           sx={rtlSx(isRTL)}
         >
           {formatRoundedPercent(totals.impactPct, isRTL)}
-        </Typography>
+        </Text>
       ),
     },
     {
       id: "gainedPercent",
       align: "center",
       header: (
-        <Typography variant="labelMedium" color="primary" sx={rtlSx(isRTL)}>
+        <Text variant="labelMedium" color="primary" sx={rtlSx(isRTL)}>
           {t("assessmentReport.gainedScore", { lng: locale })}
-        </Typography>
+        </Text>
       ),
       body: (m) => (
         <SignedPercent
@@ -242,9 +242,9 @@ function buildColumns(args: {
       id: "missedPercent",
       align: "center",
       header: (
-        <Typography variant="labelMedium" color="error.light" sx={rtlSx(isRTL)}>
+        <Text variant="labelMedium" color="error.light" sx={rtlSx(isRTL)}>
           {t("assessmentReport.missedScore", { lng: locale })}
-        </Typography>
+        </Text>
       ),
       body: (m) => (
         <SignedPercent
@@ -270,13 +270,13 @@ function buildColumns(args: {
       id: "questions",
       align: "center",
       header: (
-        <Typography
+        <Text
           variant="labelMedium"
           color="text.primary"
           sx={rtlSx(isRTL)}
         >
           {t("common.questions", { lng: locale })}
-        </Typography>
+        </Text>
       ),
       body: (m) => (
         <IconButton

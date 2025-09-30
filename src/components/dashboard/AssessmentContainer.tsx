@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
-import Typography from "@mui/material/Typography";
 import { useServiceContext } from "@/providers/service-provider";
 import DashboardTitle from "@/components/dashboard/AssessmentTitle";
 import QueryBatchData from "@common/QueryBatchData";
@@ -10,8 +9,6 @@ import { useQuery } from "@/hooks/useQuery";
 import { ICustomError, PathInfo } from "@/types/index";
 import { Link, useLocation, useOutlet, useParams } from "react-router-dom";
 import MainTabs from "@/components/dashboard/MainTabs";
-import languageDetector from "@/utils/language-detector";
-import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
 import { styles } from "@styles";
 import { t } from "i18next";
 import { IconButton, useTheme } from "@mui/material";
@@ -23,6 +20,7 @@ import {
 import { ASSESSMENT_MODE } from "@/utils/enum-type";
 import InputCustomEditor from "../common/fields/InputCustomEditor";
 import showToast from "@/utils/toast-error";
+import { Text } from "../common/Text";
 
 const maxLength = 40;
 
@@ -128,11 +126,7 @@ const DashbordContainer: React.FC = () => {
               }}
             >
               {selectedTab === "settings" ? (
-                <Typography
-                  color="primary"
-                  textAlign="left"
-                  variant="headlineLarge"
-                >
+                <Text color="primary" textAlign="left" variant="headlineLarge">
                   <IconButton
                     color="primary"
                     component={Link}
@@ -146,7 +140,7 @@ const DashbordContainer: React.FC = () => {
                     />
                   </IconButton>
                   {t("common.settings")}
-                </Typography>
+                </Text>
               ) : (
                 <Box paddingX={isEditing ? 1 : 0}>
                   {isEditing ? (
@@ -158,15 +152,10 @@ const DashbordContainer: React.FC = () => {
                       hasError={false}
                     />
                   ) : (
-                    <Typography
+                    <Text
                       color="primary"
                       textAlign="left"
                       variant="headlineLarge"
-                      sx={{
-                        fontFamily: languageDetector(title)
-                          ? farsiFontFamily
-                          : primaryFontFamily,
-                      }}
                     >
                       {title}
                       {permissions?.grantUserAssessmentRole && (
@@ -174,7 +163,7 @@ const DashbordContainer: React.FC = () => {
                           <EditOutlined />
                         </IconButton>
                       )}
-                    </Typography>
+                    </Text>
                   )}
                 </Box>
               )}

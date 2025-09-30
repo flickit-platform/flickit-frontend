@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from "react";
 import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
 import { Trans } from "react-i18next";
 import { Link, useParams } from "react-router-dom";
 import {
@@ -11,9 +10,7 @@ import {
 import { t } from "i18next";
 import setDocumentTitle from "@utils/setDocumentTitle";
 import { useConfigContext } from "@/providers/config-provider";
-import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
 import { styles } from "@styles";
-import languageDetector from "@/utils/language-detector";
 import { QuestionsFilteringDropdown } from "../dashboard/dashboard-tab/questionnaires/QuestionnaireList";
 import IconButton from "@mui/material/IconButton";
 import ArrowBack from "@mui/icons-material/ArrowBack";
@@ -22,6 +19,7 @@ import { useQuestionnaire } from "../dashboard/dashboard-tab/questionnaires/Ques
 import OutlinedProgressButton from "../common/buttons/OutlinedProgressButton";
 import { Skeleton, useTheme } from "@mui/material";
 import Title from "@common/Title";
+import { Text } from "../common/Text";
 
 const itemNames = [
   {
@@ -171,18 +169,9 @@ const QuestionsTitle = (props: { isReview?: boolean; pathInfo: any }) => {
                   <ArrowForward color="primary" />
                 )}
               </IconButton>
-              <Typography
-                display="inline-block"
-                variant="h5"
-                fontWeight={"bold"}
-                style={{
-                  fontFamily: languageDetector(questionnaire.title)
-                    ? farsiFontFamily
-                    : primaryFontFamily,
-                }}
-              >
+              <Text display="inline-block" variant="h5" fontWeight={"bold"}>
                 {questionnaire.title}
-              </Typography>{" "}
+              </Text>{" "}
               {assessmentTotalProgress.loading && percent == 0 ? (
                 <Skeleton width={80} />
               ) : (

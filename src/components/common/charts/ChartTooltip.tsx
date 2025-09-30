@@ -1,7 +1,7 @@
-import { Box, Typography, useTheme } from "@mui/material";
-import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
+import { Box, useTheme } from "@mui/material";
 import languageDetector from "@/utils/language-detector";
 import { styles } from "@styles";
+import { Text } from "../Text";
 
 interface ChartTooltipProps {
   active?: boolean;
@@ -35,31 +35,29 @@ const ChartTooltip = ({
       sx={{ ...styles.rtlStyle(isFarsi) }}
     >
       {primary && (
-        <Typography
+        <Text
           variant="labelSmall"
           whiteSpace="pre-wrap"
           sx={{
-            fontFamily: isFarsi ? farsiFontFamily : primaryFontFamily,
             textAlign: isFarsi ? "right" : "left",
             whiteSpace: "pre-wrap",
           }}
           component="div"
         >
           {primary}
-        </Typography>
+        </Text>
       )}
       {secondary && (
-        <Typography
+        <Text
           variant="labelSmall"
           whiteSpace="pre-wrap"
           mt={primary ? 0.5 : 0}
           sx={{
-            fontFamily: isFarsi ? farsiFontFamily : primaryFontFamily,
             textAlign: isFarsi ? "right" : "left",
           }}
         >
           {secondary}
-        </Typography>
+        </Text>
       )}
     </Box>
   );

@@ -2,7 +2,6 @@ import { useState, useEffect, useRef } from "react";
 import { useForm } from "react-hook-form";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
 import CancelRounded from "@mui/icons-material/CancelRounded";
 import CheckCircleOutlineRounded from "@mui/icons-material/CheckCircleOutlineRounded";
@@ -10,13 +9,13 @@ import EditRounded from "@mui/icons-material/EditRounded";
 import { ICustomError } from "@/utils/custom-error";
 import FormProviderWithForm from "@common/FormProviderWithForm";
 import RichEditorField from "@common/fields/RichEditorField";
-import { farsiFontFamily, primaryFontFamily } from "@config/theme";
 import { Trans, useTranslation } from "react-i18next";
 import languageDetector from "@/utils/language-detector";
 import { CEDialog, CEDialogActions } from "../dialogs/CEDialog";
 import showToast from "@/utils/toast-error";
 import { useTheme } from "@mui/material";
 import { styles } from "@styles";
+import { Text } from "../Text";
 
 const MAX_HEIGHT = 210;
 
@@ -240,13 +239,10 @@ export const EditableRichEditor = (props: EditableRichEditorProps) => {
                   : undefined,
               }}
             >
-              <Typography
+              <Text
                 component="div"
                 textAlign="justify"
                 sx={{
-                  fontFamily: languageDetector(tempData)
-                    ? farsiFontFamily
-                    : primaryFontFamily,
                   width: "100%",
                   color: !tempData ? "rgba(61, 77, 92, 0.5)" : "initial",
                   display: "-webkit-box",
@@ -325,14 +321,14 @@ export const EditableRichEditor = (props: EditableRichEditorProps) => {
         title={<Trans i18nKey="common.warning" />}
         maxWidth="sm"
       >
-        <Typography color="#0A2342">
+        <Text color="#0A2342">
           <Trans
             i18nKey="notification.editorActionRestriction"
             components={{
               title: <span style={{ fontWeight: "bold", color: "#B86A77" }} />,
             }}
           />
-        </Typography>
+        </Text>
 
         <CEDialogActions
           type="delete"

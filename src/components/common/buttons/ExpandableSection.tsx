@@ -1,8 +1,9 @@
 import { useState } from "react";
-import { Typography, Button, Box, Stack, Collapse } from "@mui/material";
+import { Button, Box, Stack, Collapse } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import KeyboardArrowDownRoundedIcon from "@mui/icons-material/KeyboardArrowDownRounded";
 import AddRoundedIcon from "@mui/icons-material/AddRounded"; // یا هر آیکون دلخواه
+import { Text } from "../Text";
 
 interface ExpandableSectionProps {
   title: string;
@@ -53,7 +54,7 @@ const ExpandableSection: React.FC<ExpandableSectionProps> = ({
               transform: expanded ? "rotate(180deg)" : "rotate(0deg)",
             }}
           />
-          <Typography variant="semiBoldXLarge">{title}</Typography>
+          <Text variant="semiBoldXLarge">{title}</Text>
         </Stack>
 
         {onEndButtonClick && (

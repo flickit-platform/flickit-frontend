@@ -1,10 +1,8 @@
 import { useNavigate } from "react-router-dom";
 import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import { Trans } from "react-i18next";
-import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
-import languageDetector from "@/utils/language-detector";
+import { Text } from "../common/Text";
 
 export const QuestionThumb = (props: any) => {
   const {
@@ -21,48 +19,28 @@ export const QuestionThumb = (props: any) => {
   return (
     <Box py={2.5} px={2.5} minWidth="284px" maxWidth="600px">
       <Box>
-        <Typography textTransform={"capitalize"} variant="subMedium">
+        <Text textTransform={"capitalize"} variant="subMedium">
           <Trans i18nKey="common.question" /> {questionIndex}/
           {total_number_of_questions}
-        </Typography>
-        <Typography
-          variant="h6"
-          sx={
-            languageDetector(question?.title)
-              ? { fontFamily: farsiFontFamily, textAlign: "right" }
-              : { fontFamily: primaryFontFamily, textAlign: "left" }
-          }
-        >
-          {question?.title}
-        </Typography>
+        </Text>
+        <Text variant="h6">{question?.title}</Text>
       </Box>
       {question.answer?.selectedOption && (
         <Box mt={3}>
-          <Typography variant="subMedium" textTransform="uppercase">
+          <Text variant="subMedium" textTransform="uppercase">
             <Trans i18nKey="common.yourAnswer" />
-          </Typography>
-          <Typography
-            variant="h6"
-            sx={{
-              fontFamily: languageDetector(
-                question.answer?.selectedOption?.title,
-              )
-                ? farsiFontFamily
-                : primaryFontFamily,
-            }}
-          >
-            {question.answer?.selectedOption?.title}
-          </Typography>
+          </Text>
+          <Text variant="h6">{question.answer?.selectedOption?.title}</Text>
         </Box>
       )}
       {question.answer?.isNotApplicable && (
         <Box mt={3}>
-          <Typography variant="subMedium" textTransform="uppercase">
+          <Text variant="subMedium" textTransform="uppercase">
             <Trans i18nKey="common.yourAnswer" />
-          </Typography>
-          <Typography variant="h6">
+          </Text>
+          <Text variant="h6">
             <Trans i18nKey="questions.markedAsNotApplicable" />
-          </Typography>
+          </Text>
         </Box>
       )}
       <Box display="flex">

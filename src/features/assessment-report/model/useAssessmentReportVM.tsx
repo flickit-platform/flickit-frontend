@@ -9,8 +9,8 @@ import { ASSESSMENT_MODE } from "@/utils/enum-type";
 import type { IGraphicalReport } from "@/types";
 import useDialog from "@/hooks/useDialog";
 import keycloakService from "@/service/keycloakService";
-import { Typography } from "@mui/material";
 import { t } from "i18next";
+import { Text } from "@/components/common/Text";
 
 export function useAssessmentReportVM() {
   const location = useLocation();
@@ -56,7 +56,7 @@ export function useAssessmentReportVM() {
         email,
         dialogTitle: t("assessmentReport.contactExpertGroup", { lng }),
         children: (
-          <Typography
+          <Text
             textAlign="justify"
             variant="bodyLarge"
             fontFamily="inherit"

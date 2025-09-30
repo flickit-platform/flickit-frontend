@@ -1,7 +1,6 @@
 import { useEffect, useState, useRef, useCallback } from "react";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
 import { Trans } from "react-i18next";
 import {
   assessmentActions,
@@ -12,6 +11,7 @@ import { styles } from "@styles";
 import languageDetector from "@/utils/language-detector";
 import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
 import { useTheme } from "@mui/material";
+import { Text } from "../Text";
 
 const SIZE = 40;
 const STROKE = 4;
@@ -143,12 +143,12 @@ const PendingKitBanner: React.FC<{ seconds?: number }> = ({ seconds = 10 }) => {
               userSelect: "none",
             }}
           >
-            <Typography variant="headlineSmall" color="#1976d2">
+            <Text variant="headlineSmall" color="#1976d2">
               {counter}
-            </Typography>
+            </Text>
           </Box>
         </Box>
-        <Typography variant="semiBoldLarge">
+        <Text variant="semiBoldLarge">
           <Trans
             i18nKey="assessmentKit.continueAssessmentKitMessage"
             values={{
@@ -175,7 +175,7 @@ const PendingKitBanner: React.FC<{ seconds?: number }> = ({ seconds = 10 }) => {
               ),
             }}
           />
-        </Typography>
+        </Text>
         <Button color="primary" onClick={handleCancel}>
           <Trans i18nKey="common.cancel" />
         </Button>

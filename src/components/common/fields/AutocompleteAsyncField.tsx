@@ -21,7 +21,6 @@ import { farsiFontFamily, primaryFontFamily } from "@config/theme";
 import uniqueId from "@/utils/unique-id";
 import Chip from "@mui/material/Chip";
 import { t } from "i18next";
-import Typography from "@mui/material/Typography";
 import { Trans } from "react-i18next";
 import languageDetector from "@/utils/language-detector";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
@@ -32,6 +31,7 @@ import premiumIcon from "@/assets/svg/premium.svg";
 import HomeIcon from "@mui/icons-material/Home";
 import FolderOutlinedIcon from "@mui/icons-material/FolderOutlined";
 import { useTypingCaret } from "@/hooks/useTypingCaret";
+import { Text } from "../Text";
 type TUnionAutocompleteAndAutocompleteAsyncFieldBase = Omit<
   IAutocompleteAsyncFieldBase,
   "serviceQueryData" | "field"
@@ -457,12 +457,12 @@ const AutocompleteBaseField = (
                 }}
                 color={option?.isPrivate ? "secondary" : "default"}
                 label={
-                  <Typography
+                  <Text
                     variant="semiBoldSmall"
                     color="background.containerLowest"
                   >
                     <Trans i18nKey="common.privateTitle" />
-                  </Typography>
+                  </Text>
                 }
               />
             )}
