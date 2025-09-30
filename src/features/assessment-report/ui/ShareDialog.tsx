@@ -28,7 +28,7 @@ import QueryBatchData from "@/components/common/QueryBatchData";
 import DeleteForeverOutlinedIcon from "@mui/icons-material/DeleteForeverOutlined";
 import { Button, IconButton } from "@mui/material";
 import FormProviderWithForm from "@/components/common/FormProviderWithForm";
-import SpaceFieldForm from "@common/spaceFiledForm";
+import SpaceFieldForm from "@/components/common/SpaceFiledForm";
 import { useServiceContext } from "@providers/service-provider";
 import { useConnectAutocompleteField } from "@common/fields/AutocompleteAsyncField";
 import { useParams } from "react-router-dom";

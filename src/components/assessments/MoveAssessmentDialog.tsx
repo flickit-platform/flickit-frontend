@@ -8,7 +8,7 @@ import Box from "@mui/material/Box";
 import DriveFileMoveOutlinedIcon from "@mui/icons-material/DriveFileMoveOutlined";
 import { useServiceContext } from "@/providers/service-provider";
 import { useQuery } from "@/hooks/useQuery";
-import SpaceFieldForm from "@common/spaceFiledForm";
+import SpaceFieldForm from "@/components/common/SpaceFiledForm";
 
 interface IAssessmentCEFromDialogProps extends DialogProps {
   onClose: () => void;
