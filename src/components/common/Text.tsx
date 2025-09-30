@@ -56,9 +56,17 @@ function extractText(node: React.ReactNode): string | undefined {
       const values = anyProps.values || {};
       const ns = anyProps.ns;
       const defaults = anyProps.defaults;
-      return i18next.t(key, { ...values, ns, defaultValue: defaults });
-    }
 
+      // تبدیل خروجی i18next.t به string
+      const translationResult = i18next.t(key, {
+        ...values,
+        ns,
+        defaultValue: defaults,
+      });
+      return typeof translationResult === "string"
+        ? translationResult
+        : String(translationResult);
+    }
     return extractText(anyProps.children);
   }
   return undefined;
