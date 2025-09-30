@@ -1,15 +1,13 @@
 import { useState, useMemo, useCallback } from "react";
 import Box from "@mui/material/Box";
 import Slider from "@mui/material/Slider";
-import Typography from "@mui/material/Typography";
 import Tooltip from "@mui/material/Tooltip";
 import { Grid, ThemeProvider, createTheme, IconButton } from "@mui/material";
 import { useTheme, alpha } from "@mui/material/styles";
 import ArrowLeftIcon from "@mui/icons-material/ArrowLeft";
 import ArrowRightIcon from "@mui/icons-material/ArrowRight";
-import languageDetector from "@/utils/language-detector";
-import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
 import { styles } from "@styles";
+import { Text } from "@/components/common/Text";
 
 type MaturityLevel = { id: string; title: string };
 type TargetItem = { attributeId: string; maturityLevelId: string };
@@ -25,8 +23,6 @@ type MaturitySliderProps = {
 const MIN_VALUE = 1;
 const clamp = (n: number, min: number, max: number) =>
   Math.min(Math.max(n, min), max);
-const fontFor = (text?: string) =>
-  languageDetector(text) ? farsiFontFamily : primaryFontFamily;
 
 const MaturitySlider = (props: MaturitySliderProps) => {
   const {
@@ -132,10 +128,9 @@ const MaturitySlider = (props: MaturitySliderProps) => {
 };
 
 const TitleCell = ({ title }: { title: string }) => (
-  <Typography
+  <Text
     variant="semiBoldLarge"
     sx={{
-      fontFamily: fontFor(title),
       maxWidth: { xs: 260, lg: 124 },
       width: "100%",
       overflow: "hidden",
@@ -146,7 +141,7 @@ const TitleCell = ({ title }: { title: string }) => (
     }}
   >
     {title}
-  </Typography>
+  </Text>
 );
 
 interface SliderRowProps {

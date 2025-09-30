@@ -1,21 +1,19 @@
 import { lazy, Suspense, useMemo } from "react";
 import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
 import { confidenceColor } from "@/config/styles";
 import i18next from "i18next";
+import { Text } from "../../Text";
 
 interface IcompletionRingType {
   inputNumber?: number | null;
   displayNumber?: boolean;
   variant?: any;
-  fontFamily?: any;
 }
 
 const CompletionRing = ({
   inputNumber = 0,
   displayNumber = false,
   variant = "titleLarge",
-  fontFamily,
 }: IcompletionRingType) => {
   const { id, textColor, number } = calculate(inputNumber);
 
@@ -33,18 +31,12 @@ const CompletionRing = ({
         marginInlineStart={0.5}
       >
         {displayNumber && (
-          <Typography
-            variant={variant}
-            color={textColor}
-            sx={{
-              fontFamily: fontFamily,
-            }}
-          >
+          <Text variant={variant} color={textColor}>
             {number}
             {i18next.language === "en" ? "%" : "٪"}
-          </Typography>
+          </Text>
         )}
-        <CompletionRingComponent color={textColor}/>
+        <CompletionRingComponent color={textColor} />
       </Box>
     </Suspense>
   );

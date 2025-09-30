@@ -10,11 +10,9 @@ import { authActions, useAuthContext } from "@/providers/auth-provider";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import Avatar from "@mui/material/Avatar";
-import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
 import BorderColorRoundedIcon from "@mui/icons-material/BorderColorRounded";
 import { useEffect, useState } from "react";
-import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
 import CircularProgress from "@mui/material/CircularProgress";
 import Tooltip from "@mui/material/Tooltip";
 import EditIcon from "@mui/icons-material/Edit";
@@ -22,10 +20,10 @@ import AddIcon from "@mui/icons-material/Add";
 import formatBytes from "@/utils/format-bytes";
 import { ICustomError } from "@/utils/custom-error";
 import { styles } from "@styles";
-import languageDetector from "@/utils/language-detector";
 import showToast from "@/utils/toast-error";
 import { useTheme } from "@mui/material";
 import Title from "@common/Title";
+import { Text } from "../common/Text";
 
 const UserAccount = () => {
   const [hover, setHover] = useState(false);
@@ -221,36 +219,30 @@ const UserAccount = () => {
             </Grid>
             <Grid item md={9}>
               <Box>
-                <Typography variant="subLarge">
+                <Text variant="subLarge" sx={{ display: "block" }}>
                   <Trans i18nKey="common.linkedin" />
-                </Typography>
-                <Typography
+                </Text>
+                <Text
                   sx={{
                     pt: 0.5,
                     fontWeight: "bold",
-                    fontFamily: languageDetector(userInfo?.linkedin)
-                      ? farsiFontFamily
-                      : primaryFontFamily,
                   }}
                 >
                   {userInfo?.linkedin}
-                </Typography>
+                </Text>
               </Box>
               <Box mt={2.5}>
-                <Typography variant="subLarge">
+                <Text variant="subLarge" sx={{ display: "block" }}>
                   <Trans i18nKey="common.bio" />
-                </Typography>
-                <Typography
+                </Text>
+                <Text
                   sx={{
                     pt: 0.5,
                     fontWeight: "bold",
-                    fontFamily: languageDetector(userInfo?.bio)
-                      ? farsiFontFamily
-                      : primaryFontFamily,
                   }}
                 >
                   {userInfo?.bio}
-                </Typography>
+                </Text>
               </Box>
             </Grid>
           </Grid>

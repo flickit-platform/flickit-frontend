@@ -1,5 +1,4 @@
 import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
 import { Trans } from "react-i18next";
 import { farsiFontFamily, secondaryFontFamily } from "@config/theme";
 import Chip from "@mui/material/Chip";
@@ -7,7 +6,6 @@ import { styles } from "@styles";
 import { Link, useNavigate } from "react-router-dom";
 import PriceIcon from "@/components/common/icons/Price";
 import LanguageIcon from "@mui/icons-material/Language";
-import languageDetector from "@/utils/language-detector";
 import i18next from "i18next";
 import { Avatar, useTheme } from "@mui/material";
 import stringAvatar from "@/utils/string-avatar";
@@ -20,6 +18,7 @@ import { useConfigContext } from "@/providers/config-provider";
 import { ILanguage } from "@/types";
 import PaidOutlinedIcon from "@mui/icons-material/PaidOutlined";
 import PurchasedIcon from "@/components/common/icons/Purchased";
+import { Text } from "../common/Text";
 
 const AssessmentKitsStoreCard = (props: any) => {
   const {
@@ -152,17 +151,12 @@ const AssessmentKitsStoreCard = (props: any) => {
             gap={1}
             sx={{ ...styles.centerCV }}
           >
-            <Typography
+            <Text
               variant={small ? "titleMedium" : "headlineSmall"}
               color={isPrivate ? "secondary.main" : "primary.main"}
-              sx={{
-                fontFamily: languageDetector(title)
-                  ? farsiFontFamily
-                  : secondaryFontFamily,
-              }}
             >
               {title}
-            </Typography>
+            </Text>
             <Box
               sx={{ ...styles.centerV }}
               gap={small ? 0.5 : 1}
@@ -185,14 +179,11 @@ const AssessmentKitsStoreCard = (props: any) => {
                   fontSize: small ? 12 : 16,
                 }}
               />
-              <Typography
+              <Text
                 variant={small ? "labelSmall" : "semiBoldLarge"}
                 color="background.onVariant"
                 sx={{
                   textDecoration: "none",
-                  fontFamily: languageDetector(expertGroup.title)
-                    ? farsiFontFamily
-                    : secondaryFontFamily,
                   cursor: "pointer",
                   "&:hover": {
                     textDecoration: "underline",
@@ -209,8 +200,13 @@ const AssessmentKitsStoreCard = (props: any) => {
                 >
                   <Trans i18nKey="assessmentKit.designedBy" />
                 </span>{" "}
-                {expertGroup.title}
-              </Typography>
+                <Text
+                  variant={small ? "labelSmall" : "semiBoldLarge"}
+                  color="background.onVariant"
+                >
+                  {expertGroup.title}
+                </Text>
+              </Text>
             </Box>
           </Box>
           {isPrivate && (
@@ -228,16 +224,11 @@ const AssessmentKitsStoreCard = (props: any) => {
           )}
         </Box>
         <Box mt={1}>
-          <Typography
+          <Text
             component="div"
             textAlign="justify"
             variant={small ? "bodyMedium" : "bodyLarge"}
-            mt={{ xs: "8px", sm: small ? "8px" : "32px" }}
-            sx={{
-              fontFamily: languageDetector(summary)
-                ? farsiFontFamily
-                : secondaryFontFamily,
-            }}
+            mt={{ xs: "8px", sm: small ? "8px" : "28px" }}
             dangerouslySetInnerHTML={{
               __html: `${truncatedSummary}${isSummaryTruncated}`,
             }}
@@ -281,9 +272,9 @@ const AssessmentKitsStoreCard = (props: any) => {
                   : theme.palette.primary.main,
               }}
             />
-            <Typography variant={small ? "bodySmall" : "titleSmall"}>
+            <Text variant={small ? "bodySmall" : "titleSmall"}>
               {formatLanguageCodes(languages, i18next.language)}{" "}
-            </Typography>
+            </Text>
           </Box>
         </Box>
 
@@ -360,9 +351,7 @@ const CheckStatus: React.FC<CheckStatusProps> = ({
   return (
     <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
       {statusIcons[status]}
-      <Typography variant={typographyVariant}>
-        {statusLabels[status]}
-      </Typography>
+      <Text variant={typographyVariant}>{statusLabels[status]}</Text>
     </div>
   );
 };

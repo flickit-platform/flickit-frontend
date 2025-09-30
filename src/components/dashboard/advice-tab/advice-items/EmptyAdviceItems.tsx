@@ -1,10 +1,10 @@
 import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import { Trans } from "react-i18next";
 import { styles } from "@styles";
 import Tooltip from "@mui/material/Tooltip";
 import { ReactElement } from "react";
+import { Text } from "@/components/common/Text";
 
 interface EmptyStateProps {
   onAddNewRow: () => void;
@@ -26,9 +26,9 @@ const TextContent = ({
   color?: string;
   fontWeight?: string | number;
 }) => (
-  <Typography variant={variant} fontWeight={fontWeight} color={color}>
+  <Text variant={variant} fontWeight={fontWeight} color={color}>
     <Trans i18nKey={textKey} />
-  </Typography>
+  </Text>
 );
 
 const EmptyAdviceList = ({

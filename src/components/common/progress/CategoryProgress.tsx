@@ -2,10 +2,10 @@ import Box, { BoxProps } from "@mui/material/Box";
 import LinearProgress, {
   LinearProgressProps,
 } from "@mui/material/LinearProgress";
-import Typography from "@mui/material/Typography";
 import { Trans } from "react-i18next";
 import { styles } from "@styles";
 import { v3Tokens } from "@/config/tokens";
+import { Text } from "../Text";
 
 interface IQuestionnaireProgress extends BoxProps {
   progress: number;
@@ -44,7 +44,7 @@ const QuestionnaireProgress = (props: IQuestionnaireProgress) => {
         />
       </Box>
       <Box pl={is_farsi ? 0 : "8px"} pr={is_farsi ? "8px" : 0} mr="-2px">
-        <Typography
+        <Text
           color={progressToColorMapColor[progress] ?? "#1976d2"}
           variant="semiBoldSmall"
           sx={{
@@ -55,7 +55,7 @@ const QuestionnaireProgress = (props: IQuestionnaireProgress) => {
           <Trans
             i18nKey={progressToLabelMap[progress] ?? "common.inProgress"}
           />
-        </Typography>
+        </Text>
       </Box>
     </Box>
   );

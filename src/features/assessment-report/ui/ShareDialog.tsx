@@ -5,7 +5,6 @@ import Grid from "@mui/material/Grid";
 import Skeleton from "@mui/material/Skeleton";
 import Snackbar from "@mui/material/Snackbar";
 import Divider from "@mui/material/Divider";
-import Typography from "@mui/material/Typography";
 import Chip from "@mui/material/Chip";
 import Share from "@mui/icons-material/Share";
 import { useEffect, useMemo, useState } from "react";
@@ -35,6 +34,7 @@ import { useParams } from "react-router-dom";
 import { useQuery } from "@/hooks/useQuery";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import Tooltip from "@mui/material/Tooltip";
+import { Text } from "@/components/common/Text";
 
 type ShareDialogProps = {
   open: boolean;
@@ -186,20 +186,20 @@ export default function ShareDialog({
     return (
       <>
         <Box mt={2}>
-          <Typography
+          <Text
             variant="bodyMedium"
             color="rgba(61, 77, 92, 0.5)"
             fontFamily="inherit"
           >
             {t("assessmentReport.WhoHasAccessReport", { lng })}
-          </Typography>{" "}
+          </Text>{" "}
           <Divider sx={{ my: 1 }} />{" "}
         </Box>
-        <Typography variant={"bodyMedium"} color={"background.secondaryDark"}
+        <Text variant={"bodyMedium"} color={"background.secondaryDark"}
         sx={{fontFamily: "inherit"}}
         >
           {t("assessmentReport.anyoneCanAccessReport", { lng })}
-        </Typography>
+        </Text>
         <Box
           bgcolor={"primary.states.hover"}
           sx={{
@@ -212,13 +212,13 @@ export default function ShareDialog({
             mt: 2,
           }}
         >
-          <Typography
+          <Text
             variant="bodyMedium"
             color="primary.main"
             sx={{ ...styles.ellipsis, width: "100%", display: "inline-block" }}
           >
             {globalThis.location.href}
-          </Typography>
+          </Text>
           <Tooltip title={t("assessmentReport.copyReportLink", {lng})} >
             <Button
                 onClick={handleCopyClick}
@@ -246,16 +246,16 @@ export default function ShareDialog({
             {" "}
             <Box mt={permissions.canManageVisibility ? 3 : 0}>
               {" "}
-              <Typography
+              <Text
                 variant="bodyMedium"
                 color="rgba(61, 77, 92, 0.5)"
-                fontFamily="inherit"
+                sx={{ ...styles.rtlStyle(lng === "fa") }}
               >
                 {" "}
                 {isDefault
                   ? t("assessmentReport.WhoHasAccessReport", { lng })
                   : t("assessmentReport.peopleWithAccess", { lng })}
-              </Typography>{" "}
+              </Text>{" "}
               <Divider sx={{ my: 1 }} />{" "}
             </Box>{" "}
             <FormProviderWithForm
@@ -343,14 +343,14 @@ export default function ShareDialog({
       title={
         <Box sx={{ ...styles.centerV }} gap={1}>
           <Share />
-          <Typography
+          <Text
             variant={"semiBoldXLarge"}
             sx={{
               ...styles.rtlStyle(lng === "fa"),
             }}
           >
             {t("assessmentReport.shareReport", { lng })}
-          </Typography>
+          </Text>
         </Box>
       }
       maxWidth="sm"
@@ -370,13 +370,13 @@ export default function ShareDialog({
               mt: 0,
             }}
           >
-            <Typography
+            <Text
               variant="bodyMedium"
               color="rgba(61, 77, 92, 0.5)"
               fontFamily="inherit"
             >
               {t("assessmentReport.shareOptions", { lng })}
-            </Typography>
+            </Text>
             <Divider sx={{ my: 1 }} />
           </Box>
           <Box
@@ -429,7 +429,7 @@ export default function ShareDialog({
                     flex={"1"}
                     height="fit-content"
                   >
-                    <Typography
+                    <Text
                       fontFamily="inherit"
                       variant="bodyMedium"
                       sx={{ color: "#2B333B" }}
@@ -437,8 +437,8 @@ export default function ShareDialog({
                       {isDefault && status == VISIBILITY.RESTRICTED
                         ? accessOptionsNew[status].titleDefault
                         : accessOptionsNew[status].title}
-                    </Typography>
-                    <Typography
+                    </Text>
+                    <Text
                       variant="bodySmall"
                       color="background.secondaryDark"
                       fontFamily="inherit"
@@ -446,7 +446,7 @@ export default function ShareDialog({
                       {isDefault && status == VISIBILITY.RESTRICTED
                         ? accessOptionsNew[status].descriptionDefault
                         : accessOptionsNew[status].description}
-                    </Typography>
+                    </Text>
                   </Box>
                   <Box sx={{ ...styles.centerV, paddingInlineEnd: "16px" }}>
                     {isDefault && status == VISIBILITY.RESTRICTED && (
@@ -460,12 +460,12 @@ export default function ShareDialog({
                         }}
                         onClick={() => changeStatus(1)}
                       >
-                        <Typography
+                        <Text
                           variant={"labelLarge"}
                           sx={{ ...styles.rtlStyle(lng === "fa") }}
                         >
                           {t("assessmentReport.moveAssessment", { lng })}
-                        </Typography>
+                        </Text>
                       </Button>
                     )}
                   </Box>
@@ -485,13 +485,13 @@ export default function ShareDialog({
               mt: 0,
             }}
           >
-            <Typography
+            <Text
               variant="bodyMedium"
               color="rgba(61, 77, 92, 0.5)"
               fontFamily="inherit"
             >
               {t("assessmentReport.moveTheAssessment", { lng })}
-            </Typography>
+            </Text>
             <Divider sx={{ my: 1 }} />
           </Box>
           {isDefault && access === VISIBILITY.RESTRICTED && (

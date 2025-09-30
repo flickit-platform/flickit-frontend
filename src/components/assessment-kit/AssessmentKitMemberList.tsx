@@ -5,7 +5,6 @@ import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
 import TextField from "@mui/material/TextField";
 import Tooltip from "@mui/material/Tooltip";
-import Typography from "@mui/material/Typography";
 import { Trans } from "react-i18next";
 import Button from "@mui/material/Button";
 import AddIcon from "@mui/icons-material/Add";
@@ -30,6 +29,7 @@ import { useQuery } from "@/hooks/useQuery";
 import Avatar from "@mui/material/Avatar";
 import stringAvatar from "@/utils/string-avatar";
 import showToast from "@/utils/toast-error";
+import { Text } from "../common/Text";
 
 const tableCellStyles = {
   minWidth: {
@@ -97,9 +97,9 @@ export default function MemberList(props: any) {
           sx={{ ...styles.centerV }}
         >
           <div></div>
-          <Typography color="#9DA7B3" variant="headlineMedium">
+          <Text color="#9DA7B3" variant="headlineMedium">
             <Trans i18nKey={title} />
-          </Typography>
+          </Text>
           {hasBtn && (
             <Button
               variant="contained"
@@ -169,7 +169,7 @@ export default function MemberList(props: any) {
                         justifyContent="center"
                         width={{ xs: "10rem", sm: "14rem", md: "20vw" }}
                       >
-                        <Typography sx={textStyles}>{row.email}</Typography>
+                        <Text sx={textStyles}>{row.email}</Text>
                       </Box>
                       <Box
                         width={{ xs: "10rem", sm: "14rem", md: "20vw" }}
@@ -223,7 +223,7 @@ const UserInfoCell = ({ row }: any) => (
         src={row.pictureLink}
         sx={avatarStyles}
       />
-      <Typography sx={textStyles}>{row.displayName ?? row.name}</Typography>
+      <Text sx={textStyles}>{row.displayName ?? row.name}</Text>
       {!row.editable && (
         <Chip
           sx={chipStyles}

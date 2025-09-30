@@ -5,12 +5,10 @@ import { CEDialog, CEDialogActions } from "@common/dialogs/CEDialog";
 import AlertTitle from "@mui/material/AlertTitle";
 import Button from "@mui/material/Button";
 import Divider from "@mui/material/Divider";
-import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import Chip from "@mui/material/Chip";
 import { styles, generateColorFromString } from "@styles";
 import QuestionAnswer from "@mui/icons-material/QuestionAnswer";
-import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
 import languageDetector from "@/utils/language-detector";
 import { QuestionTabsTemplate } from "@/components/questions/QuestionCard";
 import LoadingButton from "@mui/lab/LoadingButton";
@@ -19,6 +17,7 @@ import AlertBox from "@/components/common/AlertBox";
 import NavigationButtons from "@/components/common/buttons/NavigationButtons";
 import { useTheme } from "@mui/material";
 import { CircleRating } from "../CircleRating";
+import { Text } from "@/components/common/Text";
 
 interface IQuestionDetailsDialogDialogProps extends DialogProps {
   onClose: () => void;
@@ -54,7 +53,7 @@ const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
           marginInlineEnd: "auto",
         }}
       />
-      <Typography
+      <Text
         variant="semiBoldXLarge"
         color="text.primary"
         sx={{
@@ -68,7 +67,7 @@ const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
         data-testid={"question-detail-title"}
       >
         {questionInfo?.question?.title}
-      </Typography>
+      </Text>
       {questionInfo?.question?.hint && (
         <Box
           sx={{
@@ -77,24 +76,17 @@ const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
             color: "background.onVariant",
           }}
         >
-          <Typography
+          <Text
             variant="bodyMedium"
             sx={{
               textTransform: "capitalize",
             }}
           >
             <Trans i18nKey="common.hint" />:
-          </Typography>
-          <Typography
-            variant="bodyMedium"
-            sx={{
-              fontFamily: languageDetector(questionInfo?.question?.hint)
-                ? farsiFontFamily
-                : primaryFontFamily,
-            }}
-          >
+          </Text>
+          <Text variant="bodyMedium">
             {questionInfo?.question?.hint}
-          </Typography>
+          </Text>
         </Box>
       )}
     </Box>
@@ -108,9 +100,9 @@ const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
         width="100%"
         sx={{ ...styles.centerCH, alignItems: "flex-start", gap: 2 }}
       >
-        <Typography variant="semiBoldMedium" color="background.onVariant">
+        <Text variant="semiBoldMedium" color="background.onVariant">
           <Trans i18nKey="questions.selectedOption" />:
-        </Typography>
+        </Text>
         {questionInfo?.answer?.index ? (
           <>
             <Box
@@ -120,7 +112,7 @@ const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
                 borderRadius: 2,
               }}
             >
-              <Typography
+              <Text
                 variant="bodyMedium"
                 sx={{
                   ...styles.rtlStyle(
@@ -131,12 +123,12 @@ const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
                 {questionInfo?.answer?.index +
                   ". " +
                   questionInfo?.answer?.title}
-              </Typography>
+              </Text>
             </Box>
             <Box sx={{ ...styles.centerVH, alignSelf: "flex-end", gap: 1 }}>
-              <Typography>
+              <Text>
                 <Trans i18nKey="common.yourConfidence" />
-              </Typography>
+              </Text>
               <CircleRating value={questionInfo?.answer?.confidenceLevel} />
             </Box>
           </>

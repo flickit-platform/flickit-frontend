@@ -1,6 +1,5 @@
 import Chip from "@mui/material/Chip";
 import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
 import { Trans } from "react-i18next";
 import { styles } from "@styles";
 import { useServiceContext } from "@/providers/service-provider";
@@ -10,12 +9,11 @@ import { useQuery } from "@/hooks/useQuery";
 import MoreActions from "@common/MoreActions";
 import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
 import { Link, useNavigate } from "react-router-dom";
-import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
 import Tooltip from "@mui/material/Tooltip";
 import LoadingButton from "@mui/lab/LoadingButton";
-import languageDetector from "@/utils/language-detector";
 import { getReadableDate } from "@/utils/readable-date";
 import flagsmith from "flagsmith";
+import { Text } from "../common/Text";
 interface IAssessmentKitListItemProps {
   data: {
     id: TId;
@@ -29,7 +27,9 @@ interface IAssessmentKitListItemProps {
   hasAccess?: boolean;
   is_member?: boolean;
   is_active?: boolean;
-  setOpenDeleteDialog: React.Dispatch<React.SetStateAction<{status: boolean, id: TId}>>;
+  setOpenDeleteDialog: React.Dispatch<
+    React.SetStateAction<{ status: boolean; id: TId }>
+  >;
 }
 
 const AssessmentKitListItem = (props: IAssessmentKitListItemProps) => {
@@ -75,25 +75,22 @@ const AssessmentKitListItem = (props: IAssessmentKitListItemProps) => {
             textDecoration: "none",
           }}
         >
-          <Typography
+          <Text
             variant="h6"
             fontWeight="bold"
             height="100%"
             alignSelf="stretch"
             sx={{
               textDecoration: "none",
-              fontFamily: languageDetector(title)
-                ? farsiFontFamily
-                : primaryFontFamily,
               ...styles.centerV,
             }}
           >
             {title}
-          </Typography>
-          <Typography color="GrayText" variant="body2">
+          </Text>
+          <Text color="GrayText" variant="body2">
             <Trans i18nKey="common.lastUpdated" />{" "}
             {getReadableDate(lastModificationTime)}
-          </Typography>
+          </Text>
         </Box>
 
         <Box
@@ -176,7 +173,7 @@ const Actions = (props: any) => {
         {
           icon: <DeleteRoundedIcon fontSize="small" />,
           text: <Trans i18nKey="common.delete" />,
-          onClick: ()=> setOpenDeleteDialog({status: true, id}),
+          onClick: () => setOpenDeleteDialog({ status: true, id }),
         },
       ]}
     />

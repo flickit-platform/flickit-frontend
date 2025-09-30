@@ -1,7 +1,7 @@
 import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
 import { Trans } from "react-i18next";
 import "./style.css";
+import { Text } from "../Text";
 
 const LoadingGauge: React.FC = () => {
   return (
@@ -50,13 +50,13 @@ const LoadingGauge: React.FC = () => {
         sx={{ bottom: "50%",  left: "50%", transform: "translate(-50%, 0)" }}
         position="absolute"
       >
-        <Typography
+        <Text
           sx={{ fontWeight: "bold", whiteSpace: "nowrap" }}
           variant="h6"
           color="GrayText"
         >
           <Trans i18nKey="common.loading" />
-        </Typography>
+        </Text>
       </Box>
     </Box>
   );

@@ -1,5 +1,4 @@
 import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
 import Skeleton from "@mui/material/Skeleton";
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
@@ -11,6 +10,7 @@ import Accordion from "@mui/material/Accordion";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import uniqueId from "@/utils/unique-id";
+import { Text } from "@/components/common/Text";
 
 const DotsLoading = () => {
   const theme = useTheme();
@@ -80,13 +80,13 @@ const GraphicalReportSkeleton = ({ isAuthenticatedUser, lang }: any) => (
     minHeight="100vh"
   >
     <Box bgcolor="primary.bgVariant" height={48} sx={{ ...styles.centerVH }}>
-      <Typography
+      <Text
         variant="semiBoldLarge"
         color="primary"
         sx={{ ...styles.centerV }}
       >
         {t("notification.generatingFinalReport")}
-      </Typography>
+      </Text>
       <DotsLoading />
     </Box>
 

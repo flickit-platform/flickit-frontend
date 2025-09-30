@@ -1,9 +1,9 @@
 import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import { Trans } from "react-i18next";
 import Link from "@mui/material/Link";
 import { styles } from "@styles";
+import { Text } from "@/components/common/Text";
 
 interface KitDesignerHeaderProps {
   onAddNewRow: () => void;
@@ -22,13 +22,13 @@ const KitDesignerHeader = ({
 }: KitDesignerHeaderProps) => (
   <>
     <div id="maturity-header">
-      <Typography variant="headlineSmall" fontWeight="bold">
+      <Text variant="headlineSmall" fontWeight="bold">
         <Trans i18nKey={`${mainTitle}`} />
-      </Typography>
+      </Text>
       <br />
-      <Typography component="div" variant="bodyMedium" textAlign="justify">
+      <Text component="div" variant="bodyMedium" textAlign="justify">
         <Trans i18nKey={`${description}`} />
-      </Typography>
+      </Text>
     </div>
     <Box justifyContent="space-between" mt={4} sx={{ ...styles.centerV }}>
       {hasBtn ? (

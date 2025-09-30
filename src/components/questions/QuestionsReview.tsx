@@ -3,7 +3,6 @@ import { useNavigate, useParams, Link } from "react-router-dom";
 import { Trans } from "react-i18next";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
 import Paper from "@mui/material/Paper";
 import Hidden from "@mui/material/Hidden";
 import Rating from "@mui/material/Rating";
@@ -22,6 +21,7 @@ import languageDetector from "@/utils/language-detector";
 import { IQuestionnaire } from "@/types";
 import { toCamelCase } from "@/utils/make-camel-case-string";
 import { ASSESSMENT_MODE } from "@/utils/enum-type";
+import { Text } from "../common/Text";
 
 const getQuestionnaireStatus = (
   answered: number,
@@ -138,19 +138,15 @@ export const Review = () => {
       case "complete":
         return (
           <>
-            <Typography
+            <Text
               component="div"
               variant="headlineMedium"
               mb={1}
               color="primary.main"
             >
               <Trans i18nKey="questions.goodJob" />
-            </Typography>
-            <Typography
-              component="div"
-              variant="headlineSmall"
-              color="primary.main"
-            >
+            </Text>
+            <Text component="div" variant="headlineSmall" color="primary.main">
               <Trans
                 i18nKey="questions.allQuestionsHaveBeenAnswered"
                 values={{ questionnaire: questionnaireTitle }}
@@ -171,8 +167,8 @@ export const Review = () => {
                   ),
                 }}
               />
-            </Typography>
-            <Typography
+            </Text>
+            <Text
               component="div"
               variant="semiBoldLarge"
               color="#0A2342"
@@ -185,13 +181,13 @@ export const Review = () => {
                     : "questions.allQuestionsInThisQuestionnaireHaveBeenAnswered"
                 }
               />
-            </Typography>
+            </Text>
           </>
         );
       case "empty":
         return (
           <>
-            <Typography
+            <Text
               variant="h4"
               color="#D81E5B"
               sx={{
@@ -201,8 +197,8 @@ export const Review = () => {
               }}
             >
               <Trans i18nKey="questions.hmmm" />
-            </Typography>
-            <Typography
+            </Text>
+            <Text
               variant="h4"
               color="#D81E5B"
               sx={{
@@ -215,20 +211,20 @@ export const Review = () => {
                 i18nKey="questions.noQuestionsHaveBeenAnswered"
                 values={{ questionnaire: questionnaireTitle }}
               />
-            </Typography>
-            <Typography
+            </Text>
+            <Text
               variant="h4"
               color="#0A2342"
               sx={{ opacity: 0.8, mb: 4, fontWeight: 600 }}
             >
               <Trans i18nKey="questions.weHighlyRecommendAnsweringMoreQuestions" />
-            </Typography>
+            </Text>
           </>
         );
       default:
         return (
           <>
-            <Typography
+            <Text
               variant="h4"
               color="#F9A03F"
               sx={{
@@ -238,8 +234,8 @@ export const Review = () => {
               }}
             >
               <Trans i18nKey="questions.nice" />
-            </Typography>
-            <Typography
+            </Text>
+            <Text
               variant="h4"
               color="#F9A03F"
               sx={{
@@ -272,8 +268,8 @@ export const Review = () => {
                   ),
                 }}
               />
-            </Typography>
-            <Typography
+            </Text>
+            <Text
               variant="h4"
               color="#0A2342"
               sx={{
@@ -284,7 +280,7 @@ export const Review = () => {
               }}
             >
               <Trans i18nKey="questions.someQuestionsHaveNotBeenAnswered" />
-            </Typography>
+            </Text>
           </>
         );
     }
@@ -337,9 +333,7 @@ export const Review = () => {
       <Box mt={2}>
         {questionsInfo.questions.map((q) => {
           const is_farsi_title = languageDetector(q.title);
-          const is_farsi_option = languageDetector(
-            q?.answer?.selectedOption?.title,
-          );
+
           return (
             <Paper
               key={q.id}
@@ -353,64 +347,52 @@ export const Review = () => {
               }}
               elevation={3}
             >
-              <Typography variant="subMedium" color="#b3b3b3">
+              <Text variant="subMedium" color="#b3b3b3">
                 <Trans i18nKey="common.question" />
-              </Typography>
-              <Typography
-                variant="h6"
-                fontWeight="bold"
-                fontFamily={
-                  is_farsi_title ? farsiFontFamily : primaryFontFamily
-                }
-              >
+              </Text>
+              <Text variant="h6" fontWeight="bold">
                 {q.index}.{q.title}
-              </Typography>
+              </Text>
 
               {/* Answer */}
               {q.answer?.selectedOption && (
                 <Box mt={3}>
-                  <Typography variant="subMedium" color="#b3b3b3">
+                  <Text variant="subMedium" color="#b3b3b3">
                     <Trans i18nKey="common.yourAnswer" />
-                  </Typography>
-                  <Typography
-                    fontFamily={
-                      is_farsi_option ? farsiFontFamily : primaryFontFamily
-                    }
-                    variant="h6"
-                    fontWeight="bold"
-                  >
+                  </Text>
+                  <Text variant="h6" fontWeight="bold">
                     {q.answer.selectedOption.index}.
                     {q.answer.selectedOption.title}
-                  </Typography>
+                  </Text>
                 </Box>
               )}
 
               {/* N/A */}
               {q.answer?.isNotApplicable && (
                 <Box mt={3}>
-                  <Typography variant="subMedium" color="#b3b3b3">
+                  <Text variant="subMedium" color="#b3b3b3">
                     <Trans i18nKey="common.yourAnswer" />
-                  </Typography>
-                  <Typography variant="h6" fontWeight="bold">
+                  </Text>
+                  <Text variant="h6" fontWeight="bold">
                     <Trans i18nKey="questions.markedAsNotApplicable" />
-                  </Typography>
+                  </Text>
                 </Box>
               )}
 
               {/* Confidence */}
               {q.answer?.confidenceLevel && isAdvancedMode && (
                 <Box mt={3}>
-                  <Typography variant="subMedium" color="#b3b3b3">
+                  <Text variant="subMedium" color="#b3b3b3">
                     <Trans i18nKey="common.yourConfidence" />
-                  </Typography>
+                  </Text>
                   <Box mt={1} sx={{ ...styles.centerV }}>
-                    <Typography variant="h6" fontWeight="bold" mr={1}>
+                    <Text variant="h6" fontWeight="bold" mr={1}>
                       <Trans
                         i18nKey={toCamelCase(
                           `common.${q.answer.confidenceLevel.title}`,
                         )}
                       />
-                    </Typography>
+                    </Text>
                     <Rating
                       value={Number(q.answer.confidenceLevel.id)}
                       readOnly

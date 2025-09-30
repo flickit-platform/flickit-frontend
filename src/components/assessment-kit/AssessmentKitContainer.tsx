@@ -1,6 +1,4 @@
 import Box from "@mui/material/Box";
-import { farsiFontFamily, primaryFontFamily } from "@config/theme";
-import Typography from "@mui/material/Typography";
 import { useServiceContext } from "@/providers/service-provider";
 import { useQuery } from "@/hooks/useQuery";
 import { useConfigContext } from "@/providers/config-provider";
@@ -17,7 +15,6 @@ import stringAvatar from "@/utils/string-avatar";
 import PermissionControl from "../common/PermissionControl";
 import SemiCircleChartap from "../common/charts/SemiCircleChart";
 import { Trans } from "react-i18next";
-import languageDetector from "@/utils/language-detector";
 import AssessmentKitsStoreListCard from "./AssessmentKitsStoreListCard";
 import { useEffect, useRef } from "react";
 import SupTitleBreadcrumb from "../common/SupTitleBreadcrumb";
@@ -26,6 +23,7 @@ import LoadingAssessmentKit from "../common/loadings/LoadingSkeletonAssessmentKi
 import keycloakService from "@/service/keycloakService";
 import useScreenResize from "@/hooks/useScreenResize";
 import Title from "@common/Title";
+import { Text } from "../common/Text";
 
 type PurchaseStatus = "free" | "paid" | "purchased";
 
@@ -121,10 +119,10 @@ const AssessmentKit = (props: any) => {
             <Grid item xs={12} md={12} lg={12}>
               <AssessmentKitIntro {...assessmentKitQueryData} />
             </Grid>
-            <Typography color="text.primary" variant="titleLarge" mt={5} mb={1}>
+            <Text color="text.primary" variant="titleLarge" mt={5} mb={1}>
               <Trans i18nKey="assessmentKit.kitStructure" />
-            </Typography>
-            <Typography color="text.primary" variant="bodyMedium">
+            </Text>
+            <Text color="text.primary" variant="bodyMedium">
               <Trans
                 i18nKey={
                   isMobileScreen
@@ -132,7 +130,7 @@ const AssessmentKit = (props: any) => {
                     : "assessmentKit.kitStructureDescription"
                 }
               />
-            </Typography>
+            </Text>
             <Grid
               item
               xs={12}
@@ -158,9 +156,9 @@ const AssessmentKit = (props: any) => {
               status={getPurchaseStatus(isFree, hasAccess)}
             />
           </Grid>
-          <Typography color="text.primary" variant="titleLarge" my={4}>
+          <Text color="text.primary" variant="titleLarge" my={4}>
             <Trans i18nKey="assessmentKit.exploreOtherKits" />
-          </Typography>
+          </Text>
           <Grid item xs={12} md={12} lg={12}>
             <AssessmentKitsStoreListCard small />
           </Grid>
@@ -213,24 +211,17 @@ const AssessmentKitBanner = (props: any) => {
         }
       ></Title>
       <Box sx={{ ...styles.centerCV }} gap={2}>
-        <Typography
-          variant="headlineLarge"
-          color="primary.main"
-          sx={{
-            fontFamily: languageDetector(assessmentTitle)
-              ? farsiFontFamily
-              : primaryFontFamily,
-          }}
-        >
+        <Text variant="headlineLarge" color="primary.main">
           {assessmentTitle}
-        </Typography>
+        </Text>
+
         <Box sx={{ ...styles.centerV, gap: 0.5 }}>
           <Avatar
             {...stringAvatar(expertGroupTitle?.toUpperCase())}
             src={pictureLink}
             sx={{ width: 24, height: 24, fontSize: 16 }}
           ></Avatar>
-          <Typography
+          <Text
             onClick={(e) => {
               e.preventDefault();
               e.stopPropagation();
@@ -248,16 +239,10 @@ const AssessmentKitBanner = (props: any) => {
             }}
           >
             {t("common.createdBy")}{" "}
-            <span
-              style={{
-                fontFamily: languageDetector(expertGroupTitle)
-                  ? farsiFontFamily
-                  : primaryFontFamily,
-              }}
-            >
-              {expertGroupTitle}
-            </span>
-          </Typography>
+            <Text variant="semiBoldLarge" color="text.primary">
+              {expertGroupTitle}{" "}
+            </Text>
+          </Text>
         </Box>
       </Box>
     </Box>

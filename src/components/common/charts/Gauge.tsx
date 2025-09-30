@@ -1,5 +1,4 @@
 import Box, { BoxProps } from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
 import { lazy, Suspense, useMemo, useRef } from "react";
 import { Trans } from "react-i18next";
 import { styles, getMaturityLevelColors } from "@styles";
@@ -7,9 +6,7 @@ import SkeletonGauge from "@common/charts/SkeletonGauge";
 import CompletionRing from "@/components/common/charts/completion-ring/CompletionRing";
 import HiddenMaturityLevel from "@/assets/svg/hidden-maturity-level.svg";
 import permissionRequired from "@/assets/svg/permission-required.svg";
-import languageDetector from "@/utils/language-detector";
-import { t } from "i18next";
-import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
+import { Text } from "../Text";
 interface IGaugeProps extends BoxProps {
   maturity_level_number: number;
   maturity_level_status: string;
@@ -80,22 +77,19 @@ const Gauge = ({
             pointerEvents: "none",
           }}
         >
-          <Typography
+          <Text
             component="div"
             sx={{
-              fontFamily: languageDetector(t(maturity_level_status))
-                ? farsiFontFamily
-                : primaryFontFamily,
               whiteSpace: "normal",
             }}
             variant={status_font_variant ?? "headlineMedium"}
             color="background.onVariant"
           >
             {maturity_level_status}
-          </Typography>
+          </Text>
 
           {confidence_text && (
-            <Typography
+            <Text
               variant={confidence_text_variant}
               color="background.onVariant"
               gap="0.125rem"
@@ -104,9 +98,6 @@ const Gauge = ({
                 display: "inline-flex",
                 alignItems: "center",
                 justifyContent: "center",
-                fontFamily: languageDetector(confidence_text)
-                  ? farsiFontFamily
-                  : primaryFontFamily,
                 whiteSpace: "normal",
                 wordBreak: "break-word",
                 overflowWrap: "anywhere",
@@ -117,17 +108,12 @@ const Gauge = ({
                 displayNumber
                 inputNumber={Math.ceil(confidence_value ?? 0)}
                 variant="titleSmall"
-                fontFamily={
-                  languageDetector(confidence_text)
-                    ? farsiFontFamily
-                    : primaryFontFamily
-                }
               />
-            </Typography>
+            </Text>
           )}
 
           {maturity_status_guide && (
-            <Typography
+            <Text
               variant={confidence_text_variant}
               color="#6C8093"
               sx={{
@@ -137,7 +123,7 @@ const Gauge = ({
               }}
             >
               {maturity_status_guide}
-            </Typography>
+            </Text>
           )}
         </Box>
       ) : (
@@ -157,13 +143,13 @@ const Gauge = ({
             height="80px"
             src={permissionRequired}
           />{" "}
-          <Typography
+          <Text
             variant="headlineSmall"
             color="background.onVariant"
             textAlign="center"
           >
             <Trans i18nKey="notification.reportInaccebile" />
-          </Typography>
+          </Text>
         </Box>
       )}
     </Box>

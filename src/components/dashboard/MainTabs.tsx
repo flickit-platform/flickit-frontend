@@ -3,7 +3,6 @@ import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import uniqueId from "@/utils/unique-id";
 import { farsiFontFamily, primaryFontFamily } from "@config/theme";
-import Typography from "@mui/material/Typography";
 import { Trans } from "react-i18next";
 import { Link, NavLink, useParams } from "react-router-dom";
 import { useServiceContext } from "@/providers/service-provider";
@@ -24,6 +23,7 @@ import { ArrowDropDownRounded, ArrowDropUpRounded } from "@mui/icons-material";
 import languageDetector from "@/utils/language-detector";
 import useMenu from "@/hooks/useMenu";
 import { t } from "i18next";
+import { Text } from "../common/Text";
 
 type TabItem = {
   label: string;
@@ -233,9 +233,9 @@ const MainTabs = (props: any) => {
                           }}
                           label={
                             <Box gap={1} sx={{ ...styles.centerVH }}>
-                              <Typography variant="semiBoldLarge">
+                              <Text variant="semiBoldLarge">
                                 <Trans i18nKey={tab.label} />
-                              </Typography>
+                              </Text>
                             </Box>
                           }
                         />

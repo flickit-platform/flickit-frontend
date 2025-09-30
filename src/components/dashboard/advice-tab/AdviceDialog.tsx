@@ -1,5 +1,4 @@
 import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
 import { Grid } from "@mui/material";
 import { Trans } from "react-i18next";
 import { useEffect, useState } from "react";
@@ -20,6 +19,7 @@ import {
   CEDialogActions,
 } from "@/components/common/dialogs/CEDialog";
 import { LoadingAdviceTargetsSkeleton } from "@/components/common/loadings/LoadingAdviceTargetsSkeleton";
+import { Text } from "@/components/common/Text";
 
 type AdviceDialogProps = {
   open: boolean;
@@ -179,7 +179,7 @@ const AdviceDialog = ({
         pt={{ xs: 0, md: 1 }}
         pb={2}
       >
-        <Typography
+        <Text
           variant="bodyMedium"
           textAlign="justify"
         >
@@ -188,7 +188,7 @@ const AdviceDialog = ({
               step === 1 ? "advice.adviceAssistantDesc" : "advice.reviewAdvice"
             }
           />
-        </Typography>
+        </Text>
 
         {(fetchPreAdviceInfo.loading || loading) && (
           <LoadingAdviceTargetsSkeleton />

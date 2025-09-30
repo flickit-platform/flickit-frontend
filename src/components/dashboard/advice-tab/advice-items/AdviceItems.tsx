@@ -8,7 +8,6 @@ import { LoadingSkeletonKitCard } from "@common/loadings/LoadingSkeletonKitCard"
 import AdviceItemsAccordion from "./AdviceItemsAccordions";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
 import Link from "@mui/material/Link";
 import Divider from "@mui/material/Divider";
 import { ICustomError } from "@/utils/custom-error";
@@ -17,6 +16,7 @@ import { Trans } from "react-i18next";
 import AdviceListNewForm from "./AdviceListNewForm";
 import QueryData from "@/components/common/QueryData";
 import showToast from "@/utils/toast-error";
+import { Text } from "@/components/common/Text";
 
 const AdviceItems = () => {
   const { service } = useServiceContext();
@@ -171,9 +171,9 @@ const AdviceItems = () => {
           <Grid item lg={12} md={12} sm={12} xs={12}>
             <Box sx={{ ...styles.centerCV }} marginTop={4} gap={2}>
               <Box justifyContent="space-between" sx={{ ...styles.centerV }}>
-                <Typography variant="semiBoldLarge">
+                <Text variant="semiBoldLarge">
                   <Trans i18nKey="advice.suggestedActionItems" />
-                </Typography>
+                </Text>
                 {displayedItems.length !== 0 && (
                   <Link
                     href="#new-advice-item"

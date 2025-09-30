@@ -11,7 +11,7 @@ import AssignmentOutlinedIcon from "@mui/icons-material/AssignmentOutlined";
 import FolderOutlinedIcon from "@mui/icons-material/FolderOutlined";
 
 const AssessmentReportTitle = (props: any) => {
-  const { pathInfo, rtlLanguage, lng, children } = props;
+  const { pathInfo, rtlLanguage, lng, children, permissions } = props;
   const { spaceId } = useParams();
   const { space, assessment } = pathInfo;
   const { state } = useLocation();
@@ -60,7 +60,7 @@ const AssessmentReportTitle = (props: any) => {
             },
             {
               title: assessment?.title,
-              to: `/${spaceId}/assessments/1/${assessment.id}/dashboard`,
+              to: `/${spaceId}/assessments/1/${assessment.id}/${permissions.canViewDashboard ? "dashboard" : "questionnaires"}`,
               icon: (
                 <AssignmentOutlinedIcon
                   fontSize="small"

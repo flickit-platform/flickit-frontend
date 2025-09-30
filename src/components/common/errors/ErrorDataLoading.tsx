@@ -1,10 +1,10 @@
 import Box, { BoxProps } from "@mui/material/Box";
 import ReportGmailerrorredRoundedIcon from "@mui/icons-material/ReportGmailerrorredRounded";
-import Typography from "@mui/material/Typography";
 import { Trans } from "react-i18next";
 import { styles } from "@styles";
 import Button from "@mui/material/Button";
 import { HOME_URL } from "@/config/constants";
+import { Text } from "../Text";
 
 interface IErrorDataLoadingProps extends BoxProps {}
 
@@ -13,9 +13,9 @@ const ErrorDataLoading = (props: IErrorDataLoadingProps) => {
   return (
     <Box sx={{ ...styles.centerCVH }} pt="64px" pb="44px" {...rest}>
       <ReportGmailerrorredRoundedIcon sx={{ fontSize: "4rem", mb: "16px" }} />
-      <Typography>
+      <Text>
         <Trans i18nKey="errors.someThingWentWrong" />
-      </Typography>
+      </Text>
       <Button
         sx={{ mt: "50px" }}
         variant="contained"

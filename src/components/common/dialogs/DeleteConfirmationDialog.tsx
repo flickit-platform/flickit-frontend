@@ -1,7 +1,7 @@
 import { Trans, useTranslation } from "react-i18next";
 import { CEDialog, CEDialogActions } from "./CEDialog";
-import Typography from "@mui/material/Typography";
 import Warning from "@mui/icons-material/Warning";
+import { Text } from "../Text";
 
 interface IDeleteConfirmationDialogProps {
   open: boolean;
@@ -36,7 +36,7 @@ export const DeleteConfirmationDialog = ({
       }
       maxWidth="sm"
     >
-      <Typography sx={{ color: "#0A2342" }}>
+      <Text sx={{ color: "#0A2342" }}>
         <Trans
           i18nKey={content}
           values={{ title }}
@@ -44,7 +44,7 @@ export const DeleteConfirmationDialog = ({
             title: <span style={{ fontWeight: "bold", color: "#B86A77" }} />,
           }}
         />
-      </Typography>
+      </Text>
 
       <CEDialogActions
         type="delete"

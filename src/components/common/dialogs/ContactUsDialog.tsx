@@ -2,7 +2,6 @@ import { useEffect, useMemo, useState } from "react";
 import { CEDialog, CEDialogActions } from "@common/dialogs/CEDialog";
 import { Trans } from "react-i18next";
 import i18next, { t } from "i18next";
-import Typography from "@mui/material/Typography";
 import { Box } from "@mui/material";
 import { DialogProps } from "@mui/material/Dialog";
 import { useForm as useFormSpree } from "@formspree/react";
@@ -12,6 +11,7 @@ import telegramIcon from "@/assets/svg/telegram-logo.svg";
 import splusIcon from "@/assets/svg/splus-logo.svg";
 import { styles } from "@styles";
 import FormProviderWithForm from "../FormProviderWithForm";
+import { Text } from "../Text";
 
 interface IContactUsDialogProps extends DialogProps {
   onClose: () => void;
@@ -148,30 +148,30 @@ const ContactUsDialog = ({
       {...rest}
       closeDialog={close}
       title={
-        <Typography
+        <Text
           variant="semiBoldXLarge"
           sx={styles.rtlStyle(isRTL)}
           fontFamily="inherit"
         >
           {dialogTitle ?? <Trans i18nKey="common.contactUs" />}
-        </Typography>
+        </Text>
       }
       sx={styles.rtlStyle(isRTL)}
     >
       <FormProviderWithForm formMethods={methods}>
         <Box px={1} pt={3} fontFamily="inherit">
-          <Typography
+          <Text
             variant="bodyLarge"
             textAlign="justify"
             fontFamily="inherit"
           >
             {children}
-          </Typography>
+          </Text>
 
           {type === "contactUs" && (
-            <Typography component="div" variant="bodyLarge" mb={2}>
+            <Text component="div" variant="bodyLarge" mb={2}>
               <Trans i18nKey="common.contactUsIntroText" />
-            </Typography>
+            </Text>
           )}
 
           {renderFormFields()}
@@ -185,7 +185,7 @@ const ContactUsDialog = ({
             marginInlineEnd={-1}
           >
             <Box gap={2} sx={{ ...styles.centerVH }}>
-              <Typography
+              <Text
                 color="text.primary"
                 variant="semiBoldLarge"
                 whiteSpace="nowrap"
@@ -193,7 +193,7 @@ const ContactUsDialog = ({
                 sx={{ ...styles.rtlStyle(isRTL) }}
               >
                 {t("common.moreWaysToReachUs", { lng })}
-              </Typography>
+              </Text>
 
               {socialIcon.map((chat) => (
                 <Box

@@ -1,7 +1,6 @@
 import { useEffect, useState, useMemo } from "react";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
 import zip from "@/assets/svg/zip.svg";
 import txt from "@/assets/svg/txt.svg";
 import gif from "@/assets/svg/gif.svg";
@@ -30,6 +29,7 @@ import { AcceptFile } from "@/utils/accept-file";
 import showToast from "@/utils/toast-error";
 import { CEDialog } from "@/components/common/dialogs/CEDialog";
 import { styles } from "@styles";
+import { Text } from "@/components/common/Text";
 
 const checkTypeUpload = (
   dropZoneData: any,
@@ -153,7 +153,7 @@ const MyDropzone = (props: any) => {
               )
             )}
 
-            <Typography variant="titleMedium">
+            <Text variant="titleMedium">
               {dropZoneData[0]?.name?.length > 14
                 ? dropZoneData[0]?.name?.substring(0, 10) +
                   "..." +
@@ -161,7 +161,7 @@ const MyDropzone = (props: any) => {
                     dropZoneData[0]?.name?.lastIndexOf("."),
                   )
                 : dropZoneData[0]?.name}
-            </Typography>
+            </Text>
           </Box>
         ) : (
           <section style={{ cursor: "pointer" }}>
@@ -192,7 +192,7 @@ const MyDropzone = (props: any) => {
                   src={UploadIcon}
                   style={{ width: "80px", height: "80px" }}
                 />
-                <Typography
+                <Text
                   variant="titleMedium"
                   color="#243342"
                   sx={{
@@ -201,10 +201,10 @@ const MyDropzone = (props: any) => {
                   }}
                 >
                   <Trans i18nKey="assessmentKit.dragYourFile" />
-                  <Typography variant="titleMedium" color="#205F94">
+                  <Text variant="titleMedium" color="#205F94">
                     <Trans i18nKey="common.locateIt" />
-                  </Typography>
-                </Typography>
+                  </Text>
+                </Text>
               </div>
             </Box>
           </section>
@@ -338,7 +338,7 @@ export const EvidenceAttachmentsDialogs = (props: any) => {
         }}
       >
         <Box sx={{ width: "100%", height: "auto" }}>
-          <Typography
+          <Text
             variant="headlineSmall"
             sx={{
               ...styles.centerH,
@@ -348,11 +348,11 @@ export const EvidenceAttachmentsDialogs = (props: any) => {
             }}
           >
             <Trans i18nKey="common.uploadAttachment" />
-            <Typography variant="headlineSmall">
+            <Text variant="headlineSmall">
               {expanded.count} <Trans i18nKey="common.of" /> 5{" "}
-            </Typography>
-          </Typography>
-          <Typography
+            </Text>
+          </Text>
+          <Text
             color="outline.outline"
             sx={{
               fontSize: "11px",
@@ -374,7 +374,7 @@ export const EvidenceAttachmentsDialogs = (props: any) => {
                   letterSpacing: "0.5px",
                 }}
               />
-              <Typography
+              <Text
                 sx={{
                   fontSize: "11px",
                   lineHeight: "12px",
@@ -382,10 +382,10 @@ export const EvidenceAttachmentsDialogs = (props: any) => {
                 }}
               >
                 <Trans i18nKey="errors.uploadAcceptable" />
-              </Typography>
+              </Text>
             </Box>
-          </Typography>
-          <Typography
+          </Text>
+          <Text
             color="outline.outline"
             sx={{
               fontSize: "11px",
@@ -405,7 +405,7 @@ export const EvidenceAttachmentsDialogs = (props: any) => {
                   height: "12px",
                 }}
               />
-              <Typography
+              <Text
                 sx={{
                   fontSize: "11px",
                   lineHeight: "12px",
@@ -413,22 +413,22 @@ export const EvidenceAttachmentsDialogs = (props: any) => {
                 }}
               >
                 <Trans i18nKey="errors.uploadAcceptableSize" />
-              </Typography>
+              </Text>
             </Box>
-          </Typography>
+          </Text>
           <MyDropzone
             setDropZoneData={setDropZoneData}
             dropZoneData={dropZoneData}
           />
         </Box>
         <Box sx={{ width: { xs: "100%", sm: "70%" }, mx: "auto" }}>
-          <Typography
+          <Text
             variant="headlineSmall"
             color="#243342"
             sx={{ paddingBottom: "1rem" }}
           >
             <Trans i18nKey="questions.additionalInfo" />
-          </Typography>
+          </Text>
           <TextField
             sx={{
               overflow: "auto",

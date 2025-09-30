@@ -1,5 +1,5 @@
 "use client";
-import { Box, Grid, Typography } from "@mui/material";
+import { Box, Grid } from "@mui/material";
 import LoadingButton from "@mui/lab/LoadingButton";
 import ShareIcon from "@mui/icons-material/ShareOutlined";
 import PermissionControl from "@/components/common/PermissionControl";
@@ -29,6 +29,7 @@ import AIGenerated from "@/components/common/icons/AIGenerated";
 import ChecklistRtlRoundedIcon from "@mui/icons-material/ChecklistRtlRounded";
 import ChecklistRoundedIcon from "@mui/icons-material/ChecklistRounded";
 import { Dashboard } from "@mui/icons-material";
+import { Text } from "@/components/common/Text";
 
 export default function AssessmentReportPage() {
   const {
@@ -117,6 +118,7 @@ export default function AssessmentReportPage() {
                     {...fetchPathInfo}
                     render={(pathInfo: PathInfo) => (
                       <AssessmentReportTitle
+                        permissions={permissions}
                         pathInfo={pathInfo}
                         rtlLanguage={rtl}
                         lng={lng}
@@ -242,15 +244,15 @@ export default function AssessmentReportPage() {
                       flexDirection="column"
                     >
                       <Box display="flex" flexDirection="column" gap={1} mb={1}>
-                        <Typography
+                        <Text
                           variant="titleLarge"
                           color="text.primary"
                           sx={{ ...styles.rtlStyle(rtl) }}
                         >
                           {t("assessmentReport.attributesStatus", { lng })}
-                        </Typography>
+                        </Text>
                         {!isQuickMode && (
-                          <Typography
+                          <Text
                             component="div"
                             textAlign="justify"
                             variant="bodyMedium"

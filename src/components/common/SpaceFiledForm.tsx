@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { Grid, IconButton } from "@mui/material";
-import Typography from "@mui/material/Typography";
 import { t } from "i18next";
 import { SpaceField } from "@common/fields/SpaceField";
 import FormProviderWithForm from "@common/FormProviderWithForm";
@@ -17,6 +16,7 @@ import {
   useAssessmentContext,
 } from "@providers/assessment-provider";
 import { useParams } from "react-router";
+import { Text } from "./Text";
 
 const CreateSpacePopUp = ({
   onClose,
@@ -81,9 +81,9 @@ const CreateSpacePopUp = ({
             mb: 1,
           }}
         >
-          <Typography sx={{...styles.rtlStyle(lng == "fa")}} variant={"bodyMedium"} color={"background.secondaryDark"}>
+          <Text sx={{...styles.rtlStyle(lng == "fa")}} variant={"bodyMedium"} color={"background.secondaryDark"}>
             {t("assessmentReport.leaveAndCreateSpaceTitle", {lng})}
-          </Typography>
+          </Text>
           <IconButton
             aria-label="close"
             onClick={onClose}
@@ -95,13 +95,13 @@ const CreateSpacePopUp = ({
             <Close />
           </IconButton>
         </Box>
-        <Typography
+        <Text
           variant={"bodySmall"}
           color={"background.secondaryDark"}
           sx={{...styles.rtlStyle(lng == "fa")}}
         >
           {t("assessmentReport.leaveAndCreateSpaceDescription", {lng})}
-        </Typography>
+        </Text>
       </Box>
       <Box sx={{ display: "flex", justifyContent: "center", gap: 1 }}>
         <Button
@@ -109,16 +109,16 @@ const CreateSpacePopUp = ({
           variant={"outlined"}
           sx={{ ...styles.rtlStyle(lng == "fa"), color: "primary.main" }}
         >
-          <Typography variant={"labelMedium"}>{t("common.refuse", {lng})}</Typography>
+          <Text variant={"labelMedium"}>{t("common.refuse", {lng})}</Text>
         </Button>
         <Button
           onClick={handelCreateSpace}
           variant={"contained"}
           sx={{ ...styles.centerV, gap: 1 }}
         >
-          <Typography variant={"labelMedium"} sx={{ ...styles.rtlStyle(lng == "fa") }}>
+          <Text variant={"labelMedium"} sx={{ ...styles.rtlStyle(lng == "fa") }}>
             {t("assessmentReport.newSpace", {lng})}
-          </Typography>
+          </Text>
           <CreateNewFolderOutlinedIcon />
         </Button>
       </Box>
@@ -153,9 +153,9 @@ const SpaceFieldForm = (props: any) => {
     <FormProviderWithForm formMethods={formMethods}>
       <Grid container>
         <Grid item lg={12} md={12} sm={12} xs={12}>
-          <Typography variant="bodyMedium" sx={{fontFamily: "inherit"}}>
+          <Text variant="bodyMedium" sx={{fontFamily: "inherit"}}>
             {t("assessment.chooseTargetSpace", { lng })}
-          </Typography>
+          </Text>
         </Grid>
         <Grid spacing={2} alignItems={"center"} container>
           <Grid item lg={6} md={6} sm={12} xs={12}>
@@ -177,14 +177,14 @@ const SpaceFieldForm = (props: any) => {
           </Grid>
           {shareDialog && (
             <Grid item lg={6} md={6} sm={12} xs={12} mt={"24px"}>
-              <Typography
+              <Text
                 sx={{ position: "relative", cursor: "pointer", fontFamily: "inherit" }}
                 variant={"labelMedium"}
                 color={"primary.main"}
                 onClick={(e) => togglePopOver(e)}
               >
                 {t("assessmentReport.newSpace", { lng })}
-              </Typography>
+              </Text>
               {anchorEl && (
                 <Popper
                   sx={{ zIndex: 1400 }}

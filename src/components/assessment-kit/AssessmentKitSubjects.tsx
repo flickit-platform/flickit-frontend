@@ -1,6 +1,5 @@
 import { useState } from "react";
 import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import List from "@mui/material/List";
@@ -11,6 +10,7 @@ import { styles } from "@styles";
 import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
 import languageDetector from "@/utils/language-detector";
 import { useTheme } from "@mui/material";
+import { Text } from "../common/Text";
 
 interface Attribute {
   id: number;
@@ -76,17 +76,7 @@ const AssessmentKitSubjects = ({ subjects }: Props) => {
 
       {/* Content */}
       <Box py={3} sx={{ ...styles.rtlStyle(languageDetector(subject.title)) }}>
-        <Typography
-          variant="bodyLarge"
-          mb={2}
-          sx={{
-            fontFamily: languageDetector(subject.description)
-              ? farsiFontFamily
-              : primaryFontFamily,
-          }}
-        >
-          {subject.description}
-        </Typography>
+        <Text variant="bodyLarge">{subject.description}</Text>
 
         <List
           dense
@@ -97,30 +87,23 @@ const AssessmentKitSubjects = ({ subjects }: Props) => {
               <ListItemText
                 sx={{
                   textAlign: languageDetector(subject.title) ? "right" : "left",
+                  "& .MuiListItemText-primary, & .MuiListItemText-secondary": {
+                    display: "inline",
+                  },
                 }}
                 primary={
-                  <Typography
-                    variant="titleMedium"
-                    sx={{
-                      fontFamily: languageDetector(attr.title)
-                        ? farsiFontFamily
-                        : primaryFontFamily,
-                    }}
-                  >
+                  <Text variant="titleMedium" sx={{ display: "inline" }}>
                     • {attr.title}:{" "}
-                  </Typography>
+                  </Text>
                 }
                 secondary={
-                  <Typography
+                  <Text
                     variant="bodyLarge"
-                    sx={{
-                      fontFamily: languageDetector(attr.description)
-                        ? farsiFontFamily
-                        : primaryFontFamily,
-                    }}
+                    color="text.primary"
+                    sx={{ display: "inline" }}
                   >
                     {attr.description}
-                  </Typography>
+                  </Text>
                 }
               />
             </ListItem>

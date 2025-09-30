@@ -10,7 +10,6 @@ import AdviceDialog from "./AdviceDialog";
 import QueryBatchData from "@common/QueryBatchData";
 import AdviceItems from "./advice-items/AdviceItems";
 import { styles } from "@styles";
-import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
 import { ErrorCodes } from "@/types/index";
 import useCalculate from "@/hooks/useCalculate";
@@ -20,6 +19,7 @@ import ActionPopup from "@/components/common/buttons/ActionPopup";
 import { t } from "i18next";
 import showToast from "@/utils/toast-error";
 import { ICustomError } from "@/utils/custom-error";
+import { Text } from "@/components/common/Text";
 
 const AssessmentAdviceContainer = (props: any) => {
   const { permissions } = useAssessmentContext();
@@ -154,9 +154,9 @@ const AssessmentAdviceContainer = (props: any) => {
               <>
                 <Box display="flex" justifyContent="space-between">
                   <Box sx={{ ...styles.centerVH }} gap={1}>
-                    <Typography variant="semiBoldLarge">
+                    <Text variant="semiBoldLarge">
                       <Trans i18nKey="advice.approachToAdvice" />
-                    </Typography>
+                    </Text>
                   </Box>
                   {fetchAdviceNarration.data?.editable && (
                     <ActionPopup
