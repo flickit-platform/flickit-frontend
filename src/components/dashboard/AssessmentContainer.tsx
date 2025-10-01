@@ -115,11 +115,7 @@ const DashbordContainer: React.FC = () => {
             justifyContent="flex-end"
           >
             <Grid
-              item
-              sm={
-                titleLength < maxLength || selectedTab === "settings" ? 6.8 : 12
-              }
-              xs={titleLength < maxLength ? 7 : 12}
+              size={{xs: titleLength < maxLength ? 7 : 12, sm: titleLength < maxLength || selectedTab === "settings" ? 6.8 : 12  }}
               sx={{
                 my:
                   assessmentInfo?.mode?.code === ASSESSMENT_MODE.QUICK ? 2 : 0,
@@ -170,13 +166,8 @@ const DashbordContainer: React.FC = () => {
             </Grid>
 
             <Grid
-              item
-              sm={
-                titleLength < maxLength || selectedTab === "settings" ? 5.2 : 12
-              }
-              xs={titleLength < maxLength ? 5 : 12}
-              sx={{ display: "flex", my: 1 }}
-              justifyContent="flex-end"
+              size={{xs: titleLength < maxLength ? 5 : 12, sm: titleLength < maxLength || selectedTab === "settings" ? 5.2 : 12}}
+              sx={{ display: "flex", my: 1, justifyContent: "flex-end" }}
             >
               <MainTabs
                 onTabChange={handleTabChange}
@@ -186,7 +177,7 @@ const DashbordContainer: React.FC = () => {
             </Grid>
 
             <Grid container mt={2}>
-              <Grid item xs={12}>
+              <Grid size={{xs: 12}}>
                 {outlet}
               </Grid>
             </Grid>
