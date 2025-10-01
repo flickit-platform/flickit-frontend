@@ -163,7 +163,7 @@ const AssessmentCard = ({
   if (showDashboard && !isQuickMode) buttonTypes.push("dashboard");
 
   return (
-    <Grid item lg={3} md={4} sm={6} xs={12}>
+    <Grid size={{ xs: 12, sm: 6, md: 4, lg: 3 }}>
       <Paper
         sx={{
           position: "relative",
@@ -193,7 +193,7 @@ const AssessmentCard = ({
 
         <Grid container sx={{ textDecoration: "none", height: "100%" }}>
           {/* Header */}
-          <Grid item xs={12}>
+          <Grid size={{ xs: 12 }}>
             <Header
               kit={kit}
               itemTitle={title}
@@ -209,8 +209,7 @@ const AssessmentCard = ({
           </Grid>
           {/* Gauge */}
           <Grid
-            item
-            xs={12}
+            size={{ xs: 12 }}
             sx={{
               ...styles.centerCH,
               textDecoration: "none",
@@ -256,13 +255,12 @@ const AssessmentCard = ({
           {/* Buttons Section */}
           {buttonTypes.length > 0 && (
             <Grid
-              item
-              xs={12}
-              mt={2}
+              size={{ xs: 12 }}
               sx={{
                 ...styles.centerCH,
                 gap: 1,
                 flexDirection: "column",
+                mt: 2
               }}
             >
               {buttonTypes.map((type) => (

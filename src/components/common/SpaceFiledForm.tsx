@@ -152,13 +152,13 @@ const SpaceFieldForm = (props: any) => {
   return (
     <FormProviderWithForm formMethods={formMethods}>
       <Grid container>
-        <Grid item lg={12} md={12} sm={12} xs={12}>
+        <Grid size={{ xs:  12, sm: 12, md: 12, lg: 12 }} >
           <Text variant="bodyMedium" sx={{fontFamily: "inherit"}}>
             {t("assessment.chooseTargetSpace", { lng })}
           </Text>
         </Grid>
         <Grid spacing={2} alignItems={"center"} container>
-          <Grid item lg={6} md={6} sm={12} xs={12}>
+          <Grid size={{ xs: 12, sm: 12, md: 6, lg: 6 }}>
             <SpaceField
               queryDataSpaces={queryDataSpaces}
               spaces={spaceList}
@@ -176,7 +176,7 @@ const SpaceFieldForm = (props: any) => {
             />{" "}
           </Grid>
           {shareDialog && (
-            <Grid item lg={6} md={6} sm={12} xs={12} mt={"24px"}>
+            <Grid size={{ xs: 12, sm: 12, md: 6, lg: 6 }} mt={"24px"}>
               <Text
                 sx={{ position: "relative", cursor: "pointer", fontFamily: "inherit" }}
                 variant={"labelMedium"}

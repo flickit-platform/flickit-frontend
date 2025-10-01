@@ -137,8 +137,8 @@ const SpaceContainer = () => {
           loaded={!spaceLoading && !!spaceData}
           renderLoading={() => (
             <Grid container spacing={3}>
-              {[...Array(6)].map((_, i) => (
-                <Grid item xs={12} sm={6} md={4} key={uniqueId()}>
+              {[...Array(6)].map(() => (
+                <Grid size={{ xs: 12, sm: 6, md: 4 }} key={uniqueId()}>
                   <Skeleton
                     variant="rectangular"
                     sx={{ borderRadius: 2, height: "60px", mb: 1 }}

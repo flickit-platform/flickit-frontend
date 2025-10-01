@@ -155,7 +155,7 @@ const AssessmentCEFromDialog = (props: IAssessmentCEFromDialogProps) => {
     >
       <FormProviderWithForm formMethods={formMethods}>
         <Grid container spacing={2} sx={styles.formGrid}>
-          <Grid item xs={12} md={12}>
+          <Grid size={{ xs: 12, md: 12 }}>
             <InputFieldUC
               autoFocus={true}
               defaultValue={defaultValues.title ?? ""}
@@ -166,7 +166,7 @@ const AssessmentCEFromDialog = (props: IAssessmentCEFromDialogProps) => {
               isFocused
             />
           </Grid>
-          <Grid item xs={12} md={12}>
+          <Grid size={{ xs: 12, md: 12 }}>
             <InputFieldUC
               autoFocus={false}
               defaultValue={defaultValues.shortTitle ?? null}
@@ -177,13 +177,13 @@ const AssessmentCEFromDialog = (props: IAssessmentCEFromDialogProps) => {
               helperText={<Trans i18nKey="assessment.shortTitleInfo" />}
             />
           </Grid>
-          <Grid item xs={12} md={7}>
+          <Grid size={{ xs: 12, md: 7 }}>
             <AssessmentKitField
               staticData={staticData?.assessment_kit}
               defaultValue={defaultValues?.assessment_kit}
             />
           </Grid>
-          <Grid item xs={12} md={5}>
+          <Grid size={{ xs: 12, md: 5 }}>
             {" "}
             <AutocompleteAsyncField
               name="language"
