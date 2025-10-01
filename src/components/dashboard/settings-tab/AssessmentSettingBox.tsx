@@ -1143,6 +1143,7 @@ const SelectionRole = (props: any) => {
               color={role.id === row.role.id ? "#004F83" : "#1B1B1E"}
               fontSize="0.875rem"
               fontWeight={500}
+              sx={{ display: "block" }}
             >
               {role.title}
             </Text>
