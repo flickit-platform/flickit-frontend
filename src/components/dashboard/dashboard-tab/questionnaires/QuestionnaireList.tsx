@@ -364,7 +364,7 @@ export const QuestionnaireList = (props: IQuestionnaireListProps) => {
                   {filteredItems.length > 0 ? (
                     filteredItems.map((data: any) => {
                       return (
-                        <Grid item lg={4} md={6} sm={12} xs={12} key={data.id}>
+                        <Grid size={{ xs: 12, sm: 12, md: 6, lg: 4 }} key={data.id}>
                           <QuestionnaireCard
                             data={data}
                             permissions={permissions}
