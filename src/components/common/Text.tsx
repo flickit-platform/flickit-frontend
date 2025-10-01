@@ -87,7 +87,6 @@ export const Text = React.forwardRef<any, Props>(function Text(
   ref,
 ) {
   const content = children ?? text;
-  console.log(component)
 
   const htmlText =
     typeof (rest as any)?.dangerouslySetInnerHTML?.__html === "string"
