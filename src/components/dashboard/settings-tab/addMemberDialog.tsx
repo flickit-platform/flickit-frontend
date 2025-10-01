@@ -339,7 +339,7 @@ const AddMemberDialog = (props: {
                       paddingY: "1rem",
                     }}
                   >
-                    <Text>{role.title}</Text>
+                    <Text sx={{ display: "block" }}>{role.title}</Text>
                     <div
                       style={{
                         color: theme.palette.text.primary,
