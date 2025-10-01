@@ -347,7 +347,11 @@ export const Review = () => {
               }}
               elevation={3}
             >
-              <Text variant="subMedium" color="#b3b3b3">
+              <Text
+                variant="subMedium"
+                color="#b3b3b3"
+                sx={{ display: "block" }}
+              >
                 <Trans i18nKey="common.question" />
               </Text>
               <Text variant="h6" fontWeight="bold">
@@ -357,7 +361,11 @@ export const Review = () => {
               {/* Answer */}
               {q.answer?.selectedOption && (
                 <Box mt={3}>
-                  <Text variant="subMedium" color="#b3b3b3">
+                  <Text
+                    variant="subMedium"
+                    color="#b3b3b3"
+                    sx={{ display: "block" }}
+                  >
                     <Trans i18nKey="common.yourAnswer" />
                   </Text>
                   <Text variant="h6" fontWeight="bold">

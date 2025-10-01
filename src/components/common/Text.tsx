@@ -120,7 +120,7 @@ export const Text = React.forwardRef<any, Props>(function Text(
       variant={variant}
       color={color}
       sx={{
-        display: "inline-block",
+        display: component === "div" ? "block" : "inline-block",
         fontFamily:
           isFa ||
           (hasNoFaOrEnLetters(content as string) && i18next.language === "fa")
