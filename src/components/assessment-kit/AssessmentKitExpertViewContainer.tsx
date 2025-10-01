@@ -1127,44 +1127,55 @@ const QuestionnairesQuestionList = (props: any) => {
               aria-controls="panel1bh-content"
               id="panel1bh-header"
             >
-              <Text
+              <Box
                 display="flex"
                 flex={1}
                 fontWeight="bold"
                 flexWrap="wrap"
                 sx={{ ...styles.rtlStyle(is_farsi) }}
-                variant="body2"
               >
-                {index + 1}.{question.title}
+                <Text variant="body2" fontWeight="bold">
+                  {index + 1}.{question.title}
+                </Text>
                 {question.mayNotBeApplicable && (
                   <Box
                     borderRadius={1}
                     bgcolor="#1976D2"
-                    color="background.containerLowest"
                     fontSize="0.75rem"
                     px="12px"
                     mx="4px"
                     height="24px"
                     sx={{ ...styles.centerVH }}
                   >
-                    <Trans i18nKey="common.na" />
+                    <Text
+                      variant="body2"
+                      fontWeight="bold"
+                      color="background.containerLowest"
+                    >
+                      <Trans i18nKey="common.na" />
+                    </Text>
                   </Box>
                 )}
                 {question.advisable && (
                   <Box
                     borderRadius={1}
                     bgcolor="#004F83"
-                    color="background.containerLowest"
                     fontSize="0.75rem"
                     px="12px"
                     mx="4px"
                     height="24px"
                     sx={{ ...styles.centerVH }}
                   >
-                    <Trans i18nKey="advice.advisable" />
+                    <Text
+                      variant="body2"
+                      fontWeight="bold"
+                      color="background.containerLowest"
+                    >
+                      <Trans i18nKey="advice.advisable" />
+                    </Text>
                   </Box>
                 )}
-              </Text>
+              </Box>
             </AccordionSummary>
             {questionsDetails && (
               <AccordionDetails>
