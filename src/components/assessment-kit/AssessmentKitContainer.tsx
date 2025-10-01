@@ -108,15 +108,13 @@ const AssessmentKit = (props: any) => {
       <Box py={4} px={{ xxl: 30, xl: 20, lg: 12, xs: 2, sm: 3 }}>
         <Grid container>
           <Grid
-            container
-            item
-            xs={12}
-            md={12}
-            lg={9}
-            paddingInlineEnd={{ xs: 0, md: 3 }}
-            paddingBlockEnd={{ xs: 2, md: 0 }}
+            size={{ xs: 12, md: 12, lg: 9 }}
+            sx={{
+              paddingInlineEnd: { xs: 0, md: 3 },
+              paddingBlockEnd: {xs: 2, md: 0 }
+            }}
           >
-            <Grid item xs={12} md={12} lg={12}>
+            <Grid size={{xs: 12, md: 12, lg: 12}}>
               <AssessmentKitIntro {...assessmentKitQueryData} />
             </Grid>
             <Text color="text.primary" variant="titleLarge" mt={5} mb={1}>
@@ -132,21 +130,16 @@ const AssessmentKit = (props: any) => {
               />
             </Text>
             <Grid
-              item
-              xs={12}
-              md={12}
-              lg={12}
-              display={{ xs: "none", sm: "block" }}
-              height={{ md: "450px", lg: "460px", xl: "500px", xxl: "550px" }}
-              mt={2}
+              size={{xs: 12, md: 12, lg: 12}}
+              sx={{display: { xs: "none", sm: "block" }, height: { md: "450px", lg: "460px", xl: "500px", xxl: "550px" }, mt: 2}}
             >
               <SemiCircleChartap items={subjects} childrenField="attributes" />
             </Grid>
-            <Grid item xs={12} md={12} lg={12} mt={1}>
+            <Grid size={{xs: 12, md: 12, lg: 12}} mt={1}>
               <AssessmentKitSubjects {...assessmentKitQueryData} />
             </Grid>
           </Grid>
-          <Grid item xs={12} md={12} lg={3}>
+          <Grid size={{xs: 12, md: 12, lg: 3}}>
             <AssessmentKitAside
               like={like}
               id={id}
@@ -159,7 +152,7 @@ const AssessmentKit = (props: any) => {
           <Text color="text.primary" variant="titleLarge" my={4}>
             <Trans i18nKey="assessmentKit.exploreOtherKits" />
           </Text>
-          <Grid item xs={12} md={12} lg={12}>
+          <Grid size={{xs: 12, md: 12, lg: 12}}>
             <AssessmentKitsStoreListCard small />
           </Grid>
         </Grid>
