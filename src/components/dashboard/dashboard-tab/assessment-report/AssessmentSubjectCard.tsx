@@ -79,7 +79,7 @@ export const AssessmentSubjectAccordion = (
           alignItems="center"
           sx={{ textDecoration: "none", color: "inherit" }}
         >
-          <Grid item xs={12} md={3} sm={12}>
+          <Grid size={{xs: 12, md: 12, sm: 12}}>
             <Box sx={{ ...styles.centerCVH }} gap={1}>
               <Box
                 sx={{
@@ -107,10 +107,10 @@ export const AssessmentSubjectAccordion = (
               </Text>
             </Box>
           </Grid>
-          <Grid item xs={12} md={0.5} sm={12}></Grid>
+          <Grid size={{xs: 12, md: 0.5, sm: 12}}></Grid>
 
           {!isMobileScreen && (
-            <Grid item xs={12} md={5} sm={12}>
+            <Grid size={{xs: 12, md: 5, sm: 12}}>
               <Box
                 sx={{
                   maxHeight: "100px",
@@ -136,9 +136,9 @@ export const AssessmentSubjectAccordion = (
               </Box>
             </Grid>
           )}
-          <Grid item xs={12} md={1} sm={12}></Grid>
+          <Grid size={{xs: 12, md: 1 , sm: 12}}></Grid>
           {isMobileScreen && (
-            <Grid item xs={12} md={2} sm={12} py={1}>
+            <Grid size={{xs: 12, sm: 12, md: 2}} py={1}>
               <FlatGaugeComponent
                 levels={maturityLevelCount}
                 levelValue={maturityLevel?.value ?? 1}
@@ -151,7 +151,7 @@ export const AssessmentSubjectAccordion = (
               />
             </Grid>
           )}
-          <Grid item xs={12} md={2} sm={12}>
+          <Grid size={{xs: 12, sm: 12, md: 2}}>
             <Box
               sx={{
                 ...styles.centerCVH,
@@ -183,7 +183,7 @@ export const AssessmentSubjectAccordion = (
             </Box>
           </Grid>
           {!isMobileScreen && (
-            <Grid item xs={0.4}>
+            <Grid size={{xs: 0.4}}>
               <FlatGaugeComponent
                 levels={maturityLevelCount}
                 levelValue={maturityLevel?.value ?? 1}

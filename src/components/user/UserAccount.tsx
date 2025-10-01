@@ -212,12 +212,12 @@ const UserAccount = () => {
       <Box mt={8}>
         <Box borderTop={"1px solid #d1d1d1"} px={1} py={3} m={1}>
           <Grid container spacing={3}>
-            <Grid item md={3}>
+            <Grid size={{md: 3}}>
               <Title size="small" textTransform={"none"}>
                 <Trans i18nKey="common.about" />
               </Title>
             </Grid>
-            <Grid item md={9}>
+            <Grid size={{md: 9}}>
               <Box>
                 <Text variant="subLarge" sx={{ display: "block" }}>
                   <Trans i18nKey="common.linkedin" />

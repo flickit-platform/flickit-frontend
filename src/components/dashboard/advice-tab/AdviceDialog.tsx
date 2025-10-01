@@ -214,7 +214,7 @@ const AdviceDialog = ({
               (m: any) => m.id == attribute?.maturityLevel.id,
             );
             return (
-              <Grid item xs={12} sm={6} key={attribute.id}>
+              <Grid size={{xs: 12, sm: 6}} key={attribute.id}>
                 <AdviceSlider
                   defaultValue={current?.value ?? 0}
                   currentState={current}

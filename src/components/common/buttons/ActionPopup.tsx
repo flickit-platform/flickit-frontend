@@ -204,7 +204,7 @@ const ConfirmDialog = ({
       {texts.confirmMessage}
     </Text>
     <Grid container spacing={1}>
-      <Grid item xs={12} sm={7.5}>
+      <Grid size={{xs: 12, sm: 7.5}}>
         <LoadingButton
           variant="contained"
           color={colorScheme.muiColor}
@@ -220,7 +220,7 @@ const ConfirmDialog = ({
           {texts.confirmButtonLabel}
         </LoadingButton>
       </Grid>
-      <Grid item xs={12} sm={4}>
+      <Grid size={{xs: 12, sm: 4}}>
         <Button
           variant="outlined"
           color={colorScheme.muiColor}

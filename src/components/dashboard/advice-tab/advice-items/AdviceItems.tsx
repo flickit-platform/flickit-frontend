@@ -168,7 +168,7 @@ const AdviceItems = () => {
       renderLoading={() => <LoadingSkeletonKitCard />}
       render={() => (
         <Grid container>
-          <Grid item lg={12} md={12} sm={12} xs={12}>
+          <Grid size={{xs: 12, sm: 12, md: 12, lg: 12}}>
             <Box sx={{ ...styles.centerCV }} marginTop={4} gap={2}>
               <Box justifyContent="space-between" sx={{ ...styles.centerV }}>
                 <Text variant="semiBoldLarge">
@@ -198,7 +198,7 @@ const AdviceItems = () => {
               <Divider sx={{ width: "100%" }} />
             </Box>
           </Grid>
-          <Grid item lg={12} md={12} sm={12} xs={12} mt={2}>
+          <Grid size={{xs: 12, sm: 12, md: 12, lg: 12}} mt={2}>
             {showNewAdviceListForm && (
               <AdviceListNewForm
                 newAdvice={newAdvice}

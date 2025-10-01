@@ -111,7 +111,7 @@ export const AssessmentSettingGeneralBox: React.FC<Props> = ({
   AssessmentTitle,
   fetchPathInfo,
   color,
-}) => {
+}: any) => {
   const formMethods = useForm({ shouldUnregister: true });
   const { assessmentInfo } = useAssessmentContext();
 
@@ -130,9 +130,7 @@ export const AssessmentSettingGeneralBox: React.FC<Props> = ({
 
         <Grid container spacing={2} sx={{ ...styles.centerH }}>
           <Grid
-            item
-            xs={12}
-            md={6}
+            size={{xs: 12, md: 6}}
             justifyContent="space-between"
             sx={{ ...styles.centerV }}
           >
@@ -156,7 +154,7 @@ export const AssessmentSettingGeneralBox: React.FC<Props> = ({
               />
             </Box>
           </Grid>
-          <Grid item xs={12} md={6}>
+          <Grid size={{xs: 12, md: 6}}>
             <Grid justifyContent="space-between" sx={{ ...styles.centerV }}>
               <Box
                 sx={{ ...styles.centerVH }}
@@ -199,7 +197,7 @@ export const AssessmentSettingGeneralBox: React.FC<Props> = ({
         <Divider sx={{ width: "100%", mb: "24px", mt: "10px" }} />
 
         <Grid container spacing={2}>
-          <Grid item>
+          <Grid>
             <QuickAssessmentSwitch />
           </Grid>
         </Grid>
@@ -210,9 +208,7 @@ export const AssessmentSettingGeneralBox: React.FC<Props> = ({
           {infoFields.map((field) => (
             <Grid
               key={field.key}
-              item
-              xs={12}
-              md={6}
+              size={{xs: 12, md: 6}}
               justifyContent="space-between"
               mb="10px"
               sx={{ ...styles.centerV }}
@@ -602,8 +598,8 @@ export const AssessmentSettingMemberBox = (props: {
                       display: {
                         xs: column.display,
                         md: "inline-block",
-                        border: "none",
                       },
+                      border: "none",
                     }}
                   >
                     <Text color="rgba(0, 0, 0, 0.56)" variant="semiBoldLarge">
@@ -707,8 +703,7 @@ export const AssessmentSettingMemberBox = (props: {
                           }}
                         >
                           <Grid
-                            item
-                            lg={8}
+                            size={{lg: 8}}
                             minWidth={{ xs: "100%", md: "160px" }}
                           >
                             <Tooltip
@@ -894,8 +889,7 @@ export const AssessmentSettingMemberBox = (props: {
                               }}
                             >
                               <Grid
-                                item
-                                lg={8}
+                                size={{lg: 8}}
                                 sx={{ minWidth: { xs: "100%", md: "160px" } }}
                               >
                                 <Select

@@ -28,9 +28,7 @@ export default function ScoreSection({
   return (
     <Grid container mt={2} columnSpacing={isQuickMode ? 2 : 5}>
       <Grid
-        item
-        xs={12}
-        md={isQuickMode ? 8.5 : 9.3}
+        size={{xs: 12, md: isQuickMode ? 8.5 : 9.3}}
         sx={{ display: "flex", flexDirection: "column" }}
       >
         {!isQuickMode && (
@@ -84,9 +82,7 @@ export default function ScoreSection({
       </Grid>
 
       <Grid
-        item
-        xs={12}
-        md={isQuickMode ? 3.5 : 2.7}
+        size={{xs: 12, md: isQuickMode ? 3.5 : 2.7 }}
         height="230px"
         sx={{ ...styles.centerVH }}
       >
