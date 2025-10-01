@@ -4,7 +4,6 @@ import { Trans } from "react-i18next";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Paper from "@mui/material/Paper";
-import Hidden from "@mui/material/Hidden";
 import Rating from "@mui/material/Rating";
 import RadioButtonCheckedRounded from "@mui/icons-material/RadioButtonCheckedRounded";
 import RadioButtonUncheckedRounded from "@mui/icons-material/RadioButtonUncheckedRounded";
@@ -299,11 +298,9 @@ export const Review = () => {
           ...styles.shadowStyle,
         }}
       >
-        <Hidden smDown>
-          <Box mt="-28px" sx={{ ...styles.centerV }}>
+          <Box mt="-28px" sx={{ ...styles.centerV, display: { xs: 'none', sm: 'none', md: 'block' } }}>
             <AnswerStatusImage status={status} />
           </Box>
-        </Hidden>
         <Box sx={{ ml: { xs: 0, sm: 2, md: 6, lg: 8 } }}>
           {renderStatusText()}
           <Box gap={{ xs: 1, sm: 2 }} sx={{ ...styles.centerV }}>
