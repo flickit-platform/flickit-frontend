@@ -1,9 +1,10 @@
-import { Box, Grid, Typography } from "@mui/material";
+import { Box, Grid } from "@mui/material";
 import { styles } from "@styles";
 import { t } from "i18next";
 import { Gauge } from "@/components/common/charts/Gauge";
 import { useScoreSection } from "../../../model/hooks/useScoreSection";
 import ChipsRow from "@/components/common/fields/ChipsRow";
+import { Text } from "@/components/common/Text";
 
 export default function ScoreSection({
   rtl,
@@ -34,15 +35,15 @@ export default function ScoreSection({
       >
         {!isQuickMode && (
           <>
-            <Typography
+            <Text
               component="div"
               variant="semiBoldLarge"
               textAlign={rtl ? "right" : "left"}
               sx={{ ...styles.rtlStyle(rtl) }}
             >
               {t("assessmentReport.introduction", { lng })}
-            </Typography>
-            <Typography
+            </Text>
+            <Text
               component="div"
               textAlign="justify"
               variant="bodyMedium"
@@ -50,18 +51,18 @@ export default function ScoreSection({
               dangerouslySetInnerHTML={{ __html: introHtml }}
               className="tiptap"
             />
-            <Typography
+            <Text
               component="div"
               variant="semiBoldLarge"
               textAlign={rtl ? "right" : "left"}
               sx={{ mt: 2, ...styles.rtlStyle(rtl) }}
             >
               {t("common.summary", { lng })}
-            </Typography>
+            </Text>
           </>
         )}
 
-        <Typography
+        <Text
           component="div"
           textAlign="justify"
           variant="bodyMedium"
@@ -71,13 +72,13 @@ export default function ScoreSection({
         />
 
         <Box sx={{ ...styles.centerV, mt: "auto" }} gap={2}>
-          <Typography
+          <Text
             component="div"
             variant="semiBoldLarge"
             sx={{ ...styles.rtlStyle(rtl) }}
           >
             {t("common.goto", { lng })}
-          </Typography>
+          </Text>
           <ChipsRow items={gotoItems} lng={lng} hoverable />
         </Box>
       </Grid>

@@ -16,7 +16,6 @@ import ListItemButton from "@mui/material/ListItemButton";
 import ListItemText from "@mui/material/ListItemText";
 import MenuIcon from "@mui/icons-material/Menu";
 import Toolbar from "@mui/material/Toolbar";
-import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import Avatar from "@mui/material/Avatar";
 import Menu from "@mui/material/Menu";
@@ -45,6 +44,7 @@ import { getReadableDate } from "@/utils/readable-date";
 import flagsmith from "flagsmith";
 import { useTheme } from "@mui/material";
 import CircularProgress from "@mui/material/CircularProgress";
+import { Text } from "./Text";
 
 const NotificationCenter = lazy(() =>
   import("@novu/notification-center").then((module) => ({
@@ -101,7 +101,7 @@ const NotificationItem = ({
         justifyContent={theme.direction === "rtl" ? "flex-end" : "flex-start"}
         sx={{ ...styles.centerV }}
       >
-        <Typography
+        <Text
           variant="titleSmall"
           color="text.primary"
           fontWeight={message.seen ? 400 : 600}
@@ -111,7 +111,7 @@ const NotificationItem = ({
           dangerouslySetInnerHTML={{ __html: message.content }}
         />
       </Box>
-      <Typography
+      <Text
         variant="labelSmall"
         color="#3D4D5C"
         marginInlineStart="8px"
@@ -119,7 +119,7 @@ const NotificationItem = ({
         whiteSpace="nowrap"
       >
         {getReadableDate(message.createdAt, "relative")}
-      </Typography>
+      </Text>
       <ArrowForwardIos
         sx={{
           fontSize: "16px",
@@ -196,7 +196,7 @@ const NotificationCenterComponent = ({ setNotificationCount }: any) => {
           width={{ md: 420, sm: 320 }}
         >
           <Box className="nc-header" height="55px" sx={{ ...styles.centerV }}>
-            <Typography
+            <Text
               className="nc-header-title"
               color="#525266"
               textAlign="left"
@@ -215,7 +215,7 @@ const NotificationCenterComponent = ({ setNotificationCount }: any) => {
                 />
               </IconButton>
               <Trans i18nKey="notification.notificationDetails" />
-            </Typography>
+            </Text>
           </Box>
           <Box className="nc-notifications-list" height={400}>
             <Box
@@ -244,29 +244,29 @@ const NotificationCenterComponent = ({ setNotificationCount }: any) => {
                 display="flex"
                 flexDirection="column"
               >
-                <Typography variant="titleMedium">
+                <Text variant="titleMedium">
                   {(selectedMessage as any)?.payload?.title}
-                </Typography>
+                </Text>
                 <Box
                   flexGrow={1}
                   display="flex"
                   alignItems="flex-start"
                   gap={1}
                 >
-                  <Typography
+                  <Text
                     variant="bodyMedium"
                     dangerouslySetInnerHTML={{
                       __html: getLinkedContent(selectedMessage),
                     }}
                   />
                 </Box>
-                <Typography variant="labelSmall" color="#3D4D5C">
+                <Text variant="labelSmall" color="#3D4D5C">
                   {getReadableDate(
                     selectedMessage?.createdAt,
                     "relativeWithDate",
                     true,
                   )}
-                </Typography>
+                </Text>
               </Box>
             </Box>
           </Box>
@@ -284,9 +284,9 @@ const NotificationCenterComponent = ({ setNotificationCount }: any) => {
               gap={1}
             >
               <img src={NotificationEmptyState} alt={"No assesment here!"} />
-              <Typography variant="bodyMedium" color="primary">
+              <Text variant="bodyMedium" color="primary">
                 <Trans i18nKey="notification.notificationEmptyState" />
-              </Typography>
+              </Text>
             </Box>
           }
           listItem={(
@@ -455,7 +455,7 @@ const Navbar = () => {
             </IconButton>
           )}
 
-          <Typography
+          <Text
             variant="h6"
             component={NavLink}
             sx={{
@@ -483,7 +483,7 @@ const Navbar = () => {
                 />
               </Box>
             )}
-          </Typography>
+          </Text>
 
           <Box
             sx={{

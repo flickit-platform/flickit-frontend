@@ -2,7 +2,7 @@ import * as React from "react";
 import Accordion from "@mui/material/Accordion";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
-import Typography from "@mui/material/Typography";
+import { Text } from "@/components/common/Text";
 import Box from "@mui/material/Box";
 import Divider from "@mui/material/Divider";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
@@ -45,13 +45,13 @@ function InnerAccordion({ title, children, lng }: Props) {
         }}
         expandIcon={<ExpandMoreIcon sx={{ color: "primary.main" }} />}
       >
-        <Typography
+        <Text
           variant="titleMedium"
           color="primary"
           sx={{ ...styles.rtlStyle(lng === "fa") }}
         >
           {title}
-        </Typography>
+        </Text>
       </AccordionSummary>
 
       <AccordionDetails
@@ -104,7 +104,7 @@ export default function HowIsItMade({ lng, report }: any) {
     <>
       {data?.map((item: any) => (
         <Box key={uniqueId()} mt={2} sx={{ ...styles.centerV }}>
-          <Typography
+          <Text
             variant="bodyMedium"
             fontWeight="bold"
             width="20%"
@@ -113,21 +113,21 @@ export default function HowIsItMade({ lng, report }: any) {
             sx={{ ...styles.rtlStyle(isRTL) }}
           >
             {item.title}
-          </Typography>
+          </Text>
           <Divider
             orientation="vertical"
             flexItem
             color={v3Tokens.outline.outline}
             sx={{ mx: "8px" }}
           />
-          <Typography
+          <Text
             width="80%"
             variant="bodyMedium"
             color={"text.primary"}
             sx={{ ...styles.rtlStyle(isRTL) }}
           >
             {item.description}
-          </Typography>
+          </Text>
           <Divider
             orientation="vertical"
             flexItem
@@ -172,13 +172,13 @@ export default function HowIsItMade({ lng, report }: any) {
           }}
           expandIcon={<ExpandMoreIcon sx={{ color: "primary.main" }} />}
         >
-          <Typography
+          <Text
             variant="headlineSmall"
             color="primary"
             sx={{ ...styles.rtlStyle(lng === "fa") }}
           >
             {t("assessmentReport.howIsThisReportMade", { lng })}
-          </Typography>
+          </Text>
         </AccordionSummary>
 
         <AccordionDetails sx={{ mt: 1.2, p: 0 }}>
@@ -186,13 +186,13 @@ export default function HowIsItMade({ lng, report }: any) {
             title={t("assessmentReport.disclaimer", { lng })}
             lng={lng}
           >
-            <Typography
+            <Text
               sx={{ ...styles.rtlStyle(lng === "fa") }}
               variant="bodyMedium"
               color={"text.primary"}
             >
               {t("assessmentReport.disclaimerDescription", { lng })}
-            </Typography>
+            </Text>
           </InnerAccordion>
 
           <InnerAccordion
@@ -200,7 +200,7 @@ export default function HowIsItMade({ lng, report }: any) {
             lng={lng}
           >
             {assessmentProcess.steps ? (
-              <Typography
+              <Text
                 variant="bodyMedium"
                 textAlign="justify"
                 sx={{ ...styles.rtlStyle(lng === "fa") }}
@@ -220,7 +220,7 @@ export default function HowIsItMade({ lng, report }: any) {
             lng={lng}
           >
             {assessmentProcess.participant ? (
-              <Typography
+              <Text
                 variant="bodyMedium"
                 textAlign="justify"
                 sx={{ ...styles.rtlStyle(lng === "fa") }}
@@ -240,7 +240,7 @@ export default function HowIsItMade({ lng, report }: any) {
             title={t("assessmentReport.aboutAssessmentKit", { lng })}
             lng={lng}
           >
-            <Typography
+            <Text
               sx={{ ...styles.rtlStyle(lng === "fa") }}
               variant="bodyMedium"
               color={"text.primary"}
@@ -254,18 +254,18 @@ export default function HowIsItMade({ lng, report }: any) {
                 maturityLevelCount,
                 questionnairesCount,
               })}
-            </Typography>
+            </Text>
           </InnerAccordion>
 
           <InnerAccordion title={t("common.maturityLevels", { lng })} lng={lng}>
-            <Typography
+            <Text
               variant="bodyMedium"
               color={"text.primary"}
               mb={2}
               sx={{ ...styles.rtlStyle(lng === "fa") }}
             >
               {t("assessmentReport.assessmentKitEvaluatesMaturity", { lng })}
-            </Typography>
+            </Text>
             {maturityLevels.map((level: any) => (
               <Box key={uniqueId()} sx={{ ...styles.centerV }} gap={2}>
                 <Box
@@ -276,7 +276,7 @@ export default function HowIsItMade({ lng, report }: any) {
                   width="27px"
                   borderRadius="16px"
                 />
-                <Typography
+                <Text
                   component="span"
                   color={
                     getMaturityLevelColors(maturityLevelCount)[level.value - 1]
@@ -286,8 +286,8 @@ export default function HowIsItMade({ lng, report }: any) {
                   sx={{ ...styles.rtlStyle(rtlLanguage) }}
                 >
                   {level.title}
-                </Typography>
-                <Typography
+                </Text>
+                <Text
                   textAlign="justify"
                   component="span"
                   variant="bodyMedium"
@@ -295,7 +295,7 @@ export default function HowIsItMade({ lng, report }: any) {
                   sx={{ ...styles.rtlStyle(rtlLanguage) }}
                 >
                   {level.description}
-                </Typography>
+                </Text>
               </Box>
             ))}
           </InnerAccordion>
@@ -304,7 +304,7 @@ export default function HowIsItMade({ lng, report }: any) {
             title={t("assessmentReport.subjectsAndAttributes", { lng })}
             lng={lng}
           >
-            <Typography
+            <Text
               variant="bodyMedium"
               color={"text.primary"}
               sx={{ ...styles.rtlStyle(lng === "fa") }}
@@ -313,12 +313,12 @@ export default function HowIsItMade({ lng, report }: any) {
                 lng,
                 count: attributes.length,
               })}
-            </Typography>
+            </Text>
             {rowItem(attributes)}
           </InnerAccordion>
 
           <InnerAccordion title={t("common.questionnaires", { lng })} lng={lng}>
-            <Typography
+            <Text
               variant="bodyMedium"
               color={"text.primary"}
               sx={{ ...styles.rtlStyle(lng === "fa") }}
@@ -328,7 +328,7 @@ export default function HowIsItMade({ lng, report }: any) {
                 QuestionCount: questionsCount,
                 QuestionnairesCount: questionnairesCount,
               })}
-            </Typography>
+            </Text>
             {rowItem(questionnaires)}
           </InnerAccordion>
         </AccordionDetails>

@@ -1,6 +1,5 @@
 import { ChangeEvent, useState } from "react";
 import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
 import SwapVertRoundedIcon from "@mui/icons-material/SwapVertRounded";
 import EditRoundedIcon from "@mui/icons-material/EditRounded";
@@ -18,6 +17,7 @@ import MultiLangTextField from "@common/fields/MultiLangTextField";
 import { useTranslationUpdater } from "@/hooks/useTranslationUpdater";
 import { useKitDesignerContext } from "@/providers/kit-provider";
 import TitleWithTranslation from "@/components/common/fields/TranslationText";
+import { Text } from "@/components/common/Text";
 
 interface ListOfItemsProps {
   items: Array<KitDesignListItems>;
@@ -157,9 +157,7 @@ const ListOfItems = ({
                       mr={2}
                       px={1.5}
                     >
-                      <Typography variant="semiBoldLarge">
-                        {index + 1}
-                      </Typography>
+                      <Text variant="semiBoldLarge">{index + 1}</Text>
                       <IconButton
                         disableRipple
                         disableFocusRipple
@@ -351,7 +349,7 @@ const ListOfItems = ({
                               }
                               sx={{ ...styles.centerCV }}
                             >
-                              <Typography
+                              <Text
                                 variant="labelCondensed"
                                 color="background.onVariant"
                                 sx={{
@@ -359,7 +357,7 @@ const ListOfItems = ({
                                 }}
                               >
                                 {editableFieldLabel}
-                              </Typography>
+                              </Text>
 
                               {editable && editMode === item.id ? (
                                 <TextField

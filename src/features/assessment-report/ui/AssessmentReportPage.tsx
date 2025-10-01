@@ -1,5 +1,5 @@
 "use client";
-import { Box, Grid, Typography } from "@mui/material";
+import { Box, Grid } from "@mui/material";
 import LoadingButton from "@mui/lab/LoadingButton";
 import ShareIcon from "@mui/icons-material/ShareOutlined";
 import PermissionControl from "@/components/common/PermissionControl";
@@ -8,7 +8,7 @@ import GraphicalReportSkeleton from "@/features/assessment-report/ui/loading/Gra
 import { styles } from "@styles";
 import { t } from "i18next";
 import type { PathInfo } from "@/types";
-import { useCallback } from "react";
+import {useCallback, useEffect, useState} from "react";
 
 import { useAssessmentReportVM } from "../../assessment-report/model/useAssessmentReportVM";
 import AssessmentReportTitle from "./AssessmentReportTitle";
@@ -29,6 +29,7 @@ import AIGenerated from "@/components/common/icons/AIGenerated";
 import ChecklistRtlRoundedIcon from "@mui/icons-material/ChecklistRtlRounded";
 import ChecklistRoundedIcon from "@mui/icons-material/ChecklistRounded";
 import { Dashboard } from "@mui/icons-material";
+import { Text } from "@/components/common/Text";
 
 export default function AssessmentReportPage() {
   const {
@@ -52,11 +53,21 @@ export default function AssessmentReportPage() {
     shareDialog,
   } = useAssessmentReportVM();
 
+  const [step, setStep] = useState(0);
   const onShare = useCallback(() => shareDialog.openDialog({}), [shareDialog]);
   const onExpert = useCallback(
     () => expertDialog.openDialog({}),
     [expertDialog],
   );
+
+  useEffect(() => {
+    if (globalThis.location.hash === "#shareDialog") {
+      shareDialog.openDialog({ type: "create" });
+      setStep(0)
+      const cleanUrl = globalThis.location?.href?.split('#')[0] ?? '';
+      globalThis.history.replaceState(null, globalThis.document.title, cleanUrl);
+    }
+  }, []);
 
   return (
     <PermissionControl error={[fetchGraphicalReport.errorObject]}>
@@ -107,6 +118,7 @@ export default function AssessmentReportPage() {
                     {...fetchPathInfo}
                     render={(pathInfo: PathInfo) => (
                       <AssessmentReportTitle
+                        permissions={permissions}
                         pathInfo={pathInfo}
                         rtlLanguage={rtl}
                         lng={lng}
@@ -232,15 +244,15 @@ export default function AssessmentReportPage() {
                       flexDirection="column"
                     >
                       <Box display="flex" flexDirection="column" gap={1} mb={1}>
-                        <Typography
+                        <Text
                           variant="titleLarge"
                           color="text.primary"
                           sx={{ ...styles.rtlStyle(rtl) }}
                         >
                           {t("assessmentReport.attributesStatus", { lng })}
-                        </Typography>
+                        </Text>
                         {!isQuickMode && (
-                          <Typography
+                          <Text
                             component="div"
                             textAlign="justify"
                             variant="bodyMedium"
@@ -305,7 +317,14 @@ export default function AssessmentReportPage() {
                   <SidebarQuickMode {...sidebarProps} />
                 </Box>
 
-                <ShareDialog {...shareDialog} {...report} lng={lng} />
+                <ShareDialog
+                  {...shareDialog}
+                  {...report}
+                  lng={lng}
+                  fetchGraphicalReport={fetchGraphicalReport}
+                  setStep={setStep}
+                  step={step}
+                />
                 <ContactUsDialog
                   {...expertDialog}
                   context={expertContext}

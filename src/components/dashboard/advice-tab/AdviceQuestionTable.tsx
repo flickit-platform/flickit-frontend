@@ -8,7 +8,6 @@ import {
   TableContainer,
 } from "@mui/material";
 import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
 import Tooltip from "@mui/material/Tooltip";
 import Chip from "@mui/material/Chip";
 import useMediaQuery from "@mui/material/useMediaQuery";
@@ -17,6 +16,7 @@ import { Trans } from "react-i18next";
 
 import languageDetector from "@/utils/language-detector";
 import { farsiFontFamily, primaryFontFamily } from "@config/theme";
+import { Text } from "@/components/common/Text";
 
 // Constants
 const HEADER_BORDER_COLOR = "#66809950";
@@ -96,29 +96,23 @@ const AdviceQuestionTable = ({
     _index: number,
     absoluteIndex: number,
   ) => (
-    <Typography variant="bodyMedium" textAlign="center">
+    <Text variant="bodyMedium" textAlign="center">
       {absoluteIndex + 1}
-    </Typography>
+    </Text>
   );
 
   const renderQuestionnaireCell = (row: AdviceRow) => (
     <Box>
-      <Typography
-        variant="bodyMedium"
-        sx={{
-          fontFamily: getFontFamily(row.questionnaire?.title),
-          textDecoration: "underline",
-        }}
-      >
+      <Text variant="bodyMedium" sx={{ textDecoration: "underline", display:"block" }}>
         {row.questionnaire?.title}
-      </Typography>
-      <Typography
+      </Text>
+      <Text
         component="div"
         variant="semiBoldMedium"
         sx={{ textDecoration: "underline" }}
       >
         Q.{row.question?.index}
-      </Typography>
+      </Text>
     </Box>
   );
 
@@ -128,10 +122,9 @@ const AdviceQuestionTable = ({
         (row.question?.title?.length ?? 0) > 100 ? row.question?.title : ""
       }
     >
-      <Typography
+      <Text
         variant="bodyMedium"
         sx={{
-          fontFamily: getFontFamily(row.question?.title),
           display: "-webkit-box",
           WebkitBoxOrient: "vertical",
           overflow: "hidden",
@@ -140,7 +133,7 @@ const AdviceQuestionTable = ({
         }}
       >
         {row.question?.title}
-      </Typography>
+      </Text>
     </Tooltip>
   );
 
@@ -148,13 +141,9 @@ const AdviceQuestionTable = ({
     option?: Option,
     textAlign: "left" | "center" | "right" = "left",
   ) => (
-    <Typography
-      variant="bodyMedium"
-      textAlign={textAlign}
-      sx={{ fontFamily: getFontFamily(option?.title) }}
-    >
+    <Text variant="bodyMedium" textAlign={textAlign}>
       {option && `${option.index}. ${option.title}`}
-    </Typography>
+    </Text>
   );
 
   const renderAttributesCell = (row: AdviceRow) => (

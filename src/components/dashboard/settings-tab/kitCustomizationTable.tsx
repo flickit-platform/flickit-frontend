@@ -6,7 +6,6 @@ import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
 import TextField from "@mui/material/TextField";
 import EditIcon from "@mui/icons-material/Edit";
@@ -15,6 +14,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import { Trans } from "react-i18next";
 import TitleWithTranslation from "@/components/common/fields/TranslationText";
 import { useKitDesignerContext } from "@/providers/kit-provider";
+import { Text } from "@/components/common/Text";
 
 interface Attribute {
   id: string | number;
@@ -182,7 +182,7 @@ const KitCustomizationTable: React.FC<SubjectTableProps> = ({
                 sx={{ bgcolor: "#F9F9F9", borderRadius: "0.5rem", mb: 1 }}
               >
                 <TableCell>
-                  <Typography variant="semiBoldLarge">{index + 1}</Typography>
+                  <Text variant="semiBoldLarge">{index + 1}</Text>
                 </TableCell>
                 <TableCell>
                   {" "}
@@ -206,9 +206,9 @@ const KitCustomizationTable: React.FC<SubjectTableProps> = ({
                     )
                   ) : (
                     <Box sx={{ display: "flex", gap: 1 }}>
-                      <Typography>
+                      <Text>
                         <Trans i18nKey="common.weight" />:
-                      </Typography>
+                      </Text>
                       {inputData?.customData?.["subjects"]?.find(
                         (item: any) => item.id === subject.id,
                       )?.weight ||
@@ -277,9 +277,9 @@ const KitCustomizationTable: React.FC<SubjectTableProps> = ({
                       )
                     ) : (
                       <Box sx={{ display: "flex", gap: 1 }}>
-                        <Typography>
+                        <Text>
                           <Trans i18nKey="common.weight" />:
-                        </Typography>
+                        </Text>
                         {inputData?.customData?.["attributes"]?.find(
                           (item: any) => item.id === attribute.id,
                         )?.weight ||

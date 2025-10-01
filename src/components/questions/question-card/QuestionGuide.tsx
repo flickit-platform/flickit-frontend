@@ -2,11 +2,11 @@ import languageDetector from "@/utils/language-detector";
 import InfoRounded from "@mui/icons-material/InfoRounded";
 import Collapse from "@mui/material/Collapse";
 import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
 import { Fragment, useState } from "react";
 import { Trans } from "react-i18next";
 import { styles } from "@styles";
 import Title from "@common/Title";
+import { Text } from "@/components/common/Text";
 
 export const QuestionGuide = (props: any) => {
   const [collapse, setCollapse] = useState<boolean>(false);
@@ -46,7 +46,7 @@ export const QuestionGuide = (props: any) => {
             sx={{ direction: `${is_farsi ? "rtl" : "ltr"}` }}
           >
             <Box display="flex" alignItems={"baseline"} p={2} width="100%">
-              <Typography variant="body2">
+              <Text variant="body2">
                 {hint.startsWith("\n")
                   ? hint
                       .substring(1)
@@ -63,7 +63,7 @@ export const QuestionGuide = (props: any) => {
                         <br />
                       </Fragment>
                     ))}
-              </Typography>
+              </Text>
             </Box>
           </Box>
         </Collapse>

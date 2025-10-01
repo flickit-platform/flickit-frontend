@@ -1,7 +1,6 @@
 import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
 import languageDetector from "@/utils/language-detector";
 import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
 import { t } from "i18next";
 import {
   BarChart,
@@ -16,6 +15,7 @@ import {
 } from "recharts";
 import { styles } from "@styles";
 import { useTheme } from "@mui/material";
+import { Text } from "../common/Text";
 
 const CustomTooltip = ({
   active,
@@ -50,7 +50,7 @@ const CustomTooltip = ({
           { score: gainedScore, label: "subject.gainedScore" },
         ].map(({ score, label }) => (
           <Box key={label} sx={{ ...styles.centerCVH }}>
-            <Typography
+            <Text
               variant="semiBoldSmall"
               color="background.containerLowest"
               sx={{
@@ -59,8 +59,8 @@ const CustomTooltip = ({
               }}
             >
               {Math.abs(score)}
-            </Typography>
-            <Typography
+            </Text>
+            <Text
               variant="bodySmall"
               color="background.containerLowest"
               sx={{
@@ -69,7 +69,7 @@ const CustomTooltip = ({
               }}
             >
               {t(label, { lng: language })}
-            </Typography>
+            </Text>
           </Box>
         ))}
       </Box>
@@ -79,7 +79,7 @@ const CustomTooltip = ({
 
 const legendFormatter = (value: string, language: string) => {
   return (
-    <Typography
+    <Text
       component="span"
       variant="labelSmall"
       sx={{
@@ -90,7 +90,7 @@ const legendFormatter = (value: string, language: string) => {
       {value === "uv"
         ? t("subject.gainedScore", { lng: language })
         : t("subject.missedScore", { lng: language })}
-    </Typography>
+    </Text>
   );
 };
 

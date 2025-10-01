@@ -3,7 +3,6 @@ import Box from "@mui/material/Box";
 import { styles } from "@styles";
 import IconButton from "@mui/material/IconButton";
 import ModeEditOutlineOutlinedIcon from "@mui/icons-material/ModeEditOutlineOutlined";
-import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
 import { useParams } from "react-router-dom";
 import { IOption, KitDesignListItems, MultiLangs } from "@/types/index";
@@ -19,6 +18,7 @@ import MultiLangTextField from "@common/fields/MultiLangTextField";
 import { useTranslationUpdater } from "@/hooks/useTranslationUpdater";
 import { useKitDesignerContext } from "@/providers/kit-provider";
 import TitleWithTranslation from "@/components/common/fields/TranslationText";
+import { Text } from "@/components/common/Text";
 
 interface ITempValues {
   title: string;
@@ -92,7 +92,7 @@ const OptionContain = (props: any) => {
           mr={2}
           px={0.2}
         >
-          <Typography variant="semiBoldLarge">{`${answerOption?.index}`}</Typography>
+          <Text variant="semiBoldLarge">{`${answerOption?.index}`}</Text>
         </Box>
 
         <Box

@@ -8,7 +8,6 @@ import useDialog from "@/hooks/useDialog";
 import { AssessmentsList } from "./AssessmentList";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
 import { ICustomError } from "@/utils/custom-error";
 import { useParams, useNavigate } from "react-router-dom";
 import toastError from "@/utils/toast-error";
@@ -29,6 +28,7 @@ import useScreenResize from "@/hooks/useScreenResize";
 import LoadingAssessmentCards from "../common/loadings/LoadingAssessmentCards";
 import { useTheme } from "@mui/material";
 import Title from "@common/Title";
+import { Text } from "../common/Text";
 
 const AssessmentContainer = () => {
   const dialogProps = useDialog();
@@ -65,7 +65,7 @@ const AssessmentContainer = () => {
       <Box display="flex" flexDirection="column" m="auto">
         <AssessmentTitle data={currentSpace} />
         {!fetchSpaceInfo.data?.canCreateAssessment && (
-          <Typography
+          <Text
             variant="semiBoldSmall"
             onClick={() => infoDialogProps.openDialog({})}
             sx={{
@@ -77,7 +77,7 @@ const AssessmentContainer = () => {
             color="primary"
           >
             <Trans i18nKey="assessment.learnWhyThisIsUnavailable" />
-          </Typography>
+          </Text>
         )}
         <Box sx={{ ...styles.centerVH, mb: "40px", mt: 1 }}>
           <Title
@@ -156,7 +156,7 @@ const AssessmentContainer = () => {
               alt={"No assesment here!"}
               width="240px"
             />
-            <Typography
+            <Text
               textAlign="center"
               variant="h3"
               color="#9DA7B3"
@@ -167,8 +167,8 @@ const AssessmentContainer = () => {
               }}
             >
               <Trans i18nKey="assessment.noAssesmentHere" />
-            </Typography>
-            <Typography
+            </Text>
+            <Text
               textAlign="center"
               variant="h1"
               color="#9DA7B3"
@@ -179,7 +179,7 @@ const AssessmentContainer = () => {
               }}
             >
               <Trans i18nKey="assessment.createAnAssessmentWith" />
-            </Typography>
+            </Text>
             <Box>
               <Button
                 startIcon={<AddRoundedIcon />}
@@ -200,9 +200,9 @@ const AssessmentContainer = () => {
                   })
                 }
               >
-                <Typography sx={{ fontSize: "1.25rem" }} variant="button">
+                <Text sx={{ fontSize: "1.25rem" }} variant="button">
                   <Trans i18nKey="assessment.newAssessment" />
-                </Typography>
+                </Text>
               </Button>
             </Box>
           </Box>
@@ -215,9 +215,9 @@ const AssessmentContainer = () => {
             <ErrorEmptyData
               emptyMessage={<Trans i18nKey="notification.nothingToSeeHere" />}
               suggests={
-                <Typography variant="subtitle1" textAlign="center">
+                <Text variant="subtitle1" textAlign="center">
                   <Trans i18nKey="assessment.tryCreatingNewAssessment" />
-                </Typography>
+                </Text>
               }
             />
           }

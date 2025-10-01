@@ -1,4 +1,3 @@
-import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import { ICustomError } from "@/utils/custom-error";
@@ -8,6 +7,7 @@ import { Trans } from "react-i18next";
 import Warning from "@mui/icons-material/Warning";
 import showToast from "@/utils/toast-error";
 import { CEDialog } from "@/components/common/dialogs/CEDialog";
+import { Text } from "@/components/common/Text";
 
 const ConfirmRemoveMemberDialog = (props: any) => {
   const {
@@ -79,7 +79,7 @@ const ConfirmRemoveMemberDialog = (props: any) => {
         </>
       }
     >
-      <Typography color="#0A2342">
+      <Text color="#0A2342">
         {expandedRemoveDialog.invited ? (
           <Trans
             i18nKey="settings.areYouSureYouWantDeleteThisMemberInvited"
@@ -96,7 +96,7 @@ const ConfirmRemoveMemberDialog = (props: any) => {
             }}
           />
         )}
-      </Typography>
+      </Text>
 
       <Box mt={2} alignSelf="flex-end" sx={{ display: "flex", gap: 2 }}>
         <Button onClick={onCloseRemoveDialog}>

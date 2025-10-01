@@ -5,7 +5,7 @@ import IconButton from "@mui/material/IconButton";
 import ModeEditOutlineOutlinedIcon from "@mui/icons-material/ModeEditOutlineOutlined";
 import QuestionDialog from "./QuestionDialog";
 import Divider from "@mui/material/Divider";
-import Typography from "@mui/material/Typography";
+import { Text } from "@/components/common/Text";
 import TitleWithTranslation from "@/components/common/fields/TranslationText";
 import { useKitDesignerContext } from "@/providers/kit-provider";
 import useDialog from "@/hooks/useDialog";
@@ -68,10 +68,10 @@ const QuestionContain = (props: any) => {
           mr={2}
           px={0.2}
         >
-          <Typography
+          <Text
             data-testid="question-index"
             variant="semiBoldLarge"
-          >{`Q. ${question?.index}`}</Typography>
+          >{`Q. ${question?.index}`}</Text>
         </Box>
         <TitleWithTranslation
           title={question.title}

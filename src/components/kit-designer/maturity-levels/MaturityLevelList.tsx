@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Box, Typography, Divider, IconButton } from "@mui/material";
+import { Box, Divider, IconButton } from "@mui/material";
 import SwapVertRounded from "@mui/icons-material/SwapVertRounded";
 import CheckRoundedIcon from "@mui/icons-material/CheckRounded";
 import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
@@ -13,6 +13,7 @@ import MultiLangTextField from "@/components/common/fields/MultiLangTextField";
 import { useKitDesignerContext } from "@/providers/kit-provider";
 import { useTranslationUpdater } from "@/hooks/useTranslationUpdater";
 import TitleWithTranslation from "@/components/common/fields/TranslationText";
+import { Text } from "@/components/common/Text";
 
 interface MaturityLevelListProps {
   maturityLevels: Array<IMaturityLevel>;
@@ -59,11 +60,11 @@ const MaturityLevelList = ({
   const handleSave = (item: IMaturityLevel) => {
     const translations = langCode
       ? {
-        [langCode]: {
-          title: tempValues.translations?.[langCode]?.title,
-          description: tempValues.translations?.[langCode]?.description,
-        },
-      }
+          [langCode]: {
+            title: tempValues.translations?.[langCode]?.title,
+            description: tempValues.translations?.[langCode]?.description,
+          },
+        }
       : undefined;
 
     onEdit({
@@ -101,7 +102,9 @@ const MaturityLevelList = ({
             mt={1.5}
             p={1.5}
             sx={{
-              backgroundColor: isEditing ? "background.container" : "background.containerLowest",
+              backgroundColor: isEditing
+                ? "background.container"
+                : "background.containerLowest",
               borderRadius: "8px",
               border: "0.3px solid #73808c30",
               display: "flex",
@@ -116,7 +119,7 @@ const MaturityLevelList = ({
               mr={2}
               p={0.25}
             >
-              <Typography variant="semiBoldLarge">{index + 1}</Typography>
+              <Text variant="semiBoldLarge">{index + 1}</Text>
               <Divider orientation="horizontal" flexItem sx={{ mx: 1 }} />
               <IconButton size="small">
                 <SwapVertRounded fontSize="small" />

@@ -12,7 +12,7 @@
   "attributesCount": "تعداد ویژگی‌ها",
   "assessmentLanguage": "زبان ارزیابی",
   "assessmentSupportsMultipleLanguages": "این کیت ارزیابی از چند زبان مختلف پشتیبانی می‌‌کند. می‌توانید زبان دلخواه خود را برای ارزیابی انتخاب کنید. سوالات ارزیابی و گزارش نهایی به این زبان نمایش داده خواهند شد.",
-  "continueAssessmentKitMessage": "آیا همچنان مایل به ایجاد ارزیابی با استفاده از کیت <name>{{kitName}}</name> هستید؟",
+  "continueAssessmentKitMessage": "آیا همچنان مایل به ایجاد ارزیابی با استفاده از کیت <name>{{title}}</name> هستید؟",
   "convertExcelToDsl": "تبدیل اکسل به DSL",
   "convertToDsl": "تبدیل به DSL",
   "createAssessmentKit": "ایجاد کیت ارزیابی",

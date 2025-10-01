@@ -3,10 +3,10 @@ import useDialog from "@/hooks/useDialog";
 import { t } from "i18next";
 import { useMediaQuery } from "@mui/material";
 import TeamworkBlocks from "@/assets/svg/teamwork-blocks.svg";
-import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import ContactUsDialog from "@/components/common/dialogs/ContactUsDialog";
 import { styles } from "@styles";
+import { Text } from "../common/Text";
 
 const AssessmentKitsContactUs = () => {
   const dialogProps = useDialog();
@@ -34,21 +34,21 @@ const AssessmentKitsContactUs = () => {
         onClick={() => dialogProps.openDialog({})}
       />
       <Box sx={{ ...styles.centerCV }}>
-        <Typography
+        <Text
           color="text.primary"
           variant="headlineMedium"
           maxWidth={{ xs: "80%", sm: "unset" }}
           mb={{ xs: "12px", sm: 4 }}
         >
           {t("assessmentKit.lookingForSomethingSpecific")}
-        </Typography>
-        <Typography
+        </Text>
+        <Text
           variant="semiBoldXLarge"
           color="background.onVariant"
           mb={{ xs: 2, sm: 4 }}
         >
           {t("assessmentKit.dropUsNote")}
-        </Typography>
+        </Text>
         <Button
           variant="contained"
           onClick={() => dialogProps.openDialog({})}

@@ -1,8 +1,8 @@
 import Box, { BoxProps } from "@mui/material/Box";
 import HourglassEmptyRoundedIcon from "@mui/icons-material/HourglassEmptyRounded";
-import Typography from "@mui/material/Typography";
 import { Trans } from "react-i18next";
 import { styles } from "@styles";
+import { Text } from "../Text";
 
 interface IErrorEmptyDataProps extends BoxProps {
   suggests?: JSX.Element;
@@ -17,7 +17,10 @@ const ErrorEmptyData = (props: IErrorEmptyDataProps) => {
     emptyMessage = <Trans i18nKey="errors.thisPlaceIsEmpty" />,
     useIllustration = false,
     img = useIllustration ? (
-      <img src="/assets/svg/no-content-empty-state.svg" alt="no-content-empty-state" />
+      <img
+        src="/assets/svg/no-content-empty-state.svg"
+        alt="no-content-empty-state"
+      />
     ) : (
       <HourglassEmptyRoundedIcon
         sx={{ fontSize: "4rem", mb: "16px", opacity: 0.8 }}
@@ -38,9 +41,9 @@ const ErrorEmptyData = (props: IErrorEmptyDataProps) => {
     >
       {img}
       {!hideMessage && (
-        <Typography variant="h5" textAlign="center">
+        <Text variant="h5" textAlign="center">
           {emptyMessage}
-        </Typography>
+        </Text>
       )}
       {suggests}
     </Box>

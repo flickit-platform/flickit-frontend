@@ -1,4 +1,4 @@
-import { Box, IconButton, Typography, useTheme } from "@mui/material";
+import { Box, IconButton, useTheme } from "@mui/material";
 import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
 import languageDetector from "@/utils/language-detector";
 import { useState } from "react";
@@ -6,6 +6,7 @@ import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import { toast } from "react-toastify";
 import Tooltip from "@mui/material/Tooltip";
 import { t } from "i18next";
+import { Text } from "../Text";
 
 interface TitleWithTranslationProps {
   title: string;
@@ -55,9 +56,9 @@ const RenderText = ({
   };
 
   return multiline ? (
-    <Typography {...baseProps} dangerouslySetInnerHTML={{ __html: text }} />
+    <Text {...baseProps} dangerouslySetInnerHTML={{ __html: text }} />
   ) : (
-    <Typography
+    <Text
       onClick={(e) => {
         if (showCopyIcon) {
           e.stopPropagation();
@@ -84,7 +85,7 @@ const RenderText = ({
           </IconButton>
         </Tooltip>
       )}
-    </Typography>
+    </Text>
   );
 };
 

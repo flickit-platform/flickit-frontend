@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
+import { Text } from "@/components/common/Text";
 import Tooltip from "@mui/material/Tooltip";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
@@ -160,9 +160,9 @@ const OptionsSection = ({
         gap={2}
         sx={{ ...styles.centerV }}
       >
-        <Typography variant="body2">
+        <Text variant="body2">
           <Trans i18nKey="kitDesigner.answerOptions" />
-        </Typography>
+        </Text>
         <Tooltip
           title={
             fetchAnswerRanges?.data?.items.length === 0 &&

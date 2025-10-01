@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import Box from "@mui/material/Box";
 import Divider from "@mui/material/Divider";
-import Typography from "@mui/material/Typography";
 import PermissionControl from "../../common/PermissionControl";
 import QueryBatchData from "../../common/QueryBatchData";
 import { useServiceContext } from "@/providers/service-provider";
@@ -17,6 +16,7 @@ import SubjectTable from "./SubjectTable";
 import { DeleteConfirmationDialog } from "@common/dialogs/DeleteConfirmationDialog";
 import { MultiLangs } from "@/types";
 import showToast from "@/utils/toast-error";
+import { Text } from "@/components/common/Text";
 
 interface INewAttribute {
   title: string;
@@ -246,9 +246,9 @@ const AttributesContent = () => {
         />
         {fetchAttributeKit.loaded &&
         fetchAttributeKit.data.items.length !== 0 ? (
-          <Typography variant="bodyMedium" mt={1}>
+          <Text variant="bodyMedium" mt={1}>
             <Trans i18nKey="kitDesigner.changeOrderHelper" />
-          </Typography>
+          </Text>
         ) : null}
         <Divider sx={{ my: 1 }} />
 

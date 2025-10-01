@@ -4,7 +4,7 @@ import { Trans } from "react-i18next";
 import { useParams } from "react-router-dom";
 import { styles } from "@styles";
 import { useQuestionContext } from "@/providers/question-provider";
-import Typography from "@mui/material/Typography";
+import { Text } from "@/components/common/Text";
 import { QuestionThumb } from "./QuestionThumb";
 import { QuestionPopover } from "./QuestionPopover";
 import Tooltip from "@mui/material/Tooltip";
@@ -163,7 +163,7 @@ export const QuestionProgressItem = (props: any) => {
             questionIndex != question.index && handlePopoverOpen(e);
           }}
         >
-          <Typography
+          <Text
             color={question?.answer?.selectedOption ||
               question?.answer?.isNotApplicable ||
               (hasIssue && questionsInfo.permissions.viewDashboard)
@@ -175,11 +175,12 @@ export const QuestionProgressItem = (props: any) => {
               lineHeight: "13px",
               opacity: question.index == questionIndex ? 1 : 0.6,
               transition: "opacity .1s ease",
+              display:"grid"
             }}
             className="i-p-i-n"
           >
             {question.index}
-          </Typography>
+          </Text>
         </Box>
       </Tooltip>
       <QuestionPopover

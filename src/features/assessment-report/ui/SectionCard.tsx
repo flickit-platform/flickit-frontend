@@ -1,4 +1,5 @@
-import { Paper, PaperProps, Typography, Box } from "@mui/material";
+import { Text } from "@/components/common/Text";
+import { Paper, PaperProps, Box } from "@mui/material";
 import { styles } from "@styles";
 import { ReactNode } from "react";
 
@@ -35,7 +36,7 @@ export default function SectionCard({
         <Box width="100%" display="flex" flexDirection="column" gap={2}>
           <Box sx={{ ...styles.centerV }} gap={1}>
             {icon}
-            <Typography
+            <Text
               component="div"
               variant="headlineSmall"
               color="primary.main"
@@ -44,17 +45,17 @@ export default function SectionCard({
               sx={{ ...styles.rtlStyle(rtl) }}
             >
               {title}
-            </Typography>
+            </Text>
           </Box>
           {desc && (
-            <Typography
+            <Text
               variant="bodyMedium"
               whiteSpace="pre-line"
               textAlign="justify"
               sx={{ ...styles.rtlStyle(rtl) }}
             >
               {desc}
-            </Typography>
+            </Text>
           )}
         </Box>
       )}

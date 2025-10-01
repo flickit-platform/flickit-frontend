@@ -1,15 +1,15 @@
 import Box from "@mui/material/Box";
 import { Trans } from "react-i18next";
 import SubjectAttributeCard from "./SubjectAttributeCard";
-import Typography from "@mui/material/Typography";
+import { Text } from "../common/Text";
 
 export const SubjectAttributeList = (props: any) => {
   const { attributes, progress, reloadQuery } = props;
   return (
     <Box mt={5} id="attributes">
-      <Typography color="outline.outline" variant="semiBoldMedium">
+      <Text color="outline.outline" variant="semiBoldMedium">
         <Trans i18nKey="common.attributes" />
-      </Typography>
+      </Text>
       <Box mt={3}>
         {attributes.map((attribute: any = {}) => {
           return (
