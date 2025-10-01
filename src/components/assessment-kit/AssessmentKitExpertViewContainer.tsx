@@ -329,7 +329,7 @@ const AssessmentKitSubjects = (props: { details: any[]; update: boolean }) => {
             <AccordionDetails>
               <Box p={1}>
                 <Grid container spacing={2} mb={1}>
-                  <Grid item xs={12} sm={7} md={8} lg={9}>
+                  <Grid size={{xs: 12, sm: 7, md: 8, lg: 9}}>
                     <Box
                       display="flex"
                       bgcolor="background.containerLowest"
