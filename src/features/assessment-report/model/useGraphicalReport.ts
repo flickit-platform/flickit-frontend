@@ -19,7 +19,7 @@ export const useGraphicalReport = () => {
   const fetchPathInfo = useQuery<PathInfo>({
     service: (args, config) =>
       service.common.getPathInfo({ assessmentId, ...(args ?? {}) }, config),
-    runOnMount: !!isAuthenticatedUser,
+    runOnMount: false,
   });
 
   const fetchGraphicalReport = useQuery<IGraphicalReport>({
@@ -71,7 +71,7 @@ export const useGraphicalReport = () => {
   useEffect(() => {
     const code = fetchGraphicalReport.errorObject?.response?.data?.code;
     if (code != null) handleErrorResponse(code);
-}, [
+  }, [
     fetchGraphicalReport.errorObject?.response?.data?.code,
     handleErrorResponse,
   ]);

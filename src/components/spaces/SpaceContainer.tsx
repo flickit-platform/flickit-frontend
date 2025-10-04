@@ -33,7 +33,6 @@ const SpaceContainer = () => {
   const dialogProps = useDialog();
   const assessmentDialogProps = useDialog();
   const infoDialogProps = useDialog();
-  const { currentSpace } = useAuthContext();
   const [searchParams, setSearchParams] = useSearchParams();
   const assessmentPage = Number(searchParams.get("assessmentPage") ?? 1);
   const {
@@ -109,13 +108,17 @@ const SpaceContainer = () => {
       type: "create",
       data: {
         space: {
-          id: currentSpace?.id,
-          title: currentSpace?.title,
+          id: fetchSpaceInfo.data?.id,
+          title: fetchSpaceInfo.data?.title,
         },
       },
     });
   };
 
+  const refetchData = () => {
+    fetchAssessments();
+    fetchSpaceInfo.query();
+  };
   return (
     <Box pt={2}>
       <Title borderBottom size="large">
@@ -252,7 +255,7 @@ const SpaceContainer = () => {
 
       <AssessmentCEFromDialog
         {...assessmentDialogProps}
-        onSubmitForm={fetchAssessments}
+        refetchData={refetchData}
       />
 
       <AssessmenetInfoDialog

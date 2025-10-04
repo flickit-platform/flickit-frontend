@@ -8,7 +8,7 @@ import GraphicalReportSkeleton from "@/features/assessment-report/ui/loading/Gra
 import { styles } from "@styles";
 import { t } from "i18next";
 import type { PathInfo } from "@/types";
-import {useCallback, useEffect, useState} from "react";
+import { useCallback, useEffect, useState } from "react";
 
 import { useAssessmentReportVM } from "../../assessment-report/model/useAssessmentReportVM";
 import AssessmentReportTitle from "./AssessmentReportTitle";
@@ -30,6 +30,7 @@ import ChecklistRtlRoundedIcon from "@mui/icons-material/ChecklistRtlRounded";
 import ChecklistRoundedIcon from "@mui/icons-material/ChecklistRounded";
 import { Dashboard } from "@mui/icons-material";
 import { Text } from "@/components/common/Text";
+import { useParams } from "react-router-dom";
 
 export default function AssessmentReportPage() {
   const {
@@ -52,6 +53,7 @@ export default function AssessmentReportPage() {
     expertDialog,
     shareDialog,
   } = useAssessmentReportVM();
+  const { spaceId } = useParams();
 
   const [step, setStep] = useState(0);
   const onShare = useCallback(() => shareDialog.openDialog({}), [shareDialog]);
@@ -63,11 +65,21 @@ export default function AssessmentReportPage() {
   useEffect(() => {
     if (globalThis.location.hash === "#shareDialog") {
       shareDialog.openDialog({ type: "create" });
-      setStep(0)
-      const cleanUrl = globalThis.location?.href?.split('#')[0] ?? '';
-      globalThis.history.replaceState(null, globalThis.document.title, cleanUrl);
+      setStep(0);
+      const cleanUrl = globalThis.location?.href?.split("#")[0] ?? "";
+      globalThis.history.replaceState(
+        null,
+        globalThis.document.title,
+        cleanUrl,
+      );
     }
   }, []);
+
+  useEffect(() => {
+    if (isAuthenticatedUser) {
+      fetchPathInfo.query();
+    }
+  }, [spaceId]);
 
   return (
     <PermissionControl error={[fetchGraphicalReport.errorObject]}>

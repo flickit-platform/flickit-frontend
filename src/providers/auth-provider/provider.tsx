@@ -21,7 +21,6 @@ export const AuthContext = createContext<IAuthContext>({
   accessToken: getAccessTokenFormStorage(),
   loadingUserInfo: true,
   userInfo: defaultUserInfo,
-  currentSpace: {},
   redirectRoute: "",
   dispatch: () => {},
 });
@@ -32,7 +31,6 @@ export const AuthProvider: FC<IAuthProviderProps> = ({ children }) => {
     accessToken: getAccessTokenFormStorage(),
     loadingUserInfo: true,
     userInfo: defaultUserInfo,
-    currentSpace: {},
     redirectRoute: "",
     dispatch: () => {},
   });

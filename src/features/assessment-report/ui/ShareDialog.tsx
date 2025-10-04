@@ -30,7 +30,7 @@ import FormProviderWithForm from "@/components/common/FormProviderWithForm";
 import SpaceFieldForm from "@/components/common/SpaceFiledForm";
 import { useServiceContext } from "@providers/service-provider";
 import { useConnectAutocompleteField } from "@common/fields/AutocompleteAsyncField";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useQuery } from "@/hooks/useQuery";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import Tooltip from "@mui/material/Tooltip";
@@ -56,8 +56,9 @@ export default function ShareDialog({
   assessment,
   fetchGraphicalReport,
   setStep,
-  step
+  step,
 }: ShareDialogProps) {
+  const navigate = useNavigate();
   const { t } = useTranslation();
   const formMethods = useForm({
     shouldUnregister: true,
@@ -89,9 +90,9 @@ export default function ShareDialog({
     accessor: "items",
   });
 
-  const AssessmentMoveTarget = useQuery({
+  const MoveAssessment = useQuery({
     service: (args, config) =>
-      service.assessments.info.AssessmentMoveTarget(
+      service.assessments.info.moveAssessment(
         args ?? {
           id: assessmentId,
           targetSpaceId: formMethods?.getValues("space")?.id,
@@ -103,9 +104,13 @@ export default function ShareDialog({
   });
 
   const onSubmit = async () => {
-    await AssessmentMoveTarget.query();
-    await fetchGraphicalReport.query();
+    const targetSpaceId = formMethods.getValues("space")?.id;
+    if (!targetSpaceId) return;
+
+    await MoveAssessment.query({ id: assessmentId, targetSpaceId });
     closeShareDialog();
+    navigate(`/${targetSpaceId}/assessments/${assessmentId}/graphical-report/`);
+    fetchGraphicalReport.query();
   };
 
   const [spaceList, setSpaceList] = useState<any[]>([]);
@@ -115,7 +120,9 @@ export default function ShareDialog({
   };
 
   useEffect(() => {
-    fetchSpaces();
+    if (isDefault) {
+      fetchSpaces();
+    }
   }, [assessmentId]);
 
   const staticData = {
@@ -173,7 +180,8 @@ export default function ShareDialog({
     isSelected: boolean;
     isDefault: boolean;
   }) => {
-    if (isSelected && isDefault && status === VISIBILITY.RESTRICTED) return "#8A0F2414";
+    if (isSelected && isDefault && status === VISIBILITY.RESTRICTED)
+      return "#8A0F2414";
     if (isSelected) return "#2466A814";
     return "inherit";
   };
@@ -195,8 +203,10 @@ export default function ShareDialog({
           </Text>{" "}
           <Divider sx={{ my: 1 }} />{" "}
         </Box>
-        <Text variant={"bodyMedium"} color={"background.secondaryDark"}
-        sx={{fontFamily: "inherit"}}
+        <Text
+          variant={"bodyMedium"}
+          color={"background.secondaryDark"}
+          sx={{ fontFamily: "inherit" }}
         >
           {t("assessmentReport.anyoneCanAccessReport", { lng })}
         </Text>
@@ -219,17 +229,20 @@ export default function ShareDialog({
           >
             {globalThis.location.href}
           </Text>
-          <Tooltip title={t("assessmentReport.copyReportLink", {lng})} >
+          <Tooltip title={t("assessmentReport.copyReportLink", { lng })}>
             <Button
-                onClick={handleCopyClick}
-                sx={{
-                  background: "primary.states.selected",
-                  minWidth: "unset",
-                  width: "36px",
-                  height: "36px",
-                }}
+              onClick={handleCopyClick}
+              sx={{
+                background: "primary.states.selected",
+                minWidth: "unset",
+                width: "36px",
+                height: "36px",
+              }}
             >
-              <ContentCopyIcon fontSize={"small"} sx={{color: "primary.main"}} />
+              <ContentCopyIcon
+                fontSize={"small"}
+                sx={{ color: "primary.main" }}
+              />
             </Button>
           </Tooltip>
         </Box>
@@ -361,7 +374,6 @@ export default function ShareDialog({
       }}
       titleStyle={{ mb: "0px !important" }}
     >
-
       {step == 0 && (
         <>
           <Box

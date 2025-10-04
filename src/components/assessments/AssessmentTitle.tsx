@@ -3,12 +3,11 @@ import Title from "@common/Title";
 import FolderOutlinedIcon from "@mui/icons-material/FolderOutlined";
 
 interface IAssessmentReportTitle {
-  data: any;
+  title: string;
 }
 
 const AssessmentTitle = (props: IAssessmentReportTitle) => {
-  const { data } = props;
-  const { title } = data;
+  const { title } = props;
 
   return (
     <Title
@@ -23,7 +22,7 @@ const AssessmentTitle = (props: IAssessmentReportTitle) => {
         <SupTitleBreadcrumb
           routes={[
             {
-              title: title ?? "",
+              title: title,
               icon: <FolderOutlinedIcon fontSize="small" />,
             },
           ]}

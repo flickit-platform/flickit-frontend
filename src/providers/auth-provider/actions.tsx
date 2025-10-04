@@ -43,10 +43,6 @@ export const setUserInfo = (payload: IUserInfo = defaultUserInfo) => {
   return { payload, type: AUTH_ACTIONS_TYPE.SET_USER_INFO };
 };
 
-export const setCurrentSpace = (payload: ISpaceInfo) => {
-  return { payload, type: AUTH_ACTIONS_TYPE.SET_CURRENT_SPACE };
-};
-
 export const signUp = () => {
   return { type: AUTH_ACTIONS_TYPE.SIGN_UP };
 };
@@ -71,7 +67,6 @@ export const authActions = {
   signOut,
   setUserInfo,
   setAccessToken,
-  setCurrentSpace,
   setRedirectRoute,
   setUserInfoLoading,
 };
