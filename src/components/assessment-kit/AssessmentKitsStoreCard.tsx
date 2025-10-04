@@ -126,30 +126,32 @@ const AssessmentKitsStoreCard = (props: any) => {
     <Box
       to={small ? `./../${id}/` : `${id}/`}
       component={Link}
-      borderRadius={2}
-      height="100%"
-      borderLeft={`4px solid ${
-        isPrivate ? theme.palette.secondary.main : theme.palette.primary.main
-      }`}
-      display="flex"
-      flexDirection="column"
-      justifyContent="space-between"
-      color="inherit"
-      p={small ? "12px 24px" : { xs: "24px", sm: "32px" }}
       sx={{
         ...styles.shadowStyle,
         cursor: "pointer",
         textDecoration: "unset",
-        mb: small ? "8px !important" : { xs: "12px", sm: "40px  !important" },
+        mb: small ? "8px !important" : { xs: "12px", sm: "40px !important" },
+        borderRadius: 2,
+        height: "100%",
+        borderLeft: `4px solid ${
+          isPrivate ? theme.palette.secondary.main : theme.palette.primary.main
+        }`,
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "space-between",
+        color: "inherit",
+        p: small ? "12px 24px" : { xs: "24px", sm: "32px" },
       }}
     >
       <Box>
-        <Box display="flex" justifyContent="space-between">
+        <Box sx={{display: "flex", justifyContent: "space-between"}}>
           <Box
-            mb={small ? 0.5 : ""}
-            alignItems="flex-start"
-            gap={1}
-            sx={{ ...styles.centerCV }}
+            sx={{
+              ...styles.centerCV,
+              alignItems: "flex-start",
+              gap: 1,
+              mb: small ? 0.5 : "",
+            }}
           >
             <Text
               variant={small ? "titleMedium" : "headlineSmall"}
@@ -158,8 +160,7 @@ const AssessmentKitsStoreCard = (props: any) => {
               {title}
             </Text>
             <Box
-              sx={{ ...styles.centerV }}
-              gap={small ? 0.5 : 1}
+              sx={{ ...styles.centerV, gap: small ? 0.5 : 1 }}
               onClick={(e) => {
                 e.preventDefault();
                 e.stopPropagation();
@@ -223,12 +224,14 @@ const AssessmentKitsStoreCard = (props: any) => {
             />
           )}
         </Box>
-        <Box mt={1}>
+        <Box sx={{ mt: 1 }}>
           <Text
             component="div"
-            textAlign="justify"
             variant={small ? "bodyMedium" : "bodyLarge"}
-            mt={{ xs: "8px", sm: small ? "8px" : "28px" }}
+            sx={{
+              textAlign: "justify",
+              mt: { xs: "8px", sm: small ? "8px" : "28px" },
+            }}
             dangerouslySetInnerHTML={{
               __html: `${truncatedSummary}${isSummaryTruncated}`,
             }}
@@ -236,12 +239,7 @@ const AssessmentKitsStoreCard = (props: any) => {
         </Box>
       </Box>
       <Box
-        display="flex"
-        flexDirection={{ xs: "column", sm: "row" }}
-        justifyContent="space-between"
-        alignItems="center"
-        gap={small ? 1 : 2}
-        mt={small ? 1 : undefined}
+        sx={{display: "flex", flexDirection: { xs: "column", sm: "row" }, justifyContent: "space-between", alignItems: "center", gap: small ? 1 : 2, mt: small ? 1 : undefined }}
       >
         <Box
           display="flex"

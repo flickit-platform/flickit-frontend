@@ -15,21 +15,21 @@ const LoadingAssessmentKit = () => {
       <Skeleton height={60} width="50%" sx={{ mb: 2 }} />
 
       <Grid container spacing={2}>
-        <Grid item xs={12} md={9}>
+        <Grid size={{xs: 12, md: 9}}>
           <Skeleton
             variant="rectangular"
             height={180}
             sx={{ borderRadius: 2 }}
           />
         </Grid>
-        <Grid item xs={12} md={3}>
+        <Grid size={{xs: 12, md: 3}}>
           <Skeleton
             variant="rectangular"
             height={180}
             sx={{ borderRadius: 2 }}
           />
         </Grid>
-        <Grid item xs={12}>
+        <Grid size={{xs: 12}}>
           <Skeleton
             variant="rectangular"
             height={400}

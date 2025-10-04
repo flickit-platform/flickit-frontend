@@ -377,8 +377,7 @@ const StepBox = (props: IStepBox) => {
     <Grid
       component={Link}
       to={linkMap[category]}
-      item
-      md={3}
+      size={{md: 3}}
       sx={{
         px: "20px",
         py: "10px",

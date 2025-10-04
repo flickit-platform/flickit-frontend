@@ -283,7 +283,7 @@ export default function ShareDialog({
                 sx={{ ...styles.formGrid, mt: 0, mb: 1, gap: 1 }}
               >
                 {" "}
-                <Grid item flex={1}>
+                <Grid flex={1}>
                   {" "}
                   <InputFieldUC
                     lng={lng}
@@ -302,7 +302,7 @@ export default function ShareDialog({
                     }}
                   />{" "}
                 </Grid>{" "}
-                <Grid item>
+                <Grid>
                   {" "}
                   <LoadingButton
                     variant="outlined"
