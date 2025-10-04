@@ -212,8 +212,7 @@ const KitCustomization = (props: any) => {
             />
             <Grid sx={{ ...styles.centerH }}>
               <Grid
-                item
-                xs={12}
+                size={{xs: 12}}
                 sx={{
                   ...styles.centerVH,
                 }}
@@ -264,12 +263,12 @@ const KitCustomization = (props: any) => {
               />
             </Box>
             <Grid mt={2} container spacing={2} justifyContent="flex-end">
-              <Grid item>
+              <Grid>
                 <Button onClick={onClose} data-cy="cancel">
                   <Trans i18nKey="common.cancel" />
                 </Button>
               </Grid>
-              <Grid item>
+              <Grid>
                 <Tooltip title={tooltipTitle}>
                   <Box>
                     <LoadingButton

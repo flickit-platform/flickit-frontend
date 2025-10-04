@@ -39,7 +39,7 @@ const SelectFieldUC = (props: ISelectFieldUC) => {
   );
 };
 
-interface ISelectField extends SelectProps {
+interface ISelectField {
   renderOption?: (option: any) => JSX.Element;
   InputLabelProps?: InputLabelProps;
   helperText?: string | JSX.Element | Element;
@@ -63,6 +63,9 @@ interface ISelectField extends SelectProps {
   value?: string;
   IconComponent?: any;
   onChange?: (e: any) => void;
+  required?: boolean;
+  defaultValue?: any;
+  label?: any;
 }
 
 export const SelectField = (props: ISelectField) => {

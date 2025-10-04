@@ -413,10 +413,10 @@ export const AssessmentSettingMemberBox = (props: {
   interface Column {
     id: "displayName" | "email" | "role";
     label: string;
-    minWidth?: string;
-    align?: "right";
-    display?: string;
-    position: string;
+    minWidth?: string | number;
+    align?: "inherit" | "left" | "center" | "right" | "justify";
+    display?: "none" | "inline-block" | "block";
+    position?: "left" | "center" | "right" | "start";
   }
 
   const editUserRoleInvited = useQuery({
