@@ -12,30 +12,7 @@ vi.mock("@/providers/service-provider", () => ({
   useServiceContext: () => ({
     service: {
       assessments: {
-        info: { MoveAssessment: MoveAssessmentSpy },
-      },
-    },
-  }),
-  ServiceProvider: ({ children }: any) => <>{children}</>,
-}));
-
-vi.mock("@providers/service-provider", () => ({
-  useServiceContext: () => ({
-    service: {
-      assessments: {
-        info: { MoveAssessment: MoveAssessmentSpy },
-      },
-    },
-  }),
-  ServiceProvider: ({ children }: any) => <>{children}</>,
-}));
-
-
-vi.mock("../../../providers/service-provider", () => ({
-  useServiceContext: () => ({
-    service: {
-      assessments: {
-        info: { MoveAssessment: MoveAssessmentSpy },
+        info: { moveAssessment: MoveAssessmentSpy },
       },
     },
   }),
@@ -49,7 +26,6 @@ const useQueryMockImpl = (opts: any) => ({
   error: undefined,
 });
 vi.mock("@/hooks/useQuery", () => ({ useQuery: useQueryMockImpl }));
-vi.mock("../../../hooks/useQuery", () => ({ useQuery: useQueryMockImpl }));
 
 
 let MoveAssessmentDialog: any;
