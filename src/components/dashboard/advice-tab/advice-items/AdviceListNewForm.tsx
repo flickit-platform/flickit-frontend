@@ -153,7 +153,7 @@ const AdviceListNewForm = ({
       >
         <Box sx={{ width: "100%" }} mx={1}>
           <Grid container spacing={1.4}>
-            <Grid item xs={12} md={6}>
+            <Grid size={{xs: 12, md: 6}}>
               <TextField
                 error={errormessage?.title}
                 id="new-advice-item"
@@ -186,9 +186,7 @@ const AdviceListNewForm = ({
             {selectAdvice?.map((item: any) => {
               return (
                 <Grid
-                  item
-                  xs={12}
-                  md={2}
+                  size={{xs: 12, md: 2}}
                   sx={{
                     display: "flex",
                     justifyContent: { xs: "center" },

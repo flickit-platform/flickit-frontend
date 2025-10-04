@@ -27,7 +27,7 @@ const AdviceSliderSkeletonItem = ({
       sx={{ width: "100%", direction: "ltr" }}
       padding={{ xs: 0.5, md: 2 }}
     >
-      <Grid item xs={4} sm={4}>
+      <Grid size={{xs: 4, sm: 4}}>
         <Box sx={{ ...styles.centerV }} gap={2}>
           <Box sx={{ width: "100%" }}>
             <Skeleton variant="text" height={20} width="70%" sx={{ mb: 0.5 }} />
@@ -36,7 +36,7 @@ const AdviceSliderSkeletonItem = ({
         </Box>
       </Grid>
 
-      <Grid item xs={6} sm={6}>
+      <Grid size={{xs: 6, sm: 6}}>
         <Box dir="ltr" position="relative" sx={{ mt: 1 }}>
           <Box
             sx={{
@@ -130,7 +130,7 @@ const AdviceSliderSkeletonItem = ({
         </Box>
       </Grid>
 
-      <Grid item xs={2} sm={2}>
+      <Grid size={{xs:2, sm: 2}}>
         <Box display="flex" alignItems="center" justifyContent="flex-end">
           <Skeleton variant="text" height={16} width={48} />
         </Box>
@@ -166,7 +166,7 @@ export const LoadingAdviceTargetsSkeleton = ({
       }}
     >
       {Array.from({ length: count }).map((_, i) => (
-        <Grid key={uniqueId()} item xs={12} sm={6}>
+        <Grid key={uniqueId()} size={{xs: 12, sm: 6}}>
           <Box
             sx={{
               borderRadius: "8px",

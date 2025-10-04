@@ -345,7 +345,7 @@ const AssessmentKitSubjects = (props: { details: any[]; update: boolean }) => {
                       </Text>
                     </Box>
                   </Grid>
-                  <Grid item xs={12} sm={7} md={8} lg={9}>
+                  <Grid size={{xs: 12, sm: 7, md: 8, lg: 9}}>
                     <Box
                       display="flex"
                       bgcolor="background.containerLowest"
@@ -461,7 +461,7 @@ const AssessmentKitQuestionnaires = (props: {
               </Text>
             </AccordionSummary>
             <AccordionDetails>
-              <Grid item xs={12} sm={7} md={8} lg={9}>
+              <Grid size={{xs: 12, sm: 7, md: 8, lg: 9}}>
                 <Box
                   display="flex"
                   bgcolor="background.containerLowest"
@@ -477,7 +477,7 @@ const AssessmentKitQuestionnaires = (props: {
                   </Text>
                 </Box>
               </Grid>
-              <Grid item xs={12} sm={7} md={8} lg={9}>
+              <Grid size={{xs: 12, sm: 7, md: 8, lg: 9}}>
                 <Box
                   display="flex"
                   bgcolor="background.containerLowest"
@@ -502,7 +502,7 @@ const AssessmentKitQuestionnaires = (props: {
                   )}
                 </Box>
               </Grid>
-              <Grid item xs={12} sm={7} md={8} lg={9}>
+              <Grid size={{xs: 12, sm: 7, md: 8, lg: 9}}>
                 <Box
                   display="flex"
                   bgcolor="background.containerLowest"
@@ -585,7 +585,7 @@ const AssessmentKitQuestionsList = (props: {
   }, [value]);
   return (
     <Box m={1} mt={5}>
-      <Grid item xs={12} sm={7} md={8} lg={9}>
+      <Grid size={{xs: 12, sm: 7, md: 8, lg: 9}}>
         <Box
           display="flex"
           bgcolor="background.containerLowest"
@@ -601,7 +601,7 @@ const AssessmentKitQuestionsList = (props: {
           </Text>
         </Box>
       </Grid>
-      <Grid item xs={12} sm={7} md={8} lg={9}>
+      <Grid size={{xs: 12, sm: 7, md: 8, lg: 9}}>
         <Box
           display="flex"
           bgcolor="background.containerLowest"
@@ -617,7 +617,7 @@ const AssessmentKitQuestionsList = (props: {
           </Text>
         </Box>
       </Grid>
-      <Grid item xs={12} sm={7} md={8} lg={9}>
+      <Grid size={{xs: 12, sm: 7, md: 8, lg: 9}}>
         <Box
           display="flex"
           bgcolor="background.containerLowest"
@@ -868,12 +868,12 @@ const UpdateAssessmentKitDialog = (props: any) => {
         })}
       </Box>
       <Grid mt={4} container spacing={2} justifyContent="flex-end">
-        <Grid item>
+        <Grid>
           <Button onClick={close} data-cy="cancel">
             <Trans i18nKey="common.cancel" />
           </Button>
         </Grid>
-        <Grid item>
+        <Grid>
           <Button variant="contained" onClick={() => setShowErrorLog(false)}>
             <Trans i18nKey="common.back" />
           </Button>

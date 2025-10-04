@@ -53,7 +53,7 @@ const ExpertGroupsList = (props: IExpertGroupsListProps) => {
       <Grid container spacing={3}>
         {items?.map((expertGroup: any) => {
           return (
-            <Grid item xs={12} sm={6} lg={4} key={expertGroup.id}>
+            <Grid size={{xs: 12, sm: 6, lg: 4}} key={expertGroup.id}>
               <ExpertGroupsItem data={expertGroup} setOpenDeleteDialog={setOpenDeleteDialog} />
             </Grid>
           );

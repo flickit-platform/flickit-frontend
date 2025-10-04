@@ -104,7 +104,7 @@ const KitDesignerContainer = () => {
             <KitDesignerTitle kitVersion={kitVersion} />
 
             <Grid container spacing={1} columns={12}>
-              <Grid item sm={12} xs={12} mt={1}>
+              <Grid size={{xs: 12, sm: 12}} mt={1}>
                 <Text
                   color="primary"
                   textAlign="left"

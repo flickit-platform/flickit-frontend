@@ -103,7 +103,7 @@ export default function MaturitySlider({
       py={{ xs: 0.5, md: 2 }}
       columnSpacing={2}
     >
-      <Grid item xs={4.1} sm={4.1}>
+      <Grid size={{xs: 4.1, sm: 4.1}}>
         <Box sx={styles.centerV} gap={2}>
           <Text
             variant="semiBoldLarge"
@@ -122,7 +122,7 @@ export default function MaturitySlider({
         </Box>
       </Grid>
 
-      <Grid item xs={7.9} sm={7.9}>
+      <Grid size={{xs: 7.9, sm: 7.9}}>
         <ThemeProvider theme={ltrTheme}>
           <SliderRow
             defaultValue={defaultValue}
