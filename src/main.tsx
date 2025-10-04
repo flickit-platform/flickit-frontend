@@ -12,7 +12,7 @@ import "react-toastify/dist/ReactToastify.css";
 import App from "./App";
 import { createRoot } from "react-dom/client";
 import keycloakService from "@/service/keycloakService";
-import "./assets/font/fonts.css";
+import "../public/assets/font/fonts.css";
 import "./components/common/charts/style.css";
 import "@utils/richEditorStyles.css";
 import { AssessmentProvider } from "./providers/assessment-provider";
