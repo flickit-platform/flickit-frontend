@@ -15,7 +15,7 @@ interface IMoreActionsProps {
   closeMenu: (e: any) => void;
   loading?: boolean;
   hideInnerIconButton?: boolean;
-  anchorEl?: () => Element | null;
+  anchorEl?:   Element | (() => Element | null) | null;
   fontSize?: "inherit" | "small" | "large" | "medium";
   items: any;
   setShowTooltip?: (e: boolean) => void;
