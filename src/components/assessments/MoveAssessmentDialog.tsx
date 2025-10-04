@@ -49,9 +49,9 @@ const MoveAssessmentDialog = (props: IAssessmentCEFromDialogProps) => {
     }
   };
 
-  const AssessmentMoveTarget = useQuery({
+  const MoveAssessment = useQuery({
     service: (args, config) =>
-      service.assessments.info.AssessmentMoveTarget(
+      service.assessments.info.moveAssessment(
         args ?? {
           id: assessmentId,
           targetSpaceId: formMethods?.getValues("space")?.id,
@@ -63,7 +63,7 @@ const MoveAssessmentDialog = (props: IAssessmentCEFromDialogProps) => {
   });
 
   const onSubmit = async () => {
-    await AssessmentMoveTarget.query();
+    await MoveAssessment.query();
     onSubmitForm?.();
     close();
   };

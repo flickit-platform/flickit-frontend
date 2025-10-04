@@ -1,8 +1,8 @@
 import { lazy, useEffect, useRef, useState } from "react";
 import { Trans } from "react-i18next";
-import { useParams, NavLink, useNavigate } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { styles } from "@styles";
-import { authActions, useAuthContext } from "@/providers/auth-provider";
+import { useAuthContext } from "@/providers/auth-provider";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import ListItemIcon from "@mui/material/ListItemIcon";
@@ -25,8 +25,6 @@ import ArrowDropUpRoundedIcon from "@mui/icons-material/ArrowDropUpRounded";
 import AccountBoxRoundedIcon from "@mui/icons-material/AccountBoxRounded";
 import EngineeringIcon from "@mui/icons-material/Engineering";
 import LogoutRoundedIcon from "@mui/icons-material/LogoutRounded";
-import { useServiceContext } from "@/providers/service-provider";
-import { useQuery } from "@/hooks/useQuery";
 import { FLAGS } from "@/types/index";
 import keycloakService from "@/service//keycloakService";
 import { useConfigContext } from "@/providers/config-provider";
@@ -308,34 +306,16 @@ const NotificationCenterComponent = ({ setNotificationCount }: any) => {
 };
 
 const Navbar = () => {
-  const { userInfo, dispatch } = useAuthContext();
+  const { userInfo } = useAuthContext();
   const { config } = useConfigContext();
-  const { spaceId } = useParams();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [notificationCenterOpen, setNotificationCenterOpen] = useState(false);
   const [notificationCount, setNotificationCount] = useState(0);
   const notificationCenterRef = useRef(null);
   const bellButtonRef = useRef(null);
-  const { service } = useServiceContext();
   const theme = useTheme();
 
   const isAuthenticated = keycloakService.isLoggedIn();
-  const navigate = useNavigate();
-
-  const fetchPathInfo = useQuery({
-    service: (args, config) =>
-      service.common.getPathInfo({ spaceId, ...(args ?? {}) }, config),
-    runOnMount: false,
-  });
-
-  const fetchSpaceInfo = async () => {
-    const res = await fetchPathInfo.query();
-    dispatch(authActions.setCurrentSpace(res?.space));
-  };
-
-  useEffect(() => {
-    if (spaceId) fetchSpaceInfo();
-  }, [spaceId]);
 
   const handleDrawerToggle = () => setMobileOpen((p) => !p);
   const toggleNotificationCenter = () => setNotificationCenterOpen((p) => !p);

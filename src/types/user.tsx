@@ -43,6 +43,5 @@ export interface IAuthContext {
   accessToken: string;
   loadingUserInfo: boolean;
   redirectRoute: string;
-  currentSpace: any;
   dispatch: Dispatch<any>;
 }
