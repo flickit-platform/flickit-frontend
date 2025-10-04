@@ -152,12 +152,12 @@ const SpaceFieldForm = (props: any) => {
   return (
     <FormProviderWithForm formMethods={formMethods}>
       <Grid container>
-        <Grid size={{ xs:  12, sm: 12, md: 12, lg: 12 }} >
+        <Grid size={{ xs: 12, sm: 12, md: 12, lg: 12 }} >
           <Text variant="bodyMedium" sx={{fontFamily: "inherit"}}>
             {t("assessment.chooseTargetSpace", { lng })}
           </Text>
         </Grid>
-        <Grid spacing={2} alignItems={"center"} container>
+        <Grid spacing={2}  sx={{width: "70%"}} alignItems={"center"} container>
           <Grid size={{ xs: 12, sm: 12, md: 6, lg: 6 }}>
             <SpaceField
               queryDataSpaces={queryDataSpaces}

@@ -8,7 +8,7 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { Trans } from "react-i18next";
 import { getMaturityLevelColors, styles } from "@styles";
-import { ISubjectInfo, IMaturityLevel } from "@/types/index";
+import { ISubjectInfo, IMaturityLevel } from "@/types";
 import CompletionRing from "@/components/common/charts/completion-ring/CompletionRing";
 import SubjectContainer from "../../../subject-report/SubjectContainer";
 import FlatGaugeComponent from "@/components/common/FlatGaugeComponent";
@@ -77,9 +77,9 @@ export const AssessmentSubjectAccordion = (
         <Grid
           container
           alignItems="center"
-          sx={{ textDecoration: "none", color: "inherit" }}
+          sx={{ textDecoration: "none", color: "inherit", width: "100%" }}
         >
-          <Grid size={{xs: 12, md: 12, sm: 12}}>
+          <Grid size={{xs:12, md: 3, sm: 12}}>
             <Box sx={{ ...styles.centerCVH }} gap={1}>
               <Box
                 sx={{
@@ -110,7 +110,7 @@ export const AssessmentSubjectAccordion = (
           <Grid size={{xs: 12, md: 0.5, sm: 12}}></Grid>
 
           {!isMobileScreen && (
-            <Grid size={{xs: 12, md: 5, sm: 12}}>
+            <Grid size={{xs:12, md: 5, sm: 12}}>
               <Box
                 sx={{
                   maxHeight: "100px",
@@ -136,9 +136,9 @@ export const AssessmentSubjectAccordion = (
               </Box>
             </Grid>
           )}
-          <Grid size={{xs: 12, md: 1 , sm: 12}}></Grid>
+          <Grid size={{xs: 12, md: 1, sm: 12}}></Grid>
           {isMobileScreen && (
-            <Grid size={{xs: 12, sm: 12, md: 2}} py={1}>
+            <Grid size={{xs: 12, md: 2, sm: 12}} py={1}>
               <FlatGaugeComponent
                 levels={maturityLevelCount}
                 levelValue={maturityLevel?.value ?? 1}

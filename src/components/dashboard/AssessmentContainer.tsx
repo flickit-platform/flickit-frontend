@@ -176,7 +176,7 @@ const DashbordContainer: React.FC = () => {
               />
             </Grid>
 
-            <Grid container mt={2}>
+            <Grid sx={{width: "100%"}} container mt={2}>
               <Grid size={{xs: 12}}>
                 {outlet}
               </Grid>
