@@ -57,5 +57,6 @@
   "successCreatedAssessmentTitleFirstPart": "این ارزیابی ",
   "successCreatedAssessmentTitleSecondPart": "با موفقیت ایجاد شد.",
   "tryCreatingNewAssessment": "در این فضای کاری هیچ ارزیابی‌ای وجود ندارد. می‌توانید یکی ایجاد کنید.",
-  "updateAssessment": "به‌روزرسانی ارزیابی"
+  "updateAssessment": "به‌روزرسانی ارزیابی",
+  "editKit": "ویرایش کیت"
 }
