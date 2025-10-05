@@ -592,8 +592,8 @@ const FullRow = (props: any) => {
       >
         <Grid container>
           {[{ title: firstTitle, value: firstValue, Icon: firstIcon }, { title: secondTitle, value: secondValue, Icon: secondIcon }].map(
-            ({ title, value, Icon }, idx) => (
-              <Grid item xs={6} key={idx}>
+            ({ title, value, Icon }) => (
+              <Grid item xs={6} key={uniqueId()}>
                 <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
                   {Icon}
                   <Box sx={{ ...styles.centerCV }}>
