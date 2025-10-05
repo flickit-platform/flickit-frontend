@@ -2,14 +2,11 @@ import Box from "@mui/material/Box";
 import IconButton from "@mui/material/IconButton";
 import { Trans } from "react-i18next";
 import Grid from "@mui/material/Grid";
-import InfoItem from "@common/InfoItem";
-import { t } from "i18next";
+import i18next, { t } from "i18next";
 import { ICustomError } from "@/utils/custom-error";
 import { useServiceContext } from "@/providers/service-provider";
 import { useQuery } from "@/hooks/useQuery";
 import { useParams } from "react-router";
-import FavoriteRoundedIcon from "@mui/icons-material/FavoriteRounded";
-import ShoppingCartRoundedIcon from "@mui/icons-material/ShoppingCartRounded";
 import EditRoundedIcon from "@mui/icons-material/EditRounded";
 import FormProviderWithForm from "@common/FormProviderWithForm";
 import { useForm } from "react-hook-form";
@@ -41,13 +38,20 @@ import { styles } from "@styles";
 import { Text } from "../common/Text";
 import LanguageIcon from "@mui/icons-material/LanguageRounded";
 import PriceIcon from "@common/icons/Price";
-import { useTheme } from "@mui/material";
+import { Button, useTheme } from "@mui/material";
 import AssignmentOutlinedIcon from "@mui/icons-material/AssignmentOutlined";
 import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined';
+import EditIcon from "@mui/icons-material/Edit";
+import FileDownloadOutlinedIcon from '@mui/icons-material/FileDownloadOutlined';
+import FileUploadOutlinedIcon from '@mui/icons-material/FileUploadOutlined';
+import { formatLanguageCodes } from "@utils/language-utils";
+
 interface IAssessmentKitSectionAuthorInfo {
   setExpertGroup: any;
   setAssessmentKitTitle: any;
   setHasActiveVersion: any;
+  handleDownloadDSL: any;
+  handleUpdateDSL: any;
 }
 
 const TextFields = [
@@ -64,7 +68,7 @@ const TextFields = [
 const AssessmentKitSectionGeneralInfo = (
   props: IAssessmentKitSectionAuthorInfo,
 ) => {
-  const { setExpertGroup, setAssessmentKitTitle, setHasActiveVersion } = props;
+  const { setExpertGroup, setAssessmentKitTitle, setHasActiveVersion, handleDownloadDSL, handleUpdateDSL } = props;
   const {
     config: { languages: appLangs },
   }: any = useConfigContext();
@@ -445,7 +449,12 @@ const AssessmentKitSectionGeneralInfo = (
               <InfoBox
                 creationTime={creationTime}
                 lastModificationTime={lastModificationTime}
+                likes={likes}
                 infoBoxData={infoBoxData}
+                handleDownloadDSL={handleDownloadDSL}
+                handleUpdateDSL={handleUpdateDSL}
+                languages={languages}
+                assessmentCounts={assessmentCounts }
               />
             </Grid>
           </Grid>
@@ -456,12 +465,11 @@ const AssessmentKitSectionGeneralInfo = (
 };
 
 const InfoBox = (props: any) => {
-  const { creationTime, lastModificationTime, infoBoxData } = props;
+  const { creationTime, lastModificationTime, infoBoxData, handleUpdateDSL, handleDownloadDSL, likes, languages, assessmentCounts  } = props;
   const theme = useTheme();
 
   return (
     <Box sx={{ ...styles.centerCH, gap: 2, mt: "8px" }}>
-      {/* RowSplit: Creation and Last Updated */}
       <Grid container spacing={2}>
         <RowSplit
           title={t("common.creationDate")}
@@ -474,7 +482,6 @@ const InfoBox = (props: any) => {
           xs={6}
         />
       </Grid>
-
       <Grid
         container
         sx={{
@@ -505,13 +512,13 @@ const InfoBox = (props: any) => {
 
       <Grid container>
         <FullRow
-          title1={t("common.supportedLanguages")}
-          title2={t("common.price")}
-          value1={""}
-          value2={t("common.free")}
+          firstTitle={t("common.supportedLanguages")}
+          secondTitle={t("common.price")}
+          firstValue={formatLanguageCodes(languages, i18next.language)}
+          secondValue={t("common.free")}
           xs={12}
-          Icon1={<LanguageIcon fontSize="large" sx={{ color: "primary.main" }} />}
-          Icon2={
+          firstIcon={<LanguageIcon fontSize="large" sx={{ color: "primary.main" }} />}
+          secondIcon={
             <PriceIcon
               color={theme.palette.primary.dark}
               width="33px"
@@ -520,18 +527,19 @@ const InfoBox = (props: any) => {
           }
         />
       </Grid>
-
       <Grid container>
         <FullRow
-          title1={t("assessmentKit.createdAssessments")}
-          title2={t("common.liked")}
-          value1={getReadableDate(creationTime)}
-          value2={getReadableDate(creationTime)}
+          firstTitle={t("assessmentKit.createdAssessments")}
+          secondTitle={t("common.liked")}
+          firstValue={assessmentCounts}
+          secondValue={<>
+            {likes} {" "} {t("common.times")}
+          </>}
           xs={12}
-          Icon1={
+          firstIcon={
             <AssignmentOutlinedIcon fontSize="large" sx={{ color: "primary.main" }} />
           }
-          Icon2={
+          secondIcon={
             <FavoriteBorderOutlinedIcon
               sx={{ color: theme.palette.primary.dark }}
               width="33px"
@@ -540,12 +548,35 @@ const InfoBox = (props: any) => {
           }
         />
       </Grid>
+      <Grid container >
+        <Grid item xs={12}>
+          <Button disabled fullWidth variant={"contained"} startIcon={<EditIcon />} >
+            <Text variant={"bodyLarge"}>
+              {t("assessment.editKit")}
+            </Text>
+          </Button>
+        </Grid>
+      </Grid>
+      <Grid container >
+        <Grid item xs={12} sx={{display: "flex", gap: "16px"}} >
+          <Button onClick={handleDownloadDSL} sx={{width: "100%"}}  variant={"outlined"} startIcon={<FileDownloadOutlinedIcon />} >
+            <Text variant={"bodyLarge"}>
+              {t("assessmentKit.downloadDSLKit")}
+            </Text>
+          </Button>
+          <Button onClick={handleUpdateDSL} sx={{width: "100%"}} variant={"outlined"} startIcon={<FileUploadOutlinedIcon />} >
+            <Text variant={"bodyLarge"}>
+              {t("assessmentKit.updateDSLKit")}
+            </Text>
+          </Button>
+        </Grid>
+      </Grid>
     </Box>
   );
 };
 
 const FullRow = (props: any) => {
-  const { title1, title2, value1, value2, Icon1, Icon2, ...rest } = props;
+  const { firstTitle, secondTitle, firstValue, secondValue, firstIcon, secondIcon, ...rest } = props;
 
   return (
     <Grid item {...rest}>
@@ -560,7 +591,7 @@ const FullRow = (props: any) => {
         }}
       >
         <Grid container>
-          {[{ title: title1, value: value1, Icon: Icon1 }, { title: title2, value: value2, Icon: Icon2 }].map(
+          {[{ title: firstTitle, value: firstValue, Icon: firstIcon }, { title: secondTitle, value: secondValue, Icon: secondIcon }].map(
             ({ title, value, Icon }, idx) => (
               <Grid item xs={6} key={idx}>
                 <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>

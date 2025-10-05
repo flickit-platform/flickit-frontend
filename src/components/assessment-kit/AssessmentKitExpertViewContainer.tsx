@@ -111,6 +111,7 @@ const AssessmentKitExpertViewContainer = () => {
       config.appTitle,
     );
   }, [assessmentKitTitle]);
+
   return (
     <Box>
       <Box flexDirection={{ xs: "column", sm: "row" }}>
@@ -141,46 +142,6 @@ const AssessmentKitExpertViewContainer = () => {
               displayChip
             />
           }
-          toolbar={
-            <Box>
-              <Button
-                variant="contained"
-                size="small"
-                sx={{ ml: 2 }}
-                onClick={() => {
-                  dialogProps.openDialog({});
-                }}
-              >
-                <Text marginInlineEnd={1} variant="button">
-                  <Trans i18nKey="assessmentKit.updateDSL" />
-                </Text>
-                <CloudUploadRoundedIcon />
-              </Button>
-              <LoadingButton
-                variant="contained"
-                loading={loadingExportBtn}
-                size="small"
-                sx={{ ml: 2 }}
-                onClick={handleExport}
-              >
-                <Text marginInlineEnd={1} variant="button">
-                  <Trans i18nKey="assessmentKit.exportDSL" />
-                </Text>
-                <CloudDownloadRoundedIcon />
-              </LoadingButton>
-              <Button
-                variant="contained"
-                size="small"
-                sx={{ ml: 2 }}
-                onClick={handleDownload}
-              >
-                <Text marginInlineEnd={1} variant="button">
-                  <Trans i18nKey="assessmentKit.downloadDSL" />
-                </Text>
-                <CloudDownloadRoundedIcon />
-              </Button>
-            </Box>
-          }
         >
           {assessmentKitTitle}
         </Title>
@@ -189,6 +150,8 @@ const AssessmentKitExpertViewContainer = () => {
             setExpertGroup={setExpertGroup}
             setAssessmentKitTitle={setAssessmentKitTitle}
             setHasActiveVersion={setHasActiveVersion}
+            handleDownloadDSL={handleDownload}
+            handleUpdateDSL={()=>dialogProps.openDialog({})}
           />
           <UpdateAssessmentKitDialog
             setForceUpdate={setForceUpdate}
