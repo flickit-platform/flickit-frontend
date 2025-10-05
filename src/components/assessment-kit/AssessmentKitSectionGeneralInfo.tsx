@@ -39,7 +39,11 @@ import useGeneralInfoField from "@/hooks/useGeneralInfoField";
 import { useTranslationUpdater } from "@/hooks/useTranslationUpdater";
 import { styles } from "@styles";
 import { Text } from "../common/Text";
-
+import LanguageIcon from "@mui/icons-material/LanguageRounded";
+import PriceIcon from "@common/icons/Price";
+import { useTheme } from "@mui/material";
+import AssignmentOutlinedIcon from "@mui/icons-material/AssignmentOutlined";
+import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined';
 interface IAssessmentKitSectionAuthorInfo {
   setExpertGroup: any;
   setAssessmentKitTitle: any;
@@ -205,9 +209,18 @@ const AssessmentKitSectionGeneralInfo = (
           }
         };
 
+        const infoBoxData = {
+          "common.maturityLevel": maturityLevelsCount,
+          "common.subjects": subjects?.map((sub: any) => sub?.title)?.length,
+          "assessmentReport.subjectsAndAttributes": attributesCount,
+          "common.questionnaire": questionnairesCount,
+          "common.questions": questionsCount,
+          "assessmentKit.numberMeasures": 1,
+        };
+
         return (
           <Grid container spacing={4}>
-            <Grid item xs={12} md={7}>
+            <Grid item xs={12} md={8}>
               <Box
                 mt={1}
                 p={2.5}
@@ -428,104 +441,323 @@ const AssessmentKitSectionGeneralInfo = (
                 </Box>
               </Box>
             </Grid>
-            <Grid item xs={12} md={5}>
-              <Box
-                mt={1}
-                p={2.5}
-                borderRadius={2}
-                bgcolor="background.containerLowest"
-                height="100%"
-              >
-                {creationTime && (
-                  <Box my={1.5}>
-                    <InfoItem
-                      bg="white"
-                      info={{
-                        item: getReadableDate(creationTime),
-                        title: t("common.creationDate"),
-                      }}
-                    />
-                  </Box>
-                )}
-                {lastModificationTime && (
-                  <Box my={1.5}>
-                    <InfoItem
-                      bg="white"
-                      info={{
-                        item: getReadableDate(lastModificationTime),
-                        title: t("common.lastUpdated"),
-                      }}
-                    />
-                  </Box>
-                )}
+            {/*todo*/}
+            <Grid item xs={12} md={4}>
+              <InfoBox
+                creationTime={creationTime}
+                lastModificationTime={lastModificationTime}
+                infoBoxData={infoBoxData}
+              />
+              {/*<Box*/}
+              {/*  mt={1}*/}
+              {/*  p={2.5}*/}
+              {/*  borderRadius={2}*/}
+              {/*  bgcolor="background.containerLowest"*/}
+              {/*  height="100%"*/}
+              {/*>*/}
+              {/*  {creationTime && (*/}
+              {/*    <Box my={1.5}>*/}
+              {/*      <InfoItem*/}
+              {/*        bg="white"*/}
+              {/*        info={{*/}
+              {/*          item: getReadableDate(creationTime),*/}
+              {/*          title: t("common.creationDate"),*/}
+              {/*        }}*/}
+              {/*      />*/}
+              {/*    </Box>*/}
+              {/*  )}*/}
+              {/*  {lastModificationTime && (*/}
+              {/*    <Box my={1.5}>*/}
+              {/*      <InfoItem*/}
+              {/*        bg="white"*/}
+              {/*        info={{*/}
+              {/*          item: getReadableDate(lastModificationTime),*/}
+              {/*          title: t("common.lastUpdated"),*/}
+              {/*        }}*/}
+              {/*      />*/}
+              {/*    </Box>*/}
+              {/*  )}*/}
 
-                <Box my={1.5}>
-                  <InfoItem
-                    bg="white"
-                    info={{
-                      item: subjects?.map((sub: any) => sub?.title),
-                      title: t("common.subjects"),
-                      type: "array",
-                    }}
-                  />
-                </Box>
-                <Box my={1.5}>
-                  <InfoItem
-                    bg="white"
-                    info={{
-                      item: questionnairesCount,
-                      title: t("common.questionnairesCount"),
-                    }}
-                  />
-                </Box>
-                <Box my={1.5}>
-                  <InfoItem
-                    bg="white"
-                    info={{
-                      item: attributesCount,
-                      title: t("assessmentKit.attributesCount"),
-                    }}
-                  />
-                </Box>
-                <Box my={1.5}>
-                  <InfoItem
-                    bg="white"
-                    info={{
-                      item: questionsCount,
-                      title: t("assessmentKit.totalQuestionsCount"),
-                    }}
-                  />
-                </Box>
-                <Box my={1.5}>
-                  <InfoItem
-                    bg="white"
-                    info={{
-                      item: maturityLevelsCount,
-                      title: t("common.maturityLevels"),
-                    }}
-                  />
-                </Box>
+              {/*  <Box my={1.5}>*/}
+              {/*    <InfoItem*/}
+              {/*      bg="white"*/}
+              {/*      info={{*/}
+              {/*        item: subjects?.map((sub: any) => sub?.title),*/}
+              {/*        title: t("common.subjects"),*/}
+              {/*        type: "array",*/}
+              {/*      }}*/}
+              {/*    />*/}
+              {/*  </Box>*/}
+              {/*  <Box my={1.5}>*/}
+              {/*    <InfoItem*/}
+              {/*      bg="white"*/}
+              {/*      info={{*/}
+              {/*        item: questionnairesCount,*/}
+              {/*        title: t("common.questionnairesCount"),*/}
+              {/*      }}*/}
+              {/*    />*/}
+              {/*  </Box>*/}
+              {/*  <Box my={1.5}>*/}
+              {/*    <InfoItem*/}
+              {/*      bg="white"*/}
+              {/*      info={{*/}
+              {/*        item: attributesCount,*/}
+              {/*        title: t("assessmentKit.attributesCount"),*/}
+              {/*      }}*/}
+              {/*    />*/}
+              {/*  </Box>*/}
+              {/*  <Box my={1.5}>*/}
+              {/*    <InfoItem*/}
+              {/*      bg="white"*/}
+              {/*      info={{*/}
+              {/*        item: questionsCount,*/}
+              {/*        title: t("assessmentKit.totalQuestionsCount"),*/}
+              {/*      }}*/}
+              {/*    />*/}
+              {/*  </Box>*/}
+              {/*  <Box my={1.5}>*/}
+              {/*    <InfoItem*/}
+              {/*      bg="white"*/}
+              {/*      info={{*/}
+              {/*        item: maturityLevelsCount,*/}
+              {/*        title: t("common.maturityLevels"),*/}
+              {/*      }}*/}
+              {/*    />*/}
+              {/*  </Box>*/}
 
-                <Box display="flex" px={1} mt={4}>
-                  <Box display="flex" mr={4}>
-                    <FavoriteRoundedIcon color="primary" />
-                    <Text color="primary" ml={1}>
-                      {likes}
-                    </Text>
-                  </Box>
-                  <Box display="flex">
-                    <ShoppingCartRoundedIcon color="primary" />
-                    <Text color="primary" ml={1}>
-                      {assessmentCounts}
-                    </Text>
-                  </Box>
-                </Box>
-              </Box>
+              {/*  <Box display="flex" px={1} mt={4}>*/}
+              {/*    <Box display="flex" mr={4}>*/}
+              {/*      <FavoriteRoundedIcon color="primary" />*/}
+              {/*      <Text color="primary" ml={1}>*/}
+              {/*        {likes}*/}
+              {/*      </Text>*/}
+              {/*    </Box>*/}
+              {/*    <Box display="flex">*/}
+              {/*      <ShoppingCartRoundedIcon color="primary" />*/}
+              {/*      <Text color="primary" ml={1}>*/}
+              {/*        {assessmentCounts}*/}
+              {/*      </Text>*/}
+              {/*    </Box>*/}
+              {/*  </Box>*/}
+              {/*</Box>*/}
             </Grid>
           </Grid>
         );
       }}
     />
+  );
+};
+
+const InfoBox = (props: any) => {
+  const { creationTime, lastModificationTime, infoBoxData } = props;
+  const theme = useTheme();
+
+  return (
+    <Box sx={{ ...styles.centerCH, gap: 2, mt: "8px" }}>
+      <Grid container spacing={2}>
+        <RowSplit
+          title={t("common.creationDate")}
+          value={getReadableDate(creationTime)}
+          xs={6}
+        />
+        <RowSplit
+          title={t("common.lastUpdated")}
+          value={getReadableDate(lastModificationTime)}
+          xs={6}
+        />
+      </Grid>
+      <Grid
+        container
+        sx={{
+          background: "#fff",
+          borderRadius: "12px",
+          p: "16px 48px",
+          flex: 1,
+        }}
+      >
+        {[...new Map(Object.entries(infoBoxData))].map(
+          ([title, value], index) => {
+            const columns = 3;
+            const centerIndex = Math.floor(columns / 2);
+            const isMiddle = index % columns === centerIndex;
+            const isTop = index < columns;
+            return (
+              <TotalInfo
+                key={title}
+                title={t(title)}
+                value={value}
+                xs={4}
+                isMiddle={isMiddle}
+                isTop={isTop}
+              />
+            );
+          },
+        )}
+      </Grid>
+      <Grid container>
+        <FullRow
+          title1={t("common.supportedLanguages")}
+          title2={t("common.price")}
+          value1={""}
+          value2={t("common.free")}
+          xs={12}
+          Icon1={<LanguageIcon fontSize={"large"} sx={{color: "primary.main"}} />}
+          Icon2={
+            <PriceIcon
+              color={theme.palette.primary.dark}
+              width={"33px"}
+              height={"33px"}
+            />
+          }
+        />
+      </Grid>
+      <Grid container>
+        <FullRow
+          title1={t("assessmentKit.createdAssessments")}
+          title2={t("common.liked")}
+          value1={getReadableDate(creationTime)}
+          value2={getReadableDate(creationTime)}
+          xs={12}
+          Icon1={<AssignmentOutlinedIcon fontSize={"large"} sx={{color: "primary.main"}} />}
+          Icon2={
+            <FavoriteBorderOutlinedIcon
+              sx={{color: theme.palette.primary.dark}}
+              width={"33px"}
+              height={"33px"}
+            />
+          }
+        />
+      </Grid>
+    </Box>
+  );
+};
+
+const FullRow = (props: any) => {
+  const { title1, title2, value1, value2, Icon1, Icon2, ...rest } = props;
+  return (
+    <Grid item {...rest}>
+      <Box
+        sx={{
+          ...styles.centerV,
+          alignItems: "center",
+          background: "#fff",
+          borderRadius: "12px",
+          p: 2,
+          flex: 1,
+        }}
+      >
+        <Grid container>
+          <Grid item xs={6}>
+            <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+              {Icon1}
+              <Box sx={{ ...styles.centerCV }}>
+                <Text variant={"bodyMedium"} color={"info.main"} sx={{...styles.rtlStyle(firstCharDetector(title1))}}>
+                  {title1}
+                </Text>
+                <Text variant={"bodyLarge"} color={"background.secondaryDark"} sx={{...styles.rtlStyle(firstCharDetector(title1))}}>
+                  {value1}
+                </Text>
+              </Box>
+            </Box>
+          </Grid>
+          <Grid item xs={6}>
+            <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+              {Icon2}
+              <Box sx={{ ...styles.centerCV }}>
+                <Text variant={"bodyMedium"} color={"info.main"}  sx={{...styles.rtlStyle(firstCharDetector(title2)),}}>
+                  {title2}
+                </Text>
+                <Text variant={"bodyLarge"} color={"background.secondaryDark"} sx={{...styles.rtlStyle(firstCharDetector(title2))}}>
+                  {value2}
+                </Text>
+              </Box>
+            </Box>
+          </Grid>
+        </Grid>
+      </Box>
+    </Grid>
+  );
+};
+
+const TotalInfo  = (props: any) => {
+  const { title, value, isMiddle, isTop, ...rest } = props;
+  return (
+    <Grid
+      item
+      {...rest}
+      sx={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        textAlign: "center",
+        position: "relative",
+        px: 2,
+        mb: isTop ? 3 : 0,
+        ...(isMiddle
+          ? {
+              "&::before": {
+                content: '""',
+                position: "absolute",
+                left: 0,
+                top: "12%",
+                height: "76%",
+                width: "1px",
+                bgcolor: "#C7CCD1",
+                display: { xs: "none", sm: "block" },
+              },
+              "&::after": {
+                content: '""',
+                position: "absolute",
+                right: 0,
+                top: "12%",
+                height: "76%",
+                width: "1px",
+                bgcolor: "#C7CCD1",
+                display: { xs: "none", sm: "block" },
+              },
+            }
+          : {}),
+      }}
+    >
+      <Box
+        sx={{
+          ...styles.centerCH,
+          justifyContent: "space-between",
+          textAlign: "center",
+          height: "59px",
+        }}
+      >
+        <Text variant={"bodyMedium"} color={"info.main"}>
+          {title}
+        </Text>
+        <Text variant={"bodyLarge"} color={"background.secondaryDark"}>
+          {value}
+        </Text>
+      </Box>
+    </Grid>
+  );
+};
+const RowSplit = (props: any) => {
+  const { title, value, ...rest } = props;
+  return (
+    <Grid item {...rest}>
+      <Box
+        sx={{
+          ...styles.centerCH,
+          background: "#fff",
+          borderRadius: "12px",
+          py: 2,
+          flex: 1,
+        }}
+      >
+        <Text variant={"bodyMedium"} color={"info.main"}>
+          {title}
+        </Text>
+        <Text variant={"bodyLarge"} color={"background.secondaryDark"}>
+          {value}
+        </Text>
+      </Box>
+    </Grid>
   );
 };
 
