@@ -95,9 +95,7 @@ const HeaderStrip: React.FC<{
       }}
     >
       <Grid
-        item
-        xs={12}
-        md={4}
+        size={{xs: 12, md: 4}}
         sx={{ p: { xs: 2, md: 2 }, textAlign: "center" }}
       >
         <Text
@@ -118,9 +116,7 @@ const HeaderStrip: React.FC<{
         </Text>
       </Grid>
       <Grid
-        item
-        xs={12}
-        md={5.5}
+        size={{xs: 12, md: 5.5}}
         sx={{ p: { xs: 2, md: 2 }, textAlign: "center" }}
       >
         <Text
@@ -132,9 +128,7 @@ const HeaderStrip: React.FC<{
         </Text>
       </Grid>
       <Grid
-        item
-        xs={12}
-        md={2.5}
+        size={{xs: 12, md: 2.5}}
         sx={{ p: { xs: 2, md: 2 }, textAlign: "center" }}
       >
         <FlatGauge

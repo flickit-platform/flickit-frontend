@@ -141,7 +141,7 @@ const AssessmentSettingContainer = () => {
           return (
             <Box m="auto" mt={2}>
               <Grid container columns={12}>
-                <Grid item sm={12} xs={12}>
+                <Grid size={{xs: 12, sm: 12}}>
                   <AssessmentSettingGeneralBox
                     AssessmentTitle={title}
                     fetchPathInfo={fetchPathInfo.query}
@@ -150,7 +150,7 @@ const AssessmentSettingContainer = () => {
                 </Grid>
               </Grid>
               <Grid container columns={12}>
-                <Grid item sm={12} xs={12}>
+                <Grid size={{xs: 12, sm: 12}}>
                   <AssessmentSettingMemberBox
                     listOfRoles={listOfRoles}
                     listOfUser={listOfUser}
@@ -170,7 +170,7 @@ const AssessmentSettingContainer = () => {
               </Grid>
               {isAdvanceMode && (
                 <Grid container columns={12}>
-                  <Grid item sm={12} xs={12}>
+                  <Grid size={{xs: 12, sm: 12}}>
                     <KitCustomization kitInfo={assessmentInfo} />
                   </Grid>
                 </Grid>

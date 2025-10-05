@@ -126,7 +126,7 @@ const ExpertGroupCEFormDialog = (props: IExpertGroupCEFromDialogProps) => {
       <FormProviderWithForm formMethods={formMethods}>
         <Grid container spacing={2} sx={styles.formGrid}>
           {type !== "update" && (
-            <Grid item xs={12} md={5}>
+            <Grid size={{xs: 12, md: 5}}>
               <UploadField
                 accept={{
                   "image/jpeg": [".jpeg", ".jpg"],
@@ -142,7 +142,7 @@ const ExpertGroupCEFormDialog = (props: IExpertGroupCEFromDialogProps) => {
               />
             </Grid>
           )}
-          <Grid item xs={12} md={type === "update" ? 12 : 7}>
+          <Grid size={{xs: 12, md: type === "update" ? 12 : 7}}>
             <InputFieldUC
               defaultValue={defaultValues.title ?? ""}
               name="title"
@@ -151,7 +151,7 @@ const ExpertGroupCEFormDialog = (props: IExpertGroupCEFromDialogProps) => {
               isFocused
             />
           </Grid>
-          <Grid item xs={12} md={8}>
+          <Grid size={{xs: 12, md: 8}}>
             <InputFieldUC
               name="bio"
               label={<Trans i18nKey="common.bio" />}
@@ -159,7 +159,7 @@ const ExpertGroupCEFormDialog = (props: IExpertGroupCEFromDialogProps) => {
               required
             />
           </Grid>
-          <Grid item xs={12} md={4}>
+          <Grid size={{xs: 12, md: 4}}>
             <InputFieldUC
               name="website"
               label={<Trans i18nKey="common.website" />}
@@ -167,7 +167,7 @@ const ExpertGroupCEFormDialog = (props: IExpertGroupCEFromDialogProps) => {
               defaultValue={defaultValues.website ?? ""}
             />
           </Grid>
-          <Grid item xs={12}>
+          <Grid size={{xs: 12}}>
             <RichEditorField
               bgcolor={v3Tokens.primary.bg}
               name="about"

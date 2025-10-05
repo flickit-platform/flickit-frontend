@@ -12,19 +12,19 @@ const LoadingSkeletonOfAssessmentReport = () => {
         sx={{ width: { xs: "90%", sm: "80%", md: "60%" } }}
       />
       <Grid container spacing={3} columns={14} mt={1}>
-        <Grid item lg={8} md={14} sm={14} xs={14}>
+        <Grid size={{xs: 14, sm: 14, md: 14, lg: 8}}>
           <Skeleton
             variant="rectangular"
             sx={{ borderRadius: 2, height: "270px" }}
           />
         </Grid>
-        <Grid item lg={3} md={7} sm={14} xs={14}>
+        <Grid size={{xs: 14, sm: 14, md: 7, lg: 3}}>
           <LoadingSkeleton height="270px" />
         </Grid>
-        <Grid item lg={3} md={7} sm={14} xs={14}>
+        <Grid size={{xs: 14, sm: 14, md: 7, lg:3}}>
           <LoadingSkeleton height="270px" />
         </Grid>
-        <Grid item sm={14} xs={14} id="subjects">
+        <Grid size={{xs: 14, sm: 14}} id="subjects">
           <Box mt={4}>
             <Title borderBottom={true}>
               <Skeleton width="110px" />
@@ -37,7 +37,7 @@ const LoadingSkeletonOfAssessmentReport = () => {
               >
                 {[1, 2, 3].map((item) => {
                   return (
-                    <Grid item xs={12} sm={12} md={6} lg={4} key={item}>
+                    <Grid size={{xs: 12, sm: 12, md: 6, lg: 4}} key={item}>
                       <LoadingSkeleton height="700px" />
                     </Grid>
                   );

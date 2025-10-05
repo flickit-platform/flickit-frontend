@@ -301,7 +301,7 @@ const QuestionReportDialog = (props: IQuestionReportDialog) => {
       <CEDialogActions
         cancelLabel={t("common.close", { lng })}
         hideSubmitButton={true}
-        cancelType={"contained"}
+        cancelType={"outlined"}
         onClose={onClose}
         sx={{
           flexDirection: { xs: "column-reverse", sm: "row" },

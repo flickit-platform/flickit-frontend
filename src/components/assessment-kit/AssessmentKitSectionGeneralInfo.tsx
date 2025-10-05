@@ -207,7 +207,7 @@ const AssessmentKitSectionGeneralInfo = (
 
         return (
           <Grid container spacing={4}>
-            <Grid item xs={12} md={7}>
+            <Grid size={{xs: 12, md: 7}}>
               <Box
                 mt={1}
                 p={2.5}
@@ -428,7 +428,7 @@ const AssessmentKitSectionGeneralInfo = (
                 </Box>
               </Box>
             </Grid>
-            <Grid item xs={12} md={5}>
+            <Grid size={{xs: 12, md: 5}}>
               <Box
                 mt={1}
                 p={2.5}

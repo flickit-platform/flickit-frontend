@@ -7,7 +7,7 @@ import QuestionnaireProgress from "@common/progress/CategoryProgress";
 import { Link } from "react-router-dom";
 import StartRoundedIcon from "@mui/icons-material/StartRounded";
 import { styles } from "@styles";
-import { IPermissions, IQuestionnairesInfo, TId } from "@/types/index";
+import { IPermissions, IQuestionnairesInfo, TId } from "@/types";
 import Chip from "@mui/material/Chip";
 import Collapse from "@mui/material/Collapse";
 import IconButton from "@mui/material/IconButton";

@@ -72,7 +72,7 @@ const TodoBox = (props: any) => {
                     .filter(([key]) => key !== "name")
                     .map(([key, value]) => {
                       return (
-                        <Grid item xs={12} md={6} key={uniqueId()}>
+                        <Grid size={{xs: 12, md: 6}} key={uniqueId()}>
                           <IssuesItem
                             originalName={item.name}
                             key={key}
@@ -148,7 +148,7 @@ const TodoBox = (props: any) => {
                     .filter(([key]) => key !== "name")
                     .map(([key, value]) => {
                       return (
-                        <Grid key={uniqueId()} item xs={12} md={6}>
+                        <Grid key={uniqueId()} size={{xs: 12, md: 6}}>
                           <IssuesItem
                             name={key}
                             value={value}

@@ -340,10 +340,7 @@ const MaturityLevelTable = ({
         { label: "common.questions", value: questionsCount },
       ].map((item, index) => (
         <Grid
-          item
-          xs={12}
-          sm={4}
-          md={2}
+          size={{xs: 12, sm: 4, md: 2}}
           key={uniqueId()}
           sx={{
             ...styles.centerVH,

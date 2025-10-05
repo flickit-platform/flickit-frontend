@@ -47,7 +47,7 @@ const SupTitleBreadcrumb = (
               underline={disabled ? "none" : "hover"}
               color="inherit"
               to={to}
-              onClick={(e) => disabled && e.preventDefault()}
+              onClick={(e: any) => disabled && e.preventDefault()}
               sx={{
                 ...styles.centerV,
                 cursor: "pointer",

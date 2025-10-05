@@ -216,7 +216,7 @@ export default function AssessmentReportPage() {
 
                 <Box display="flex" flexDirection="column" gap={4}>
                   <Grid container spacing={3}>
-                    <Grid item xs={12} md={isQuickMode ? 9 : 12}>
+                    <Grid size={{ xs: 12, md: isQuickMode ? 9 : 12 }}>
                       <SectionCard>
                         <ReportHeader
                           rtl={rtl}
@@ -233,7 +233,7 @@ export default function AssessmentReportPage() {
                       </SectionCard>
                     </Grid>
 
-                    <Grid item display={{ xs: "none", md: "block" }} md={3}>
+                    <Grid size={{md: 3}} display={{ xs: "none", md: "block" }}>
                       <SidebarQuickMode {...sidebarProps} />
                     </Grid>
                   </Grid>
