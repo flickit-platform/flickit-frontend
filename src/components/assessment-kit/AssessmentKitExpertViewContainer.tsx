@@ -3,7 +3,7 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Alert from "@mui/material/Alert";
 import { useServiceContext } from "@/providers/service-provider";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useQuery } from "@/hooks/useQuery";
 import { Trans } from "react-i18next";
 import Tab from "@mui/material/Tab";
@@ -38,10 +38,13 @@ import uniqueId from "@/utils/unique-id";
 import showToast from "@/utils/toast-error";
 import Title from "@common/Title";
 import { Text } from "../common/Text";
+import { IconButton } from "@mui/material";
+import { ArrowForward } from "@mui/icons-material";
 
 const AssessmentKitExpertViewContainer = () => {
   const { fetchAssessmentKitDetailsQuery, fetchAssessmentKitDownloadUrlQuery } =
     useAssessmentKit();
+  const navigate = useNavigate();
   const dialogProps = useDialog();
   const { config } = useConfigContext();
   const [forceUpdate, setForceUpdate] = useState<boolean>(false);
@@ -110,55 +113,76 @@ const AssessmentKitExpertViewContainer = () => {
     );
   }, [assessmentKitTitle]);
 
+  const handleBack = () => {
+    navigate(`/user/expert-groups/${expertGroupId}/`);
+  };
+
   return (
-    <Box>
-      <Box flexDirection={{ xs: "column", sm: "row" }}>
-        <Title
-          backLink={"/"}
-          size="large"
-          wrapperProps={{
-            sx: {
-              flexDirection: { xs: "column", md: "row" },
-              alignItems: { xs: "flex-start", md: "flex-end" },
-            },
-          }}
-          sup={
-            <SupTitleBreadcrumb
-              routes={[
-                {
-                  title: t("expertGroups.expertGroups") as string,
-                  to: `/user/expert-groups`,
-                },
-                {
-                  title: expertGroup?.title,
-                  to: `/user/expert-groups/${expertGroupId}`,
-                },
-                {
-                  title: assessmentKitTitle,
-                },
-              ]}
-              displayChip
-            />
-          }
+    <Box flexDirection={{ xs: "column", sm: "row" }}>
+      <Title
+        backLink={"/"}
+        size="large"
+        wrapperProps={{
+          sx: {
+            flexDirection: { xs: "column", md: "row" },
+            alignItems: { xs: "flex-start", md: "flex-end" },
+          },
+        }}
+        sup={
+          <SupTitleBreadcrumb
+            routes={[
+              {
+                title: t("expertGroups.expertGroups") as string,
+                to: `/user/expert-groups`,
+              },
+              {
+                title: expertGroup?.title,
+                to: `/user/expert-groups/${expertGroupId}`,
+              },
+              {
+                title: assessmentKitTitle,
+              },
+            ]}
+            displayChip
+          />
+        }
+      >
+        <Box
+          mt={3.125}
+          mb={2.125}
+          display="flex"
+          justifyContent="space-between"
+          width="100%"
+          alignItems="center"
         >
-          {assessmentKitTitle}
-        </Title>
-        <Box mt={3}>
-          <AssessmentKitSectionGeneralInfo
-            setExpertGroup={setExpertGroup}
-            setAssessmentKitTitle={setAssessmentKitTitle}
-            setHasActiveVersion={setHasActiveVersion}
-            handleDownloadDSL={handleDownload}
-            handleUpdateDSL={()=>dialogProps.openDialog({})}
-          />
-          <UpdateAssessmentKitDialog
-            setForceUpdate={setForceUpdate}
-            setLoaded={setLoaded}
-            loaded={loaded}
-            {...dialogProps}
-          />
-          <AssessmentKitSectionsTabs update={forceUpdate} details={details} />
+          <Box>
+            <IconButton color="primary" onClick={handleBack} size="small">
+              <ArrowForward
+                sx={(theme) => ({
+                  ...theme.typography.headlineMedium,
+                  transform: `scaleX(${theme.direction === "rtl" ? 1 : -1})`,
+                })}
+              />
+            </IconButton>
+            {assessmentKitTitle}
+          </Box>
         </Box>
+      </Title>
+      <Box>
+        <AssessmentKitSectionGeneralInfo
+          setExpertGroup={setExpertGroup}
+          setAssessmentKitTitle={setAssessmentKitTitle}
+          setHasActiveVersion={setHasActiveVersion}
+          handleDownloadDSL={handleDownload}
+          handleUpdateDSL={() => dialogProps.openDialog({})}
+        />
+        <UpdateAssessmentKitDialog
+          setForceUpdate={setForceUpdate}
+          setLoaded={setLoaded}
+          loaded={loaded}
+          {...dialogProps}
+        />
+        <AssessmentKitSectionsTabs update={forceUpdate} details={details} />
       </Box>
     </Box>
   );
