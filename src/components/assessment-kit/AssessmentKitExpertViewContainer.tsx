@@ -1,7 +1,5 @@
-import { Fragment, SyntheticEvent, useEffect, useMemo, useState } from "react";
+import { Fragment, SyntheticEvent, useEffect, useState } from "react";
 import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
-import Alert from "@mui/material/Alert";
 import { useServiceContext } from "@/providers/service-provider";
 import { useNavigate, useParams } from "react-router-dom";
 import { useQuery } from "@/hooks/useQuery";
@@ -26,13 +24,7 @@ import useDialog from "@/hooks/useDialog";
 import SupTitleBreadcrumb from "@common/SupTitleBreadcrumb";
 import languageDetector from "@/utils/language-detector";
 import { ICustomError } from "@/utils/custom-error";
-import CloudUploadRoundedIcon from "@mui/icons-material/CloudUploadRounded";
-import { CEDialog, CEDialogActions } from "@common/dialogs/CEDialog";
-import { useForm } from "react-hook-form";
-import UploadField from "@common/fields/UploadField";
-import FormProviderWithForm from "@common/FormProviderWithForm";
-import { AssessmentKitDetailsType } from "@/types/index";
-import convertToBytes from "@/utils/convert-to-bytes";
+import { AssessmentKitDetailType } from "@/types/index";
 import { useConfigContext } from "@/providers/config-provider";
 import uniqueId from "@/utils/unique-id";
 import showToast from "@/utils/toast-error";
@@ -40,16 +32,17 @@ import Title from "@common/Title";
 import { Text } from "../common/Text";
 import { IconButton } from "@mui/material";
 import { ArrowForward } from "@mui/icons-material";
+import UpdateAssessmentKitDialog from "@/features/kit-detail/ui/UpdateAssessmentKitDialog";
 
 const AssessmentKitExpertViewContainer = () => {
-  const { fetchAssessmentKitDetailsQuery, fetchAssessmentKitDownloadUrlQuery } =
+  const { fetchAssessmentKitDetailQuery, fetchAssessmentKitDownloadUrlQuery } =
     useAssessmentKit();
   const navigate = useNavigate();
   const dialogProps = useDialog();
   const { config } = useConfigContext();
   const [forceUpdate, setForceUpdate] = useState<boolean>(false);
   const { expertGroupId, assessmentKitId = "" } = useParams();
-  const [details, setDetails] = useState<AssessmentKitDetailsType>();
+  const [details, setDetails] = useState<AssessmentKitDetailType>();
   const [expertGroup, setExpertGroup] = useState<any>();
   const [assessmentKitTitle, setAssessmentKitTitle] = useState<any>();
   const [hasActiveVersion, setHasActiveVersion] = useState<any>(false);
@@ -58,9 +51,9 @@ const AssessmentKitExpertViewContainer = () => {
 
   const { service } = useServiceContext();
 
-  const AssessmentKitDetails = async () => {
-    const data: AssessmentKitDetailsType = hasActiveVersion
-      ? await fetchAssessmentKitDetailsQuery.query()
+  const AssessmentKitDetail = async () => {
+    const data: AssessmentKitDetailType = hasActiveVersion
+      ? await fetchAssessmentKitDetailQuery.query()
       : undefined;
     setDetails(data);
   };
@@ -103,7 +96,7 @@ const AssessmentKitExpertViewContainer = () => {
   };
   useEffect(() => {
     if (!loaded) {
-      AssessmentKitDetails();
+      AssessmentKitDetail();
     }
   }, [loaded, forceUpdate, hasActiveVersion]);
   useEffect(() => {
@@ -169,13 +162,13 @@ const AssessmentKitExpertViewContainer = () => {
         </Box>
       </Title>
       <Box>
-        <AssessmentKitSectionGeneralInfo
+        {/* <AssessmentKitSectionGeneralInfo
           setExpertGroup={setExpertGroup}
           setAssessmentKitTitle={setAssessmentKitTitle}
           setHasActiveVersion={setHasActiveVersion}
           handleDownloadDSL={handleDownload}
           handleUpdateDSL={() => dialogProps.openDialog({})}
-        />
+        /> */}
         <UpdateAssessmentKitDialog
           setForceUpdate={setForceUpdate}
           setLoaded={setLoaded}
@@ -676,213 +669,7 @@ const AssessmentKitQuestionsList = (props: {
     </Box>
   );
 };
-const UpdateAssessmentKitDialog = (props: any) => {
-  const {
-    onClose: closeDialog,
-    setForceUpdate,
-    setLoaded,
-    loaded,
-    ...rest
-  } = props;
-  const { service } = useServiceContext();
-  const formMethods = useForm({ shouldUnregister: true });
-  const abortController = useMemo(() => new AbortController(), [rest.open]);
-  const [showErrorLog, setShowErrorLog] = useState<boolean>(false);
-  const [syntaxErrorObject, setSyntaxErrorObject] = useState<any>();
-  const [updateErrorObject, setUpdateErrorObject] = useState<any>();
-  const { assessmentKitId } = useParams();
-  const { expertGroupId } = useParams();
-  const setIsValid = () => {
-    return false;
-  };
-  const close = () => {
-    setSyntaxErrorObject(null);
-    setUpdateErrorObject(null);
-    setShowErrorLog(false);
-    abortController.abort();
-    closeDialog();
-  };
-  useEffect(() => {
-    return () => {
-      abortController.abort();
-    };
-  }, []);
-  const onSubmit = async (data: any, event: any, shouldView?: boolean) => {
-    event.preventDefault();
-    const { dsl_id, ...restOfData } = data;
-    const formattedData = {
-      kitDslId: dsl_id.kitDslId,
-      ...restOfData,
-    };
-    setLoaded(true);
-    try {
-      await service.assessmentKit.dsl.updateKitFromDsl(
-        { data: formattedData, assessmentKitId: assessmentKitId },
-        { signal: abortController.signal },
-      );
-      setForceUpdate((prev: boolean) => !prev);
-      setLoaded(false);
-      close();
-    } catch (e: any) {
-      const err = e as ICustomError;
-      if (e?.response?.status == 422) {
-        setSyntaxErrorObject(e?.response?.data?.errors);
-        setUpdateErrorObject(null);
-        setShowErrorLog(true);
-      }
-      if (e?.response?.data?.code === "UNSUPPORTED_DSL_CONTENT_CHANGE") {
-        setUpdateErrorObject(e?.response?.data?.messages);
-        setSyntaxErrorObject(null);
-        setShowErrorLog(true);
-      }
 
-      if (
-        e?.response?.status !== 422 &&
-        e?.response?.data?.code !== "UNSUPPORTED_DSL_CONTENT_CHANGE"
-      ) {
-        showToast(err.message);
-      }
-      setLoaded(false);
-      formMethods.clearErrors();
-      return () => {
-        abortController.abort();
-      };
-    }
-  };
-  const formContent = (
-    <FormProviderWithForm formMethods={formMethods}>
-      <Text variant="body1">
-        <Trans i18nKey="assessmentKit.pleaseNoteThatThereAreSomeLimitations" />
-      </Text>
-      <Box ml={4} my={2}>
-        <Text component="li" variant="body1" fontWeight={"bold"}>
-          <Trans i18nKey="assessmentKit.deletingAQuestionnaire" />
-        </Text>
-        <Text component="li" variant="body1" fontWeight={"bold"}>
-          <Trans i18nKey="assessmentKit.deletingQuestionFromAPreExistingQuestionnaireOrAddingANewOne" />
-        </Text>
-        <Text component="li" variant="body1" fontWeight={"bold"}>
-          <Trans i18nKey="assessmentKit.anyChangesInTheNumberOfOptionsForAPreExistingQuestion" />
-        </Text>
-      </Box>
-      <Grid container spacing={2} sx={styles.formGrid}>
-        <Box width="100%" ml={2}>
-          <UploadField
-            accept={{ "application/zip": [".zip"] }}
-            uploadService={(args: any, config: any) =>
-              service.assessmentKit.dsl.uploadFile(args, config)
-            }
-            deleteService={(args: any, config: any) =>
-              service.assessmentKit.dsl.deleteLegacyDslFile(args, config)
-            }
-            setIsValid={setIsValid}
-            param={expertGroupId}
-            name="dsl_id"
-            required={true}
-            label={<Trans i18nKey="assessmentKit.dsl" />}
-            maxSize={convertToBytes(5, "MB")}
-            setSyntaxErrorObject={setSyntaxErrorObject}
-            setShowErrorLog={setShowErrorLog}
-          />
-        </Box>
-      </Grid>
-      <CEDialogActions
-        closeDialog={close}
-        loading={loaded}
-        type="submit"
-        submitButtonLabel={t("common.saveChanges") as string}
-        onSubmit={formMethods.handleSubmit(onSubmit)}
-      />
-    </FormProviderWithForm>
-  );
-  const syntaxErrorContent = (
-    <Box>
-      {syntaxErrorObject && (
-        <Text ml={1} variant="h6">
-          <Trans i18nKey="errors.youveGotSyntaxErrorsInYourDslFile" />
-        </Text>
-      )}
-      {updateErrorObject && (
-        <Text ml={1} variant="h6">
-          <Trans i18nKey="assessmentKit.unsupportedDslContentChange" />
-        </Text>
-      )}
-      <Divider />
-      <Box mt={4} maxHeight="260px" overflow="scroll">
-        {syntaxErrorObject?.map((e: any) => {
-          return (
-            <Box key={uniqueId()} sx={{ ml: 1 }}>
-              <Alert severity="error" sx={{ my: 2 }}>
-                <Box display="flex" flexDirection="column">
-                  <Text variant="subtitle2" color="error">
-                    <Trans
-                      i18nKey="errors.errorAtLine"
-                      values={{
-                        message: e.message,
-                        fileName: e.fileName,
-                        line: e.line,
-                        column: e.column,
-                      }}
-                    />
-                  </Text>
-                  <Text variant="subtitle2" color="error">
-                    <Trans
-                      i18nKey="errors.errorLine"
-                      values={{
-                        errorLine: e.errorLine,
-                      }}
-                    />
-                  </Text>
-                </Box>
-              </Alert>
-            </Box>
-          );
-        })}
-        {updateErrorObject?.map((e: any) => {
-          return (
-            <Box key={uniqueId()} ml={1}>
-              <Alert severity="error" sx={{ my: 2 }}>
-                <Box display="flex">
-                  <Text variant="subtitle2" color="error">
-                    {e}
-                  </Text>
-                </Box>
-              </Alert>
-            </Box>
-          );
-        })}
-      </Box>
-      <Grid mt={4} container spacing={2} justifyContent="flex-end">
-        <Grid item>
-          <Button onClick={close} data-cy="cancel">
-            <Trans i18nKey="common.cancel" />
-          </Button>
-        </Grid>
-        <Grid item>
-          <Button variant="contained" onClick={() => setShowErrorLog(false)}>
-            <Trans i18nKey="common.back" />
-          </Button>
-        </Grid>
-      </Grid>
-    </Box>
-  );
-  return (
-    <CEDialog
-      {...rest}
-      closeDialog={close}
-      title={
-        <>
-          <CloudUploadRoundedIcon
-            sx={{ marginInlineEnd: 1, marginInlineStart: "unset" }}
-          />
-          {<Trans i18nKey="assessmentKit.updateDSL" />}
-        </>
-      }
-    >
-      {!showErrorLog ? formContent : syntaxErrorContent}
-    </CEDialog>
-  );
-};
 const SubjectQuestionList = (props: any) => {
   const { questions } = props;
   const [expanded, setExpanded] = useState<string | false>(false);
@@ -1403,7 +1190,7 @@ const MaturityLevelsDetails = (props: any) => {
 const useAssessmentKit = () => {
   const { service } = useServiceContext();
   const { assessmentKitId } = useParams();
-  const fetchAssessmentKitDetailsQuery = useQuery({
+  const fetchAssessmentKitDetailQuery = useQuery({
     service: (args, config) =>
       service.assessmentKit.details.getKit(args ?? { assessmentKitId }, config),
     runOnMount: false,
@@ -1443,7 +1230,7 @@ const useAssessmentKit = () => {
   });
 
   return {
-    fetchAssessmentKitDetailsQuery,
+    fetchAssessmentKitDetailQuery,
     fetchAssessmentKitSubjectDetailsQuery,
     fetchAssessmentKitSubjectAttributesDetailsQuery,
     fetchMaturityLevelQuestionsQuery,
