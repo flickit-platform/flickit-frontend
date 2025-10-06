@@ -29,7 +29,7 @@ import { keyframes } from "@emotion/react";
 import { Link } from "react-router-dom";
 import { LoadingSkeleton } from "@common/loadings/LoadingSkeleton";
 import { AssessmentKitStatsType, AssessmentKitInfoType } from "@/types/index";
-import SelectLanguage from "@/utils/select-language";
+import SelectLanguage from "@/features/kit-detail/ui/SelectLanguage";
 import { useConfigContext } from "@/providers/config-provider";
 import uniqueId from "@/utils/unique-id";
 import { getReadableDate } from "@/utils/readable-date";

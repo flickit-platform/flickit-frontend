@@ -25,7 +25,7 @@ import { keyframes } from "@emotion/react";
 import convertToBytes from "@/utils/convert-to-bytes";
 import { useQuery } from "@/hooks/useQuery";
 import LoadingButton from "@mui/lab/LoadingButton";
-import SelectLanguage from "@/utils/select-language";
+import SelectLanguage from "@/features/kit-detail/ui/SelectLanguage";
 import uniqueId from "@/utils/unique-id";
 import i18n from "i18next";
 import showToast from "@/utils/toast-error";
