@@ -37,7 +37,6 @@
   "kitStructureDescriptionWithoutChart": "Each subject represents a core assessment domain within the kit, such as Software, Team, or Process. It contains a set of Attributes that highlight critical aspects of performance, quality, or maturity in that domain. Reviewing these attributes provides a structured understanding of the current state and helps identify improvement opportunities.",
   "lookingForSomethingSpecific": "Looking for something more specific?",
   "managePermissions": "Manage permissions",
-  "numberMeasures": "Number of measures",
   "newDraft": "New draft",
   "noDraftVersion": "There is no draft version.",
   "numberOfQuestions": "Number of questions",

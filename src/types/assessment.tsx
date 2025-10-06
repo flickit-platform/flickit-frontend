@@ -209,6 +209,7 @@ export interface AssessmentKitStatsType {
   maturityLevelsCount: number;
   likes: number;
   assessmentCounts: number;
+  measuresCount: number;
   subjects: AssessmentKitStatsSubjects[];
   expertGroup: IExpertGroup[];
 }

@@ -202,6 +202,7 @@ const AssessmentKitSectionGeneralInfo = (
           assessmentCounts,
           subjects,
           expertGroup,
+          measuresCount
         } = stats as AssessmentKitStatsType;
         setAssessmentKitTitle(title);
         setHasActiveVersion(hasActiveVersion);
@@ -216,10 +217,10 @@ const AssessmentKitSectionGeneralInfo = (
         const infoBoxData = {
           "common.maturityLevel": maturityLevelsCount,
           "common.subjects": subjects?.map((sub: any) => sub?.title)?.length,
-          "assessmentReport.subjectsAndAttributes": attributesCount,
+          "common.attributes": attributesCount,
           "common.questionnaire": questionnairesCount,
           "common.questions": questionsCount,
-          "assessmentKit.numberMeasures": 1,
+          "kitDesigner.measures": measuresCount,
         };
 
         return (
