@@ -194,6 +194,7 @@ const AssessmentKitSectionGeneralInfo = (
           assessmentCounts,
           subjects,
           expertGroup,
+          measuresCount
         } = stats as AssessmentKitStatsType;
         setAssessmentKitTitle(title);
         setHasActiveVersion(hasActiveVersion);

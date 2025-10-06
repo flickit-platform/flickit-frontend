@@ -37,7 +37,7 @@ const KitDetailsAside = ({
     "common.attributes": stats.attributesCount,
     "common.questionnaire": stats.questionnairesCount,
     "common.questions": stats.questionsCount,
-    "assessmentKit.numberMeasures": 1,
+    "assessmentKit.numberMeasures": stats.measuresCount,
   };
   const theme = useTheme();
   const { service } = useServiceContext();
