@@ -53,7 +53,7 @@ export default function useGeneralInfoField(props: any) {
         field === "published" ||
         field === "isPrivate")
     ) {
-      updateData[field] = value !== undefined ? value : updatedValues[field];
+      updateData[field] = value ?? updatedValues[field];
     } else {
       const goal = updatedValues.goal;
       const context = updatedValues.context;

@@ -9,7 +9,7 @@ const SelectLanguage = (props: any) => {
   return (
     <FormControl sx={{ width: "100%" }}>
       <Select
-        disabled={editable != undefined ? !editable : false}
+        disabled={editable === undefined ? false : !editable}
         size="small"
         labelId={`language-name-label`}
         value={mainLanguage.value}

@@ -195,11 +195,10 @@ const EditableKitDetail = (props: {
           const data = {
             ...info,
 
-            lang:
-              {
-                label: info?.mainLanguage?.title,
-                value: info?.mainLanguage?.code,
-              } ?? "",
+            lang: {
+              label: info?.mainLanguage?.title,
+              value: info?.mainLanguage?.code,
+            },
           };
 
           const fieldOptions =
@@ -208,7 +207,7 @@ const EditableKitDetail = (props: {
                   value: lng?.code,
                   label: lng?.title,
                 }))
-              : (field.options as any);
+              : options;
 
           return (
             <Grid item xs={12} md={md} key={name}>
