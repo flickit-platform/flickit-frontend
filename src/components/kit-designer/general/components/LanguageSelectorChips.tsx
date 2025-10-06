@@ -1,17 +1,15 @@
-import { Stack, Chip, Button, Menu, MenuItem, useTheme } from "@mui/material";
-import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
-import { useState, useRef, useEffect } from "react";
+import { Stack, Chip, useTheme } from "@mui/material";
 import { useTranslation } from "react-i18next";
+import LanguageMenu from "./LanguageMenu";
 import { ILanguage } from "@/types";
-import CheckIcon from "@mui/icons-material/Check";
 
-interface LanguageSelectorChipsProps {
+export type LanguageSelectorChipsProps = {
   mainLanguage: ILanguage;
   translatedLanguage?: ILanguage;
   availableLanguages: ILanguage[];
   onAddLanguage: (lang: ILanguage) => void;
   hideButton?: boolean;
-}
+};
 
 const LanguageSelectorChips = ({
   mainLanguage,
@@ -21,29 +19,12 @@ const LanguageSelectorChips = ({
   hideButton = false,
 }: LanguageSelectorChipsProps) => {
   const { t } = useTranslation();
-  const [menuAnchor, setMenuAnchor] = useState<null | HTMLElement>(null);
-  const buttonRef = useRef<HTMLButtonElement>(null);
-  const [menuWidth, setMenuWidth] = useState<number | undefined>(undefined);
-
-  useEffect(() => {
-    if (buttonRef.current) {
-      setMenuWidth(buttonRef.current.offsetWidth);
-    }
-  }, []);
-
-  const handleMenuClick = (e: React.MouseEvent<HTMLElement>) => {
-    setMenuAnchor(e.currentTarget);
-  };
-
-  const handleSelectMainLanguage = (langCode: string) => {
-    const selected = availableLanguages.find((l) => l.code === langCode);
-    if (selected) {
-      onAddLanguage(selected);
-    }
-    setMenuAnchor(null);
-  };
-
   const theme = useTheme();
+
+  const selectedCodes = [
+    mainLanguage?.code,
+    translatedLanguage?.code,
+  ].filter(Boolean) as string[];
 
   return (
     <Stack direction="row" alignItems="center" gap={2}>
@@ -63,53 +44,16 @@ const LanguageSelectorChips = ({
           color="primary"
         />
       )}
+
       {!hideButton && (
-        <>
-          <Button
-            ref={buttonRef}
-            variant="contained"
-            endIcon={<ArrowDropDownIcon />}
-            onClick={handleMenuClick}
-            size="small"
-            sx={{
-              whiteSpace: "nowrap",
-            }}
-          >
-            {t("kitDesigner.addLanguage")}
-          </Button>
-          <Menu
-            anchorEl={menuAnchor}
-            open={Boolean(menuAnchor)}
-            onClose={() => setMenuAnchor(null)}
-            PaperProps={{
-              sx: {
-                width: menuWidth,
-                minWidth: "min-content !important",
-              },
-            }}
-          >
-            {availableLanguages.map((lang) => (
-              <MenuItem
-                key={lang.code}
-                onClick={() => handleSelectMainLanguage(lang.code)}
-                sx={{
-                  ...theme.typography.bodyMedium,
-                  whiteSpace: "nowrap",
-                  display: "flex",
-                  justifyContent: "space-between",
-                }}
-              >
-                {lang.title}
-                {(lang.code === mainLanguage.code ||
-                  lang.code === translatedLanguage?.code) && (
-                  <CheckIcon
-                    sx={{ marginInlineStart: "auto", color: "primary.main" }}
-                  />
-                )}
-              </MenuItem>
-            ))}
-          </Menu>
-        </>
+        <LanguageMenu
+          availableLanguages={availableLanguages}
+          onSelect={onAddLanguage}
+          selectedCodes={selectedCodes}
+          buttonLabel={t("kitDesigner.addLanguage")}
+          size="small"
+          followButtonWidth
+        />
       )}
     </Stack>
   );

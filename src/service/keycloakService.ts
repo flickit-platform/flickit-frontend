@@ -9,7 +9,6 @@ const _kc: KeycloakInstance = new Keycloak({
 const PUBLIC_PATHS = ["/assessment-kits", "/graphical-report/"];
 
 export const isPublicRoute = (path: string) => {
-  console.log(path)
   if (path.includes("/assessment-kits") && path.includes("createAssessment")) {
     return false;
   }

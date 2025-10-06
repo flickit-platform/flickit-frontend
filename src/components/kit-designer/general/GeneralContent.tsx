@@ -223,7 +223,7 @@ const GeneralContent = ({ kitVersion }: { kitVersion: IKitVersion }) => {
         </Button>
         <Button
           variant="contained"
-          onClick={handleSaveEdit}
+          onClick={() => handleSaveEdit()}
           disabled={updateKitInfoQuery.loading || editableFields.size === 0}
         >
           {updateKitInfoQuery.loading ? (

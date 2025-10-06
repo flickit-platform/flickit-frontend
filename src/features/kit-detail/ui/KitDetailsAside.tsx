@@ -35,7 +35,7 @@ const KitDetailsAside = ({
     "common.maturityLevel": stats.maturityLevelsCount,
     "common.subjects": stats.subjects?.map((sub: any) => sub?.title)?.length,
     "common.attributes": stats.attributesCount,
-    "common.questionnaire": stats.questionnairesCount,
+    "common.questionnaires": stats.questionnairesCount,
     "common.questions": stats.questionsCount,
     "assessmentKit.numberMeasures": stats.measuresCount,
   };

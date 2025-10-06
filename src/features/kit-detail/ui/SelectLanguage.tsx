@@ -1,31 +1,22 @@
 import FormControl from "@mui/material/FormControl";
-import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
-import OutlinedInput from "@mui/material/OutlinedInput";
 import Select from "@mui/material/Select";
-import { Trans } from "react-i18next";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
-import { t } from "i18next";
 
 const SelectLanguage = (props: any) => {
   const { mainLanguage, handleChange, languages, editable } = props;
 
   return (
     <FormControl sx={{ width: "100%" }}>
-      <InputLabel id="language-name-label">
-        {" "}
-        <Trans i18nKey="common.language" />
-      </InputLabel>
       <Select
-        disabled={editable != undefined ? !editable : false}
+        disabled={editable === undefined ? false : !editable}
         size="small"
         labelId={`language-name-label`}
-        value={mainLanguage.title}
+        value={mainLanguage.value}
         IconComponent={KeyboardArrowDownIcon}
         displayEmpty
         required={true}
-        input={<OutlinedInput label={t("common.language")} />}
-        onChange={(e) => handleChange(e)}
+        onChange={(e) => handleChange(e.target.value)}
         sx={{
           fontSize: "14px",
           bgcolor: "inherit",
@@ -38,9 +29,9 @@ const SelectLanguage = (props: any) => {
           },
         }}
       >
-        {languages?.map((option: any) => (
-          <MenuItem key={option} value={option.title}>
-            <Trans i18nKey={option.title} />
+        {languages.map((option: any) => (
+          <MenuItem key={option.value} value={option.value}>
+            {option.label}
           </MenuItem>
         ))}
       </Select>

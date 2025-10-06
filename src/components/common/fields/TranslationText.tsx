@@ -1,4 +1,4 @@
-import { Box, IconButton, useTheme } from "@mui/material";
+import { Box, Divider, IconButton, useTheme } from "@mui/material";
 import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
 import languageDetector from "@/utils/language-detector";
 import { useState } from "react";
@@ -91,25 +91,39 @@ const RenderText = ({
 
 const TitleWithTranslation = ({
   title,
-  translation= "",
+  translation = "",
   ...rest
 }: TitleWithTranslationProps) => {
-  const theme = useTheme()
+  const theme = useTheme();
   const isFarsiTitle = languageDetector(title);
   const isFarsiTranslation = translation
     ? languageDetector(translation)
     : false;
   return (
     <Box display="flex" flexDirection="column" flexGrow={1}>
-      <RenderText text={title} isFarsi={isFarsiTitle} {...rest} variantOverride="bodyMedium"/>
+      <RenderText
+        text={title}
+        isFarsi={isFarsiTitle}
+        {...rest}
+        variantOverride="bodyMedium"
+      />
       {translation && (
-        <RenderText
-          text={translation}
-          isFarsi={isFarsiTranslation}
-          color={theme.palette.background.onVariant}
-          variantOverride="bodyMedium"
-          {...rest}
-        />
+        <>
+          <Divider
+            sx={{
+              marginBlockStart: rest.multiline ? -1 : 1,
+              marginBlockEnd: rest.multiline ? -1 : 0,
+            }}
+          />
+
+          <RenderText
+            text={translation}
+            isFarsi={isFarsiTranslation}
+            color={theme.palette.background.onVariant}
+            variantOverride="bodyMedium"
+            {...rest}
+          />
+        </>
       )}
     </Box>
   );
