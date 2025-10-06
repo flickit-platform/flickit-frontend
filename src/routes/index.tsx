@@ -42,8 +42,8 @@ const QuestionnairesScreen = lazy(
 const AssessmentKitsScreen = lazy(
   () => import("../screens/AssessmentKitsScreen"),
 );
-const AssessmentKitExpertViewScreen = lazy(
-  () => import("../screens/AssessmentKitExpertViewScreen"),
+const AssessmentKitDetail = lazy(
+  () => import("../screens/AssessmentKitDetail"),
 );
 const AssessmentKitScreen = lazy(
   () => import("../screens/AssessmentKitScreen"),
@@ -103,7 +103,7 @@ const Routes = () => {
           />
           <Route
             path="/user/:accountTab/:expertGroupId/assessment-kits/:assessmentKitId"
-            element={<AssessmentKitExpertViewScreen />}
+            element={<AssessmentKitDetail />}
           />
           <Route
             path="/user/:accountTab/:expertGroupId/assessment-kits/:assessmentKitId/permissions"

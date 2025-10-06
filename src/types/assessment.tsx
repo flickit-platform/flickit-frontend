@@ -26,7 +26,7 @@ interface AssessmentKitStatsSubjects {
   title: string;
 }
 
-interface AssessmentKitDetailsMaturityLevel {
+interface AssessmentKitDetailMaturityLevel {
   id: number;
   title: string;
   index: number;
@@ -171,8 +171,8 @@ export interface IAssessmentResponse {
   assessmentPermissions: IAssessmentPermissions;
 }
 
-export interface AssessmentKitDetailsType {
-  maturityLevel: AssessmentKitDetailsMaturityLevel;
+export interface AssessmentKitDetailType {
+  maturityLevel: AssessmentKitDetailMaturityLevel;
   subjects: { id: number; title: string; index: number }[];
   questionnaires: { id: number; title: string; index: number }[];
 }
@@ -211,7 +211,7 @@ export interface AssessmentKitStatsType {
   assessmentCounts: number;
   measuresCount: number;
   subjects: AssessmentKitStatsSubjects[];
-  expertGroup: IExpertGroup[];
+  expertGroup: IExpertGroup;
 }
 
 export interface AssessmentKitInfoType {

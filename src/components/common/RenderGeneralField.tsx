@@ -87,7 +87,7 @@ return {isEditing, fieldValue, translationFieldValue }
       />
     </Box>
   ) : (
-    <>
+    <Box display="flex" width="100%" gap={2}>
       <TitleWithTranslation
         title={fieldValue ?? ""}
         translation={translationFieldValue}
@@ -96,10 +96,10 @@ return {isEditing, fieldValue, translationFieldValue }
       />
       <IconButton
         onClick={() => handleFieldEdit(field)}
-        sx={{ width: 40, height: 40, borderRadius: "50%", p: 0 }}
+        sx={{ width: 24, height: 24, borderRadius: "50%", p: 0 }}
       >
         <EditIcon />
       </IconButton>
-    </>
+    </Box>
   );
 };

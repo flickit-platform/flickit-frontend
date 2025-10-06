@@ -2,11 +2,14 @@ import Box from "@mui/material/Box";
 import IconButton from "@mui/material/IconButton";
 import { Trans } from "react-i18next";
 import Grid from "@mui/material/Grid";
-import i18next, { t } from "i18next";
+import InfoItem from "@common/InfoItem";
+import { t } from "i18next";
 import { ICustomError } from "@/utils/custom-error";
 import { useServiceContext } from "@/providers/service-provider";
 import { useQuery } from "@/hooks/useQuery";
 import { useParams } from "react-router";
+import FavoriteRoundedIcon from "@mui/icons-material/FavoriteRounded";
+import ShoppingCartRoundedIcon from "@mui/icons-material/ShoppingCartRounded";
 import EditRoundedIcon from "@mui/icons-material/EditRounded";
 import FormProviderWithForm from "@common/FormProviderWithForm";
 import { useForm } from "react-hook-form";
@@ -31,27 +34,16 @@ import { useConfigContext } from "@/providers/config-provider";
 import uniqueId from "@/utils/unique-id";
 import { getReadableDate } from "@/utils/readable-date";
 import showToast from "@/utils/toast-error";
-import { RenderGeneralField } from "@common/RenderGeneralField";
 import useGeneralInfoField from "@/hooks/useGeneralInfoField";
 import { useTranslationUpdater } from "@/hooks/useTranslationUpdater";
 import { styles } from "@styles";
 import { Text } from "../common/Text";
-import LanguageIcon from "@mui/icons-material/LanguageRounded";
-import PriceIcon from "@common/icons/Price";
-import { Button, useTheme } from "@mui/material";
-import AssignmentOutlinedIcon from "@mui/icons-material/AssignmentOutlined";
-import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined';
-import EditIcon from "@mui/icons-material/Edit";
-import FileDownloadOutlinedIcon from '@mui/icons-material/FileDownloadOutlined';
-import FileUploadOutlinedIcon from '@mui/icons-material/FileUploadOutlined';
-import { formatLanguageCodes } from "@utils/language-utils";
+import { RenderGeneralField } from "../common/RenderGeneralField";
 
 interface IAssessmentKitSectionAuthorInfo {
   setExpertGroup: any;
   setAssessmentKitTitle: any;
   setHasActiveVersion: any;
-  handleDownloadDSL: any;
-  handleUpdateDSL: any;
 }
 
 const TextFields = [
@@ -68,7 +60,7 @@ const TextFields = [
 const AssessmentKitSectionGeneralInfo = (
   props: IAssessmentKitSectionAuthorInfo,
 ) => {
-  const { setExpertGroup, setAssessmentKitTitle, setHasActiveVersion, handleDownloadDSL, handleUpdateDSL } = props;
+  const { setExpertGroup, setAssessmentKitTitle, setHasActiveVersion } = props;
   const {
     config: { languages: appLangs },
   }: any = useConfigContext();
@@ -214,6 +206,7 @@ const AssessmentKitSectionGeneralInfo = (
           }
         };
 
+
         const infoBoxData = {
           "common.maturityLevel": maturityLevelsCount,
           "common.subjects": subjects?.map((sub: any) => sub?.title)?.length,
@@ -223,9 +216,10 @@ const AssessmentKitSectionGeneralInfo = (
           "kitDesigner.measures": measuresCount,
         };
 
+
         return (
           <Grid container spacing={4}>
-            <Grid item xs={12} md={8}>
+            <Grid item xs={12} md={7}>
               <Box
                 mt={1}
                 p={2.5}
@@ -446,17 +440,99 @@ const AssessmentKitSectionGeneralInfo = (
                 </Box>
               </Box>
             </Grid>
-            <Grid item xs={12} md={4}>
-              <InfoBox
-                creationTime={creationTime}
-                lastModificationTime={lastModificationTime}
-                likes={likes}
-                infoBoxData={infoBoxData}
-                handleDownloadDSL={handleDownloadDSL}
-                handleUpdateDSL={handleUpdateDSL}
-                languages={languages}
-                assessmentCounts={assessmentCounts }
-              />
+            <Grid item xs={12} md={5}>
+              <Box
+                mt={1}
+                p={2.5}
+                borderRadius={2}
+                bgcolor="background.containerLowest"
+                height="100%"
+              >
+                {creationTime && (
+                  <Box my={1.5}>
+                    <InfoItem
+                      bg="white"
+                      info={{
+                        item: getReadableDate(creationTime),
+                        title: t("common.creationDate"),
+                      }}
+                    />
+                  </Box>
+                )}
+                {lastModificationTime && (
+                  <Box my={1.5}>
+                    <InfoItem
+                      bg="white"
+                      info={{
+                        item: getReadableDate(lastModificationTime),
+                        title: t("common.lastUpdated"),
+                      }}
+                    />
+                  </Box>
+                )}
+
+                <Box my={1.5}>
+                  <InfoItem
+                    bg="white"
+                    info={{
+                      item: subjects?.map((sub: any) => sub?.title),
+                      title: t("common.subjects"),
+                      type: "array",
+                    }}
+                  />
+                </Box>
+                <Box my={1.5}>
+                  <InfoItem
+                    bg="white"
+                    info={{
+                      item: questionnairesCount,
+                      title: t("common.questionnairesCount"),
+                    }}
+                  />
+                </Box>
+                <Box my={1.5}>
+                  <InfoItem
+                    bg="white"
+                    info={{
+                      item: attributesCount,
+                      title: t("assessmentKit.attributesCount"),
+                    }}
+                  />
+                </Box>
+                <Box my={1.5}>
+                  <InfoItem
+                    bg="white"
+                    info={{
+                      item: questionsCount,
+                      title: t("assessmentKit.totalQuestionsCount"),
+                    }}
+                  />
+                </Box>
+                <Box my={1.5}>
+                  <InfoItem
+                    bg="white"
+                    info={{
+                      item: maturityLevelsCount,
+                      title: t("common.maturityLevels"),
+                    }}
+                  />
+                </Box>
+
+                <Box display="flex" px={1} mt={4}>
+                  <Box display="flex" mr={4}>
+                    <FavoriteRoundedIcon color="primary" />
+                    <Text color="primary" ml={1}>
+                      {likes}
+                    </Text>
+                  </Box>
+                  <Box display="flex">
+                    <ShoppingCartRoundedIcon color="primary" />
+                    <Text color="primary" ml={1}>
+                      {assessmentCounts}
+                    </Text>
+                  </Box>
+                </Box>
+              </Box>
             </Grid>
           </Grid>
         );
@@ -464,248 +540,6 @@ const AssessmentKitSectionGeneralInfo = (
     />
   );
 };
-
-const InfoBox = (props: any) => {
-  const { creationTime, lastModificationTime, infoBoxData, handleUpdateDSL, handleDownloadDSL, likes, languages, assessmentCounts  } = props;
-  const theme = useTheme();
-
-  return (
-    <Box sx={{ ...styles.centerCH, gap: 2, mt: "8px" }}>
-      <Grid container spacing={2}>
-        <RowSplit
-          title={t("common.creationDate")}
-          value={getReadableDate(creationTime)}
-          xs={6}
-        />
-        <RowSplit
-          title={t("common.lastUpdated")}
-          value={getReadableDate(lastModificationTime)}
-          xs={6}
-        />
-      </Grid>
-      <Grid
-        container
-        sx={{
-          background: "#fff",
-          borderRadius: "12px",
-          p: "16px 48px",
-          flex: 1,
-        }}
-      >
-        {[...Object.entries(infoBoxData)].map(([title, value], index) => {
-          const columns = 3;
-          const centerIndex = Math.floor(columns / 2);
-          const isMiddle = index % columns === centerIndex;
-          const isTop = index < columns;
-
-          return (
-            <TotalInfo
-              key={title}
-              title={t(title)}
-              value={value}
-              xs={4}
-              isMiddle={isMiddle}
-              isTop={isTop}
-            />
-          );
-        })}
-      </Grid>
-
-      <Grid container>
-        <FullRow
-          firstTitle={t("common.supportedLanguages")}
-          secondTitle={t("common.price")}
-          firstValue={formatLanguageCodes(languages, i18next.language)}
-          secondValue={t("common.free")}
-          xs={12}
-          firstIcon={<LanguageIcon fontSize="large" sx={{ color: "primary.main" }} />}
-          secondIcon={
-            <PriceIcon
-              color={theme.palette.primary.dark}
-              width="33px"
-              height="33px"
-            />
-          }
-        />
-      </Grid>
-      <Grid container>
-        <FullRow
-          firstTitle={t("assessmentKit.createdAssessments")}
-          secondTitle={t("common.liked")}
-          firstValue={assessmentCounts}
-          secondValue={<>
-            {likes} {" "} {t("common.times")}
-          </>}
-          xs={12}
-          firstIcon={
-            <AssignmentOutlinedIcon fontSize="large" sx={{ color: "primary.main" }} />
-          }
-          secondIcon={
-            <FavoriteBorderOutlinedIcon
-              sx={{ color: theme.palette.primary.dark }}
-              width="33px"
-              height="33px"
-            />
-          }
-        />
-      </Grid>
-      <Grid container >
-        <Grid item xs={12}>
-          <Button disabled fullWidth variant={"contained"} startIcon={<EditIcon />} >
-            <Text variant={"bodyLarge"}>
-              {t("assessment.editKit")}
-            </Text>
-          </Button>
-        </Grid>
-      </Grid>
-      <Grid container >
-        <Grid item xs={12} sx={{display: "flex", gap: "16px"}} >
-          <Button onClick={handleDownloadDSL} sx={{width: "100%"}}  variant={"outlined"} startIcon={<FileDownloadOutlinedIcon />} >
-            <Text variant={"bodyLarge"}>
-              {t("assessmentKit.downloadDSLKit")}
-            </Text>
-          </Button>
-          <Button onClick={handleUpdateDSL} sx={{width: "100%"}} variant={"outlined"} startIcon={<FileUploadOutlinedIcon />} >
-            <Text variant={"bodyLarge"}>
-              {t("assessmentKit.updateDSLKit")}
-            </Text>
-          </Button>
-        </Grid>
-      </Grid>
-    </Box>
-  );
-};
-
-const FullRow = (props: any) => {
-  const { firstTitle, secondTitle, firstValue, secondValue, firstIcon, secondIcon, ...rest } = props;
-
-  return (
-    <Grid item {...rest}>
-      <Box
-        sx={{
-          ...styles.centerV,
-          alignItems: "center",
-          background: "#fff",
-          borderRadius: "12px",
-          p: 2,
-          flex: 1,
-        }}
-      >
-        <Grid container>
-          {[{ title: firstTitle, value: firstValue, Icon: firstIcon }, { title: secondTitle, value: secondValue, Icon: secondIcon }].map(
-            ({ title, value, Icon }) => (
-              <Grid item xs={6} key={uniqueId()}>
-                <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-                  {Icon}
-                  <Box sx={{ ...styles.centerCV }}>
-                    <Text
-                      variant="bodyMedium"
-                      color="info.main"
-                      sx={{ ...styles.rtlStyle(firstCharDetector(title)) }}
-                    >
-                      {title}
-                    </Text>
-                    <Text
-                      variant="bodyLarge"
-                      color="background.secondaryDark"
-                      sx={{ ...styles.rtlStyle(firstCharDetector(title)) }}
-                    >
-                      {value}
-                    </Text>
-                  </Box>
-                </Box>
-              </Grid>
-            )
-          )}
-        </Grid>
-      </Box>
-    </Grid>
-  );
-};
-
-const TotalInfo = (props: any) => {
-  const { title, value, isMiddle, isTop, ...rest } = props;
-
-  return (
-    <Grid
-      item
-      {...rest}
-      sx={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        textAlign: "center",
-        position: "relative",
-        px: 2,
-        mb: isTop ? 3 : 0,
-        ...(isMiddle && {
-          "&::before": {
-            content: '""',
-            position: "absolute",
-            left: 0,
-            top: "12%",
-            height: "76%",
-            width: "1px",
-            bgcolor: "#C7CCD1",
-            display: { xs: "none", sm: "block" },
-          },
-          "&::after": {
-            content: '""',
-            position: "absolute",
-            right: 0,
-            top: "12%",
-            height: "76%",
-            width: "1px",
-            bgcolor: "#C7CCD1",
-            display: { xs: "none", sm: "block" },
-          },
-        }),
-      }}
-    >
-      <Box
-        sx={{
-          ...styles.centerCH,
-          justifyContent: "space-between",
-          textAlign: "center",
-          height: "59px",
-        }}
-      >
-        <Text variant="bodyMedium" color="info.main">
-          {title}
-        </Text>
-        <Text variant="bodyLarge" color="background.secondaryDark">
-          {value}
-        </Text>
-      </Box>
-    </Grid>
-  );
-};
-
-const RowSplit = (props: any) => {
-  const { title, value, ...rest } = props;
-
-  return (
-    <Grid item {...rest}>
-      <Box
-        sx={{
-          ...styles.centerCH,
-          background: "#fff",
-          borderRadius: "12px",
-          py: 2,
-          flex: 1,
-        }}
-      >
-        <Text variant="bodyMedium" color="info.main">
-          {title}
-        </Text>
-        <Text variant="bodyLarge" color="background.secondaryDark">
-          {value}
-        </Text>
-      </Box>
-    </Grid>
-  );
-};
-
 
 const OnHoverInput = (props: any) => {
   const [show, setShow] = useState<boolean>(false);
