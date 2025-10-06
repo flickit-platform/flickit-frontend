@@ -101,13 +101,13 @@ const TitleWithTranslation = ({
     : false;
   return (
     <Box display="flex" flexDirection="column" flexGrow={1}>
-      <RenderText text={title} isFarsi={isFarsiTitle} {...rest} />
+      <RenderText text={title} isFarsi={isFarsiTitle} {...rest} variantOverride="bodyMedium"/>
       {translation && (
         <RenderText
           text={translation}
           isFarsi={isFarsiTranslation}
           color={theme.palette.background.onVariant}
-          variantOverride={"body2"}
+          variantOverride="bodyMedium"
           {...rest}
         />
       )}
