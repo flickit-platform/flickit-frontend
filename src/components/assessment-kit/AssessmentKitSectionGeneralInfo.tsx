@@ -206,17 +206,6 @@ const AssessmentKitSectionGeneralInfo = (
           }
         };
 
-
-        const infoBoxData = {
-          "common.maturityLevel": maturityLevelsCount,
-          "common.subjects": subjects?.map((sub: any) => sub?.title)?.length,
-          "common.attributes": attributesCount,
-          "common.questionnaire": questionnairesCount,
-          "common.questions": questionsCount,
-          "kitDesigner.measures": measuresCount,
-        };
-
-
         return (
           <Grid container spacing={4}>
             <Grid item xs={12} md={7}>
