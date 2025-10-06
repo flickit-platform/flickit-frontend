@@ -4,59 +4,56 @@ import TitleWithTranslation from "@common/fields/TranslationText";
 import IconButton from "@mui/material/IconButton";
 import Box from "@mui/material/Box";
 import EditIcon from "@mui/icons-material/Edit";
-type fieldName = "title" | "summary" | "about" | "goal" | "context"
+type fieldName = "title" | "summary" | "about" | "goal" | "context";
 
-export function RenderGeneralField(props: any){
-const {
-  field,
-  data,
-  editableFields,
-  langCode,
-  updatedValues,
-  setUpdatedValues,
-  showTranslations,
-  toggleTranslation,
-  handleFieldEdit,
-  updateTranslation,
-  handleSaveEdit,
-  handleCancelTextBox,
-  multiline = false,
-  useRichEditor = false,
-  } = props
+export function RenderGeneralField(props: any) {
+  const {
+    field,
+    data,
+    editableFields,
+    langCode,
+    updatedValues,
+    setUpdatedValues,
+    showTranslations,
+    toggleTranslation,
+    handleFieldEdit,
+    updateTranslation,
+    handleSaveEdit,
+    handleCancelTextBox,
+    multiline = false,
+    useRichEditor = false,
+  } = props;
 
   const renderField = useCallback(() => {
-      const isEditing = editableFields.has(field);
-      const isMetadataField = field === "goal" || field === "context";
+    const isEditing = editableFields.has(field);
+    const isMetadataField = field === "goal" || field === "context";
 
-      const fieldValue = isMetadataField
-        ? (data.metadata?.[field] ?? "")
-        : (data[field] ?? "");
+    const fieldValue = isMetadataField
+      ? (data.metadata?.[field] ?? "")
+      : (data[field] ?? "");
 
-      let translationFieldValue = "";
+    let translationFieldValue = "";
 
-      if (langCode) {
-        if (isMetadataField) {
-          translationFieldValue =
-            data?.translations?.[langCode]?.metadata?.[field] ?? "";
-        } else {
-          translationFieldValue = data?.translations?.[langCode]?.[field] ?? "";
-        }
+    if (langCode) {
+      if (isMetadataField) {
+        translationFieldValue =
+          data?.translations?.[langCode]?.metadata?.[field] ?? "";
+      } else {
+        translationFieldValue = data?.translations?.[langCode]?.[field] ?? "";
       }
-return {isEditing, fieldValue, translationFieldValue }
+    }
+    return { isEditing, fieldValue, translationFieldValue };
+  }, [
+    editableFields,
+    updatedValues,
+    showTranslations,
+    langCode,
+    updateTranslation,
+    toggleTranslation,
+    handleFieldEdit,
+  ]);
 
-    },
-    [
-      editableFields,
-      updatedValues,
-      showTranslations,
-      langCode,
-      updateTranslation,
-      toggleTranslation,
-      handleFieldEdit,
-    ],
-  )
-
-  const {isEditing, fieldValue, translationFieldValue } = renderField()
+  const { isEditing, fieldValue, translationFieldValue } = renderField();
   return isEditing ? (
     <Box flexGrow={1}>
       <MultiLangTextField
@@ -92,7 +89,7 @@ return {isEditing, fieldValue, translationFieldValue }
         title={fieldValue ?? ""}
         translation={translationFieldValue}
         variant="semiBoldMedium"
-        multiline
+        multiline={multiline}
       />
       <IconButton
         onClick={() => handleFieldEdit(field)}
@@ -102,4 +99,4 @@ return {isEditing, fieldValue, translationFieldValue }
       </IconButton>
     </Box>
   );
-};
+}

@@ -67,6 +67,9 @@ const EditableKitDetail = (props: {
   };
   return (
     <Box
+      display="flex"
+      flexDirection="column"
+      gap={4}
       sx={{
         background: "#fff",
         borderRadius: "12px",
@@ -86,43 +89,41 @@ const EditableKitDetail = (props: {
         };
 
         return (
-          <Box key={name}>
+          <Box
+            key={name}
+            display="flex"
+            alignItems="flex-start"
+            justifyContent="space-between"
+            sx={{
+              flexDirection: multiline ? "column" : "row",
+            }}
+          >
+            <Text variant="titleSmall" minWidth="80px !important" mt="2px">
+              <Trans i18nKey={label} />
+            </Text>
             <Box
-              display="flex"
-              alignItems="flex-start"
-              justifyContent="space-between"
               sx={{
-                flexDirection: multiline ? "column" : "row",
+                display: "flex",
+                width: "100%",
               }}
             >
-              <Text variant="titleSmall" minWidth="80px !important">
-                <Trans i18nKey={label} />
-              </Text>
-              <Box
-                sx={{
-                  display: "flex",
-                  width: "100%",
-                }}
-              >
-                <RenderGeneralField
-                  field={name}
-                  data={data}
-                  editableFields={editableFields}
-                  langCode={langCode}
-                  updatedValues={updatedValues}
-                  setUpdatedValues={setUpdatedValues}
-                  showTranslations={showTranslations}
-                  toggleTranslation={toggleTranslation}
-                  handleFieldEdit={handleFieldEdit}
-                  multiline={multiline}
-                  useRichEditor={useRichEditor}
-                  updateTranslation={updateTranslation}
-                  handleSaveEdit={handleSaveEdit}
-                  handleCancelTextBox={handleCancelTextBox}
-                />
-              </Box>
+              <RenderGeneralField
+                field={name}
+                data={data}
+                editableFields={editableFields}
+                langCode={langCode}
+                updatedValues={updatedValues}
+                setUpdatedValues={setUpdatedValues}
+                showTranslations={showTranslations}
+                toggleTranslation={toggleTranslation}
+                handleFieldEdit={handleFieldEdit}
+                multiline={multiline}
+                useRichEditor={useRichEditor}
+                updateTranslation={updateTranslation}
+                handleSaveEdit={handleSaveEdit}
+                handleCancelTextBox={handleCancelTextBox}
+              />
             </Box>
-            <Divider flexItem sx={{ my: 2 }} />
           </Box>
         );
       })}
