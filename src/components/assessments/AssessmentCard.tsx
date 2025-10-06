@@ -351,7 +351,6 @@ const Header = ({
       <Box
         sx={{
           overflow: "hidden",
-          textOverflow: "ellipsis",
           whiteSpace: "nowrap",
           flexShrink: 1,
           direction: languageDetector(itemTitle) ? "rtl" : "ltr",
@@ -367,6 +366,7 @@ const Header = ({
             textAlign: "center",
             color: color?.code ?? "#101c32",
           }}
+          lines={1}
           data-cy="assessment-card-title"
         >
           {itemTitle}
