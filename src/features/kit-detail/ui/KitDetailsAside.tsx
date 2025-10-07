@@ -270,7 +270,7 @@ const KitDetailsAside = ({
           onClick={openMenu}
         >
           <Text variant="semiBoldLarge">
-            <Trans i18nKey="assessmentKit.createAssessmentKit" />
+            <Trans i18nKey="assessmentKit.editKit" />
           </Text>
         </Button>
 

@@ -32,6 +32,7 @@
   "dsl": "DSL",
   "dslDownloadGuide": "If you don’t have the appropriate Excel template, you can download it.",
   "dslReadyToDownload": "Your DSL is ready to download!",
+  "editKit": "Edit kit",
   "editViaKitDesigner": "Edit via Kit Designer",
   "exploreOtherKits": "Explore other kits",
   "exportDSL": "Export DSL",
@@ -54,7 +55,7 @@
   "updateDSL": "Update DSL",
   "updateDSLKit": "Update DSL",
   "viaDSL": "Via DSL",
-  "viaKitDesigner": "Via kit designer",
+  "viaKitDesigner": "Via Kit Designer",
   "youLikedThisKit": "You liked this kit!",
   "interestedThisKit": "Interested in this kit?",
   "tellUsWhatYouLookingFor": "Briefly describe the software you’d like to assess."
