@@ -1,13 +1,17 @@
 import { RenderGeneralField } from "@/components/common/RenderGeneralField";
 import { Text } from "@/components/common/Text";
 import useGeneralInfoField from "@/hooks/useGeneralInfoField";
-import { AssessmentKitInfoType } from "@/types";
-import { Box, Grid } from "@mui/material";
-import { useCallback } from "react";
+import { AssessmentKitInfoType, ILanguage } from "@/types";
+import { Box, Grid, useTheme } from "@mui/material";
+import { Fragment, useCallback } from "react";
 import { Trans } from "react-i18next";
 import { useParams } from "react-router-dom";
 import { useTranslationUpdater } from "@/hooks/useTranslationUpdater";
-import { t } from "i18next";
+import i18next, { t } from "i18next";
+import LanguageMenu from "@/components/kit-designer/general/components/LanguageMenu";
+import { useQuery } from "@/hooks/useQuery";
+import { useServiceContext } from "@/providers/service-provider";
+import { useConfigContext } from "@/providers/config-provider";
 
 const priceOptions = [
   { value: 0, label: t("common.free") },
@@ -43,16 +47,6 @@ const generalFields = [
     type: "text" as const,
     options: [],
     md: 12,
-    disabled: false,
-  },
-  {
-    name: "lang",
-    label: "common.language",
-    multiline: false,
-    useRichEditor: false,
-    type: "select" as const,
-    options: [],
-    md: 6,
     disabled: false,
   },
   {
@@ -121,7 +115,6 @@ const generalFields = [
 type FieldName =
   | "title"
   | "summary"
-  | "lang"
   | "price"
   | "published"
   | "isPrivate"
@@ -133,6 +126,8 @@ const EditableKitDetail = (props: {
   fetchAssessmentKitInfoQuery: any;
   info: AssessmentKitInfoType;
 }) => {
+  const theme = useTheme();
+  const { service } = useServiceContext();
   const { fetchAssessmentKitInfoQuery, info } = props;
   const { assessmentKitId } = useParams();
 
@@ -173,6 +168,25 @@ const EditableKitDetail = (props: {
     });
   };
 
+  const addLanguageQuery = useQuery({
+    service: (args, config) =>
+      service.assessmentKit.info.addLanguage(args, config),
+    runOnMount: false,
+  });
+
+  const {
+    config: { languages },
+  } = useConfigContext();
+
+  const handleAddLanguage = (selectedLang: ILanguage) => {
+    addLanguageQuery
+      .query({
+        assessmentKitId,
+        data: { lang: selectedLang.code },
+      })
+      .then(() => fetchAssessmentKitInfoQuery.query());
+  };
+
   return (
     <Box
       display="flex"
@@ -200,61 +214,93 @@ const EditableKitDetail = (props: {
               value: info?.mainLanguage?.code,
             },
           };
-
-          const fieldOptions =
-            name === "lang"
-              ? (info?.languages ?? []).map((lng: any) => ({
-                  value: lng?.code,
-                  label: lng?.title,
-                }))
-              : options;
+          const selectedCodes = info.languages
+            .map((lang) => {
+              return lang.code;
+            })
+            .filter(Boolean) as string[];
+          const selectedTitles = (info.languages ?? [])
+            .map((l) => l?.title)
+            .filter(Boolean)
+            .join(i18next.language === "fa" ? "، " : ", ");
 
           return (
-            <Grid item xs={12} md={md} key={name}>
-              <Box
-                display="flex"
-                justifyContent="space-between"
-                sx={{
-                  gap: 2,
-                  flexDirection: {
-                    xs: "column",
-                    md: multiline ? "column" : "row",
-                  },
-                  alignItems: {
-                    xs: "flex-start",
-                    md: multiline ? "flex-start" : "center",
-                  },
-                }}
-              >
-                <Box width="80px">
-                  <Text variant="titleSmall" mt="2px" height="100%">
-                    <Trans i18nKey={label} />
-                  </Text>
+            <Fragment>
+              <Grid item xs={12} md={md} key={name}>
+                <Box
+                  display="flex"
+                  justifyContent="space-between"
+                  sx={{
+                    gap: 2,
+                    flexDirection: {
+                      xs: "column",
+                      md: multiline ? "column" : "row",
+                    },
+                    alignItems: {
+                      xs: "flex-start",
+                      md: multiline ? "flex-start" : "center",
+                    },
+                  }}
+                >
+                  <Box width="80px">
+                    <Text variant="titleSmall" mt="2px" height="100%">
+                      <Trans i18nKey="common.supportedLanguages" />
+                    </Text>
+                  </Box>
+                  <Box sx={{ display: "flex", width: "100%" }}>
+                    <RenderGeneralField
+                      field={name}
+                      fieldType={type}
+                      data={data}
+                      editableFields={editableFields}
+                      langCode={langCode}
+                      updatedValues={updatedValues}
+                      setUpdatedValues={setUpdatedValues}
+                      showTranslations={showTranslations}
+                      toggleTranslation={toggleTranslation}
+                      handleFieldEdit={handleFieldEdit}
+                      multiline={multiline}
+                      useRichEditor={useRichEditor}
+                      updateTranslation={updateTranslation}
+                      handleSaveEdit={handleSaveEdit}
+                      handleCancelTextBox={handleCancelTextBox}
+                      options={options}
+                      label={<Trans i18nKey={label} />}
+                      disabled={field?.disabled}
+                    />
+                  </Box>
                 </Box>
-                <Box sx={{ display: "flex", width: "100%" }}>
-                  <RenderGeneralField
-                    field={name}
-                    fieldType={type}
-                    data={data}
-                    editableFields={editableFields}
-                    langCode={langCode}
-                    updatedValues={updatedValues}
-                    setUpdatedValues={setUpdatedValues}
-                    showTranslations={showTranslations}
-                    toggleTranslation={toggleTranslation}
-                    handleFieldEdit={handleFieldEdit}
-                    multiline={multiline}
-                    useRichEditor={useRichEditor}
-                    updateTranslation={updateTranslation}
-                    handleSaveEdit={handleSaveEdit}
-                    handleCancelTextBox={handleCancelTextBox}
-                    options={fieldOptions}
-                    label={<Trans i18nKey={label} />}
-                    disabled={field?.disabled}
-                  />
-                </Box>
-              </Box>
-            </Grid>
+              </Grid>
+              {name === "summary" && (
+                <Grid item xs={12} md={6}>
+                  <Box display="flex">
+                    <Box width="80px">
+                      <Text variant="titleSmall" mt="2px" height="100%">
+                        <Trans i18nKey={label} />
+                      </Text>
+                    </Box>
+                    <Box
+                      sx={{ display: "flex", width: "50%" }}
+                      color="outline.variant"
+                    >
+                      <LanguageMenu
+                        buttonColor="inherit"
+                        labelColor={theme.palette.background.secondaryDark}
+                        availableLanguages={languages}
+                        selectedCodes={selectedCodes}
+                        mainLanguageCode={info.mainLanguage?.code}
+                        onSelect={handleAddLanguage}
+                        buttonLabel={selectedTitles}
+                        size="small"
+                        followButtonWidth
+                        fullWidth
+                        buttonVariant="outlined"
+                      />
+                    </Box>
+                  </Box>
+                </Grid>
+              )}
+            </Fragment>
           );
         })}
       </Grid>
