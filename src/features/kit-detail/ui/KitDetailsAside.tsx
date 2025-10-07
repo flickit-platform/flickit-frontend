@@ -5,10 +5,9 @@ import {
   ArrowDropDownRounded,
   ArrowDropUpRounded,
   AssignmentOutlined,
-  Edit,
+  EditOutlined,
   FavoriteBorderOutlined,
   FileDownloadOutlined,
-  FileUploadOutlined,
   Language,
 } from "@mui/icons-material";
 import {
@@ -26,24 +25,44 @@ import PriceIcon from "@common/icons/Price";
 import uniqueId from "@/utils/unique-id";
 import { useQuery } from "@/hooks/useQuery";
 import { useServiceContext } from "@/providers/service-provider";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import showToast from "@/utils/toast-error";
 import { ICustomError } from "@/utils/custom-error";
 import UpdateAssessmentKitDialog from "./UpdateAssessmentKitDialog";
 import useDialog from "@/hooks/useDialog";
 import { Trans } from "react-i18next";
 import useMenu from "@/hooks/useMenu";
+import {
+  CEDialog,
+  CEDialogActions,
+} from "@/components/common/dialogs/CEDialog";
 
 const KitDetailsAside = ({
   stats,
   languages,
   assessmentKitTitle,
+  draftVersionId,
 }: {
   stats: AssessmentKitStatsType;
   languages: string;
   assessmentKitTitle: string;
+  draftVersionId: number;
 }) => {
+  const navigate = useNavigate();
+  const { assessmentKitId } = useParams();
   const { open, openMenu, closeMenu, anchorEl } = useMenu();
+  const cloneAssessmentKit = useQuery({
+    service: (args, config) => service.assessmentKit.info.clone(args, config),
+    runOnMount: false,
+  });
+
+  const handleCreateViaKitDesigner = () => {
+    !draftVersionId &&
+      cloneAssessmentKit.query({ assessmentKitId }).then((res: any) => {
+        navigate(`./../../kit-designer/${res?.kitVersionId}`);
+      });
+    draftVersionId && navigate(`./../../kit-designer/${draftVersionId}`);
+  };
 
   const infoBoxData = {
     "common.maturityLevel": stats.maturityLevelsCount ?? "-",
@@ -56,8 +75,8 @@ const KitDetailsAside = ({
   };
   const theme = useTheme();
   const { service } = useServiceContext();
-  const { assessmentKitId } = useParams();
   const dialogProps = useDialog();
+  const createDraftWarningdialogProps = useDialog();
 
   const fetchAssessmentKitDownloadUrlQuery = useQuery({
     service: (args, config) =>
@@ -276,6 +295,7 @@ const KitDetailsAside = ({
           <MenuItem
             onClick={() => {
               closeMenu();
+              createDraftWarningdialogProps.openDialog({});
             }}
           >
             <Trans i18nKey="assessmentKit.viaKitDesigner" />
@@ -283,6 +303,37 @@ const KitDetailsAside = ({
         </Menu>
       </Grid>
       <UpdateAssessmentKitDialog {...dialogProps} />
+      <CEDialog
+        open={createDraftWarningdialogProps.open}
+        closeDialog={createDraftWarningdialogProps.onClose}
+        title={
+          <>
+            <EditOutlined />
+            <Trans i18nKey="assessmentKit.editViaKitDesigner" />
+          </>
+        }
+        maxWidth="sm"
+      >
+        <Text>
+          <Trans
+            i18nKey={
+              draftVersionId
+                ? "assessmentKit.continueEdittingDraft"
+                : "assessmentKit.createNewDraftDesc"
+            }
+          />
+        </Text>
+
+        <CEDialogActions
+          loading={false}
+          onClose={createDraftWarningdialogProps.onClose}
+          submitButtonLabel={
+            draftVersionId ? t("common.continue") : t("assessmentKit.newDraft")
+          }
+          cancelLabel={t("common.cancel")}
+          onSubmit={handleCreateViaKitDesigner}
+        />
+      </CEDialog>
     </Grid>
   );
 };
