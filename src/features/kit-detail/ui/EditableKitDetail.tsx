@@ -242,7 +242,7 @@ const EditableKitDetail = (props: {
                     },
                   }}
                 >
-                  <Box width="80px">
+                  <Box width={name === "isPrivate" ? "120px" : "80px"}>
                     <Text variant="titleSmall" mt="2px" height="100%">
                       <Trans i18nKey={label} />
                     </Text>
@@ -272,31 +272,36 @@ const EditableKitDetail = (props: {
                 </Box>
               </Grid>
               {name === "summary" && (
-                <Grid item xs={12} md={6}>
-                  <Box display="flex">
-                    <Box width="80px">
-                      <Text variant="titleSmall" mt="2px" height="100%">
-                        <Trans i18nKey={"common.supportedLanguages"} />
-                      </Text>
-                    </Box>
-                    <Box
-                      sx={{ display: "flex", width: "50%" }}
-                      color="outline.variant"
-                    >
-                      <LanguageMenu
-                        buttonColor="inherit"
-                        labelColor={theme.palette.background.secondaryDark}
-                        availableLanguages={languages}
-                        selectedCodes={selectedCodes}
-                        mainLanguageCode={info.mainLanguage?.code}
-                        onSelect={handleAddLanguage}
-                        buttonLabel={selectedTitles}
-                        size="small"
-                        followButtonWidth
-                        fullWidth
-                        buttonVariant="outlined"
-                      />
-                    </Box>
+                <Grid
+                  item
+                  xs={12}
+                  md={6}
+                  display="flex"
+                  alignItems="center"
+                  gap={1}
+                >
+                  <Box>
+                    <Text variant="titleSmall" mt="2px" height="100%">
+                      <Trans i18nKey={"common.supportedLanguages"} />
+                    </Text>
+                  </Box>
+                  <Box
+                    sx={{ display: "flex", width: "50%" }}
+                    color="outline.variant"
+                  >
+                    <LanguageMenu
+                      buttonColor="inherit"
+                      labelColor={theme.palette.background.secondaryDark}
+                      availableLanguages={languages}
+                      selectedCodes={selectedCodes}
+                      mainLanguageCode={info.mainLanguage?.code}
+                      onSelect={handleAddLanguage}
+                      buttonLabel={selectedTitles}
+                      size="small"
+                      followButtonWidth
+                      fullWidth
+                      buttonVariant="outlined"
+                    />
                   </Box>
                 </Grid>
               )}
