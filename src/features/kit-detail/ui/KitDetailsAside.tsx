@@ -2,6 +2,8 @@ import { Text } from "@/components/common/Text";
 import { AssessmentKitStatsType } from "@/types";
 import { getReadableDate } from "@/utils/readable-date";
 import {
+  ArrowDropDownRounded,
+  ArrowDropUpRounded,
   AssignmentOutlined,
   Edit,
   FavoriteBorderOutlined,
@@ -9,7 +11,15 @@ import {
   FileUploadOutlined,
   Language,
 } from "@mui/icons-material";
-import { Box, Button, Divider, Grid, useTheme } from "@mui/material";
+import {
+  Box,
+  Button,
+  Divider,
+  Grid,
+  Menu,
+  MenuItem,
+  useTheme,
+} from "@mui/material";
 import { styles } from "@styles";
 import { t } from "i18next";
 import PriceIcon from "@common/icons/Price";
@@ -21,6 +31,8 @@ import showToast from "@/utils/toast-error";
 import { ICustomError } from "@/utils/custom-error";
 import UpdateAssessmentKitDialog from "./UpdateAssessmentKitDialog";
 import useDialog from "@/hooks/useDialog";
+import { Trans } from "react-i18next";
+import useMenu from "@/hooks/useMenu";
 
 const KitDetailsAside = ({
   stats,
@@ -31,13 +43,16 @@ const KitDetailsAside = ({
   languages: string;
   assessmentKitTitle: string;
 }) => {
+  const { open, openMenu, closeMenu, anchorEl } = useMenu();
+
   const infoBoxData = {
-    "common.maturityLevel": stats.maturityLevelsCount,
-    "common.subjects": stats.subjects?.map((sub: any) => sub?.title)?.length,
-    "common.attributes": stats.attributesCount,
-    "common.questionnaires": stats.questionnairesCount,
-    "common.questions": stats.questionsCount,
-    "assessmentKit.numberMeasures": stats.measuresCount,
+    "common.maturityLevel": stats.maturityLevelsCount ?? "-",
+    "common.subjects":
+      stats.subjects?.map((sub: any) => sub?.title)?.length ?? "-",
+    "common.attributes": stats.attributesCount ?? "-",
+    "common.questionnaires": stats.questionnairesCount ?? "-",
+    "common.questions": stats.questionsCount ?? "-",
+    "assessmentKit.numberMeasures": stats.measuresCount ?? "-",
   };
   const theme = useTheme();
   const { service } = useServiceContext();
@@ -192,7 +207,7 @@ const KitDetailsAside = ({
           firstValue={stats.assessmentCounts}
           secondValue={
             <>
-              {stats.likes} {t("common.times")}
+              {stats.likes ?? "0"} {t("common.times")}
             </>
           }
           xs={12}
@@ -214,32 +229,58 @@ const KitDetailsAside = ({
           }
         />
       </Grid>
-      <Grid item xs={12}>
-        <Button disabled fullWidth variant="contained" startIcon={<Edit />}>
-          <Text variant="semiBoldLarge">{t("assessment.editKit")}</Text>
-        </Button>
-      </Grid>
-      <Grid item xs={12} md={5.7}>
+      <Grid item xs={12} md={6}>
         <Button
           onClick={handleDownloadDSL}
           variant="outlined"
           fullWidth
           startIcon={<FileDownloadOutlined />}
+          size="small"
         >
           <Text variant="semiBoldLarge">
             {t("assessmentKit.downloadDSLKit")}
           </Text>
         </Button>
       </Grid>
-      <Grid item xs={12} md={6.3}>
+      <Grid item xs={12} md={6}>
         <Button
-          onClick={() => dialogProps.openDialog({})}
-          variant="outlined"
+          variant="contained"
+          size="small"
+          endIcon={!open ? <ArrowDropDownRounded /> : <ArrowDropUpRounded />}
           fullWidth
-          startIcon={<FileUploadOutlined />}
+          onClick={openMenu}
         >
-          <Text variant="semiBoldLarge">{t("assessmentKit.updateDSLKit")}</Text>
+          <Text variant="semiBoldLarge">
+            <Trans i18nKey="assessmentKit.createAssessmentKit" />
+          </Text>
         </Button>
+
+        <Menu
+          anchorEl={anchorEl}
+          open={open}
+          onClose={closeMenu}
+          PaperProps={{
+            style: {
+              maxHeight: 48 * 4.5,
+            },
+          }}
+        >
+          <MenuItem
+            onClick={() => {
+              closeMenu();
+              dialogProps.openDialog({});
+            }}
+          >
+            <Trans i18nKey="assessmentKit.viaDSL" />
+          </MenuItem>
+          <MenuItem
+            onClick={() => {
+              closeMenu();
+            }}
+          >
+            <Trans i18nKey="assessmentKit.viaKitDesigner" />
+          </MenuItem>
+        </Menu>
       </Grid>
       <UpdateAssessmentKitDialog {...dialogProps} />
     </Grid>
@@ -280,7 +321,7 @@ const FullRow = (props: any) => {
                   {title}
                 </Text>
                 <Text variant="semiBoldLarge" color="background.on">
-                  {value}
+                  {value ?? "-"}
                 </Text>
               </Box>
             </Box>

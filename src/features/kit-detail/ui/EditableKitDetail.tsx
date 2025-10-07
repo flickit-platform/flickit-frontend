@@ -244,7 +244,7 @@ const EditableKitDetail = (props: {
                 >
                   <Box width="80px">
                     <Text variant="titleSmall" mt="2px" height="100%">
-                      <Trans i18nKey="common.supportedLanguages" />
+                      <Trans i18nKey={label} />
                     </Text>
                   </Box>
                   <Box sx={{ display: "flex", width: "100%" }}>
@@ -276,7 +276,7 @@ const EditableKitDetail = (props: {
                   <Box display="flex">
                     <Box width="80px">
                       <Text variant="titleSmall" mt="2px" height="100%">
-                        <Trans i18nKey={label} />
+                        <Trans i18nKey={"common.supportedLanguages"} />
                       </Text>
                     </Box>
                     <Box
