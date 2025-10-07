@@ -8,7 +8,6 @@ import i18next from "i18next";
 import { formatLanguageCodes } from "@/utils/language-utils";
 import PageTitle from "./PageTitle";
 import KitDetailsAside from "./KitDetailsAside";
-import GeneralContent from "@/components/kit-designer/general/GeneralContent";
 import EditableKitDetail from "./EditableKitDetail";
 
 const AssessmentKitDetail = () => {
@@ -56,6 +55,7 @@ const AssessmentKitDetail = () => {
                     i18next.language,
                   )}
                   assessmentKitTitle={info.title}
+                  draftVersionId={info.draftVersionId}
                 />
               </Grid>
             </Grid>

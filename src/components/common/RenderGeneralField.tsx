@@ -9,6 +9,7 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import FormControl from "@mui/material/FormControl";
 import SelectLanguage from "@/features/kit-detail/ui/SelectLanguage";
 import { EditOutlined } from "@mui/icons-material";
+import { Text } from "./Text";
 
 export function RenderGeneralField(props: any) {
   const {
@@ -94,7 +95,7 @@ export function RenderGeneralField(props: any) {
                     key={val}
                     value={val}
                     control={<Radio size="small" />}
-                    label={option.label}
+                    label={<Text variant="bodyMedium" color="background.secondaryDark">{option.label}</Text>}
                     sx={{
                       m: 0,
                     }}
@@ -156,10 +157,10 @@ export function RenderGeneralField(props: any) {
         title={fieldValue ?? ""}
         translation={translationFieldValue}
         variant="semiBoldMedium"
-        multiline={multiline}
+        multiline={useRichEditor}
       />
       <IconButton onClick={() => handleFieldEdit(field)}>
-        <EditOutlined fontSize="small" color="primary"/>
+        <EditOutlined fontSize="small" color="primary" />
       </IconButton>
     </Box>
   );
