@@ -1,19 +1,20 @@
 import { useQuery } from "@/hooks/useQuery";
 import { useServiceContext } from "@/providers/service-provider";
 import { useParams } from "react-router-dom";
-import { Grid } from "@mui/material";
+import { Grid, Tab, Tabs } from "@mui/material";
 import QueryBatchData from "../../../components/common/QueryBatchData";
 import { AssessmentKitInfoType, AssessmentKitStatsType } from "@/types";
 import i18next from "i18next";
 import { formatLanguageCodes } from "@/utils/language-utils";
 import PageTitle from "./PageTitle";
 import KitDetailsAside from "./KitDetailsAside";
-import GeneralContent from "@/components/kit-designer/general/GeneralContent";
 import EditableKitDetail from "./EditableKitDetail";
+import KitDetailsMenu from "@/features/kit-detail/ui/kitDetailsMenu";
 
 const AssessmentKitDetail = () => {
   const { assessmentKitId, expertGroupId } = useParams();
   const { service } = useServiceContext();
+
   const fetchAssessmentKitInfoQuery = useQuery<AssessmentKitInfoType>({
     service: (args, config) =>
       service.assessmentKit.info.getInfo(args ?? { assessmentKitId }, config),
@@ -58,6 +59,11 @@ const AssessmentKitDetail = () => {
                   assessmentKitTitle={info.title}
                 />
               </Grid>
+            </Grid>
+
+
+            <Grid container sm={12} xs={12} mt={6}>
+              <KitDetailsMenu/>
             </Grid>
           </>
         );

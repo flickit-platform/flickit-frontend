@@ -180,6 +180,7 @@ const AssessmentKitExpertViewContainer = () => {
     </Box>
   );
 };
+// todo
 const AssessmentKitSectionsTabs = (props: {
   details: any;
   update: boolean;
@@ -1187,7 +1188,7 @@ const MaturityLevelsDetails = (props: any) => {
     </Box>
   );
 };
-const useAssessmentKit = () => {
+export const useAssessmentKit = () => {
   const { service } = useServiceContext();
   const { assessmentKitId } = useParams();
   const fetchAssessmentKitDetailQuery = useQuery({
