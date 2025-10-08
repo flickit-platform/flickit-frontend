@@ -30,32 +30,35 @@ export function useLanguagePicker(
   const buttonId = useId();
   const menuId = useId();
 
-  const menuState = useMenu();
+  const menu = useMenu();
 
   const buttonRef = useRef<HTMLButtonElement>(null);
-  const [panelWidth, setPanelWidth] = useState<number>();
+  const [menuWidth, setMenuWidth] = useState<number | undefined>(undefined);
 
   useEffect(() => {
     if (!matchButtonWidth || !buttonRef.current) return;
 
     const el = buttonRef.current;
-    const updateWidth = () => setPanelWidth(el.offsetWidth);
-    updateWidth();
+    const updateMenuWidthFromButton = () => setMenuWidth(el.offsetWidth);
+    updateMenuWidthFromButton();
 
-    const RO = (window as any).ResizeObserver;
-    const ro = RO ? new RO(updateWidth) : null;
-    ro?.observe?.(el);
+    const ResizeObs = globalThis.ResizeObserver;
+    const resizeObserver = ResizeObs
+      ? new ResizeObs(updateMenuWidthFromButton)
+      : null;
 
-    return () => ro?.disconnect?.();
+    resizeObserver?.observe?.(el);
+    return () => resizeObserver?.disconnect?.();
   }, [matchButtonWidth]);
 
-  const ordered = useMemo(() => {
-    const head = languages.filter((l) => l.code === primaryCode);
-    const tail = languages.filter((l) => l.code !== primaryCode);
-    return [...head, ...tail];
+  const orderedLanguages = useMemo(() => {
+    if (!lockPrimaryOnTop || !primaryCode) return languages;
+    const primary = languages.filter((l) => l.code === primaryCode);
+    const others = languages.filter((l) => l.code !== primaryCode);
+    return [...primary, ...others];
   }, [languages, lockPrimaryOnTop, primaryCode]);
 
-  const isCurrent = useCallback(
+  const isSelectedCode = useCallback(
     (code: string) => code === selectedCode,
     [selectedCode],
   );
@@ -63,10 +66,10 @@ export function useLanguagePicker(
   return {
     aria: { buttonId, menuId },
     buttonRef,
-    menuState,
-    panelWidth,
-    items: ordered,
-    isCurrent,
-    behavior: { blockReselect },
+    menu,
+    menuWidth,
+    items: orderedLanguages,
+    isSelectedCode,
+    flags: { blockReselect },
   };
 }

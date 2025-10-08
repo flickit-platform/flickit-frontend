@@ -27,7 +27,6 @@ type Props = {
   showCheckmark?: boolean;
   behavior?: LanguagePickerBehavior;
 
-  // 🎯 جدید: کنترل ظاهر دکمه
   buttonVariant?: "text" | "outlined" | "contained";
   buttonColor?: "inherit" | "primary" | "secondary" | "info" | "error";
   labelColor?: string;
@@ -52,7 +51,7 @@ export default function LanguagePickerMultiple({
   const primaryBadge = t("common.mainLanguage");
 
   const pseudoSelected = values[0] ?? "";
-  const { aria, buttonRef, menuState, panelWidth, items } = useLanguagePicker(
+  const { aria, buttonRef, menu, menuWidth, items } = useLanguagePicker(
     languages,
     pseudoSelected,
     primaryCode,
@@ -63,7 +62,7 @@ export default function LanguagePickerMultiple({
 
   const handlePick = (lang: ILanguage) => {
     if (!isSelected(lang.code)) onAdd(lang);
-    menuState.closeMenu();
+    menu.closeMenu();
   };
 
   const resolvedVariant = buttonVariant ?? "outlined";
@@ -81,11 +80,11 @@ export default function LanguagePickerMultiple({
     <>
       <Button
         id={aria.buttonId}
-        aria-controls={menuState.open ? aria.menuId : undefined}
+        aria-controls={menu.open ? aria.menuId : undefined}
         aria-haspopup="menu"
-        aria-expanded={menuState.open ? "true" : undefined}
+        aria-expanded={menu.open ? "true" : undefined}
         ref={buttonRef}
-        onClick={menuState.openMenu}
+        onClick={menu.openMenu}
         size={size}
         fullWidth={fullWidth}
         disabled={disabled}
@@ -101,13 +100,13 @@ export default function LanguagePickerMultiple({
 
       <Menu
         id={aria.menuId}
-        anchorEl={menuState.anchorEl}
-        open={menuState.open}
-        onClose={menuState.closeMenu}
+        anchorEl={menu.anchorEl}
+        open={menu.open}
+        onClose={menu.closeMenu}
         MenuListProps={{ "aria-labelledby": aria.buttonId }}
         PaperProps={{
           sx: {
-            width: (behavior?.matchButtonWidth ?? true) ? panelWidth : "auto",
+            width: (behavior?.matchButtonWidth ?? true) ? menuWidth : "auto",
           },
         }}
       >

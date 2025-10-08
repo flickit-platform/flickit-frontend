@@ -196,7 +196,10 @@ const KitDetailsAside = ({
 
       {/* Rows */}
       <Grid item xs={12}>
-        <TwoColRow left={languagePriceRow.left} right={languagePriceRow.right} />
+        <TwoColRow
+          left={languagePriceRow.left}
+          right={languagePriceRow.right}
+        />
       </Grid>
       <Grid item xs={12}>
         <TwoColRow left={row2.left} right={row2.right} />
@@ -276,7 +279,7 @@ const EditMenu = ({
       <Button
         variant="contained"
         size="small"
-        endIcon={!menu.open ? <ArrowDropDownRounded /> : <ArrowDropUpRounded />}
+        endIcon={menu.open ? <ArrowDropUpRounded /> : <ArrowDropDownRounded />}
         fullWidth
         onClick={menu.openMenu}
       >

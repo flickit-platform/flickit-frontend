@@ -1,5 +1,5 @@
 import { Fragment, useMemo } from "react";
-import { Box, Grid, useTheme } from "@mui/material";
+import { Box, Grid } from "@mui/material";
 import { Trans } from "react-i18next";
 import { Text } from "@/components/common/Text";
 import { RenderGeneralField } from "@/components/common/RenderGeneralField";
@@ -13,7 +13,6 @@ type Props = {
 };
 
 const EditableKitDetail = ({ fetchAssessmentKitInfoQuery, info }: Props) => {
-  const theme = useTheme();
 
   const {
     // data
