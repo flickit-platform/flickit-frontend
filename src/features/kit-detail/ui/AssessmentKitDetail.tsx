@@ -10,10 +10,15 @@ import PageTitle from "./PageTitle";
 import KitDetailsAside from "./KitDetailsAside";
 import EditableKitDetail from "./EditableKitDetail";
 import KitDetailsMenu from "@/features/kit-detail/ui/kitDetailsMenu";
+import { useAssessmentKit } from "@components/assessment-kit/AssessmentKitExpertViewContainer";
+import { useEffect, useState } from "react";
+import GeneralContent from "@components/kit-designer/general/GeneralContent";
 
 const AssessmentKitDetail = () => {
   const { assessmentKitId, expertGroupId } = useParams();
   const { service } = useServiceContext();
+  const [details, setDetails] = useState<any[]>([]);
+  const { fetchAssessmentKitDetailQuery } = useAssessmentKit();
 
   const fetchAssessmentKitInfoQuery = useQuery<AssessmentKitInfoType>({
     service: (args, config) =>
@@ -25,6 +30,47 @@ const AssessmentKitDetail = () => {
       service.assessmentKit.info.getStats(args ?? { assessmentKitId }, config),
     runOnMount: true,
   });
+
+  useEffect(() => {
+    const fetchDetails = async () => {
+      const res: any = await fetchAssessmentKitDetailQuery.query();
+      const tabMap = [
+        {
+          key: "maturityLevel",
+          title: "common.maturityLevel",
+          Component: GeneralContent,
+          Items: [],
+        },
+        {
+          key: "subjects",
+          title: "common.subjects",
+          Component: GeneralContent,
+          Items: res.subjects ?? [],
+        },
+        {
+          key: "questionnaires",
+          title: "common.questionnaires",
+          Component: GeneralContent,
+          Items: res.questionnaires ?? [],
+        },
+        {
+          key: "measures",
+          title: "assessmentKit.numberMeasures",
+          Component: GeneralContent,
+          Items: res.questionnaires ?? [],
+        },
+        {
+          key: "answerRanges",
+          title: "kitDesigner.answerRanges",
+          Component: GeneralContent,
+          Items: [],
+        },
+      ];
+
+      setDetails(tabMap);
+    };
+    fetchDetails();
+  }, []);
 
   return (
     <QueryBatchData
@@ -62,9 +108,9 @@ const AssessmentKitDetail = () => {
             </Grid>
 
 
-            <Grid container sm={12} xs={12} mt={6}>
-              <KitDetailsMenu/>
-            </Grid>
+            {details.length > 0 && <Grid container sm={12} xs={12} mt={6}>
+              <KitDetailsMenu details={details}/>
+            </Grid>}
           </>
         );
       }}

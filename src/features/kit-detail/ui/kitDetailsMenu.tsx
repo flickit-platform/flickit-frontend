@@ -1,58 +1,18 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Grid, Tab, Tabs, Box, Collapse } from "@mui/material";
 import { Trans } from "react-i18next";
 import KeyboardArrowDownRoundedIcon from "@mui/icons-material/KeyboardArrowDownRounded";
-import { useAssessmentKit } from "@components/assessment-kit/AssessmentKitExpertViewContainer";
-import GeneralContent from "@components/kit-designer/general/GeneralContent";
 import { blue } from "@config/colors";
 import { Text } from "@common/Text";
+import i18next from "i18next";
 
-const KitDetailsMenu = () => {
-  const { fetchAssessmentKitDetailQuery } = useAssessmentKit();
+const KitDetailsMenu = (props: any) => {
+
+  const {details} = props
   const [selectedTab, setSelectedTab] = useState(0);
-  const [details, setDetails] = useState<any[]>([]);
   const [expandedItem, setExpandedItem] = useState("");
+ const isRTl = i18next.language == "fa"
 
-  useEffect(() => {
-    const fetchDetails = async () => {
-      const res: any = await fetchAssessmentKitDetailQuery.query();
-      const tabMap = [
-        {
-          key: "maturityLevel",
-          title: "common.maturityLevel",
-          Component: GeneralContent,
-          Items: [],
-        },
-        {
-          key: "subjects",
-          title: "common.subjects",
-          Component: GeneralContent,
-          Items: res.subjects ?? [],
-        },
-        {
-          key: "questionnaires",
-          title: "common.questionnaires",
-          Component: GeneralContent,
-          Items: res.questionnaires ?? [],
-        },
-        {
-          key: "measures",
-          title: "assessmentKit.numberMeasures",
-          Component: GeneralContent,
-          Items: res.questionnaires ?? [],
-        },
-        {
-          key: "answerRanges",
-          title: "kitDesigner.answerRanges",
-          Component: GeneralContent,
-          Items: [],
-        },
-      ];
-
-      setDetails(tabMap);
-    };
-    fetchDetails();
-  }, []);
 
   const handleTabChange = (_: any, newValue: number) => {
     setSelectedTab(newValue);
@@ -68,7 +28,11 @@ const KitDetailsMenu = () => {
         item
         md={2.5}
         xs={12}
-        sx={{ display: "flex", flexDirection: "column",py :2,  backgroundColor: "#FCFCFD", }}
+        sx={{ display: "flex", flexDirection: "column",py :2,
+          backgroundColor: "#FCFCFD", borderRadius: isRTl ? "0px 12px 12px 0px" :  "12px 0px 0px 12px",
+          borderLeft: isRTl ? "1px solid #C7CCD1" : "none",
+          borderRight: isRTl ? "none" : "1px solid #C7CCD1"
+      }}
       >
         <Tabs
           orientation="vertical"
@@ -80,13 +44,11 @@ const KitDetailsMenu = () => {
             flexGrow: 1,
             borderBottom: "none",
             padding: 0,
-            color: "background.secondaryDark",
             "& .MuiTab-root": { position: "relative", zIndex: 1 },
-            "& .Mui-selected": { color: "primary.main", fontWeight: "bold" },
-            "& .MuiTabs-indicator": { backgroundColor: "primary.main !important", zIndex: 2 },
+            "& .MuiTabs-indicator": {left: isRTl ? 0 : "auto", right: isRTl ? "auto" : 0, backgroundColor: "primary.main !important", zIndex: 2 },
           }}
         >
-          {details.map((tab, idx) => (
+          {details.map((tab: any, idx: any) => (
             <CustomTab
               key={tab.key}
               tab={tab}
@@ -139,7 +101,7 @@ const CustomTab: React.FC<CustomTabProps> = ({
           width: "100%",
           height: "41px",
           color: isSelected ? "primary.main" : "background.secondaryDark",
-          backgroundColor: isSelected ? blue[95] : "transparent",
+          backgroundColor: isSelected ? "#2466a814" : "transparent",
           opacity: 1,
         }}
         onClick={() => {
@@ -202,7 +164,6 @@ const NestedItem = ({ item }: { item: any }) => {
           display: "flex",
           alignItems: "center",
           color: "background.secondaryDark",
-          "&:hover": { color: "primary.main" },
         }}
         onClick={() => hasSubItems && setExpanded((prev) => !prev)}
       >
@@ -237,8 +198,7 @@ const NestedItem = ({ item }: { item: any }) => {
                 key={sub.id || sub.key}
                 sx={{
                   cursor: "pointer",
-                  color: "text.secondary",
-                  "&:hover": { color: "primary.main" },
+                  color: "background.secondaryDark",
                   height: "41px",
                   display: "flex",
                   alignItems: "center",
