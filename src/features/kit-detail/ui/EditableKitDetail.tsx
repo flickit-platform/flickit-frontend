@@ -6,6 +6,7 @@ import { RenderGeneralField } from "@/components/common/RenderGeneralField";
 import type { AssessmentKitInfoType } from "@/types";
 import { FieldName, useEditableKitDetail } from "../model/useEditableKitDetail";
 import LanguagePicker from "./LanguagePicker";
+import i18next from "i18next";
 
 type Props = {
   fetchAssessmentKitInfoQuery: any;
@@ -57,6 +58,7 @@ const EditableKitDetail = ({ fetchAssessmentKitInfoQuery, info }: Props) => {
             type,
             options,
             disabled,
+            width
           } = field;
 
           return (
@@ -81,7 +83,7 @@ const EditableKitDetail = ({ fetchAssessmentKitInfoQuery, info }: Props) => {
                     variant="titleSmall"
                     mt="2px"
                     height="100%"
-                    minWidth="35px"
+                    minWidth={width}
                     whiteSpace="nowrap"
                   >
                     <Trans i18nKey={label} />
