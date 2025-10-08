@@ -4,9 +4,8 @@ import { Trans } from "react-i18next";
 import KeyboardArrowDownRoundedIcon from "@mui/icons-material/KeyboardArrowDownRounded";
 import { useAssessmentKit } from "@components/assessment-kit/AssessmentKitExpertViewContainer";
 import GeneralContent from "@components/kit-designer/general/GeneralContent";
-import log from "eslint-plugin-react/lib/util/log";
-import { values } from "lodash";
 import { blue } from "@config/colors";
+import { Text } from "@common/Text";
 
 const KitDetailsMenu = () => {
   const { fetchAssessmentKitDetailQuery } = useAssessmentKit();
@@ -148,9 +147,9 @@ const CustomTab: React.FC<CustomTabProps> = ({
           onExpand(tab.key);
         }}
         label={
-          <span style={{ fontWeight: 600 }}>
+          <Text variant={"titleSmall"} >
             <Trans i18nKey={tab.title} />
-          </span>
+          </Text>
         }
         icon={
           tab.Items?.length > 0 ? (
@@ -202,7 +201,7 @@ const NestedItem = ({ item }: { item: any }) => {
           height: "41px",
           display: "flex",
           alignItems: "center",
-          color: "text.secondary",
+          color: "background.secondaryDark",
           "&:hover": { color: "primary.main" },
         }}
         onClick={() => hasSubItems && setExpanded((prev) => !prev)}
@@ -216,7 +215,9 @@ const NestedItem = ({ item }: { item: any }) => {
             }}
           />
         )}
-        <Trans i18nKey={item.title} />
+        <Text variant={"titleSmall"}>
+          <Trans i18nKey={item.title} />
+        </Text>
       </Box>
 
       {hasSubItems && (
@@ -244,7 +245,9 @@ const NestedItem = ({ item }: { item: any }) => {
                 }}
                 onClick={sub.onClick}
               >
-                <Trans i18nKey={sub.title} />
+                <Text variant={"titleSmall"}>
+                  <Trans i18nKey={sub.title} />
+                </Text>
               </Box>
             ))}
           </Box>
