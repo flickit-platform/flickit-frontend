@@ -159,12 +159,8 @@ const ContactUsDialog = ({
       sx={styles.rtlStyle(isRTL)}
     >
       <FormProviderWithForm formMethods={methods}>
-        <Box px={1} pt={3} fontFamily="inherit">
-          <Text
-            variant="bodyLarge"
-            textAlign="justify"
-            fontFamily="inherit"
-          >
+        <Box px={1} fontFamily="inherit">
+          <Text variant="bodyLarge" textAlign="justify" fontFamily="inherit">
             {children}
           </Text>
 

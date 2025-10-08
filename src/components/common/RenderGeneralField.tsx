@@ -30,6 +30,7 @@ export function RenderGeneralField(props: any) {
     fieldType = "text",
     options = [],
     disabled,
+    editable,
   } = props;
 
   const renderField = useCallback(() => {
@@ -77,7 +78,11 @@ export function RenderGeneralField(props: any) {
     if (fieldType === "radio") {
       return (
         <Box flexGrow={1}>
-          <FormControl component="fieldset" fullWidth disabled={disabled}>
+          <FormControl
+            component="fieldset"
+            fullWidth
+            disabled={disabled || !editable}
+          >
             <RadioGroup
               row
               value={currentValue}
@@ -95,7 +100,14 @@ export function RenderGeneralField(props: any) {
                     key={val}
                     value={val}
                     control={<Radio size="small" />}
-                    label={<Text variant="bodyMedium" color="background.secondaryDark">{option.label}</Text>}
+                    label={
+                      <Text
+                        variant="bodyMedium"
+                        color="background.secondaryDark"
+                      >
+                        {option.label}
+                      </Text>
+                    }
                     sx={{
                       m: 0,
                     }}
@@ -104,18 +116,6 @@ export function RenderGeneralField(props: any) {
               })}
             </RadioGroup>
           </FormControl>
-        </Box>
-      );
-    }
-
-    if (fieldType === "select") {
-      return (
-        <Box display="flex" width="70%" gap={2} alignItems="center">
-          <SelectLanguage
-            handleChange={handleFieldChange}
-            mainLanguage={currentValue}
-            languages={options}
-          />
         </Box>
       );
     }
@@ -159,9 +159,11 @@ export function RenderGeneralField(props: any) {
         variant="semiBoldMedium"
         multiline={useRichEditor}
       />
-      <IconButton onClick={() => handleFieldEdit(field)}>
-        <EditOutlined fontSize="small" color="primary" />
-      </IconButton>
+      {editable && (
+        <IconButton onClick={() => handleFieldEdit(field)}>
+          <EditOutlined fontSize="small" color="primary" />
+        </IconButton>
+      )}
     </Box>
   );
 }

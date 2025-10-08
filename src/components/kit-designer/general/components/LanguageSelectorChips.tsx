@@ -1,7 +1,7 @@
 import { Stack, Chip, useTheme, Box } from "@mui/material";
 import { useTranslation } from "react-i18next";
-import LanguageMenu from "./LanguageMenu";
 import { ILanguage } from "@/types";
+import LanguagePickerMultiple from "@/features/kit-detail/ui/LanguagePicker";
 
 export type LanguageSelectorChipsProps = {
   mainLanguage: ILanguage;
@@ -21,7 +21,7 @@ const LanguageSelectorChips = ({
   const { t } = useTranslation();
   const theme = useTheme();
 
-  const selectedCodes = [mainLanguage?.code, translatedLanguage?.code].filter(
+  const selectedCodes = [mainLanguage?.code,translatedLanguage?.code].filter(
     Boolean,
   ) as string[];
 
@@ -33,7 +33,7 @@ const LanguageSelectorChips = ({
         color="primary"
         variant="outlined"
       />
-      {translatedLanguage && (
+      {translatedLanguage?.code && (
         <Chip
           sx={{ ...theme.typography.labelSmall }}
           label={t("kitDesigner.translatedLanguage", {
@@ -46,13 +46,13 @@ const LanguageSelectorChips = ({
 
       {!hideButton && (
         <Box color="primary">
-          <LanguageMenu
-            availableLanguages={availableLanguages}
-            onSelect={onAddLanguage}
-            selectedCodes={selectedCodes}
-            buttonLabel={t("kitDesigner.addLanguage")}
+          <LanguagePickerMultiple
+            languages={availableLanguages}
+            onAdd={onAddLanguage}
+            values={selectedCodes}
+            label={t("kitDesigner.addLanguage")}
             size="small"
-            followButtonWidth
+            buttonVariant="contained"
           />
         </Box>
       )}
