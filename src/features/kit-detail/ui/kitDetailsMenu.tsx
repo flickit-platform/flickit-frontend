@@ -15,6 +15,7 @@ const KitDetailsMenu = (props: any) => {
 
 
   const handleTabChange = (_: any, newValue: number) => {
+    console.log(newValue,"testtt");
     setSelectedTab(newValue);
     window.location.hash = details[newValue]?.key;
   };
@@ -45,7 +46,7 @@ const KitDetailsMenu = (props: any) => {
             borderBottom: "none",
             padding: 0,
             "& .MuiTab-root": { position: "relative", zIndex: 1 },
-            "& .MuiTabs-indicator": {left: isRTl ? 0 : "auto", right: isRTl ? "auto" : 0, backgroundColor: "primary.main !important", zIndex: 2 },
+            "& .MuiTabs-indicator": {maxHeight: "41px", left: isRTl ? 0 : "auto", right: isRTl ? "auto" : 0, backgroundColor: "primary.main !important", zIndex: 2 },
           }}
         >
           {details.map((tab: any, idx: any) => (
@@ -142,7 +143,7 @@ const CustomTab: React.FC<CustomTabProps> = ({
             }}
           >
             {tab.Items.map((item: any) => {
-              return <NestedItem key={item.key} item={item} />;
+              return <NestedItem key={item.key} item={item} onSelect={onSelect} selectedValue={selectedValue} />;
             })}
           </Box>
         </Collapse>
@@ -151,10 +152,18 @@ const CustomTab: React.FC<CustomTabProps> = ({
   );
 };
 
-const NestedItem = ({ item }: { item: any }) => {
+const NestedItem = ({ item, onSelect, selectedValue }: any) => {
   const [expanded, setExpanded] = useState(false);
   const hasSubItems = item?.attributes?.length > 0;
 
+  const onSelectedFunc = () =>{
+if(hasSubItems){
+  setExpanded((prev) => !prev)
+}else{
+onSelect(null,item?.id)
+}
+
+  }
   return (
     <Box>
       <Box
@@ -165,7 +174,7 @@ const NestedItem = ({ item }: { item: any }) => {
           alignItems: "center",
           color: "background.secondaryDark",
         }}
-        onClick={() => hasSubItems && setExpanded((prev) => !prev)}
+        onClick={onSelectedFunc}
       >
         {hasSubItems && (
           <KeyboardArrowDownRoundedIcon
@@ -183,18 +192,30 @@ const NestedItem = ({ item }: { item: any }) => {
 
       {hasSubItems && (
         <Collapse in={expanded} timeout={500} unmountOnExit>
-          <Box
+          <Tabs
+            value={selectedValue}
+            orientation="vertical"
             sx={{
-              paddingInlineStart: 4.7,
+              // paddingInlineStart: 4.7,
               display: "flex",
               flexDirection: "column",
               gap: 1,
               mt: 1,
               justifyContent: "center",
+              borderBottom: "none",
+              alignItems: "flex-start !important",
+              "& .MuiTabs-flexContainer": {
+                alignItems: "flex-start", // 👈 این بخش واقعاً تب‌ها رو تراز می‌کنه
+              },
+              textAlign: "left"
             }}
           >
             {item?.attributes.map((sub: any) => (
-              <Box
+              <Tab
+                value={sub.id}
+                label={ <Text variant={"titleSmall"}>
+                  <Trans i18nKey={sub.title} />
+                </Text>}
                 key={sub.id || sub.key}
                 sx={{
                   cursor: "pointer",
@@ -202,15 +223,12 @@ const NestedItem = ({ item }: { item: any }) => {
                   height: "41px",
                   display: "flex",
                   alignItems: "center",
+                  textAlign: "left"
                 }}
-                onClick={sub.onClick}
-              >
-                <Text variant={"titleSmall"}>
-                  <Trans i18nKey={sub.title} />
-                </Text>
-              </Box>
+                onClick={()=>onSelect(null, sub.id)}
+              />
             ))}
-          </Box>
+          </Tabs>
         </Collapse>
       )}
     </Box>
