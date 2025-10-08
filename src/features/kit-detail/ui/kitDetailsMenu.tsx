@@ -6,12 +6,11 @@ import { blue } from "@config/colors";
 import { Text } from "@common/Text";
 import i18next from "i18next";
 
-const KitDetailsMenu = (props: any) => {
-  const { details } = props;
+const KitDetailsMenu = ({ details }: any) => {
   const [selectedTab, setSelectedTab] = useState(0);
   const [parentValue, setParentValue] = useState(0);
   const [expandedItem, setExpandedItem] = useState("");
-  const isRTl = i18next.language == "fa";
+  const isRTL = i18next.language === "fa";
 
   const handleTabChange = (_: any, newValue: number) => {
     setSelectedTab(newValue);
@@ -21,118 +20,99 @@ const KitDetailsMenu = (props: any) => {
   const handleExpand = (key: string) => {
     setExpandedItem((prev) => (prev === key ? "" : key));
   };
+
   return (
-    <>
-      <Grid
-        item
-        md={2.5}
-        xs={12}
+    <Grid
+      item
+      md={2.5}
+      xs={12}
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        py: 2,
+        backgroundColor: "#FCFCFD",
+        borderRadius: isRTL ? "0px 12px 12px 0px" : "12px 0px 0px 12px",
+        borderLeft: isRTL ? "1px solid #C7CCD1" : "none",
+        borderRight: isRTL ? "none" : "1px solid #C7CCD1",
+      }}
+    >
+      <Tabs
+        orientation="vertical"
+        variant="scrollable"
+        value={selectedTab}
+        onChange={handleTabChange}
+        aria-label="Vertical tabs"
         sx={{
-          display: "flex",
-          flexDirection: "column",
-          py: 2,
-          backgroundColor: "#FCFCFD",
-          borderRadius: isRTl ? "0px 12px 12px 0px" : "12px 0px 0px 12px",
-          borderLeft: isRTl ? "1px solid #C7CCD1" : "none",
-          borderRight: isRTl ? "none" : "1px solid #C7CCD1",
+          flexGrow: 1,
+          borderBottom: "none",
+          padding: 0,
+          "& .MuiTab-root": { position: "relative", zIndex: 1 },
+          "& .MuiTabs-indicator": {
+            maxHeight: "41px",
+            left: isRTL ? 0 : "auto",
+            right: isRTL ? "auto" : 0,
+            backgroundColor: "primary.main !important",
+            zIndex: 2,
+          },
         }}
       >
-        <Tabs
-          orientation="vertical"
-          variant="scrollable"
-          value={selectedTab}
-          onChange={handleTabChange}
-          aria-label="Vertical tabs"
-          sx={{
-            flexGrow: 1,
-            borderBottom: "none",
-            padding: 0,
-            "& .MuiTab-root": { position: "relative", zIndex: 1 },
-            "& .MuiTabs-indicator": {
-              maxHeight: "41px",
-              left: isRTl ? 0 : "auto",
-              right: isRTl ? "auto" : 0,
-              backgroundColor: "primary.main !important",
-              zIndex: 2,
-            },
-          }}
-        >
-          {details.map((tab: any, idx: any) => (
-            <CustomTab
-              key={tab.key}
-              tab={tab}
-              value={idx}
-              selectedValue={selectedTab}
-              expandedItem={expandedItem}
-              onSelect={handleTabChange}
-              onExpand={handleExpand}
-              setParentValue={setParentValue}
-              parentValue={parentValue}
-              isRtl={isRTl}
-            />
-          ))}
-        </Tabs>
-      </Grid>
-
-      {/*<Grid item md={9.5} xs={12} sx={{ height: "100%", padding: 3, bgcolor: "background.containerLowest" }}>*/}
-      {/*todo*/}
-      {/*</Grid>*/}
-    </>
+        {details.map((tab: any, index: number) => (
+          <ParentTab
+            key={tab.key}
+            tab={tab}
+            value={index}
+            selectedTab={selectedTab}
+            expandedItem={expandedItem}
+            onSelect={handleTabChange}
+            onExpand={handleExpand}
+            setParentValue={setParentValue}
+            parentValue={parentValue}
+            isRTL={isRTL}
+          />
+        ))}
+      </Tabs>
+    </Grid>
   );
 };
 
-interface CustomTabProps {
+interface ParentTabProps {
   tab: any;
   value: number;
-  selectedValue: number;
+  selectedTab: number;
   expandedItem: string;
   onSelect: (_: any, value: number) => void;
   onExpand: (key: string) => void;
-  setParentValue: any;
-  parentValue: any;
-  isRtl: any;
+  setParentValue: React.Dispatch<React.SetStateAction<number>>;
+  parentValue: number;
+  isRTL: boolean;
 }
 
-const CustomTab: React.FC<CustomTabProps> = ({
+const ParentTab: React.FC<ParentTabProps> = ({
   tab,
   value,
-  selectedValue,
+  selectedTab,
   expandedItem,
   onSelect,
   onExpand,
   setParentValue,
   parentValue,
-  isRtl,
+  isRTL,
 }) => {
   const isExpanded = expandedItem === tab.key;
-  const isSelected = parentValue == value;
-  const isParentSelected = value == selectedValue
-  console.log(selectedValue, value, parentValue, "test tt");
+  const isSelected = parentValue === value;
+
+  const handleClick = () => {
+    onSelect(null, value);
+    onExpand(tab.key);
+    setParentValue(value);
+  };
+
   return (
     <>
       <Tab
         value={value}
-        sx={{
-          alignItems: "flex-start",
-          textTransform: "none",
-          justifyContent: "flex-start",
-          mb: isSelected ? "0px" : "4px",
-          width: "100%",
-          height: "41px",
-          color: isSelected ? "primary.main" : "background.secondaryDark",
-          backgroundColor: isSelected ? "#2466a814" : "transparent",
-          opacity: 1,
-        }}
-        onClick={() => {
-          onSelect(null, value);
-          onExpand(tab.key);
-          setParentValue(value);
-        }}
-        label={
-          <Text variant={"titleSmall"}>
-            <Trans i18nKey={tab.title} />
-          </Text>
-        }
+        onClick={handleClick}
+        iconPosition="start"
         icon={
           tab.Items?.length > 0 ? (
             <KeyboardArrowDownRoundedIcon
@@ -145,7 +125,22 @@ const CustomTab: React.FC<CustomTabProps> = ({
             <KeyboardArrowDownRoundedIcon sx={{ visibility: "hidden" }} />
           )
         }
-        iconPosition="start"
+        label={
+          <Text variant="titleSmall">
+            <Trans i18nKey={tab.title} />
+          </Text>
+        }
+        sx={{
+          textTransform: "none",
+          alignItems: "flex-start",
+          justifyContent: "flex-start",
+          mb: isSelected ? "0px" : "4px",
+          width: "100%",
+          height: "41px",
+          color: isSelected ? "primary.main" : "background.secondaryDark",
+          backgroundColor: isSelected ? "#2466a814" : "transparent",
+          opacity: 1,
+        }}
       />
 
       {tab.Items?.length > 0 && (
@@ -157,19 +152,17 @@ const CustomTab: React.FC<CustomTabProps> = ({
               backgroundColor: isSelected ? blue[95] : "transparent",
             }}
           >
-            {tab.Items.map((item: any) => {
-              return (
-                <NestedItem
-                  key={item.key}
-                  item={item}
-                  onSelect={onSelect}
-                  selectedValue={selectedValue}
-                  setParentValue={setParentValue}
-                  value={value}
-                  isRtl={isRtl}
-                />
-              );
-            })}
+            {tab.Items.map((item: any) => (
+              <NestedItem
+                key={item.key}
+                item={item}
+                onSelect={onSelect}
+                selectedValue={selectedTab}
+                setParentValue={setParentValue}
+                parentValue={value}
+                isRTL={isRTL}
+              />
+            ))}
           </Box>
         </Collapse>
       )}
@@ -177,47 +170,52 @@ const CustomTab: React.FC<CustomTabProps> = ({
   );
 };
 
-const NestedItem = ({
+interface NestedItemProps {
+  item: any;
+  onSelect: any;
+  selectedValue: number;
+  parentValue: number;
+  setParentValue: React.Dispatch<React.SetStateAction<number>>;
+  isRTL: boolean;
+}
+
+const NestedItem: React.FC<NestedItemProps> = ({
   item,
   onSelect,
   selectedValue,
-  value,
+  parentValue,
   setParentValue,
-  isRtl,
-}: any) => {
+  isRTL,
+}) => {
   const [expanded, setExpanded] = useState(false);
   const hasSubItems = item?.attributes?.length > 0;
 
-  const onSelectedFunc = () => {
-    setParentValue(value);
-    if (hasSubItems) {
-      setExpanded((prev) => !prev);
-    } else {
-      onSelect(null, item?.id);
-    }
+  const handleSelect = () => {
+    setParentValue(parentValue);
+    if (hasSubItems) setExpanded((prev) => !prev);
+    else onSelect(null, item.id);
   };
+
   return (
     <Box>
       <Tabs
         orientation="vertical"
         value={selectedValue}
+        onClick={handleSelect}
         sx={{
           cursor: "pointer",
           height: "41px",
           display: "flex",
           alignItems: "center",
-          color: "background.secondaryDark",
           borderBottom: "none",
-          paddingRight: isRtl ? "" : 0,
-          paddingLeft: isRtl ? 0 : "",
+          color: "background.secondaryDark",
+          paddingRight: isRTL ? "" : 0,
+          paddingLeft: isRTL ? 0 : "",
+          paddingInlineStart: hasSubItems ? 3 : 0,
         }}
-        onClick={onSelectedFunc}
       >
         <Tab
           value={item.id}
-          sx={{
-            textTransform: "none",
-          }}
           label={
             <Box
               sx={{
@@ -237,11 +235,12 @@ const NestedItem = ({
                   }}
                 />
               )}
-              <Text variant={"titleSmall"} sx={{ textAlign: "left" }}>
+              <Text variant="titleSmall" sx={{ textAlign: "left" }}>
                 <Trans i18nKey={item.title} />
               </Text>
             </Box>
           }
+          sx={{ textTransform: "none" }}
         />
       </Tabs>
 
@@ -255,27 +254,30 @@ const NestedItem = ({
               display: "flex",
               flexDirection: "column",
               gap: 1,
-              // mt: 1,
               justifyContent: "center",
               borderBottom: "none",
-              paddingRight: isRtl ? "" : 0,
-              paddingLeft: isRtl ? 0 : "",
               alignItems: "flex-start !important",
               "& .MuiTabs-flexContainer": {
-                alignItems: "flex-start", // 👈 این بخش واقعاً تب‌ها رو تراز می‌کنه
+                alignItems: "flex-start",
               },
               textAlign: "left",
+              paddingRight: isRTL ? "" : 0,
+              paddingLeft: isRTL ? 0 : "",
             }}
           >
-            {item?.attributes.map((sub: any) => (
+            {item.attributes.map((sub: any) => (
               <Tab
+                key={sub.id || sub.key}
                 value={sub.id}
+                onClick={() => {
+                  onSelect(null, sub.id);
+                  setParentValue(parentValue);
+                }}
                 label={
-                  <Text variant={"titleSmall"}>
+                  <Text variant="titleSmall">
                     <Trans i18nKey={sub.title} />
                   </Text>
                 }
-                key={sub.id || sub.key}
                 sx={{
                   textTransform: "none",
                   cursor: "pointer",
@@ -285,10 +287,6 @@ const NestedItem = ({
                   alignItems: "flex-start",
                   textAlign: "left",
                   width: "100%",
-                }}
-                onClick={() => {
-                  onSelect(null, sub.id);
-                  setParentValue(value);
                 }}
               />
             ))}
