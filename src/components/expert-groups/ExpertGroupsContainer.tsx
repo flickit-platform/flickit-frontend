@@ -20,6 +20,7 @@ import ExpertGroupsList from "./ExpertGroupsList";
 import { useEffect, useState } from "react";
 import flagsmith from "flagsmith";
 import uniqueId from "@/utils/unique-id";
+import { showExpertGroups } from "@/utils/helpers";
 
 const ExpertGroupsContainer = () => {
   const { service } = useServiceContext();
@@ -53,8 +54,7 @@ const ExpertGroupsContainer = () => {
       : Math.ceil(queryData.data?.total / queryData.data?.size);
 
   useDocumentTitle(t("expertGroups.expertGroups") as string);
-  const showGroups =
-    flagsmith.hasFeature(FLAGS.display_expert_groups) || !flagsmith.initialised;
+  const showGroups = showExpertGroups()
 
   return (
     <Box>
