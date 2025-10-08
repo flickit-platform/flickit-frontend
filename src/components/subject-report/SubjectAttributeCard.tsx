@@ -165,7 +165,10 @@ const SubjectAttributeCard = (props: any) => {
     setSortOrder(null);
   };
 
-  const colorPallet = getMaturityLevelColors(maturity_levels_count, true);
+  const colorPallet = getMaturityLevelColors(
+    maturity_levels_count,
+    "background",
+  );
   const backgroundColor = colorPallet[maturityLevel.value - 1];
 
   const handleSortChange = (sortBy: any, sortOrder: any) => {

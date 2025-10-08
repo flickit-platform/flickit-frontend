@@ -26,13 +26,6 @@ interface AssessmentKitStatsSubjects {
   title: string;
 }
 
-interface AssessmentKitDetailMaturityLevel {
-  id: number;
-  title: string;
-  index: number;
-  competences: LevelCompetence[];
-}
-
 export interface IAssessmentKitReportModel {
   id: number;
   title: string;
@@ -171,12 +164,6 @@ export interface IAssessmentResponse {
   assessmentPermissions: IAssessmentPermissions;
 }
 
-export interface AssessmentKitDetailType {
-  maturityLevel: AssessmentKitDetailMaturityLevel;
-  subjects: { id: number; title: string; index: number }[];
-  questionnaires: { id: number; title: string; index: number }[];
-}
-
 export interface IAssessmentKitInfo {
   id: TId;
   title: string;
@@ -231,7 +218,20 @@ export interface AssessmentKitInfoType {
   languages: { code: string; title: string }[];
   draftVersionId: number | null;
 }
-
+interface IIndexedItem {
+  id: TId;
+  title: string;
+  index: number;
+}
+export type IMaturityLevelIndexedItem = IIndexedItem & {
+  competences: LevelCompetence[];
+};
+export interface AssessmentKitDetailsType {
+  maturityLevels: IMaturityLevelIndexedItem[];
+  measures: IIndexedItem[];
+  questionnaires: IIndexedItem[];
+  subjects: IIndexedItem & { attributes: IIndexedItem[] };
+}
 export interface IAssessmentModel extends IDefaultModel<IAssessment> {
   requested_space: string | null;
 }

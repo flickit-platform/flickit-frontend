@@ -364,16 +364,15 @@ export const confidenceColor = [
 ];
 export const getMaturityLevelColors = (
   maturity_level_number: number,
-  bg?: boolean,
-  text?: boolean,
+  type?: "background" | "text",
 ) => {
   let maturityInstance = maturityLevelColorMap;
-  if (bg) {
+  if (type === "background") {
     maturityInstance = maturityLevelBGColorMap;
-  }
-  if (text) {
+  } else if (type === "text") {
     maturityInstance = maturityLevelTextColorMap;
   }
+
   switch (maturity_level_number) {
     case 1:
       return maturityInstance.ML1;

@@ -41,8 +41,8 @@ const TreeMapChart: React.FC<TreeMapProps> = ({
 }) => {
   const [hoveredId, setHoveredId] = useState<number | null>(null);
 
-  const lightColors = getMaturityLevelColors(levels, true);
-  const textColors = getMaturityLevelColors(levels, false, true);
+  const lightColors = getMaturityLevelColors(levels, "background");
+  const textColors = getMaturityLevelColors(levels, "text");
   const darkColors = getMaturityLevelColors(levels);
 
   const treeMapData = useMemo(

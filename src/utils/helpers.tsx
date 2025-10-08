@@ -59,5 +59,9 @@ export const useIntersectOnce = (targetId: string, onHit: () => void) => {
   }, [targetId, onHit]);
 };
 
-export const showExpertGroups = () =>
-  flagsmith.hasFeature(FLAGS.display_expert_groups) || !flagsmith.initialised;
+// export const showExpertGroups = () =>
+//   flagsmith.hasFeature(FLAGS.display_expert_groups) || !flagsmith.initialised;
+
+export const showExpertGroups = () => true;
+
+export const getPercentSymbol = (isRTL?: boolean) => (isRTL ? "٪" : "%");
