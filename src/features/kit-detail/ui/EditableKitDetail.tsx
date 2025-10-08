@@ -13,7 +13,6 @@ type Props = {
 };
 
 const EditableKitDetail = ({ fetchAssessmentKitInfoQuery, info }: Props) => {
-
   const {
     // data
     dataForField,
@@ -67,22 +66,26 @@ const EditableKitDetail = ({ fetchAssessmentKitInfoQuery, info }: Props) => {
                   display="flex"
                   justifyContent="space-between"
                   sx={{
-                    gap: 2,
+                    gap: useRichEditor ? 0 : 5,
                     flexDirection: {
                       xs: "column",
-                      md: multiline ? "column" : "row",
+                      md: useRichEditor ? "column" : "row",
                     },
                     alignItems: {
                       xs: "flex-start",
-                      md: multiline ? "flex-start" : "center",
+                      md: useRichEditor ? "flex-start" : "center",
                     },
                   }}
                 >
-                  <Box width={name === "isPrivate" ? "120px" : "80px"}>
-                    <Text variant="titleSmall" mt="2px" height="100%">
-                      <Trans i18nKey={label} />
-                    </Text>
-                  </Box>
+                  <Text
+                    variant="titleSmall"
+                    mt="2px"
+                    height="100%"
+                    minWidth="35px"
+                    whiteSpace="nowrap"
+                  >
+                    <Trans i18nKey={label} />
+                  </Text>
                   <Box sx={{ display: "flex", width: "100%" }}>
                     <RenderGeneralField
                       field={name as FieldName}
@@ -116,7 +119,7 @@ const EditableKitDetail = ({ fetchAssessmentKitInfoQuery, info }: Props) => {
                   md={6}
                   display="flex"
                   alignItems="center"
-                  gap={1}
+                  gap={2}
                 >
                   <Box>
                     <Text variant="titleSmall" mt="2px" height="100%">

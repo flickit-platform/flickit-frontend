@@ -12,7 +12,10 @@ import type { ICustomError } from "@/utils/custom-error";
 import type { AssessmentKitStatsType } from "@/types";
 import LanguageIcon from "@mui/icons-material/Language";
 import PriceIcon from "@common/icons/Price";
-import { AssignmentOutlined, FavoriteBorderOutlined } from "@mui/icons-material";
+import {
+  AssignmentOutlined,
+  FavoriteBorderOutlined,
+} from "@mui/icons-material";
 
 type UseKitDetailsAsideArgs = {
   stats: AssessmentKitStatsType;
@@ -86,10 +89,16 @@ export function useKitDetailsAside({
 
   const gridItems = useMemo(
     () => [
-      { title: t("common.maturityLevel"), value: stats.maturityLevelsCount ?? "-" },
+      {
+        title: t("common.maturityLevel"),
+        value: stats.maturityLevelsCount ?? "-",
+      },
       { title: t("common.subjects"), value: stats.subjects?.length ?? "-" },
       { title: t("common.attributes"), value: stats.attributesCount ?? "-" },
-      { title: t("common.questionnaires"), value: stats.questionnairesCount ?? "-" },
+      {
+        title: t("common.questionnaires"),
+        value: stats.questionnairesCount ?? "-",
+      },
       { title: t("common.questions"), value: stats.questionsCount ?? "-" },
       { title: t("kitDesigner.measures"), value: stats.measuresCount ?? "-" },
     ],
@@ -109,7 +118,9 @@ export function useKitDetailsAside({
       left: {
         title: t("common.supportedLanguages"),
         value: languages,
-        icon: <LanguageIcon sx={{ color: "primary.main", width: 32, height: 32 }} />,
+        icon: (
+          <LanguageIcon sx={{ color: "primary.main", width: 32, height: 32 }} />
+        ),
       },
       right: {
         title: t("common.price"),
@@ -123,7 +134,7 @@ export function useKitDetailsAside({
         ),
       },
     }),
-    [languages, t, theme.palette.primary.dark],
+    [languages, theme.palette.primary.dark],
   );
 
   const row2 = useMemo(

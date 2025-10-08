@@ -88,7 +88,7 @@ export function useEditableKitDetail(
 
   const selectedCodes = useMemo(
     () => (info.languages || []).map((l) => l.code).filter(Boolean) as string[],
-    [info.languages],
+    [],
   );
 
   const selectedTitles = useMemo(
@@ -97,7 +97,7 @@ export function useEditableKitDetail(
         .map((l) => l?.title)
         .filter(Boolean)
         .join(i18n.language === "fa" ? "، " : ", "),
-    [info.languages, i18n.language],
+    [],
   );
 
   const dataForField = {
@@ -113,7 +113,7 @@ export function useEditableKitDetail(
       { value: 0, label: t("common.free") },
       { value: 1, label: t("common.paid") },
     ],
-    [t, i18n.language],
+    [],
   );
 
   const statusOptions = useMemo(
@@ -121,7 +121,7 @@ export function useEditableKitDetail(
       { value: "true", label: t("common.published") },
       { value: "false", label: t("common.unpublished") },
     ],
-    [t, i18n.language],
+    [],
   );
 
   const visibilityOptions = useMemo(
@@ -129,7 +129,7 @@ export function useEditableKitDetail(
       { value: "true", label: t("common.public") },
       { value: "false", label: t("common.private") },
     ],
-    [t, i18n.language],
+    [],
   );
 
   const generalFields = useMemo(
@@ -186,7 +186,7 @@ export function useEditableKitDetail(
       },
       {
         name: "about",
-        label: "common.what",
+        label: "kitDetail.whatIsThisKit",
         multiline: true,
         useRichEditor: true,
         type: "text" as const,
@@ -196,7 +196,7 @@ export function useEditableKitDetail(
       },
       {
         name: "goal",
-        label: "common.when",
+        label: "kitDetail.whenToUseThisKit",
         multiline: true,
         useRichEditor: true,
         type: "text" as const,
@@ -206,7 +206,7 @@ export function useEditableKitDetail(
       },
       {
         name: "context",
-        label: "common.who",
+        label: "kitDetail.whoNeedsThisKit",
         multiline: true,
         useRichEditor: true,
         type: "text" as const,
