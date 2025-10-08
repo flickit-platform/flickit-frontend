@@ -67,6 +67,7 @@ import showToast from "@/utils/toast-error";
 import { useTheme } from "@mui/material";
 import Title from "@common/Title";
 import { Text } from "../common/Text";
+import { showExpertGroups } from "@/utils/helpers";
 
 const ExpertGroupContainer = () => {
   const { service } = useServiceContext();
@@ -133,8 +134,7 @@ const ExpertGroupContainer = () => {
     }
   };
 
-  const showGroups =
-    flagsmith.hasFeature(FLAGS.display_expert_groups) || !flagsmith.initialised;
+  const showGroups = showExpertGroups()
 
   return (
     <>
@@ -699,8 +699,7 @@ const ExpertGroupMembers = (props: any) => {
   const { hasAccess, query, inviteeQuery } = props;
   const [openInvitees, setOpenInvitees] = useState(false);
   const [openAddMembers, setOpenAddMembers] = useState(false);
-  const showGroups =
-    flagsmith.hasFeature(FLAGS.display_expert_groups) || !flagsmith.initialised;
+  const showGroups = showExpertGroups()
 
   return (
     <Box>
@@ -1100,8 +1099,7 @@ const AssessmentKitsList = (props: any) => {
   const handleClose = () => {
     setAnchorEl(null);
   };
-  const showGroups =
-    flagsmith.hasFeature(FLAGS.display_expert_groups) || !flagsmith.initialised;
+  const showGroups = showExpertGroups()
 
   if (!assessmentKitQuery) {
     console.warn(

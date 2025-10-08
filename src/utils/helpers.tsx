@@ -1,3 +1,5 @@
+import { FLAGS } from "@/types";
+import flagsmith from "flagsmith";
 import { useEffect } from "react";
 
 export const getBasePath = (path: string): string => {
@@ -56,3 +58,8 @@ export const useIntersectOnce = (targetId: string, onHit: () => void) => {
     return () => inter?.disconnect();
   }, [targetId, onHit]);
 };
+
+// export const showExpertGroups = () =>
+//   flagsmith.hasFeature(FLAGS.display_expert_groups) || !flagsmith.initialised;
+
+export const showExpertGroups = () => true;

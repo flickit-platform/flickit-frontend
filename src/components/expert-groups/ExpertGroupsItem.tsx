@@ -25,6 +25,7 @@ import { farsiFontFamily, primaryFontFamily } from "@config/theme";
 import { FLAGS, TId } from "@/types";
 import flagsmith from "flagsmith";
 import showToast from "@/utils/toast-error";
+import { showExpertGroups } from "@/utils/helpers";
 
 interface IExpertGroupsItemProps {
   data: any;
@@ -190,7 +191,7 @@ const Actions = (props: any) => {
     });
   };
   
-  const showGroups = flagsmith.hasFeature(FLAGS.display_expert_groups) || !flagsmith.initialised;
+  const showGroups = showExpertGroups()
   const menu  = useMenu();
 
   return (

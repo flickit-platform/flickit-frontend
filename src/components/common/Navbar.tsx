@@ -43,6 +43,7 @@ import flagsmith from "flagsmith";
 import { useTheme } from "@mui/material";
 import CircularProgress from "@mui/material/CircularProgress";
 import { Text } from "./Text";
+import { showExpertGroups } from "@/utils/helpers";
 
 const NotificationCenter = lazy(() =>
   import("@novu/notification-center").then((module) => ({
@@ -621,8 +622,7 @@ const AccountDropDownButton = ({ userInfo }: any) => {
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) =>
     setAnchorEl(event.currentTarget);
   const handleClose = () => setAnchorEl(null);
-  const showGroups =
-    flagsmith.hasFeature(FLAGS.display_expert_groups) || !flagsmith.initialised;
+  const showGroups = showExpertGroups()
 
   return (
     <>
