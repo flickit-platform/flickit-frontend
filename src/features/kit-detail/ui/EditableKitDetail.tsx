@@ -66,7 +66,7 @@ const EditableKitDetail = ({ fetchAssessmentKitInfoQuery, info }: Props) => {
                   display="flex"
                   justifyContent="space-between"
                   sx={{
-                    gap: useRichEditor ? 0 : 5,
+                    gap: { xs: 0, md: useRichEditor ? 0 : 5 },
                     flexDirection: {
                       xs: "column",
                       md: useRichEditor ? "column" : "row",
