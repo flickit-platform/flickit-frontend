@@ -10,12 +10,13 @@ const KitDetailsMenu = (props: any) => {
 
   const {details} = props
   const [selectedTab, setSelectedTab] = useState(0);
+  const [parentValue, setParentValue] = useState(0);
   const [expandedItem, setExpandedItem] = useState("");
  const isRTl = i18next.language == "fa"
 
 
   const handleTabChange = (_: any, newValue: number) => {
-    console.log(newValue,"testtt");
+
     setSelectedTab(newValue);
     window.location.hash = details[newValue]?.key;
   };
@@ -58,6 +59,8 @@ const KitDetailsMenu = (props: any) => {
               expandedItem={expandedItem}
               onSelect={handleTabChange}
               onExpand={handleExpand}
+              setParentValue={setParentValue}
+              parentValue={parentValue}
             />
           ))}
         </Tabs>
@@ -77,6 +80,8 @@ interface CustomTabProps {
   expandedItem: string;
   onSelect: (_: any, value: number) => void;
   onExpand: (key: string) => void;
+  setParentValue: any;
+  parentValue: any;
 }
 
 const CustomTab: React.FC<CustomTabProps> = ({
@@ -86,9 +91,11 @@ const CustomTab: React.FC<CustomTabProps> = ({
   expandedItem,
   onSelect,
   onExpand,
+                                               setParentValue,
+                                               parentValue
 }) => {
   const isExpanded = expandedItem === tab.key;
-  const isSelected = selectedValue == value;
+  const isSelected = parentValue == value;
 
   return (
     <>
@@ -108,6 +115,7 @@ const CustomTab: React.FC<CustomTabProps> = ({
         onClick={() => {
           onSelect(null, value);
           onExpand(tab.key);
+          setParentValue(value)
         }}
         label={
           <Text variant={"titleSmall"} >
@@ -143,7 +151,7 @@ const CustomTab: React.FC<CustomTabProps> = ({
             }}
           >
             {tab.Items.map((item: any) => {
-              return <NestedItem key={item.key} item={item} onSelect={onSelect} selectedValue={selectedValue} />;
+              return <NestedItem key={item.key} item={item} onSelect={onSelect} selectedValue={selectedValue} setParentValue={setParentValue} value={value} />;
             })}
           </Box>
         </Collapse>
@@ -152,11 +160,12 @@ const CustomTab: React.FC<CustomTabProps> = ({
   );
 };
 
-const NestedItem = ({ item, onSelect, selectedValue }: any) => {
+const NestedItem = ({ item, onSelect, selectedValue, value, setParentValue }: any) => {
   const [expanded, setExpanded] = useState(false);
   const hasSubItems = item?.attributes?.length > 0;
 
   const onSelectedFunc = () =>{
+    setParentValue(value)
 if(hasSubItems){
   setExpanded((prev) => !prev)
 }else{
@@ -207,15 +216,17 @@ onSelect(null,item?.id)
               "& .MuiTabs-flexContainer": {
                 alignItems: "flex-start", // 👈 این بخش واقعاً تب‌ها رو تراز می‌کنه
               },
-              textAlign: "left"
+              textAlign: "left",
             }}
           >
             {item?.attributes.map((sub: any) => (
               <Tab
                 value={sub.id}
-                label={ <Text variant={"titleSmall"}>
-                  <Trans i18nKey={sub.title} />
-                </Text>}
+                label={
+                  <Text variant={"titleSmall"}>
+                    <Trans i18nKey={sub.title} />
+                  </Text>
+                }
                 key={sub.id || sub.key}
                 sx={{
                   cursor: "pointer",
@@ -223,9 +234,12 @@ onSelect(null,item?.id)
                   height: "41px",
                   display: "flex",
                   alignItems: "center",
-                  textAlign: "left"
+                  textAlign: "left",
                 }}
-                onClick={()=>onSelect(null, sub.id)}
+                onClick={() => {
+                  onSelect(null, sub.id);
+                  setParentValue(value)
+                }}
               />
             ))}
           </Tabs>
