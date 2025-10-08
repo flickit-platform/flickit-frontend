@@ -8,6 +8,7 @@ import {
   FileDownloadOutlined,
   ArrowDropDownRounded,
   ArrowDropUpRounded,
+  FileUploadOutlined,
 } from "@mui/icons-material";
 import UpdateAssessmentKitDialog from "./UpdateAssessmentKitDialog";
 import {
@@ -296,18 +297,22 @@ const EditMenu = ({
         <MenuItem
           onClick={() => {
             menu.closeMenu();
-            onOpenDsl();
+            onOpenDraft();
           }}
+          sx={{ gap: 1 }}
         >
-          {t("assessmentKit.viaDSL")}
+          <EditOutlined fontSize="small" color="primary" />
+          <Text variant="bodyMedium">{t("kitDetail.viaKitDesigner")}</Text>
         </MenuItem>
         <MenuItem
           onClick={() => {
             menu.closeMenu();
-            onOpenDraft();
+            onOpenDsl();
           }}
+          sx={{ gap: 1 }}
         >
-          {t("kitDetail.viaKitDesigner")}
+          <FileUploadOutlined fontSize="small" color="primary" />
+          <Text variant="bodyMedium">{t("kitDetail.uploadDSL")}</Text>
         </MenuItem>
       </Menu>
     </>

@@ -5,6 +5,10 @@
   "downloadDSLKit": "Download DSL",
   "editKit": "Edit kit",
   "editViaKitDesigner": "Edit via Kit Designer",
+  "uploadDSL": "Upload new DSL",
   "newDraft": "New draft",
-  "viaKitDesigner": "Via Kit Designer"
+  "viaKitDesigner": "Via Kit Designer",
+  "whatIsThisKit": "What is this kit?",
+  "whoNeedsThisKit": "Who needs this kit?",
+  "whenToUseThisKit": "When to use this kit?"
 }

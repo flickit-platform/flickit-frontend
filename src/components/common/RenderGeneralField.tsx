@@ -89,7 +89,6 @@ export function RenderGeneralField(props: any) {
               sx={{
                 display: "flex",
                 flexWrap: "wrap",
-                gap: 2,
               }}
             >
               {options.map((option: any) => {
