@@ -4,6 +4,8 @@ import { Trans } from "react-i18next";
 import KeyboardArrowDownRoundedIcon from "@mui/icons-material/KeyboardArrowDownRounded";
 import { useAssessmentKit } from "@components/assessment-kit/AssessmentKitExpertViewContainer";
 import GeneralContent from "@components/kit-designer/general/GeneralContent";
+import log from "eslint-plugin-react/lib/util/log";
+import { values } from "lodash";
 
 const KitDetailsMenu = () => {
   const { fetchAssessmentKitDetailQuery } = useAssessmentKit();
@@ -15,21 +17,38 @@ const KitDetailsMenu = () => {
     const fetchDetails = async () => {
       const res: any = await fetchAssessmentKitDetailQuery.query();
       const tabMap = [
-        { key: "maturityLevel", title: "common.maturityLevel", Component: GeneralContent, Items: [] },
+        {
+          key: "maturityLevel",
+          title: "common.maturityLevel",
+          Component: GeneralContent,
+          Items: [],
+        },
         {
           key: "subjects",
           title: "common.subjects",
           Component: GeneralContent,
           Items: res.subjects ?? [],
-          subItems: [
-            { id: 4633, title: "sub", index: 1 },
-            { id: 4644, title: "sub", index: 2 },
-          ],
         },
-        { key: "questionnaires", title: "common.questionnaires", Component: GeneralContent, Items: res.questionnaires ?? [] },
-        { key: "measures", title: "assessmentKit.numberMeasures", Component: GeneralContent, Items: res.questionnaires ?? [] },
-        { key: "answerRanges", title: "kitDesigner.answerRanges", Component: GeneralContent, Items: [] },
+        {
+          key: "questionnaires",
+          title: "common.questionnaires",
+          Component: GeneralContent,
+          Items: res.questionnaires ?? [],
+        },
+        {
+          key: "measures",
+          title: "assessmentKit.numberMeasures",
+          Component: GeneralContent,
+          Items: res.questionnaires ?? [],
+        },
+        {
+          key: "answerRanges",
+          title: "kitDesigner.answerRanges",
+          Component: GeneralContent,
+          Items: [],
+        },
       ];
+
       setDetails(tabMap);
     };
     fetchDetails();
@@ -41,12 +60,16 @@ const KitDetailsMenu = () => {
   };
 
   const handleExpand = (key: string) => {
-    setExpandedItem(prev => (prev === key ? "" : key));
+    setExpandedItem((prev) => (prev === key ? "" : key));
   };
-
   return (
     <>
-      <Grid item sm={2} xs={12} sx={{ display: "flex", flexDirection: "column" }}>
+      <Grid
+        item
+        md={2.5}
+        xs={12}
+        sx={{ display: "flex", flexDirection: "column" }}
+      >
         <Tabs
           orientation="vertical"
           variant="scrollable"
@@ -79,8 +102,8 @@ const KitDetailsMenu = () => {
         </Tabs>
       </Grid>
 
-      {/*<Grid item sm={10} xs={12} sx={{ height: "100%", padding: 3, bgcolor: "background.containerLowest" }}>*/}
-      {/*  /!* todo: محتوای تب انتخاب شده *!/*/}
+      {/*<Grid item md={9.5} xs={12} sx={{ height: "100%", padding: 3, bgcolor: "background.containerLowest" }}>*/}
+      {/*todo*/}
       {/*</Grid>*/}
     </>
   );
@@ -95,26 +118,47 @@ interface CustomTabProps {
   onExpand: (key: string) => void;
 }
 
-const CustomTab: React.FC<CustomTabProps> = ({ tab, value, selectedValue, expandedItem, onSelect, onExpand }) => {
+const CustomTab: React.FC<CustomTabProps> = ({
+  tab,
+  value,
+  selectedValue,
+  expandedItem,
+  onSelect,
+  onExpand,
+}) => {
   const isExpanded = expandedItem === tab.key;
-  const isSelected = selectedValue == value
+  const isSelected = selectedValue == value;
 
-  console.log(isSelected, selectedValue, value);
   return (
     <>
       <Tab
         value={value}
-        sx={{ alignItems: "flex-start", textTransform: "none", justifyContent: "flex-start", width: "100%", color: isSelected ? "primary.main" : "background.secondaryDark",
-          backgroundColor: isSelected ? "rgba(25,118,210,0.08)" : "transparent",}}
+        sx={{
+          alignItems: "flex-start",
+          textTransform: "none",
+          justifyContent: "flex-start",
+          mb: isSelected ? "0px" : "4px",
+          width: "100%",
+          height: "41px",
+          color: isSelected ? "primary.main" : "background.secondaryDark",
+          backgroundColor: isSelected ? "rgba(25,118,210,0.08)" : "transparent",
+        }}
         onClick={() => {
           onSelect(null, value);
           onExpand(tab.key);
         }}
-        label={<span style={{ fontWeight: 600 }}><Trans i18nKey={tab.title} /></span>}
+        label={
+          <span style={{ fontWeight: 600 }}>
+            <Trans i18nKey={tab.title} />
+          </span>
+        }
         icon={
           tab.Items?.length > 0 ? (
             <KeyboardArrowDownRoundedIcon
-              sx={{ transition: "transform 0.2s ease", transform: isExpanded ? "rotate(180deg)" : "rotate(0deg)" }}
+              sx={{
+                transition: "transform 0.2s ease",
+                transform: isExpanded ? "rotate(180deg)" : "rotate(0deg)",
+              }}
             />
           ) : (
             <KeyboardArrowDownRoundedIcon sx={{ visibility: "hidden" }} />
@@ -125,11 +169,19 @@ const CustomTab: React.FC<CustomTabProps> = ({ tab, value, selectedValue, expand
 
       {tab.Items?.length > 0 && (
         <Collapse in={isExpanded} timeout={200} unmountOnExit>
-          <Box sx={{ pl: 6, display: "flex", flexDirection: "column", gap: 1, mt: 1, backgroundColor: isSelected ? "rgba(25,118,210,0.08)" : "transparent" }}>
-            {tab.Items.map((item: any) =>{
-                return (
-                  <NestedItem key={item.key} item={item} isSelected={isSelected} {...tab} />
-                )
+          <Box
+            sx={{
+              paddingInlineStart: 2.5,
+              display: "flex",
+              flexDirection: "column",
+              py: 1,
+              backgroundColor: isSelected
+                ? "rgba(25,118,210,0.08)"
+                : "transparent",
+            }}
+          >
+            {tab.Items.map((item: any) => {
+              return <NestedItem key={item.key} item={item} />;
             })}
           </Box>
         </Collapse>
@@ -138,19 +190,30 @@ const CustomTab: React.FC<CustomTabProps> = ({ tab, value, selectedValue, expand
   );
 };
 
-const NestedItem = ({ item, subItems, isSelected }: { item: any, subItems: any, isSelected: boolean }) => {
+const NestedItem = ({ item }: { item: any }) => {
   const [expanded, setExpanded] = useState(false);
-  const hasSubItems = subItems?.length > 0;
+  const hasSubItems = item?.attributes?.length > 0;
 
   return (
     <Box>
       <Box
-        sx={{ cursor: "pointer", display: "flex", alignItems: "center", color: "text.secondary", "&:hover": { color: "primary.main" } }}
-        onClick={() => hasSubItems && setExpanded(prev => !prev)}
+        sx={{
+          cursor: "pointer",
+          height: "41px",
+          display: "flex",
+          alignItems: "center",
+          color: "text.secondary",
+          "&:hover": { color: "primary.main" },
+        }}
+        onClick={() => hasSubItems && setExpanded((prev) => !prev)}
       >
         {hasSubItems && (
           <KeyboardArrowDownRoundedIcon
-            sx={{ ml: 1, transition: "transform 0.2s ease", transform: expanded ? "rotate(180deg)" : "rotate(0deg)" }}
+            sx={{
+              ml: 1,
+              transition: "transform 0.2s ease",
+              transform: expanded ? "rotate(180deg)" : "rotate(0deg)",
+            }}
           />
         )}
         <Trans i18nKey={item.title} />
@@ -158,11 +221,27 @@ const NestedItem = ({ item, subItems, isSelected }: { item: any, subItems: any, 
 
       {hasSubItems && (
         <Collapse in={expanded} timeout={1000} unmountOnExit>
-          <Box sx={{ pl: 3, display: "flex", flexDirection: "column", gap: 1, mt: 1 }}>
-            {subItems.map((sub: any) => (
+          <Box
+            sx={{
+              pl: 3,
+              display: "flex",
+              flexDirection: "column",
+              gap: 1,
+              mt: 1,
+              justifyContent: "center",
+            }}
+          >
+            {item?.attributes.map((sub: any) => (
               <Box
                 key={sub.id || sub.key}
-                sx={{ cursor: "pointer", color: "text.secondary", "&:hover": { color: "primary.main" } }}
+                sx={{
+                  cursor: "pointer",
+                  color: "text.secondary",
+                  "&:hover": { color: "primary.main" },
+                  height: "41px",
+                  display: "flex",
+                  alignItems: "center",
+                }}
                 onClick={sub.onClick}
               >
                 <Trans i18nKey={sub.title} />
