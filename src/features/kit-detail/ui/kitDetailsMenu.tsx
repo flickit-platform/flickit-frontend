@@ -6,6 +6,7 @@ import { useAssessmentKit } from "@components/assessment-kit/AssessmentKitExpert
 import GeneralContent from "@components/kit-designer/general/GeneralContent";
 import log from "eslint-plugin-react/lib/util/log";
 import { values } from "lodash";
+import { blue } from "@config/colors";
 
 const KitDetailsMenu = () => {
   const { fetchAssessmentKitDetailQuery } = useAssessmentKit();
@@ -68,7 +69,7 @@ const KitDetailsMenu = () => {
         item
         md={2.5}
         xs={12}
-        sx={{ display: "flex", flexDirection: "column" }}
+        sx={{ display: "flex", flexDirection: "column",py :2,  backgroundColor: "#FCFCFD", }}
       >
         <Tabs
           orientation="vertical"
@@ -77,15 +78,13 @@ const KitDetailsMenu = () => {
           onChange={handleTabChange}
           aria-label="Vertical tabs"
           sx={{
-            borderRight: 1,
-            borderColor: "divider",
             flexGrow: 1,
-            backgroundColor: "#FCFCFD",
+            borderBottom: "none",
             padding: 0,
             color: "background.secondaryDark",
             "& .MuiTab-root": { position: "relative", zIndex: 1 },
             "& .Mui-selected": { color: "primary.main", fontWeight: "bold" },
-            "& .MuiTabs-indicator": { backgroundColor: "primary.main" },
+            "& .MuiTabs-indicator": { backgroundColor: "primary.main !important", zIndex: 2 },
           }}
         >
           {details.map((tab, idx) => (
@@ -141,7 +140,8 @@ const CustomTab: React.FC<CustomTabProps> = ({
           width: "100%",
           height: "41px",
           color: isSelected ? "primary.main" : "background.secondaryDark",
-          backgroundColor: isSelected ? "rgba(25,118,210,0.08)" : "transparent",
+          backgroundColor: isSelected ? blue[95] : "transparent",
+          opacity: 1,
         }}
         onClick={() => {
           onSelect(null, value);
@@ -168,15 +168,15 @@ const CustomTab: React.FC<CustomTabProps> = ({
       />
 
       {tab.Items?.length > 0 && (
-        <Collapse in={isExpanded} timeout={200} unmountOnExit>
+        <Collapse in={isExpanded} timeout={500} unmountOnExit>
           <Box
             sx={{
-              paddingInlineStart: 2.5,
+              paddingInlineStart: 3.8,
               display: "flex",
               flexDirection: "column",
               py: 1,
               backgroundColor: isSelected
-                ? "rgba(25,118,210,0.08)"
+                ? blue[95]
                 : "transparent",
             }}
           >
@@ -220,10 +220,10 @@ const NestedItem = ({ item }: { item: any }) => {
       </Box>
 
       {hasSubItems && (
-        <Collapse in={expanded} timeout={1000} unmountOnExit>
+        <Collapse in={expanded} timeout={500} unmountOnExit>
           <Box
             sx={{
-              pl: 3,
+              paddingInlineStart: 4.7,
               display: "flex",
               flexDirection: "column",
               gap: 1,
