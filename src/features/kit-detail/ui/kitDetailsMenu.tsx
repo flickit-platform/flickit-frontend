@@ -7,16 +7,13 @@ import { Text } from "@common/Text";
 import i18next from "i18next";
 
 const KitDetailsMenu = (props: any) => {
-
-  const {details} = props
+  const { details } = props;
   const [selectedTab, setSelectedTab] = useState(0);
   const [parentValue, setParentValue] = useState(0);
   const [expandedItem, setExpandedItem] = useState("");
- const isRTl = i18next.language == "fa"
-
+  const isRTl = i18next.language == "fa";
 
   const handleTabChange = (_: any, newValue: number) => {
-
     setSelectedTab(newValue);
     window.location.hash = details[newValue]?.key;
   };
@@ -30,11 +27,15 @@ const KitDetailsMenu = (props: any) => {
         item
         md={2.5}
         xs={12}
-        sx={{ display: "flex", flexDirection: "column",py :2,
-          backgroundColor: "#FCFCFD", borderRadius: isRTl ? "0px 12px 12px 0px" :  "12px 0px 0px 12px",
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          py: 2,
+          backgroundColor: "#FCFCFD",
+          borderRadius: isRTl ? "0px 12px 12px 0px" : "12px 0px 0px 12px",
           borderLeft: isRTl ? "1px solid #C7CCD1" : "none",
-          borderRight: isRTl ? "none" : "1px solid #C7CCD1"
-      }}
+          borderRight: isRTl ? "none" : "1px solid #C7CCD1",
+        }}
       >
         <Tabs
           orientation="vertical"
@@ -47,7 +48,13 @@ const KitDetailsMenu = (props: any) => {
             borderBottom: "none",
             padding: 0,
             "& .MuiTab-root": { position: "relative", zIndex: 1 },
-            "& .MuiTabs-indicator": {maxHeight: "41px", left: isRTl ? 0 : "auto", right: isRTl ? "auto" : 0, backgroundColor: "primary.main !important", zIndex: 2 },
+            "& .MuiTabs-indicator": {
+              maxHeight: "41px",
+              left: isRTl ? 0 : "auto",
+              right: isRTl ? "auto" : 0,
+              backgroundColor: "primary.main !important",
+              zIndex: 2,
+            },
           }}
         >
           {details.map((tab: any, idx: any) => (
@@ -61,6 +68,7 @@ const KitDetailsMenu = (props: any) => {
               onExpand={handleExpand}
               setParentValue={setParentValue}
               parentValue={parentValue}
+              isRtl={isRTl}
             />
           ))}
         </Tabs>
@@ -82,6 +90,7 @@ interface CustomTabProps {
   onExpand: (key: string) => void;
   setParentValue: any;
   parentValue: any;
+  isRtl: any;
 }
 
 const CustomTab: React.FC<CustomTabProps> = ({
@@ -91,12 +100,14 @@ const CustomTab: React.FC<CustomTabProps> = ({
   expandedItem,
   onSelect,
   onExpand,
-                                               setParentValue,
-                                               parentValue
+  setParentValue,
+  parentValue,
+  isRtl,
 }) => {
   const isExpanded = expandedItem === tab.key;
   const isSelected = parentValue == value;
-
+  const isParentSelected = value == selectedValue
+  console.log(selectedValue, value, parentValue, "test tt");
   return (
     <>
       <Tab
@@ -115,10 +126,10 @@ const CustomTab: React.FC<CustomTabProps> = ({
         onClick={() => {
           onSelect(null, value);
           onExpand(tab.key);
-          setParentValue(value)
+          setParentValue(value);
         }}
         label={
-          <Text variant={"titleSmall"} >
+          <Text variant={"titleSmall"}>
             <Trans i18nKey={tab.title} />
           </Text>
         }
@@ -141,17 +152,23 @@ const CustomTab: React.FC<CustomTabProps> = ({
         <Collapse in={isExpanded} timeout={500} unmountOnExit>
           <Box
             sx={{
-              paddingInlineStart: 3.8,
               display: "flex",
               flexDirection: "column",
-              py: 1,
-              backgroundColor: isSelected
-                ? blue[95]
-                : "transparent",
+              backgroundColor: isSelected ? blue[95] : "transparent",
             }}
           >
             {tab.Items.map((item: any) => {
-              return <NestedItem key={item.key} item={item} onSelect={onSelect} selectedValue={selectedValue} setParentValue={setParentValue} value={value} />;
+              return (
+                <NestedItem
+                  key={item.key}
+                  item={item}
+                  onSelect={onSelect}
+                  selectedValue={selectedValue}
+                  setParentValue={setParentValue}
+                  value={value}
+                  isRtl={isRtl}
+                />
+              );
             })}
           </Box>
         </Collapse>
@@ -160,44 +177,73 @@ const CustomTab: React.FC<CustomTabProps> = ({
   );
 };
 
-const NestedItem = ({ item, onSelect, selectedValue, value, setParentValue }: any) => {
+const NestedItem = ({
+  item,
+  onSelect,
+  selectedValue,
+  value,
+  setParentValue,
+  isRtl,
+}: any) => {
   const [expanded, setExpanded] = useState(false);
   const hasSubItems = item?.attributes?.length > 0;
 
-  const onSelectedFunc = () =>{
-    setParentValue(value)
-if(hasSubItems){
-  setExpanded((prev) => !prev)
-}else{
-onSelect(null,item?.id)
-}
-
-  }
+  const onSelectedFunc = () => {
+    setParentValue(value);
+    if (hasSubItems) {
+      setExpanded((prev) => !prev);
+    } else {
+      onSelect(null, item?.id);
+    }
+  };
   return (
     <Box>
-      <Box
+      <Tabs
+        orientation="vertical"
+        value={selectedValue}
         sx={{
           cursor: "pointer",
           height: "41px",
           display: "flex",
           alignItems: "center",
           color: "background.secondaryDark",
+          borderBottom: "none",
+          paddingRight: isRtl ? "" : 0,
+          paddingLeft: isRtl ? 0 : "",
         }}
         onClick={onSelectedFunc}
       >
-        {hasSubItems && (
-          <KeyboardArrowDownRoundedIcon
-            sx={{
-              ml: 1,
-              transition: "transform 0.2s ease",
-              transform: expanded ? "rotate(180deg)" : "rotate(0deg)",
-            }}
-          />
-        )}
-        <Text variant={"titleSmall"}>
-          <Trans i18nKey={item.title} />
-        </Text>
-      </Box>
+        <Tab
+          value={item.id}
+          sx={{
+            textTransform: "none",
+          }}
+          label={
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "flex-start",
+                textAlign: "left",
+                width: "100%",
+                paddingInlineStart: !hasSubItems ? 3.8 : 0,
+              }}
+            >
+              {hasSubItems && (
+                <KeyboardArrowDownRoundedIcon
+                  sx={{
+                    ml: 1,
+                    transition: "transform 0.2s ease",
+                    transform: expanded ? "rotate(180deg)" : "rotate(0deg)",
+                  }}
+                />
+              )}
+              <Text variant={"titleSmall"} sx={{ textAlign: "left" }}>
+                <Trans i18nKey={item.title} />
+              </Text>
+            </Box>
+          }
+        />
+      </Tabs>
 
       {hasSubItems && (
         <Collapse in={expanded} timeout={500} unmountOnExit>
@@ -205,13 +251,15 @@ onSelect(null,item?.id)
             value={selectedValue}
             orientation="vertical"
             sx={{
-              // paddingInlineStart: 4.7,
+              paddingInlineStart: 4.7,
               display: "flex",
               flexDirection: "column",
               gap: 1,
-              mt: 1,
+              // mt: 1,
               justifyContent: "center",
               borderBottom: "none",
+              paddingRight: isRtl ? "" : 0,
+              paddingLeft: isRtl ? 0 : "",
               alignItems: "flex-start !important",
               "& .MuiTabs-flexContainer": {
                 alignItems: "flex-start", // 👈 این بخش واقعاً تب‌ها رو تراز می‌کنه
@@ -229,16 +277,18 @@ onSelect(null,item?.id)
                 }
                 key={sub.id || sub.key}
                 sx={{
+                  textTransform: "none",
                   cursor: "pointer",
                   color: "background.secondaryDark",
                   height: "41px",
                   display: "flex",
-                  alignItems: "center",
+                  alignItems: "flex-start",
                   textAlign: "left",
+                  width: "100%",
                 }}
                 onClick={() => {
                   onSelect(null, sub.id);
-                  setParentValue(value)
+                  setParentValue(value);
                 }}
               />
             ))}
