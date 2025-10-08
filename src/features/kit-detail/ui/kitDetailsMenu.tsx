@@ -22,56 +22,68 @@ const KitDetailsMenu = ({ details }: any) => {
   };
 
   return (
-    <Grid
-      item
-      md={2.5}
-      xs={12}
-      sx={{
-        display: "flex",
-        flexDirection: "column",
-        py: 2,
-        backgroundColor: "#FCFCFD",
-        borderRadius: isRTL ? "0px 12px 12px 0px" : "12px 0px 0px 12px",
-        borderLeft: isRTL ? "1px solid #C7CCD1" : "none",
-        borderRight: isRTL ? "none" : "1px solid #C7CCD1",
-      }}
-    >
-      <Tabs
-        orientation="vertical"
-        variant="scrollable"
-        value={selectedTab}
-        onChange={handleTabChange}
-        aria-label="Vertical tabs"
+    <>
+      <Grid
+        item
+        md={2.5}
+        xs={12}
         sx={{
-          flexGrow: 1,
-          borderBottom: "none",
-          padding: 0,
-          "& .MuiTab-root": { position: "relative", zIndex: 1 },
-          "& .MuiTabs-indicator": {
-            maxHeight: "41px",
-            left: isRTL ? 0 : "auto",
-            right: isRTL ? "auto" : 0,
-            backgroundColor: "primary.main !important",
-            zIndex: 2,
-          },
+          display: "flex",
+          flexDirection: "column",
+          py: 2,
+          backgroundColor: "#FCFCFD",
+          borderRadius: isRTL ? "0px 12px 12px 0px" : "12px 0px 0px 12px",
+          borderLeft: isRTL ? "1px solid #C7CCD1" : "none",
+          borderRight: isRTL ? "none" : "1px solid #C7CCD1",
         }}
       >
-        {details.map((tab: any, index: number) => (
-          <ParentTab
-            key={tab.key}
-            tab={tab}
-            value={index}
-            selectedTab={selectedTab}
-            expandedItem={expandedItem}
-            onSelect={handleTabChange}
-            onExpand={handleExpand}
-            setParentValue={setParentValue}
-            parentValue={parentValue}
-            isRTL={isRTL}
-          />
-        ))}
-      </Tabs>
-    </Grid>
+        <Tabs
+          orientation="vertical"
+          variant="scrollable"
+          value={selectedTab}
+          onChange={handleTabChange}
+          aria-label="Vertical tabs"
+          sx={{
+            flexGrow: 1,
+            borderBottom: "none",
+            padding: 0,
+            "& .MuiTab-root": { position: "relative", zIndex: 1 },
+            "& .MuiTabs-indicator": {
+              maxHeight: "41px",
+              left: isRTL ? 0 : "auto",
+              right: isRTL ? "auto" : 0,
+              backgroundColor: "primary.main !important",
+              zIndex: 2,
+            },
+          }}
+        >
+          {details.map((tab: any, index: number) => (
+            <ParentTab
+              key={tab.key}
+              tab={tab}
+              value={index}
+              selectedTab={selectedTab}
+              expandedItem={expandedItem}
+              onSelect={handleTabChange}
+              onExpand={handleExpand}
+              setParentValue={setParentValue}
+              parentValue={parentValue}
+              isRTL={isRTL}
+            />
+          ))}
+        </Tabs>
+      </Grid>
+      <Grid
+        item
+        md={9.5}
+        xs={12}
+        sx={{
+          height: "100%",
+          padding: 3,
+          bgcolor: "background.containerLowest",
+        }}
+      ></Grid>
+    </>
   );
 };
 
