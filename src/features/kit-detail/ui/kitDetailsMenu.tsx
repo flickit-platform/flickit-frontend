@@ -14,7 +14,7 @@ const KitDetailsMenu = ({ details }: any) => {
 
   const handleTabChange = (_: any, newValue: number) => {
     setSelectedTab(newValue);
-    window.location.hash = details[newValue]?.key;
+    globalThis.location.hash = details[newValue]?.key;
   };
 
   const handleExpand = (key: string) => {
@@ -235,7 +235,7 @@ const NestedItem: React.FC<NestedItemProps> = ({
                 justifyContent: "flex-start",
                 textAlign: "left",
                 width: "100%",
-                paddingInlineStart: !hasSubItems ? 3.8 : 0,
+                paddingInlineStart: hasSubItems ? 0 : 3.8,
               }}
             >
               {hasSubItems && (
