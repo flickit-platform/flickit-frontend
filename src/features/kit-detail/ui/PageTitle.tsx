@@ -1,4 +1,5 @@
 import SupTitleBreadcrumb from "@/components/common/SupTitleBreadcrumb";
+import { Text } from "@/components/common/Text";
 import Title from "@/components/common/Title";
 import { ArrowBack, ArrowForward } from "@mui/icons-material";
 import { Box, IconButton } from "@mui/material";
@@ -63,7 +64,7 @@ const PageTitle = ({
               <ArrowBack sx={(theme) => theme.typography.headlineMedium} />
             )}
           </IconButton>
-          {title}
+          <Text variant="headlineLarge">{title}</Text>
         </Box>
       </Box>
     </Title>

@@ -150,7 +150,9 @@ const AssessmentContainer = () => {
               )
             }
           >
-            <Trans i18nKey="assessment.assessments" />
+            <Text variant="headlineLarge">
+              <Trans i18nKey="assessment.assessments" />
+            </Text>
           </Title>
           {}
         </Box>

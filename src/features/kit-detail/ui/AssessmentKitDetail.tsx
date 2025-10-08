@@ -1,18 +1,15 @@
-import { useQuery } from "@/hooks/useQuery";
-import { useServiceContext } from "@/providers/service-provider";
+import { Grid } from "@mui/material";
 import { useParams } from "react-router-dom";
-import { Grid, Tab, Tabs } from "@mui/material";
-import QueryBatchData from "../../../components/common/QueryBatchData";
-import { AssessmentKitInfoType, AssessmentKitStatsType } from "@/types";
-import i18next from "i18next";
-import { formatLanguageCodes } from "@/utils/language-utils";
+import { useServiceContext } from "@/providers/service-provider";
+import QueryBatchData from "@/components/common/QueryBatchData";
 import PageTitle from "./PageTitle";
 import KitDetailsAside from "./KitDetailsAside";
 import EditableKitDetail from "./EditableKitDetail";
 import KitDetailsMenu from "@/features/kit-detail/ui/kitDetailsMenu";
 import { useAssessmentKit } from "@components/assessment-kit/AssessmentKitExpertViewContainer";
 import { useEffect, useState } from "react";
-import GeneralContent from "@components/kit-designer/general/GeneralContent";
+import { AssessmentKitInfoType, AssessmentKitStatsType } from "@/types";
+import { useAssessmentKitDetail } from "../model/useAssessmentKitDetail";
 
 const AssessmentKitDetail = () => {
   const { assessmentKitId, expertGroupId } = useParams();
@@ -20,16 +17,13 @@ const AssessmentKitDetail = () => {
   const [details, setDetails] = useState<any[]>([]);
   const { fetchAssessmentKitDetailQuery } = useAssessmentKit();
 
-  const fetchAssessmentKitInfoQuery = useQuery<AssessmentKitInfoType>({
-    service: (args, config) =>
-      service.assessmentKit.info.getInfo(args ?? { assessmentKitId }, config),
-    runOnMount: true,
-  });
-  const fetchAssessmentKitStatsQuery = useQuery({
-    service: (args, config) =>
-      service.assessmentKit.info.getStats(args ?? { assessmentKitId }, config),
-    runOnMount: true,
-  });
+  const {
+    fetchAssessmentKitInfoQuery,
+    fetchAssessmentKitStatsQuery,
+    info,
+    stats,
+    languages,
+  } = useAssessmentKitDetail(assessmentKitId, service);
 
   useEffect(() => {
     const fetchDetails = async () => {
@@ -38,31 +32,31 @@ const AssessmentKitDetail = () => {
         {
           key: "maturityLevel",
           title: "common.maturityLevel",
-          Component: GeneralContent,
+          Component: <></>,
           Items: [],
         },
         {
           key: "subjects",
           title: "common.subjects",
-          Component: GeneralContent,
+          Component: <></>,
           Items: res.subjects ?? [],
         },
         {
           key: "questionnaires",
           title: "common.questionnaires",
-          Component: GeneralContent,
+          Component: <></>,
           Items: res.questionnaires ?? [],
         },
         {
           key: "measures",
           title: "assessmentKit.numberMeasures",
-          Component: GeneralContent,
+          Component: <></>,
           Items: res.questionnaires ?? [],
         },
         {
           key: "answerRanges",
           title: "kitDesigner.answerRanges",
-          Component: GeneralContent,
+          Component: <></>,
           Items: [],
         },
       ];
@@ -74,35 +68,31 @@ const AssessmentKitDetail = () => {
 
   return (
     <QueryBatchData
-      queryBatchData={[
-        fetchAssessmentKitInfoQuery,
-        fetchAssessmentKitStatsQuery,
-      ]}
-      render={([info, stat]) => {
-        const stats = stat as AssessmentKitStatsType;
+      queryBatchData={[fetchAssessmentKitInfoQuery, fetchAssessmentKitStatsQuery]}
+      render={([infoData, statsData]) => {
+        const _info = (info ?? infoData) as AssessmentKitInfoType;
+        const _stats = (stats ?? statsData) as AssessmentKitStatsType;
 
         return (
           <>
             <PageTitle
-              title={info.title}
+              title={_info.title}
               expertGroupId={expertGroupId}
-              expertGroupTitle={stats.expertGroup.title}
+              expertGroupTitle={_stats.expertGroup.title}
             />
             <Grid container spacing={3}>
               <Grid item xs={12} md={8}>
                 <EditableKitDetail
                   fetchAssessmentKitInfoQuery={fetchAssessmentKitInfoQuery}
-                  info={info as AssessmentKitInfoType}
+                  info={_info}
                 />
               </Grid>
               <Grid item xs={12} md={4}>
                 <KitDetailsAside
-                  stats={stats}
-                  languages={formatLanguageCodes(
-                    info.languages,
-                    i18next.language,
-                  )}
-                  assessmentKitTitle={info.title}
+                  stats={_stats}
+                  languages={languages}
+                  assessmentKitTitle={_info.title}
+                  draftVersionId={_info.draftVersionId}
                 />
               </Grid>
             </Grid>

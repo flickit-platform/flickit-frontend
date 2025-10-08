@@ -1,132 +1,160 @@
-import { RenderGeneralField } from "@/components/common/RenderGeneralField";
-import { Text } from "@/components/common/Text";
-import useGeneralInfoField from "@/hooks/useGeneralInfoField";
-import { AssessmentKitInfoType, ILanguage } from "@/types";
-import { Box, Divider } from "@mui/material";
-import { useCallback, useState } from "react";
+import { Fragment, useMemo } from "react";
+import { Box, Grid } from "@mui/material";
 import { Trans } from "react-i18next";
-import { useParams } from "react-router-dom";
-import { styles } from "@styles";
-import { useTranslationUpdater } from "@/hooks/useTranslationUpdater";
+import { Text } from "@/components/common/Text";
+import { RenderGeneralField } from "@/components/common/RenderGeneralField";
+import type { AssessmentKitInfoType } from "@/types";
+import { FieldName, useEditableKitDetail } from "../model/useEditableKitDetail";
+import LanguagePicker from "./LanguagePicker";
+import i18next from "i18next";
 
-const generalFields = [
-  {
-    name: "title",
-    label: "common.title",
-    multiline: false,
-    useRichEditor: false,
-  },
-  {
-    name: "summary",
-    label: "common.summary",
-    multiline: true,
-    useRichEditor: false,
-  },
-  { name: "about", label: "common.what", multiline: true, useRichEditor: true },
-  { name: "goal", label: "common.when", multiline: true, useRichEditor: true },
-  {
-    name: "context",
-    label: "common.who",
-    multiline: true,
-    useRichEditor: true,
-  },
-] as const;
-
-const EditableKitDetail = (props: {
+type Props = {
   fetchAssessmentKitInfoQuery: any;
   info: AssessmentKitInfoType;
-}) => {
-  const { fetchAssessmentKitInfoQuery, info } = props;
-  const { assessmentKitId } = useParams();
+};
 
+const EditableKitDetail = ({ fetchAssessmentKitInfoQuery, info }: Props) => {
   const {
-    handleSaveEdit,
+    // data
+    dataForField,
+    generalFields,
+    selectedCodes,
+    selectedTitles,
+    languages,
+
+    // state
     editableFields,
-    setEditableFields,
     langCode,
-    toggleTranslation,
     showTranslations,
     updatedValues,
+
+    // actions
+    toggleTranslation,
     setUpdatedValues,
-  } = useGeneralInfoField({
-    assessmentKitId: assessmentKitId,
-    fetchAssessmentKitInfoQuery,
-  });
-  const handleFieldEdit = useCallback(
-    (field: "title" | "summary" | "about" | "goal" | "context") => {
-      setEditableFields((prev) => new Set(prev).add(field));
-    },
-    [],
-  );
-  const { updateTranslation } = useTranslationUpdater(langCode);
-  const handleCancelTextBox = (field: any) => {
-    editableFields.delete(field);
-    setUpdatedValues((prev: any) => ({
-      ...prev,
-    }));
-  };
+    handleFieldEdit,
+    handleSaveEdit,
+    handleCancelTextBox,
+    updateTranslation,
+    handleAddLanguage,
+  } = useEditableKitDetail(info, fetchAssessmentKitInfoQuery);
+
+  const fields = useMemo(() => generalFields, [generalFields]);
+
   return (
     <Box
-      sx={{
-        background: "#fff",
-        borderRadius: "12px",
-        py: 2,
-        px: 4,
-      }}
+      display="flex"
+      flexDirection="column"
+      gap={3}
+      sx={{ background: "#fff", borderRadius: "12px", py: 2, px: 4 }}
     >
-      {" "}
-      {generalFields.map((field) => {
-        const { name, label, multiline, useRichEditor } = field;
-        const data = {
-          title: info.title,
-          summary: info.summary,
-          about: info.about,
-          metadata: info.metadata,
-          translations: info.translations,
-        };
+      <Grid container spacing={2}>
+        {fields.map((field: any) => {
+          const {
+            name,
+            label,
+            multiline,
+            useRichEditor,
+            md,
+            type,
+            options,
+            disabled,
+            width
+          } = field;
 
-        return (
-          <Box key={name}>
-            <Box
-              display="flex"
-              alignItems="flex-start"
-              justifyContent="space-between"
-              sx={{
-                flexDirection: multiline ? "column" : "row",
-              }}
-            >
-              <Text variant="titleSmall" minWidth="80px !important">
-                <Trans i18nKey={label} />
-              </Text>
-              <Box
-                sx={{
-                  display: "flex",
-                  width: "100%",
-                }}
-              >
-                <RenderGeneralField
-                  field={name}
-                  data={data}
-                  editableFields={editableFields}
-                  langCode={langCode}
-                  updatedValues={updatedValues}
-                  setUpdatedValues={setUpdatedValues}
-                  showTranslations={showTranslations}
-                  toggleTranslation={toggleTranslation}
-                  handleFieldEdit={handleFieldEdit}
-                  multiline={multiline}
-                  useRichEditor={useRichEditor}
-                  updateTranslation={updateTranslation}
-                  handleSaveEdit={handleSaveEdit}
-                  handleCancelTextBox={handleCancelTextBox}
-                />
-              </Box>
-            </Box>
-            <Divider flexItem sx={{ my: 2 }} />
-          </Box>
-        );
-      })}
+          return (
+            <Fragment key={name}>
+              <Grid item xs={12} md={md}>
+                <Box
+                  display="flex"
+                  justifyContent="space-between"
+                  sx={{
+                    gap: { xs: 0, md: useRichEditor ? 0 : 5 },
+                    flexDirection: {
+                      xs: "column",
+                      md: useRichEditor ? "column" : "row",
+                    },
+                    alignItems: {
+                      xs: "flex-start",
+                      md: useRichEditor ? "flex-start" : "center",
+                    },
+                  }}
+                >
+                  <Text
+                    variant="titleSmall"
+                    mt="2px"
+                    height="100%"
+                    minWidth={width}
+                    whiteSpace="nowrap"
+                  >
+                    <Trans i18nKey={label} />
+                  </Text>
+                  <Box sx={{ display: "flex", width: "100%" }}>
+                    <RenderGeneralField
+                      field={name as FieldName}
+                      fieldType={type}
+                      data={dataForField}
+                      editableFields={editableFields}
+                      langCode={langCode}
+                      updatedValues={updatedValues}
+                      setUpdatedValues={setUpdatedValues}
+                      showTranslations={showTranslations}
+                      toggleTranslation={toggleTranslation}
+                      handleFieldEdit={handleFieldEdit}
+                      multiline={multiline}
+                      useRichEditor={useRichEditor}
+                      updateTranslation={updateTranslation}
+                      handleSaveEdit={handleSaveEdit}
+                      handleCancelTextBox={handleCancelTextBox}
+                      options={options}
+                      label={<Trans i18nKey={label} />}
+                      disabled={disabled}
+                      editable={info.editable}
+                    />
+                  </Box>
+                </Box>
+              </Grid>
+
+              {name === "summary" && (
+                <Grid
+                  item
+                  xs={12}
+                  md={6}
+                  display="flex"
+                  alignItems="center"
+                  gap={2}
+                >
+                  <Box>
+                    <Text variant="titleSmall" mt="2px" height="100%">
+                      <Trans i18nKey={"common.supportedLanguages"} />
+                    </Text>
+                  </Box>
+                  <Box
+                    sx={{ display: "flex", width: "50%" }}
+                    color="outline.variant"
+                  >
+                    <LanguagePicker
+                      languages={languages}
+                      values={selectedCodes}
+                      primaryCode={info.mainLanguage?.code}
+                      onAdd={handleAddLanguage}
+                      label={selectedTitles}
+                      size="small"
+                      fullWidth
+                      disabled={!info.editable}
+                      behavior={{
+                        matchButtonWidth: true,
+                        lockPrimaryOnTop: true,
+                      }}
+                    />
+                  </Box>
+                </Grid>
+              )}
+            </Fragment>
+          );
+        })}
+      </Grid>
     </Box>
   );
 };
+
 export default EditableKitDetail;

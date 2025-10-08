@@ -53,7 +53,7 @@ export const CEDialog = (props: PropsWithChildren<ICEDialogProps>) => {
             ...titleStyle,
           }}
         >
-          <Box sx={{ ...styles.centerVH }}>{title}</Box>
+          <Box sx={{ ...styles.centerVH, gap: "6px" }}>{title}</Box>
           <IconButton
             aria-label="close"
             onClick={closeDialog}

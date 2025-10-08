@@ -1,4 +1,4 @@
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import Box from "@mui/material/Box";
 import IconButton from "@mui/material/IconButton";
 import SwapVertRoundedIcon from "@mui/icons-material/SwapVertRounded";
@@ -676,6 +676,15 @@ const QuestionsSection = ({
     value: questionnaireLogic.kitState.questions.length + 1,
     id: null,
   });
+
+  useEffect(() => {
+    setNewQuestion({
+      title: "",
+      index: questionnaireLogic.kitState.questions.length + 1,
+      value: questionnaireLogic.kitState.questions.length + 1,
+      id: null,
+    });
+  }, [questionnaireLogic.kitState.questions.length]);
 
   const handleQuestionDragEnd = (result: any) => {
     if (!result.destination) return;

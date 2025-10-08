@@ -150,7 +150,7 @@ export interface IGraphicalReport {
   lang: ILanguage;
   visibility: VISIBILITY;
   linkHash: string;
-  isAdvisable: boolean
+  isAdvisable: boolean;
 }
 
 type insight = {
@@ -228,7 +228,8 @@ export interface AssessmentKitInfoType {
   mainLanguage?: { code: string; title: string };
   metadata?: { context: string; goal: string };
   translations?: any;
-  languages: {code: string, title: string}[]
+  languages: { code: string; title: string }[];
+  draftVersionId: number | null;
 }
 
 export interface IAssessmentModel extends IDefaultModel<IAssessment> {

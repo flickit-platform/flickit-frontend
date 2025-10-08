@@ -1,0 +1,14 @@
+{
+  "continueEdittingDraft": "A draft has already been created. You can continue editing the kit on that draft and release your changes when ready",
+  "createdAssessments": "Created assessments",
+  "createNewDraftDesc": "The current kit content will be available as a draft in the Kit Designer. You can make your desired changes and release them when you’re ready",
+  "downloadDSLKit": "Download DSL",
+  "editKit": "Edit kit",
+  "editViaKitDesigner": "Edit via Kit Designer",
+  "uploadDSL": "Upload new DSL",
+  "newDraft": "New draft",
+  "viaKitDesigner": "Via Kit Designer",
+  "whatIsThisKit": "What is this kit?",
+  "whoNeedsThisKit": "Who needs this kit?",
+  "whenToUseThisKit": "When to use this kit?"
+}
