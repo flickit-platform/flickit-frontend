@@ -27,11 +27,8 @@ const UpdateAssessmentKitDialog = (props: any) => {
   const [showErrorLog, setShowErrorLog] = useState<boolean>(false);
   const [syntaxErrorObject, setSyntaxErrorObject] = useState<any>();
   const [updateErrorObject, setUpdateErrorObject] = useState<any>();
-  const { assessmentKitId } = useParams();
-  const { expertGroupId } = useParams();
-  const setIsValid = () => {
-    return false;
-  };
+  const { assessmentKitId, expertGroupId } = useParams();
+
   const close = () => {
     setSyntaxErrorObject(null);
     setUpdateErrorObject(null);
@@ -56,7 +53,6 @@ const UpdateAssessmentKitDialog = (props: any) => {
         { data: formattedData, assessmentKitId: assessmentKitId },
         { signal: abortController.signal },
       );
-     
       close();
     } catch (e: any) {
       const err = e as ICustomError;
@@ -109,7 +105,7 @@ const UpdateAssessmentKitDialog = (props: any) => {
             deleteService={(args: any, config: any) =>
               service.assessmentKit.dsl.deleteLegacyDslFile(args, config)
             }
-            setIsValid={setIsValid}
+            setIsValid={false}
             param={expertGroupId}
             name="dsl_id"
             required={true}
@@ -205,9 +201,7 @@ const UpdateAssessmentKitDialog = (props: any) => {
       closeDialog={close}
       title={
         <>
-          <CloudUploadRounded
-            sx={{ marginInlineEnd: 1, marginInlineStart: "unset" }}
-          />
+          <CloudUploadRounded />
           {<Trans i18nKey="assessmentKit.updateDSL" />}
         </>
       }

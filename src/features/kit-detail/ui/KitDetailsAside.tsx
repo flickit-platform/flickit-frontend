@@ -1,110 +1,157 @@
+// KitDetailsAside.tsx
+import * as React from "react";
+import { Grid, Box, Button, Divider, Menu, MenuItem } from "@mui/material";
 import { Text } from "@/components/common/Text";
-import { AssessmentKitStatsType } from "@/types";
-import { getReadableDate } from "@/utils/readable-date";
+import { styles } from "@styles";
 import {
+  EditOutlined,
+  FileDownloadOutlined,
   ArrowDropDownRounded,
   ArrowDropUpRounded,
-  AssignmentOutlined,
-  EditOutlined,
-  FavoriteBorderOutlined,
-  FileDownloadOutlined,
-  Language,
 } from "@mui/icons-material";
-import {
-  Box,
-  Button,
-  Divider,
-  Grid,
-  Menu,
-  MenuItem,
-  useTheme,
-} from "@mui/material";
-import { styles } from "@styles";
-import { t } from "i18next";
-import PriceIcon from "@common/icons/Price";
-import uniqueId from "@/utils/unique-id";
-import { useQuery } from "@/hooks/useQuery";
-import { useServiceContext } from "@/providers/service-provider";
-import { useNavigate, useParams } from "react-router-dom";
-import showToast from "@/utils/toast-error";
-import { ICustomError } from "@/utils/custom-error";
 import UpdateAssessmentKitDialog from "./UpdateAssessmentKitDialog";
-import useDialog from "@/hooks/useDialog";
-import { Trans } from "react-i18next";
-import useMenu from "@/hooks/useMenu";
 import {
   CEDialog,
   CEDialogActions,
 } from "@/components/common/dialogs/CEDialog";
+import type { AssessmentKitStatsType } from "@/types";
+import { Trans, useTranslation } from "react-i18next";
+import useMenu from "@/hooks/useMenu";
+import { useKitDetailsAside } from "../model/useKitDetailsAside";
+
+const StatCard = ({
+  title,
+  value,
+  icon,
+}: {
+  title: string;
+  value: React.ReactNode;
+  icon?: React.ReactNode;
+}) => (
+  <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+    {icon}
+    <Box sx={{ ...styles.centerCV }}>
+      <Text variant="bodyMedium" color="background.onVariant">
+        {title}
+      </Text>
+      <Text variant="semiBoldLarge" color="background.on">
+        {value ?? "-"}
+      </Text>
+    </Box>
+  </Box>
+);
+
+const StatsGrid = ({
+  items,
+  columns = 3,
+}: {
+  items: { title: string; value: React.ReactNode }[];
+  columns?: number;
+}) => (
+  <Box
+    sx={{
+      ...styles.centerCVH,
+      background: "#fff",
+      borderRadius: "12px",
+      flex: 1,
+      px: 4,
+    }}
+  >
+    <Grid container rowGap={3} py={2} columnSpacing={0}>
+      {items.map((it, index, arr) => {
+        const isLastInRow = (index + 1) % columns === 0;
+        const isLastItem = index === arr.length - 1;
+        const showDivider = !isLastInRow && !isLastItem;
+        return (
+          <React.Fragment key={it.title}>
+            <Grid item xs={12 / columns - 0.05} sx={{ position: "relative" }}>
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                }}
+              >
+                <Text variant="bodyMedium" color="background.onVariant">
+                  {it.title}
+                </Text>
+                <Text variant="semiBoldLarge" color="background.on">
+                  {it.value}
+                </Text>
+              </Box>
+            </Grid>
+            {showDivider && <Divider orientation="vertical" flexItem />}
+          </React.Fragment>
+        );
+      })}
+    </Grid>
+  </Box>
+);
+
+const TwoColRow = ({
+  left,
+  right,
+}: {
+  left: { title: string; value: React.ReactNode; icon?: React.ReactNode };
+  right: { title: string; value: React.ReactNode; icon?: React.ReactNode };
+}) => (
+  <Box
+    sx={{
+      ...styles.centerV,
+      alignItems: "center",
+      background: "#fff",
+      borderRadius: "12px",
+      p: 2,
+      flex: 1,
+    }}
+  >
+    <Grid container>
+      <Grid item xs={7}>
+        <StatCard {...left} />
+      </Grid>
+      <Grid item xs={5}>
+        <StatCard {...right} />
+      </Grid>
+    </Grid>
+  </Box>
+);
+
+type Props = {
+  stats: AssessmentKitStatsType;
+  languages: string | string[];
+  assessmentKitTitle: string;
+  draftVersionId: number | null;
+};
 
 const KitDetailsAside = ({
   stats,
   languages,
   assessmentKitTitle,
   draftVersionId,
-}: {
-  stats: AssessmentKitStatsType;
-  languages: string;
-  assessmentKitTitle: string;
-  draftVersionId: number;
-}) => {
-  const navigate = useNavigate();
-  const { assessmentKitId } = useParams();
-  const { open, openMenu, closeMenu, anchorEl } = useMenu();
-  const cloneAssessmentKit = useQuery({
-    service: (args, config) => service.assessmentKit.info.clone(args, config),
-    runOnMount: false,
+}: Props) => {
+  const { t } = useTranslation();
+
+  const {
+    creationDate,
+    lastUpdated,
+    gridItems,
+    languagePriceRow,
+    row2,
+    handleDownloadDSL,
+    handleCreateViaKitDesigner,
+    dslDialog,
+    draftDialog,
+    menu,
+  } = useKitDetailsAside({
+    stats,
+    languages,
+    assessmentKitTitle,
+    draftVersionId,
   });
-
-  const handleCreateViaKitDesigner = () => {
-    !draftVersionId &&
-      cloneAssessmentKit.query({ assessmentKitId }).then((res: any) => {
-        navigate(`./../../kit-designer/${res?.kitVersionId}`);
-      });
-    draftVersionId && navigate(`./../../kit-designer/${draftVersionId}`);
-  };
-
-  const infoBoxData = {
-    "common.maturityLevel": stats.maturityLevelsCount ?? "-",
-    "common.subjects":
-      stats.subjects?.map((sub: any) => sub?.title)?.length ?? "-",
-    "common.attributes": stats.attributesCount ?? "-",
-    "common.questionnaires": stats.questionnairesCount ?? "-",
-    "common.questions": stats.questionsCount ?? "-",
-    "assessmentKit.numberMeasures": stats.measuresCount ?? "-",
-  };
-  const theme = useTheme();
-  const { service } = useServiceContext();
-  const dialogProps = useDialog();
-  const createDraftWarningdialogProps = useDialog();
-
-  const fetchAssessmentKitDownloadUrlQuery = useQuery({
-    service: (args, config) =>
-      service.assessmentKit.dsl.getDownloadUrl(
-        args ?? { assessmentKitId },
-        config,
-      ),
-    runOnMount: false,
-  });
-
-  const handleDownloadDSL = async () => {
-    try {
-      const response = await fetchAssessmentKitDownloadUrlQuery.query();
-      const fileUrl = response.url;
-      const a = document.createElement("a");
-      a.href = fileUrl;
-      a.download = `${assessmentKitTitle ?? "download"}.zip`;
-      document.body.appendChild(a);
-      a.click();
-      a.remove();
-    } catch (e) {
-      const err = e as ICustomError;
-      showToast(err);
-    }
-  };
 
   return (
     <Grid container rowSpacing={2} columnSpacing={3} position="sticky" top={60}>
+      {/* Dates */}
       <Grid item xs={12} md={6}>
         <Box
           sx={{
@@ -119,7 +166,7 @@ const KitDetailsAside = ({
             {t("common.creationDate")}
           </Text>
           <Text variant="semiBoldLarge" color="background.on">
-            {getReadableDate(stats.creationTime)}
+            {creationDate}
           </Text>
         </Box>
       </Grid>
@@ -137,117 +184,28 @@ const KitDetailsAside = ({
             {t("common.lastUpdated")}
           </Text>
           <Text variant="semiBoldLarge" color="background.on">
-            {getReadableDate(stats.lastModificationTime)}
+            {lastUpdated}
           </Text>
         </Box>
       </Grid>
-      <Grid item xs={12}>
-        <Box
-          sx={{
-            ...styles.centerCVH,
-            background: "#fff",
-            borderRadius: "12px",
-            flex: 1,
-            paddingInlineStart: 4,
-            paddingInlineEnd: 3,
-          }}
-        >
-          <Grid container rowGap={3} paddingBlock={2}>
-            {[...Object.entries(infoBoxData)].map(
-              ([title, value], index, arr) => {
-                const isLastInRow = (index + 1) % 3 === 0;
-                const isLastItem = index === arr.length - 1;
-                const shouldShowDivider = !isLastInRow && !isLastItem;
 
-                return (
-                  <>
-                    <Grid
-                      key={title}
-                      item
-                      xs={6}
-                      md={3.95}
-                      sx={{ position: "relative" }}
-                    >
-                      <Box
-                        sx={{
-                          display: "flex",
-                          flexDirection: "column",
-                          alignItems: "center",
-                        }}
-                      >
-                        <Text variant="bodyMedium" color="background.onVariant">
-                          {t(title)}
-                        </Text>
-                        <Text variant="semiBoldLarge" color="background.on">
-                          {value}
-                        </Text>
-                      </Box>
-                    </Grid>
-                    {shouldShowDivider && (
-                      <Divider orientation="vertical" flexItem />
-                    )}
-                  </>
-                );
-              },
-            )}
-          </Grid>
-        </Box>
+      {/* Grid stats */}
+      <Grid item xs={12}>
+        <StatsGrid items={gridItems} columns={3} />
       </Grid>
 
+      {/* Rows */}
       <Grid item xs={12}>
-        <FullRow
-          firstTitle={t("common.supportedLanguages")}
-          secondTitle={t("common.price")}
-          firstValue={languages}
-          secondValue={t("common.free")}
-          xs={12}
-          firstIcon={
-            <Language
-              sx={{
-                color: "primary.main",
-                width: "32px",
-                height: "32px",
-              }}
-            />
-          }
-          secondIcon={
-            <PriceIcon
-              color={theme.palette.primary.dark}
-              width="32px"
-              height="32px"
-            />
-          }
-        />{" "}
-      </Grid>
-      <Grid item xs={12}>
-        <FullRow
-          firstTitle={t("assessmentKit.createdAssessments")}
-          secondTitle={t("common.liked")}
-          firstValue={stats.assessmentCounts}
-          secondValue={
-            <>
-              {stats.likes ?? "0"} {t("common.times")}
-            </>
-          }
-          xs={12}
-          firstIcon={
-            <AssignmentOutlined
-              sx={{
-                color: "primary.main",
-                width: "32px",
-                height: "32px",
-              }}
-            />
-          }
-          secondIcon={
-            <FavoriteBorderOutlined
-              sx={{ color: theme.palette.primary.dark }}
-              width="32px"
-              height="32px"
-            />
-          }
+        <TwoColRow
+          left={languagePriceRow.left}
+          right={languagePriceRow.right}
         />
       </Grid>
+      <Grid item xs={12}>
+        <TwoColRow left={row2.left} right={row2.right} />
+      </Grid>
+
+      {/* Actions */}
       <Grid item xs={12} md={6}>
         <Button
           onClick={handleDownloadDSL}
@@ -256,60 +214,29 @@ const KitDetailsAside = ({
           startIcon={<FileDownloadOutlined />}
           size="small"
         >
-          <Text variant="semiBoldLarge">
-            {t("assessmentKit.downloadDSLKit")}
-          </Text>
+          <Text variant="semiBoldLarge">{t("kitDetail.downloadDSLKit")}</Text>
         </Button>
       </Grid>
-      <Grid item xs={12} md={6}>
-        <Button
-          variant="contained"
-          size="small"
-          endIcon={!open ? <ArrowDropDownRounded /> : <ArrowDropUpRounded />}
-          fullWidth
-          onClick={openMenu}
-        >
-          <Text variant="semiBoldLarge">
-            <Trans i18nKey="assessmentKit.editKit" />
-          </Text>
-        </Button>
 
-        <Menu
-          anchorEl={anchorEl}
-          open={open}
-          onClose={closeMenu}
-          PaperProps={{
-            style: {
-              maxHeight: 48 * 4.5,
-            },
-          }}
-        >
-          <MenuItem
-            onClick={() => {
-              closeMenu();
-              dialogProps.openDialog({});
-            }}
-          >
-            <Trans i18nKey="assessmentKit.viaDSL" />
-          </MenuItem>
-          <MenuItem
-            onClick={() => {
-              closeMenu();
-              createDraftWarningdialogProps.openDialog({});
-            }}
-          >
-            <Trans i18nKey="assessmentKit.viaKitDesigner" />
-          </MenuItem>
-        </Menu>
+      {/* Edit menu */}
+      <Grid item xs={12} md={6}>
+        <EditMenu
+          menu={menu}
+          onOpenDsl={() => dslDialog.openDialog({})}
+          onOpenDraft={() => draftDialog.openDialog({})}
+        />
       </Grid>
-      <UpdateAssessmentKitDialog {...dialogProps} />
+
+      {/* Dialogs */}
+      <UpdateAssessmentKitDialog {...dslDialog} />
+
       <CEDialog
-        open={createDraftWarningdialogProps.open}
-        closeDialog={createDraftWarningdialogProps.onClose}
+        open={draftDialog.open}
+        closeDialog={draftDialog.onClose}
         title={
           <>
             <EditOutlined />
-            <Trans i18nKey="assessmentKit.editViaKitDesigner" />
+            <Trans i18nKey="kitDetail.editViaKitDesigner" />
           </>
         }
         maxWidth="sm"
@@ -318,17 +245,16 @@ const KitDetailsAside = ({
           <Trans
             i18nKey={
               draftVersionId
-                ? "assessmentKit.continueEdittingDraft"
-                : "assessmentKit.createNewDraftDesc"
+                ? "kitDetail.continueEdittingDraft"
+                : "kitDetail.createNewDraftDesc"
             }
           />
         </Text>
-
         <CEDialogActions
           loading={false}
-          onClose={createDraftWarningdialogProps.onClose}
+          onClose={draftDialog.onClose}
           submitButtonLabel={
-            draftVersionId ? t("common.continue") : t("assessmentKit.newDraft")
+            draftVersionId ? t("common.continue") : t("kitDetail.newDraft")
           }
           cancelLabel={t("common.cancel")}
           onSubmit={handleCreateViaKitDesigner}
@@ -338,48 +264,54 @@ const KitDetailsAside = ({
   );
 };
 
-const FullRow = (props: any) => {
-  const {
-    firstTitle,
-    secondTitle,
-    firstValue,
-    secondValue,
-    firstIcon,
-    secondIcon,
-  } = props;
-
+const EditMenu = ({
+  menu,
+  onOpenDsl,
+  onOpenDraft,
+}: {
+  menu: ReturnType<typeof useMenu>;
+  onOpenDsl: () => void;
+  onOpenDraft: () => void;
+}) => {
+  const { t } = useTranslation();
   return (
-    <Box
-      sx={{
-        ...styles.centerV,
-        alignItems: "center",
-        background: "#fff",
-        borderRadius: "12px",
-        p: 2,
-        flex: 1,
-      }}
-    >
-      <Grid container>
-        {[
-          { title: firstTitle, value: firstValue, Icon: firstIcon },
-          { title: secondTitle, value: secondValue, Icon: secondIcon },
-        ].map(({ title, value, Icon }, index) => (
-          <Grid item xs={index % 2 === 0 ? 7 : 5} key={uniqueId()}>
-            <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-              {Icon}
-              <Box sx={{ ...styles.centerCV }}>
-                <Text variant="bodyMedium" color="background.onVariant">
-                  {title}
-                </Text>
-                <Text variant="semiBoldLarge" color="background.on">
-                  {value ?? "-"}
-                </Text>
-              </Box>
-            </Box>
-          </Grid>
-        ))}
-      </Grid>
-    </Box>
+    <>
+      <Button
+        variant="contained"
+        size="small"
+        endIcon={menu.open ? <ArrowDropUpRounded /> : <ArrowDropDownRounded />}
+        fullWidth
+        onClick={menu.openMenu}
+      >
+        <Text variant="semiBoldLarge">
+          <Trans i18nKey="kitDetail.editKit" />
+        </Text>
+      </Button>
+      <Menu
+        anchorEl={menu.anchorEl}
+        open={menu.open}
+        onClose={menu.closeMenu}
+        PaperProps={{ style: { maxHeight: 48 * 4.5 } }}
+      >
+        <MenuItem
+          onClick={() => {
+            menu.closeMenu();
+            onOpenDsl();
+          }}
+        >
+          {t("assessmentKit.viaDSL")}
+        </MenuItem>
+        <MenuItem
+          onClick={() => {
+            menu.closeMenu();
+            onOpenDraft();
+          }}
+        >
+          {t("kitDetail.viaKitDesigner")}
+        </MenuItem>
+      </Menu>
+    </>
   );
 };
+
 export default KitDetailsAside;

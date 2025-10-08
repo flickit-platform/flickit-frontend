@@ -22,12 +22,12 @@ export type LanguageMenuProps = {
   fullWidth?: boolean;
   followButtonWidth?: boolean;
   showCheckmark?: boolean;
-  disabledCodes?: string[];
   mainLanguageCode?: string;
   mainBadgeLabel?: React.ReactNode;
   buttonVariant?: "text" | "outlined" | "contained";
   buttonColor?: "info" | "inherit" | "primary" | "secondary" | "error";
   labelColor?: string;
+  disabled?: boolean;
 };
 
 const LanguageMenu = ({
@@ -39,12 +39,12 @@ const LanguageMenu = ({
   fullWidth = false,
   followButtonWidth = true,
   showCheckmark = true,
-  disabledCodes = [],
   mainLanguageCode,
   mainBadgeLabel = t("common.mainLanguage"),
   buttonVariant,
   buttonColor = "primary",
   labelColor = "primary.contrastText",
+  disabled,
 }: LanguageMenuProps) => {
   const theme = useTheme();
   const btnRef = useRef<HTMLButtonElement>(null);
@@ -54,13 +54,13 @@ const LanguageMenu = ({
   const sortedLanguages = useMemo(() => {
     if (!Array.isArray(availableLanguages)) return [];
     if (!mainLanguageCode) return [...availableLanguages];
-  
-    const mains = availableLanguages.filter(l => l.code === mainLanguageCode);
-    const rest  = availableLanguages.filter(l => l.code !== mainLanguageCode);
-  
+
+    const mains = availableLanguages.filter((l) => l.code === mainLanguageCode);
+    const rest = availableLanguages.filter((l) => l.code !== mainLanguageCode);
+
     return [...mains, ...rest];
   }, [availableLanguages, mainLanguageCode]);
-  
+
   useEffect(() => {
     if (followButtonWidth && btnRef.current) {
       setMenuWidth(btnRef.current.offsetWidth);
@@ -80,6 +80,7 @@ const LanguageMenu = ({
   return (
     <>
       <Button
+        disabled={disabled}
         color={buttonColor ?? "inherit"}
         ref={btnRef}
         variant={buttonVariant ?? "contained"}
@@ -91,7 +92,9 @@ const LanguageMenu = ({
       >
         <Text
           variant="semiBoldMedium"
-          color={labelColor ?? "primary.contrastText"}
+          color={
+            (labelColor ?? disabled) ? "text.disabled" : "primary.contrastText"
+          }
         >
           {buttonLabel}
         </Text>

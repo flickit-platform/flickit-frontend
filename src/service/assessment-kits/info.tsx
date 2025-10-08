@@ -150,6 +150,4 @@ export const info = {
       },
     });
   },
-
-  banner() {},
 };
