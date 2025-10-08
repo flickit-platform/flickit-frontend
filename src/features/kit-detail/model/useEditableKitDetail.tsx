@@ -7,6 +7,7 @@ import useGeneralInfoField from "@/hooks/useGeneralInfoField";
 import { useTranslationUpdater } from "@/hooks/useTranslationUpdater";
 import { AssessmentKitInfoType, ILanguage } from "@/types";
 import { useTranslation } from "react-i18next";
+import i18next from "i18next";
 
 export type FieldName =
   | "title"
@@ -143,6 +144,7 @@ export function useEditableKitDetail(
         options: [],
         md: 12,
         disabled: false,
+        width: i18next.language === "fa" ? "35px" : "60px",
       },
       {
         name: "summary",
@@ -153,6 +155,7 @@ export function useEditableKitDetail(
         options: [],
         md: 12,
         disabled: false,
+        width: i18next.language === "fa" ? "35px" : "60px",
       },
       {
         name: "price",
@@ -163,6 +166,7 @@ export function useEditableKitDetail(
         options: priceOptions,
         md: 6,
         disabled: true,
+        width: "35px",
       },
       {
         name: "isPrivate",
@@ -173,6 +177,7 @@ export function useEditableKitDetail(
         options: visibilityOptions,
         md: 6,
         disabled: false,
+        width: "35px",
       },
       {
         name: "published",
@@ -183,6 +188,7 @@ export function useEditableKitDetail(
         options: statusOptions,
         md: 6,
         disabled: false,
+        width: "35px",
       },
       {
         name: "about",

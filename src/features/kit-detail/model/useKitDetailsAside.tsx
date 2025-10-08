@@ -152,7 +152,7 @@ export function useKitDetailsAside({
         title: t("common.liked"),
         value: (
           <>
-            {stats.likes ?? "0"} {t("common.times")}
+            {stats.likes ?? "0"}
           </>
         ),
         icon: (
