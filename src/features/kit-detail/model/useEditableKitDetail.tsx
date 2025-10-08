@@ -195,8 +195,8 @@ export function useEditableKitDetail(
         disabled: false,
       },
       {
-        name: "goal",
-        label: "kitDetail.whenToUseThisKit",
+        name: "context",
+        label: "kitDetail.whoNeedsThisKit",
         multiline: true,
         useRichEditor: true,
         type: "text" as const,
@@ -205,8 +205,8 @@ export function useEditableKitDetail(
         disabled: false,
       },
       {
-        name: "context",
-        label: "kitDetail.whoNeedsThisKit",
+        name: "goal",
+        label: "kitDetail.whenToUseThisKit",
         multiline: true,
         useRichEditor: true,
         type: "text" as const,
