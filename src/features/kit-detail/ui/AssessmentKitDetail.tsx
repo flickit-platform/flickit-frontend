@@ -6,7 +6,6 @@ import PageTitle from "./PageTitle";
 import KitDetailsAside from "./KitDetailsAside";
 import EditableKitDetail from "./EditableKitDetail";
 import KitDetailsMenu from "@/features/kit-detail/ui/kitDetailsMenu";
-import { useAssessmentKit } from "@components/assessment-kit/AssessmentKitExpertViewContainer";
 import { useEffect, useState } from "react";
 import { AssessmentKitInfoType, AssessmentKitStatsType } from "@/types";
 import { useAssessmentKitDetail } from "../model/useAssessmentKitDetail";
@@ -15,11 +14,11 @@ const AssessmentKitDetail = () => {
   const { assessmentKitId, expertGroupId } = useParams();
   const { service } = useServiceContext();
   const [details, setDetails] = useState<any[]>([]);
-  const { fetchAssessmentKitDetailQuery } = useAssessmentKit();
 
   const {
     fetchAssessmentKitInfoQuery,
     fetchAssessmentKitStatsQuery,
+    fetchAssessmentKitDetailQuery,
     info,
     stats,
     languages,

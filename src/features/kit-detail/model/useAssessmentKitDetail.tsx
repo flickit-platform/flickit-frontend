@@ -19,6 +19,11 @@ export function useAssessmentKitDetail(
       service.assessmentKit.info.getStats(args ?? { assessmentKitId }, config),
     runOnMount: true,
   });
+  const fetchAssessmentKitDetailQuery = useQuery<AssessmentKitStatsType>({
+    service: (args, config) =>
+      service.assessmentKit.details.getKit(args ?? { assessmentKitId }, config),
+    runOnMount: true,
+  });
 
   const derived = useMemo(() => {
     const info = fetchAssessmentKitInfoQuery.data as
@@ -41,6 +46,7 @@ export function useAssessmentKitDetail(
   return {
     fetchAssessmentKitInfoQuery,
     fetchAssessmentKitStatsQuery,
+    fetchAssessmentKitDetailQuery,
     ...derived,
   } as const;
 }
