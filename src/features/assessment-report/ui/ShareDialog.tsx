@@ -225,7 +225,8 @@ export default function ShareDialog({
           <Text
             variant="bodyMedium"
             color="primary.main"
-            sx={{ ...styles.ellipsis, width: "100%", display: "inline-block" }}
+            lines={1}
+            sx={{ width: "100%" }}
           >
             {globalThis.location.href}
           </Text>

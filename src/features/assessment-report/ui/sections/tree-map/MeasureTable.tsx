@@ -18,6 +18,7 @@ import useDialog from "@/hooks/useDialog";
 import QuestionReportDialog from "@/features/assessment-report/ui/sections/questionReportDialog";
 import { styles } from "@styles";
 import { Text } from "@/components/common/Text";
+import { getPercentSymbol } from "@/utils/helpers";
 
 export const rtlSx = (flag?: boolean) => styles.rtlStyle(flag);
 
@@ -44,10 +45,6 @@ const clampPercentage = (n: number | undefined | null) => {
   return Math.max(0, Math.min(100, v));
 };
 
-const PERSIAN_PERCENT = "٪";
-const LATIN_PERCENT = "%";
-const getPercentSymbol = (isRTL?: boolean) =>
-  isRTL ? PERSIAN_PERCENT : LATIN_PERCENT;
 export const formatRoundedPercent = (n: number, isRTL?: boolean) =>
   `${Math.round(n)}${getPercentSymbol(isRTL)}`;
 

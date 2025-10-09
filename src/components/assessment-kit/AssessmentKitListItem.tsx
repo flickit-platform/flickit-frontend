@@ -3,7 +3,7 @@ import Box from "@mui/material/Box";
 import { Trans } from "react-i18next";
 import { styles } from "@styles";
 import { useServiceContext } from "@/providers/service-provider";
-import { FLAGS, TId } from "@/types/index";
+import { TId } from "@/types/index";
 import useMenu from "@/hooks/useMenu";
 import { useQuery } from "@/hooks/useQuery";
 import MoreActions from "@common/MoreActions";
@@ -12,8 +12,8 @@ import { Link, useNavigate } from "react-router-dom";
 import Tooltip from "@mui/material/Tooltip";
 import LoadingButton from "@mui/lab/LoadingButton";
 import { getReadableDate } from "@/utils/readable-date";
-import flagsmith from "flagsmith";
 import { Text } from "../common/Text";
+import { showExpertGroups } from "@/utils/helpers";
 interface IAssessmentKitListItemProps {
   data: {
     id: TId;
@@ -35,8 +35,7 @@ interface IAssessmentKitListItemProps {
 const AssessmentKitListItem = (props: IAssessmentKitListItemProps) => {
   const navigate = useNavigate();
 
-  const showGroups =
-    flagsmith.hasFeature(FLAGS.display_expert_groups) || !flagsmith.initialised;
+  const showGroups = showExpertGroups()
   const { service } = useServiceContext();
   const cloneAssessmentKit = useQuery({
     service: (args, config) => service.assessmentKit.info.clone(args, config),
@@ -57,7 +56,7 @@ const AssessmentKitListItem = (props: IAssessmentKitListItemProps) => {
     <Box
       borderRadius={2}
       p={2}
-      bgcolor="#fbf8fb"
+      bgcolor="background.containerLowest"
       mb={1}
       sx={{
         ...styles.centerV,
