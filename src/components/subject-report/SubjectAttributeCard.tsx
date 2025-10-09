@@ -1,7 +1,7 @@
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import { Trans } from "react-i18next";
-import { getMaturityLevelColors, styles } from "@styles";
+import { styles } from "@styles";
 import Accordion from "@mui/material/Accordion";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import AccordionSummary from "@mui/material/AccordionSummary";
@@ -32,6 +32,7 @@ import DropDownContent from "./DropDownContent";
 import { useTheme } from "@mui/material";
 import Title from "@common/Title";
 import { Text } from "../common/Text";
+import { getSemanticColors } from "@/config/colors";
 
 const SubjectAttributeCard = (props: any) => {
   const {
@@ -165,9 +166,9 @@ const SubjectAttributeCard = (props: any) => {
     setSortOrder(null);
   };
 
-  const colorPallet = getMaturityLevelColors(
+  const colorPallet = getSemanticColors(
     maturity_levels_count,
-    "background",
+    "bg",
   );
   const backgroundColor = colorPallet[maturityLevel.value - 1];
 

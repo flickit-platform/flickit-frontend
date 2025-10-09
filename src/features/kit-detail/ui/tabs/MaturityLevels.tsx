@@ -1,5 +1,4 @@
 import { Text } from "@/components/common/Text";
-import { getMaturityLevelColors } from "@/config/styles";
 import { IMaturityLevelIndexedItem } from "@/types";
 import { ExpandMoreRounded } from "@mui/icons-material";
 import {
@@ -15,6 +14,13 @@ import { useMemo } from "react";
 import { getPercentSymbol } from "@/utils/helpers";
 import i18next from "i18next";
 import { useAccordion } from "@/hooks/useAccordion";
+import {
+  BASE_PALETTE,
+  getSemanticColors,
+  withDefaultOverrides,
+} from "@/config/colors";
+
+const localPalette = withDefaultOverrides(BASE_PALETTE, { C5: "#C7CCD1" });
 
 export const MaturityLevels = ({
   maturityLevels,
@@ -25,12 +31,12 @@ export const MaturityLevels = ({
   const { isExpanded, onChange } = useAccordion<number>(null);
 
   const colorPallet = useMemo(
-    () => getMaturityLevelColors(maturityLevels.length),
+    () => getSemanticColors(maturityLevels.length, "default", localPalette),
     [maturityLevels.length],
   );
 
   const bgColorPallet = useMemo(
-    () => getMaturityLevelColors(maturityLevels.length, "background"),
+    () => getSemanticColors(maturityLevels.length, "bg", localPalette),
     [maturityLevels.length],
   );
 
@@ -49,8 +55,8 @@ export const MaturityLevels = ({
             sx={{
               boxShadow: "none !important",
               borderRadius: "16px !important",
-              border: `0.5px solid ${colorPallet[index]}`,
-              borderInlineStart: `6px solid ${colorPallet[index]}`,
+              border: `1px solid ${colorPallet[index]}`,
+              borderInlineStart: `8px solid ${colorPallet[index]}`,
               bgcolor: "initial",
               "&:before": { content: "none" },
               position: "relative",
@@ -66,12 +72,14 @@ export const MaturityLevels = ({
                   alignItems: "flex-start",
                   width: "100%",
                   gap: 2,
-                  margin: "16px",
                 },
                 borderTopLeftRadius: "12px !important",
                 borderTopRightRadius: "12px !important",
                 backgroundColor: isExpanded(level.index)
                   ? bgColorPallet[index]
+                  : "",
+                borderBottom: isExpanded(level.index)
+                  ? `1px solid ${colorPallet[index]}`
                   : "",
               }}
             >
@@ -82,7 +90,12 @@ export const MaturityLevels = ({
                 <Divider
                   flexItem
                   orientation="vertical"
-                  sx={{ mx: "8px", bgcolor: "background.containerLowest" }}
+                  sx={{
+                    mx: "8px",
+                    bgcolor: isExpanded(level.index)
+                      ? "background.on"
+                      : "background.containerLowest",
+                  }}
                 />
                 <Text variant="bodyMedium" lines={1}>
                   {level.title}
@@ -112,7 +125,9 @@ export const MaturityLevels = ({
                         orientation="vertical"
                         sx={{
                           marginInlineStart: "8px",
-                          bgcolor: "background.containerLowest",
+                          bgcolor: isExpanded(level.index)
+                            ? "background.on"
+                            : "background.containerLowest",
                         }}
                       />
                     )}

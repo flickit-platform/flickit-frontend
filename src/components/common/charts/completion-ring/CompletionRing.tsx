@@ -1,8 +1,8 @@
 import { lazy, Suspense, useMemo } from "react";
 import Box from "@mui/material/Box";
-import { confidenceColor } from "@/config/styles";
 import i18next from "i18next";
 import { Text } from "../../Text";
+import { CONFIDENCE_PALETTE } from "@/config/colors";
 
 interface IcompletionRingType {
   inputNumber?: number | null;
@@ -54,7 +54,7 @@ const calculate = (inputNumber: any) => {
   }
 
   let newNum = Math.floor(number / 20);
-  textColor = confidenceColor[newNum];
+  textColor = CONFIDENCE_PALETTE[newNum];
 
   switch (number >= 0) {
     case number < 20:

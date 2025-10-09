@@ -2,13 +2,14 @@ import { Suspense } from "react";
 import Box, { BoxProps } from "@mui/material/Box";
 import { farsiFontFamily, primaryFontFamily } from "@config/theme";
 import useMediaQuery from "@mui/material/useMediaQuery";
-import { getMaturityLevelColors, styles } from "@styles";
+import { styles } from "@styles";
 import { capitalizeFirstLetter } from "@/utils/filter-letter";
 import languageDetector from "@/utils/language-detector";
 import FlatGaugeComponent from "@/components/common/FlatGaugeComponent";
 import CompletionRing from "@/components/common/charts/completion-ring/CompletionRing";
 import Tooltip from "@mui/material/Tooltip";
 import { Text } from "../../Text";
+import { getSemanticColors } from "@/config/colors";
 
 interface IGaugeProps extends BoxProps {
   maturityLevelNumber: number;
@@ -48,7 +49,7 @@ const FlatGauge = (props: IGaugeProps) => {
   );
 
   if (maturityLevelNumber < levelValue) return null;
-  const darkColors = getMaturityLevelColors(maturityLevelNumber);
+  const darkColors = getSemanticColors(maturityLevelNumber);
 
   const isFarsi = languageDetector(text ?? "");
 

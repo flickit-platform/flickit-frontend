@@ -1,12 +1,13 @@
 import Box, { BoxProps } from "@mui/material/Box";
 import { lazy, Suspense, useMemo, useRef } from "react";
 import { Trans } from "react-i18next";
-import { styles, getMaturityLevelColors } from "@styles";
+import { styles } from "@styles";
 import SkeletonGauge from "@common/charts/SkeletonGauge";
 import CompletionRing from "@/components/common/charts/completion-ring/CompletionRing";
 import HiddenMaturityLevel from "@/assets/svg/hidden-maturity-level.svg";
 import permissionRequired from "@/assets/svg/permission-required.svg";
 import { Text } from "../Text";
+import { getSemanticColors } from "@/config/colors";
 interface IGaugeProps extends BoxProps {
   maturity_level_number: number;
   maturity_level_status: string;
@@ -33,7 +34,7 @@ const Gauge = ({
   status_font_variant,
   ...rest
 }: IGaugeProps) => {
-  const colorPallet = getMaturityLevelColors(maturity_level_number);
+  const colorPallet = getSemanticColors(maturity_level_number);
   const colorCode = colorPallet?.[level_value - 1] ?? "disabled.main";
 
   const gaugeComponentCache = useRef<any>({});
