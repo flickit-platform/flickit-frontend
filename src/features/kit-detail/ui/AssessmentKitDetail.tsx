@@ -1,73 +1,38 @@
-import { Grid } from "@mui/material";
+import { Grid, Tab, Tabs } from "@mui/material";
 import { useParams } from "react-router-dom";
-import { useServiceContext } from "@/providers/service-provider";
 import QueryBatchData from "@/components/common/QueryBatchData";
 import PageTitle from "./PageTitle";
 import KitDetailsAside from "./KitDetailsAside";
 import EditableKitDetail from "./EditableKitDetail";
-import KitDetailsMenu from "@/features/kit-detail/ui/kitDetailsMenu";
-import { useEffect, useState } from "react";
-import { AssessmentKitInfoType, AssessmentKitStatsType } from "@/types";
+import {
+  AssessmentKitDetailsType,
+  AssessmentKitInfoType,
+  AssessmentKitStatsType,
+} from "@/types";
 import { useAssessmentKitDetail } from "../model/useAssessmentKitDetail";
+import { Text } from "@/components/common/Text";
+import QueryData from "@/components/common/QueryData";
+import { MaturityLevels } from "./tabs/MaturityLevels";
 
 const AssessmentKitDetail = () => {
   const { assessmentKitId, expertGroupId } = useParams();
-  const { service } = useServiceContext();
-  const [details, setDetails] = useState<any[]>([]);
 
   const {
     fetchAssessmentKitInfoQuery,
     fetchAssessmentKitStatsQuery,
-    fetchAssessmentKitDetailQuery,
+    fetchAssessmentKitDetailsQuery,
     info,
     stats,
+    details,
     languages,
-  } = useAssessmentKitDetail(assessmentKitId, service);
-
-  useEffect(() => {
-    const fetchDetails = async () => {
-      const res: any = await fetchAssessmentKitDetailQuery.query();
-      const tabMap = [
-        {
-          key: "maturityLevel",
-          title: "common.maturityLevel",
-          Component: <></>,
-          Items: [],
-        },
-        {
-          key: "subjects",
-          title: "common.subjects",
-          Component: <></>,
-          Items: res.subjects ?? [],
-        },
-        {
-          key: "questionnaires",
-          title: "common.questionnaires",
-          Component: <></>,
-          Items: res.questionnaires ?? [],
-        },
-        {
-          key: "measures",
-          title: "assessmentKit.numberMeasures",
-          Component: <></>,
-          Items: res.questionnaires ?? [],
-        },
-        {
-          key: "answerRanges",
-          title: "kitDesigner.answerRanges",
-          Component: <></>,
-          Items: [],
-        },
-      ];
-
-      setDetails(tabMap);
-    };
-    fetchDetails();
-  }, []);
+  } = useAssessmentKitDetail(assessmentKitId);
 
   return (
     <QueryBatchData
-      queryBatchData={[fetchAssessmentKitInfoQuery, fetchAssessmentKitStatsQuery]}
+      queryBatchData={[
+        fetchAssessmentKitInfoQuery,
+        fetchAssessmentKitStatsQuery,
+      ]}
       render={([infoData, statsData]) => {
         const _info = (info ?? infoData) as AssessmentKitInfoType;
         const _stats = (stats ?? statsData) as AssessmentKitStatsType;
@@ -94,12 +59,71 @@ const AssessmentKitDetail = () => {
                   draftVersionId={_info.draftVersionId}
                 />
               </Grid>
+              {_info.hasActiveVersion && (
+                <QueryData
+                  {...fetchAssessmentKitDetailsQuery}
+                  render={(detailsData) => {
+                    const _details = (details ??
+                      detailsData) as AssessmentKitDetailsType;
+
+                    return (
+                      <Grid container sm={12} xs={12} mt={6}>
+                        <Grid
+                          item
+                          sm={3}
+                          xs={12}
+                          sx={{ display: "flex", flexDirection: "column" }}
+                        >
+                          <Tabs
+                            sx={{
+                              borderRight: 1,
+                              borderColor: "divider",
+                              flexGrow: 1,
+                              backgroundColor: "rgba(36, 102, 168, 0.04)",
+                              padding: 0,
+                              color: "rgba(0, 0, 0, 0.6)",
+
+                              "& .Mui-selected": {
+                                color: "primary.main",
+                                fontWeight: "bold",
+                              },
+
+                              "& .MuiTabs-indicator": {
+                                backgroundColor: "primary.main",
+                              },
+                            }}
+                          >
+                            <Tab
+                              sx={{
+                                alignItems: "flex-start",
+                                textTransform: "none",
+                              }}
+                              label={
+                                <Text variant="semiBoldLarge">
+                                </Text>
+                              }
+                            />
+                          </Tabs>
+                        </Grid>
+
+                        <Grid
+                          item
+                          sm={9}
+                          xs={12}
+                          sx={{
+                            height: "100%",
+                            padding: "16px 32px",
+                            bgcolor: "background.containerLowest",
+                          }}
+                        >
+                          <MaturityLevels maturityLevels={_details.maturityLevels} />
+                        </Grid>
+                      </Grid>
+                    );
+                  }}
+                />
+              )}
             </Grid>
-
-
-            {details.length > 0 && <Grid container sm={12} xs={12} mt={6}>
-              <KitDetailsMenu details={details}/>
-            </Grid>}
           </>
         );
       }}

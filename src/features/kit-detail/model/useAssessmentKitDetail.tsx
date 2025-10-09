@@ -2,12 +2,12 @@ import { useMemo } from "react";
 import i18next from "i18next";
 import { useQuery } from "@/hooks/useQuery";
 import { formatLanguageCodes } from "@/utils/language-utils";
-import { AssessmentKitInfoType, AssessmentKitStatsType } from "@/types";
+import { AssessmentKitDetailsType, AssessmentKitInfoType, AssessmentKitStatsType } from "@/types";
+import { useServiceContext } from "@/providers/service-provider";
 
-export function useAssessmentKitDetail(
-  assessmentKitId: string | undefined,
-  service: any,
-) {
+export function useAssessmentKitDetail(assessmentKitId: string | undefined) {
+  const { service } = useServiceContext();
+
   const fetchAssessmentKitInfoQuery = useQuery<AssessmentKitInfoType>({
     service: (args, config) =>
       service.assessmentKit.info.getInfo(args ?? { assessmentKitId }, config),
@@ -19,7 +19,8 @@ export function useAssessmentKitDetail(
       service.assessmentKit.info.getStats(args ?? { assessmentKitId }, config),
     runOnMount: true,
   });
-  const fetchAssessmentKitDetailQuery = useQuery<AssessmentKitStatsType>({
+
+  const fetchAssessmentKitDetailsQuery = useQuery<AssessmentKitDetailsType>({
     service: (args, config) =>
       service.assessmentKit.details.getKit(args ?? { assessmentKitId }, config),
     runOnMount: true,
@@ -32,10 +33,12 @@ export function useAssessmentKitDetail(
     const stats = fetchAssessmentKitStatsQuery.data as
       | AssessmentKitStatsType
       | undefined;
+    const details = fetchAssessmentKitDetailsQuery.data;
 
     return {
       info,
       stats,
+      details,
       languages: info
         ? formatLanguageCodes(info.languages, i18next.language)
         : [],
@@ -46,7 +49,7 @@ export function useAssessmentKitDetail(
   return {
     fetchAssessmentKitInfoQuery,
     fetchAssessmentKitStatsQuery,
-    fetchAssessmentKitDetailQuery,
+    fetchAssessmentKitDetailsQuery,
     ...derived,
   } as const;
 }
