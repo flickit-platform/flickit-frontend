@@ -60,9 +60,8 @@ import { DeleteConfirmationDialog } from "@common/dialogs/DeleteConfirmationDial
 import uniqueId from "@/utils/unique-id";
 import languageDetector from "@/utils/language-detector";
 import { useConfigContext } from "@/providers/config-provider";
-import { FLAGS, TId } from "@/types";
+import { TId } from "@/types";
 import { getReadableDate } from "@/utils/readable-date";
-import flagsmith from "flagsmith";
 import showToast from "@/utils/toast-error";
 import { useTheme } from "@mui/material";
 import Title from "@common/Title";

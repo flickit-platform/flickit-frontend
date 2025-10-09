@@ -1,6 +1,5 @@
 import { Grid, Tab, Tabs } from "@mui/material";
 import { useParams } from "react-router-dom";
-import { useServiceContext } from "@/providers/service-provider";
 import QueryBatchData from "@/components/common/QueryBatchData";
 import PageTitle from "./PageTitle";
 import KitDetailsAside from "./KitDetailsAside";
@@ -11,10 +10,8 @@ import {
   AssessmentKitStatsType,
 } from "@/types";
 import { useAssessmentKitDetail } from "../model/useAssessmentKitDetail";
-import { Trans } from "react-i18next";
 import { Text } from "@/components/common/Text";
 import QueryData from "@/components/common/QueryData";
-import PermissionControl from "@/components/common/PermissionControl";
 import { MaturityLevels } from "./tabs/MaturityLevels";
 
 const AssessmentKitDetail = () => {

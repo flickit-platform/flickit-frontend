@@ -22,8 +22,7 @@ import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
 import { ICustomError } from "@/utils/custom-error";
 import languageDetector from "@/utils/language-detector";
 import { farsiFontFamily, primaryFontFamily } from "@config/theme";
-import { FLAGS, TId } from "@/types";
-import flagsmith from "flagsmith";
+import { TId } from "@/types";
 import showToast from "@/utils/toast-error";
 import { showExpertGroups } from "@/utils/helpers";
 

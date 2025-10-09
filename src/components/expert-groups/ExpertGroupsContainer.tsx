@@ -8,7 +8,7 @@ import { Trans } from "react-i18next";
 import { styles } from "@styles";
 import { useAuthContext } from "@/providers/auth-provider";
 import { useServiceContext } from "@/providers/service-provider";
-import { FLAGS, TQueryFunction } from "@/types/index";
+import { TQueryFunction } from "@/types/index";
 import forLoopComponent from "@/utils/for-loop-component";
 import useDialog from "@/hooks/useDialog";
 import useDocumentTitle from "@/hooks/useDocumentTitle";
@@ -18,7 +18,6 @@ import QueryData from "@common/QueryData";
 import ExpertGroupCEFormDialog from "./ExpertGroupCEFormDialog";
 import ExpertGroupsList from "./ExpertGroupsList";
 import { useEffect, useState } from "react";
-import flagsmith from "flagsmith";
 import uniqueId from "@/utils/unique-id";
 import { showExpertGroups } from "@/utils/helpers";
 
