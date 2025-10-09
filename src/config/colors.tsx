@@ -1,111 +1,111 @@
 export const orange = {
-  100: '#FFFFFF',
-  99: '#FEDFDB',
-  98: '#FDFAF7',
-  95: '#F9F3EB',
-  90: '#F4E7D7',
-  80: '#FFD399',
-  70: '#F9BC6C',
-  60: '#FFA733',
-  50: '#FF9000',
-  40: '#CC7400',
-  35: '#B26500',
-  30: '#995700',
-  25: '#804800',
-  20: '#663A00',
-  10: '#331D00',
-  5: '#1A0F00',
-  2: '#0A0600',
-  1: '#050300',
-  0: '#000000',
-}
+  100: "#FFFFFF",
+  99: "#FEDFDB",
+  98: "#FDFAF7",
+  95: "#F9F3EB",
+  90: "#F4E7D7",
+  80: "#FFD399",
+  70: "#F9BC6C",
+  60: "#FFA733",
+  50: "#FF9000",
+  40: "#CC7400",
+  35: "#B26500",
+  30: "#995700",
+  25: "#804800",
+  20: "#663A00",
+  10: "#331D00",
+  5: "#1A0F00",
+  2: "#0A0600",
+  1: "#050300",
+  0: "#000000",
+};
 export const blue = {
-  100: '#FFFFFF',
-  99: '#FBFCFE',
-  98: '#F7FAFD',
-  95: '#EAF2FB',
-  90: '#D5E5F6',
-  80: '#ABCDED',
-  70: '#81B2E4',
-  60: '#5799DB',
-  50: '#2B80D2',
-  40: '#2466A8',
-  35: '#1F5993',
-  30: '#1B4D7E',
-  25: '#164069',
-  20: '#123354',
-  10: '#091A2A',
-  5: '#040D15',
-  2: '#020508',
-  1: '#010304',
-  0: '#000000',
+  100: "#FFFFFF",
+  99: "#FBFCFE",
+  98: "#F7FAFD",
+  95: "#EAF2FB",
+  90: "#D5E5F6",
+  80: "#ABCDED",
+  70: "#81B2E4",
+  60: "#5799DB",
+  50: "#2B80D2",
+  40: "#2466A8",
+  35: "#1F5993",
+  30: "#1B4D7E",
+  25: "#164069",
+  20: "#123354",
+  10: "#091A2A",
+  5: "#040D15",
+  2: "#020508",
+  1: "#010304",
+  0: "#000000",
 };
 
 export const green = {
-  100: '#FFFFFF',
-  99: '#FBFDFB',
-  98: '#F8FCF8',
-  95: '#EDF7ED',
-  90: '#DBF0DB',
-  80: '#B8E0B8',
-  70: '#94D194',
-  60: '#70C270',
-  50: '#4CB24C',
-  40: '#3D8F3D',
-  35: '#367D36',
-  30: '#2E6B2E',
-  25: '#265926',
-  20: '#1F471F',
-  10: '#0F240F',
-  5: '#081208',
-  2: '#030703',
-  1: '#020402',
-  0: '#000000',
+  100: "#FFFFFF",
+  99: "#FBFDFB",
+  98: "#F8FCF8",
+  95: "#EDF7ED",
+  90: "#DBF0DB",
+  80: "#B8E0B8",
+  70: "#94D194",
+  60: "#70C270",
+  50: "#4CB24C",
+  40: "#3D8F3D",
+  35: "#367D36",
+  30: "#2E6B2E",
+  25: "#265926",
+  20: "#1F471F",
+  10: "#0F240F",
+  5: "#081208",
+  2: "#030703",
+  1: "#020402",
+  0: "#000000",
 };
 export const red = {
-  100: '#FFFFFF',
-  99: '#FEFAFB',
-  98: '#FEF6F7',
-  95: '#FCE8EB',
-  90: '#FAD1D8',
-  80: '#F5A3B1',
-  70: '#F0758A',
-  60: '#EB4763',
-  50: '#E5193B',
-  40: '#B81430',
-  35: '#A1122A',
-  30: '#8A0F24',
-  25: '#730D1E',
-  20: '#5C0A18',
-  10: '#2E050C',
-  5: '#170306',
-  2: '#090102',
-  1: '#050101',
-  0: '#000000',
+  100: "#FFFFFF",
+  99: "#FEFAFB",
+  98: "#FEF6F7",
+  95: "#FCE8EB",
+  90: "#FAD1D8",
+  80: "#F5A3B1",
+  70: "#F0758A",
+  60: "#EB4763",
+  50: "#E5193B",
+  40: "#B81430",
+  35: "#A1122A",
+  30: "#8A0F24",
+  25: "#730D1E",
+  20: "#5C0A18",
+  10: "#2E050C",
+  5: "#170306",
+  2: "#090102",
+  1: "#050101",
+  0: "#000000",
 };
 export const pink = {
-  100: '#FFFFFF',
-  99: '#FEFAFC',
-  98: '#FEF6F9',
-  95: '#FCE8EF',
-  90: '#FAD1DF',
-  80: '#F5A3BE',
-  70: '#F0759E',
-  60: '#EB477E',
-  50: '#E51A5E',
-  40: '#B8144B',
-  35: '#A11241',
-  30: '#8A0F38',
-  25: '#730D2F',
-  20: '#5C0A25',
-  10: '#2E0513',
-  5: '#170309',
-  2: '#090104',
-  1: '#050102',
-  0: '#000000',
+  100: "#FFFFFF",
+  99: "#FEFAFC",
+  98: "#FEF6F9",
+  95: "#FCE8EF",
+  90: "#FAD1DF",
+  80: "#F5A3BE",
+  70: "#F0759E",
+  60: "#EB477E",
+  50: "#E51A5E",
+  40: "#B8144B",
+  35: "#A11241",
+  30: "#8A0F38",
+  25: "#730D2F",
+  20: "#5C0A25",
+  10: "#2E0513",
+  5: "#170309",
+  2: "#090104",
+  1: "#050102",
+  0: "#000000",
 };
 export const grayBlue = {
-  100: '#FFFFFF',
+  100: "#FFFFFF",
   99: "#FCFCFD",
   98: "#F9FAFB",
   97: "#F6F7F8",
@@ -157,3 +157,141 @@ export const gray = {
   1: "#020303",
   0: "#000000",
 };
+
+export type Tone = "default" | "bg" | "text";
+export type Semantic = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10;
+export type ColorKey =
+  | "C0"
+  | "C1"
+  | "C2"
+  | "C3"
+  | "C4"
+  | "C5"
+  | "C6"
+  | "C7"
+  | "C8"
+  | "C9"
+  | "C10";
+
+export type PaletteBranch = Readonly<Record<ColorKey, string>>;
+export type Palette = Readonly<{
+  default: PaletteBranch;
+  bg: PaletteBranch;
+  text: PaletteBranch;
+}>;
+
+const BASE_SOLID: PaletteBranch = {
+  C0: "#821717",
+  C1: "#9B4545",
+  C2: "#B47474",
+  C3: "#CDA2A2",
+  C4: "#E6D1D1",
+  C5: "#F3F5F6",
+  C6: "#D1E6D8",
+  C7: "#A2CDB1",
+  C8: "#74B489",
+  C9: "#459B62",
+  C10: "#17823B",
+} as const;
+
+const ORDER: readonly ColorKey[] = [
+  "C0",
+  "C1",
+  "C2",
+  "C3",
+  "C4",
+  "C5",
+  "C6",
+  "C7",
+  "C8",
+  "C9",
+  "C10",
+] as const;
+
+const withAlpha30 = (hex: string) => `${hex}30`;
+
+const TEXT_OVERRIDES: Partial<PaletteBranch> = {
+  C4: "#661100",
+  C5: "#2B333B",
+  C6: "#0F582E",
+} as const;
+
+export function buildPalette(defaultBranch: PaletteBranch): Palette {
+  const bg = ORDER.reduce(
+    (acc, key) => {
+      acc[key] = withAlpha30(defaultBranch[key]);
+      return acc;
+    },
+    {} as Record<ColorKey, string>,
+  ) as PaletteBranch;
+
+  const text = ORDER.reduce(
+    (acc, key) => {
+      acc[key] = TEXT_OVERRIDES[key] ?? defaultBranch[key];
+      return acc;
+    },
+    {} as Record<ColorKey, string>,
+  ) as PaletteBranch;
+
+  return Object.freeze({ default: defaultBranch, bg, text });
+}
+
+export const BASE_PALETTE: Palette = buildPalette(BASE_SOLID);
+
+const ML_INDEX: Readonly<Record<Semantic, readonly number[]>> = {
+  1: [0],
+  2: [0, 10],
+  3: [0, 5, 10],
+  4: [0, 2, 8, 10],
+  5: [0, 2, 5, 8, 10],
+  6: [0, 2, 3, 7, 8, 10],
+  7: [0, 2, 3, 5, 7, 8, 10],
+  8: [0, 1, 2, 3, 7, 8, 9, 10],
+  9: [0, 1, 2, 3, 5, 7, 8, 9, 10],
+  10: [0, 1, 2, 3, 4, 6, 7, 8, 9, 10],
+} as const;
+
+const keyByIndex = (i: number): ColorKey => ORDER[i];
+
+function toSemantic(n: number): Semantic {
+  const clamped = Math.max(1, Math.min(10, Math.round(n)));
+  return clamped as Semantic;
+}
+
+export function getSemanticColors(
+  level: number,
+  tone: Tone = "default",
+  palette: Palette = BASE_PALETTE,
+): string[] {
+  const key = toSemantic(level); 
+  const indices = ML_INDEX[key];
+  const branch = palette[tone];
+  return indices.map((i) => branch[keyByIndex(i)]);
+}
+
+export const C1_CONTRAST = "#B71515";
+export const C2_CONTRAST = "#D74427";
+export const C3_CONTRAST = "#F55C3D";
+export const C4_CONTRAST = "#F2995A";
+export const C5_CONTRAST = "#4FB34C";
+export const C6_CONTRAST = "#0A5C25";
+
+export const CONFIDENCE_PALETTE: readonly string[] = [
+  C1_CONTRAST,
+  C2_CONTRAST,
+  C4_CONTRAST,
+  C3_CONTRAST,
+  C4_CONTRAST,
+  C5_CONTRAST,
+] as const;
+
+export function withDefaultOverrides(
+  palette: Palette,
+  overrides: Partial<PaletteBranch>,
+): Palette {
+  const nextDefault = Object.freeze({
+    ...palette.default,
+    ...overrides,
+  }) as PaletteBranch;
+  return buildPalette(nextDefault);
+}
