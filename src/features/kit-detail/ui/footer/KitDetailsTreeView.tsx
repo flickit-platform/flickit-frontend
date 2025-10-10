@@ -20,9 +20,7 @@ const NodeLabel = ({ children }: { children: ReactNode }) => (
 );
 
 const sectionActiveSx = (active: boolean) =>
-  active
-    ? { color: "primary.main", backgroundColor: "primary.states.hover" }
-    : undefined;
+  active ? { color: "primary.main", backgroundColor: "primary.states.hover" } : undefined;
 
 const makeTreeSx = (isRTL: boolean) => ({
   flexGrow: 1,
@@ -32,7 +30,6 @@ const makeTreeSx = (isRTL: boolean) => ({
   py: 2,
   borderStartStartRadius: "12px",
   borderEndStartRadius: "12px",
-
   "& .MuiTreeItem-content": {
     position: "relative",
     paddingInlineStart: 2,
@@ -51,35 +48,26 @@ const makeTreeSx = (isRTL: boolean) => ({
       borderRadius: `${INDICATOR_RADIUS}px`,
     },
   },
-
-  "& .MuiTreeItem-content.Mui-selected, & .Mui-selected > .MuiTreeItem-content, & .MuiTreeItem-content:focus":
-    {
-      color: "primary.main",
-      backgroundColor: "primary.states.selected",
-      "&::before": { backgroundColor: "primary.main" },
-    },
-
+  "& .MuiTreeItem-content.Mui-selected, & .Mui-selected > .MuiTreeItem-content, & .MuiTreeItem-content:focus": {
+    color: "primary.main",
+    backgroundColor: "primary.states.selected",
+    "&::before": { backgroundColor: "primary.main" },
+  },
   "& .MuiTreeItem-group": {
     marginLeft: 0,
     paddingInlineStart: 1,
   },
-
   "& .MuiTreeItem-iconContainer": {
     mr: isRTL ? 0 : 0.75,
     ml: isRTL ? 0.75 : 0,
   },
-
   "& .MuiTreeItem-content:hover": {
     backgroundColor: "primary.states.hover",
   },
 });
 
 const renderSubjectBranch = (sub: Subject) => (
-  <TreeItem
-    key={sub.id}
-    nodeId={`subject-${sub.id}`}
-    label={<NodeLabel>{sub.title}</NodeLabel>}
-  >
+  <TreeItem key={sub.id} nodeId={`subject-${sub.id}`} label={<NodeLabel>{sub.title}</NodeLabel>}>
     {sub.attributes?.map((attr: Attribute) => (
       <TreeItem
         key={`${sub.id}-${attr.id}`}
@@ -91,39 +79,35 @@ const renderSubjectBranch = (sub: Subject) => (
 );
 
 const renderQuestionnaireLeaf = (q: Questionnaire) => (
-  <TreeItem
-    key={q.id}
-    nodeId={`questionnaire-${q.id}`}
-    label={<NodeLabel>{q.title}</NodeLabel>}
-  />
+  <TreeItem key={q.id} nodeId={`questionnaire-${q.id}`} label={<NodeLabel>{q.title}</NodeLabel>} />
 );
 
 export default function KitDetailsTreeView({
   details,
+  onSelect,
+  initialSelectedId,
 }: {
   details: KitDetailsType;
+  onSelect?: (nodeId: string) => void;
+  initialSelectedId?: string;
 }) {
   const isRTL = i18next.language === "fa";
   const { t } = useTranslation();
-  const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [selectedId, setSelectedId] = useState<string | null>(initialSelectedId ?? null);
 
   const activeSection = useMemo(() => {
     if (!selectedId) return null;
-    if (
-      selectedId.startsWith("subject-") ||
-      selectedId.startsWith("attribute-")
-    )
-      return "subjects-root" as const;
-    if (selectedId.startsWith("questionnaire-"))
-      return "questionnaires-root" as const;
+    if (selectedId.startsWith("subject-") || selectedId.startsWith("attribute-")) return "subjects-root" as const;
+    if (selectedId.startsWith("questionnaire-")) return "questionnaires-root" as const;
     return null;
   }, [selectedId]);
 
-  const handleSelect = (_: SyntheticEvent, nodeId: string) =>
+  const handleSelect = (_: SyntheticEvent, nodeId: string) => {
     setSelectedId(nodeId);
+    onSelect?.(nodeId);
+  };
 
   const ExpandedIcon = <ExpandLessRounded fontSize="small" />;
-
   const CollapsedIcon = <ExpandMoreRounded fontSize="small" />;
 
   return (
@@ -135,11 +119,7 @@ export default function KitDetailsTreeView({
       onNodeSelect={handleSelect}
       sx={makeTreeSx(isRTL)}
     >
-      <TreeItem
-        nodeId="maturity-levels-root"
-        label={<NodeLabel>{t("common.maturityLevels")}</NodeLabel>}
-      />
-
+      <TreeItem nodeId="maturity-levels-root" label={<NodeLabel>{t("common.maturityLevels")}</NodeLabel>} />
       <TreeItem
         nodeId="subjects-root"
         label={<NodeLabel>{t("common.subjects")}</NodeLabel>}
@@ -147,7 +127,6 @@ export default function KitDetailsTreeView({
       >
         {details?.subjects?.map(renderSubjectBranch)}
       </TreeItem>
-
       <TreeItem
         nodeId="questionnaires-root"
         label={<NodeLabel>{t("common.questionnaires")}</NodeLabel>}
@@ -155,11 +134,7 @@ export default function KitDetailsTreeView({
       >
         {details?.questionnaires?.map(renderQuestionnaireLeaf)}
       </TreeItem>
-
-      <TreeItem
-        nodeId="answer-ranges-root"
-        label={<NodeLabel>{t("kitDesigner.answerRanges")}</NodeLabel>}
-      />
+      <TreeItem nodeId="answer-ranges-root" label={<NodeLabel>{t("kitDesigner.answerRanges")}</NodeLabel>} />
     </TreeView>
   );
 }
