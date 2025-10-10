@@ -1,4 +1,4 @@
-const SubjectPanel = ({}: {}) => {
+const SubjectPanel = () => {
   return <div>Subject</div>;
 };
 

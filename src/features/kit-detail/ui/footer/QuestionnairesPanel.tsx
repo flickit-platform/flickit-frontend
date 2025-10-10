@@ -1,4 +1,4 @@
-const QuestionnairesPanel = ({}: {}) => {
+const QuestionnairesPanel = () => {
   return <div>Questionnaires</div>;
 };
 

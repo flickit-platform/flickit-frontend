@@ -1,4 +1,4 @@
-const AnswerRangesPanel = ({}: {}) => {
+const AnswerRangesPanel = () => {
   return <div>Answer Ranges</div>;
 };
 

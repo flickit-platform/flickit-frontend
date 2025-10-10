@@ -1,4 +1,4 @@
-const AttributePanel = ({}: {}) => {
+const AttributePanel = () => {
   return <div>Attribute</div>;
 };
 
