@@ -1,15 +1,16 @@
+import React, { Suspense } from "react";
 import { Grid } from "@mui/material";
-import { Suspense } from "react";
 import { useParams } from "react-router-dom";
-import { KitDetailsType } from "../../model/types";
-import { useKitDetailContainer } from "../../model/useKitDetailContainer";
-import KitDetailsTreeView from "./KitDetailsTreeView";
 import QueryData from "@/components/common/QueryData";
-import { useFooterContainer } from "../../model/models/useFooterContainer";
+import { useKitDetailContainer } from "../../model/useKitDetailContainer";
+import { KitDetailsType } from "../../model/types";
+import { useFooterController } from "../../model/footer/useFooterController";
+import KitDetailsTreeView from "./KitDetailsTreeView";
 
-const FooterContainer = () => {
+const FooterContainer: React.FC = () => {
   const { assessmentKitId } = useParams();
-  const { fetchKitDetailQuery, details } = useKitDetailContainer(assessmentKitId);
+  const { fetchKitDetailQuery, details } =
+    useKitDetailContainer(assessmentKitId);
 
   return (
     <QueryData
@@ -23,18 +24,23 @@ const FooterContainer = () => {
 };
 
 function Inner({ details }: { details: KitDetailsType }) {
-  const { nodeId, setNodeId, Active, activeProps } = useFooterContainer(details);
+  const { selectedId, setSelectedId, ActiveComp, activeProps } =
+    useFooterController(details);
 
   return (
     <Grid container sm={12} xs={12} mt={4}>
-      <Grid item sm={2} xs={12} sx={{ display: "flex", flexDirection: "column" }}>
+      <Grid
+        item
+        sm={2}
+        xs={12}
+        sx={{ display: "flex", flexDirection: "column" }}
+      >
         <KitDetailsTreeView
           details={details}
-          initialSelectedId={nodeId}
-          onSelect={setNodeId}
+          initialSelectedId={selectedId}
+          onSelect={setSelectedId}
         />
       </Grid>
-
       <Grid
         item
         sm={9.8}
@@ -48,7 +54,7 @@ function Inner({ details }: { details: KitDetailsType }) {
         }}
       >
         <Suspense fallback={null}>
-          <Active {...activeProps} />
+          <ActiveComp {...activeProps} />
         </Suspense>
       </Grid>
     </Grid>

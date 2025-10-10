@@ -22,7 +22,7 @@ import { IMaturityLevelIndexedItem } from "../../model/types";
 
 const localPalette = withDefaultOverrides(BASE_PALETTE, { C5: "#C7CCD1" });
 
-const MaturityLevels = ({
+const MaturityLevelsPanel = ({
   maturityLevels,
 }: {
   maturityLevels: IMaturityLevelIndexedItem[];
@@ -144,4 +144,4 @@ const MaturityLevels = ({
   );
 };
 
-export default MaturityLevels;
+export default MaturityLevelsPanel;
