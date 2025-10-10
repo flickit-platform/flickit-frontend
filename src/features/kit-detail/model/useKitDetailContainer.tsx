@@ -2,38 +2,38 @@ import { useMemo } from "react";
 import i18next from "i18next";
 import { useQuery } from "@/hooks/useQuery";
 import { formatLanguageCodes } from "@/utils/language-utils";
-import { AssessmentKitDetailsType, AssessmentKitInfoType, AssessmentKitStatsType } from "@/types";
 import { useServiceContext } from "@/providers/service-provider";
+import { KitDetailsType, KitInfoType, KitStatsType } from "./types";
 
-export function useAssessmentKitDetail(assessmentKitId: string | undefined) {
+export function useKitDetailContainer(assessmentKitId: string | undefined) {
   const { service } = useServiceContext();
 
-  const fetchAssessmentKitInfoQuery = useQuery<AssessmentKitInfoType>({
+  const fetchKitInfoQuery = useQuery<KitInfoType>({
     service: (args, config) =>
       service.assessmentKit.info.getInfo(args ?? { assessmentKitId }, config),
     runOnMount: true,
   });
 
-  const fetchAssessmentKitStatsQuery = useQuery<AssessmentKitStatsType>({
+  const fetchKitStatsQuery = useQuery<KitStatsType>({
     service: (args, config) =>
       service.assessmentKit.info.getStats(args ?? { assessmentKitId }, config),
     runOnMount: true,
   });
 
-  const fetchAssessmentKitDetailsQuery = useQuery<AssessmentKitDetailsType>({
+  const fetchKitDetailQuery = useQuery<KitDetailsType>({
     service: (args, config) =>
       service.assessmentKit.details.getKit(args ?? { assessmentKitId }, config),
     runOnMount: true,
   });
 
   const derived = useMemo(() => {
-    const info = fetchAssessmentKitInfoQuery.data as
-      | AssessmentKitInfoType
+    const info = fetchKitInfoQuery.data as
+      | KitInfoType
       | undefined;
-    const stats = fetchAssessmentKitStatsQuery.data as
-      | AssessmentKitStatsType
+    const stats = fetchKitStatsQuery.data as
+      | KitStatsType
       | undefined;
-    const details = fetchAssessmentKitDetailsQuery.data;
+    const details = fetchKitDetailQuery.data;
 
     return {
       info,
@@ -44,12 +44,12 @@ export function useAssessmentKitDetail(assessmentKitId: string | undefined) {
         : [],
       expertGroupTitle: stats?.expertGroup?.title,
     } as const;
-  }, [fetchAssessmentKitInfoQuery.data, fetchAssessmentKitStatsQuery.data]);
+  }, [fetchKitInfoQuery.data, fetchKitStatsQuery.data]);
 
   return {
-    fetchAssessmentKitInfoQuery,
-    fetchAssessmentKitStatsQuery,
-    fetchAssessmentKitDetailsQuery,
+    fetchKitInfoQuery,
+    fetchKitStatsQuery,
+    fetchKitDetailQuery,
     ...derived,
   } as const;
 }

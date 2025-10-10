@@ -126,7 +126,6 @@ declare module "@mui/material/styles" {
     bgVariant?: string;
     bg?: string;
     states?: {
-      base: string;
       hover: string;
       selected: string;
       focus: string;
@@ -164,39 +163,15 @@ declare module "@mui/material/Typography" {
     semiBoldSmall?: true;
   }
 }
-const alphaToSolid = (
-  base: string,
-  alphaValue: number,
-  bg: string = "#FFFFFF",
-) => {
-  const hexToRgb = (hex: string) => {
-    const c = hex.replace("#", "");
-    const bigint = parseInt(c, 16);
-    return [(bigint >> 16) & 255, (bigint >> 8) & 255, bigint & 255];
-  };
-
-  const rgbToHex = (r: number, g: number, b: number) =>
-    `#${[r, g, b].map((x) => x.toString(16).padStart(2, "0")).join("")}`;
-
-  const [r1, g1, b1] = hexToRgb(base);
-  const [r2, g2, b2] = hexToRgb(bg);
-
-  const r = Math.round(r1 * alphaValue + r2 * (1 - alphaValue));
-  const g = Math.round(g1 * alphaValue + g2 * (1 - alphaValue));
-  const b = Math.round(b1 * alphaValue + b2 * (1 - alphaValue));
-
-  return rgbToHex(r, g, b);
-};
 
 const makeStates = (base: string) => {
   const bg = v3Tokens.surface.containerLowest;
   return {
-    base,
-    hover: alphaToSolid(base, v3Tokens.states.hover, bg),
-    selected: alphaToSolid(base, v3Tokens.states.selected, bg),
-    focus: alphaToSolid(base, v3Tokens.states.focus, bg),
-    focusVisible: alphaToSolid(base, v3Tokens.states.focusVisible, bg),
-    outlineBorder: alphaToSolid(base, v3Tokens.states.outlineBorder, bg),
+    hover: base + "0A",
+    selected: base + "14",
+    focus: base + "1F",
+    focusVisible: base + "4D",
+    outlineBorder: base + "80",
   };
 };
 

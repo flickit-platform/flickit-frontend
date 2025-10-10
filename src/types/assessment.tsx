@@ -16,16 +16,6 @@ export interface IAssessmentKit {
   kit?: IAssessmentKit;
 }
 
-type LevelCompetence = {
-  title: string;
-  value: number;
-  maturityLevelId: number;
-};
-
-interface AssessmentKitStatsSubjects {
-  title: string;
-}
-
 export interface IAssessmentKitReportModel {
   id: number;
   title: string;
@@ -187,51 +177,6 @@ export interface IAssessmentKitInfo {
   tags: { id: TId; title: string }[];
 }
 
-export interface AssessmentKitStatsType {
-  creationTime: string;
-  lastModificationTime: string;
-  questionnairesCount: number;
-  attributesCount: number;
-  questionsCount: number;
-  maturityLevelsCount: number;
-  likes: number;
-  assessmentCounts: number;
-  measuresCount: number;
-  subjects: AssessmentKitStatsSubjects[];
-  expertGroup: IExpertGroup;
-}
-
-export interface AssessmentKitInfoType {
-  id: number;
-  title: string;
-  summary: string;
-  published: boolean;
-  isPrivate: boolean;
-  price: number;
-  about: string;
-  tags: [];
-  editable?: boolean;
-  hasActiveVersion?: boolean;
-  mainLanguage?: { code: string; title: string };
-  metadata?: { context: string; goal: string };
-  translations?: any;
-  languages: { code: string; title: string }[];
-  draftVersionId: number | null;
-}
-interface IIndexedItem {
-  id: TId;
-  title: string;
-  index: number;
-}
-export type IMaturityLevelIndexedItem = IIndexedItem & {
-  competences: LevelCompetence[];
-};
-export interface AssessmentKitDetailsType {
-  maturityLevels: IMaturityLevelIndexedItem[];
-  measures: IIndexedItem[];
-  questionnaires: IIndexedItem[];
-  subjects: IIndexedItem & { attributes: IIndexedItem[] };
-}
 export interface IAssessmentModel extends IDefaultModel<IAssessment> {
   requested_space: string | null;
 }
