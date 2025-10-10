@@ -1,5 +1,4 @@
 import { Text } from "@/components/common/Text";
-import { IMaturityLevelIndexedItem } from "@/types";
 import { ExpandMoreRounded } from "@mui/icons-material";
 import {
   Accordion,
@@ -19,10 +18,11 @@ import {
   getSemanticColors,
   withDefaultOverrides,
 } from "@/config/colors";
+import { IMaturityLevelIndexedItem } from "../../model/types";
 
 const localPalette = withDefaultOverrides(BASE_PALETTE, { C5: "#C7CCD1" });
 
-export const MaturityLevels = ({
+const MaturityLevels = ({
   maturityLevels,
 }: {
   maturityLevels: IMaturityLevelIndexedItem[];
@@ -143,3 +143,5 @@ export const MaturityLevels = ({
     </Box>
   );
 };
+
+export default MaturityLevels;

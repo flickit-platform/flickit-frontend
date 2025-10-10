@@ -5,9 +5,10 @@ import { useServiceContext } from "@/providers/service-provider";
 import { useConfigContext } from "@/providers/config-provider";
 import useGeneralInfoField from "@/hooks/useGeneralInfoField";
 import { useTranslationUpdater } from "@/hooks/useTranslationUpdater";
-import { AssessmentKitInfoType, ILanguage } from "@/types";
+import { ILanguage } from "@/types";
 import { useTranslation } from "react-i18next";
 import i18next from "i18next";
+import { KitInfoType } from "./types";
 
 export type FieldName =
   | "title"
@@ -19,8 +20,8 @@ export type FieldName =
   | "goal"
   | "context";
 
-export function useEditableKitDetail(
-  info: AssessmentKitInfoType,
+export function useKitInfo(
+  info: KitInfoType,
   fetchAssessmentKitInfoQuery: any,
 ) {
   const { t, i18n } = useTranslation();

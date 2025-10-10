@@ -1,4 +1,4 @@
-// KitDetailsAside.tsx
+// KitAside.tsx
 import * as React from "react";
 import { Grid, Box, Button, Divider, Menu, MenuItem } from "@mui/material";
 import { Text } from "@/components/common/Text";
@@ -15,10 +15,10 @@ import {
   CEDialog,
   CEDialogActions,
 } from "@/components/common/dialogs/CEDialog";
-import type { AssessmentKitStatsType } from "@/types";
 import { Trans, useTranslation } from "react-i18next";
 import useMenu from "@/hooks/useMenu";
-import { useKitDetailsAside } from "../model/useKitDetailsAside";
+import { KitStatsType } from "../model/types";
+import { useKitAside } from "../model/useKitAside";
 
 const StatCard = ({
   title,
@@ -118,13 +118,13 @@ const TwoColRow = ({
 );
 
 type Props = {
-  stats: AssessmentKitStatsType;
+  stats: KitStatsType;
   languages: string | string[];
   assessmentKitTitle: string;
   draftVersionId: number | null;
 };
 
-const KitDetailsAside = ({
+const KitAside = ({
   stats,
   languages,
   assessmentKitTitle,
@@ -143,7 +143,7 @@ const KitDetailsAside = ({
     dslDialog,
     draftDialog,
     menu,
-  } = useKitDetailsAside({
+  } = useKitAside({
     stats,
     languages,
     assessmentKitTitle,
@@ -319,4 +319,4 @@ const EditMenu = ({
   );
 };
 
-export default KitDetailsAside;
+export default KitAside;

@@ -1,5 +1,5 @@
 import useDocumentTitle from "@/hooks/useDocumentTitle";
-import AssessmentKitDetail from "@/features/kit-detail/ui/AssessmentKitDetail";
+import AssessmentKitDetail from "@/features/kit-detail/ui/KitDetailContainer";
 
 const AssessmentKitDetailViewScreen = () => {
   useDocumentTitle();

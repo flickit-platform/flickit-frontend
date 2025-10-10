@@ -9,22 +9,22 @@ import useDialog from "@/hooks/useDialog";
 import { useServiceContext } from "@/providers/service-provider";
 import showToast from "@/utils/toast-error";
 import type { ICustomError } from "@/utils/custom-error";
-import type { AssessmentKitStatsType } from "@/types";
 import LanguageIcon from "@mui/icons-material/Language";
 import PriceIcon from "@common/icons/Price";
 import {
   AssignmentOutlined,
   FavoriteBorderOutlined,
 } from "@mui/icons-material";
+import { KitStatsType } from "./types";
 
 type UseKitDetailsAsideArgs = {
-  stats: AssessmentKitStatsType;
+  stats: KitStatsType;
   languages: string | string[];
   assessmentKitTitle: string;
   draftVersionId: number | null;
 };
 
-export function useKitDetailsAside({
+export function useKitAside({
   stats,
   languages,
   assessmentKitTitle,

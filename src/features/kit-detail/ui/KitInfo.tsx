@@ -3,17 +3,17 @@ import { Box, Grid } from "@mui/material";
 import { Trans } from "react-i18next";
 import { Text } from "@/components/common/Text";
 import { RenderGeneralField } from "@/components/common/RenderGeneralField";
-import type { AssessmentKitInfoType } from "@/types";
-import { FieldName, useEditableKitDetail } from "../model/useEditableKitDetail";
+import { FieldName, useKitInfo } from "../model/useKitInfo";
 import LanguagePicker from "./LanguagePicker";
 import i18next from "i18next";
+import { KitInfoType } from "../model/types";
 
 type Props = {
   fetchAssessmentKitInfoQuery: any;
-  info: AssessmentKitInfoType;
+  info: KitInfoType;
 };
 
-const EditableKitDetail = ({ fetchAssessmentKitInfoQuery, info }: Props) => {
+const KitInfo = ({ fetchAssessmentKitInfoQuery, info }: Props) => {
   const {
     // data
     dataForField,
@@ -36,7 +36,7 @@ const EditableKitDetail = ({ fetchAssessmentKitInfoQuery, info }: Props) => {
     handleCancelTextBox,
     updateTranslation,
     handleAddLanguage,
-  } = useEditableKitDetail(info, fetchAssessmentKitInfoQuery);
+  } = useKitInfo(info, fetchAssessmentKitInfoQuery);
 
   const fields = useMemo(() => generalFields, [generalFields]);
 
@@ -157,4 +157,4 @@ const EditableKitDetail = ({ fetchAssessmentKitInfoQuery, info }: Props) => {
   );
 };
 
-export default EditableKitDetail;
+export default KitInfo;
