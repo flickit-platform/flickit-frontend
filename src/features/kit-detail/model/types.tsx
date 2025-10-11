@@ -40,12 +40,12 @@ export interface KitInfoType {
 interface IIndexedItem {
   id: TId;
   title: string;
-  index?: number;
+  index: number;
 }
 export type IMaturityLevelIndexedItem = IIndexedItem & {
   competences: LevelCompetence[];
 };
-export type IAnswerRangeIndexedItem = IIndexedItem & {
+export type IAnswerRangeIndexedItem = Omit<IIndexedItem, 'index'> & {
   answerOptions: {index: number; title: string; value: number; translations: Record<string, { title: string }>}[];
   translations: any;
 };
