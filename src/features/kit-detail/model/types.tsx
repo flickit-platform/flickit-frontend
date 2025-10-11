@@ -40,15 +40,19 @@ export interface KitInfoType {
 interface IIndexedItem {
   id: TId;
   title: string;
-  index: number;
+  index?: number;
 }
 export type IMaturityLevelIndexedItem = IIndexedItem & {
   competences: LevelCompetence[];
+};
+export type IAnswerRangeIndexedItem = IIndexedItem & {
+  answerOptions: {index: number; title: string; value: number; translations: Record<string, { title: string }>}[];
+  translations: any;
 };
 export interface KitDetailsType {
   maturityLevels: IMaturityLevelIndexedItem[];
   measures: IIndexedItem[];
   questionnaires: IIndexedItem[];
   subjects: (IIndexedItem & { attributes: IIndexedItem[] })[];
-  answerRanges: IIndexedItem[];
+  answerRanges: IAnswerRangeIndexedItem[];
 }
