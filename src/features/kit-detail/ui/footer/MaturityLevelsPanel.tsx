@@ -72,7 +72,7 @@ const MaturityLevelsPanel = ({
                   alignItems: "flex-start",
                   width: "100%",
                   gap: 2,
-                  flexWrap: "wrap",
+                  flexWrap: "wrap",   
                 },
                 borderTopLeftRadius: "12px !important",
                 borderTopRightRadius: "12px !important",
@@ -103,17 +103,17 @@ const MaturityLevelsPanel = ({
                 </Text>
               </Box>
               {0 < level.competences.length && (
-                <Box display="flex" gap={1} flex={1}>
+                <Box display="flex" gap={2} flex={1}>
                   <Text variant="semiBoldMedium">
-                    {t("common.competences")}:
+                    {t("common.competences")}
                   </Text>
-                  <Box display="flex" gap={1}>
+                  <Box display="flex"  gap={1}>
                     {level.competences.map((competence, i) => {
                       const isLast = i === level.competences.length - 1;
                       return (
                         <Box key={competence.title} sx={{ ...styles.centerV }}>
                           <Text variant="bodyMedium" lines={1}>
-                            {competence.title}
+                            {competence.title}:
                           </Text>
                           <Text variant="bodyMedium" marginInlineStart={0.5}>
                             {competence.value}
