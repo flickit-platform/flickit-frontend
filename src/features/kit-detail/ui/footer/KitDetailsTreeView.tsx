@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useMemo, useState, useCallback } from "react";
 import { TreeView, TreeItem } from "@mui/lab";
 import ExpandMoreRounded from "@mui/icons-material/ExpandMoreRounded";
 import ExpandLessRounded from "@mui/icons-material/ExpandLessRounded";
@@ -8,7 +8,6 @@ import { Text } from "@common/Text";
 import { buildTree } from "../../config/config";
 import { KitDetailsType } from "../../model/types";
 
-const ROW_HEIGHT = 41;
 const INDICATOR_WIDTH = 3;
 const INDICATOR_RADIUS = 2;
 
@@ -36,7 +35,7 @@ const makeTreeSx = (isRTL: boolean) => ({
   "& .MuiTreeItem-content": {
     position: "relative",
     paddingInlineStart: 2,
-    height: `${ROW_HEIGHT}px`,
+    paddingBlock: 1,
     alignItems: "center",
     color: "background.secondaryDark",
     transition: "background-color .2s, color .2s",
@@ -68,10 +67,7 @@ const makeTreeSx = (isRTL: boolean) => ({
   "& .MuiTreeItem-content:hover": {
     backgroundColor: "primary.states.hover",
   },
-
-  "& .MuiTreeItem-label": {
-    paddingInline: 0,
-  },
+  "& .MuiTreeItem-label": { paddingInline: 0 },
 });
 
 function getActiveRoot(selectedId: string | null): string | null {
@@ -79,7 +75,6 @@ function getActiveRoot(selectedId: string | null): string | null {
   if (selectedId.startsWith("subject-") || selectedId.startsWith("attribute-"))
     return "subjects-root";
   if (selectedId.startsWith("questionnaire-")) return "questionnaires-root";
-
   return null;
 }
 
@@ -99,6 +94,19 @@ function renderNodes(
   ));
 }
 
+type FlatNode = { nodeId: string; children?: FlatNode[] };
+
+const buildParentMap = (nodes: FlatNode[]) => {
+  const m: Record<string, string | null> = {};
+  const dfs = (xs: FlatNode[], p: string | null) =>
+    xs.forEach((n) => {
+      m[n.nodeId] = p;
+      if (n.children?.length) dfs(n.children, n.nodeId);
+    });
+  dfs(nodes, null);
+  return m;
+};
+
 export default function KitDetailsTreeView({
   details,
   onSelect,
@@ -113,14 +121,34 @@ export default function KitDetailsTreeView({
   const [selectedId, setSelectedId] = useState<string | null>(
     initialSelectedId ?? null,
   );
+  const [expanded, setExpanded] = useState<string[]>([]);
 
   const nodes = useMemo(() => buildTree(details, t as any), [details, t]);
   const activeRoot = useMemo(() => getActiveRoot(selectedId), [selectedId]);
+
+  const parentById = useMemo(
+    () => buildParentMap(nodes as unknown as FlatNode[]),
+    [nodes],
+  );
 
   const handleSelect = (_e: React.SyntheticEvent, nodeId: string) => {
     setSelectedId(nodeId);
     onSelect?.(nodeId);
   };
+
+  const handleToggle = useCallback(
+    (_e: React.SyntheticEvent, nextIds: string[]) => {
+      const prev = new Set(expanded);
+      const added = nextIds.find((id) => !prev.has(id)); 
+      if (!added) {
+        setExpanded(nextIds);
+        return;
+      }
+      const p = parentById[added] ?? null;
+      setExpanded(nextIds.filter((id) => id === added || parentById[id] !== p));
+    },
+    [expanded, parentById],
+  );
 
   return (
     <TreeView
@@ -129,6 +157,8 @@ export default function KitDetailsTreeView({
       defaultExpandIcon={<ExpandMoreRounded fontSize="small" />}
       selected={selectedId ?? undefined}
       onNodeSelect={handleSelect}
+      expanded={expanded}
+      onNodeToggle={handleToggle}
       sx={makeTreeSx(isRTL)}
     >
       {renderNodes(nodes, activeRoot)}

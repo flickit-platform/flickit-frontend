@@ -11,13 +11,8 @@ import FooterContainer from "./footer/FooterContainer";
 const KitDetailContainer = () => {
   const { assessmentKitId, expertGroupId } = useParams();
 
-  const {
-    fetchKitInfoQuery,
-    fetchKitStatsQuery,
-    info,
-    stats,
-    languages,
-  } = useKitDetailContainer(assessmentKitId);
+  const { fetchKitInfoQuery, fetchKitStatsQuery, info, stats, languages } =
+    useKitDetailContainer(assessmentKitId);
 
   return (
     <QueryBatchData
@@ -33,7 +28,7 @@ const KitDetailContainer = () => {
               expertGroupId={expertGroupId}
               expertGroupTitle={_stats.expertGroup.title}
             />
-            <Grid container spacing={3}>
+            <Grid container spacing={4}>
               <Grid item xs={12} md={8}>
                 <EditableKitDetail
                   fetchAssessmentKitInfoQuery={fetchKitInfoQuery}
@@ -48,7 +43,9 @@ const KitDetailContainer = () => {
                   draftVersionId={_info.draftVersionId}
                 />
               </Grid>
-              {_info.hasActiveVersion && <FooterContainer />}
+              <Grid item sm={12} xs={12}>
+                {_info.hasActiveVersion && <FooterContainer />}
+              </Grid>
             </Grid>
           </>
         );

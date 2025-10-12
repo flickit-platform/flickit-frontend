@@ -1,6 +1,6 @@
 import Box from "@mui/material/Box";
 import { Trans } from "react-i18next";
-import { farsiFontFamily, secondaryFontFamily } from "@config/theme";
+import { farsiFontFamily, primaryFontFamily } from "@config/theme";
 import Chip from "@mui/material/Chip";
 import { styles } from "@styles";
 import { Link, useNavigate } from "react-router-dom";
@@ -195,7 +195,7 @@ const AssessmentKitsStoreCard = (props: any) => {
                     fontFamily:
                       i18next.language === "fa"
                         ? farsiFontFamily
-                        : secondaryFontFamily,
+                        : primaryFontFamily,
                   }}
                 >
                   <Trans i18nKey="assessmentKit.designedBy" />
