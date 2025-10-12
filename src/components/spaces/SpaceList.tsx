@@ -120,7 +120,7 @@ export const SpaceCard = (props: ISpaceCardProps) => {
         }}
       >
         <FolderRoundedIcon color="primary" fontSize="large" />
-        <Box>
+        <Box display="flex" flexDirection="column" gap="4px">
           <Box
             sx={{
               ...styles.centerV,

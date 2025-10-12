@@ -28,10 +28,10 @@ function Inner({ details }: { details: KitDetailsType }) {
     useFooterController(details);
 
   return (
-    <Grid container sm={12} xs={12} mt={4}>
+    <Grid container sm={12} xs={12} height="100%" mt={2}>
       <Grid
         item
-        sm={2}
+        sm={2.3}
         xs={12}
         sx={{ display: "flex", flexDirection: "column" }}
       >
@@ -43,7 +43,7 @@ function Inner({ details }: { details: KitDetailsType }) {
       </Grid>
       <Grid
         item
-        sm={9.8}
+        sm={9.7}
         xs={12}
         sx={{
           height: "100%",
