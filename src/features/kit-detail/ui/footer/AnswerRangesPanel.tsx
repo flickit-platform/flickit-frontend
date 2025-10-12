@@ -122,8 +122,31 @@ const AccordionSummaryContent = (props: any) => {
 const AccordionDetailsContent = (props: any) => {
   const { range } = props;
 
+  return (
+    <AccordionDetails sx={{ display: "flex", flexDirection: "column", p: 2 }}>
+      <Text variant="titleSmall" sx={{ mb: 1 }}>
+        {t("common.options")}
+      </Text>
+      <Box sx={{ display: "flex", flexWrap: "wrap" }}>
+        {range.answerOptions.map((opt: any) => (
+          <OptionPill key={opt.index} option={opt} />
+        ))}
+      </Box>
+    </AccordionDetails>
+  );
+};
+
+const OptionPill = memo(function OptionPill({
+  option,
+}: {
+  option: {
+    index: number;
+    title: string;
+    value: number;
+    translations: Record<string, { title: string }>;
+  };
+}) {
   type TranslationMap = Record<string, { title: string }>;
-  type OptionDTO = {index: number; title: string; value: number; translations: Record<string, { title: string }>};
 
   const getPrimaryTranslationTitle = (
     map?: TranslationMap | null,
@@ -132,69 +155,50 @@ const AccordionDetailsContent = (props: any) => {
       ? (Object.values(map)[0]?.title ?? null)
       : null;
 
-  const optionScoreFormatter =(v: string)=> t("common.score") + ": " + t(v)
+  const optionScoreFormatter = (v: string) => t("common.score") + ": " + t(v);
 
-  const OptionPill = memo(function OptionPill({
-    option,
-  }: {
-    option: OptionDTO;
-  }) {
-    const translate = getPrimaryTranslationTitle(option.translations);
-
-    return (
-      <Box
-        key={option.index}
-        sx={{
-          display: "flex",
-          alignItems: "center",
-          gap: 4,
-          marginInlineEnd: 3,
-          mb: 2,
-          py: 1,
-          px: 2,
-          borderRadius: 2,
-          border: "0.5px solid #C7CCD1",
-          width: "fit-content",
-        }}
-      >
-        <Box display="flex" flexDirection="column">
-          <Text variant={"bodyMedium"}>{option?.index}. {option?.title}</Text>
-          {translate && (
-            <>
-              <Divider variant="fullWidth" orientation="horizontal" flexItem />
-              <Text variant="bodyMedium">{translate}</Text>
-            </>
-          )}
-        </Box>
-
-        <Chip
-          label={
-            <Box>
-              <Text variant="bodySmall">{t("common.score")}</Text>:{" "}
-              <Text variant="bodyMedium" sx={{ paddingInlineStart: "2.5px" }}>
-                {optionScoreFormatter(`${option.value}`)}
-              </Text>
-            </Box>
-          }
-        />
-      </Box>
-    );
-  });
+  const translate = getPrimaryTranslationTitle(option.translations);
 
   return (
-    <AccordionDetails sx={{ display: "flex", flexDirection: "column", p: 2 }}>
-      <Text variant="titleSmall" sx={{ mb: 1 }}>
-        {t("common.options")}
-      </Text>
-      <Box sx={{ display: "flex", flexWrap: "wrap" }}>
-        {range.answerOptions.map((opt: any) => (
-          <OptionPill
-            key={opt.index}
-            option={opt}
-          />
-        ))}
+    <Box
+      key={option.index}
+      sx={{
+        display: "flex",
+        alignItems: "center",
+        gap: 4,
+        marginInlineEnd: 3,
+        mb: 2,
+        py: 1,
+        px: 2,
+        borderRadius: 2,
+        border: "0.5px solid #C7CCD1",
+        width: "fit-content",
+      }}
+    >
+      <Box display="flex" flexDirection="column">
+        <Text variant={"bodyMedium"}>
+          {option?.index}. {option?.title}
+        </Text>
+        {translate && (
+          <>
+            <Divider variant="fullWidth" orientation="horizontal" flexItem />
+            <Text variant="bodyMedium">{translate}</Text>
+          </>
+        )}
       </Box>
-    </AccordionDetails>
+
+      <Chip
+        label={
+          <Box>
+            <Text variant="bodySmall">{t("common.score")}</Text>:{" "}
+            <Text variant="bodyMedium" sx={{ paddingInlineStart: "2.5px" }}>
+              {optionScoreFormatter(`${option.value}`)}
+            </Text>
+          </Box>
+        }
+      />
+    </Box>
   );
-};
+});
+
 export default AnswerRangesPanel;
