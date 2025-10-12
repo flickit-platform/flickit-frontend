@@ -66,7 +66,16 @@ const AnswerRangesPanel = ({
                   isExpanded={isExpanded}
                 />
               </AccordionSummary>
-              <AccordionDetailsContent range={range} />
+              <AccordionDetails sx={{ display: "flex", flexDirection: "column", p: 2 }}>
+                <Text variant="titleSmall" sx={{ mb: 1 }}>
+                  {t("common.options")}
+                </Text>
+                <Box sx={{ display: "flex", flexWrap: "wrap" }}>
+                  {range.answerOptions.map((opt: any) => (
+                    <OptionPill key={opt.index} option={opt} />
+                  ))}
+                </Box>
+              </AccordionDetails>
             </Accordion>
           );
         })}
@@ -117,22 +126,6 @@ const AccordionSummaryContent = (props: any) => {
         sx={{ background: "#66809914", borderRadius: 4 }}
       />
     </>
-  );
-};
-const AccordionDetailsContent = (props: any) => {
-  const { range } = props;
-
-  return (
-    <AccordionDetails sx={{ display: "flex", flexDirection: "column", p: 2 }}>
-      <Text variant="titleSmall" sx={{ mb: 1 }}>
-        {t("common.options")}
-      </Text>
-      <Box sx={{ display: "flex", flexWrap: "wrap" }}>
-        {range.answerOptions.map((opt: any) => (
-          <OptionPill key={opt.index} option={opt} />
-        ))}
-      </Box>
-    </AccordionDetails>
   );
 };
 
