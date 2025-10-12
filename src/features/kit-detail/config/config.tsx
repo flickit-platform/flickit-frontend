@@ -3,21 +3,34 @@ import type { KitDetailsType } from "../model/types";
 
 const Empty: React.FC = () => null;
 
-function lazyDefault<T = any>(factory: () => Promise<any>, exportName?: string): LazyExoticComponent<React.FC<T>> {
+function lazyDefault<T = any>(
+  factory: () => Promise<any>,
+  exportName?: string,
+): LazyExoticComponent<React.FC<T>> {
   return lazy(async () => {
     const mod: any = await factory();
-    const Comp = (exportName ? mod?.[exportName] : mod?.default) ?? mod?.default;
+    const Comp =
+      (exportName ? mod?.[exportName] : mod?.default) ?? mod?.default;
     return { default: (Comp as React.FC<T>) ?? Empty };
   });
 }
 
-const LazyMaturity = lazyDefault(() => import("../ui/footer/MaturityLevelsPanel"));
+const LazyMaturity = lazyDefault(
+  () => import("../ui/footer/MaturityLevelsPanel"),
+);
+const LazyMeasures = lazyDefault(() => import("../ui/footer/MeasuresPanel"));
 const LazySubjects = lazyDefault(() => import("../ui/footer/SubjectsPanel"));
 const LazySubject = lazyDefault(() => import("../ui/footer/SubjectPanel"));
 const LazyAttribute = lazyDefault(() => import("../ui/footer/AttributePanel"));
-const LazyQuestionnaires = lazyDefault(() => import("../ui/footer/QuestionnairesPanel"));
-const LazyQuestionnaire = lazyDefault(() => import("../ui/footer/QuestionnairePanel"));
-const LazyAnswerRanges = lazyDefault(() => import("../ui/footer/AnswerRangesPanel"));
+const LazyQuestionnaires = lazyDefault(
+  () => import("../ui/footer/QuestionnairesPanel"),
+);
+const LazyQuestionnaire = lazyDefault(
+  () => import("../ui/footer/QuestionnairePanel"),
+);
+const LazyAnswerRanges = lazyDefault(
+  () => import("../ui/footer/AnswerRangesPanel"),
+);
 
 export type TreeNode = {
   nodeId: string;
@@ -29,8 +42,13 @@ export type ConfigItem = {
   id: string;
   title: (t: (k: string) => string) => string;
   rootNodeId: string;
-  component: React.ComponentType<any> | LazyExoticComponent<React.ComponentType<any>>;
-  buildChildren?: (details: KitDetailsType, t: (k: string) => string) => TreeNode[];
+  component:
+    | React.ComponentType<any>
+    | LazyExoticComponent<React.ComponentType<any>>;
+  buildChildren?: (
+    details: KitDetailsType,
+    t: (k: string) => string,
+  ) => TreeNode[];
   match: (nodeId: string) => boolean;
   propsFrom: (nodeId: string, details: KitDetailsType) => Record<string, any>;
 };
@@ -43,7 +61,9 @@ export const treeConfig: ConfigItem[] = [
     component: LazyMaturity,
     buildChildren: undefined,
     match: (nodeId) => nodeId === "maturity-root",
-    propsFrom: (_nodeId, details) => ({ maturityLevels: details.maturityLevels }),
+    propsFrom: (_nodeId, details) => ({
+      maturityLevels: details.maturityLevels,
+    }),
   },
   {
     id: "subjects",
@@ -55,14 +75,16 @@ export const treeConfig: ConfigItem[] = [
         {
           nodeId: "subjects-root",
           title: "",
-          children: details.subjects?.map((s) => ({
-            nodeId: `subject-${s.id}`,
-            title: s.title,
-            children: s.attributes?.map((a) => ({
-              nodeId: `attribute-${s.id}-${a.id}`,
-              title: a.title,
+          children:
+            details.subjects?.map((s) => ({
+              nodeId: `subject-${s.id}`,
+              title: s.title,
+              children:
+                s.attributes?.map((a) => ({
+                  nodeId: `attribute-${s.id}-${a.id}`,
+                  title: a.title,
+                })) ?? [],
             })) ?? [],
-          })) ?? [],
         },
       ];
     },
@@ -105,7 +127,11 @@ export const treeConfig: ConfigItem[] = [
       {
         nodeId: "questionnaires-root",
         title: "",
-        children: details.questionnaires?.map((q) => ({ nodeId: `questionnaire-${q.id}`, title: q.title })) ?? [],
+        children:
+          details.questionnaires?.map((q) => ({
+            nodeId: `questionnaire-${q.id}`,
+            title: q.title,
+          })) ?? [],
       },
     ],
     match: (nodeId) => nodeId === "questionnaires-root",
@@ -120,8 +146,42 @@ export const treeConfig: ConfigItem[] = [
     match: (nodeId) => nodeId.startsWith("questionnaire-"),
     propsFrom: (nodeId, details) => {
       const qid = nodeId.replace("questionnaire-", "");
-      const questionnaire = details.questionnaires.find((q) => String(q.id) === qid);
+      const questionnaire = details.questionnaires.find(
+        (q) => String(q.id) === qid,
+      );
       return { questionnaire };
+    },
+  },
+  {
+    id: "measures",
+    title: (t) => t("common.measures"),
+    rootNodeId: "measures-root",
+    component: LazyMeasures,
+    buildChildren: (details) => [
+      {
+        nodeId: "measures-root",
+        title: "",
+        children:
+          details.measures?.map((m) => ({
+            nodeId: `measure-${m.id}`,
+            title: m.title,
+          })) ?? [],
+      },
+    ],
+    match: (nodeId) => nodeId === "measures-root",
+    propsFrom: (_nodeId, details) => ({ ranges: details.measures }),
+  },
+  {
+    id: "measure",
+    title: () => "",
+    rootNodeId: "",
+    component: LazyMeasures,
+    buildChildren: undefined,
+    match: (nodeId) => nodeId.startsWith("measure-"),
+    propsFrom: (nodeId, details) => {
+      const measureId = nodeId.replace("measure-", "");
+      const measure = details.measures.find((m) => String(m.id) === measureId);
+      return { measure };
     },
   },
   {
@@ -135,22 +195,43 @@ export const treeConfig: ConfigItem[] = [
   },
 ];
 
-export function buildTree(details: KitDetailsType, t: (k: string) => string): TreeNode[] {
+export function buildTree(
+  details: KitDetailsType,
+  t: (k: string) => string,
+): TreeNode[] {
   const base: TreeNode[] = [
     { nodeId: "maturity-root", title: t("common.maturityLevels") },
     {
       nodeId: "subjects-root",
       title: t("common.subjects"),
-      children: details.subjects?.map((s) => ({
-        nodeId: `subject-${s.id}`,
-        title: s.title,
-        children: s.attributes?.map((a) => ({ nodeId: `attribute-${s.id}-${a.id}`, title: a.title })) ?? [],
-      })) ?? [],
+      children:
+        details.subjects?.map((s) => ({
+          nodeId: `subject-${s.id}`,
+          title: s.title,
+          children:
+            s.attributes?.map((a) => ({
+              nodeId: `attribute-${s.id}-${a.id}`,
+              title: a.title,
+            })) ?? [],
+        })) ?? [],
     },
     {
       nodeId: "questionnaires-root",
       title: t("common.questionnaires"),
-      children: details.questionnaires?.map((q) => ({ nodeId: `questionnaire-${q.id}`, title: q.title })) ?? [],
+      children:
+        details.questionnaires?.map((q) => ({
+          nodeId: `questionnaire-${q.id}`,
+          title: q.title,
+        })) ?? [],
+    },
+    {
+      nodeId: "measures-root",
+      title: t("kitDesigner.measures"),
+      children:
+        details.measures?.map((m) => ({
+          nodeId: `measure-${m.id}`,
+          title: m.title,
+        })) ?? [],
     },
     { nodeId: "answer-ranges-root", title: t("kitDesigner.answerRanges") },
   ];

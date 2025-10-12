@@ -72,6 +72,7 @@ const MaturityLevelsPanel = ({
                   alignItems: "flex-start",
                   width: "100%",
                   gap: 2,
+                  flexWrap: "wrap",
                 },
                 borderTopLeftRadius: "12px !important",
                 borderTopRightRadius: "12px !important",
@@ -83,7 +84,7 @@ const MaturityLevelsPanel = ({
                   : "",
               }}
             >
-              <Box width="250px" sx={{ ...styles.centerV }}>
+              <Box sx={{ ...styles.centerV }} flex={0.5}>
                 <Text variant="semiBoldLarge" lines={1}>
                   {level.index}. {level.title}
                 </Text>
@@ -101,39 +102,41 @@ const MaturityLevelsPanel = ({
                   {level.title}
                 </Text>
               </Box>
-
-              <Text variant="semiBoldMedium">{t("common.competences")}</Text>
-
-              {level.competences.map((competence, i) => {
-                const isLast = i === level.competences.length - 1;
-                return (
-                  <Box
-                    key={competence.title}
-                    maxWidth="120px"
-                    sx={{ ...styles.centerV }}
-                  >
-                    <Text variant="bodyMedium" lines={1}>
-                      {competence.title}:
-                    </Text>
-                    <Text variant="bodyMedium" marginInlineStart={0.5}>
-                      {competence.value}
-                    </Text>
-                    {getPercentSymbol(i18next.language === "fa")}
-                    {!isLast && (
-                      <Divider
-                        flexItem
-                        orientation="vertical"
-                        sx={{
-                          marginInlineStart: "8px",
-                          bgcolor: isExpanded(level.index)
-                            ? "background.on"
-                            : "background.containerLowest",
-                        }}
-                      />
-                    )}
+              {0 < level.competences.length && (
+                <Box display="flex" gap={1} flex={1}>
+                  <Text variant="semiBoldMedium">
+                    {t("common.competences")}:
+                  </Text>
+                  <Box display="flex" gap={1}>
+                    {level.competences.map((competence, i) => {
+                      const isLast = i === level.competences.length - 1;
+                      return (
+                        <Box key={competence.title} sx={{ ...styles.centerV }}>
+                          <Text variant="bodyMedium" lines={1}>
+                            {competence.title}
+                          </Text>
+                          <Text variant="bodyMedium" marginInlineStart={0.5}>
+                            {competence.value}
+                          </Text>
+                          {getPercentSymbol(i18next.language === "fa")}
+                          {!isLast && (
+                            <Divider
+                              flexItem
+                              orientation="vertical"
+                              sx={{
+                                marginInlineStart: "8px",
+                                bgcolor: isExpanded(level.index)
+                                  ? "background.on"
+                                  : "background.containerLowest",
+                              }}
+                            />
+                          )}
+                        </Box>
+                      );
+                    })}
                   </Box>
-                );
-              })}
+                </Box>
+              )}
             </AccordionSummary>
 
             <AccordionDetails />

@@ -1,29 +1,10 @@
-import React, { Suspense } from "react";
+import { Suspense } from "react";
 import { Grid } from "@mui/material";
-import { useParams } from "react-router-dom";
-import QueryData from "@/components/common/QueryData";
-import { useKitDetailContainer } from "../../model/useKitDetailContainer";
 import { KitDetailsType } from "../../model/types";
 import { useFooterController } from "../../model/footer/useFooterController";
 import KitDetailsTreeView from "./KitDetailsTreeView";
 
-const FooterContainer: React.FC = () => {
-  const { assessmentKitId } = useParams();
-  const { fetchKitDetailQuery, details } =
-    useKitDetailContainer(assessmentKitId);
-
-  return (
-    <QueryData
-      {...fetchKitDetailQuery}
-      render={(detailsData) => {
-        const _details = (details ?? detailsData) as KitDetailsType;
-        return <Inner details={_details} />;
-      }}
-    />
-  );
-};
-
-function Inner({ details }: { details: KitDetailsType }) {
+function FooterContainer({ details }: { details: KitDetailsType }) {
   const { selectedId, setSelectedId, ActiveComp, activeProps } =
     useFooterController(details);
 
