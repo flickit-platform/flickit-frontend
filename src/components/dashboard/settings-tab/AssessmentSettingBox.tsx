@@ -307,7 +307,7 @@ const QuickAssessmentSwitch = () => {
     <Box sx={{ ...styles.centerV }} color="background.onVariant" gap={1}>
       <FormControlLabel
         control={
-          <Switch checked={isQuickMode} onChange={handleToggleQuickMode} />
+          <Switch data-testid="assessment-switch-mode-btn" checked={isQuickMode} onChange={handleToggleQuickMode} />
         }
         label={
           <Box gap={1} sx={{ ...styles.centerV }}>
@@ -338,6 +338,7 @@ const QuickAssessmentSwitch = () => {
 
       <CEDialog
         open={dialogProps.open}
+        data-testid={"assessment-switch-mode-dialog"}
         closeDialog={dialogProps.onClose}
         title={
           <Trans

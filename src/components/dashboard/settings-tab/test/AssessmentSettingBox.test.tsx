@@ -1,5 +1,5 @@
 import { describe, it, vi, expect } from "vitest";
-import {render, screen, within} from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 import {ServiceProvider} from "@providers/service-provider";
 import { AppProvider } from "@providers/app-provider";
@@ -54,5 +54,16 @@ describe("display Assessment info", () => {
         expect(titleInfo).toHaveTextContent("assessment title");
 
     });
+    it("check assessment mode dialog confirm", async ()=>{
+        renderInfoBox();
 
+
+        const switchBtn = screen.getByTestId("assessment-switch-mode-btn")
+        fireEvent.click(switchBtn);
+        const switchModeDialog = screen.getByTestId("assessment-switch-mode-dialog")
+        expect(switchModeDialog).toBeInTheDocument()
+        const confirmButton = screen.getByTestId("submit")
+        fireEvent.click(confirmButton);
+
+    })
 });
