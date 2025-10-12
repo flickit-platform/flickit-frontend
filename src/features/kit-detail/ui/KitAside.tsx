@@ -55,7 +55,7 @@ const StatsGrid = ({
       background: "#fff",
       borderRadius: "12px",
       flex: 1,
-      px: 4,
+      paddingInlineStart: 2,
     }}
   >
     <Grid container rowGap={3} py={2} columnSpacing={0}>

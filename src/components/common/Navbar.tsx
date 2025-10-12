@@ -499,9 +499,7 @@ const Navbar = () => {
               }}
               size="small"
             >
-              <Text variant="titleMedium">
-                <Trans i18nKey="assessment.myAssessments" />
-              </Text>
+              <Trans i18nKey="assessment.myAssessments" />
             </Button>
 
             <Button
@@ -519,9 +517,7 @@ const Navbar = () => {
               }}
               size="small"
             >
-              <Text variant="titleMedium">
-                <Trans i18nKey="common.kitLibrary" />
-              </Text>
+              <Trans i18nKey="common.kitLibrary" />
             </Button>
           </Box>
 
@@ -624,7 +620,7 @@ const AccountDropDownButton = ({ userInfo }: any) => {
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) =>
     setAnchorEl(event.currentTarget);
   const handleClose = () => setAnchorEl(null);
-  const showGroups = showExpertGroups();
+  const showGroups = showExpertGroups()
 
   return (
     <>
