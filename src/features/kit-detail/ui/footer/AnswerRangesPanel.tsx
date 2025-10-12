@@ -29,14 +29,6 @@ const AnswerRangesPanel = ({
 
       <Box display="flex" flexDirection="column" gap={1}>
         {ranges.map((range) => {
-          const translation = range?.translations as Record<
-            string,
-            { title: string }
-          >;
-          const hasTranslation = Object.keys(translation || {}).length > 0;
-          const Translate = hasTranslation
-            ? Object.values(translation)[0]?.title
-            : null;
 
           return (
             <Accordion
@@ -70,36 +62,7 @@ const AnswerRangesPanel = ({
                   borderBottom: isExpanded(range.id) ? `1px solid #C7CCD1` : "",
                 }}
               >
-                <Box width="250px" sx={{ ...styles.centerV }}>
-                  <Text variant="semiBoldLarge" lines={1}>
-                    {range.title}
-                  </Text>
-                  {hasTranslation && (
-                    <>
-                      <Divider
-                        flexItem
-                        orientation="vertical"
-                        sx={{
-                          mx: "8px",
-                          bgcolor: isExpanded(range.id)
-                            ? "background.on"
-                            : "background.containerLowest",
-                        }}
-                      />
-                      <Text variant="bodyMedium" lines={1}>
-                        {Translate}
-                      </Text>
-                    </>
-                  )}
-                </Box>
-                <Chip
-                  label={
-                    <Text>
-                      {range.answerOptions.length} {t("kitDetail.option")}
-                    </Text>
-                  }
-                  sx={{ background: "#66809914" }}
-                />
+                <AccordionSummaryContent range={range} isExpanded={isExpanded} />
               </AccordionSummary>
 
               <AccordionDetails
@@ -112,67 +75,7 @@ const AnswerRangesPanel = ({
                 <Text variant={"titleSmall"} sx={{ mb: 1 }}>
                   {t("common.options")}
                 </Text>
-                <Box sx={{ display: "flex", flexWrap: "wrap" }}>
-                  {range?.answerOptions.map((option: any) => {
-                    const translation = option?.translations as Record<
-                      string,
-                      { title: string }
-                    >;
-                    const hasTranslation =
-                      Object.keys(translation || {}).length > 0;
-                    const Translate = hasTranslation
-                      ? Object.values(translation)[0]?.title
-                      : null;
-
-                    return (
-                      <Box
-                        key={option.index}
-                        sx={{
-                          display: "flex",
-                          alignItems: "center",
-                          gap: 4,
-                          marginInlineEnd: 4,
-                          mb: 2,
-                          py: 2,
-                          px: 1,
-                          borderRadius: 2,
-                          border: "0.5px solid #C7CCD1",
-                          width: "fit-content",
-                        }}
-                      >
-                        <Box display={"flex"} flexDirection={"column"}>
-                          <Text variant={"bodyMedium"}>{option?.title}</Text>
-                          {hasTranslation && (
-                            <>
-                              <Divider
-                                variant="fullWidth"
-                                orientation="horizontal"
-                                flexItem
-                              />
-                              <Text variant="bodyMedium">{Translate}</Text>
-                            </>
-                          )}
-                        </Box>
-                        <Chip
-                          label={
-                            <Box>
-                              <Text variant="bodySmall">
-                                {t("common.score")}
-                              </Text>
-                              :
-                              <Text
-                                variant="bodyMedium"
-                                sx={{ paddingInlineStart: "2.5px" }}
-                              >
-                                {t(option.value)}
-                              </Text>
-                            </Box>
-                          }
-                        />
-                      </Box>
-                    );
-                  })}
-                </Box>
+               <AccordionDetailsContent range={range} />
               </AccordionDetails>
             </Accordion>
           );
@@ -181,5 +84,121 @@ const AnswerRangesPanel = ({
     </Box>
   );
 };
+
+const AccordionSummaryContent = (props: any) =>{
+  const {range, isExpanded} = props
+  const { t } = useTranslation();
+
+  const translation = range?.translations as Record<
+    string,
+    { title: string }
+  >;
+  const hasTranslation = Object.keys(translation || {}).length > 0;
+  const translatedTitleSummary = hasTranslation
+    ? Object.values(translation)[0]?.title
+    : null;
+
+  return (
+    <>
+      <Box width="250px" sx={{ ...styles.centerV }}>
+        <Text variant="semiBoldLarge" lines={1}>
+          {range.title}
+        </Text>
+        {hasTranslation && (
+          <>
+            <Divider
+              flexItem
+              orientation="vertical"
+              sx={{
+                mx: "8px",
+                bgcolor: isExpanded(range.id)
+                  ? "background.on"
+                  : "background.containerLowest",
+              }}
+            />
+            <Text variant="bodyMedium" lines={1}>
+              {translatedTitleSummary}
+            </Text>
+          </>
+        )}
+      </Box>
+      <Chip
+        label={
+          <Text>
+            {range.answerOptions.length} {t("kitDetail.option")}
+          </Text>
+        }
+        sx={{ background: "#66809914" }}
+      />
+    </>
+  )
+}
+const AccordionDetailsContent = (props: any) =>{
+  const {range} = props
+  const { t } = useTranslation();
+  return (
+    <Box sx={{ display: "flex", flexWrap: "wrap" }}>
+      {range?.answerOptions.map((option: any) => {
+        const translation = option?.translations as Record<
+          string,
+          { title: string }
+        >;
+        const hasTranslation =
+          Object.keys(translation || {}).length > 0;
+        const translatedTitleDetail = hasTranslation
+          ? Object.values(translation)[0]?.title
+          : null;
+
+        return (
+          <Box
+            key={option.index}
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              gap: 4,
+              marginInlineEnd: 4,
+              mb: 2,
+              py: 2,
+              px: 1,
+              borderRadius: 2,
+              border: "0.5px solid #C7CCD1",
+              width: "fit-content",
+            }}
+          >
+            <Box display={"flex"} flexDirection={"column"}>
+              <Text variant={"bodyMedium"}>{option?.title}</Text>
+              {hasTranslation && (
+                <>
+                  <Divider
+                    variant="fullWidth"
+                    orientation="horizontal"
+                    flexItem
+                  />
+                  <Text variant="bodyMedium">{translatedTitleDetail}</Text>
+                </>
+              )}
+            </Box>
+            <Chip
+              label={
+                <Box>
+                  <Text variant="bodySmall">
+                    {t("common.score")}
+                  </Text>
+                  :
+                  <Text
+                    variant="bodyMedium"
+                    sx={{ paddingInlineStart: "2.5px" }}
+                  >
+                    {t(option.value)}
+                  </Text>
+                </Box>
+              }
+            />
+          </Box>
+        );
+      })}
+    </Box>
+  )
+}
 
 export default AnswerRangesPanel;

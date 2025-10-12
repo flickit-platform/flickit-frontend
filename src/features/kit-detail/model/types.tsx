@@ -47,7 +47,7 @@ export type IMaturityLevelIndexedItem = IIndexedItem & {
 };
 export type IAnswerRangeIndexedItem = Omit<IIndexedItem, 'index'> & {
   answerOptions: {index: number; title: string; value: number; translations: Record<string, { title: string }>}[];
-  translations: any;
+  translations: Record<string, { title: string }>;
 };
 export interface KitDetailsType {
   maturityLevels: IMaturityLevelIndexedItem[];
