@@ -10,11 +10,16 @@ function FooterContainer({ details }: { details: KitDetailsType }) {
 
   return (
     <Grid container sm={12} xs={12} height="100%" mt={2}>
-      <Grid item sm={2.3} xs={12} sx={{ display: "flex", flexDirection: "column" }}>
+      <Grid
+        item
+        sm={2.3}
+        xs={12}
+        sx={{ display: "flex", flexDirection: "column" }}
+      >
         <KitDetailsTreeView
           details={details}
-          initialSelectedId={selectedId}
           onSelect={setSelectedId}
+          selectedId={selectedId}
         />
       </Grid>
 

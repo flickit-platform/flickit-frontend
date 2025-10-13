@@ -20,7 +20,6 @@ const AnswerRangesPanel = ({
   ranges: KitDetailsType["answerRanges"];
 }) => {
   const { isExpanded, onChange } = useAccordion<number | string>(null);
-
   return (
     <Box display="flex" flexDirection="column" gap={6}>
       <Text variant="semiBoldXLarge" color="primary">
@@ -92,7 +91,7 @@ const AccordionSummaryContent = (props: any) => {
   const translation = range?.translations as Record<string, { title: string }>;
   const hasTranslation = Object.keys(translation || {}).length > 0;
   const translatedTitleSummary = hasTranslation
-    ? Object.values(translation)[0]?.title
+    ? Object.values(translation ?? {})[0]?.title
     : null;
 
   return (
@@ -131,7 +130,7 @@ const AccordionSummaryContent = (props: any) => {
   );
 };
 
-const OptionPill = memo(function OptionPill({
+export const OptionPill = memo(function OptionPill({
   option,
 }: {
   option: {
