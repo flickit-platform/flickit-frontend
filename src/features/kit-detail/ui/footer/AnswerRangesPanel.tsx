@@ -66,7 +66,9 @@ const AnswerRangesPanel = ({
                   isExpanded={isExpanded}
                 />
               </AccordionSummary>
-              <AccordionDetails sx={{ display: "flex", flexDirection: "column", p: 2 }}>
+              <AccordionDetails
+                sx={{ display: "flex", flexDirection: "column", p: 2 }}
+              >
                 <Text variant="titleSmall" sx={{ mb: 1 }}>
                   {t("common.options")}
                 </Text>
@@ -185,10 +187,13 @@ const OptionPill = memo(function OptionPill({
           <Box>
             <Text variant="bodySmall">{t("common.score")}</Text>:{" "}
             <Text variant="bodyMedium" sx={{ paddingInlineStart: "2.5px" }}>
-              {optionScoreFormatter(`${option.value}`)}
+              {option.value}
             </Text>
           </Box>
         }
+        sx={{
+          bgcolor: "background.container",
+        }}
       />
     </Box>
   );
