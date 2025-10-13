@@ -41,7 +41,7 @@ export interface KitInfoType {
 interface translations<T> {
   T: IIndexedItem;
 }
-interface IIndexedItem {
+export interface IIndexedItem {
   id: TId;
   title: string;
   index: number;
