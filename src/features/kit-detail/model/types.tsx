@@ -51,10 +51,14 @@ export type IMaturityLevelIndexedItem = IIndexedItem & {
   description: string;
   competences: LevelCompetence[];
 };
+export type IAnswerRangeIndexedItem = Omit<IIndexedItem, 'index'> & {
+  answerOptions: {index: number; title: string; value: number; translations: Record<string, { title: string }>}[];
+  translations: Record<string, { title: string }>;
+};
 export interface KitDetailsType {
   maturityLevels: IMaturityLevelIndexedItem[];
   measures: IIndexedItem[];
   questionnaires: IIndexedItem[];
   subjects: (IIndexedItem & { attributes: IIndexedItem[] })[];
-  answerRanges: IIndexedItem[];
+  answerRanges: IAnswerRangeIndexedItem[];
 }
