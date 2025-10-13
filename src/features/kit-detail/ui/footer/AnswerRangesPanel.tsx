@@ -130,7 +130,7 @@ const AccordionSummaryContent = (props: any) => {
   );
 };
 
-const OptionPill = memo(function OptionPill({
+export const OptionPill = memo(function OptionPill({
   option,
 }: {
   option: {

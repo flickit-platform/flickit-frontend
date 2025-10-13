@@ -77,7 +77,9 @@ const QuestionnairePanel = ({
                           : "",
                       }}
                     >
-                      <Text variant="bodyMedium">{question.title}</Text>
+                      <Text variant="bodyMedium">
+                        {question.index}.{question.title}
+                      </Text>
                     </AccordionSummary>
                     <AccordionDetails
                       sx={{ display: "flex", flexDirection: "column", p: 2 }}

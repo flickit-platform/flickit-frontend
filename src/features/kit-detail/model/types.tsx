@@ -76,3 +76,14 @@ export interface QuestionnaireDetails {
   questions: QuestionDetaisl[];
   translations?: translations<"FA" | "EN">;
 }
+
+export interface measureDetails {
+  questionsCount: number;
+  description: string;
+  questions: (QuestionDetaisl & {
+    options: options[];
+    answerRange: string;
+    questionnaire: IIndexedItem;
+  })[];
+  translations?: translations<"FA" | "EN">;
+}

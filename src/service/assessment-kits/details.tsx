@@ -65,6 +65,21 @@ export const details = {
     );
   },
 
+  getMeasures(
+    {
+      assessmentKitId,
+      measureId,
+    }: { assessmentKitId: string | undefined; measureId: TId },
+    config?: AxiosRequestConfig,
+  ) {
+    return axios.get(
+      `/api/v2/assessment-kits/${assessmentKitId}/details/measures/${measureId}`,
+      {
+        ...(config ?? {}),
+      },
+    );
+  },
+
   getMaturityLevelQuestions(
     {
       assessmentKitId,
