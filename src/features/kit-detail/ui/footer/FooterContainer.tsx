@@ -1,10 +1,10 @@
 import { Suspense } from "react";
 import { Grid } from "@mui/material";
-import { KitDetailsType } from "../../model/types";
+import { KitDetailsType, KitStatsType } from "../../model/types";
 import { useFooterController } from "../../model/footer/useFooterController";
 import KitDetailsTreeView from "./KitDetailsTreeView";
 
-function FooterContainer({ details }: { details: KitDetailsType }) {
+function FooterContainer({ details, stats }: { details: KitDetailsType, stats: KitStatsType }) {
   const { selectedId, setSelectedId, ActiveComp, activeProps } =
     useFooterController(details);
 
@@ -35,7 +35,7 @@ function FooterContainer({ details }: { details: KitDetailsType }) {
         }}
       >
         <Suspense fallback={null}>
-          <ActiveComp {...activeProps} />
+          <ActiveComp {...activeProps} stats={stats} />
         </Suspense>
       </Grid>
     </Grid>

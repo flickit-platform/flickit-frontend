@@ -58,7 +58,7 @@ const KitDetailContainer = () => {
                     render={(detailsData) => {
                       const _details = (details ??
                         detailsData) as KitDetailsType;
-                      return <FooterContainer details={_details} />;
+                      return <FooterContainer stats={_stats} details={_details} />;
                     }}
                   />
                 )}
