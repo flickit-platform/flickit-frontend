@@ -37,12 +37,18 @@ export interface KitInfoType {
   languages: { code: string; title: string }[];
   draftVersionId: number | null;
 }
+
+interface translations<T> {
+  T: IIndexedItem;
+}
 interface IIndexedItem {
   id: TId;
   title: string;
   index: number;
+  translations: translations<"FA" | "EN">;
 }
 export type IMaturityLevelIndexedItem = IIndexedItem & {
+  description: string;
   competences: LevelCompetence[];
 };
 export interface KitDetailsType {

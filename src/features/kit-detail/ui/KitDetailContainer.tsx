@@ -5,14 +5,22 @@ import PageTitle from "./PageTitle";
 import KitDetailsAside from "./KitAside";
 import EditableKitDetail from "./KitInfo";
 import { useKitDetailContainer } from "../model/useKitDetailContainer";
-import { KitInfoType, KitStatsType } from "../model/types";
+import { KitDetailsType, KitInfoType, KitStatsType } from "../model/types";
 import FooterContainer from "./footer/FooterContainer";
+import QueryData from "@/components/common/QueryData";
 
 const KitDetailContainer = () => {
   const { assessmentKitId, expertGroupId } = useParams();
 
-  const { fetchKitInfoQuery, fetchKitStatsQuery, info, stats, languages } =
-    useKitDetailContainer(assessmentKitId);
+  const {
+    fetchKitInfoQuery,
+    fetchKitStatsQuery,
+    fetchKitDetailQuery,
+    info,
+    stats,
+    details,
+    languages,
+  } = useKitDetailContainer(assessmentKitId);
 
   return (
     <QueryBatchData
@@ -44,7 +52,16 @@ const KitDetailContainer = () => {
                 />
               </Grid>
               <Grid item sm={12} xs={12}>
-                {_info.hasActiveVersion && <FooterContainer />}
+                {_info.hasActiveVersion && (
+                  <QueryData
+                    {...fetchKitDetailQuery}
+                    render={(detailsData) => {
+                      const _details = (details ??
+                        detailsData) as KitDetailsType;
+                      return <FooterContainer details={_details} />;
+                    }}
+                  />
+                )}
               </Grid>
             </Grid>
           </>
