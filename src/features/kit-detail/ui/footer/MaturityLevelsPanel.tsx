@@ -72,7 +72,7 @@ const MaturityLevelsPanel = ({
                   alignItems: "flex-start",
                   width: "100%",
                   gap: 2,
-                  flexWrap: "wrap",   
+                  flexWrap: "wrap",
                 },
                 borderTopLeftRadius: "12px !important",
                 borderTopRightRadius: "12px !important",
@@ -84,30 +84,37 @@ const MaturityLevelsPanel = ({
                   : "",
               }}
             >
-              <Box sx={{ ...styles.centerV }} flex={0.5}>
+              <Box
+                sx={{ ...styles.centerV }}
+                flex={Object.values(level.translations)[0]?.title ? 0.5 : 0.25}
+              >
                 <Text variant="semiBoldLarge" lines={1}>
                   {level.index}. {level.title}
                 </Text>
-                <Divider
-                  flexItem
-                  orientation="vertical"
-                  sx={{
-                    mx: "8px",
-                    bgcolor: isExpanded(level.index)
-                      ? "background.on"
-                      : "background.containerLowest",
-                  }}
-                />
-                <Text variant="bodyMedium" lines={1}>
-                  {level.title}
-                </Text>
+                {Object.values(level.translations)[0]?.title && (
+                  <>
+                    <Divider
+                      flexItem
+                      orientation="vertical"
+                      sx={{
+                        mx: "8px",
+                        bgcolor: isExpanded(level.index)
+                          ? "background.on"
+                          : "background.containerLowest",
+                      }}
+                    />
+                    <Text variant="bodyMedium" lines={1}>
+                      {Object.values(level.translations)[0]?.title}
+                    </Text>
+                  </>
+                )}
               </Box>
               {0 < level.competences.length && (
                 <Box display="flex" gap={2} flex={1}>
                   <Text variant="semiBoldMedium">
                     {t("common.competences")}
                   </Text>
-                  <Box display="flex"  gap={1}>
+                  <Box display="flex" gap={1}>
                     {level.competences.map((competence, i) => {
                       const isLast = i === level.competences.length - 1;
                       return (
@@ -139,7 +146,24 @@ const MaturityLevelsPanel = ({
               )}
             </AccordionSummary>
 
-            <AccordionDetails />
+            <AccordionDetails>
+              <Box display="flex" gap={2} flex={1} paddingBlock={1}>
+                <Text variant="semiBoldMedium">{t("common.description")}</Text>
+                <Box width="100%">
+                  <Text variant="bodyMedium">{level.description}</Text>
+
+                  {Object.values(level.translations)[0]?.description && (
+                    <>
+                      <Divider flexItem sx={{ my: 1 }} />
+
+                      <Text variant="bodyMedium" lines={1}>
+                        {Object.values(level.translations)[0]?.description}
+                      </Text>
+                    </>
+                  )}
+                </Box>
+              </Box>
+            </AccordionDetails>
           </Accordion>
         ))}
       </Box>
