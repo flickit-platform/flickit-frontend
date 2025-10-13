@@ -42,7 +42,7 @@ export const details = {
     {
       assessmentKitId,
       questionnaireId,
-    }: { assessmentKitId: TId; questionnaireId: TId },
+    }: { assessmentKitId: string | undefined; questionnaireId: TId },
     config?: AxiosRequestConfig,
   ) {
     return axios.get(

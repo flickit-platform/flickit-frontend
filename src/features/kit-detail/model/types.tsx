@@ -45,14 +45,16 @@ export interface IIndexedItem {
   id: TId;
   title: string;
   index: number;
-  translations: translations<"FA" | "EN">;
+  translations?: translations<"FA" | "EN">;
 }
+
+type options = Omit<IIndexedItem, "id"> & { value: number };
 export type IMaturityLevelIndexedItem = IIndexedItem & {
   description: string;
   competences: LevelCompetence[];
 };
-export type IAnswerRangeIndexedItem = Omit<IIndexedItem, 'index'> & {
-  answerOptions: {index: number; title: string; value: number; translations: Record<string, { title: string }>}[];
+export type IAnswerRangeIndexedItem = Omit<IIndexedItem, "index"> & {
+  answerOptions: options[];
   translations: Record<string, { title: string }>;
 };
 export interface KitDetailsType {
@@ -61,4 +63,16 @@ export interface KitDetailsType {
   questionnaires: IIndexedItem[];
   subjects: (IIndexedItem & { attributes: IIndexedItem[] })[];
   answerRanges: IAnswerRangeIndexedItem[];
+}
+
+type QuestionDetaisl = IIndexedItem & {
+  mayNotBeApplicable: boolean;
+  advisable: boolean;
+};
+
+export interface QuestionnaireDetails {
+  questionsCount: number;
+  description: string;
+  questions: QuestionDetaisl[];
+  translations?: translations<"FA" | "EN">;
 }

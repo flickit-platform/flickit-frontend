@@ -266,7 +266,7 @@ export function getSemanticColors(
   const key = toSemantic(level); 
   const indices = ML_INDEX[key];
   const branch = palette[tone];
-  return indices.map((i) => branch[keyByIndex(i)]);
+  return indices?.map((i) => branch[keyByIndex(i)]);
 }
 
 export const C1_CONTRAST = "#B71515";

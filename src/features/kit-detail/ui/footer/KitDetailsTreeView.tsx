@@ -5,7 +5,7 @@ import ExpandLessRounded from "@mui/icons-material/ExpandLessRounded";
 import i18next from "i18next";
 import { useTranslation } from "react-i18next";
 import { Text } from "@common/Text";
-import { buildTree } from "../../config/config";
+import { buildTree, treeConfig } from "../../config/config";
 import { KitDetailsType } from "../../model/types";
 
 const INDICATOR_WIDTH = 3;
@@ -110,16 +110,17 @@ const buildParentMap = (nodes: FlatNode[]) => {
 export default function KitDetailsTreeView({
   details,
   onSelect,
-  initialSelectedId,
+  selectedId,
 }: {
   details: KitDetailsType;
   onSelect?: (nodeId: string) => void;
-  initialSelectedId?: string;
+  selectedId: string;
 }) {
+  const banTreeView = treeConfig.filter((t) => t.component === undefined);
   const isRTL = i18next.language === "fa";
   const { t } = useTranslation();
-  const [selectedId, setSelectedId] = useState<string | null>(
-    initialSelectedId ?? null,
+  const [highlightId, setHighlightId] = useState<string | null>(
+    selectedId ?? null,
   );
   const [expanded, setExpanded] = useState<string[]>([]);
 
@@ -132,14 +133,16 @@ export default function KitDetailsTreeView({
   );
 
   const handleSelect = (_e: React.SyntheticEvent, nodeId: string) => {
-    setSelectedId(nodeId);
-    onSelect?.(nodeId);
+    setHighlightId(nodeId);
+    if (!banTreeView.some((t) => t.rootNodeId === nodeId)) {
+      onSelect?.(nodeId);
+    }
   };
 
   const handleToggle = useCallback(
     (_e: React.SyntheticEvent, nextIds: string[]) => {
       const prev = new Set(expanded);
-      const added = nextIds.find((id) => !prev.has(id)); 
+      const added = nextIds.find((id) => !prev.has(id));
       if (!added) {
         setExpanded(nextIds);
         return;
@@ -155,7 +158,7 @@ export default function KitDetailsTreeView({
       aria-label="navigator"
       defaultCollapseIcon={<ExpandLessRounded fontSize="small" />}
       defaultExpandIcon={<ExpandMoreRounded fontSize="small" />}
-      selected={selectedId ?? undefined}
+      selected={highlightId ?? undefined}
       onNodeSelect={handleSelect}
       expanded={expanded}
       onNodeToggle={handleToggle}
