@@ -150,8 +150,6 @@ const OptionPill = memo(function OptionPill({
       ? (Object.values(map)[0]?.title ?? null)
       : null;
 
-  const optionScoreFormatter = (v: string) => t("common.score") + ": " + t(v);
-
   const translate = getPrimaryTranslationTitle(option.translations);
 
   return (
