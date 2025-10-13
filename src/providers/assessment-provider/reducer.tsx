@@ -20,6 +20,11 @@ const assessmentReducer = (
         ...prevState,
         pendingKitData: action.payload,
       };
+      case ASSESSMENT_ACTIONS_TYPE.SET_PENDING_REPORT_SHARE:
+      return {
+        ...prevState,
+        pendingReportData: action.payload,
+      };
     default:
       return prevState;
   }

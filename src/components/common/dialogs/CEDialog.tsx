@@ -14,7 +14,7 @@ import { t } from "i18next";
 import { Box, IconButton } from "@mui/material";
 import { Close } from "@mui/icons-material";
 import languageDetector from "@/utils/language-detector";
-import { farsiFontFamily, secondaryFontFamily } from "@config/theme";
+import { farsiFontFamily, primaryFontFamily } from "@config/theme";
 
 interface ICEDialogProps extends Omit<DialogProps, "title"> {
   closeDialog?: () => void;
@@ -53,7 +53,7 @@ export const CEDialog = (props: PropsWithChildren<ICEDialogProps>) => {
             ...titleStyle,
           }}
         >
-          <Box sx={{ ...styles.centerVH }}>{title}</Box>
+          <Box sx={{ ...styles.centerVH, gap: "6px" }}>{title}</Box>
           <IconButton
             aria-label="close"
             onClick={closeDialog}
@@ -151,7 +151,7 @@ export const CEDialogActions = (props: ICEDialogActionsProps) => {
               sx={{
                 fontFamily: languageDetector(cancelLabel)
                   ? farsiFontFamily
-                  : secondaryFontFamily,
+                  : primaryFontFamily,
                 color: "primary.main",
               }}
               variant={cancelType}

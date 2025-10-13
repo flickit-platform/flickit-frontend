@@ -2,17 +2,16 @@ import { useEffect, useMemo, useState } from "react";
 import { CEDialog, CEDialogActions } from "@common/dialogs/CEDialog";
 import { Trans } from "react-i18next";
 import i18next, { t } from "i18next";
-import Typography from "@mui/material/Typography";
 import { Box } from "@mui/material";
-import CheckCircleOutlineRoundedIcon from "@mui/icons-material/CheckCircleOutlineRounded";
 import { DialogProps } from "@mui/material/Dialog";
 import { useForm as useFormSpree } from "@formspree/react";
-import { FormProvider, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { InputFieldUC } from "../fields/InputField";
 import telegramIcon from "@/assets/svg/telegram-logo.svg";
 import splusIcon from "@/assets/svg/splus-logo.svg";
 import { styles } from "@styles";
-import { toast } from "react-toastify";
+import FormProviderWithForm from "../FormProviderWithForm";
+import { Text } from "../Text";
 
 interface IContactUsDialogProps extends DialogProps {
   onClose: () => void;
@@ -65,7 +64,11 @@ const ContactUsDialog = ({
   const [state, handleSubmitSpree] = useFormSpree(
     import.meta.env.VITE_FORM_SPREE,
   );
-  const methods = useForm({ defaultValues: { email: email ?? "" } });
+  const methods = useForm({
+    defaultValues: { email: email ?? "" },
+    mode: "onSubmit",
+    reValidateMode: "onSubmit",
+  });
   const [dialogKey, setDialogKey] = useState(0);
 
   useEffect(() => {
@@ -93,17 +96,9 @@ const ContactUsDialog = ({
     onClose();
   };
 
-  const handleSucceeded = () => {
-    handleSubmitSpree({});
-    close();
-  };
-
   const onSubmit = async (data: any) => {
     handleSubmitSpree(data).then(() => {
-      if (type === "purchased") {
-        handleSucceeded();
-        toast(t("common.thankYouForYourMessage", { lng }), { type: "success" });
-      }
+      close();
     });
   };
 
@@ -111,6 +106,7 @@ const ContactUsDialog = ({
     <>
       {type !== "requestAnExpertReview" && (
         <InputFieldUC
+          isFocused
           name="email"
           label={t("user.yourEmailAddress", { lng })}
           required
@@ -120,6 +116,7 @@ const ContactUsDialog = ({
 
       <Box sx={{ mt: 2 }}>
         <InputFieldUC
+          isFocused
           name="mobile"
           label={t("user.yourPhoneNumber", { lng })}
           placeholder={t("user.pleaseEnterYourPhoneNumber", { lng })}
@@ -149,113 +146,83 @@ const ContactUsDialog = ({
     <CEDialog
       key={dialogKey}
       {...rest}
-      closeDialog={state.succeeded ? handleSucceeded : close}
+      closeDialog={close}
       title={
-        <Typography
+        <Text
           variant="semiBoldXLarge"
           sx={styles.rtlStyle(isRTL)}
           fontFamily="inherit"
         >
           {dialogTitle ?? <Trans i18nKey="common.contactUs" />}
-        </Typography>
+        </Text>
       }
       sx={styles.rtlStyle(isRTL)}
     >
-      {state.succeeded && type !== "purchased" ? (
-        <Box mt={2} minHeight={{ xs: "calc(100vh - 100px)", sm: "unset" }}>
-          <Box height="94%" textAlign="center" sx={{ ...styles.centerCVH }}>
-            <CheckCircleOutlineRoundedIcon
-              sx={{ fontSize: 64, color: "success.main", mb: 1 }}
-            />
-            <Typography variant="h5" fontWeight="bold" mb={1}>
-              {t("common.thankYouForYourMessage", { lng })}
-            </Typography>
-            <Typography variant="body2" color="text.secondary">
-              {t("common.weWillGetBackToYouSoon", { lng })}
-            </Typography>
-          </Box>
+      <FormProviderWithForm formMethods={methods}>
+        <Box px={1} fontFamily="inherit">
+          <Text variant="bodyLarge" textAlign="justify" fontFamily="inherit">
+            {children}
+          </Text>
 
-          <CEDialogActions
-            hideCancelButton
-            submitButtonLabel={t("common.okGotIt", { lng })}
-            closeDialog={handleSucceeded}
-            onSubmit={handleSucceeded}
-          />
-        </Box>
-      ) : (
-        <FormProvider {...methods}>
-          <Box px={1} pt={3} fontFamily="inherit">
-            <form onSubmit={methods.handleSubmit(onSubmit)}>
-              <Typography
-                variant="bodyLarge"
-                textAlign="justify"
-                fontFamily="inherit"
+          {type === "contactUs" && (
+            <Text component="div" variant="bodyLarge" mb={2}>
+              <Trans i18nKey="common.contactUsIntroText" />
+            </Text>
+          )}
+
+          {renderFormFields()}
+
+          <Box
+            display="flex"
+            alignItems="center"
+            flexDirection={{ xs: "column", md: "row" }}
+            justifyContent="space-between"
+            gap={2}
+            marginInlineEnd={-1}
+          >
+            <Box gap={2} sx={{ ...styles.centerVH }}>
+              <Text
+                color="text.primary"
+                variant="semiBoldLarge"
+                whiteSpace="nowrap"
+                component="div"
+                sx={{ ...styles.rtlStyle(isRTL) }}
               >
-                {children}
-              </Typography>
+                {t("common.moreWaysToReachUs", { lng })}
+              </Text>
 
-              {type === "contactUs" && (
-                <Typography component="div" variant="bodyLarge" mb={2}>
-                  <Trans i18nKey="common.contactUsIntroText" />
-                </Typography>
-              )}
-
-              {renderFormFields()}
-            </form>
-
-            <Box
-              display="flex"
-              alignItems="center"
-              flexDirection={{ xs: "column", md: "row" }}
-              justifyContent="space-between"
-              gap={2}
-              ml={-1}
-            >
-              <Box gap={2} mt={3} sx={{ ...styles.centerVH }}>
-                <Typography
-                  color="text.primary"
-                  variant="semiBoldLarge"
-                  whiteSpace="nowrap"
-                  sx={{ ...styles.rtlStyle(isRTL) }}
+              {socialIcon.map((chat) => (
+                <Box
+                  key={chat.id}
+                  onClick={() => window.open(chat.link, "_blank")}
+                  sx={{ cursor: "pointer", ...styles.centerVH }}
                 >
-                  {t("common.moreWaysToReachUs", { lng })}
-                </Typography>
-
-                <Box display="flex" gap={2}>
-                  {socialIcon.map((chat) => (
-                    <Box
-                      key={chat.id}
-                      onClick={() => window.open(chat.link, "_blank")}
-                      sx={{ cursor: "pointer" }}
-                    >
-                      <img
-                        src={chat.icon}
-                        alt="chat icon"
-                        style={{ width: 24, height: 24 }}
-                      />
-                    </Box>
-                  ))}
+                  <img
+                    src={chat.icon}
+                    alt="chat icon"
+                    style={{ width: 24, height: 24 }}
+                  />
                 </Box>
-              </Box>
-
-              <CEDialogActions
-                cancelLabel={t("common.cancel", { lng })}
-                submitButtonLabel={
-                  primaryActionButtonText ?? t("common.confirm", { lng })
-                }
-                onClose={close}
-                loading={state.submitting}
-                onSubmit={methods.handleSubmit(onSubmit)}
-                sx={{
-                  flexDirection: { xs: "column-reverse", sm: "row" },
-                  gap: 2,
-                  ...styles.rtlStyle(isRTL),
-                }}
-              />
+              ))}
             </Box>
+
+            <CEDialogActions
+              cancelLabel={t("common.cancel", { lng })}
+              submitButtonLabel={
+                primaryActionButtonText ?? t("common.confirm", { lng })
+              }
+              onClose={close}
+              loading={state.submitting}
+              onSubmit={methods.handleSubmit(onSubmit)}
+              sx={{
+                flexDirection: { xs: "column-reverse", sm: "row" },
+                gap: 2,
+                ...styles.rtlStyle(isRTL),
+              }}
+            />
           </Box>
-        </FormProvider>
-      )}
+        </Box>
+      </FormProviderWithForm>
     </CEDialog>
   );
 };

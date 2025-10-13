@@ -1,6 +1,5 @@
 import Box from "@mui/material/Box";
 import { Trans } from "react-i18next";
-import Typography from "@mui/material/Typography";
 import { useEffect, useRef, useState } from "react";
 import { ICustomError } from "@/utils/custom-error";
 import { useQuery } from "@/hooks/useQuery";
@@ -13,6 +12,7 @@ import { EditableRichEditor } from "../common/fields/EditableRichEditor";
 import ActionPopup from "../common/buttons/ActionPopup";
 import useInsightPopup from "@/hooks/useAssessmentInsightPopup";
 import showToast from "@/utils/toast-error";
+import { Text } from "../common/Text";
 
 const SubjectOverallInsight = ({
   subjectId,
@@ -114,9 +114,9 @@ const SubjectOverallInsight = ({
   return (
     <Box display="flex" flexDirection="column" px={{ xs: 1, sm: 4 }}>
       <Box sx={{ ...styles.centerV, justifyContent: "space-between" }}>
-        <Typography variant="semiBoldLarge">
+        <Text variant="semiBoldLarge">
           <Trans i18nKey="common.insight" />
-        </Typography>
+        </Text>
         {editable && (
           <ActionPopup
             status={status}

@@ -1,4 +1,4 @@
-import { Box, IconButton, Typography, useTheme } from "@mui/material";
+import { Box, Divider, IconButton, useTheme } from "@mui/material";
 import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
 import languageDetector from "@/utils/language-detector";
 import { useState } from "react";
@@ -6,6 +6,7 @@ import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import { toast } from "react-toastify";
 import Tooltip from "@mui/material/Tooltip";
 import { t } from "i18next";
+import { Text } from "../Text";
 
 interface TitleWithTranslationProps {
   title: string;
@@ -55,9 +56,9 @@ const RenderText = ({
   };
 
   return multiline ? (
-    <Typography {...baseProps} dangerouslySetInnerHTML={{ __html: text }} />
+    <Text {...baseProps} dangerouslySetInnerHTML={{ __html: text }} />
   ) : (
-    <Typography
+    <Text
       onClick={(e) => {
         if (showCopyIcon) {
           e.stopPropagation();
@@ -84,31 +85,45 @@ const RenderText = ({
           </IconButton>
         </Tooltip>
       )}
-    </Typography>
+    </Text>
   );
 };
 
 const TitleWithTranslation = ({
   title,
-  translation= "",
+  translation = "",
   ...rest
 }: TitleWithTranslationProps) => {
-  const theme = useTheme()
+  const theme = useTheme();
   const isFarsiTitle = languageDetector(title);
   const isFarsiTranslation = translation
     ? languageDetector(translation)
     : false;
   return (
     <Box display="flex" flexDirection="column" flexGrow={1}>
-      <RenderText text={title} isFarsi={isFarsiTitle} {...rest} />
+      <RenderText
+        text={title}
+        isFarsi={isFarsiTitle}
+        {...rest}
+        variantOverride="bodyMedium"
+      />
       {translation && (
-        <RenderText
-          text={translation}
-          isFarsi={isFarsiTranslation}
-          color={theme.palette.background.onVariant}
-          variantOverride={"body2"}
-          {...rest}
-        />
+        <>
+          <Divider
+            sx={{
+              marginBlockStart: rest.multiline ? -1 : 1,
+              marginBlockEnd: rest.multiline ? -1 : 0,
+            }}
+          />
+
+          <RenderText
+            text={translation}
+            isFarsi={isFarsiTranslation}
+            color={theme.palette.background.onVariant}
+            variantOverride="bodyMedium"
+            {...rest}
+          />
+        </>
       )}
     </Box>
   );

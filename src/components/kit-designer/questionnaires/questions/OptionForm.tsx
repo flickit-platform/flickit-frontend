@@ -5,13 +5,13 @@ import Link from "@mui/material/Link";
 import CheckIcon from "@mui/icons-material/Check";
 import CloseIcon from "@mui/icons-material/Close";
 import { Trans } from "react-i18next";
-import Typography from "@mui/material/Typography";
 import { t } from "i18next";
 import MultiLangTextField from "@common/fields/MultiLangTextField";
 import { useKitDesignerContext } from "@/providers/kit-provider";
 import { useTranslationUpdater } from "@/hooks/useTranslationUpdater";
 import { MultiLangs } from "@/types";
 import { styles } from "@styles";
+import { Text } from "@/components/common/Text";
 
 interface OptionFormProps {
   newItem: {
@@ -46,7 +46,7 @@ const OptionForm = (props: OptionFormProps) => {
         position: "relative",
       }}
     >
-      <Typography
+      <Text
         variant="body2"
         sx={{
           alignItems: "center",
@@ -58,7 +58,7 @@ const OptionForm = (props: OptionFormProps) => {
         }}
       >
         {`${t("option")} ${newItem.index}`}
-      </Typography>
+      </Text>
 
       <Box width="100%" mx={1}>
         <MultiLangTextField

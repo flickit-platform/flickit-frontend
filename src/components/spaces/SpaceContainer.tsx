@@ -33,7 +33,6 @@ const SpaceContainer = () => {
   const dialogProps = useDialog();
   const assessmentDialogProps = useDialog();
   const infoDialogProps = useDialog();
-  const { currentSpace } = useAuthContext();
   const [searchParams, setSearchParams] = useSearchParams();
   const assessmentPage = Number(searchParams.get("assessmentPage") ?? 1);
   const {
@@ -60,6 +59,7 @@ const SpaceContainer = () => {
     errorObject: assessmentsErrorObject,
     deleteAssessment,
     fetchAssessments,
+    fetchSpaceInfo
   } = useFetchAssessments(assessmentPage - 1, defaultSpaceId);
 
   const handleChangePage = (_: unknown, newPage: number) => {
@@ -88,7 +88,8 @@ const SpaceContainer = () => {
   useEffect(() => {
     if (window.location.hash === "#createSpace") {
       dialogProps.openDialog({ type: "create" });
-      window.location.hash = "";
+      const cleanUrl = globalThis.location?.href?.split('#')[0] ?? '';
+      globalThis.history.replaceState(null, globalThis.document.title, cleanUrl);
     }
   }, []);
 
@@ -107,13 +108,17 @@ const SpaceContainer = () => {
       type: "create",
       data: {
         space: {
-          id: currentSpace?.id,
-          title: currentSpace?.title,
+          id: fetchSpaceInfo.data?.id,
+          title: fetchSpaceInfo.data?.title,
         },
       },
     });
   };
 
+  const refetchData = () => {
+    fetchAssessments();
+    fetchSpaceInfo.query();
+  };
   return (
     <Box pt={2}>
       <Title borderBottom size="large">
@@ -191,6 +196,7 @@ const SpaceContainer = () => {
         }
         endButtonIcon={<NewAssessmentIcon width={20} />}
         sx={{ mt: 4 }}
+        disabled={!fetchSpaceInfo.data?.canCreateAssessment}
       >
         <QueryData
           data={assessments}
@@ -207,6 +213,7 @@ const SpaceContainer = () => {
                   title="assessment.noAssesmentHere"
                   SubTitle="assessment.createAnAssessmentWith"
                   onAddNewRow={handleAddNewAssessment}
+                  disabled={!fetchSpaceInfo.data?.canCreateAssessment}
                 />
               ) : (
                 <>
@@ -248,7 +255,7 @@ const SpaceContainer = () => {
 
       <AssessmentCEFromDialog
         {...assessmentDialogProps}
-        onSubmitForm={fetchAssessments}
+        refetchData={refetchData}
       />
 
       <AssessmenetInfoDialog

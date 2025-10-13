@@ -1,14 +1,15 @@
 import { Suspense } from "react";
 import Box, { BoxProps } from "@mui/material/Box";
 import { farsiFontFamily, primaryFontFamily } from "@config/theme";
-import Typography from "@mui/material/Typography";
 import useMediaQuery from "@mui/material/useMediaQuery";
-import { getMaturityLevelColors, styles } from "@styles";
+import { styles } from "@styles";
 import { capitalizeFirstLetter } from "@/utils/filter-letter";
 import languageDetector from "@/utils/language-detector";
 import FlatGaugeComponent from "@/components/common/FlatGaugeComponent";
 import CompletionRing from "@/components/common/charts/completion-ring/CompletionRing";
 import Tooltip from "@mui/material/Tooltip";
+import { Text } from "../../Text";
+import { getSemanticColors } from "@/config/colors";
 
 interface IGaugeProps extends BoxProps {
   maturityLevelNumber: number;
@@ -48,7 +49,7 @@ const FlatGauge = (props: IGaugeProps) => {
   );
 
   if (maturityLevelNumber < levelValue) return null;
-  const darkColors = getMaturityLevelColors(maturityLevelNumber);
+  const darkColors = getSemanticColors(maturityLevelNumber);
 
   const isFarsi = languageDetector(text ?? "");
 
@@ -62,12 +63,11 @@ const FlatGauge = (props: IGaugeProps) => {
               fontFamily: isFarsi ? farsiFontFamily : primaryFontFamily,
             }}
           >
-            <Typography
+            <Text
               color="text.primary"
               sx={{
                 fontSize: "1.25rem",
                 fontWeight: "bold",
-                fontFamily: isFarsi ? farsiFontFamily : primaryFontFamily,
                 whiteSpace: "nowrap",
                 textAlign: "center",
                 overflow: "hidden",
@@ -76,7 +76,7 @@ const FlatGauge = (props: IGaugeProps) => {
               }}
             >
               {capitalizeFirstLetter(text)}
-            </Typography>
+            </Text>
           </Tooltip>
 
           <Box
@@ -96,16 +96,13 @@ const FlatGauge = (props: IGaugeProps) => {
               pointer={true}
             />
           </Box>
-          <Typography
+          <Text
             variant="bodyMedium"
             color="background.onVariant"
             sx={{
               ...styles.centerVH,
               gap: "5px",
               fontWeight: 300,
-              fontFamily: languageDetector(confidenceText ?? "")
-                ? farsiFontFamily
-                : primaryFontFamily,
             }}
           >
             {confidenceText}
@@ -114,7 +111,7 @@ const FlatGauge = (props: IGaugeProps) => {
               inputNumber={confidenceLevelNum}
               variant="semiBoldMedium"
             />
-          </Typography>
+          </Text>
         </Box>
       </Box>
     </Suspense>

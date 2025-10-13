@@ -1,8 +1,7 @@
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
 import { Trans } from "react-i18next";
-import { getMaturityLevelColors, styles } from "@styles";
+import { styles } from "@styles";
 import Accordion from "@mui/material/Accordion";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import AccordionSummary from "@mui/material/AccordionSummary";
@@ -32,6 +31,8 @@ import ScoreImpactBarChart from "./ScoreImpactBarChart";
 import DropDownContent from "./DropDownContent";
 import { useTheme } from "@mui/material";
 import Title from "@common/Title";
+import { Text } from "../common/Text";
+import { getSemanticColors } from "@/config/colors";
 
 const SubjectAttributeCard = (props: any) => {
   const {
@@ -165,7 +166,10 @@ const SubjectAttributeCard = (props: any) => {
     setSortOrder(null);
   };
 
-  const colorPallet = getMaturityLevelColors(maturity_levels_count, true);
+  const colorPallet = getSemanticColors(
+    maturity_levels_count,
+    "bg",
+  );
   const backgroundColor = colorPallet[maturityLevel.value - 1];
 
   const handleSortChange = (sortBy: any, sortOrder: any) => {
@@ -201,7 +205,7 @@ const SubjectAttributeCard = (props: any) => {
           },
         }}
         expanded={
-          permissions.viewAttributeScoreDetail && expandedAttribute === id
+          permissions?.viewAttributeScoreDetail && expandedAttribute === id
         }
         onChange={handleChange(id)}
       >
@@ -239,18 +243,15 @@ const SubjectAttributeCard = (props: any) => {
           >
             <Grid item xs={12} sm={9} sx={{ p: 4 }}>
               <Title>
-                <Typography
+                <Text
                   variant="headlineSmall"
                   sx={{
                     textTransform: "none",
-                    fontFamily: languageDetector(title)
-                      ? farsiFontFamily
-                      : primaryFontFamily,
                   }}
                 >
                   {title}
-                </Typography>
-                <Typography
+                </Text>
+                <Text
                   variant="bodyMedium"
                   sx={{
                     textTransform: "none",
@@ -260,20 +261,17 @@ const SubjectAttributeCard = (props: any) => {
                   {"("}
                   <Trans i18nKey="common.weight" />: {maturityLevel?.value}
                   {")"}
-                </Typography>
+                </Text>
               </Title>
-              <Typography
+              <Text
                 variant="bodyMedium"
                 color="background.onVariant"
                 sx={{
                   mt: 1,
-                  fontFamily: languageDetector(description)
-                    ? farsiFontFamily
-                    : primaryFontFamily,
                 }}
               >
                 {description}
-              </Typography>
+              </Text>
             </Grid>
             <Grid item xs={12} sm={3} height={{ sm: "100%", xs: "unset" }}>
               {" "}
@@ -315,7 +313,7 @@ const SubjectAttributeCard = (props: any) => {
                       expandedAttribute == id ? "0 8px 0 0" : "0 8px 8px 0",
                   }}
                 />
-                {permissions.viewAttributeScoreDetail && (
+                {permissions?.viewAttributeScoreDetail && (
                   <ExpandMoreIcon
                     sx={{
                       position: "absolute",

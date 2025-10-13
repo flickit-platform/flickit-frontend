@@ -1,11 +1,11 @@
 import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
 import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Radio from "@mui/material/Radio";
 import Divider from "@mui/material/Divider";
 import { Trans } from "react-i18next";
 import { t } from "i18next";
+import { Text } from "../common/Text";
 
 const PopoverContent = ({
   onSortChange,
@@ -50,14 +50,14 @@ const PopoverContent = ({
 
   return (
     <Box px={2} py={1}>
-      <Typography variant="bodySmall" sx={{ mb: 1 }} color="background.onVariant">
+      <Text variant="bodySmall" sx={{ mb: 1 }} color="background.onVariant">
         <Trans i18nKey="common.orderBy" />
-      </Typography>
+      </Text>
       <RadioGroup value={getSelectedValue()} onChange={handleSortChange}>
         <FormControlLabel
           value="weight"
           control={<Radio sx={{ padding: "4px" }} />}
-          label={<Typography variant="bodySmall">{t("impact")}</Typography>}
+          label={<Text variant="bodySmall">{t("impact")}</Text>}
         />
         <Divider sx={{ my: 1 }} />
 
@@ -65,18 +65,18 @@ const PopoverContent = ({
           value="gainedScoreLowToHigh"
           control={<Radio sx={{ padding: "4px" }} />}
           label={
-            <Typography variant="bodySmall">
+            <Text variant="bodySmall">
               {t("subject.gainedScore")} ({t("common.ascending")})
-            </Typography>
+            </Text>
           }
         />
         <FormControlLabel
           value="gainedScoreHighToLow"
           control={<Radio sx={{ padding: "4px" }} />}
           label={
-            <Typography variant="bodySmall">
+            <Text variant="bodySmall">
               {t("subject.gainedScore")} ({t("common.descending")})
-            </Typography>
+            </Text>
           }
         />
         <Divider sx={{ my: 1 }} />
@@ -84,18 +84,18 @@ const PopoverContent = ({
           value="missedScoreLowToHigh"
           control={<Radio sx={{ padding: "4px" }} />}
           label={
-            <Typography variant="bodySmall">
+            <Text variant="bodySmall">
               {t("subject.missedScore")} ({t("common.ascending")})
-            </Typography>
+            </Text>
           }
         />
         <FormControlLabel
           value="missedScoreHighToLow"
           control={<Radio sx={{ padding: "4px" }} />}
           label={
-            <Typography variant="bodySmall">
+            <Text variant="bodySmall">
               {t("subject.missedScore")} ({t("common.descending")})
-            </Typography>
+            </Text>
           }
         />
       </RadioGroup>

@@ -1,5 +1,5 @@
 import { Dispatch, SetStateAction, useMemo } from "react";
-import { Box, Typography, Grid, useTheme } from "@mui/material";
+import { Box, Grid, useTheme } from "@mui/material";
 import TreeMapChart from "@/components/common/charts/TreeMapChart";
 import ManWithMagnifier from "@/assets/svg/man-with-magnifier.svg";
 import { t } from "i18next";
@@ -10,6 +10,7 @@ import MeasuresTable from "./MeasureTable";
 import AIGenerated from "@/components/common/icons/AIGenerated";
 import FlatGauge from "@/components/common/charts/flat-gauge/FlatGauge";
 import { IMaturityLevel, IUserPermissions } from "@/types";
+import { Text } from "@/components/common/Text";
 
 type Props = Readonly<{
   isQuickMode: boolean;
@@ -99,21 +100,22 @@ const HeaderStrip: React.FC<{
         md={4}
         sx={{ p: { xs: 2, md: 2 }, textAlign: "center" }}
       >
-        <Typography
+        <Text
           component="div"
           variant="titleLarge"
           color="Background.default"
           sx={rtlSx(vm.titleRtl)}
         >
           {vm.title}
-        </Typography>
-        <Typography
+        </Text>
+        <Text
           variant="semiBoldSmall"
           color="Background.onVariant"
-          sx={rtlSx(vm.rtl)}
+          mt={1}
+          sx={{ ...rtlSx(vm.rtl), display: "block" }}
         >
           {vm.weightText}
-        </Typography>
+        </Text>
       </Grid>
       <Grid
         item
@@ -121,13 +123,13 @@ const HeaderStrip: React.FC<{
         md={5.5}
         sx={{ p: { xs: 2, md: 2 }, textAlign: "center" }}
       >
-        <Typography
+        <Text
           variant="bodyMedium"
           color="Background.default"
           sx={rtlSx(vm.descRtl)}
         >
           {vm.description}
-        </Typography>
+        </Text>
       </Grid>
       <Grid
         item
@@ -183,15 +185,11 @@ const InsightBlock: React.FC<{
             }}
           />
         )}
-        <Typography
-          color="text.primary"
-          variant="semiBoldLarge"
-          sx={rtlSx(rtl)}
-        >
+        <Text color="text.primary" variant="semiBoldLarge" sx={rtlSx(rtl)}>
           {title}
-        </Typography>
+        </Text>
       </Box>
-      <Typography
+      <Text
         component="div"
         textAlign="justify"
         variant="bodyMedium"
@@ -214,9 +212,9 @@ const ReasonBar: React.FC<{ text: string; rtl?: boolean }> = ({
     borderBottom="0.5px solid rgba(102,128,153,0.5)"
     sx={{ ...styles.centerVH }}
   >
-    <Typography color="text.primary" variant="labelMedium" sx={rtlSx(rtl)}>
+    <Text color="text.primary" variant="labelMedium" sx={rtlSx(rtl)}>
       {text}
-    </Typography>
+    </Text>
   </Box>
 );
 
@@ -225,7 +223,7 @@ const GuidanceNote: React.FC<{ text: string; rtl?: boolean }> = ({
   rtl,
 }) => (
   <Box my={1} sx={{ ...styles.centerV }}>
-    <Typography
+    <Text
       color="info.main"
       variant="bodySmall"
       whiteSpace="break-spaces"
@@ -233,7 +231,7 @@ const GuidanceNote: React.FC<{ text: string; rtl?: boolean }> = ({
       sx={rtlSx(rtl)}
     >
       {text}
-    </Typography>
+    </Text>
   </Box>
 );
 
@@ -256,9 +254,9 @@ const EmptyState: React.FC<{ text: string; rtl?: boolean }> = ({
       alt="Man With Magnifier"
       sx={{ width: "100%", height: 112, maxWidth: 260 }}
     />
-    <Typography variant="semiBoldXLarge" color="disabled.on" sx={rtlSx(rtl)}>
+    <Text variant="semiBoldXLarge" color="disabled.on" sx={rtlSx(rtl)}>
       {text}
-    </Typography>
+    </Text>
   </Box>
 );
 

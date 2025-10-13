@@ -1,4 +1,3 @@
-import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import Divider from "@mui/material/Divider";
 import Box from "@mui/material/Box";
@@ -17,6 +16,7 @@ import { useConfigContext } from "@/providers/config-provider";
 import { RenderGeneralField } from "@common/RenderGeneralField";
 import useGeneralInfoField from "@/hooks/useGeneralInfoField";
 import { useTranslationUpdater } from "@/hooks/useTranslationUpdater";
+import { Text } from "@/components/common/Text";
 
 const generalFields = [
   {
@@ -31,11 +31,11 @@ const generalFields = [
     multiline: false,
     useRichEditor: false,
   },
-  { name: "about", label: "common.what", multiline: true, useRichEditor: true },
-  { name: "goal", label: "common.when", multiline: true, useRichEditor: true },
+  { name: "about", label: "kitDetail.whatIsThisKit", multiline: true, useRichEditor: true },
+  { name: "goal", label: "kitDetail.whoNeedsThisKit", multiline: true, useRichEditor: true },
   {
     name: "context",
-    label: "common.who",
+    label: "kitDetail.whenToUseThisKit",
     multiline: true,
     useRichEditor: true,
   },
@@ -137,14 +137,14 @@ const GeneralContent = ({ kitVersion }: { kitVersion: IKitVersion }) => {
   return (
     <>
       <Box justifyContent="space-between" sx={{ ...styles.centerV }}>
-        <Typography variant="headlineSmall" fontWeight="bold">
+        <Text variant="headlineSmall" fontWeight="bold">
           <Trans i18nKey="common.general" />
-        </Typography>
+        </Text>
       </Box>
 
-      <Typography variant="bodyMedium">
+      <Text variant="bodyMedium">
         <Trans i18nKey="kitDesigner.generalDescription" />
-      </Typography>
+      </Text>
 
       <Divider sx={{ my: 2 }} />
 
@@ -157,9 +157,9 @@ const GeneralContent = ({ kitVersion }: { kitVersion: IKitVersion }) => {
           render={(data) => (
             <Stack spacing={2}>
               <Box sx={{ ...styles.centerV }} gap={2}>
-                <Typography variant="semiBoldLarge">
+                <Text variant="semiBoldLarge">
                   <Trans i18nKey="kitDesigner.availableLanguages" />:
-                </Typography>
+                </Text>
                 <LanguageSelectorChips
                   mainLanguage={data.mainLanguage}
                   translatedLanguage={translatedLang}
@@ -181,9 +181,9 @@ const GeneralContent = ({ kitVersion }: { kitVersion: IKitVersion }) => {
                     }}
                     gap={multiline ? 0 : 2}
                   >
-                    <Typography variant="semiBoldLarge">
+                    <Text variant="semiBoldLarge">
                       <Trans i18nKey={label} />:
-                    </Typography>
+                    </Text>
                     <Box
                       sx={{
                         display: "flex",
@@ -223,7 +223,7 @@ const GeneralContent = ({ kitVersion }: { kitVersion: IKitVersion }) => {
         </Button>
         <Button
           variant="contained"
-          onClick={handleSaveEdit}
+          onClick={() => handleSaveEdit()}
           disabled={updateKitInfoQuery.loading || editableFields.size === 0}
         >
           {updateKitInfoQuery.loading ? (

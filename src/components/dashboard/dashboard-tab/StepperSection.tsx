@@ -1,6 +1,5 @@
 import Box from "@mui/material/Box";
 import Step from "@mui/material/Step";
-import Typography from "@mui/material/Typography";
 import StepLabel from "@mui/material/StepLabel";
 import Stepper from "@mui/material/Stepper";
 import { Trans } from "react-i18next";
@@ -13,6 +12,7 @@ import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import useScreenResize from "@/hooks/useScreenResize";
 import { useTheme } from "@mui/material";
+import { Text } from "@/components/common/Text";
 
 interface IStepperSection {
   setActiveStep: (value: React.SetStateAction<number>) => void;
@@ -158,12 +158,12 @@ const StepBox = (props: IStepBox) => {
           <Chip
             label={
               <Box sx={{ ...styles.centerVH, gap: 1 }}>
-                <Typography variant="labelMedium">{count}</Typography>
-                <Typography variant="labelSmall">
+                <Text variant="labelMedium">{count}</Text>
+                <Text variant="labelSmall">
                   {t(
                     count > 1 ? "common.issues" : "common.issue",
                   ).toUpperCase()}
-                </Typography>
+                </Text>
               </Box>
             }
             size="small"
@@ -223,22 +223,22 @@ const StepBox = (props: IStepBox) => {
             justifyContent: "space-evenly",
           }}
         >
-          <Typography
+          <Text
             sx={{ direction: "ltr" }}
             variant="headlineLarge"
-          >{`${answered} / ${total} `}</Typography>
+          >{`${answered} / ${total} `}</Text>
           <Box sx={{ ...styles.centerCVH, gap: 1 }}>
             {completed ? completedTag : localStep === 0 && currentTag}
             {issuesTag("questions")}
           </Box>
         </Box>
         <Box gap="4px" sx={{ ...styles.centerVH }}>
-          <Typography variant="labelMedium" color="#2D80D2">
+          <Text variant="labelMedium" color="#2D80D2">
             {Math.floor((100 * answered) / total)}%
-          </Typography>
-          <Typography variant="labelMedium" color="#3D4D5C80">
+          </Text>
+          <Text variant="labelMedium" color="#3D4D5C80">
             {t("dashboard.fromTotalQuestionsCount")}
-          </Typography>
+          </Text>
         </Box>
       </Box>
     );
@@ -260,23 +260,25 @@ const StepBox = (props: IStepBox) => {
         }}
       >
         <Box sx={{ display: "flex", justifyContent: "center", gap: 2 }}>
-          <Typography
+          <Text
             sx={{ direction: "ltr" }}
             variant="headlineLarge"
-          >{`${result} / ${expected}`}</Typography>
-          <Box sx={{ ...styles.centerCVH, gap: 1 }}>
-            {completed && completedTag}
-            {!completed && localStep === 1 && currentTag}
-            {!!hasIssues && issuesTag("insights")}
-          </Box>
+          >{`${result} / ${expected}`}</Text>
+          {(completed || (!completed && localStep === 1) || !!hasIssues) && (
+            <Box sx={{ ...styles.centerCVH, gap: 1 }}>
+              {completed && completedTag}
+              {!completed && localStep === 1 && currentTag}
+              {!!hasIssues && issuesTag("insights")}
+            </Box>
+          )}
         </Box>
         <Box sx={{ ...styles.centerVH, gap: "4px" }}>
-          <Typography variant="labelMedium" color="#2D80D2">
+          <Text variant="labelMedium" color="#2D80D2">
             {Math.floor((100 * result) / expected)}%
-          </Typography>
-          <Typography variant="labelMedium" color="#3D4D5C80">
+          </Text>
+          <Text variant="labelMedium" color="#3D4D5C80">
             {t("dashboard.totalInsightsCount")}
-          </Typography>
+          </Text>
         </Box>
       </Box>
     );
@@ -296,12 +298,16 @@ const StepBox = (props: IStepBox) => {
         }}
       >
         <Box sx={{ display: "flex", justifyContent: "space-evenly" }}>
-          <Typography variant="headlineLarge">{total}</Typography>
-          <Box sx={{ ...styles.centerCVH, gap: 1 }}>
-            {completed && completedTag}
-            {!completed && localStep === 2 && currentTag}
-            {hasIssues && !completed && issuesTag("advices")}
-          </Box>
+          <Text variant="headlineLarge">{total}</Text>
+          {(completed ||
+            (!completed && localStep === 2) ||
+            (hasIssues && !completed)) && (
+            <Box sx={{ ...styles.centerCVH, gap: 1 }}>
+              {completed && completedTag}
+              {!completed && localStep === 2 && currentTag}
+              {hasIssues && !completed && issuesTag("advices")}
+            </Box>
+          )}
         </Box>
       </Box>
     );
@@ -330,15 +336,17 @@ const StepBox = (props: IStepBox) => {
             justifyContent: "space-evenly",
           }}
         >
-          <Typography
+          <Text
             sx={{ direction: "ltr" }}
             variant="headlineLarge"
-          >{`${providedMetadata} / ${totalMetadata} `}</Typography>
-          <Box sx={{ ...styles.centerCVH, gap: 1 }}>
-            {completed && completedTag}
-            {!completed && localStep === 3 && currentTag}
-            {hasIssues && issuesTag("report")}
-          </Box>
+          >{`${providedMetadata} / ${totalMetadata} `}</Text>
+          {(hasIssues || completed || (!completed && localStep === 3)) && (
+            <Box sx={{ ...styles.centerCVH, gap: 1 }}>
+              {completed && completedTag}
+              {!completed && localStep === 3 && currentTag}
+              {hasIssues && issuesTag("report")}
+            </Box>
+          )}
         </Box>
       </Box>
     );
@@ -350,7 +358,6 @@ const StepBox = (props: IStepBox) => {
     if (advices) return renderAdvices();
     return renderReport();
   })();
-  
 
   const titleMap: Record<string, string> = {
     questions: "dashboard.answeringQuestionsTitle",
@@ -392,15 +399,15 @@ const StepBox = (props: IStepBox) => {
         color: "inherit",
       }}
     >
-      <Typography
+      <Text
         variant="semiBoldLarge"
         color="background.onVariant"
-        sx={{ mb: "36px", textAlign: "center" }}
+        sx={{ mb: "36px", textAlign: "center", display: "inline-block" }}
       >
-        <Typography variant="semiBoldXLarge">
+        <Text variant="semiBoldXLarge">
           <Trans i18nKey={titleMap[category]} />
-        </Typography>
-      </Typography>
+        </Text>
+      </Text>
       {content}
     </Grid>
   );

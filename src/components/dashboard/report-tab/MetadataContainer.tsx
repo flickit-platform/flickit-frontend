@@ -1,6 +1,5 @@
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
 import { Trans } from "react-i18next";
 import { Link, useParams } from "react-router-dom";
@@ -15,6 +14,7 @@ import ReportProblemOutlinedIcon from "@mui/icons-material/ReportProblemOutlined
 import Switch from "@mui/material/Switch";
 import { EditableRichEditor } from "@/components/common/fields/EditableRichEditor";
 import { styles } from "@styles";
+import { Text } from "@/components/common/Text";
 const ReportTab = () => {
   const { spaceId = "", assessmentId = "" } = useParams();
   const { service } = useServiceContext();
@@ -93,7 +93,7 @@ const ReportTab = () => {
                         name == "intro" ? { xs: "100%", md: "68%" } : "100%",
                     }}
                   >
-                    <Typography
+                    <Text
                       color="text.primary"
                       variant="semiBoldLarge"
                       justifyContent="flex-start"
@@ -103,11 +103,11 @@ const ReportTab = () => {
                     >
                       <Trans i18nKey={title} />
                       {!metadata[name] && (
-                        <Typography variant="semiBoldLarge" color="error.main">
+                        <Text variant="semiBoldLarge" color="error.main">
                           (<Trans i18nKey="common.empty" />)
-                        </Typography>
+                        </Text>
                       )}
-                    </Typography>
+                    </Text>
                     <Box>
                       <EditableRichEditor
                         defaultValue={metadata[name]}
@@ -148,9 +148,9 @@ const ReportTab = () => {
                           sx={{ display: "flex", gap: 1, width: "100%" }}
                           variant={"contained"}
                         >
-                          <Typography sx={{ whiteSpace: "nowrap" }}>
+                          <Text sx={{ whiteSpace: "nowrap" }}>
                             <Trans i18nKey="assessmentReport.viewReport" />
-                          </Typography>
+                          </Text>
                           <AssignmentOutlinedIcon fontSize={"small"} />
                         </Button>
                         <Divider sx={{ width: "100%", my: 2 }} />
@@ -159,9 +159,9 @@ const ReportTab = () => {
                           justifyContent="space-between"
                           sx={{ ...styles.centerV }}
                         >
-                          <Typography variant="semiBoldLarge">
+                          <Text variant="semiBoldLarge">
                             <Trans i18nKey="assessmentReport.publishReport" />
-                          </Typography>
+                          </Text>
                           <Switch
                             checked={published}
                             onChange={handlePublishChange}
@@ -177,7 +177,7 @@ const ReportTab = () => {
                         {Object.values(metadata).includes(null) &&
                           !published && (
                             <Box bgcolor="transparent">
-                              <Typography
+                              <Text
                                 variant="semiBoldSmall"
                                 color="error.main"
                                 sx={{
@@ -189,7 +189,7 @@ const ReportTab = () => {
                               >
                                 <ReportProblemOutlinedIcon fontSize={"small"} />
                                 <Trans i18nKey="errors.fillInAllRequired" />
-                              </Typography>
+                              </Text>
                             </Box>
                           )}
                       </Box>

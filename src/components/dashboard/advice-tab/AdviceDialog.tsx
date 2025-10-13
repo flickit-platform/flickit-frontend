@@ -1,5 +1,4 @@
 import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
 import { Grid } from "@mui/material";
 import { Trans } from "react-i18next";
 import { useEffect, useState } from "react";
@@ -20,6 +19,7 @@ import {
   CEDialogActions,
 } from "@/components/common/dialogs/CEDialog";
 import { LoadingAdviceTargetsSkeleton } from "@/components/common/loadings/LoadingAdviceTargetsSkeleton";
+import { Text } from "@/components/common/Text";
 
 type AdviceDialogProps = {
   open: boolean;
@@ -107,6 +107,52 @@ const AdviceDialog = ({
       ? createAdviceQueryData.loading
       : createAINarrationQueryData.loading;
 
+  useEffect(() => {
+    if (!open) return;
+    const ac = new AbortController();
+
+    const isRangeOrSlider = (el: HTMLElement | null) => {
+      if (!el) return false;
+      const tag = el.tagName?.toLowerCase();
+      const isRangeInput =
+        tag === "input" && (el as HTMLInputElement).type === "range";
+      const isAriaSlider =
+        el.getAttribute?.("role") === "slider" ||
+        el.closest?.('[role="slider"]');
+      return Boolean(isRangeInput || isAriaSlider);
+    };
+
+    const onUp = (e: KeyboardEvent) => {
+      if (e.key !== "Enter" || e.repeat) return;
+
+      const el = e.target as HTMLElement | null;
+      const disabled =
+        (step === 1 && (!target || target.length === 0)) || isLoading;
+
+      if (isRangeOrSlider(el)) {
+        e.preventDefault();
+        (el as HTMLElement)?.blur();
+        if (!disabled) onSubmit();
+        return;
+      }
+
+      if (
+        el &&
+        (el.isContentEditable ||
+          /^(input|textarea|select|button)$/i.test(el.tagName))
+      )
+        return;
+
+      if (!disabled) onSubmit();
+    };
+
+    window.addEventListener("keyup", onUp, {
+      signal: ac.signal,
+      capture: true,
+    });
+    return () => ac.abort();
+  }, [open, step, target, isLoading, onSubmit]);
+
   return (
     <CEDialog
       open={open}
@@ -130,12 +176,11 @@ const AdviceDialog = ({
       <Box
         width="100%"
         sx={{ ...styles.centerCV }}
-        pt={{ xs: 0, md: 3 }}
+        pt={{ xs: 0, md: 1 }}
         pb={2}
       >
-        <Typography
+        <Text
           variant="bodyMedium"
-          color="background.onVariant"
           textAlign="justify"
         >
           <Trans
@@ -143,7 +188,7 @@ const AdviceDialog = ({
               step === 1 ? "advice.adviceAssistantDesc" : "advice.reviewAdvice"
             }
           />
-        </Typography>
+        </Text>
 
         {(fetchPreAdviceInfo.loading || loading) && (
           <LoadingAdviceTargetsSkeleton />

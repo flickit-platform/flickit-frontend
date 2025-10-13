@@ -1,5 +1,4 @@
 import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
 import { useParams } from "react-router-dom";
 import { useEffect, useState, useRef } from "react";
 import Skeleton from "@mui/material/Skeleton";
@@ -13,6 +12,7 @@ import { EditableRichEditor } from "../../../common/fields/EditableRichEditor";
 import ActionPopup from "../../../common/buttons/ActionPopup";
 import useInsightPopup from "@/hooks/useAssessmentInsightPopup";
 import showToast from "@/utils/toast-error";
+import { Text } from "@/components/common/Text";
 
 export const AssessmentInsight = ({ defaultInsight, reloadQuery }: any) => {
   const { service } = useServiceContext();
@@ -43,7 +43,10 @@ export const AssessmentInsight = ({ defaultInsight, reloadQuery }: any) => {
 
   const ApproveAssessmentInsight = useQuery({
     service: (args, config) =>
-      service.assessments.insight.approveOverall(args ?? { assessmentId }, config),
+      service.assessments.insight.approveOverall(
+        args ?? { assessmentId },
+        config,
+      ),
     runOnMount: false,
   });
 
@@ -99,12 +102,7 @@ export const AssessmentInsight = ({ defaultInsight, reloadQuery }: any) => {
   });
 
   return (
-    <Box
-      display="flex"
-      flexDirection="column"
-      gap={2}
-      width="100%"
-    >
+    <Box display="flex" flexDirection="column" gap={2} width="100%">
       <Box
         sx={{
           ...styles.centerV,
@@ -112,9 +110,9 @@ export const AssessmentInsight = ({ defaultInsight, reloadQuery }: any) => {
           justifyContent: "space-between",
         }}
       >
-        <Typography variant="semiBoldLarge">
+        <Text variant="semiBoldLarge">
           <Trans i18nKey="dashboard.assessmentOverallInsights" />
-        </Typography>
+        </Text>
 
         {editable && (
           <ActionPopup
@@ -144,7 +142,10 @@ export const AssessmentInsight = ({ defaultInsight, reloadQuery }: any) => {
             );
           }}
           infoQuery={fetchAssessmentInsight.query}
-          placeholder={t("assessmentReport.writeYourInsightsOfTheAssessmentResultsHere") ?? ""}
+          placeholder={
+            t("assessmentReport.writeYourInsightsOfTheAssessmentResultsHere") ??
+            ""
+          }
         />
       )}
     </Box>

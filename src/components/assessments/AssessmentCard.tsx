@@ -12,7 +12,6 @@ import toastError from "@/utils/toast-error";
 import MoreActions from "@common/MoreActions";
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
-import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import {
   IAssessment,
@@ -32,7 +31,6 @@ import SettingsIcon from "@mui/icons-material/Settings";
 import Tooltip from "@mui/material/Tooltip";
 import Chip from "@mui/material/Chip";
 import CompletionRing from "@/components/common/charts/completion-ring/CompletionRing";
-import { farsiFontFamily, primaryFontFamily } from "@config/theme";
 import languageDetector from "@/utils/language-detector";
 import Assessment from "@mui/icons-material/Assessment";
 import { getReadableDate } from "@/utils/readable-date";
@@ -43,6 +41,7 @@ import MoveAssessmentDialog from "./MoveAssessmentDialog";
 import { useAssessmentCreation } from "@/hooks/useAssessmentCreation";
 import keycloakService from "@/service/keycloakService";
 import { useAuthContext } from "@/providers/auth-provider";
+import { Text } from "../common/Text";
 
 interface IAssessmentCardProps {
   item: IAssessment & { space: any };
@@ -81,6 +80,7 @@ const AssessmentCard = ({
     hasReport,
     color,
     title,
+    space: propSpaceId,
   } = item;
 
   const calculateMaturityLevelQuery = useQuery({
@@ -113,8 +113,10 @@ const AssessmentCard = ({
           setShow(true);
         }
       }
-      const { answersCount, questionsCount } =
-        await assessmentTotalProgress.query();
+      const result = await assessmentTotalProgress?.query();
+
+      const answersCount = result?.answersCount ?? 0;
+      const questionsCount = result?.questionsCount ?? 0;
       if (questionsCount) {
         setProgressPercent(((answersCount / questionsCount) * 100).toFixed(2));
       }
@@ -134,18 +136,18 @@ const AssessmentCard = ({
 
   const pathRoute = (checkItem: boolean): string => {
     if (permissions.canViewReport && hasReport && isQuickMode) {
-      return `/${spaceId ?? defaultSpaceId}/assessments/${id}/graphical-report/`;
+      return `/${spaceId ?? defaultSpaceId ?? propSpaceId.id}/assessments/${id}/graphical-report/`;
     }
     if (checkItem && permissions.canViewDashboard) {
       return isQuickMode
-        ? `/${spaceId ?? defaultSpaceId}/assessments/1/${id}/questionnaires`
-        : `/${spaceId ?? defaultSpaceId}/assessments/1/${id}/dashboard`;
+        ? `/${spaceId ?? defaultSpaceId ?? propSpaceId.id}/assessments/1/${id}/questionnaires`
+        : `/${spaceId ?? defaultSpaceId ?? propSpaceId.id}/assessments/1/${id}/dashboard`;
     }
     if (permissions.canViewReport && hasReport) {
-      return `/${spaceId ?? defaultSpaceId}/assessments/${id}/graphical-report/`;
+      return `/${spaceId ?? defaultSpaceId ?? propSpaceId.id}/assessments/${id}/graphical-report/`;
     }
     if (permissions.canViewQuestionnaires && isQuickMode) {
-      return `/${spaceId ?? defaultSpaceId}/assessments/1/${id}/questionnaires`;
+      return `/${spaceId ?? defaultSpaceId ?? propSpaceId.id}/assessments/1/${id}/questionnaires`;
     }
     return "";
   };
@@ -176,6 +178,7 @@ const AssessmentCard = ({
           ":hover": { boxShadow: 9 },
         }}
         data-cy="assessment-card"
+        data-testid={"assessment-card"}
       >
         {permissions.canManageSettings && (
           <Actions
@@ -229,7 +232,7 @@ const AssessmentCard = ({
                   height={permissions.canViewReport ? "130px" : "unset"}
                 />
                 {permissions.canViewReport && !isQuickMode && (
-                  <Typography
+                  <Text
                     sx={{ ...styles.centerVH }}
                     variant="bodySmall"
                     color="background.onVariant"
@@ -241,7 +244,7 @@ const AssessmentCard = ({
                       inputNumber={Math.ceil(confidenceValue)}
                       variant="titleSmall"
                     />
-                  </Typography>
+                  </Text>
                 )}
               </>
             ) : (
@@ -269,7 +272,7 @@ const AssessmentCard = ({
                   progressPercent={progressPercent}
                   location={location}
                   language={language}
-                  spaceId={spaceId ?? defaultSpaceId}
+                  spaceId={spaceId ?? defaultSpaceId ?? propSpaceId.id}
                   type={type}
                 />
               ))}
@@ -304,6 +307,7 @@ const Header = ({
     }}
     component={Link}
     to={pathRoute(isCalculateValid)}
+    data-testid="assessmentCard-header"
   >
     <Tooltip title={kit?.title}>
       <Chip
@@ -324,22 +328,15 @@ const Header = ({
         data-cy="assessment-card-title"
       />
     </Tooltip>
-    <Typography
-      variant="h5"
-      color="CaptionText"
-      textTransform={"uppercase"}
+    <Box
       sx={{
         padding: "8px 28px",
-        fontWeight: "bold",
         pb: 0,
         textAlign: "center",
         color: color?.code ?? "#101c32",
         maxWidth: "320px",
         margin: "0 auto",
         width: "100%",
-        fontFamily: languageDetector(itemTitle)
-          ? farsiFontFamily
-          : primaryFontFamily,
         direction: languageDetector(itemTitle) ? "rtl" : "ltr",
         ...styles.centerVH,
         gap: "10px",
@@ -354,15 +351,28 @@ const Header = ({
       <Box
         sx={{
           overflow: "hidden",
-          textOverflow: "ellipsis",
           whiteSpace: "nowrap",
           flexShrink: 1,
           direction: languageDetector(itemTitle) ? "rtl" : "ltr",
         }}
       >
-        {itemTitle}
+        <Text
+          variant="h5"
+          color="CaptionText"
+          textTransform={"uppercase"}
+          sx={{
+            fontWeight: "bold",
+            pb: 0,
+            textAlign: "center",
+            color: color?.code ?? "#101c32",
+          }}
+          lines={1}
+          data-cy="assessment-card-title"
+        >
+          {itemTitle}
+        </Text>
       </Box>
-    </Typography>
+    </Box>
 
     <Box sx={{ ...styles.centerVH }}>
       <Box
@@ -374,19 +384,19 @@ const Header = ({
           p: 0.5,
         }}
       >
-        <Typography variant="labelSmall" color="info.main">
+        <Text variant="labelSmall" color="info.main">
           {language.code}
-        </Typography>
+        </Text>
       </Box>
       <Divider orientation="vertical" flexItem sx={{ mx: "8px" }} />
-      <Typography
+      <Text
         variant="labelSmall"
         sx={{ textAlign: "center" }}
         color="info.main"
       >
         <Trans i18nKey="common.lastUpdated" />{" "}
         {getReadableDate(lastModificationTime)}
-      </Typography>
+      </Text>
     </Box>
   </Box>
 );
@@ -462,6 +472,7 @@ const CardButton = ({
       state={{ location, language }}
       to={to}
       data-cy="assessment-card-btn"
+      data-testid="assessment-card-btn"
       variant={
         key === "reportTitle" || key === "dashboard" ? "contained" : "outlined"
       }

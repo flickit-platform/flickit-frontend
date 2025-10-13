@@ -12,6 +12,7 @@ type Props = {
   onShare: () => void;
   onExpert: () => void;
   onQuestionnaires: () => void;
+  canViewQuestionnaire: boolean;
 };
 
 export default function ReportActionsRow({
@@ -22,17 +23,20 @@ export default function ReportActionsRow({
   onShare,
   onExpert,
   onQuestionnaires,
+  canViewQuestionnaire,
 }: Readonly<Props>) {
   return (
     <Box display="flex" gap={2} justifyContent="space-between">
-      <LoadingButton
-        variant="outlined"
-        size="small"
-        onClick={onQuestionnaires}
-        sx={{ ...styles.rtlStyle(rtl), width: { xs: "100%", md: "unset" } }}
-      >
-        {t("common.questionnaires", { lng })}
-      </LoadingButton>
+      {canViewQuestionnaire && (
+        <LoadingButton
+          variant="outlined"
+          size="small"
+          onClick={onQuestionnaires}
+          sx={{ ...styles.rtlStyle(rtl), width: { xs: "100%", md: "unset" } }}
+        >
+          {t("common.questionnaires", { lng })}
+        </LoadingButton>
+      )}
 
       <Box display={{ xs: "none", md: "flex" }} gap={2}>
         <LoadingButton

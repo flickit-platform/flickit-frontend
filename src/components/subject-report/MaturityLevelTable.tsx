@@ -6,7 +6,6 @@ import TableRow from "@mui/material/TableRow";
 import TableCell from "@mui/material/TableCell";
 import TableBody from "@mui/material/TableBody";
 import TableSortLabel from "@mui/material/TableSortLabel";
-import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import { useTheme } from "@mui/material";
 import Chip from "@mui/material/Chip";
@@ -27,6 +26,7 @@ import ScoreDisplay from "./ScoreDisplay";
 import usePopover from "@/hooks/usePopover";
 import { styles } from "@styles";
 import { CircleRating } from "./CircleRating";
+import { Text } from "../common/Text";
 
 interface Item {
   questionnaire: { id: string; title: string };
@@ -350,12 +350,12 @@ const MaturityLevelTable = ({
             gap: 1,
           }}
         >
-          <Typography sx={{ textAlign: "center" }} variant="bodyMedium">
+          <Text sx={{ textAlign: "center" }} variant="bodyMedium">
             <Trans i18nKey={item.label} />:
-          </Typography>
-          <Typography variant="semiBoldMedium">
+          </Text>
+          <Text variant="semiBoldMedium">
             {formatMaturityNumber(item.value)}
-          </Typography>
+          </Text>
         </Grid>
       ))}
     </Grid>
@@ -510,9 +510,9 @@ const MaturityLevelTable = ({
             align="center"
             sx={{ textAlign: "center" }}
           >
-            <Typography>
+            <Text>
               <Trans i18nKey="subject.noQuestionAvailableForThisMaturity" />
-            </Typography>
+            </Text>
           </TableCell>
         </TableRow>
       )}

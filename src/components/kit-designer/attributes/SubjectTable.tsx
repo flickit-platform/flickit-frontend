@@ -7,7 +7,6 @@ import TableCell from "@mui/material/TableCell";
 import TableBody from "@mui/material/TableBody";
 import IconButton from "@mui/material/IconButton";
 import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
 import SwapVertRoundedIcon from "@mui/icons-material/SwapVertRounded";
 import EditIcon from "@mui/icons-material/Edit";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
@@ -20,6 +19,7 @@ import { useKitDesignerContext } from "@/providers/kit-provider";
 import { useTranslationUpdater } from "@/hooks/useTranslationUpdater";
 import { MultiLangs } from "@/types";
 import TitleWithTranslation from "@common/fields/TranslationText";
+import { Text } from "@/components/common/Text";
 
 interface Attribute {
   id: string | number;
@@ -208,7 +208,7 @@ const SubjectTable: React.FC<SubjectTableProps> = ({
                   sx={{ bgcolor: "#F9F9F9", borderRadius: "0.5rem", mb: 1 }}
                 >
                   <TableCell>
-                    <Typography variant="semiBoldLarge">{index + 1}</Typography>
+                    <Text variant="semiBoldLarge">{index + 1}</Text>
                   </TableCell>
                   <TableCell>
                     <TitleWithTranslation
@@ -291,9 +291,9 @@ const SubjectTable: React.FC<SubjectTableProps> = ({
                                             justifyContent="space-around"
                                             sx={{ ...styles.centerV }}
                                           >
-                                            <Typography variant="semiBoldLarge">
+                                            <Text variant="semiBoldLarge">
                                               {attrIndex + 1}
-                                            </Typography>
+                                            </Text>
                                             <IconButton
                                               disableRipple
                                               disableFocusRipple

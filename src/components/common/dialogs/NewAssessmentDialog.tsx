@@ -11,7 +11,6 @@ import { CEDialog, CEDialogActions } from "@common/dialogs/CEDialog";
 import FormProviderWithForm from "@common/FormProviderWithForm";
 import AutocompleteAsyncField from "@common/fields/AutocompleteAsyncField";
 import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
 import NewAssessmentIcon from "@/components/common/icons/NewAssessment";
 import LanguageIcon from "@mui/icons-material/Language";
 import FolderOutlinedIcon from "@mui/icons-material/FolderOutlined";
@@ -26,6 +25,7 @@ import {
 import i18next from "i18next";
 import showToast from "@/utils/toast-error";
 import { SpaceField } from "../fields/SpaceField";
+import { Text } from "../Text";
 
 interface IAssessmentCEFromDialogProps extends DialogProps {
   onClose: () => void;
@@ -50,7 +50,11 @@ const NewAssessmentDialog = (props: IAssessmentCEFromDialogProps) => {
   const assessmentId = staticData?.assessment_kit?.id;
   const { langList, spaceList, queryDataSpaces } = staticData;
   const { spaceId } = useParams();
-  const formMethods = useForm({ shouldUnregister: true });
+  const formMethods = useForm({
+    shouldUnregister: true,
+    mode: "onSubmit",
+    reValidateMode: "onSubmit",
+  });
   const abortController = useMemo(() => new AbortController(), [rest.open]);
   const navigate = useNavigate();
   const langSec = langList?.length > 1;
@@ -160,103 +164,111 @@ const NewAssessmentDialog = (props: IAssessmentCEFromDialogProps) => {
       contentStyle={{ padding: "32px 32px 16px" }}
       style={{ paddingTop: "32px", background: "#F3F5F6" }}
     >
-      {type === "create" ? (
-        <FormProviderWithForm formMethods={formMethods}>
-          <Typography variant="semiBoldLarge" color="text.primary" pb={4}>
-            <Trans i18nKey="assessment.createAssessmentConfirmSettings" />
-          </Typography>
-          <Grid container display="flex" alignItems="start">
-            <Grid
-              xs={12}
-              sm={langSec ? 5.5 : 12}
-              item
-              py="18px"
-              display={spaceSec ? "relative" : "none"}
-            >
-              <Box
-                justifyContent="flex-start"
-                gap="8px"
-                mb="8px"
-                sx={{ ...styles.centerV }}
+      <FormProviderWithForm formMethods={formMethods}>
+        {type === "create" ? (
+          <>
+            <Text variant="semiBoldLarge" color="text.primary" pb={4}>
+              <Trans i18nKey="assessment.createAssessmentConfirmSettings" />
+            </Text>
+            <Grid container display="flex" alignItems="start">
+              <Grid
+                xs={12}
+                sm={langSec ? 5.5 : 12}
+                item
+                py="18px"
+                display={spaceSec ? "relative" : "none"}
               >
-                <FolderOutlinedIcon
-                  sx={{ color: "background.onVariant", background: "transparent" }}
+                <Box
+                  justifyContent="flex-start"
+                  gap="8px"
+                  mb="8px"
+                  sx={{ ...styles.centerV }}
+                >
+                  <FolderOutlinedIcon
+                    sx={{
+                      color: "background.onVariant",
+                      background: "transparent",
+                    }}
+                  />
+                  <Text>
+                    <Trans i18nKey="spaces.targetSpace" />
+                  </Text>
+                </Box>
+                <Text variant="bodySmall" color="text.primary">
+                  <Trans i18nKey="assessment.chooseSpace" />
+                </Text>
+                <SpaceField
+                  queryDataSpaces={queryDataSpaces}
+                  spaces={spaceList}
+                  sx={{ mt: "42px" }}
+                  filterSelectedOptions={false}
                 />
-                <Typography>
-                  <Trans i18nKey="spaces.targetSpace" />
-                </Typography>
-              </Box>
-              <Typography variant="bodySmall" color="text.primary">
-                <Trans i18nKey="assessment.chooseSpace" />
-              </Typography>
-              <SpaceField
-                queryDataSpaces={queryDataSpaces}
-                spaces={spaceList}
-                sx={{ mt: "42px" }}
-                filterSelectedOptions={false}
+              </Grid>
+              <Divider
+                orientation="vertical"
+                flexItem
+                sx={{ mx: 4, display: spaceSec ? "relative" : "none" }}
               />
-            </Grid>
-            <Divider
-              orientation="vertical"
-              flexItem
-              sx={{ mx: 4, display: spaceSec ? "relative" : "none" }}
-            />
-            <Grid
-              item
-              xs={12}
-              sm={spaceSec ? 5.5 : 12}
-              py="18px"
-              display={langSec ? "relative" : "none"}
-            >
-              <Box
-                justifyContent="flex-start"
-                gap="8px"
-                mb="8px"
-                sx={{ ...styles.centerV }}
+              <Grid
+                item
+                xs={12}
+                sm={spaceSec ? 5.5 : 12}
+                py="18px"
+                display={langSec ? "relative" : "none"}
               >
-                <LanguageIcon
-                  sx={{ color: "background.onVariant", background: "transparent" }}
-                />
-                <Typography>
-                  <Trans i18nKey="assessmentKit.assessmentLanguage" />
-                </Typography>
-              </Box>
-              <Typography variant="bodySmall" color="text.primary">
-                <Trans i18nKey="assessmentKit.assessmentSupportsMultipleLanguages" />
-              </Typography>
-              <LangField lang={langList} />
+                <Box
+                  justifyContent="flex-start"
+                  gap="8px"
+                  mb="8px"
+                  sx={{ ...styles.centerV }}
+                >
+                  <LanguageIcon
+                    sx={{
+                      color: "background.onVariant",
+                      background: "transparent",
+                    }}
+                  />
+                  <Text>
+                    <Trans i18nKey="assessmentKit.assessmentLanguage" />
+                  </Text>
+                </Box>
+                <Text variant="bodySmall" color="text.primary">
+                  <Trans i18nKey="assessmentKit.assessmentSupportsMultipleLanguages" />
+                </Text>
+                <LangField lang={langList} />
+              </Grid>
             </Grid>
-          </Grid>
-        </FormProviderWithForm>
-      ) : (
-        <Box
-          sx={{
-            ...styles.centerV,
-            alignItems: "flex-start",
-            justifyContent: "flex-start",
-            gap: "8px",
-          }}
-        >
-          <ErrorOutlinedIcon color="error" />
-          <Typography>
-            <Trans i18nKey="spaces.limitExceededSpacesDesc" />
-          </Typography>
-        </Box>
-      )}
+          </>
+        ) : (
+          <Box
+            sx={{
+              ...styles.centerV,
+              alignItems: "flex-start",
+              justifyContent: "flex-start",
+              gap: "8px",
+            }}
+          >
+            <ErrorOutlinedIcon color="error" />
+            <Text>
+              <Trans i18nKey="spaces.limitExceededSpacesDesc" />
+            </Text>
+          </Box>
+        )}
 
-      <CEDialogActions
-        closeDialog={close}
-        submitButtonLabel={
-          type === "create" ? "common.continue" : "spaces.createSpace"
-        }
-        loading={loading}
-        type={type}
-        onSubmit={
-          type === "create"
-            ? formMethods.handleSubmit(onSubmit)
-            : handleCreateSpaceWithSave
-        }
-      />
+        <CEDialogActions
+          closeDialog={close}
+          submitButtonLabel={
+            type === "create" ? "common.continue" : "spaces.createSpace"
+          }
+          loading={loading}
+          type={type}
+          onSubmit={
+            type === "create"
+              ? formMethods.handleSubmit(onSubmit)
+              : handleCreateSpaceWithSave
+          }
+        />
+      </FormProviderWithForm>
     </CEDialog>
   );
 };

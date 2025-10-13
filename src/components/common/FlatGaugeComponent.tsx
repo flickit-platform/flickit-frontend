@@ -1,9 +1,10 @@
 import { useMemo } from "react";
-import { Box, Typography } from "@mui/material";
+import { Box } from "@mui/material";
 import { styles } from "@styles";
 import i18next, { t } from "i18next";
 import uniqueId from "@/utils/unique-id";
 import { v3Tokens } from "@/config/tokens";
+import { Text } from "./Text";
 
 interface Props {
   levels: number;
@@ -105,7 +106,7 @@ const FlatGaugeComponent: React.FC<Props> = ({
       }}
     >
       {guideText && (
-        <Typography
+        <Text
           variant="caption"
           color="success.dark"
           mt={0.5}
@@ -113,7 +114,7 @@ const FlatGaugeComponent: React.FC<Props> = ({
           sx={{ ...styles.rtlStyle(isRtl) }}
         >
           {t("common.best", { lngCode })}
-        </Typography>
+        </Text>
       )}
 
       <Box sx={{ position: "relative" }}>
@@ -133,7 +134,6 @@ const FlatGaugeComponent: React.FC<Props> = ({
               const clipPath = `polygon(${offsetTop}px 0, ${
                 offsetTop + widthTop
               }px 0, ${offsetBottom + widthBottom}px ${cellHeight}px, ${offsetBottom}px ${cellHeight}px)`;
-
 
               let borderRadius: string | number = 0;
 
@@ -207,7 +207,7 @@ const FlatGaugeComponent: React.FC<Props> = ({
       </Box>
 
       {guideText && (
-        <Typography
+        <Text
           variant="caption"
           color="error.main"
           mt={0.5}
@@ -215,7 +215,7 @@ const FlatGaugeComponent: React.FC<Props> = ({
           sx={{ ...styles.rtlStyle(isRtl) }}
         >
           {t("common.worst", { lngCode })}
-        </Typography>
+        </Text>
       )}
     </Box>
   );

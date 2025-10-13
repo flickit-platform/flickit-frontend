@@ -4,17 +4,16 @@ import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
-import Typography from "@mui/material/Typography";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { Trans } from "react-i18next";
-import { getMaturityLevelColors, styles } from "@styles";
+import { styles } from "@styles";
 import { ISubjectInfo, IMaturityLevel } from "@/types/index";
 import CompletionRing from "@/components/common/charts/completion-ring/CompletionRing";
-import languageDetector from "@/utils/language-detector";
-import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
 import SubjectContainer from "../../../subject-report/SubjectContainer";
 import FlatGaugeComponent from "@/components/common/FlatGaugeComponent";
+import { Text } from "@/components/common/Text";
+import { getSemanticColors } from "@/config/colors";
 
 interface IAssessmentSubjectCardProps extends ISubjectInfo {
   maturity_level?: IMaturityLevel;
@@ -41,7 +40,7 @@ export const AssessmentSubjectAccordion = (
     theme.breakpoints.down("md"),
   );
 
-  const darkColors = getMaturityLevelColors(maturityLevelCount);
+  const darkColors = getSemanticColors(maturityLevelCount);
 
   const handleAccordionChange = (
     event: React.SyntheticEvent,
@@ -91,25 +90,22 @@ export const AssessmentSubjectAccordion = (
                   width: "100%",
                 }}
               >
-                <Typography
+                <Text
                   color="#243342"
                   sx={{
                     textTransform: "none",
                     whiteSpace: "pre-wrap",
-                    fontFamily: languageDetector(title)
-                      ? farsiFontFamily
-                      : primaryFontFamily,
                   }}
                   variant="headlineMedium"
                 >
                   {title}
-                </Typography>
+                </Text>
               </Box>
-              <Typography variant="bodyMedium">
+              <Text variant="bodyMedium">
                 {"("}
                 <Trans i18nKey="common.weight" />: {maturityLevel?.value}
                 {")"}
-              </Typography>
+              </Text>
             </Box>
           </Grid>
           <Grid item xs={12} md={0.5} sm={12}></Grid>
@@ -126,21 +122,18 @@ export const AssessmentSubjectAccordion = (
                   whiteSpace: "pre-wrap",
                 }}
               >
-                <Typography
+                <Text
                   variant="bodyMedium"
                   fontWeight={400}
                   color="#243342"
                   sx={{
                     textTransform: "none",
                     whiteSpace: "break-spaces",
-                    fontFamily: languageDetector(description)
-                      ? farsiFontFamily
-                      : primaryFontFamily,
                     textAlign: "justify",
                   }}
                 >
                   {description}
-                </Typography>
+                </Text>
               </Box>
             </Grid>
           )}
@@ -167,24 +160,21 @@ export const AssessmentSubjectAccordion = (
                 width: "100%",
               }}
             >
-              <Typography
+              <Text
                 color={"text.primary"}
                 sx={{
                   display: "flex",
                   gap: "5px",
                   fontSize: "1.25rem",
                   fontWeight: "bold",
-                  fontFamily: languageDetector(maturityLevel?.title ?? "")
-                    ? farsiFontFamily
-                    : primaryFontFamily,
                 }}
               >
                 {maturityLevel?.title}
-              </Typography>
+              </Text>
               <Box sx={{ ...styles.centerVH, marginInlineStart: 1 }}>
-                <Typography variant="bodyMedium" color="background.onVariant">
+                <Text variant="bodyMedium" color="background.onVariant">
                   <Trans i18nKey="common.confidence" />:
-                </Typography>
+                </Text>
                 <CompletionRing
                   inputNumber={confidenceValue}
                   displayNumber

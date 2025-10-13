@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import Box from "@mui/material/Box";
 import Divider from "@mui/material/Divider";
-import Typography from "@mui/material/Typography";
+import { Text } from "@/components/common/Text";
 import PermissionControl from "../../common/PermissionControl";
 import QueryBatchData from "../../common/QueryBatchData";
 import { useServiceContext } from "@/providers/service-provider";
@@ -196,9 +196,9 @@ const SubjectsContent = () => {
           description="kitDesigner.subjectsKitDesignerDescription"
         />
         {fetchSubjectKit.loaded && fetchSubjectKit.data.items.length !== 0 ? (
-          <Typography variant="bodyMedium" mt={1}>
+          <Text variant="bodyMedium" mt={1}>
             <Trans i18nKey="kitDesigner.changeOrderHelper" />
-          </Typography>
+          </Text>
         ) : null}
         <Divider sx={{ my: 1 }} />
 

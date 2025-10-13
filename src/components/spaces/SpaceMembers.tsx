@@ -17,7 +17,6 @@ import LoadingButton from "@mui/lab/LoadingButton";
 import { useAuthContext } from "@/providers/auth-provider";
 import Chip from "@mui/material/Chip";
 import Skeleton from "@mui/material/Skeleton";
-import Typography from "@mui/material/Typography";
 import MoreActions from "@common/MoreActions";
 import PeopleOutlineRoundedIcon from "@mui/icons-material/PeopleOutlineRounded";
 import useScreenResize from "@/hooks/useScreenResize";
@@ -38,6 +37,7 @@ import { getReadableDate } from "@/utils/readable-date";
 import showToast from "@/utils/toast-error";
 import { DeleteConfirmationDialog } from "@common/dialogs/DeleteConfirmationDialog";
 import Title from "@common/Title";
+import { Text } from "../common/Text";
 
 export const SpaceMembers = (props: any) => {
   const { editable } = props;
@@ -181,6 +181,7 @@ export const SpaceMembers = (props: any) => {
             InputProps={{
               endAdornment: <AddMemberButton loading={loading} />,
             }}
+            required
           />
         </form>
       </Box>
@@ -202,9 +203,9 @@ export const SpaceMembers = (props: any) => {
                 }}
                 fontSize="small"
               />
-              <Typography fontWeight={"bold"}>
+              <Text fontWeight={"bold"}>
                 {spaceMembersQueryData?.data?.items?.length}
-              </Typography>
+              </Text>
             </Box>
           }
         >
@@ -419,9 +420,9 @@ export const SpaceMembers = (props: any) => {
                                     marginInlineEnd: 0.5,
                                   }}
                                 />
-                                <Typography variant="body2">
+                                <Text variant="body2">
                                   {getReadableDate(expirationDate)}
-                                </Typography>
+                                </Text>
                               </Box>
                               {
                                 <Actions
@@ -610,7 +611,7 @@ const InviteSpaceMemberDialog = (
       loading={loading}
       maxWidth="sm"
     >
-      <Typography>
+      <Text>
         <Trans
           i18nKey="user.emailIsNotOnAppTitleYet"
           values={{
@@ -619,7 +620,7 @@ const InviteSpaceMemberDialog = (
           }}
         />{" "}
         <Trans i18nKey="user.wouldYouLikeToInviteThemToJoin" />
-      </Typography>
+      </Text>
     </InviteMemberDialog>
   );
 };

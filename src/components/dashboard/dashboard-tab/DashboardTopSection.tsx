@@ -1,7 +1,6 @@
 import { Fragment, useEffect } from "react";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
 import { Trans } from "react-i18next";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
@@ -19,6 +18,7 @@ import useCalculate from "@/hooks/useCalculate";
 import { ErrorCodes } from "@/types/index";
 import showToast from "@/utils/toast-error";
 import { useTheme } from "@mui/material";
+import { Text } from "@/components/common/Text";
 
 const TodoBox = (props: any) => {
   const { todoBoxData, fetchDashboard } = props;
@@ -33,9 +33,9 @@ const TodoBox = (props: any) => {
         >
           {" "}
           <Box sx={{ ...styles.centerV, mt: "-6px" }}>
-            <Typography variant="headlineSmall">
+            <Text variant="headlineSmall">
               <Trans i18nKey="dashboard.whatToDoNow" />
-            </Typography>
+            </Text>
             <Tooltip title={<Trans i18nKey="dashboard.whatToDoNowTooltip" />}>
               <IconButton size="small" color="primary">
                 <InfoOutlinedIcon />
@@ -52,7 +52,7 @@ const TodoBox = (props: any) => {
                   mt="32px"
                   sx={{ ...styles.centerV }}
                 >
-                  <Typography variant="semiBoldLarge" color="text.primary">
+                  <Text variant="semiBoldLarge" color="text.primary">
                     {item.name == "questions" && (
                       <Trans i18nKey="dashboard.questionsIssues" />
                     )}
@@ -65,7 +65,7 @@ const TodoBox = (props: any) => {
                     {item.name == "report" && (
                       <Trans i18nKey="assessmentReport.reportIssues" />
                     )}
-                  </Typography>
+                  </Text>
                 </Box>
                 <Grid container columns={12} spacing={2}>
                   {Object.entries(item)
@@ -100,12 +100,12 @@ const TodoBox = (props: any) => {
         >
           {" "}
           <Box sx={{ ...styles.centerV, mt: "-6px" }}>
-            <Typography
+            <Text
               color={now.length < 0 ? "text.primary" : "#3D4D5C80"}
               variant="headlineSmall"
             >
               <Trans i18nKey="dashboard.whatToDoNext" />
-            </Typography>
+            </Text>
             <Tooltip title={<Trans i18nKey="dashboard.whatToDoNextTooltip" />}>
               <IconButton
                 size="small"
@@ -125,7 +125,7 @@ const TodoBox = (props: any) => {
                   sx={{ ...styles.centerV }}
                   id={item.name}
                 >
-                  <Typography
+                  <Text
                     variant="semiBoldLarge"
                     color={now.length < 0 ? "text.primary" : "#3D4D5C80"}
                   >
@@ -141,7 +141,7 @@ const TodoBox = (props: any) => {
                     {item.name == "report" && (
                       <Trans i18nKey="assessmentReport.reportIssues" />
                     )}
-                  </Typography>
+                  </Text>
                 </Box>
                 <Grid container columns={12} spacing={2}>
                   {Object.entries(item)
@@ -385,7 +385,7 @@ export const IssuesItem = ({
           fill: color === "info" ? theme.palette.error.main : colorPalette.main,
         }}
       />
-      <Typography
+      <Text
         sx={{
           display: "flex",
           gap: 1,
@@ -400,7 +400,7 @@ export const IssuesItem = ({
             <Box component="span">{value.toString()}</Box>
           )}
         {issueTextMap[name] && <Trans i18nKey={issueTextMap[name]} />}
-      </Typography>
+      </Text>
 
       {isUnapproved && (
         <Button
@@ -411,13 +411,13 @@ export const IssuesItem = ({
           color={color === "info" ? "primary" : color}
           variant="outlined"
         >
-          <Typography variant="labelMedium">
+          <Text variant="labelMedium">
             <Trans
               i18nKey={
                 name === "unapproved" ? "common.approveAll" : "common.approve"
               }
             />
-          </Typography>
+          </Text>
         </Button>
       )}
 
@@ -437,9 +437,9 @@ export const IssuesItem = ({
                 padding: "4px 10px",
               }}
             >
-              <Typography variant="labelMedium">
+              <Text variant="labelMedium">
                 <Trans i18nKey="dashboard.generateAll" />
-              </Typography>
+              </Text>
             </LoadingButton>
           </div>
         </Tooltip>
@@ -473,14 +473,14 @@ export const IssuesItem = ({
                 loading={regenerateInsights.loading}
                 color={color === "info" ? "primary" : color}
               >
-                <Typography variant="labelMedium" sx={{ whiteSpace: "nowrap" }}>
+                <Text variant="labelMedium" sx={{ whiteSpace: "nowrap" }}>
                   {name === "expired" && (
                     <Trans i18nKey="common.regenerateAll" />
                   )}
                   {name === "expiredAdvices" && (
                     <Trans i18nKey="common.regenerate" />
                   )}
-                </Typography>
+                </Text>
               </LoadingButton>
             </div>
           </Tooltip>
@@ -497,12 +497,12 @@ export const IssuesItem = ({
               color={color === "info" ? "primary" : color}
               variant="outlined"
             >
-              <Typography variant="labelMedium" sx={{ whiteSpace: "nowrap" }}>
+              <Text variant="labelMedium" sx={{ whiteSpace: "nowrap" }}>
                 {name === "expired" && <Trans i18nKey="common.approveAll" />}
                 {name === "expiredAdvices" && (
                   <Trans i18nKey="common.approve" />
                 )}
-              </Typography>
+              </Text>
             </LoadingButton>
           </Box>
         </>
@@ -517,9 +517,9 @@ export const IssuesItem = ({
           color={color === "info" ? "primary" : color}
           variant="outlined"
         >
-          <Typography variant="labelMedium">
+          <Text variant="labelMedium">
             <Trans i18nKey="common.resolveAll" />
-          </Typography>
+          </Text>
         </Button>
       )}
       {name === "unapprovedAnswers" && (
@@ -533,9 +533,9 @@ export const IssuesItem = ({
               padding: "4px 10px",
             }}
           >
-            <Typography variant="labelMedium">
+            <Text variant="labelMedium">
               <Trans i18nKey="common.approveAll" />
-            </Typography>
+            </Text>
           </LoadingButton>
         </Box>
       )}

@@ -5,6 +5,8 @@ import { styles } from "@styles";
 import { IconButton } from "@mui/material";
 import { useMemo } from "react";
 import Title from "@common/Title";
+import AssignmentOutlinedIcon from "@mui/icons-material/AssignmentOutlined";
+import FolderOutlinedIcon from "@mui/icons-material/FolderOutlined";
 
 const DashboardTitle = (props: any) => {
   const { pathInfo, title, permissions } = props;
@@ -23,9 +25,11 @@ const DashboardTitle = (props: any) => {
             {
               title: space?.title,
               to: `/${spaceId}/assessments/${page}`,
+              icon: <FolderOutlinedIcon fontSize="small" />,
             },
             {
               title: `${title ?? pathInfo.assessment.title}`,
+              icon: <AssignmentOutlinedIcon fontSize="small" />,
             },
           ]}
           displayChip

@@ -1,4 +1,3 @@
-import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import Divider from "@mui/material/Divider";
 import Box from "@mui/material/Box";
@@ -15,10 +14,9 @@ import { useQuery } from "@/hooks/useQuery";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import ErrorIcon from "@mui/icons-material/Error";
 import CircularProgress from "@mui/material/CircularProgress";
-import languageDetector from "@/utils/language-detector";
-import { farsiFontFamily, primaryFontFamily } from "@config/theme";
 import showToast from "@/utils/toast-error";
 import { styles } from "@styles";
+import { Text } from "@/components/common/Text";
 
 const PublishContent = ({ kitVersion }: { kitVersion: IKitVersion }) => {
   const { service } = useServiceContext();
@@ -59,17 +57,17 @@ const PublishContent = ({ kitVersion }: { kitVersion: IKitVersion }) => {
     <PermissionControl>
       <>
         <Box justifyContent="space-between" sx={{ ...styles.centerV }}>
-          <Typography variant="headlineSmall" fontWeight="bold">
+          <Text variant="headlineSmall" fontWeight="bold">
             <Trans i18nKey="kitDesigner.release" />
-          </Typography>
+          </Text>
         </Box>
-        <Typography variant="bodyMedium">
+        <Text variant="bodyMedium">
           <Trans i18nKey="kitDesigner.publishDescription" />
-        </Typography>
+        </Text>
         <Box justifyContent="space-between" mt={4} sx={{ ...styles.centerV }}>
-          <Typography variant="headlineSmall" fontWeight="bold">
+          <Text variant="headlineSmall" fontWeight="bold">
             <Trans i18nKey="common.validation" />
-          </Typography>
+          </Text>
         </Box>
         <Divider sx={{ my: 1 }} />
         <Box
@@ -96,9 +94,9 @@ const PublishContent = ({ kitVersion }: { kitVersion: IKitVersion }) => {
           {validateKitVersion.loading ? (
             <Box gap={1} sx={{ ...styles.centerVH }}>
               <CircularProgress size={24} />
-              <Typography variant="bodyMedium">
+              <Text variant="bodyMedium">
                 <Trans i18nKey="common.loading" />
-              </Typography>
+              </Text>
             </Box>
           ) : validateKitVersion?.data?.isValid ? (
             <Box
@@ -107,9 +105,9 @@ const PublishContent = ({ kitVersion }: { kitVersion: IKitVersion }) => {
               sx={{ ...styles.centerV }}
             >
               <CheckCircleIcon color="inherit" />
-              <Typography variant="bodyMedium">
+              <Text variant="bodyMedium">
                 <Trans i18nKey="kitDesigner.kitValidated" />{" "}
-              </Typography>
+              </Text>
             </Box>
           ) : (
             <>
@@ -119,23 +117,14 @@ const PublishContent = ({ kitVersion }: { kitVersion: IKitVersion }) => {
                 sx={{ ...styles.centerV }}
               >
                 <ErrorIcon color="inherit" />
-                <Typography variant="bodyMedium" fontWeight="bold">
+                <Text variant="bodyMedium" fontWeight="bold">
                   <Trans i18nKey="kitDesigner.kitErrorsTitle" />{" "}
-                </Typography>
+                </Text>
               </Box>
               <ul>
                 {validateKitVersion?.data?.errors.map((error: string) => (
                   <li key={error}>
-                    <Typography
-                      variant="bodyMedium"
-                      sx={{
-                        fontFamily: languageDetector(error)
-                          ? farsiFontFamily
-                          : primaryFontFamily,
-                      }}
-                    >
-                      {error}
-                    </Typography>
+                    <Text variant="bodyMedium">{error}</Text>
                   </li>
                 ))}
               </ul>

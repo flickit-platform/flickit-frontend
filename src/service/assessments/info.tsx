@@ -59,7 +59,7 @@ export const info = {
   },
 
   migrateKitVersion(
-    { assessmentId }: { assessmentId: TId },
+    { assessmentId }: { assessmentId?: TId },
     config?: AxiosRequestConfig<any>,
   ) {
     return axios.post(
@@ -131,7 +131,7 @@ export const info = {
     );
   },
 
-  AssessmentMoveTarget(
+  moveAssessment(
     { id, targetSpaceId }: { id: any; targetSpaceId: any },
     config?: AxiosRequestConfig<any>,
   ) {

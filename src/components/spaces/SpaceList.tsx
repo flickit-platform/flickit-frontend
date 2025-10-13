@@ -1,13 +1,12 @@
 import { useState } from "react";
 import CircularProgress from "@mui/material/CircularProgress";
 import Tooltip from "@mui/material/Tooltip";
-import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import { Trans } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { useServiceContext } from "@/providers/service-provider";
 import { useQuery } from "@/hooks/useQuery";
-import SettingsIcon from "@mui/icons-material/Settings";
+import EditRoundedIcon from "@mui/icons-material/EditRounded";
 import ExitToAppRoundedIcon from "@mui/icons-material/ExitToAppRounded";
 import useMenu from "@/hooks/useMenu";
 import { ICustomError } from "@/utils/custom-error";
@@ -22,13 +21,12 @@ import {
   TQueryFunction,
 } from "@/types/index";
 import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
-import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
-import languageDetector from "@/utils/language-detector";
 import premium from "@/assets/svg/premium.svg";
-import i18next, { t } from "i18next";
+import { t } from "i18next";
 import Grid from "@mui/material/Grid";
 import FolderRoundedIcon from "@mui/icons-material/FolderRounded";
 import { v3Tokens } from "@/config/tokens";
+import { Text } from "../common/Text";
 
 interface ISpaceListProps {
   dialogProps: TDialogProps;
@@ -122,25 +120,20 @@ export const SpaceCard = (props: ISpaceCardProps) => {
         }}
       >
         <FolderRoundedIcon color="primary" fontSize="large" />
-        <Box>
+        <Box display="flex" flexDirection="column" gap="4px">
           <Box
             sx={{
               ...styles.centerV,
               gap: 1,
             }}
           >
-            <Typography
+            <Text
               variant="semiBoldLarge"
               color="primary.dark"
-              sx={{
-                fontFamily: languageDetector(title)
-                  ? farsiFontFamily
-                  : primaryFontFamily,
-              }}
               data-testid={"space-card-title-test"}
             >
               {loading ? <CircularProgress size={20} /> : title}
-            </Typography>
+            </Text>
 
             {type?.code === SPACE_LEVELS.PREMIUM && (
               <Tooltip
@@ -156,19 +149,13 @@ export const SpaceCard = (props: ISpaceCardProps) => {
               </Tooltip>
             )}
           </Box>
-          <Typography
+          <Text
             variant="bodyMedium"
             color="text.primary"
-            sx={{
-              fontFamily:
-                languageDetector(owner.displayName) || i18next.language === "fa"
-                  ? farsiFontFamily
-                  : primaryFontFamily,
-            }}
             data-testid="space-card-show-displayName"
           >
             {t("common.owner")}: {isOwner ? t("common.you") : owner.displayName}
-          </Typography>
+          </Text>
         </Box>
       </Box>
       <Box
@@ -275,8 +262,8 @@ const Actions = (props: any) => {
       loading={loading || editLoading || leaveSpaceQuery.loading}
       items={[
         isOwner && {
-          icon: <SettingsIcon fontSize="small" />,
-          text: <Trans i18nKey="common.settings" />,
+          icon: <EditRoundedIcon fontSize="small" />,
+          text: <Trans i18nKey="common.edit" />,
           onClick: openEditDialog,
         },
         isOwner && {

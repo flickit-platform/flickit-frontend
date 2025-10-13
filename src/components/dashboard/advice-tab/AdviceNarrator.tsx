@@ -1,6 +1,5 @@
 import Box from "@mui/material/Box";
 import { useTranslation } from "react-i18next";
-import Typography from "@mui/material/Typography";
 import CircularProgress from "@mui/material/CircularProgress";
 import { useParams } from "react-router-dom";
 import { useEffect, useState, useRef } from "react";
@@ -8,6 +7,7 @@ import { useServiceContext } from "@/providers/service-provider";
 import { EditableRichEditor } from "@/components/common/fields/EditableRichEditor";
 import { getReadableDate } from "@/utils/readable-date";
 import { styles } from "@styles";
+import { Text } from "@/components/common/Text";
 
 export const AssessmentReportNarrator = ({ fetchAdviceNarration }: any) => {
   const [aboutSection, setAboutSection] = useState<any>(null);
@@ -60,9 +60,9 @@ export const AssessmentReportNarrator = ({ fetchAdviceNarration }: any) => {
             showEditorMenu={true}
           />
           {aboutSection?.creationTime && (
-            <Typography variant="bodyMedium" mx={1}>
+            <Text variant="bodyMedium" mx={1}>
               {getReadableDate(aboutSection?.creationTime)}
-            </Typography>
+            </Text>
           )}
         </>
       )}
