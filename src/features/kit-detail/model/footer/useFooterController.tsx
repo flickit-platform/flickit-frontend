@@ -1,19 +1,37 @@
-import { useMemo, useState } from "react";
-import { resolveActive } from "../../config/config";
+import { useEffect, useMemo, useState } from "react";
 import { KitDetailsType } from "../types";
+import { resolveActive } from "../../config/config";
 
-export function useFooterController(
-  details: KitDetailsType,
-  initialId = "maturity-root",
-) {
-  const [selectedId, setSelectedId] = useState<string>(initialId);
 
-  const active = useMemo(() => resolveActive(selectedId), [selectedId]);
-  const ActiveComp = active.component as any;
-  const activeProps = useMemo(
-    () => active.propsFrom(selectedId, details),
-    [active, selectedId, details],
+type StickyView = {
+  Comp: React.ComponentType<any>;
+  props: Record<string, any>;
+  key: string;
+} | null;
+
+export function useFooterController(details: KitDetailsType) {
+  const [selectedId, setSelectedId] = useState<string>("maturity-root");
+  const cfg = useMemo(() => resolveActive(selectedId), [selectedId]);
+
+  const [sticky, setSticky] = useState<StickyView>(null);
+
+  const currentProps = useMemo(
+    () => (cfg?.propsFrom ? cfg.propsFrom(selectedId, details) : {}),
+    [cfg, selectedId, details]
   );
+
+  useEffect(() => {
+    if (cfg?.component) {
+      setSticky({
+        Comp: cfg.component as React.ComponentType<any>,
+        props: currentProps,
+        key: selectedId, 
+      });
+    }
+  }, [cfg, selectedId, currentProps]);
+
+  const ActiveComp = sticky?.Comp ?? null;
+  const activeProps = sticky?.props ?? {};
 
   return { selectedId, setSelectedId, ActiveComp, activeProps };
 }

@@ -121,7 +121,7 @@ const AccordionSummaryContent = (props: any) => {
       </Box>
       <Chip
         label={
-          <Text variant={"bodyMedium"}>
+          <Text variant="semiBoldMedium">
             {range.answerOptions.length} {t("kitDetail.options")}
           </Text>
         }
