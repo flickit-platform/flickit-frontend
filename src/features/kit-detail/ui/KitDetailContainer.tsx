@@ -7,7 +7,6 @@ import EditableKitDetail from "./KitInfo";
 import { useKitDetailContainer } from "../model/useKitDetailContainer";
 import { KitDetailsType, KitInfoType, KitStatsType } from "../model/types";
 import FooterContainer from "./footer/FooterContainer";
-import QueryData from "@/components/common/QueryData";
 
 const KitDetailContainer = () => {
   const { assessmentKitId, expertGroupId } = useParams();

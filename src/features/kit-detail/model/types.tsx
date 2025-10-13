@@ -77,7 +77,7 @@ export interface QuestionnaireDetails {
   translations?: translations<"FA" | "EN">;
 }
 
-export interface measureDetails {
+export interface MeasureDetails {
   questionsCount: number;
   description: string;
   questions: (QuestionDetaisl & {

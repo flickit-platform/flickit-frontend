@@ -1,6 +1,5 @@
 import { useParams } from "react-router-dom";
 import { IIndexedItem } from "../../model/types";
-import { useKitDetailContainer } from "../../model/useKitDetailContainer";
 import QueryData from "@/components/common/QueryData";
 import { useQuestionnaire } from "../../model/footer/useQuestionnaire";
 import {
@@ -87,11 +86,7 @@ const QuestionnairePanel = ({
                       <Text variant="titleSmall" sx={{ mb: 1 }}>
                         {t("common.options")}
                       </Text>
-                      <Box sx={{ display: "flex", flexWrap: "wrap" }}>
-                        {/* {question..map((opt: any) => (
-                      <OptionPill key={opt.index} option={opt} />
-                    ))} */}
-                      </Box>
+                      <Box sx={{ display: "flex", flexWrap: "wrap" }}></Box>
                     </AccordionDetails>
                   </Accordion>
                 );

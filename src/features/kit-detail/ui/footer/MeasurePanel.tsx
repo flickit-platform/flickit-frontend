@@ -1,6 +1,5 @@
 import { useParams } from "react-router-dom";
 import { IIndexedItem } from "../../model/types";
-import { useKitDetailContainer } from "../../model/useKitDetailContainer";
 import QueryData from "@/components/common/QueryData";
 import {
   Accordion,

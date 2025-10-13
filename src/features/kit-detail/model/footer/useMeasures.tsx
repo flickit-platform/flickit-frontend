@@ -2,7 +2,7 @@ import { useMemo } from "react";
 import { useQuery } from "@/hooks/useQuery";
 import { useServiceContext } from "@/providers/service-provider";
 import { TId } from "@/types";
-import { measureDetails } from "../types";
+import { MeasureDetails } from "../types";
 
 export function useMeasures(
   assessmentKitId: string | undefined,
@@ -10,7 +10,7 @@ export function useMeasures(
 ) {
   const { service } = useServiceContext();
 
-  const fetcMeasureDetailslQuery = useQuery<measureDetails>({
+  const fetcMeasureDetailslQuery = useQuery<MeasureDetails>({
     service: (args, config) =>
       service.assessmentKit.details.getMeasures(
         args ?? { assessmentKitId, measureId },
