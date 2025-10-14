@@ -45,9 +45,9 @@ const MeasurePanel = ({ measure }: { measure: IIndexedItem }) => {
               {_measure.questions.map((question, index) => {
                 return (
                   <Accordion
-                    key={question.id}
-                    expanded={isExpanded(question.id)}
-                    onChange={onChange(question.id)}
+                    key={question.title}
+                    expanded={isExpanded(question.title)}
+                    onChange={onChange(question.title)}
                     sx={{
                       boxShadow: "none !important",
                       borderRadius: "16px !important",
@@ -73,10 +73,10 @@ const MeasurePanel = ({ measure }: { measure: IIndexedItem }) => {
                         },
                         borderTopLeftRadius: "12px !important",
                         borderTopRightRadius: "12px !important",
-                        backgroundColor: isExpanded(question.id)
+                        backgroundColor: isExpanded(question.title)
                           ? "#66809914"
                           : "",
-                        borderBottom: isExpanded(question.id)
+                        borderBottom: isExpanded(question.title)
                           ? `1px solid #C7CCD1`
                           : "",
                       }}
