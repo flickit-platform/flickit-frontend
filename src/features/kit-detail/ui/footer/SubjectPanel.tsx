@@ -9,7 +9,7 @@ import { useServiceContext } from "@providers/service-provider";
 import { useParams } from "react-router-dom";
 import QueryData from "@common/QueryData";
 import Divider from "@mui/material/Divider";
-
+import { KitStatsType } from "../../model/types";
 type Ttranslations = Record<string, { title: string }>;
 type TAttribute = {title: string; weight: number; id: number; index: number }
 interface IsubjectData {
@@ -19,8 +19,16 @@ interface IsubjectData {
   translations?: Record<string, { title: string }>;
   weight: number
 };
-const SubjectPanel = (props: any) => {
-  const { subject, stats } : any = props;
+interface IsubjectProp {
+  attributes: TAttribute[];
+  id: number;
+  index: number;
+  translations: Record<string, { title: string }>;
+  title: string
+};
+
+const SubjectPanel = ({ subject, stats }: {subject: IsubjectProp, stats: KitStatsType}) => {
+
   const { service } = useServiceContext();
   const { t } = useTranslation();
   const { assessmentKitId = "" } = useParams();
@@ -42,12 +50,12 @@ const SubjectPanel = (props: any) => {
       {...fetchSubjectDetail}
       render={(data: IsubjectData ) => {
         const { weight, description, translations, attributes } = data;
-
+        console.log(data, "test data");
         return (
           <Box sx={{ ...styles.centerCV, gap: "32px" }}>
             <InfoHeader
               title={subject?.title}
-              translations={getTranslationTitle(subject?.translation)}
+              translations={getTranslationTitle(subject?.translations)}
               sectionName={t("kitDetail.subject")}
               questionLabel={`${stats?.questionsCount} ${t("common.question")}`}
               weightLabel={`${t("common.weight")}: ${weight}`}
