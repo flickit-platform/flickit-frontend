@@ -259,11 +259,11 @@ function toSemantic(n: number): Semantic {
 }
 
 export function getSemanticColors(
-  level: number,
+  levels: number,
   tone: Tone = "default",
   palette: Palette = BASE_PALETTE,
 ): string[] {
-  const key = toSemantic(level); 
+  const key = toSemantic(levels); 
   const indices = ML_INDEX[key];
   const branch = palette[tone];
   return indices?.map((i) => branch[keyByIndex(i)]);

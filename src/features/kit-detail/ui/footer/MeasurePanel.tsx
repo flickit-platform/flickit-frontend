@@ -14,6 +14,8 @@ import { Text } from "@/components/common/Text";
 import { useTranslation } from "react-i18next";
 import { useMeasures } from "../../model/footer/useMeasures";
 import { OptionPill } from "./AnswerRangesPanel";
+import { InfoHeader } from "../common/InfoHeader";
+import { getTranslation } from "./SubjectPanel";
 
 const MeasurePanel = ({ measure }: { measure: IIndexedItem }) => {
   const { assessmentKitId } = useParams();
@@ -27,13 +29,16 @@ const MeasurePanel = ({ measure }: { measure: IIndexedItem }) => {
   return (
     <QueryData
       {...fetcMeasureDetailslQuery}
-      render={(measure) => {
-        const _measure = measureDetails ?? measure;
+      render={(measure_element) => {
+        const _measure = measureDetails ?? measure_element;
         return (
           <Box display="flex" flexDirection="column" gap={6}>
-            <Text variant="semiBoldXLarge" color="primary">
-              {t("kitDesigner.answerRanges")}
-            </Text>
+            <InfoHeader
+              title={measure.title}
+              translations={getTranslation(measure?.translations, "title")}
+              sectionName={t("common.measure")}
+              firstTag={`${_measure.questions.length} ${t("common.question")}`}
+            />
 
             <Box display="flex" flexDirection="column" gap={1}>
               {" "}
@@ -81,61 +86,60 @@ const MeasurePanel = ({ measure }: { measure: IIndexedItem }) => {
                       </Text>
                     </AccordionSummary>
                     <AccordionDetails
-                      sx={{ display: "flex", flexDirection: "column", p: 2 }}
+                      sx={{
+                        display: "flex",
+                        flexDirection: "column",
+                        p: 2,
+                        gap: 2,
+                      }}
                     >
                       <Grid container>
-                        <Grid item md={6}>
-                          <Text variant="titleSmall" sx={{ mb: 1 }}>
-                            {t("common.questionnaire")}
-                          </Text>
-                          <Box
-                            sx={{
-                              display: "flex",
-                              alignItems: "center",
-                              gap: 4,
-                              marginInlineEnd: 3,
-                              mb: 2,
-                              py: 1,
-                              px: 2,
-                              borderRadius: 2,
-                              border: "1px solid",
-                              borderColor: "outline.variant",
-                              bgcolor: "primary.bg",
-                              width: "fit-content",
-                              color: "primary.main",
-                            }}
-                          >
-                            {question.questionnaire.title}
-                          </Box>
-                        </Grid>
-                        <Grid item md={6}>
-                          <Text variant="titleSmall" sx={{ mb: 1 }}>
-                            {t("common.answerRange")}
-                          </Text>
-                          <Box
-                            sx={{
-                              display: "flex",
-                              alignItems: "center",
-                              gap: 4,
-                              marginInlineEnd: 3,
-                              mb: 2,
-                              py: 1,
-                              px: 2,
-                              borderRadius: 2,
-                              border: "1px solid",
-                              borderColor: "outline.variant",
-                              bgcolor: "primary.bg",
-                              width: "fit-content",
-                              color: "primary.main",
-                            }}
-                          >
-                            {question.answerRange.title}
-                          </Box>
-                        </Grid>
+                        {question?.questionnaire.title && (
+                          <Grid item md={6}>
+                            <Text variant="titleSmall" sx={{ mb: 1 }}>
+                              {t("common.questionnaire")}
+                            </Text>
+                            <Box
+                              sx={{
+                                padding: "4px 16px",
+                                borderRadius: "4px",
+                                border: "1px solid",
+                                borderColor: "outline.variant",
+                                bgcolor: "primary.bg",
+                                width: "fit-content",
+                                color: "primary.main",
+                              }}
+                            >
+                              <Text variant="bodyMedium">
+                                {question.questionnaire.title}
+                              </Text>
+                            </Box>
+                          </Grid>
+                        )}
+                        {question?.answerRange && (
+                          <Grid item md={6}>
+                            <Text variant="titleSmall" sx={{ mb: 1 }}>
+                              {t("common.answerRange")}
+                            </Text>
+                            <Box
+                              sx={{
+                                padding: "4px 16px",
+                                borderRadius: "4px",
+                                border: "1px solid",
+                                borderColor: "outline.variant",
+                                bgcolor: "primary.bg",
+                                width: "fit-content",
+                                color: "primary.main",
+                              }}
+                            >
+                              {question?.answerRange?.title}
+                            </Box>
+                          </Grid>
+                        )}
                       </Grid>
                       {question?.options?.length && (
                         <>
-                          <Text variant="titleSmall" sx={{ mb: 1 }}>
+                          <Text variant="titleSmall">
                             {t("common.options")}
                           </Text>
                           <Box sx={{ display: "flex", flexWrap: "wrap" }}>

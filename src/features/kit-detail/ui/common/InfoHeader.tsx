@@ -7,16 +7,15 @@ export const InfoHeader = ({
   title,
   translations,
   sectionName,
-  questionLabel,
-  weightLabel,
+  firstTag,
+  secondTag,
 }: {
   title: string;
   translations: any;
   sectionName: string;
-  questionLabel: string;
-  weightLabel: string;
+  firstTag: string;
+  secondTag?: string;
 }) => {
-
   const ChipStyle = {
     ".MuiChip-label": {
       px: "12px",
@@ -53,21 +52,23 @@ export const InfoHeader = ({
           }}
           label={
             <Text variant={"bodyMedium"} color={"primary.main"}>
-              {questionLabel}
+              {firstTag}
             </Text>
           }
         />
-        <Chip
-          sx={{
-            ...ChipStyle,
-            background: "#2466A80A",
-          }}
-          label={
-            <Text variant={"bodyMedium"} color={"primary.main"}>
-              {weightLabel}
-            </Text>
-          }
-        />
+        {secondTag && (
+          <Chip
+            sx={{
+              ...ChipStyle,
+              background: "#2466A80A",
+            }}
+            label={
+              <Text variant={"bodyMedium"} color={"primary.main"}>
+                {secondTag}
+              </Text>
+            }
+          />
+        )}
       </Box>
     </Box>
   );

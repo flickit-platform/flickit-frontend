@@ -189,6 +189,7 @@ export const OptionPill = memo(function OptionPill({
           </Box>
         }
         sx={{
+          borderRadius: "16px",
           bgcolor: "background.container",
         }}
       />
