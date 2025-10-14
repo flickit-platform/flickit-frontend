@@ -4,7 +4,7 @@ import { KitDetailsType, KitStatsType } from "../../model/types";
 import { useFooterController } from "../../model/footer/useFooterController";
 import KitDetailsTreeView from "./KitDetailsTreeView";
 
-function FooterContainer({ details, stats }: { details: KitDetailsType, stats: KitStatsType }) {
+function FooterContainer({ details }: { details: KitDetailsType }) {
   const { selectedId, setSelectedId, ActiveComp, activeProps } =
     useFooterController(details);
 
@@ -35,7 +35,7 @@ function FooterContainer({ details, stats }: { details: KitDetailsType, stats: K
         }}
       >
         <Suspense fallback={null}>
-          <ActiveComp {...activeProps} stats={stats} />
+          <ActiveComp {...activeProps} />
         </Suspense>
       </Grid>
     </Grid>

@@ -9,26 +9,27 @@ import { useServiceContext } from "@providers/service-provider";
 import { useParams } from "react-router-dom";
 import QueryData from "@common/QueryData";
 import Divider from "@mui/material/Divider";
-import { KitStatsType } from "../../model/types";
-type Ttranslations = Record<string, { title: string }>;
-type TAttribute = {title: string; weight: number; id: number; index: number }
+import { useEffect } from "react";
+
+type Ttranslations = Record<string, { title?: string; description?: string }>;
+type TAttribute = { title: string; weight: number; id: number; index: number };
+
 interface IsubjectData {
   attributes: TAttribute[];
   description: string;
   questionsCount: number;
-  translations?: Record<string, { title: string }>;
-  weight: number
-};
+  translations?: Ttranslations;
+  weight: number;
+}
 interface IsubjectProp {
   attributes: TAttribute[];
   id: number;
   index: number;
-  translations: Record<string, { title: string }>;
-  title: string
-};
+  translations: Ttranslations;
+  title: string;
+}
 
-const SubjectPanel = ({ subject, stats }: {subject: IsubjectProp, stats: KitStatsType}) => {
-
+const SubjectPanel = ({ subject }: { subject: IsubjectProp }) => {
   const { service } = useServiceContext();
   const { t } = useTranslation();
   const { assessmentKitId = "" } = useParams();
@@ -37,27 +38,39 @@ const SubjectPanel = ({ subject, stats }: {subject: IsubjectProp, stats: KitStat
     service: (args = { assessmentKitId, subjectId: subject?.id }, config) =>
       service.assessmentKit.details.getSubject(args, config),
   });
-  const getTranslationTitle = (
-    translateTitle?: Ttranslations | null,
+
+  useEffect(() => {
+    fetchSubjectDetail.query();
+  }, [subject.id]);
+  
+  const getTranslation = (
+    obj?: Ttranslations | null,
+    type: keyof { title?: string; description?: string } = "title",
   ): string | null => {
-    return translateTitle && Object.keys(translateTitle).length > 0
-      ? (Object.values(translateTitle)[0]?.title ?? null)
+    return obj && Object.keys(obj).length > 0
+      ? (Object.values(obj)[0]?.[type] ?? null)
       : null;
   };
 
   return (
     <QueryData
       {...fetchSubjectDetail}
-      render={(data: IsubjectData ) => {
-        const { weight, description, translations, attributes } = data;
-        console.log(data, "test data");
+      render={(data: IsubjectData) => {
+        const {
+          weight,
+          description,
+          translations,
+          attributes,
+          questionsCount,
+        } = data;
+
         return (
           <Box sx={{ ...styles.centerCV, gap: "32px" }}>
             <InfoHeader
               title={subject?.title}
-              translations={getTranslationTitle(subject?.translations)}
+              translations={getTranslation(subject?.translations, "title")}
               sectionName={t("kitDetail.subject")}
-              questionLabel={`${stats?.questionsCount} ${t("common.question")}`}
+              questionLabel={`${questionsCount} ${t("common.question")}`}
               weightLabel={`${t("common.weight")}: ${weight}`}
             />
 
@@ -73,7 +86,7 @@ const SubjectPanel = ({ subject, stats }: {subject: IsubjectProp, stats: KitStat
               >
                 <TitleWithTranslation
                   title={description}
-                  translation={getTranslationTitle(translations)}
+                  translation={getTranslation(translations, "description")}
                   titleSx={{ color: "background.secondaryDark" }}
                   translationSx={{ color: "background.secondaryDark" }}
                 />
@@ -83,46 +96,53 @@ const SubjectPanel = ({ subject, stats }: {subject: IsubjectProp, stats: KitStat
               <Text variant="bodyLarge" color={"background.secondaryDark"}>
                 {t("kitDetail.includedAttribute")}:
               </Text>
-              <Box sx={{ ...styles.centerV, justifyContent: "flex-start", mt: 2}}>
-                {attributes?.map(({title,weight} : {title: string, weight: number} , idx: number)=>{
-                  const isLast = attributes.length - 1 === idx
-                  return (
-                    <>
-                      <Box
-                        sx={{
-                          display: "flex",
-                          flexDirection: "column",
-                          gap: "10px",
-                          justifyContent: "center",
-                          alignItems: "center",
-                          px: 2,
-                          py: 1,
-                        }}
-                      >
-                        <Text variant={"bodyMedium"} color={"primary.main"}>
-                          {title}
-                        </Text>
-                        <Text
-                          variant={"bodySmall"}
-                          color={"background.secondaryDark"}
-                        >{`${t("common.weight")} ${weight}`}</Text>
-                      </Box>
-                      {!isLast && (
-                        <Divider
-                          flexItem
-                          orientation="vertical"
+              <Box
+                sx={{ ...styles.centerV, justifyContent: "flex-start", mt: 2 }}
+              >
+                {attributes?.map(
+                  (
+                    { title, weight }: { title: string; weight: number },
+                    idx: number,
+                  ) => {
+                    const isLast = attributes.length - 1 === idx;
+                    return (
+                      <>
+                        <Box
                           sx={{
-                            marginInline: "8px",
-                            bgcolor: "#C7CCD1",
-                            alignSelf: "stretch",
-                            mt: "12px",
-                            mb: "12px",
+                            display: "flex",
+                            flexDirection: "column",
+                            gap: "10px",
+                            justifyContent: "center",
+                            alignItems: "center",
+                            px: 2,
+                            py: 1,
                           }}
-                        />
-                      )}
-                    </>
-                  );
-                })}
+                        >
+                          <Text variant={"bodyMedium"} color={"primary.main"}>
+                            {title}
+                          </Text>
+                          <Text
+                            variant={"bodySmall"}
+                            color={"background.secondaryDark"}
+                          >{`${t("common.weight")} ${weight}`}</Text>
+                        </Box>
+                        {!isLast && (
+                          <Divider
+                            flexItem
+                            orientation="vertical"
+                            sx={{
+                              marginInline: "8px",
+                              bgcolor: "#C7CCD1",
+                              alignSelf: "stretch",
+                              mt: "12px",
+                              mb: "12px",
+                            }}
+                          />
+                        )}
+                      </>
+                    );
+                  },
+                )}
               </Box>
             </Box>
           </Box>
