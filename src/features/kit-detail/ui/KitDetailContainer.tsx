@@ -7,7 +7,6 @@ import EditableKitDetail from "./KitInfo";
 import { useKitDetailContainer } from "../model/useKitDetailContainer";
 import { KitDetailsType, KitInfoType, KitStatsType } from "../model/types";
 import FooterContainer from "./footer/FooterContainer";
-import QueryData from "@common/QueryData";
 
 const KitDetailContainer = () => {
   const { assessmentKitId, expertGroupId } = useParams();
@@ -58,14 +57,7 @@ const KitDetailContainer = () => {
               </Grid>
               <Grid item sm={12} xs={12}>
                 {_info.hasActiveVersion && (
-                  <QueryData
-                    {...fetchKitDetailQuery}
-                    render={(detailsData) => {
-                      const _details = (details ??
-                        detailsData) as KitDetailsType;
-                      return <FooterContainer details={_details} />;
-                    }}
-                  />
+                  <FooterContainer details={_details} />
                 )}
               </Grid>
             </Grid>
