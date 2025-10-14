@@ -6,6 +6,7 @@ import {
   AccordionDetails,
   AccordionSummary,
   Box,
+  Grid,
 } from "@mui/material";
 import { useAccordion } from "@/hooks/useAccordion";
 import { ExpandMoreRounded } from "@mui/icons-material";
@@ -36,12 +37,12 @@ const MeasurePanel = ({ measure }: { measure: IIndexedItem }) => {
 
             <Box display="flex" flexDirection="column" gap={1}>
               {" "}
-              {_measure.questions.map((question) => {
+              {_measure.questions.map((question, index) => {
                 return (
                   <Accordion
-                    key={question.title}
-                    expanded={isExpanded(question.title)}
-                    onChange={onChange(question.title)}
+                    key={question.id}
+                    expanded={isExpanded(question.id)}
+                    onChange={onChange(question.id)}
                     sx={{
                       boxShadow: "none !important",
                       borderRadius: "16px !important",
@@ -67,29 +68,83 @@ const MeasurePanel = ({ measure }: { measure: IIndexedItem }) => {
                         },
                         borderTopLeftRadius: "12px !important",
                         borderTopRightRadius: "12px !important",
-                        backgroundColor: isExpanded(question.title)
+                        backgroundColor: isExpanded(question.id)
                           ? "#66809914"
                           : "",
-                        borderBottom: isExpanded(question.title)
+                        borderBottom: isExpanded(question.id)
                           ? `1px solid #C7CCD1`
                           : "",
                       }}
                     >
                       <Text variant="bodyMedium">
-                        {question.index}.{question.title}
+                        {index + 1}.{question.title}
                       </Text>
                     </AccordionSummary>
                     <AccordionDetails
                       sx={{ display: "flex", flexDirection: "column", p: 2 }}
                     >
-                      <Text variant="titleSmall" sx={{ mb: 1 }}>
-                        {t("common.options")}
-                      </Text>
-                      <Box sx={{ display: "flex", flexWrap: "wrap" }}>
-                        {question.options?.map((opt: any) => (
-                          <OptionPill key={opt.index} option={opt} />
-                        ))}
-                      </Box>
+                      <Grid container>
+                        <Grid item md={6}>
+                          <Text variant="titleSmall" sx={{ mb: 1 }}>
+                            {t("common.questionnaire")}
+                          </Text>
+                          <Box
+                            sx={{
+                              display: "flex",
+                              alignItems: "center",
+                              gap: 4,
+                              marginInlineEnd: 3,
+                              mb: 2,
+                              py: 1,
+                              px: 2,
+                              borderRadius: 2,
+                              border: "1px solid",
+                              borderColor: "outline.variant",
+                              bgcolor: "primary.bg",
+                              width: "fit-content",
+                              color: "primary.main",
+                            }}
+                          >
+                            {question.questionnaire.title}
+                          </Box>
+                        </Grid>
+                        <Grid item md={6}>
+                          <Text variant="titleSmall" sx={{ mb: 1 }}>
+                            {t("common.answerRange")}
+                          </Text>
+                          <Box
+                            sx={{
+                              display: "flex",
+                              alignItems: "center",
+                              gap: 4,
+                              marginInlineEnd: 3,
+                              mb: 2,
+                              py: 1,
+                              px: 2,
+                              borderRadius: 2,
+                              border: "1px solid",
+                              borderColor: "outline.variant",
+                              bgcolor: "primary.bg",
+                              width: "fit-content",
+                              color: "primary.main",
+                            }}
+                          >
+                            {question.answerRange.title}
+                          </Box>
+                        </Grid>
+                      </Grid>
+                      {question?.options?.length && (
+                        <>
+                          <Text variant="titleSmall" sx={{ mb: 1 }}>
+                            {t("common.options")}
+                          </Text>
+                          <Box sx={{ display: "flex", flexWrap: "wrap" }}>
+                            {question.options?.map((opt: any) => (
+                              <OptionPill key={opt.index} option={opt} />
+                            ))}
+                          </Box>
+                        </>
+                      )}
                     </AccordionDetails>
                   </Accordion>
                 );
