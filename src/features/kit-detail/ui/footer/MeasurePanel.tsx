@@ -1,7 +1,6 @@
 import { useParams } from "react-router-dom";
 import { IIndexedItem } from "../../model/types";
 import QueryData from "@/components/common/QueryData";
-import { useQuestionnaire } from "../../model/footer/useQuestionnaire";
 import {
   Accordion,
   AccordionDetails,
@@ -12,23 +11,23 @@ import { useAccordion } from "@/hooks/useAccordion";
 import { ExpandMoreRounded } from "@mui/icons-material";
 import { Text } from "@/components/common/Text";
 import { useTranslation } from "react-i18next";
+import { useMeasures } from "../../model/footer/useMeasures";
+import { OptionPill } from "./AnswerRangesPanel";
 
-const QuestionnairePanel = ({
-  questionnaire,
-}: {
-  questionnaire: IIndexedItem;
-}) => {
+const MeasurePanel = ({ measure }: { measure: IIndexedItem }) => {
   const { assessmentKitId } = useParams();
-  const { fetcQuestionnaireDetailslQuery, questionnaireDetails } =
-    useQuestionnaire(assessmentKitId, questionnaire.id);
+  const { fetcMeasureDetailslQuery, measureDetails } = useMeasures(
+    assessmentKitId,
+    measure.id,
+  );
   const { t } = useTranslation();
   const { isExpanded, onChange } = useAccordion<number | string>(null);
 
   return (
     <QueryData
-      {...fetcQuestionnaireDetailslQuery}
-      render={(questionnaire) => {
-        const _questionnaire = questionnaireDetails ?? questionnaire;
+      {...fetcMeasureDetailslQuery}
+      render={(measure) => {
+        const _measure = measureDetails ?? measure;
         return (
           <Box display="flex" flexDirection="column" gap={6}>
             <Text variant="semiBoldXLarge" color="primary">
@@ -37,12 +36,12 @@ const QuestionnairePanel = ({
 
             <Box display="flex" flexDirection="column" gap={1}>
               {" "}
-              {_questionnaire.questions.map((question) => {
+              {_measure.questions.map((question) => {
                 return (
                   <Accordion
-                    key={question.id}
-                    expanded={isExpanded(question.id)}
-                    onChange={onChange(question.id)}
+                    key={question.title}
+                    expanded={isExpanded(question.title)}
+                    onChange={onChange(question.title)}
                     sx={{
                       boxShadow: "none !important",
                       borderRadius: "16px !important",
@@ -68,10 +67,10 @@ const QuestionnairePanel = ({
                         },
                         borderTopLeftRadius: "12px !important",
                         borderTopRightRadius: "12px !important",
-                        backgroundColor: isExpanded(question.id)
+                        backgroundColor: isExpanded(question.title)
                           ? "#66809914"
                           : "",
-                        borderBottom: isExpanded(question.id)
+                        borderBottom: isExpanded(question.title)
                           ? `1px solid #C7CCD1`
                           : "",
                       }}
@@ -86,7 +85,11 @@ const QuestionnairePanel = ({
                       <Text variant="titleSmall" sx={{ mb: 1 }}>
                         {t("common.options")}
                       </Text>
-                      <Box sx={{ display: "flex", flexWrap: "wrap" }}></Box>
+                      <Box sx={{ display: "flex", flexWrap: "wrap" }}>
+                        {question.options?.map((opt: any) => (
+                          <OptionPill key={opt.index} option={opt} />
+                        ))}
+                      </Box>
                     </AccordionDetails>
                   </Accordion>
                 );
@@ -99,4 +102,4 @@ const QuestionnairePanel = ({
   );
 };
 
-export default QuestionnairePanel;
+export default MeasurePanel;

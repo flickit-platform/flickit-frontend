@@ -31,13 +31,13 @@ const MaturityLevelsPanel = ({
   const { isExpanded, onChange } = useAccordion<number>(null);
 
   const colorPallet = useMemo(
-    () => getSemanticColors(maturityLevels.length, "default", localPalette),
-    [maturityLevels.length],
+    () => getSemanticColors(maturityLevels?.length, "default", localPalette),
+    [maturityLevels?.length],
   );
 
   const bgColorPallet = useMemo(
-    () => getSemanticColors(maturityLevels.length, "bg", localPalette),
-    [maturityLevels.length],
+    () => getSemanticColors(maturityLevels?.length, "bg", localPalette),
+    [maturityLevels?.length],
   );
 
   return (
@@ -47,7 +47,7 @@ const MaturityLevelsPanel = ({
       </Text>
 
       <Box display="flex" flexDirection="column" gap={1}>
-        {maturityLevels.map((level, index) => (
+        {maturityLevels?.map((level, index) => (
           <Accordion
             key={level.index}
             expanded={isExpanded(level.index)}
@@ -86,12 +86,14 @@ const MaturityLevelsPanel = ({
             >
               <Box
                 sx={{ ...styles.centerV }}
-                flex={Object.values(level.translations)[0]?.title ? 0.5 : 0.25}
+                flex={
+                  Object.values(level.translations ?? {})[0]?.title ? 0.5 : 0.25
+                }
               >
                 <Text variant="semiBoldLarge" lines={1}>
                   {level.index}. {level.title}
                 </Text>
-                {Object.values(level.translations)[0]?.title && (
+                {Object.values(level?.translations ?? {})[0]?.title && (
                   <>
                     <Divider
                       flexItem
@@ -104,7 +106,7 @@ const MaturityLevelsPanel = ({
                       }}
                     />
                     <Text variant="bodyMedium" lines={1}>
-                      {Object.values(level.translations)[0]?.title}
+                      {Object.values(level.translations ?? {})[0]?.title}
                     </Text>
                   </>
                 )}
@@ -152,12 +154,15 @@ const MaturityLevelsPanel = ({
                 <Box width="100%">
                   <Text variant="bodyMedium">{level.description}</Text>
 
-                  {Object.values(level.translations)[0]?.description && (
+                  {Object.values(level.translations ?? {})[0]?.description && (
                     <>
                       <Divider flexItem sx={{ my: 1 }} />
 
                       <Text variant="bodyMedium" lines={1}>
-                        {Object.values(level.translations)[0]?.description}
+                        {
+                          Object.values(level.translations ?? {})[0]
+                            ?.description
+                        }
                       </Text>
                     </>
                   )}

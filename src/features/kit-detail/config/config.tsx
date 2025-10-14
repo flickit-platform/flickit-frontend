@@ -18,13 +18,10 @@ function lazyDefault<T = any>(
 const LazyMaturity = lazyDefault(
   () => import("../ui/footer/MaturityLevelsPanel"),
 );
-const LazyMeasures = lazyDefault(() => import("../ui/footer/MeasuresPanel"));
-const LazySubjects = lazyDefault(() => import("../ui/footer/SubjectsPanel"));
+const LazyMeasures = lazyDefault(() => import("../ui/footer/MeasurePanel"));
 const LazySubject = lazyDefault(() => import("../ui/footer/SubjectPanel"));
 const LazyAttribute = lazyDefault(() => import("../ui/footer/AttributePanel"));
-const LazyQuestionnaires = lazyDefault(
-  () => import("../ui/footer/QuestionnairesPanel"),
-);
+
 const LazyQuestionnaire = lazyDefault(
   () => import("../ui/footer/QuestionnairePanel"),
 );
@@ -42,7 +39,7 @@ export type ConfigItem = {
   id: string;
   title: (t: (k: string) => string) => string;
   rootNodeId: string;
-  component:
+  component?:
     | React.ComponentType<any>
     | LazyExoticComponent<React.ComponentType<any>>;
   buildChildren?: (
@@ -69,7 +66,6 @@ export const treeConfig: ConfigItem[] = [
     id: "subjects",
     title: (t) => t("common.subjects"),
     rootNodeId: "subjects-root",
-    component: LazySubjects,
     buildChildren: (details) => {
       return [
         {
@@ -122,7 +118,6 @@ export const treeConfig: ConfigItem[] = [
     id: "questionnaires",
     title: (t) => t("common.questionnaires"),
     rootNodeId: "questionnaires-root",
-    component: LazyQuestionnaires,
     buildChildren: (details) => [
       {
         nodeId: "questionnaires-root",
@@ -156,7 +151,6 @@ export const treeConfig: ConfigItem[] = [
     id: "measures",
     title: (t) => t("common.measures"),
     rootNodeId: "measures-root",
-    component: LazyMeasures,
     buildChildren: (details) => [
       {
         nodeId: "measures-root",
@@ -239,5 +233,5 @@ export function buildTree(
 }
 
 export function resolveActive(nodeId: string) {
-  return treeConfig.find((c) => c.match(nodeId)) ?? treeConfig[0];
+  return treeConfig.find((c) => c.match(nodeId));
 }

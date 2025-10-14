@@ -267,7 +267,7 @@ export default function HowIsItMade({ lng, report }: any) {
             >
               {t("assessmentReport.assessmentKitEvaluatesMaturity", { lng })}
             </Text>
-            {maturityLevels.map((level: any) => (
+            {maturityLevels?.map((level: any) => (
               <Box key={uniqueId()} sx={{ ...styles.centerV }} gap={2}>
                 <Box
                   bgcolor={
