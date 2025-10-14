@@ -144,7 +144,10 @@ export const treeConfig: ConfigItem[] = [
       const questionnaire = details.questionnaires.find(
         (q) => String(q.id) === qid,
       );
-      return { questionnaire };
+      return {
+        questionnaire,
+        maturityLevelsCount: details.maturityLevels.length,
+      };
     },
   },
   {

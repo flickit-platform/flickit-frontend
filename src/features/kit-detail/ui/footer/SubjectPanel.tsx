@@ -11,7 +11,7 @@ import QueryData from "@common/QueryData";
 import Divider from "@mui/material/Divider";
 import { useEffect } from "react";
 
-type Ttranslations = Record<string, { title?: string; description?: string }>;
+type Ttranslations = Record<string, any>;
 type TAttribute = { title: string; weight: number; id: number; index: number };
 
 interface IsubjectData {
@@ -29,6 +29,16 @@ interface IsubjectProp {
   title: string;
 }
 
+export const getTranslation = (
+  obj?: Ttranslations | null,
+  type?: any,
+): string | null => {
+  return obj && Object.keys(obj).length > 0
+    ? (Object.values(obj)[0]?.[type] ?? null)
+    : null;
+};
+
+
 const SubjectPanel = ({ subject }: { subject: IsubjectProp }) => {
   const { service } = useServiceContext();
   const { t } = useTranslation();
@@ -45,14 +55,6 @@ const SubjectPanel = ({ subject }: { subject: IsubjectProp }) => {
     fetchSubjectDetail.query();
   }, [subject.id]);
   
-  const getTranslation = (
-    obj?: Ttranslations | null,
-    type: keyof { title?: string; description?: string } = "title",
-  ): string | null => {
-    return obj && Object.keys(obj).length > 0
-      ? (Object.values(obj)[0]?.[type] ?? null)
-      : null;
-  };
 
   return (
     <QueryData
@@ -72,8 +74,8 @@ const SubjectPanel = ({ subject }: { subject: IsubjectProp }) => {
               title={subject?.title}
               translations={getTranslation(subject?.translations, "title")}
               sectionName={t("kitDetail.subject")}
-              questionLabel={`${questionsCount} ${t("common.question")}`}
-              weightLabel={`${t("common.weight")}: ${weight}`}
+              firstTag={`${questionsCount} ${t("common.question")}`}
+              secondTag={`${t("common.weight")}: ${weight}`}
             />
 
             <Box>

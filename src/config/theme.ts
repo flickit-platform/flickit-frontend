@@ -401,13 +401,13 @@ export const getTheme = (lang: any) => {
       },
       semiBoldMedium: {
         fontFamily: is_farsi ? farsiFontFamily : primaryFontFamily,
-        fontWeight: "500",
+        fontWeight: "400",
         fontSize: "16px",
         letterSpacing: is_farsi ? "0px" : "0.1px",
       },
       semiBoldLarge: {
         fontFamily: is_farsi ? farsiFontFamily : primaryFontFamily,
-        fontWeight: "500",
+        fontWeight: "400",
         fontSize: "18px",
         letterSpacing: is_farsi ? "0px" : "0.15px",
       },

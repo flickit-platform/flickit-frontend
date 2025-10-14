@@ -45,7 +45,7 @@ export interface IIndexedItem {
   id: TId;
   title: string;
   index: number;
-  translations?: translations<"FA" | "EN">;
+  translations?:  Record<string, { title?: string; description?: string }>;
 }
 
 type options = Omit<IIndexedItem, "id"> & { value: number };
@@ -75,6 +75,28 @@ export interface QuestionnaireDetails {
   description: string;
   questions: QuestionDetaisl[];
   translations?: translations<"FA" | "EN">;
+}
+
+export interface QuestionDetailss {
+  hint?: string;
+  options: options[];
+  attributeImpacts: {
+    id: TId;
+    title: string;
+    affectedLevels: {
+      maturityLevel: IIndexedItem;
+      weight: number;
+    }[];
+  }[];
+  answerRange?: {
+    id: TId;
+    title: string;
+  };
+  measure?: {
+    id: TId;
+    title: string;
+  };
+  translations: any;
 }
 
 export interface MeasureDetails {
