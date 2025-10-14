@@ -35,8 +35,10 @@ const SubjectPanel = ({ subject }: { subject: IsubjectProp }) => {
   const { assessmentKitId = "" } = useParams();
 
   const fetchSubjectDetail = useQuery({
-    service: (args = { assessmentKitId, subjectId: subject?.id }, config) =>
-      service.assessmentKit.details.getSubject(args, config),
+    service: (args, config) => {
+      const finalArgs = args ?? { assessmentKitId, subjectId: subject?.id };
+      return service.assessmentKit.details.getSubject(finalArgs, config);
+    },
   });
 
   useEffect(() => {
