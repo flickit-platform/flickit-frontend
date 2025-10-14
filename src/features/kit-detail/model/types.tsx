@@ -82,7 +82,7 @@ export interface MeasureDetails {
   description: string;
   questions: (QuestionDetaisl & {
     options: options[];
-    answerRange: string;
+    answerRange: { title: string; id: TId };
     questionnaire: IIndexedItem;
   })[];
   translations?: translations<"FA" | "EN">;

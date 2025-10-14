@@ -74,8 +74,9 @@ function getActiveRoot(selectedId: string | null): string | null {
   if (!selectedId) return null;
   if (selectedId.startsWith("subject-") || selectedId.startsWith("attribute-"))
     return "subjects-root";
-  if (selectedId.startsWith("questionnaire-")) return "questionnaires-root";
-  return null;
+    if (selectedId.startsWith("questionnaire-")) return "questionnaires-root";
+    if (selectedId.startsWith("measure-")) return "measures-root";
+    return null;
 }
 
 function renderNodes(
