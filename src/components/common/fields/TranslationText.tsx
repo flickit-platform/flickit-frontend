@@ -1,3 +1,4 @@
+import { SxProps, Theme } from "@mui/material/styles";
 import { Box, Divider, IconButton, useTheme } from "@mui/material";
 import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
 import languageDetector from "@/utils/language-detector";
@@ -10,10 +11,12 @@ import { Text } from "../Text";
 
 interface TitleWithTranslationProps {
   title: string;
-  translation?: string;
+  translation?: string | null;
   variant?: any;
   multiline?: boolean;
   showCopyIcon?: boolean;
+  titleSx?: SxProps<Theme>;
+  translationSx?: SxProps<Theme>;
 }
 
 const RenderText = ({
@@ -24,6 +27,7 @@ const RenderText = ({
   variant,
   multiline,
   showCopyIcon,
+  sx
 }: {
   text: string;
   isFarsi: boolean;
@@ -32,18 +36,20 @@ const RenderText = ({
   variant?: string;
   multiline?: boolean;
   showCopyIcon?: boolean;
+  sx?: any
 }) => {
   const theme = useTheme();
 
   const baseProps = {
     component: "div" as const,
-    variant: variantOverride ?? variant,
+    variant: variant ?? variantOverride,
     sx: {
       mt: !multiline ? 0.5 : 0,
       color: color ?? "inherit",
       fontFamily: isFarsi ? farsiFontFamily : primaryFontFamily,
       textAlign: multiline ? "justify" : "unset",
       width: "fit-content",
+      ...sx,
     },
   };
   const [isHovered, setIsHovered] = useState(false);
@@ -92,6 +98,8 @@ const RenderText = ({
 const TitleWithTranslation = ({
   title,
   translation = "",
+  titleSx,
+  translationSx,
   ...rest
 }: TitleWithTranslationProps) => {
   const theme = useTheme();
@@ -104,6 +112,7 @@ const TitleWithTranslation = ({
       <RenderText
         text={title}
         isFarsi={isFarsiTitle}
+        sx={titleSx}
         {...rest}
         variantOverride="bodyMedium"
       />
@@ -120,6 +129,7 @@ const TitleWithTranslation = ({
             text={translation}
             isFarsi={isFarsiTranslation}
             color={theme.palette.background.onVariant}
+            sx={translationSx}
             variantOverride="bodyMedium"
             {...rest}
           />

@@ -1,8 +1,9 @@
 import { Suspense } from "react";
 import { Grid } from "@mui/material";
+import { KitDetailsType } from "../../model/types";
 import { useFooterController } from "../../model/footer/useFooterController";
 import KitDetailsTreeView from "./KitDetailsTreeView";
-import type { KitDetailsType } from "../../model/types";
+
 
 function FooterContainer({ details }: { details: KitDetailsType }) {
   const { selectedId, setSelectedId, ActiveComp, activeProps } =
