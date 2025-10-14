@@ -1,4 +1,5 @@
 {
+  "attribute": "Attribute",
   "continueEdittingDraft": "A draft has already been created. You can continue editing the kit on that draft and release your changes when ready",
   "createdAssessments": "Created assessments",
   "createNewDraftDesc": "The current kit content will be available as a draft in the Kit Designer. You can make your desired changes and release them when you’re ready",
@@ -11,6 +12,7 @@
   "viaKitDesigner": "Via Kit Designer",
   "subject": "Subject",
   "options": "Options",
+  "questions": "Questions",
   "whatIsThisKit": "What is this kit?",
   "whoNeedsThisKit": "Who needs this kit?",
   "whenToUseThisKit": "When to use this kit?"
