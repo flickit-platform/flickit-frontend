@@ -22,6 +22,7 @@ import { getSemanticColors } from "@/config/colors";
 import { InfoHeader } from "../common/InfoHeader";
 import { getTranslation } from "./SubjectPanel";
 import TitleWithTranslation from "@/components/common/fields/TranslationText";
+import { OptionPill } from "./AnswerRangesPanel";
 
 const QuestionnairePanel = ({
   questionnaire,
@@ -244,6 +245,23 @@ const QuestionnairePanel = ({
                                   </>
                                 )}
                               </Grid>
+                              {ques?.options?.length && (
+                                <Box  mt={2}>
+                                  <Text variant="titleSmall">
+                                    {t("common.options")}
+                                  </Text>
+                                  <Box
+                                    sx={{ display: "flex", flexWrap: "wrap" }}
+                                  >
+                                    {ques.options?.map((opt: any) => (
+                                      <OptionPill
+                                        key={opt.index}
+                                        option={opt}
+                                      />
+                                    ))}
+                                  </Box>
+                                </Box>
+                              )}
                               <Box my={2}>
                                 <Text variant="titleSmall" sx={{ mb: 1 }}>
                                   {t("kitDetail.affectedAttributes")}
