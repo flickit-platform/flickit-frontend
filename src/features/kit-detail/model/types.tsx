@@ -45,7 +45,8 @@ export interface IIndexedItem {
   id: TId;
   title: string;
   index: number;
-  translations?:  Record<string, { title?: string; description?: string }>;
+  description?: string;
+  translations?: Record<string, { title?: string; description?: string }>;
 }
 
 type options = Omit<IIndexedItem, "id"> & { value: number };
@@ -72,6 +73,7 @@ type QuestionDetaisl = IIndexedItem & {
 
 export interface QuestionnaireDetails {
   questionsCount: number;
+  title: string;
   description: string;
   questions: QuestionDetaisl[];
   translations?: translations<"FA" | "EN">;
@@ -101,6 +103,7 @@ export interface QuestionDetailss {
 
 export interface MeasureDetails {
   questionsCount: number;
+  title: string;
   description: string;
   questions: (QuestionDetaisl & {
     options: options[];

@@ -19,6 +19,7 @@ import {
   withDefaultOverrides,
 } from "@/config/colors";
 import { IMaturityLevelIndexedItem } from "../../model/types";
+import { getTranslation } from "./SubjectPanel";
 
 const localPalette = withDefaultOverrides(BASE_PALETTE, { C5: "#C7CCD1" });
 
@@ -86,29 +87,16 @@ const MaturityLevelsPanel = ({
             >
               <Box
                 sx={{ ...styles.centerV }}
-                flex={
-                  Object.values(level.translations ?? {})[0]?.title ? 0.5 : 0.25
-                }
+                flex={getTranslation(level?.translations, "title") ? 0.5 : 0.25}
+                gap={1}
               >
                 <Text variant="semiBoldLarge" lines={1}>
                   {level.index}. {level.title}
                 </Text>
-                {Object.values(level?.translations ?? {})[0]?.title && (
-                  <>
-                    <Divider
-                      flexItem
-                      orientation="vertical"
-                      sx={{
-                        mx: "8px",
-                        bgcolor: isExpanded(level.index)
-                          ? "background.on"
-                          : "background.containerLowest",
-                      }}
-                    />
-                    <Text variant="bodyMedium" lines={1}>
-                      {Object.values(level.translations ?? {})[0]?.title}
-                    </Text>
-                  </>
+                {getTranslation(level?.translations, "title") && (
+                  <Text variant="bodyMedium" lines={1}>
+                    {getTranslation(level?.translations, "title")}
+                  </Text>
                 )}
               </Box>
               {0 < level.competences.length && (

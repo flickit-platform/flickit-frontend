@@ -1,4 +1,4 @@
-import { Box } from "@mui/material";
+import { Box, Chip } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import { InfoHeader } from "../common/InfoHeader";
 import { styles } from "@styles";
@@ -38,7 +38,6 @@ export const getTranslation = (
     : null;
 };
 
-
 const SubjectPanel = ({ subject }: { subject: IsubjectProp }) => {
   const { service } = useServiceContext();
   const { t } = useTranslation();
@@ -54,7 +53,6 @@ const SubjectPanel = ({ subject }: { subject: IsubjectProp }) => {
   useEffect(() => {
     fetchSubjectDetail.query();
   }, [subject.id]);
-  
 
   return (
     <QueryData
@@ -122,13 +120,20 @@ const SubjectPanel = ({ subject }: { subject: IsubjectProp }) => {
                             py: 1,
                           }}
                         >
-                          <Text variant={"bodyMedium"} color={"primary.main"}>
+                          <Text variant="bodyMedium" color="primary.main" textAlign="center">
                             {title}
                           </Text>
-                          <Text
-                            variant={"bodySmall"}
-                            color={"background.secondaryDark"}
-                          >{`${t("common.weight")} ${weight}`}</Text>
+                          <Chip
+                            label={
+                              <Text
+                                variant="semiBoldSmall"
+                                color="background.contrastText"
+                              >
+                                {`${t("common.weight")} ${weight}`}
+                              </Text>
+                            }
+                            sx={{ background: "#66809914", borderRadius: 4 }}
+                          />
                         </Box>
                         {!isLast && (
                           <Divider
