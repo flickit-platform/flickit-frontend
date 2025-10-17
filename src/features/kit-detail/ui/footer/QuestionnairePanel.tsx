@@ -268,7 +268,7 @@ const QuestionnairePanel = ({
                                   </>
                                 )}
                               </Grid>
-                              {ques.options?.length && (
+                              {Boolean(ques.options?.length) && (
                                 <Box mt={2}>
                                   <Text variant="titleSmall">
                                     {t("common.options")}
