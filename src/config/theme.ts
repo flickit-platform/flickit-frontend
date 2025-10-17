@@ -336,7 +336,7 @@ export const getTheme = (lang: any) => {
       titleSmall: {
         fontFamily: is_farsi ? farsiFontFamily : primaryFontFamily,
         fontWeight: "bold",
-        fontSize: "0.875rem",
+        fontSize: "1rem",
         letterSpacing: is_farsi ? "0px" : ".1px",
       },
       titleMedium: {
@@ -395,25 +395,25 @@ export const getTheme = (lang: any) => {
       },
       semiBoldSmall: {
         fontFamily: is_farsi ? farsiFontFamily : primaryFontFamily,
-        fontWeight: "500",
+        fontWeight: 400,
         fontSize: "13px",
         letterSpacing: is_farsi ? "0px" : "0.5px",
       },
       semiBoldMedium: {
         fontFamily: is_farsi ? farsiFontFamily : primaryFontFamily,
-        fontWeight: "400",
+        fontWeight: 400,
         fontSize: "16px",
         letterSpacing: is_farsi ? "0px" : "0.1px",
       },
       semiBoldLarge: {
         fontFamily: is_farsi ? farsiFontFamily : primaryFontFamily,
-        fontWeight: "400",
+        fontWeight: 400,
         fontSize: "18px",
         letterSpacing: is_farsi ? "0px" : "0.15px",
       },
       semiBoldXLarge: {
         fontFamily: is_farsi ? farsiFontFamily : primaryFontFamily,
-        fontWeight: "500",
+        fontWeight: 400,
         fontSize: "1.375rem",
         letterSpacing: "0px",
       },

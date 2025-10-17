@@ -59,9 +59,9 @@ const QuestionnairePanel = ({
       render={(questionnaire_element) => {
         const _questionnaire = questionnaireDetails ?? questionnaire_element;
         return (
-          <Box display="flex" flexDirection="column" gap={6}>
+          <Box display="flex" flexDirection="column" gap={4}>
             <InfoHeader
-              title={questionnaire.title}
+              title={_questionnaire.title}
               translations={getTranslation(
                 questionnaire?.translations,
                 "title",
@@ -69,9 +69,31 @@ const QuestionnairePanel = ({
               sectionName={t("common.questionnaire")}
               firstTag={`${_questionnaire.questions.length} ${t("common.question")}`}
             />
-
+            <Box>
+              <Text variant="bodyLarge" color={"background.secondaryDark"}>
+                {t("common.description")}:
+              </Text>
+              <Box
+                sx={{
+                  px: 2,
+                }}
+              >
+                <TitleWithTranslation
+                  title={_questionnaire.description}
+                  translation={getTranslation(
+                    questionnaire.translations,
+                    "description",
+                  )}
+                  titleSx={{ color: "background.secondaryDark" }}
+                  translationSx={{ color: "background.secondaryDark" }}
+                />
+              </Box>
+            </Box>
             <Box display="flex" flexDirection="column" gap={1}>
-              {" "}
+              <Text variant="bodyLarge" color={"background.secondaryDark"}>
+                {t("common.questions")} ({_questionnaire.questions.length}
+                {t("common.question")})
+              </Text>
               {_questionnaire.questions.map((question) => {
                 return (
                   <Accordion
@@ -113,6 +135,7 @@ const QuestionnairePanel = ({
                     >
                       <Box
                         display="flex"
+                        alignItems="center"
                         justifyContent="space-between"
                         width="100%"
                       >
@@ -178,7 +201,7 @@ const QuestionnairePanel = ({
 
                               {ques?.hint && (
                                 <Grid item md={12} mb={2}>
-                                  <Text variant="titleSmall">
+                                  <Text variant="titleSmall" mb={0.5}>
                                     {t("common.hint")}
                                   </Text>
                                   <TitleWithTranslation
@@ -245,8 +268,8 @@ const QuestionnairePanel = ({
                                   </>
                                 )}
                               </Grid>
-                              {ques.options?.length && (
-                                <Box  mt={2}>
+                              {Boolean(ques.options?.length) && (
+                                <Box mt={2}>
                                   <Text variant="titleSmall">
                                     {t("common.options")}
                                   </Text>
@@ -263,104 +286,110 @@ const QuestionnairePanel = ({
                                 </Box>
                               )}
                               <Box my={2}>
-                                <Text variant="titleSmall" sx={{ mb: 1 }}>
+                                <Text variant="titleSmall" sx={{ mb: 2 }}>
                                   {t("kitDetail.affectedAttributes")}
                                 </Text>
                                 <Box display="flex" flexWrap="wrap" rowGap={1}>
-                                  {ques?.attributeImpacts?.map((impact) => {
-                                    return (
-                                      <Box display="flex">
-                                        <Box
-                                          display="flex"
-                                          flexDirection="column"
-                                          alignItems="center"
-                                          gap="10px"
-                                        >
-                                          <Box px="18px" py="8px 0px">
-                                            <Text
-                                              textAlign="center"
-                                              variant="semiBoldLarge"
-                                              color="primary"
-                                            >
-                                              {" "}
-                                              {impact.title}
-                                            </Text>
-                                          </Box>
-                                          {impact.affectedLevels.map(
-                                            (level) => {
-                                              return (
-                                                <Chip
-                                                  sx={{
-                                                    width: "fit-content",
-                                                    ".MuiChip-label": {
-                                                      px: "12px",
-                                                      py: "4px",
-                                                      color:
-                                                        "background.contrastText",
-                                                    },
-                                                    background:
-                                                      getSemanticColors(
-                                                        maturityLevelsCount,
-                                                        "bg",
-                                                      )[
-                                                        level.maturityLevel
-                                                          .index - 1
-                                                      ],
-                                                    border: "1px solid",
-                                                    borderColor:
-                                                      getSemanticColors(
-                                                        maturityLevelsCount,
-                                                        "text",
-                                                      )[
-                                                        level.maturityLevel
-                                                          .index - 1
-                                                      ],
-                                                  }}
-                                                  label={
-                                                    <Box display="flex">
-                                                      <Text variant="semiBoldMedium">
-                                                        {
+                                  {ques?.attributeImpacts?.map(
+                                    (impact, index) => {
+                                      const isLast =
+                                        index === ques.attributeImpacts.length;
+                                      return (
+                                        <Box display="flex">
+                                          <Box
+                                            display="flex"
+                                            flexDirection="column"
+                                            alignItems="center"
+                                            gap="10px"
+                                          >
+                                            <Box px="18px" py="8px 0px">
+                                              <Text
+                                                textAlign="center"
+                                                variant="semiBoldLarge"
+                                                color="primary"
+                                              >
+                                                {" "}
+                                                {impact.title}
+                                              </Text>
+                                            </Box>
+                                            {impact.affectedLevels.map(
+                                              (level) => {
+                                                return (
+                                                  <Chip
+                                                    sx={{
+                                                      width: "fit-content",
+                                                      ".MuiChip-label": {
+                                                        px: "12px",
+                                                        py: "4px",
+                                                        color:
+                                                          "background.contrastText",
+                                                      },
+                                                      background:
+                                                        getSemanticColors(
+                                                          maturityLevelsCount,
+                                                          "bg",
+                                                        )[
                                                           level.maturityLevel
-                                                            .title
-                                                        }
-                                                      </Text>
-                                                      <Divider
-                                                        flexItem
-                                                        orientation="vertical"
-                                                        sx={{
-                                                          mx: 1,
-                                                          borderColor:
-                                                            "text.primary",
-                                                          height: 16,
-                                                          display: "flex",
-                                                          alignSelf: "center",
-                                                        }}
-                                                      />
+                                                            .index - 1
+                                                        ],
+                                                      border: "1px solid",
+                                                      borderColor:
+                                                        getSemanticColors(
+                                                          maturityLevelsCount,
+                                                          "text",
+                                                        )[
+                                                          level.maturityLevel
+                                                            .index - 1
+                                                        ],
+                                                    }}
+                                                    label={
+                                                      <Box display="flex">
+                                                        <Text variant="semiBoldMedium">
+                                                          {
+                                                            level.maturityLevel
+                                                              .title
+                                                          }
+                                                        </Text>
+                                                        <Divider
+                                                          flexItem
+                                                          orientation="vertical"
+                                                          sx={{
+                                                            mx: 1,
+                                                            borderColor:
+                                                              "text.primary",
+                                                            height: 16,
+                                                            display: "flex",
+                                                            alignSelf: "center",
+                                                          }}
+                                                        />
 
-                                                      <Text variant="semiBoldMedium">
-                                                        {t("common.weight")}
-                                                        {": "}
-                                                        {level.weight}
-                                                      </Text>
-                                                    </Box>
-                                                  }
-                                                />
-                                              );
-                                            },
+                                                        <Text variant="semiBoldMedium">
+                                                          {t("common.weight")}
+                                                          {": "}
+                                                          {level.weight}
+                                                        </Text>
+                                                      </Box>
+                                                    }
+                                                  />
+                                                );
+                                              },
+                                            )}
+                                          </Box>
+                                          {isLast && (
+                                            <Divider
+                                              flexItem
+                                              orientation="vertical"
+                                              sx={{
+                                                mx: 1,
+                                                height: 36,
+                                                borderColor: "outline.variant",
+                                              }}
+                                            />
                                           )}
                                         </Box>
-                                        <Divider
-                                          flexItem
-                                          orientation="vertical"
-                                          sx={{
-                                            mx: 1,
-                                            height: 36,
-                                            borderColor: "outline.variant",
-                                          }}
-                                        />
-                                      </Box>
-                                    );
-                                  })}
+                                      );
+                                    },
+                                  )}
                                 </Box>
                               </Box>
                             </Grid>

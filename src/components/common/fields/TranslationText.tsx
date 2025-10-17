@@ -10,7 +10,7 @@ import { t } from "i18next";
 import { Text } from "../Text";
 
 interface TitleWithTranslationProps {
-  title: string;
+  title?: string;
   translation?: string | null;
   variant?: any;
   multiline?: boolean;
@@ -27,7 +27,7 @@ const RenderText = ({
   variant,
   multiline,
   showCopyIcon,
-  sx
+  sx,
 }: {
   text: string;
   isFarsi: boolean;
@@ -36,7 +36,7 @@ const RenderText = ({
   variant?: string;
   multiline?: boolean;
   showCopyIcon?: boolean;
-  sx?: any
+  sx?: any;
 }) => {
   const theme = useTheme();
 
@@ -110,7 +110,7 @@ const TitleWithTranslation = ({
   return (
     <Box display="flex" flexDirection="column" flexGrow={1}>
       <RenderText
-        text={title}
+        text={title ?? ""}
         isFarsi={isFarsiTitle}
         sx={titleSx}
         {...rest}

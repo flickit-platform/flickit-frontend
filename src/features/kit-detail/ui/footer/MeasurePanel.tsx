@@ -16,6 +16,7 @@ import { useMeasures } from "../../model/footer/useMeasures";
 import { OptionPill } from "./AnswerRangesPanel";
 import { InfoHeader } from "../common/InfoHeader";
 import { getTranslation } from "./SubjectPanel";
+import TitleWithTranslation from "@/components/common/fields/TranslationText";
 
 const MeasurePanel = ({ measure }: { measure: IIndexedItem }) => {
   const { assessmentKitId } = useParams();
@@ -32,14 +33,33 @@ const MeasurePanel = ({ measure }: { measure: IIndexedItem }) => {
       render={(measure_element) => {
         const _measure = measureDetails ?? measure_element;
         return (
-          <Box display="flex" flexDirection="column" gap={6}>
+          <Box display="flex" flexDirection="column" gap={4}>
             <InfoHeader
-              title={measure.title}
+              title={_measure.title}
               translations={getTranslation(measure?.translations, "title")}
               sectionName={t("common.measure")}
               firstTag={`${_measure.questions.length} ${t("common.question")}`}
             />
-
+            <Box>
+              <Text variant="bodyLarge" color={"background.secondaryDark"}>
+                {t("common.description")}:
+              </Text>
+              <Box
+                sx={{
+                  px: 2,
+                }}
+              >
+                <TitleWithTranslation
+                  title={_measure.description}
+                  translation={getTranslation(
+                    _measure.translations,
+                    "description",
+                  )}
+                  titleSx={{ color: "background.secondaryDark" }}
+                  translationSx={{ color: "background.secondaryDark" }}
+                />
+              </Box>
+            </Box>
             <Box display="flex" flexDirection="column" gap={1}>
               {" "}
               {_measure.questions.map((question, index) => {
