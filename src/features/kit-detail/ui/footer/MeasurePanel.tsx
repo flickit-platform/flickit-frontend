@@ -101,9 +101,10 @@ const MeasurePanel = ({ measure }: { measure: IIndexedItem }) => {
                           : "",
                       }}
                     >
-                      <Text variant="bodyMedium">
-                        {index + 1}.{question.title}
-                      </Text>
+                      <Box>
+                        <Text variant="bodyMedium">{index + 1}.</Text>{" "}
+                        <Text variant="bodyMedium"> {question.title}</Text>
+                      </Box>
                     </AccordionSummary>
                     <AccordionDetails
                       sx={{
