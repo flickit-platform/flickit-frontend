@@ -90,9 +90,13 @@ const MaturityLevelsPanel = ({
                 flex={getTranslation(level?.translations, "title") ? 0.5 : 0.25}
                 gap={1}
               >
-                <Text variant="semiBoldLarge" lines={1}>
-                  {level.index}. {level.title}
-                </Text>
+                <Box display="flex" gap={0.5}>
+                  <Text variant="bodyMedium">{level.index}. </Text>
+                  <Text variant="bodyMedium" lines={1}>
+                    {level.title}
+                  </Text>
+                </Box>
+
                 {getTranslation(level?.translations, "title") && (
                   <Text variant="bodyMedium" lines={1}>
                     {getTranslation(level?.translations, "title")}
@@ -104,7 +108,11 @@ const MaturityLevelsPanel = ({
                   <Text variant="semiBoldMedium">
                     {t("common.competences")}
                   </Text>
-                  <Box display="flex" gap={1}>
+                  <Box
+                    display="flex"
+                    gap={1}
+                    flexDirection={{ xs: "column", md: "row" }}
+                  >
                     {level.competences.map((competence, i) => {
                       const isLast = i === level.competences.length - 1;
                       return (
@@ -125,6 +133,7 @@ const MaturityLevelsPanel = ({
                                 bgcolor: isExpanded(level.index)
                                   ? "background.on"
                                   : "background.containerLowest",
+                                display: { xs: "none", md: "flex" },
                               }}
                             />
                           )}
@@ -137,20 +146,22 @@ const MaturityLevelsPanel = ({
             </AccordionSummary>
 
             <AccordionDetails>
-              <Box display="flex" gap={2} flex={1} paddingBlock={1}>
+              <Box
+                display={{ xs: "block", md: "flex" }}
+                gap={2}
+                flex={1}
+                paddingBlock={1}
+              >
                 <Text variant="semiBoldMedium">{t("common.description")}</Text>
                 <Box width="100%">
                   <Text variant="bodyMedium">{level.description}</Text>
 
-                  {Object.values(level.translations ?? {})[0]?.description && (
+                  {getTranslation(level.translations, "description") && (
                     <>
                       <Divider flexItem sx={{ my: 1 }} />
 
                       <Text variant="bodyMedium" lines={1}>
-                        {
-                          Object.values(level.translations ?? {})[0]
-                            ?.description
-                        }
+                        {getTranslation(level.translations, "description")}
                       </Text>
                     </>
                   )}

@@ -61,13 +61,13 @@ const QuestionnairePanel = ({
         return (
           <Box display="flex" flexDirection="column" gap={4}>
             <InfoHeader
-              title={_questionnaire.title}
+              title={questionnaire.title}
               translations={getTranslation(
                 questionnaire?.translations,
                 "title",
               )}
               sectionName={t("common.questionnaire")}
-              firstTag={`${_questionnaire.questions.length} ${t("common.question")}`}
+              firstTag={`${_questionnaire.questions.length} ${t("kitDetail.questions")}`}
             />
             <Box>
               <Text variant="bodyLarge" color={"background.secondaryDark"}>
@@ -91,8 +91,8 @@ const QuestionnairePanel = ({
             </Box>
             <Box display="flex" flexDirection="column" gap={1}>
               <Text variant="bodyLarge" color={"background.secondaryDark"}>
-                {t("common.questions")} ({_questionnaire.questions.length}
-                {t("common.question")})
+                {t("common.questions")} ({_questionnaire.questions.length}{" "}
+                {t("kitDetail.questions")})
               </Text>
               {_questionnaire.questions.map((question) => {
                 return (
@@ -139,9 +139,10 @@ const QuestionnairePanel = ({
                         justifyContent="space-between"
                         width="100%"
                       >
-                        <Text variant="bodyMedium">
-                          {question.index}.{question.title}
-                        </Text>
+                        <Box>
+                          <Text variant="bodyMedium">{question.index}.</Text>{" "}
+                          <Text variant="bodyMedium"> {question.title}</Text>
+                        </Box>
                         <Box display="flex" gap={1}>
                           {question.mayNotBeApplicable && (
                             <Chip
@@ -189,14 +190,22 @@ const QuestionnairePanel = ({
                           return (
                             <Grid container>
                               {getTranslation(ques?.translations, "title") && (
-                                <Grid item md={12}>
-                                  <Text variant="semiBoldLarge">
-                                    {getTranslation(
-                                      ques?.translations,
-                                      "title",
-                                    )}
-                                  </Text>
-                                </Grid>
+                                <>
+                                  <Grid item md={12}>
+                                    {" "}
+                                    <Text variant="titleSmall" mb={0.5}>
+                                      {t("kitDetail.questionTranslation")}
+                                    </Text>
+                                  </Grid>
+                                  <Grid item md={12}>
+                                    <Text variant="semiBoldLarge" mb={1}>
+                                      {getTranslation(
+                                        ques?.translations,
+                                        "title",
+                                      )}
+                                    </Text>
+                                  </Grid>
+                                </>
                               )}
 
                               {ques?.hint && (
@@ -224,7 +233,7 @@ const QuestionnairePanel = ({
                                 {ques?.measure?.title && (
                                   <>
                                     <Text variant="titleSmall" sx={{ mb: 1 }}>
-                                      {t("common.questionnaire")}
+                                      {t("common.measure")}
                                     </Text>
                                     <Box
                                       sx={{
@@ -270,7 +279,7 @@ const QuestionnairePanel = ({
                               </Grid>
                               {Boolean(ques.options?.length) && (
                                 <Box mt={2}>
-                                  <Text variant="titleSmall">
+                                  <Text variant="titleSmall" mb={1}>
                                     {t("common.options")}
                                   </Text>
                                   <Box
@@ -293,7 +302,8 @@ const QuestionnairePanel = ({
                                   {ques?.attributeImpacts?.map(
                                     (impact, index) => {
                                       const isLast =
-                                        index === ques.attributeImpacts.length;
+                                        index ===
+                                        ques.attributeImpacts.length - 1;
                                       return (
                                         <Box display="flex">
                                           <Box
@@ -375,7 +385,7 @@ const QuestionnairePanel = ({
                                               },
                                             )}
                                           </Box>
-                                          {isLast && (
+                                          {!isLast && (
                                             <Divider
                                               flexItem
                                               orientation="vertical"

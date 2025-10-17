@@ -99,7 +99,13 @@ const SubjectPanel = ({ subject }: { subject: IsubjectProp }) => {
                 {t("kitDetail.includedAttribute")}:
               </Text>
               <Box
-                sx={{ ...styles.centerV, justifyContent: "flex-start", mt: 2 }}
+                sx={{
+                  justifyContent: "flex-start",
+                  mt: 2,
+                  display:"flex",
+                  alignItems:"center",
+                  flexDirection: { xs: "column", md: "row" },
+                }}
               >
                 {attributes?.map(
                   (
@@ -120,7 +126,11 @@ const SubjectPanel = ({ subject }: { subject: IsubjectProp }) => {
                             py: 1,
                           }}
                         >
-                          <Text variant="bodyMedium" color="primary.main" textAlign="center">
+                          <Text
+                            variant="bodyMedium"
+                            color="primary.main"
+                            textAlign="center"
+                          >
                             {title}
                           </Text>
                           <Chip

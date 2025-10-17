@@ -24,8 +24,23 @@ export const InfoHeader = ({
   };
 
   return (
-    <Box sx={{ ...styles.centerV, justifyContent: "space-between", gap: 2 }}>
-      <Box sx={{ ...styles.centerV, gap: 2 }}>
+    <Box
+      sx={{
+        display: "flex",
+        alignItems: "center",
+        flexDirection: { xs: "column", md: "row" },
+        justifyContent: "space-between",
+        gap: 2,
+      }}
+    >
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          flexDirection: { xs: "column", md: "row" },
+          gap: 2,
+        }}
+      >
         <Chip
           sx={{
             ...ChipStyle,

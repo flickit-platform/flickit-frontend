@@ -68,7 +68,7 @@ const AnswerRangesPanel = ({
               <AccordionDetails
                 sx={{ display: "flex", flexDirection: "column", p: 2 }}
               >
-                <Text variant="titleSmall" sx={{ mb: 1 }}>
+                <Text variant="titleSmall" sx={{ mb: 10 }}>
                   {t("common.options")}
                 </Text>
                 <Box sx={{ display: "flex", flexWrap: "wrap" }}>
@@ -168,9 +168,11 @@ export const OptionPill = memo(function OptionPill({
       }}
     >
       <Box display="flex" flexDirection="column">
-        <Text variant={"bodyMedium"}>
-          {option?.index}. {option?.title}
-        </Text>
+        {" "}
+        <Box>
+          <Text variant="bodyMedium">{option.index}.</Text>{" "}
+          <Text variant="bodyMedium"> {option.title}</Text>
+        </Box>
         {translate && (
           <>
             <Divider variant="fullWidth" orientation="horizontal" flexItem />
@@ -183,7 +185,7 @@ export const OptionPill = memo(function OptionPill({
         label={
           <Box>
             <Text variant="bodySmall">{t("common.score")}</Text>:{" "}
-            <Text variant="bodyMedium" sx={{ paddingInlineStart: "2.5px" }}>
+            <Text variant="bodySmall" sx={{ paddingInlineStart: "2.5px" }}>
               {option.value}
             </Text>
           </Box>
