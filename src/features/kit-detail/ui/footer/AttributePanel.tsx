@@ -4,6 +4,10 @@ import {
   AccordionSummary,
   Box,
   Grid,
+  Tabs,
+  Tab,
+  Chip,
+  Divider,
 } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import { InfoHeader } from "../common/InfoHeader";
@@ -14,16 +18,108 @@ import { useQuery } from "@/hooks/useQuery";
 import { useServiceContext } from "@providers/service-provider";
 import { useParams } from "react-router-dom";
 import QueryData from "@common/QueryData";
-import { useEffect, useState } from "react";
-import Tabs from "@mui/material/Tabs";
-import Tab from "@mui/material/Tab";
-import uniqueId from "@utils/unique-id";
-import languageDetector from "@utils/language-detector";
-import { farsiFontFamily, primaryFontFamily } from "@config/theme";
+import React, { useEffect, useState, useCallback } from "react";
 import { useAccordion } from "@/hooks/useAccordion";
 import { ExpandMoreRounded } from "@mui/icons-material";
-import Chip from "@mui/material/Chip";
-import { OptionPill } from "@/features/kit-detail/ui/footer/AnswerRangesPanel";
+import { OptionPill as RawOptionPill } from "@/features/kit-detail/ui/footer/AnswerRangesPanel";
+
+const OptionPill = React.memo(RawOptionPill);
+const Tags = React.memo(function Tags({ mayNotBeApplicable, advisable }: any) {
+  const { t } = useTranslation();
+  const tags = [
+    {
+      title: "notAdvisable",
+      bg: "primary.bgVariant",
+      color: "primary.main",
+      visible: !advisable,
+      key: "na",
+    },
+    {
+      title: "notApplicable",
+      bg: "secondary.bgVariant",
+      color: "secondary.main",
+      visible: !!mayNotBeApplicable,
+      key: "napp",
+    },
+  ];
+  return (
+    <>
+      {tags.map((tag) =>
+        tag.visible ? (
+          <Chip
+            key={tag.key}
+            sx={{
+              color: tag.color,
+              border: "1px solid",
+              borderColor: tag.color,
+              backgroundColor: tag.bg,
+              height: 28,
+            }}
+            label={
+              <Text variant="bodySmall">{t(`questions.${tag.title}`)}</Text>
+            }
+          />
+        ) : null,
+      )}
+    </>
+  );
+});
+
+const sxTabs = {
+  border: "none",
+  "& .MuiTabs-indicator": { display: "none" },
+  alignItems: "center",
+};
+const sxTab = {
+  mr: 1,
+  border: "none",
+  textTransform: "none",
+  color: "text.primary",
+  py: 1,
+  "&.Mui-selected": {
+    boxShadow: "0 1px 4px rgba(0,0,0,0.25) !important",
+    borderRadius: "4px !important",
+    color: "primary.main",
+    bgcolor: "background.containerLowest",
+    "&:hover": { bgcolor: "background.containerLowest", border: "none" },
+  },
+};
+const sxAccordion = {
+  boxShadow: "none !important",
+  borderRadius: "16px !important",
+  border: "1px solid #C7CCD1",
+  bgcolor: "initial",
+  "&:before": { content: "none" },
+  position: "relative",
+  transition: "background-position .4s ease",
+  mb: 1,
+};
+const sxSummary = (expanded: boolean) => ({
+  px: 0, // قبلاً 2 بود، صفر شد
+  py: 0,
+  minHeight: 0,
+  "&.Mui-expanded": { minHeight: 0 }, // جلوی بلند شدن عمودی هنگام باز شدن
+  "& .MuiAccordionSummary-content": {
+    alignItems: "center",
+    width: "100%",
+    gap: 0,
+    margin: 0,
+    padding: 0,
+  },
+  "& .MuiAccordionSummary-content.Mui-expanded": {
+    margin: 0,
+    padding: 0,
+  },
+  "& .MuiAccordionSummary-expandIconWrapper": {
+    m: 0,
+    p: 0,
+  },
+  borderTopLeftRadius: "12px !important",
+  borderTopRightRadius: "12px !important",
+  backgroundColor: expanded ? "#66809914" : "",
+});
+
+const sxDetails = { display: "flex", flexDirection: "column", p: 0 };
 
 type TTranslations = Record<string, { title?: string; description?: string }>;
 type TAttribute = { title: string; weight: number; id: number; index: number };
@@ -55,6 +151,14 @@ interface IsubjectProp {
 }
 type IattributeProp = Omit<IsubjectProp, "attributes">;
 
+const getTranslation = (
+  obj?: TTranslations | null,
+  type: keyof { title?: string; description?: string } = "title",
+): string | null =>
+  obj && Object.keys(obj).length > 0
+    ? (Object.values(obj)[0]?.[type] ?? null)
+    : null;
+
 const AttributePanel = ({
   subject,
   attribute,
@@ -66,8 +170,11 @@ const AttributePanel = ({
   const { t } = useTranslation();
   const { assessmentKitId = "" } = useParams();
 
-  const [TopNavValue, setTopNavValue] = useState<number | null>(null);
-  const [selectedMaturityLevel, setSelectedMaturityLevel] = useState<any>();
+  const [tabIndex, setTabIndex] = useState<number | null>(null);
+  const [selectedMaturityLevelId, setSelectedMaturityLevelId] = useState<
+    number | null
+  >(null);
+
   const { isExpanded, onChange } = useAccordion<number>(null);
 
   const fetchAttributeDetail = useQuery({
@@ -82,7 +189,7 @@ const AttributePanel = ({
       const finalArgs = args ?? {
         assessmentKitId,
         attributeId: attribute?.id,
-        maturityLevelId: selectedMaturityLevel,
+        maturityLevelId: selectedMaturityLevelId,
       };
       return service.assessmentKit.details.getMaturityLevelQuestions(
         finalArgs,
@@ -93,27 +200,37 @@ const AttributePanel = ({
   });
 
   useEffect(() => {
-    if (selectedMaturityLevel) {
+    const data: IattributeData | undefined = fetchAttributeDetail?.data;
+    if (!data) return;
+    const idx = data.maturityLevels.findIndex((m) => m.questionCount !== 0);
+    if (idx !== -1) {
+      const firstML = data.maturityLevels[idx];
+      setTabIndex(idx);
+      setSelectedMaturityLevelId(firstML.id);
+    } else {
+      setTabIndex(0);
+      setSelectedMaturityLevelId(data.maturityLevels[0]?.id ?? null);
+    }
+  }, [fetchAttributeDetail?.data]);
+
+  useEffect(() => {
+    if (selectedMaturityLevelId) {
       fetchMaturityLevelQuestions.query();
     }
-  }, [selectedMaturityLevel]);
+  }, [selectedMaturityLevelId]);
 
-  const getTranslation = (
-    obj?: TTranslations | null,
-    type: keyof { title?: string; description?: string } = "title",
-  ): string | null => {
-    return obj && Object.keys(obj).length > 0
-      ? (Object.values(obj)[0]?.[type] ?? null)
-      : null;
-  };
-
-  const handleChangeTab = (event: React.SyntheticEvent, newValue: number) => {
-    setTopNavValue(newValue);
-  };
-
-  const maturityHandelClick = (id: number) => {
-    setSelectedMaturityLevel(id);
-  };
+  const handleTabChange = useCallback(
+    (_: React.SyntheticEvent, newIdx: number) => {
+      setTabIndex(newIdx);
+      const ml = fetchAttributeDetail?.data?.maturityLevels?.[newIdx];
+      if (ml && ml.questionCount !== 0) {
+        setSelectedMaturityLevelId(ml.id);
+      } else {
+        setSelectedMaturityLevelId(null);
+      }
+    },
+    [fetchAttributeDetail?.data?.maturityLevels],
+  );
 
   return (
     <QueryData
@@ -126,18 +243,6 @@ const AttributePanel = ({
           questionCount,
           maturityLevels,
         } = data;
-        useEffect(() => {
-          const index = maturityLevels.findIndex(
-            (item) => item.questionCount != 0,
-          );
-          const findMaturityLevelItem =
-            index !== -1 ? { index, id: maturityLevels[index].id } : null;
-
-          if (findMaturityLevelItem) {
-            setTopNavValue(findMaturityLevelItem.index);
-            setSelectedMaturityLevel(findMaturityLevelItem.id);
-          }
-        }, []);
 
         return (
           <Box sx={{ ...styles.centerCV, gap: "32px" }}>
@@ -153,12 +258,7 @@ const AttributePanel = ({
               <Text variant="bodyLarge" color={"background.secondaryDark"}>
                 {t("common.description")}:
               </Text>
-              <Box
-                sx={{
-                  px: 2,
-                  pt: 1,
-                }}
-              >
+              <Box sx={{ px: 2, pt: 1 }}>
                 <TitleWithTranslation
                   title={description}
                   translation={getTranslation(translations, "description")}
@@ -167,11 +267,13 @@ const AttributePanel = ({
                 />
               </Box>
             </Box>
-            <Box>
-              <Text variant="bodyLarge" color={"background.secondaryDark"}>
-                {t("kitDetail.includedAttribute")}:
-              </Text>
+
+            {Boolean(questionCount) && (
               <Box>
+                <Text variant="bodyLarge" color={"background.secondaryDark"}>
+                  {t("kitDetail.impactfulQuestions")}:
+                </Text>
+
                 <Box
                   bgcolor="background.variant"
                   width="100%"
@@ -181,59 +283,26 @@ const AttributePanel = ({
                   sx={{ ...styles.centerVH }}
                 >
                   <Tabs
-                    value={TopNavValue}
-                    onChange={(event, newValue) =>
-                      handleChangeTab(event, newValue)
-                    }
+                    value={tabIndex}
+                    onChange={handleTabChange}
                     variant="scrollable"
                     scrollButtons="auto"
-                    aria-label="scrollable auto tabs example"
-                    sx={{
-                      border: "none",
-                      "& .MuiTabs-indicator": {
-                        display: "none",
-                      },
-                      alignItems: "center",
-                    }}
+                    aria-label="attribute maturity tabs"
+                    sx={sxTabs}
                   >
-                    {maturityLevels.map((item: any) => {
+                    {maturityLevels.map((item) => {
                       const { title, id, index, questionCount } = item;
                       return (
                         <Tab
-                          onClick={() => maturityHandelClick(id)}
-                          key={uniqueId()}
-                          sx={{
-                            // ...theme.typography.semiBoldLarge,
-                            mr: 1,
-                            border: "none",
-                            textTransform: "none",
-                            color: "text.primary",
-                            py: 1,
-                            "&.Mui-selected": {
-                              boxShadow: "0 1px 4px rgba(0,0,0,25%) !important",
-                              borderRadius: "4px !important",
-                              color: "primary.main",
-                              bgcolor: "background.containerLowest",
-                              "&:hover": {
-                                bgcolor: "background.containerLowest",
-                                border: "none",
-                              },
-                            },
-                          }}
-                          disabled={questionCount == 0}
+                          key={id}
+                          sx={sxTab}
+                          disabled={questionCount === 0}
                           label={
-                            <Box
-                              gap={1}
-                              fontFamily={
-                                languageDetector(title)
-                                  ? farsiFontFamily
-                                  : primaryFontFamily
-                              }
-                              sx={{ ...styles.centerVH }}
-                            >
-                              <Text variant={"bodyMedium"}>{`${index}.`}</Text>
-                              <Text variant={"bodyMedium"}>
-                                {`(${questionCount})`} {`${title}`}
+                            <Box gap={0.5} sx={{ ...styles.centerVH }}>
+                              <Text variant="bodyMedium">{`${index}.`}</Text>
+                              <Text variant="bodyMedium">{title}</Text>
+                              <Text variant="bodyMedium">
+                                ({questionCount})
                               </Text>
                             </Box>
                           }
@@ -246,12 +315,13 @@ const AttributePanel = ({
                 <QueryData
                   {...fetchMaturityLevelQuestions}
                   render={(maturityData) => {
-                    const { questions, questionsCount } = maturityData;
+                    const { questions = [] } = maturityData ?? {};
 
                     return (
                       <Box>
-                        {questions.map((question: any, index: number) => {
+                        {questions.map((q: any, i: number) => {
                           const {
+                            id,
                             title,
                             questionnaire,
                             weight,
@@ -260,22 +330,16 @@ const AttributePanel = ({
                             answerOptions,
                             measure,
                             answerRange,
-                          } = question;
+                          } = q;
+
+                          const expanded = isExpanded(i);
+
                           return (
                             <Accordion
-                              key={uniqueId()}
-                              expanded={isExpanded(index)}
-                              onChange={onChange(index)}
-                              sx={{
-                                boxShadow: "none !important",
-                                borderRadius: "16px !important",
-                                border: `1px solid #C7CCD1`,
-                                bgcolor: "initial",
-                                "&:before": { content: "none" },
-                                position: "relative",
-                                transition: "background-position .4s ease",
-                                mb: 1,
-                              }}
+                              key={id ?? i}
+                              expanded={expanded}
+                              onChange={onChange(i)}
+                              sx={sxAccordion}
                             >
                               <AccordionSummary
                                 expandIcon={
@@ -283,110 +347,155 @@ const AttributePanel = ({
                                     sx={{ color: "surface.on" }}
                                   />
                                 }
-                                sx={{
-                                  "& .MuiAccordionSummary-content": {
+                                sx={sxSummary(expanded)}
+                              >
+                                <Box
+                                  sx={{
+                                    display: "flex",
                                     alignItems: "center",
                                     width: "100%",
-                                    gap: 2,
-                                    // m: 0
-                                  },
-                                  "& .MuiAccordionSummary-content.Mui-expanded":
-                                    {
-                                      margin: "0px !important",
-                                    },
-                                  borderTopLeftRadius: "12px !important",
-                                  borderTopRightRadius: "12px !important",
-                                  backgroundColor: isExpanded(index)
-                                    ? "#66809914"
-                                    : "",
-                                  borderBottom: isExpanded(index)
-                                    ? `1px solid #C7CCD1`
-                                    : "",
-                                }}
-                              >
-                                <Grid
-                                  container
-                                  rowSpacing={{ xs: 1, md: 0 }}
-                                  justifyContent={"center"}
-                                  alignItems={"center"}
+                                    px: 0,
+                                    gap: 0,
+                                    flexWrap: { xs: "wrap", md: "nowrap" },
+                                  }}
                                 >
-                                  <Grid
-                                    item
-                                    xs={12}
-                                    justifyContent={"flex-start"}
-                                    md={
-                                      mayNotBeApplicable || !advisable ? 5 : 8
-                                    }
-                                  >
-                                    <Text>
-                                      {index + 1}. {title}
-                                    </Text>
-                                  </Grid>
-                                  {(mayNotBeApplicable || !advisable) && (
-                                    <Grid
-                                      item
-                                      xs={12}
-                                      md={3}
-                                      sx={{ ...styles.centerVH, gap: 1 }}
-                                    >
-                                      <Tags
-                                        mayNotBeApplicable={mayNotBeApplicable}
-                                        advisable={advisable}
-                                      />
-                                    </Grid>
-                                  )}
-
-                                  <Grid
-                                    item
+                                  <Box
                                     sx={{
-                                      textAlign: "center",
-                                      borderInline: { md: "1px solid #C7CCD1" },
+                                      width: "70%",
+                                      minWidth: 0,
+                                      py: "12px",
+                                      px: "16px",
                                     }}
-                                    xs={6}
-                                    md={3}
+                                  >
+                                    <Grid
+                                      container
+                                      rowSpacing={{ xs: 0, md: 0 }}
+                                      alignItems="center"
+                                      sx={{ m: 0, width: "100%" }}
+                                    >
+                                      <Grid
+                                        item
+                                        xs={12}
+                                        md={
+                                          mayNotBeApplicable || !advisable
+                                            ? 8
+                                            : 12
+                                        }
+                                      >
+                                        <Box display="flex" gap={0.5}>
+                                          <Text variant="bodyMedium">
+                                            {i + 1}.{" "}
+                                          </Text>
+                                          <Text variant="bodyMedium" textAlign="justify">
+                                            {title}
+                                          </Text>
+                                        </Box>
+                                      </Grid>
+                                      {(mayNotBeApplicable || !advisable) && (
+                                        <Grid
+                                          item
+                                          xs={12}
+                                          md={3}
+                                          sx={{ ...styles.centerVH, gap: 1 }}
+                                        >
+                                          <Tags
+                                            mayNotBeApplicable={
+                                              mayNotBeApplicable
+                                            }
+                                            advisable={advisable}
+                                          />
+                                        </Grid>
+                                      )}
+                                    </Grid>
+                                  </Box>
+
+                                  <Divider
+                                    orientation="vertical"
+                                    flexItem
+                                    sx={{
+                                      display: { xs: "none", md: "block" },
+                                      alignSelf: "stretch",
+                                      borderColor: "#C7CCD1",
+                                      m: 0,
+                                    }}
+                                  />
+
+                                  <Box
+                                    width="20%"
+                                    sx={{
+                                      display: "flex",
+                                      alignItems: "center",
+                                      justifyContent: "center",
+                                      px: 1,
+                                      py: 1,
+                                      borderTop: {
+                                        xs: "1px solid #C7CCD1",
+                                        md: "none",
+                                      },
+                                    }}
                                   >
                                     <Text
-                                      bgcolor={"secondary.bg"}
                                       sx={{
                                         textAlign: "center",
                                         borderRadius: 1,
                                         px: 1,
                                         py: 0.5,
+                                        display: "inline-block",
+                                        bgcolor: "secondary.bg",
                                       }}
+                                      variant="bodyMedium"
                                     >
                                       {questionnaire}
                                     </Text>
-                                  </Grid>
-                                  <Grid
-                                    item
-                                    sx={{ ...styles.centerVH }}
-                                    xs={6}
-                                    md={1}
+                                  </Box>
+
+                                  <Divider
+                                    orientation="vertical"
+                                    flexItem
+                                    sx={{
+                                      display: { xs: "none", md: "block" },
+                                      alignSelf: "stretch",
+                                      borderColor: "#C7CCD1",
+                                      m: 0,
+                                    }}
+                                  />
+
+                                  <Box
+                                    width="10%"
+                                    sx={{
+                                      display: "flex",
+                                      alignItems: "center",
+                                      justifyContent: "center",
+                                      py: 0,
+                                      borderTop: {
+                                        xs: "1px solid #C7CCD1",
+                                        md: "none",
+                                      },
+                                    }}
                                   >
-                                    <Text sx={{ textAlign: "center" }}>
+                                    <Text
+                                      variant="bodyMedium"
+                                      sx={{ textAlign: "center" }}
+                                    >
                                       {t("common.weight")}: {weight}
                                     </Text>
-                                  </Grid>
-                                </Grid>
+                                  </Box>
+                                </Box>
                               </AccordionSummary>
-                              <AccordionDetails
-                                sx={{
-                                  display: "flex",
-                                  flexDirection: "column",
-                                  p: 2,
-                                }}
-                              >
-                                <Grid container>
+
+                              <AccordionDetails sx={sxDetails}>
+                                <Grid container p={2} pt={2}>
                                   <Grid item xs={answerRange ? 6 : 12}>
                                     <Text variant="titleSmall" sx={{ mb: 1 }}>
                                       {t("common.measure")}
                                     </Text>
-                                  </Grid>
-                                  <Grid item xs={6}>
                                     <Box
                                       sx={{
-                                        padding: "4px 16px",
-                                        borderRadius: "4px",
+                                        display: "flex",
+                                        alignItems: "center",
+                                        px: 2,
+                                        py: 0.5,
+                                        borderRadius: 1,
                                         border: "1px solid",
                                         borderColor: "outline.variant",
                                         bgcolor: "primary.bg",
@@ -399,63 +508,60 @@ const AttributePanel = ({
                                       </Text>
                                     </Box>
                                   </Grid>
+
                                   {answerRange && (
-                                    <>
-                                      <Grid item xs={6}>
-                                        <Text
-                                          variant="titleSmall"
-                                          sx={{ mb: 1 }}
-                                        >
-                                          {t("kitDesigner.answerRanges")}
+                                    <Grid item xs={6}>
+                                      <Text variant="titleSmall" sx={{ mb: 1 }}>
+                                        {t("kitDesigner.answerRanges")}
+                                      </Text>
+                                      <Box
+                                        sx={{
+                                          px: 2,
+                                          py: 0.5,
+                                          borderRadius: 1,
+                                          border: "1px solid",
+                                          borderColor: "outline.variant",
+                                          bgcolor: "primary.bg",
+                                          width: "fit-content",
+                                          color: "primary.main",
+                                        }}
+                                      >
+                                        <Text variant="bodyMedium">
+                                          {answerRange?.title}
                                         </Text>
-                                      </Grid>
-                                      <Grid item xs={6}>
-                                        <Box
-                                          sx={{
-                                            padding: "4px 16px",
-                                            borderRadius: "4px",
-                                            border: "1px solid",
-                                            borderColor: "outline.variant",
-                                            bgcolor: "primary.bg",
-                                            width: "fit-content",
-                                            color: "primary.main",
-                                          }}
-                                        >
-                                          <Text variant="bodyMedium">
-                                            {answerRange?.title}
-                                          </Text>
-                                        </Box>
-                                      </Grid>
-                                    </>
+                                      </Box>
+                                    </Grid>
                                   )}
                                 </Grid>
-                                <Grid container mt={"10px"}>
-                                  <Grid item xs={12}>
-                                    {answerOptions?.length && (
-                                      <>
-                                        <Text
-                                          sx={{ mb: "10px" }}
-                                          variant="titleSmall"
-                                        >
-                                          {t("common.options")}
-                                        </Text>
-                                        <Box
-                                          sx={{
-                                            display: "flex",
-                                            flexWrap: "wrap",
-                                          }}
-                                        >
-                                          {answerOptions?.map((opt: any) => (
-                                            <OptionPill
-                                              key={opt.index}
-                                              option={opt}
-                                            />
-                                          ))}
-                                        </Box>
-                                      </>
-                                    )}
-                                  </Grid>
-                                </Grid>
+
+                                {Array.isArray(answerOptions) &&
+                                  answerOptions.length > 0 && (
+                                    <Box px={2} pb={2}>
+                                      <Text
+                                        sx={{ mb: "10px" }}
+                                        variant="titleSmall"
+                                      >
+                                        {t("common.options")}
+                                      </Text>
+                                      <Box
+                                        sx={{
+                                          display: "flex",
+                                          flexWrap: "wrap",
+                                        }}
+                                      >
+                                        {answerOptions.map((opt: any) => (
+                                          <OptionPill
+                                            key={
+                                              opt.index ??
+                                              opt.id ??
+                                              `${id}-${opt.value}`
+                                            }
+                                            option={opt}
+                                          />
+                                        ))}
+                                      </Box>
+                                    </Box>
+                                  )}
                               </AccordionDetails>
                             </Accordion>
                           );
@@ -465,49 +571,11 @@ const AttributePanel = ({
                   }}
                 />
               </Box>
-            </Box>
+            )}
           </Box>
         );
       }}
     />
-  );
-};
-
-const Tags = ({ mayNotBeApplicable, advisable } : any) => {
-  const { t } = useTranslation();
-
-  const tagsMap = [
-    {
-      title: "notAdvisable",
-      backgroundColor: "primary.bgVariant",
-      color: "primary.main",
-      visible: !advisable,
-    },
-    {
-      title: "notApplicable",
-      backgroundColor: "secondary.bgVariant",
-      color: "secondary.main",
-      visible: mayNotBeApplicable,
-    },
-  ];
-  return (
-    <>
-      {tagsMap.map((tag) => {
-        const { color, backgroundColor, title, visible } = tag;
-        return visible && (
-          <Chip
-            sx={{
-              color: color,
-              border: `1px solid`,
-              borderColor: color,
-              backgroundColor: backgroundColor,
-              height: "28px",
-            }}
-            label={<Text variant={"bodySmall"}>{t(`questions.${title}`)}</Text>}
-          />
-        );
-      })}
-    </>
   );
 };
 
