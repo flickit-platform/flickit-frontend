@@ -1,4 +1,4 @@
-import React, { useMemo, useState, useCallback } from "react";
+import React, { useMemo, useState, useCallback, useEffect } from "react";
 import { TreeView, TreeItem } from "@mui/lab";
 import ExpandMoreRounded from "@mui/icons-material/ExpandMoreRounded";
 import ExpandLessRounded from "@mui/icons-material/ExpandLessRounded";
@@ -10,6 +10,20 @@ import { KitDetailsType } from "../../model/types";
 
 const INDICATOR_WIDTH = 3;
 const INDICATOR_RADIUS = 2;
+
+const setHash = (nodeId: string, method: "push" | "replace" = "push") => {
+  const url = new URL(window.location.href);
+  url.hash = nodeId;
+  const fn = method === "push" ? "pushState" : "replaceState";
+  if (window.history[fn]) {
+    window.history[fn](null, "", url.toString());
+  } else {
+    window.location.hash = nodeId;
+  }
+};
+
+const getHashId = () =>
+  decodeURIComponent(window.location.hash.replace(/^#/, ""));
 
 const NodeLabel = ({ children }: { children: React.ReactNode }) => (
   <Text variant="titleSmall">{children}</Text>
@@ -143,6 +157,7 @@ export default function KitDetailsTreeView({
     setHighlightId(nodeId);
     if (!banTreeView.some((t) => t.rootNodeId === nodeId)) {
       onSelect?.(nodeId);
+      setHash(nodeId, "push");
     }
   };
 
@@ -159,6 +174,26 @@ export default function KitDetailsTreeView({
     },
     [expanded, parentById],
   );
+
+  useEffect(() => {
+    const initial = getHashId();
+    if (!initial) return;
+
+    setHighlightId(initial);
+    const path: string[] = [];
+    let cur: string | null = initial;
+    while (cur && parentById[cur]) {
+      const p: any = parentById[cur]!;
+      path.unshift(p);
+      cur = p;
+    }
+    setExpanded((prev) => Array.from(new Set([...prev, ...path])));
+
+    if (!banTreeView.some((t) => t.rootNodeId === initial)) {
+      onSelect?.(initial);
+    }
+    if (initial !== selectedId) setHash(initial, "replace");
+  }, [parentById]);
 
   return (
     <TreeView

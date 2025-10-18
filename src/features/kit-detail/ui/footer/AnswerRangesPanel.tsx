@@ -68,7 +68,7 @@ const AnswerRangesPanel = ({
               <AccordionDetails
                 sx={{ display: "flex", flexDirection: "column", p: 2 }}
               >
-                <Text variant="titleSmall" sx={{ mb: 10 }}>
+                <Text variant="titleSmall" sx={{ mb: 1 }}>
                   {t("common.options")}
                 </Text>
                 <Box sx={{ display: "flex", flexWrap: "wrap" }}>

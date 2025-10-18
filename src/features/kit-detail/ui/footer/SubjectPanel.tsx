@@ -38,7 +38,13 @@ export const getTranslation = (
     : null;
 };
 
-const SubjectPanel = ({ subject }: { subject: IsubjectProp }) => {
+const SubjectPanel = ({
+  subject,
+  onSelect,
+}: {
+  subject: IsubjectProp;
+  onSelect: any;
+}) => {
   const { service } = useServiceContext();
   const { t } = useTranslation();
   const { assessmentKitId = "" } = useParams();
@@ -53,6 +59,12 @@ const SubjectPanel = ({ subject }: { subject: IsubjectProp }) => {
   useEffect(() => {
     fetchSubjectDetail.query();
   }, [subject.id]);
+
+  const goToAttribute = (attributeId: number) => {
+    const nodeId = `attribute-${subject.id}-${attributeId}`;
+    window.location.hash = nodeId;
+    onSelect?.(nodeId);
+  };
 
   return (
     <QueryData
@@ -72,12 +84,12 @@ const SubjectPanel = ({ subject }: { subject: IsubjectProp }) => {
               title={subject?.title}
               translations={getTranslation(subject?.translations, "title")}
               sectionName={t("kitDetail.subject")}
-              firstTag={`${questionsCount} ${t("common.question")}`}
+              firstTag={`${questionsCount} ${t("common.questions")}`}
               secondTag={`${t("common.weight")}: ${weight}`}
             />
 
             <Box>
-              <Text variant="bodyLarge" color={"background.secondaryDark"}>
+              <Text variant="semiBoldMedium" color={"background.secondaryDark"}>
                 {t("common.description")}:
               </Text>
               <Box
@@ -95,21 +107,25 @@ const SubjectPanel = ({ subject }: { subject: IsubjectProp }) => {
               </Box>
             </Box>
             <Box>
-              <Text variant="bodyLarge" color={"background.secondaryDark"}>
+              <Text variant="semiBoldMedium" color={"background.secondaryDark"}>
                 {t("kitDetail.includedAttribute")}:
               </Text>
               <Box
                 sx={{
                   justifyContent: "flex-start",
                   mt: 2,
-                  display:"flex",
-                  alignItems:"center",
+                  display: "flex",
+                  alignItems: "center",
                   flexDirection: { xs: "column", md: "row" },
                 }}
               >
                 {attributes?.map(
                   (
-                    { title, weight }: { title: string; weight: number },
+                    {
+                      title,
+                      weight,
+                      id,
+                    }: { title: string; weight: number; id: number },
                     idx: number,
                   ) => {
                     const isLast = attributes.length - 1 === idx;
@@ -127,9 +143,11 @@ const SubjectPanel = ({ subject }: { subject: IsubjectProp }) => {
                           }}
                         >
                           <Text
-                            variant="bodyMedium"
+                            onClick={() => goToAttribute(id)}
+                            variant="semiBoldMedium"
                             color="primary.main"
                             textAlign="center"
+                            sx={{ cursor: "pointer" }}
                           >
                             {title}
                           </Text>

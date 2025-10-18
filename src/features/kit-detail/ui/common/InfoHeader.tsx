@@ -47,15 +47,15 @@ export const InfoHeader = ({
             background: "#6680991f",
           }}
           label={
-            <Text variant={"bodyMedium"} color={"background.secondaryDark"}>
+            <Text variant="semiBoldMedium" color={"background.secondaryDark"}>
               {sectionName}
             </Text>
           }
         />
-        <Text variant={"bodyLarge"} color={"primary.main"}>
+        <Text variant="semiBoldXLarge" color={"primary.main"}>
           {title}
         </Text>
-        <Text variant={"bodyLarge"} color={"background.secondaryDark"}>
+        <Text variant="semiBoldXLarge" color={"background.secondaryDark"}>
           {translations}
         </Text>
       </Box>
@@ -66,7 +66,7 @@ export const InfoHeader = ({
             background: "#2466A80A",
           }}
           label={
-            <Text variant={"bodyMedium"} color={"primary.main"}>
+            <Text variant="semiBoldMedium" color={"primary.main"}>
               {firstTag}
             </Text>
           }
@@ -78,7 +78,7 @@ export const InfoHeader = ({
               background: "#2466A80A",
             }}
             label={
-              <Text variant={"bodyMedium"} color={"primary.main"}>
+              <Text variant="semiBoldMedium" color={"primary.main"}>
                 {secondTag}
               </Text>
             }

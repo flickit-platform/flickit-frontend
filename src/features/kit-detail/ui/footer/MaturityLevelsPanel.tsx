@@ -62,6 +62,7 @@ const MaturityLevelsPanel = ({
               "&:before": { content: "none" },
               position: "relative",
               transition: "background-position .4s ease",
+              "&.Mui-expanded": { margin: 0 },
             }}
           >
             <AccordionSummary
@@ -69,6 +70,7 @@ const MaturityLevelsPanel = ({
                 <ExpandMoreRounded sx={{ color: colorPallet[index] }} />
               }
               sx={{
+                "&.Mui-expanded": { minHeight: "48px" },
                 "& .MuiAccordionSummary-content": {
                   alignItems: "flex-start",
                   width: "100%",
@@ -91,8 +93,8 @@ const MaturityLevelsPanel = ({
                 gap={1}
               >
                 <Box display="flex" gap={0.5}>
-                  <Text variant="bodyMedium">{level.index}. </Text>
-                  <Text variant="bodyMedium" lines={1}>
+                  <Text variant="semiBoldMedium">{level.index}. </Text>
+                  <Text variant="semiBoldMedium" lines={1}>
                     {level.title}
                   </Text>
                 </Box>

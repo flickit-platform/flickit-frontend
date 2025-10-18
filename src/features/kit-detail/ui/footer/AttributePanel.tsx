@@ -93,12 +93,13 @@ const sxAccordion = {
   position: "relative",
   transition: "background-position .4s ease",
   mb: 1,
+  "&.Mui-expanded": { marginTop: 0 },
 };
 const sxSummary = (expanded: boolean) => ({
-  px: 0, // قبلاً 2 بود، صفر شد
+  px: 0,
   py: 0,
   minHeight: 0,
-  "&.Mui-expanded": { minHeight: 0 }, // جلوی بلند شدن عمودی هنگام باز شدن
+  "&.Mui-expanded": { minHeight: 0 }, 
   "& .MuiAccordionSummary-content": {
     alignItems: "center",
     width: "100%",
@@ -255,7 +256,7 @@ const AttributePanel = ({
             />
 
             <Box>
-              <Text variant="bodyLarge" color={"background.secondaryDark"}>
+              <Text variant="semiBoldLarge" color={"background.secondaryDark"}>
                 {t("common.description")}:
               </Text>
               <Box sx={{ px: 2, pt: 1 }}>
@@ -270,7 +271,7 @@ const AttributePanel = ({
 
             {Boolean(questionCount) && (
               <Box>
-                <Text variant="bodyLarge" color={"background.secondaryDark"}>
+                <Text variant="titleSmall" color={"background.secondaryDark"}>
                   {t("kitDetail.impactfulQuestions")}:
                 </Text>
 
@@ -299,9 +300,9 @@ const AttributePanel = ({
                           disabled={questionCount === 0}
                           label={
                             <Box gap={0.5} sx={{ ...styles.centerVH }}>
-                              <Text variant="bodyMedium">{`${index}.`}</Text>
-                              <Text variant="bodyMedium">{title}</Text>
-                              <Text variant="bodyMedium">
+                              <Text variant="semiBoldMedium">{`${index}.`}</Text>
+                              <Text variant="semiBoldMedium">{title}</Text>
+                              <Text variant="semiBoldMedium">
                                 ({questionCount})
                               </Text>
                             </Box>
@@ -386,7 +387,10 @@ const AttributePanel = ({
                                           <Text variant="bodyMedium">
                                             {i + 1}.{" "}
                                           </Text>
-                                          <Text variant="bodyMedium" textAlign="justify">
+                                          <Text
+                                            variant="bodyMedium"
+                                            textAlign="justify"
+                                          >
                                             {title}
                                           </Text>
                                         </Box>
