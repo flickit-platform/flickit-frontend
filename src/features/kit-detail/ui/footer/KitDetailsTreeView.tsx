@@ -193,7 +193,7 @@ export default function KitDetailsTreeView({
       onSelect?.(initial);
     }
     if (initial !== selectedId) setHash(initial, "replace");
-  }, [parentById]);
+  }, [parentById, selectedId]);
 
   return (
     <TreeView
