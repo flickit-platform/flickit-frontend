@@ -7,6 +7,8 @@ import EditableKitDetail from "./KitInfo";
 import { useKitDetailContainer } from "../model/useKitDetailContainer";
 import { KitDetailsType, KitInfoType, KitStatsType } from "../model/types";
 import FooterContainer from "./footer/FooterContainer";
+import QueryData from "@/components/common/QueryData";
+import { useEffect } from "react";
 
 const KitDetailContainer = () => {
   const { assessmentKitId, expertGroupId } = useParams();
@@ -17,22 +19,21 @@ const KitDetailContainer = () => {
     fetchKitDetailQuery,
     info,
     stats,
-    details,
     languages,
   } = useKitDetailContainer(assessmentKitId);
-  console.log("selectedId");
+
+  useEffect(() => {
+    if (info?.hasActiveVersion) {
+      fetchKitDetailQuery.query();
+    }
+  }, [info?.hasActiveVersion]);
 
   return (
     <QueryBatchData
-      queryBatchData={[
-        fetchKitInfoQuery,
-        fetchKitStatsQuery,
-        fetchKitDetailQuery,
-      ]}
-      render={([infoData, statsData, detailsData]) => {
+      queryBatchData={[fetchKitInfoQuery, fetchKitStatsQuery]}
+      render={([infoData, statsData]) => {
         const _info = (info ?? infoData) as KitInfoType;
         const _stats = (stats ?? statsData) as KitStatsType;
-        const _details = (details ?? detailsData) as KitDetailsType;
         return (
           <>
             <PageTitle
@@ -57,7 +58,12 @@ const KitDetailContainer = () => {
               </Grid>
               <Grid item sm={12} xs={12}>
                 {_info.hasActiveVersion && (
-                  <FooterContainer details={_details} />
+                  <QueryData
+                    {...fetchKitDetailQuery}
+                    render={(details) => {
+                      return <FooterContainer details={details} />;
+                    }}
+                  />
                 )}
               </Grid>
             </Grid>

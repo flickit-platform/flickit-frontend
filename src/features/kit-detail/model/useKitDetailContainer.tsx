@@ -23,7 +23,7 @@ export function useKitDetailContainer(assessmentKitId: string | undefined) {
   const fetchKitDetailQuery = useQuery<KitDetailsType>({
     service: (args, config) =>
       service.assessmentKit.details.getKit(args ?? { assessmentKitId }, config),
-    runOnMount: true,
+    runOnMount: false,
   });
 
   const derived = useMemo(() => {
@@ -33,12 +33,10 @@ export function useKitDetailContainer(assessmentKitId: string | undefined) {
     const stats = fetchKitStatsQuery.data as
       | KitStatsType
       | undefined;
-    const details = fetchKitDetailQuery.data;
 
     return {
       info,
       stats,
-      details,
       languages: info
         ? formatLanguageCodes(info.languages, i18next.language)
         : [],

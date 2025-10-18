@@ -33,6 +33,7 @@ export type TreeNode = {
   nodeId: string;
   title: string;
   children?: TreeNode[];
+  disabled?: boolean;
 };
 
 export type ConfigItem = {
@@ -49,6 +50,8 @@ export type ConfigItem = {
   match: (nodeId: string) => boolean;
   propsFrom: (nodeId: string, details: KitDetailsType) => Record<string, any>;
 };
+
+const isEmpty = <T,>(arr?: T[]) => !arr || arr.length === 0;
 
 export const treeConfig: ConfigItem[] = [
   {
@@ -196,6 +199,8 @@ export function buildTree(
   details: KitDetailsType,
   t: (k: string) => string,
 ): TreeNode[] {
+  const answerRangesDisabled = isEmpty(details.answerRanges);
+
   const base: TreeNode[] = [
     { nodeId: "maturity-root", title: t("common.maturityLevels") },
     {
@@ -230,7 +235,11 @@ export function buildTree(
           title: m.title,
         })) ?? [],
     },
-    { nodeId: "answer-ranges-root", title: t("kitDesigner.answerRanges") },
+    {
+      nodeId: "answer-ranges-root",
+      title: t("kitDesigner.answerRanges"),
+      disabled: answerRangesDisabled,
+    },
   ];
   return base;
 }

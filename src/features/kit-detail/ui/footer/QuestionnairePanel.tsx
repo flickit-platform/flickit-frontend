@@ -141,7 +141,7 @@ const QuestionnairePanel = ({
                       >
                         <Box>
                           <Text variant="bodyMedium">{question.index}.</Text>{" "}
-                          <Text variant="bodyMedium"> {question.title}</Text>
+                          <Text variant="bodyMedium" textAlign="justify"> {question.title}</Text>
                         </Box>
                         <Box display="flex" gap={1}>
                           {question.mayNotBeApplicable && (

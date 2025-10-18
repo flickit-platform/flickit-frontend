@@ -1,4 +1,5 @@
 {
+  "attribute": "شاخص",
   "affectedAttributes": "شاخص‌های موردتاثیر",
   "continueEdittingDraft": "یک پیش‌نویس از قبل ایجاد شده است. می‌توانید ویرایش کیت را روی همان پیش‌نویس ادامه داده و در نهایت تغییرات را ثبت کنید.",
   "createdAssessments": "ارزیابی‌های ساخته‌شده",
@@ -7,6 +8,7 @@
   "editKit": "ویرایش کیت",
   "editViaKitDesigner": "ویرایش با «طراح کیت»",
   "includedAttribute": "شاخص‌های موثر بر این موضوع",
+  "impactfulQuestions": "سوالات موثر بر این شاخص، به تفکیک سطوح بلوغ",
   "uploadDSL": "بارگذاری DSL جدید",
   "newDraft": "پیش‌نویس جدید",
   "viaKitDesigner": "از طریق «طراح کیت»",

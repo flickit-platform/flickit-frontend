@@ -74,9 +74,9 @@ function getActiveRoot(selectedId: string | null): string | null {
   if (!selectedId) return null;
   if (selectedId.startsWith("subject-") || selectedId.startsWith("attribute-"))
     return "subjects-root";
-    if (selectedId.startsWith("questionnaire-")) return "questionnaires-root";
-    if (selectedId.startsWith("measure-")) return "measures-root";
-    return null;
+  if (selectedId.startsWith("questionnaire-")) return "questionnaires-root";
+  if (selectedId.startsWith("measure-")) return "measures-root";
+  return null;
 }
 
 function renderNodes(
@@ -88,7 +88,13 @@ function renderNodes(
       key={n.nodeId}
       nodeId={n.nodeId}
       label={<NodeLabel>{n.title}</NodeLabel>}
-      sx={sectionActiveSx(n.nodeId === activeRoot)}
+      sx={{
+        ...sectionActiveSx(n.nodeId === activeRoot),
+        "& .Mui-disabled": {
+          cursor: !!n.disabled ? "default !important" : "pointer !important",
+        },
+      }}
+      disabled={!!n.disabled}
     >
       {n.children?.length ? renderNodes(n.children, activeRoot) : null}
     </TreeItem>
