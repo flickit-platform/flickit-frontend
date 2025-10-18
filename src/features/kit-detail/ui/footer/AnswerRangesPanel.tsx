@@ -169,7 +169,7 @@ export const OptionPill = memo(function OptionPill({
     >
       <Box display="flex" flexDirection="column">
         {" "}
-        <Box>
+        <Box display="flex" gap={0.5}>
           <Text variant="bodyMedium">{option.index}.</Text>{" "}
           <Text variant="bodyMedium"> {option.title}</Text>
         </Box>

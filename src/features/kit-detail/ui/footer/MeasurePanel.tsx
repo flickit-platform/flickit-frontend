@@ -101,7 +101,7 @@ const MeasurePanel = ({ measure }: { measure: IIndexedItem }) => {
                           : "",
                       }}
                     >
-                      <Box>
+                      <Box display="flex" gap={0.5}>
                         <Text variant="bodyMedium">{index + 1}.</Text>{" "}
                         <Text variant="bodyMedium"> {question.title}</Text>
                       </Box>
