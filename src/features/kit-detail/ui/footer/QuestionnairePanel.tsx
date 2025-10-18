@@ -70,7 +70,7 @@ const QuestionnairePanel = ({
               firstTag={`${_questionnaire.questions.length} ${t("kitDetail.questions")}`}
             />
             <Box>
-              <Text variant="bodyLarge" color={"background.secondaryDark"}>
+              <Text variant="semiBoldLarge" color={"background.secondaryDark"}>
                 {t("common.description")}:
               </Text>
               <Box
@@ -90,7 +90,7 @@ const QuestionnairePanel = ({
               </Box>
             </Box>
             <Box display="flex" flexDirection="column" gap={1}>
-              <Text variant="bodyLarge" color={"background.secondaryDark"}>
+              <Text variant="titleSmall" color={"background.secondaryDark"}>
                 {t("common.questions")} ({_questionnaire.questions.length}{" "}
                 {t("kitDetail.questions")})
               </Text>
@@ -108,6 +108,7 @@ const QuestionnairePanel = ({
                       "&:before": { content: "none" },
                       position: "relative",
                       transition: "background-position .4s ease",
+                      "&.Mui-expanded": { margin: 0 },
                     }}
                   >
                     <AccordionSummary
@@ -115,6 +116,7 @@ const QuestionnairePanel = ({
                         <ExpandMoreRounded sx={{ color: "surface.on" }} />
                       }
                       sx={{
+                        "&.Mui-expanded": { minHeight: "48px" },
                         "& .MuiAccordionSummary-content": {
                           alignItems: "center",
                           width: "100%",
@@ -141,7 +143,10 @@ const QuestionnairePanel = ({
                       >
                         <Box>
                           <Text variant="bodyMedium">{question.index}.</Text>{" "}
-                          <Text variant="bodyMedium" textAlign="justify"> {question.title}</Text>
+                          <Text variant="bodyMedium" textAlign="justify">
+                            {" "}
+                            {question.title}
+                          </Text>
                         </Box>
                         <Box display="flex" gap={1}>
                           {question.mayNotBeApplicable && (
@@ -198,7 +203,7 @@ const QuestionnairePanel = ({
                                     </Text>
                                   </Grid>
                                   <Grid item md={12}>
-                                    <Text variant="semiBoldLarge" mb={1}>
+                                    <Text variant="bodyMedium" mb={1}>
                                       {getTranslation(
                                         ques?.translations,
                                         "title",

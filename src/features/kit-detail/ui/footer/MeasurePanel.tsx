@@ -41,7 +41,7 @@ const MeasurePanel = ({ measure }: { measure: IIndexedItem }) => {
               firstTag={`${_measure.questions.length} ${t("common.question")}`}
             />
             <Box>
-              <Text variant="bodyLarge" color={"background.secondaryDark"}>
+              <Text variant="semiBoldLarge" color={"background.secondaryDark"}>
                 {t("common.description")}:
               </Text>
               <Box
@@ -61,7 +61,10 @@ const MeasurePanel = ({ measure }: { measure: IIndexedItem }) => {
               </Box>
             </Box>
             <Box display="flex" flexDirection="column" gap={1}>
-              {" "}
+              <Text variant="titleSmall" color={"background.secondaryDark"}>
+                {t("common.questions")} ({_measure.questions.length}{" "}
+                {t("kitDetail.questions")})
+              </Text>{" "}
               {_measure.questions.map((question, index) => {
                 return (
                   <Accordion
@@ -76,6 +79,7 @@ const MeasurePanel = ({ measure }: { measure: IIndexedItem }) => {
                       "&:before": { content: "none" },
                       position: "relative",
                       transition: "background-position .4s ease",
+                      "&.Mui-expanded": { margin: 0 },
                     }}
                   >
                     <AccordionSummary
@@ -83,6 +87,8 @@ const MeasurePanel = ({ measure }: { measure: IIndexedItem }) => {
                         <ExpandMoreRounded sx={{ color: "surface.on" }} />
                       }
                       sx={{
+                        "&.Mui-expanded": { minHeight: "48px" },
+
                         "& .MuiAccordionSummary-content": {
                           alignItems: "center",
                           width: "100%",
@@ -103,7 +109,10 @@ const MeasurePanel = ({ measure }: { measure: IIndexedItem }) => {
                     >
                       <Box>
                         <Text variant="bodyMedium">{index + 1}.</Text>{" "}
-                        <Text variant="bodyMedium" textAlign="justify"> {question.title}</Text>
+                        <Text variant="bodyMedium" textAlign="justify">
+                          {" "}
+                          {question.title}
+                        </Text>
                       </Box>
                     </AccordionSummary>
                     <AccordionDetails
@@ -160,7 +169,7 @@ const MeasurePanel = ({ measure }: { measure: IIndexedItem }) => {
                       </Grid>
                       {question?.options?.length && (
                         <>
-                          <Text variant="titleSmall">
+                          <Text variant="titleSmall" sx={{ mb: 1 }}>
                             {t("common.options")}
                           </Text>
                           <Box sx={{ display: "flex", flexWrap: "wrap" }}>

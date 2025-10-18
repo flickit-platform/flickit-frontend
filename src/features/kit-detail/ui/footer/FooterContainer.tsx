@@ -4,7 +4,6 @@ import { KitDetailsType } from "../../model/types";
 import { useFooterController } from "../../model/footer/useFooterController";
 import KitDetailsTreeView from "./KitDetailsTreeView";
 
-
 function FooterContainer({ details }: { details: KitDetailsType }) {
   const { selectedId, setSelectedId, ActiveComp, activeProps } =
     useFooterController(details);
@@ -38,7 +37,11 @@ function FooterContainer({ details }: { details: KitDetailsType }) {
       >
         {ActiveComp ? (
           <Suspense fallback={null}>
-            <ActiveComp key={selectedId} {...activeProps} />
+            <ActiveComp
+              key={selectedId}
+              {...activeProps}
+              onSelect={setSelectedId}
+            />
           </Suspense>
         ) : null}
       </Grid>
