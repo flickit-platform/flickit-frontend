@@ -98,7 +98,6 @@ const AttributePanel = ({
     }
   }, [selectedMaturityLevel]);
 
-
   const getTranslation = (
     obj?: TTranslations | null,
     type: keyof { title?: string; description?: string } = "title",
@@ -263,6 +262,8 @@ const AttributePanel = ({
                             mayNotBeApplicable,
                             advisable,
                             answerOptions,
+                            measure,
+                            answerRange,
                           } = question;
                           return (
                             <Accordion
@@ -291,6 +292,7 @@ const AttributePanel = ({
                                     alignItems: "center",
                                     width: "100%",
                                     gap: 2,
+                                    // m: 0
                                   },
                                   "& .MuiAccordionSummary-content.Mui-expanded":
                                     {
@@ -306,10 +308,17 @@ const AttributePanel = ({
                                     : "",
                                 }}
                               >
-                                <Grid container>
+                                <Grid
+                                  container
+                                  rowSpacing={{ xs: 1, md: 0 }}
+                                  justifyContent={"center"}
+                                  alignItems={"center"}
+                                >
                                   <Grid
                                     item
-                                    xs={
+                                    xs={12}
+                                    justifyContent={"flex-start"}
+                                    md={
                                       mayNotBeApplicable || !advisable ? 5 : 8
                                     }
                                   >
@@ -320,7 +329,8 @@ const AttributePanel = ({
                                   {(mayNotBeApplicable || !advisable) && (
                                     <Grid
                                       item
-                                      xs={3}
+                                      xs={12}
+                                      md={3}
                                       sx={{ ...styles.centerVH, gap: 1 }}
                                     >
                                       <Tags
@@ -332,19 +342,32 @@ const AttributePanel = ({
 
                                   <Grid
                                     item
-                                    sx={{ textAlign: "center",
-                                    borderBlock: "1px"
+                                    sx={{
+                                      textAlign: "center",
+                                      borderInline: { md: "1px solid #C7CCD1" },
                                     }}
-                                    xs={3}
+                                    xs={6}
+                                    md={3}
                                   >
-                                    <Text bgcolor={"secondary.bg"} sx={{ textAlign: "center", borderRadius: 1, px: 1, py: 0.5  }}>
+                                    <Text
+                                      bgcolor={"secondary.bg"}
+                                      sx={{
+                                        textAlign: "center",
+                                        borderRadius: 1,
+                                        px: 1,
+                                        py: 0.5,
+                                      }}
+                                    >
                                       {questionnaire}
                                     </Text>
                                   </Grid>
-                                  <Grid item xs={1}>
-                                    <Text
-                                      sx={{ textAlign: "center" }}
-                                    >
+                                  <Grid
+                                    item
+                                    sx={{ ...styles.centerVH }}
+                                    xs={6}
+                                    md={1}
+                                  >
+                                    <Text sx={{ textAlign: "center" }}>
                                       {t("common.weight")}: {weight}
                                     </Text>
                                   </Grid>
@@ -358,12 +381,12 @@ const AttributePanel = ({
                                 }}
                               >
                                 <Grid container>
-                                  <Grid item xs={12}>
+                                  <Grid item xs={answerRange ? 6 : 12}>
                                     <Text variant="titleSmall" sx={{ mb: 1 }}>
                                       {t("common.measure")}
                                     </Text>
                                   </Grid>
-                                  <Grid item xs={12}>
+                                  <Grid item xs={6}>
                                     <Box
                                       sx={{
                                         padding: "4px 16px",
@@ -376,10 +399,39 @@ const AttributePanel = ({
                                       }}
                                     >
                                       <Text variant="bodyMedium">
-                                        {questionnaire}
+                                        {measure?.title}
                                       </Text>
                                     </Box>
                                   </Grid>
+                                  {answerRange && (
+                                    <>
+                                      <Grid item xs={6}>
+                                        <Text
+                                          variant="titleSmall"
+                                          sx={{ mb: 1 }}
+                                        >
+                                          {t("kitDesigner.answerRanges")}
+                                        </Text>
+                                      </Grid>
+                                      <Grid item xs={6}>
+                                        <Box
+                                          sx={{
+                                            padding: "4px 16px",
+                                            borderRadius: "4px",
+                                            border: "1px solid",
+                                            borderColor: "outline.variant",
+                                            bgcolor: "primary.bg",
+                                            width: "fit-content",
+                                            color: "primary.main",
+                                          }}
+                                        >
+                                          <Text variant="bodyMedium">
+                                            {answerRange?.title}
+                                          </Text>
+                                        </Box>
+                                      </Grid>
+                                    </>
+                                  )}
                                 </Grid>
                                 <Grid container mt={"10px"}>
                                   <Grid item xs={12}>
@@ -434,28 +486,30 @@ const Tags = (props: any) => {
       title: "notAdvisable",
       backgroundColor: "primary.bgVariant",
       color: "primary.main",
+      display: advisable ? "none" : "flex",
     },
     {
       title: "notApplicable",
       backgroundColor: "secondary.bgVariant",
       color: "secondary.main",
+      display: mayNotBeApplicable ? "flex" : "none",
     },
   ];
   return (
     <>
       {tagsMap.map((tag) => {
+        const { color, backgroundColor, title, display } = tag;
         return (
           <Chip
             sx={{
-              color: tag.color,
+              color: color,
               border: `1px solid`,
-              borderColor: tag.color,
-              backgroundColor: tag.backgroundColor,
+              borderColor: color,
+              backgroundColor: backgroundColor,
               height: "28px",
+              display,
             }}
-            label={
-              <Text variant={"bodySmall"}>{t(`questions.${tag.title}`)}</Text>
-            }
+            label={<Text variant={"bodySmall"}>{t(`questions.${title}`)}</Text>}
           />
         );
       })}
