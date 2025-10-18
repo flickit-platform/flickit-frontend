@@ -7,16 +7,15 @@ export const InfoHeader = ({
   title,
   translations,
   sectionName,
-  questionLabel,
-  weightLabel,
+  firstTag,
+  secondTag,
 }: {
   title: string;
   translations: any;
   sectionName: string;
-  questionLabel: string;
-  weightLabel: string;
+  firstTag: string;
+  secondTag?: string;
 }) => {
-
   const ChipStyle = {
     ".MuiChip-label": {
       px: "12px",
@@ -25,8 +24,23 @@ export const InfoHeader = ({
   };
 
   return (
-    <Box sx={{ ...styles.centerV, justifyContent: "space-between", gap: 2 }}>
-      <Box sx={{ ...styles.centerV, gap: 2 }}>
+    <Box
+      sx={{
+        display: "flex",
+        alignItems: "center",
+        flexDirection: { xs: "column", md: "row" },
+        justifyContent: "space-between",
+        gap: 2,
+      }}
+    >
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          flexDirection: { xs: "column", md: "row" },
+          gap: 2,
+        }}
+      >
         <Chip
           sx={{
             ...ChipStyle,
@@ -53,21 +67,23 @@ export const InfoHeader = ({
           }}
           label={
             <Text variant={"bodyMedium"} color={"primary.main"}>
-              {questionLabel}
+              {firstTag}
             </Text>
           }
         />
-        <Chip
-          sx={{
-            ...ChipStyle,
-            background: "#2466A80A",
-          }}
-          label={
-            <Text variant={"bodyMedium"} color={"primary.main"}>
-              {weightLabel}
-            </Text>
-          }
-        />
+        {secondTag && (
+          <Chip
+            sx={{
+              ...ChipStyle,
+              background: "#2466A80A",
+            }}
+            label={
+              <Text variant={"bodyMedium"} color={"primary.main"}>
+                {secondTag}
+              </Text>
+            }
+          />
+        )}
       </Box>
     </Box>
   );

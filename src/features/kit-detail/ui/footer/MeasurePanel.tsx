@@ -6,6 +6,7 @@ import {
   AccordionDetails,
   AccordionSummary,
   Box,
+  Grid,
 } from "@mui/material";
 import { useAccordion } from "@/hooks/useAccordion";
 import { ExpandMoreRounded } from "@mui/icons-material";
@@ -13,6 +14,9 @@ import { Text } from "@/components/common/Text";
 import { useTranslation } from "react-i18next";
 import { useMeasures } from "../../model/footer/useMeasures";
 import { OptionPill } from "./AnswerRangesPanel";
+import { InfoHeader } from "../common/InfoHeader";
+import { getTranslation } from "./SubjectPanel";
+import TitleWithTranslation from "@/components/common/fields/TranslationText";
 
 const MeasurePanel = ({ measure }: { measure: IIndexedItem }) => {
   const { assessmentKitId } = useParams();
@@ -26,17 +30,39 @@ const MeasurePanel = ({ measure }: { measure: IIndexedItem }) => {
   return (
     <QueryData
       {...fetcMeasureDetailslQuery}
-      render={(measure) => {
-        const _measure = measureDetails ?? measure;
+      render={(measure_element) => {
+        const _measure = measureDetails ?? measure_element;
         return (
-          <Box display="flex" flexDirection="column" gap={6}>
-            <Text variant="semiBoldXLarge" color="primary">
-              {t("kitDesigner.answerRanges")}
-            </Text>
-
+          <Box display="flex" flexDirection="column" gap={4}>
+            <InfoHeader
+              title={_measure.title}
+              translations={getTranslation(measure?.translations, "title")}
+              sectionName={t("common.measure")}
+              firstTag={`${_measure.questions.length} ${t("common.question")}`}
+            />
+            <Box>
+              <Text variant="bodyLarge" color={"background.secondaryDark"}>
+                {t("common.description")}:
+              </Text>
+              <Box
+                sx={{
+                  px: 2,
+                }}
+              >
+                <TitleWithTranslation
+                  title={_measure.description}
+                  translation={getTranslation(
+                    _measure.translations,
+                    "description",
+                  )}
+                  titleSx={{ color: "background.secondaryDark" }}
+                  translationSx={{ color: "background.secondaryDark" }}
+                />
+              </Box>
+            </Box>
             <Box display="flex" flexDirection="column" gap={1}>
               {" "}
-              {_measure.questions.map((question) => {
+              {_measure.questions.map((question, index) => {
                 return (
                   <Accordion
                     key={question.title}
@@ -75,21 +101,75 @@ const MeasurePanel = ({ measure }: { measure: IIndexedItem }) => {
                           : "",
                       }}
                     >
-                      <Text variant="bodyMedium">
-                        {question.index}.{question.title}
-                      </Text>
+                      <Box>
+                        <Text variant="bodyMedium">{index + 1}.</Text>{" "}
+                        <Text variant="bodyMedium"> {question.title}</Text>
+                      </Box>
                     </AccordionSummary>
                     <AccordionDetails
-                      sx={{ display: "flex", flexDirection: "column", p: 2 }}
+                      sx={{
+                        display: "flex",
+                        flexDirection: "column",
+                        p: 2,
+                        gap: 2,
+                      }}
                     >
-                      <Text variant="titleSmall" sx={{ mb: 1 }}>
-                        {t("common.options")}
-                      </Text>
-                      <Box sx={{ display: "flex", flexWrap: "wrap" }}>
-                        {question.options?.map((opt: any) => (
-                          <OptionPill key={opt.index} option={opt} />
-                        ))}
-                      </Box>
+                      <Grid container>
+                        {question?.questionnaire.title && (
+                          <Grid item md={6}>
+                            <Text variant="titleSmall" sx={{ mb: 1 }}>
+                              {t("common.questionnaire")}
+                            </Text>
+                            <Box
+                              sx={{
+                                padding: "4px 16px",
+                                borderRadius: "4px",
+                                border: "1px solid",
+                                borderColor: "outline.variant",
+                                bgcolor: "primary.bg",
+                                width: "fit-content",
+                                color: "primary.main",
+                              }}
+                            >
+                              <Text variant="bodyMedium">
+                                {question.questionnaire.title}
+                              </Text>
+                            </Box>
+                          </Grid>
+                        )}
+                        {question?.answerRange && (
+                          <Grid item md={6}>
+                            <Text variant="titleSmall" sx={{ mb: 1 }}>
+                              {t("common.answerRange")}
+                            </Text>
+                            <Box
+                              sx={{
+                                padding: "4px 16px",
+                                borderRadius: "4px",
+                                border: "1px solid",
+                                borderColor: "outline.variant",
+                                bgcolor: "primary.bg",
+                                width: "fit-content",
+                                color: "primary.main",
+                              }}
+                            >
+                              {question?.answerRange?.title}
+                            </Box>
+                          </Grid>
+                        )}
+                      </Grid>
+                      {question?.options?.length && (
+                        <>
+                          <Text variant="titleSmall">
+                            {t("common.options")}
+                          </Text>
+                          <Box sx={{ display: "flex", flexWrap: "wrap" }}>
+                            {question.options?.map((opt: any) => (
+                              <OptionPill key={opt.index} option={opt} />
+                            ))}
+                          </Box>
+                        </>
+                      )}
                     </AccordionDetails>
                   </Accordion>
                 );

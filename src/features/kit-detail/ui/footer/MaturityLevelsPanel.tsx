@@ -19,6 +19,7 @@ import {
   withDefaultOverrides,
 } from "@/config/colors";
 import { IMaturityLevelIndexedItem } from "../../model/types";
+import { getTranslation } from "./SubjectPanel";
 
 const localPalette = withDefaultOverrides(BASE_PALETTE, { C5: "#C7CCD1" });
 
@@ -86,29 +87,20 @@ const MaturityLevelsPanel = ({
             >
               <Box
                 sx={{ ...styles.centerV }}
-                flex={
-                  Object.values(level.translations ?? {})[0]?.title ? 0.5 : 0.25
-                }
+                flex={getTranslation(level?.translations, "title") ? 0.5 : 0.25}
+                gap={1}
               >
-                <Text variant="semiBoldLarge" lines={1}>
-                  {level.index}. {level.title}
-                </Text>
-                {Object.values(level?.translations ?? {})[0]?.title && (
-                  <>
-                    <Divider
-                      flexItem
-                      orientation="vertical"
-                      sx={{
-                        mx: "8px",
-                        bgcolor: isExpanded(level.index)
-                          ? "background.on"
-                          : "background.containerLowest",
-                      }}
-                    />
-                    <Text variant="bodyMedium" lines={1}>
-                      {Object.values(level.translations ?? {})[0]?.title}
-                    </Text>
-                  </>
+                <Box display="flex" gap={0.5}>
+                  <Text variant="bodyMedium">{level.index}. </Text>
+                  <Text variant="bodyMedium" lines={1}>
+                    {level.title}
+                  </Text>
+                </Box>
+
+                {getTranslation(level?.translations, "title") && (
+                  <Text variant="bodyMedium" lines={1}>
+                    {getTranslation(level?.translations, "title")}
+                  </Text>
                 )}
               </Box>
               {0 < level.competences.length && (
@@ -116,7 +108,11 @@ const MaturityLevelsPanel = ({
                   <Text variant="semiBoldMedium">
                     {t("common.competences")}
                   </Text>
-                  <Box display="flex" gap={1}>
+                  <Box
+                    display="flex"
+                    gap={1}
+                    flexDirection={{ xs: "column", md: "row" }}
+                  >
                     {level.competences.map((competence, i) => {
                       const isLast = i === level.competences.length - 1;
                       return (
@@ -137,6 +133,7 @@ const MaturityLevelsPanel = ({
                                 bgcolor: isExpanded(level.index)
                                   ? "background.on"
                                   : "background.containerLowest",
+                                display: { xs: "none", md: "flex" },
                               }}
                             />
                           )}
@@ -149,20 +146,22 @@ const MaturityLevelsPanel = ({
             </AccordionSummary>
 
             <AccordionDetails>
-              <Box display="flex" gap={2} flex={1} paddingBlock={1}>
+              <Box
+                display={{ xs: "block", md: "flex" }}
+                gap={2}
+                flex={1}
+                paddingBlock={1}
+              >
                 <Text variant="semiBoldMedium">{t("common.description")}</Text>
                 <Box width="100%">
                   <Text variant="bodyMedium">{level.description}</Text>
 
-                  {Object.values(level.translations ?? {})[0]?.description && (
+                  {getTranslation(level.translations, "description") && (
                     <>
                       <Divider flexItem sx={{ my: 1 }} />
 
                       <Text variant="bodyMedium" lines={1}>
-                        {
-                          Object.values(level.translations ?? {})[0]
-                            ?.description
-                        }
+                        {getTranslation(level.translations, "description")}
                       </Text>
                     </>
                   )}

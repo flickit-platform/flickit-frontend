@@ -29,7 +29,7 @@ const SelectLanguage = (props: any) => {
           },
         }}
       >
-        {languages.map((option: any) => (
+        {languages?.map((option: any) => (
           <MenuItem key={option.value} value={option.value}>
             {option.label}
           </MenuItem>

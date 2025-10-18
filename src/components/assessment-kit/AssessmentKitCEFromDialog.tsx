@@ -236,7 +236,7 @@ const AssessmentKitCEFromDialog = (props: IAssessmentKitCEFromDialogProps) => {
     <FormProviderWithForm formMethods={formMethods}>
       <Grid container spacing={type != "convert" ? 2 : 0} sx={styles.formGrid}>
         <Grid item xs={12} md={12} display={activeStep === 0 ? "" : "none"}>
-          {type === "convert" && buttonStep == 0 && !convertData && (
+          {type === "convert" && buttonStep == 0  && (
             <Box pb="10px">
               <Box
                 bgcolor="background.containerHighest"

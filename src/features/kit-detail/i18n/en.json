@@ -1,4 +1,5 @@
 {
+  "affectedAttributes": "Affected attributes",
   "attribute": "Attribute",
   "continueEdittingDraft": "A draft has already been created. You can continue editing the kit on that draft and release your changes when ready",
   "createdAssessments": "Created assessments",
@@ -13,6 +14,7 @@
   "subject": "Subject",
   "options": "Options",
   "questions": "Questions",
+  "questionTranslation": "Question translation",
   "whatIsThisKit": "What is this kit?",
   "whoNeedsThisKit": "Who needs this kit?",
   "whenToUseThisKit": "When to use this kit?"
