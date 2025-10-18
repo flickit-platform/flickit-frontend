@@ -3,6 +3,7 @@ import {
   AccordionDetails,
   AccordionSummary,
   Box,
+  Grid,
 } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import { InfoHeader } from "../common/InfoHeader";
@@ -21,6 +22,8 @@ import languageDetector from "@utils/language-detector";
 import { farsiFontFamily, primaryFontFamily } from "@config/theme";
 import { useAccordion } from "@/hooks/useAccordion";
 import { ExpandMoreRounded } from "@mui/icons-material";
+import Chip from "@mui/material/Chip";
+import { OptionPill } from "@/features/kit-detail/ui/footer/AnswerRangesPanel";
 
 type TTranslations = Record<string, { title?: string; description?: string }>;
 type TAttribute = { title: string; weight: number; id: number; index: number };
@@ -128,11 +131,15 @@ const AttributePanel = ({
           maturityLevels,
         } = data;
         useEffect(() => {
-          const findMaturityLevelItem = maturityLevels.find(
+          const index = maturityLevels.findIndex(
             (item) => item.questionCount != 0,
           );
+          const findMaturityLevelItem =
+            index !== -1 ? { index, id: maturityLevels[index].id } : null;
+
           if (findMaturityLevelItem) {
-            setTopNavValue(findMaturityLevelItem.questionCount);
+            setTopNavValue(findMaturityLevelItem.index);
+            setSelectedMaturityLevel(findMaturityLevelItem.id);
           }
         }, []);
 
@@ -142,8 +149,8 @@ const AttributePanel = ({
               title={attribute?.title}
               translations={getTranslation(translations, "title")}
               sectionName={t("kitDetail.attribute")}
-              questionLabel={`${questionCount} ${t("kitDetail.questions")}`}
-              weightLabel={`${t("common.weight")}: ${weight}`}
+              firstTag={`${questionCount} ${t("kitDetail.questions")}`}
+              secondTag={`${t("common.weight")}: ${weight}`}
             />
 
             <Box>
@@ -174,7 +181,7 @@ const AttributePanel = ({
                   width="100%"
                   borderRadius="12px"
                   my={2}
-                  paddingBlock={0.5}
+                  paddingBlock={1}
                   sx={{ ...styles.centerVH }}
                 >
                   <Tabs
@@ -197,7 +204,7 @@ const AttributePanel = ({
                       const { title, id, index, questionCount } = item;
                       return (
                         <Tab
-                          onClick={() => maturityHandelClick(item.id)}
+                          onClick={() => maturityHandelClick(id)}
                           key={uniqueId()}
                           sx={{
                             // ...theme.typography.semiBoldLarge,
@@ -205,6 +212,7 @@ const AttributePanel = ({
                             border: "none",
                             textTransform: "none",
                             color: "text.primary",
+                            py: 1,
                             "&.Mui-selected": {
                               boxShadow: "0 1px 4px rgba(0,0,0,25%) !important",
                               borderRadius: "4px !important",
@@ -229,7 +237,7 @@ const AttributePanel = ({
                             >
                               <Text variant={"bodyMedium"}>{`${index}.`}</Text>
                               <Text variant={"bodyMedium"}>
-                                {`${title}`} {`(${questionCount})`}
+                                {`(${questionCount})`} {`${title}`}
                               </Text>
                             </Box>
                           }
@@ -242,74 +250,170 @@ const AttributePanel = ({
                 <QueryData
                   {...fetchMaturityLevelQuestions}
                   render={(maturityData) => {
-
                     const { questions, questionsCount } = maturityData;
 
-                      return  <Box >
-                        {
-                            questions.map((question: any) => {
-                                const { index, title } = question;
-                                return (
-                                    <Accordion
-                                        key={uniqueId()}
-                                        expanded={isExpanded(index)}
-                                        onChange={onChange(index)}
-                                        sx={{
-                                            boxShadow: "none !important",
-                                            borderRadius: "16px !important",
-                                            border: `1px solid #C7CCD1`,
-                                            bgcolor: "initial",
-                                            "&:before": { content: "none" },
-                                            position: "relative",
-                                            transition: "background-position .4s ease",
-                                            mb: 1
-                                        }}
+                    return (
+                      <Box>
+                        {questions.map((question: any) => {
+                          const {
+                            index,
+                            title,
+                            questionnaire,
+                            weight,
+                            mayNotBeApplicable,
+                            advisable,
+                            answerOptions,
+                          } = question;
+                          return (
+                            <Accordion
+                              key={uniqueId()}
+                              expanded={isExpanded(index)}
+                              onChange={onChange(index)}
+                              sx={{
+                                boxShadow: "none !important",
+                                borderRadius: "16px !important",
+                                border: `1px solid #C7CCD1`,
+                                bgcolor: "initial",
+                                "&:before": { content: "none" },
+                                position: "relative",
+                                transition: "background-position .4s ease",
+                                mb: 1,
+                              }}
+                            >
+                              <AccordionSummary
+                                expandIcon={
+                                  <ExpandMoreRounded
+                                    sx={{ color: "surface.on" }}
+                                  />
+                                }
+                                sx={{
+                                  "& .MuiAccordionSummary-content": {
+                                    alignItems: "center",
+                                    width: "100%",
+                                    gap: 2,
+                                  },
+                                  "& .MuiAccordionSummary-content.Mui-expanded":
+                                    {
+                                      margin: "0px !important",
+                                    },
+                                  borderTopLeftRadius: "12px !important",
+                                  borderTopRightRadius: "12px !important",
+                                  backgroundColor: isExpanded(index)
+                                    ? "#66809914"
+                                    : "",
+                                  borderBottom: isExpanded(index)
+                                    ? `1px solid #C7CCD1`
+                                    : "",
+                                }}
+                              >
+                                <Grid container>
+                                  <Grid
+                                    item
+                                    xs={
+                                      mayNotBeApplicable || !advisable ? 5 : 8
+                                    }
+                                  >
+                                    <Text>
+                                      {index}. {title}
+                                    </Text>
+                                  </Grid>
+                                  {(mayNotBeApplicable || !advisable) && (
+                                    <Grid
+                                      item
+                                      xs={3}
+                                      sx={{ ...styles.centerVH, gap: 1 }}
                                     >
-                                        <AccordionSummary
-                                            expandIcon={
-                                                <ExpandMoreRounded sx={{ color: "surface.on" }} />
-                                            }
-                                            sx={{
-                                                "& .MuiAccordionSummary-content": {
-                                                    alignItems: "center",
-                                                    width: "100%",
-                                                    gap: 2,
-                                                },
-                                                "& .MuiAccordionSummary-content.Mui-expanded": {
-                                                    margin: "0px !important",
-                                                },
-                                                borderTopLeftRadius: "12px !important",
-                                                borderTopRightRadius: "12px !important",
-                                                backgroundColor: isExpanded(index)
-                                                    ? "#66809914"
-                                                    : "",
-                                                borderBottom: isExpanded(index)
-                                                    ? `1px solid #C7CCD1`
-                                                    : "",
-                                            }}
-                                        >
-                                            <Text>{title}</Text>
-                                        </AccordionSummary>
-                                        <AccordionDetails
-                                            sx={{
-                                                display: "flex",
-                                                flexDirection: "column",
-                                                p: 2,
-                                            }}
-                                        >
-                                            <Text variant="titleSmall" sx={{ mb: 1 }}>
-                                                {t("common.options")}
-                                            </Text>
-                                            <Box
-                                                sx={{ display: "flex", flexWrap: "wrap" }}
-                                            ></Box>
-                                        </AccordionDetails>
-                                    </Accordion>
-                                );
-                            })
-                        }
-                    </Box>
+                                      <Tags
+                                        mayNotBeApplicable={mayNotBeApplicable}
+                                        advisable={advisable}
+                                      />
+                                    </Grid>
+                                  )}
 
+                                  <Grid
+                                    item
+                                    sx={{ textAlign: "center",
+                                    borderBlock: "1px"
+                                    }}
+                                    xs={3}
+                                  >
+                                    <Text bgcolor={"secondary.bg"} sx={{ textAlign: "center", borderRadius: 1, px: 1, py: 0.5  }}>
+                                      {questionnaire}
+                                    </Text>
+                                  </Grid>
+                                  <Grid item xs={1}>
+                                    <Text
+                                      sx={{ textAlign: "center" }}
+                                    >
+                                      {t("common.weight")}: {weight}
+                                    </Text>
+                                  </Grid>
+                                </Grid>
+                              </AccordionSummary>
+                              <AccordionDetails
+                                sx={{
+                                  display: "flex",
+                                  flexDirection: "column",
+                                  p: 2,
+                                }}
+                              >
+                                <Grid container>
+                                  <Grid item xs={12}>
+                                    <Text variant="titleSmall" sx={{ mb: 1 }}>
+                                      {t("common.measure")}
+                                    </Text>
+                                  </Grid>
+                                  <Grid item xs={12}>
+                                    <Box
+                                      sx={{
+                                        padding: "4px 16px",
+                                        borderRadius: "4px",
+                                        border: "1px solid",
+                                        borderColor: "outline.variant",
+                                        bgcolor: "primary.bg",
+                                        width: "fit-content",
+                                        color: "primary.main",
+                                      }}
+                                    >
+                                      <Text variant="bodyMedium">
+                                        {questionnaire}
+                                      </Text>
+                                    </Box>
+                                  </Grid>
+                                </Grid>
+                                <Grid container mt={"10px"}>
+                                  <Grid item xs={12}>
+                                    {answerOptions?.length && (
+                                      <>
+                                        <Text
+                                          sx={{ mb: "10px" }}
+                                          variant="titleSmall"
+                                        >
+                                          {t("common.options")}
+                                        </Text>
+                                        <Box
+                                          sx={{
+                                            display: "flex",
+                                            flexWrap: "wrap",
+                                          }}
+                                        >
+                                          {answerOptions?.map((opt: any) => (
+                                            <OptionPill
+                                              key={opt.index}
+                                              option={opt}
+                                            />
+                                          ))}
+                                        </Box>
+                                      </>
+                                    )}
+                                  </Grid>
+                                </Grid>
+                              </AccordionDetails>
+                            </Accordion>
+                          );
+                        })}
+                      </Box>
+                    );
                   }}
                 />
               </Box>
@@ -318,6 +422,44 @@ const AttributePanel = ({
         );
       }}
     />
+  );
+};
+
+const Tags = (props: any) => {
+  const { mayNotBeApplicable, advisable } = props;
+  const { t } = useTranslation();
+
+  const tagsMap = [
+    {
+      title: "notAdvisable",
+      backgroundColor: "primary.bgVariant",
+      color: "primary.main",
+    },
+    {
+      title: "notApplicable",
+      backgroundColor: "secondary.bgVariant",
+      color: "secondary.main",
+    },
+  ];
+  return (
+    <>
+      {tagsMap.map((tag) => {
+        return (
+          <Chip
+            sx={{
+              color: tag.color,
+              border: `1px solid`,
+              borderColor: tag.color,
+              backgroundColor: tag.backgroundColor,
+              height: "28px",
+            }}
+            label={
+              <Text variant={"bodySmall"}>{t(`questions.${tag.title}`)}</Text>
+            }
+          />
+        );
+      })}
+    </>
   );
 };
 
