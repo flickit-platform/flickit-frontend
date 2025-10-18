@@ -169,7 +169,7 @@ const MeasurePanel = ({ measure }: { measure: IIndexedItem }) => {
                       </Grid>
                       {question?.options?.length && (
                         <>
-                          <Text variant="titleSmall">
+                          <Text variant="titleSmall" sx={{ mb: 1 }}>
                             {t("common.options")}
                           </Text>
                           <Box sx={{ display: "flex", flexWrap: "wrap" }}>

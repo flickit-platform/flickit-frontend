@@ -99,7 +99,7 @@ const sxSummary = (expanded: boolean) => ({
   px: 0,
   py: 0,
   minHeight: 0,
-  "&.Mui-expanded": { minHeight: 0 }, 
+  "&.Mui-expanded": { minHeight: 0 },
   "& .MuiAccordionSummary-content": {
     alignItems: "center",
     width: "100%",
@@ -541,10 +541,7 @@ const AttributePanel = ({
                                 {Array.isArray(answerOptions) &&
                                   answerOptions.length > 0 && (
                                     <Box px={2} pb={2}>
-                                      <Text
-                                        sx={{ mb: "10px" }}
-                                        variant="titleSmall"
-                                      >
+                                      <Text variant="titleSmall" sx={{ mb: 1 }}>
                                         {t("common.options")}
                                       </Text>
                                       <Box
