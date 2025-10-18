@@ -276,7 +276,7 @@ const AttributePanel = ({
                 </Text>
 
                 <Box
-                  bgcolor="background.variant"
+                  bgcolor="primary.states.selected"
                   width="100%"
                   borderRadius="12px"
                   my={2}
@@ -361,8 +361,8 @@ const AttributePanel = ({
                                   }}
                                 >
                                   <Box
+                                    width={{ xs: "100%", md: "70%" }}
                                     sx={{
-                                      width: "70%",
                                       minWidth: 0,
                                       py: "12px",
                                       px: "16px",
@@ -425,7 +425,7 @@ const AttributePanel = ({
                                   />
 
                                   <Box
-                                    width="20%"
+                                    width={{ xs: "100%", md: "20%" }}
                                     sx={{
                                       display: "flex",
                                       alignItems: "center",
@@ -441,7 +441,7 @@ const AttributePanel = ({
                                     <Text
                                       sx={{
                                         textAlign: "center",
-                                        borderRadius: 1,
+                                        borderRadius: "8px",
                                         px: 1,
                                         py: 0.5,
                                         display: "inline-block",
@@ -465,7 +465,7 @@ const AttributePanel = ({
                                   />
 
                                   <Box
-                                    width="10%"
+                                    width={{ xs: "100%", md: "10%" }}
                                     sx={{
                                       display: "flex",
                                       alignItems: "center",
