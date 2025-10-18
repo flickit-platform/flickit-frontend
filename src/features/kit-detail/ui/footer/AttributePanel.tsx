@@ -120,12 +120,9 @@ const AttributePanel = ({
       {...fetchAttributeDetail}
       render={(data: IattributeData) => {
         const {
-          id,
-          index,
           weight,
           description,
           translations,
-          title,
           questionCount,
           maturityLevels,
         } = data;
@@ -253,9 +250,8 @@ const AttributePanel = ({
 
                     return (
                       <Box>
-                        {questions.map((question: any) => {
+                        {questions.map((question: any, index: number) => {
                           const {
-                            index,
                             title,
                             questionnaire,
                             weight,
@@ -323,7 +319,7 @@ const AttributePanel = ({
                                     }
                                   >
                                     <Text>
-                                      {index}. {title}
+                                      {index + 1}. {title}
                                     </Text>
                                   </Grid>
                                   {(mayNotBeApplicable || !advisable) && (
@@ -477,8 +473,7 @@ const AttributePanel = ({
   );
 };
 
-const Tags = (props: any) => {
-  const { mayNotBeApplicable, advisable } = props;
+const Tags = ({ mayNotBeApplicable, advisable } : any) => {
   const { t } = useTranslation();
 
   const tagsMap = [
@@ -486,20 +481,20 @@ const Tags = (props: any) => {
       title: "notAdvisable",
       backgroundColor: "primary.bgVariant",
       color: "primary.main",
-      display: advisable ? "none" : "flex",
+      visible: !advisable,
     },
     {
       title: "notApplicable",
       backgroundColor: "secondary.bgVariant",
       color: "secondary.main",
-      display: mayNotBeApplicable ? "flex" : "none",
+      visible: mayNotBeApplicable,
     },
   ];
   return (
     <>
       {tagsMap.map((tag) => {
-        const { color, backgroundColor, title, display } = tag;
-        return (
+        const { color, backgroundColor, title, visible } = tag;
+        return visible && (
           <Chip
             sx={{
               color: color,
@@ -507,7 +502,6 @@ const Tags = (props: any) => {
               borderColor: color,
               backgroundColor: backgroundColor,
               height: "28px",
-              display,
             }}
             label={<Text variant={"bodySmall"}>{t(`questions.${title}`)}</Text>}
           />
