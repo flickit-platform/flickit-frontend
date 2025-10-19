@@ -40,14 +40,15 @@ const AnswerRangesPanel = ({
               <AccordionSummary
                 expandIcon={<ExpandMoreRounded sx={{ color: "surface.on" }} />}
                 sx={{
-                  "&.Mui-expanded": { minHeight: "48px" },
+                  "&.Mui-expanded": { minHeight: "unset" },
                   "& .MuiAccordionSummary-content": {
                     alignItems: "center",
                     width: "100%",
                     gap: 2,
                   },
                   "& .MuiAccordionSummary-content.Mui-expanded": {
-                    margin: "0px !important",
+                    marginBlock: "12px !important",
+                    marginInline: "0px !important",
                   },
                   borderTopLeftRadius: "12px !important",
                   borderTopRightRadius: "12px !important",
@@ -89,7 +90,7 @@ const AnswerRangesPanel = ({
                 </>
               </AccordionSummary>
               <AccordionDetails
-                sx={{ display: "flex", flexDirection: "column", p: 2 }}
+                sx={{ display: "flex", flexDirection: "column" }}
               >
                 <OptionsSection options={range.answerOptions} />
               </AccordionDetails>
