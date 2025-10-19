@@ -8,7 +8,7 @@ export const OptionsSection = ({ options }: { options: IOption[] }) => {
   return (
     <>
       {Boolean(options?.length) && (
-        <Box px={2} pb={2}>
+        <Box pb={2}>
           <Text variant="titleSmall" sx={{ mb: 1 }}>
             {t("common.options")}
           </Text>

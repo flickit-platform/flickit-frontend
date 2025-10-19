@@ -451,7 +451,7 @@ const AttributePanel = ({ attribute }: { attribute: IIndexedItem }) => {
                                       alignItems: "center",
                                       justifyContent: "center",
                                       py: 0,
-                                      paddingInlineStart:1,
+                                      paddingInlineStart: 1,
                                       borderTop: {
                                         xs: "1px solid #C7CCD1",
                                         md: "none",
@@ -468,21 +468,27 @@ const AttributePanel = ({ attribute }: { attribute: IIndexedItem }) => {
                                 </Box>
                               </AccordionSummary>
                               <AccordionDetails>
-                                <Grid container spacing={0} p={2}>
-                                  <Grid item xs={12} md={6}>
-                                    <InfoField
-                                      label={t("common.measure")}
-                                      value={measure?.title}
-                                    />
+                                <Box
+                                  display="flex"
+                                  flexDirection="column"
+                                  gap={1}
+                                >
+                                  <Grid container spacing={0}>
+                                    <Grid item xs={12} md={6}>
+                                      <InfoField
+                                        label={t("common.measure")}
+                                        value={measure?.title}
+                                      />
+                                    </Grid>
+                                    <Grid item xs={12} md={6}>
+                                      <InfoField
+                                        label={t("common.answerRange")}
+                                        value={answerRange?.title}
+                                      />
+                                    </Grid>
                                   </Grid>
-                                  <Grid item xs={12} md={6}>
-                                    <InfoField
-                                      label={t("common.answerRange")}
-                                      value={answerRange?.title}
-                                    />
-                                  </Grid>
-                                </Grid>
-                                <OptionsSection options={answerOptions} />
+                                  <OptionsSection options={answerOptions} />
+                                </Box>
                               </AccordionDetails>
                             </Accordion>
                           );
