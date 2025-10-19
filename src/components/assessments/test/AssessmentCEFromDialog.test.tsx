@@ -2,8 +2,8 @@ import AssessmentCEFromDialog from "../AssessmentCEFromDialog";
 import { describe, it, vi, expect } from "vitest";
 import {render, screen, within} from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
-import {ServiceProvider} from "@providers/ServiceProvider";
-import { AppProvider } from "@providers/AppProvider";
+import { ServiceProvider } from "@/providers/service-provider";
+import { AppProvider } from "@providers/app-provider";
 import userEvent from "@testing-library/user-event";
 
 const SubmitForm = vi.fn()
@@ -34,7 +34,7 @@ const MockProviders = ({ children }: any) => (
 const renderDialog = () => {
     render(
         <MockProviders>
-            <AssessmentCEFromDialog {...usedDialog} onSubmitForm={SubmitForm} />
+            <AssessmentCEFromDialog {...usedDialog} onSubmit={SubmitForm} />
         </MockProviders>,
     );
 };
