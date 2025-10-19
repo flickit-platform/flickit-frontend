@@ -25,7 +25,7 @@ const AnswerRangesPanel = ({
   return (
     <Box display="flex" flexDirection="column" gap={6}>
       <Text variant="semiBoldXLarge" color="primary">
-        {t("kitDesigner.answerRanges")}
+        {t("common.answerRange")}
       </Text>
 
       <Box display="flex" flexDirection="column" gap={1}>
