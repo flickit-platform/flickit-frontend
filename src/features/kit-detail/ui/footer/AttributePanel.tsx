@@ -98,7 +98,7 @@ export const sxAccordion = {
   "&.Mui-expanded": { margin: 0 },
 };
 export const sxSummary = (expanded: boolean) => ({
-  px: 2,
+  paddingInlineEnd: 1.5,
   py: 0,
   minHeight: 0,
   "&.Mui-expanded": { minHeight: 0 },
@@ -451,6 +451,7 @@ const AttributePanel = ({ attribute }: { attribute: IIndexedItem }) => {
                                       alignItems: "center",
                                       justifyContent: "center",
                                       py: 0,
+                                      paddingInlineStart:1,
                                       borderTop: {
                                         xs: "1px solid #C7CCD1",
                                         md: "none",
