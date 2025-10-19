@@ -1,9 +1,9 @@
 import { FC, PropsWithChildren } from "react";
 import Chip from "@mui/material/Chip";
-import Typography from "@mui/material/Typography";
 import { styles } from "@styles";
 import Box from "@mui/material/Box";
-import uniqueId from "@/utils/uniqueId";
+import uniqueId from "@/utils/unique-id";
+import { Text } from "./Text";
 
 interface IInfoItems {
   renderMap?: Record<string, (...args: any) => JSX.Element>;
@@ -33,7 +33,7 @@ const DefaultInfoItemComponent = (
 ) => {
   const { title, children, bg, itemBg, action } = props;
   return (
-    <Typography
+    <Text
       mb={1}
       variant="body2"
       sx={{
@@ -62,7 +62,7 @@ const DefaultInfoItemComponent = (
         )}
         {children}
       </Box>
-    </Typography>
+    </Text>
   );
 };
 

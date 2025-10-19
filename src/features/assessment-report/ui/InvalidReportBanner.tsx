@@ -1,7 +1,8 @@
-import { Box, Button, Typography } from "@mui/material";
+import { Box, Button } from "@mui/material";
 import { Replay } from "@mui/icons-material";
 import { styles } from "@styles";
 import { t } from "i18next";
+import { Text } from "@/components/common/Text";
 type Props = Readonly<{
   onRetry: () => void;
 }>;
@@ -16,13 +17,13 @@ export default function InvalidReportBanner({ onRetry }: Props) {
       role="alert"
       aria-live="polite"
     >
-      <Typography
+      <Text
         variant="semiBoldLarge"
         color="error.contrastText"
         sx={{ ...styles.centerV }}
       >
         {t("notification.incompleteReportDueToDelay")}
-      </Typography>
+      </Text>
       <Box bgcolor="background.container" color="error.main" borderRadius="4px">
         <Button
           onClick={onRetry}

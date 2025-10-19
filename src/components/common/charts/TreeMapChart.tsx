@@ -7,11 +7,12 @@ import {
   useMemo,
 } from "react";
 import { ResponsiveContainer, Treemap } from "recharts";
-import { getMaturityLevelColors, styles } from "@styles";
+import { styles } from "@styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useTheme, Box } from "@mui/material";
 import { v3Tokens } from "@/config/tokens";
-import FlatGaugeComponent from "@common/flatGaugeComponent";
+import FlatGaugeComponent from "@/components/common/FlatGaugeComponent";
+import { getSemanticColors } from "@/config/colors";
 
 interface TreeMapNode {
   name: string;
@@ -41,9 +42,9 @@ const TreeMapChart: React.FC<TreeMapProps> = ({
 }) => {
   const [hoveredId, setHoveredId] = useState<number | null>(null);
 
-  const lightColors = getMaturityLevelColors(levels, true);
-  const textColors = getMaturityLevelColors(levels, false, true);
-  const darkColors = getMaturityLevelColors(levels);
+  const lightColors = getSemanticColors(levels, "bg");
+  const textColors = getSemanticColors(levels, "text");
+  const darkColors = getSemanticColors(levels);
 
   const treeMapData = useMemo(
     () =>

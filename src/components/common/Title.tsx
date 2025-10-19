@@ -1,4 +1,4 @@
-import Typography, { TypographyProps } from "@mui/material/Typography";
+import { TypographyProps } from "@mui/material/Typography";
 import Box, { BoxProps } from "@mui/material/Box";
 import { Link as RLink, To } from "react-router-dom";
 import Link from "@mui/material/Link";
@@ -10,7 +10,8 @@ import { styles } from "@styles";
 import { Trans } from "react-i18next";
 import i18next from "i18next";
 import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
-import languageDetector from "@utils/languageDetector";
+import languageDetector from "@/utils/language-detector";
+import { Text } from "./Text";
 
 type TitleSize = "small" | "medium" | "large";
 
@@ -149,29 +150,29 @@ const Title: React.FC<TitleProps> = ({
                 </Box>
               </Box>
               {sup && (
-                <Typography
+                <Text
                   textTransform="uppercase"
                   variant={subVariant}
                   lineHeight={0}
                   {...subProps}
                 >
                   {sup}
-                </Typography>
+                </Text>
               )}
             </Box>
           </Box>
         ) : sup ? (
-          <Typography
+          <Text
             textTransform="uppercase"
             variant={subVariant}
             {...subProps}
           >
             {sup}
-          </Typography>
+          </Text>
         ) : null}
 
         {appTitle && (
-          <Typography
+          <Text
             color="#CED3D9"
             fontWeight={500}
             variant="subtitle1"
@@ -183,10 +184,10 @@ const Title: React.FC<TitleProps> = ({
             }}
           >
             <Trans i18nKey={appTitle} />
-          </Typography>
+          </Text>
         )}
 
-        <Typography
+        <Text
           textTransform={size === "large" ? "inherit" : "uppercase"}
           fontWeight="bold"
           variant={titleVariant}
@@ -219,9 +220,9 @@ const Title: React.FC<TitleProps> = ({
               <Box id={inPageLink} position="absolute" top="-84px" />
             </Link>
           )}
-        </Typography>
+        </Text>
 
-        {sub && <Typography variant={subVariant}>{sub}</Typography>}
+        {sub && <Text variant={subVariant}>{sub}</Text>}
       </Box>
 
       <Box

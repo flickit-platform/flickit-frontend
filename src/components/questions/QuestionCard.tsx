@@ -4,7 +4,7 @@ import Checkbox from "@mui/material/Checkbox";
 import Paper from "@mui/material/Paper";
 import ToggleButton from "@mui/material/ToggleButton";
 import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
+import { Text } from "@/components/common/Text";
 import { useNavigate, useParams } from "react-router-dom";
 import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
 import FormControlLabel from "@mui/material/FormControlLabel";
@@ -12,7 +12,7 @@ import {
   questionActions,
   useQuestionContext,
   useQuestionDispatch,
-} from "@/providers/QuestionProvider";
+} from "@/providers/question-provider";
 import {
   EAssessmentStatus,
   IAnswerHistory,
@@ -25,9 +25,9 @@ import {
 import { Trans } from "react-i18next";
 import TabPanel from "@mui/lab/TabPanel";
 import LoadingButton from "@mui/lab/LoadingButton";
-import { useServiceContext } from "@providers/ServiceProvider";
-import { ICustomError } from "@utils/CustomError";
-import useDialog from "@utils/useDialog";
+import { useServiceContext } from "@/providers/service-provider";
+import { ICustomError } from "@/utils/custom-error";
+import useDialog from "@/hooks/useDialog";
 import Divider from "@mui/material/Divider";
 import Grid from "@mui/material/Grid";
 import { FormProvider, useForm } from "react-hook-form";
@@ -35,52 +35,52 @@ import { styles } from "@styles";
 import { InputFieldUC } from "@common/fields/InputField";
 import setDocumentTitle from "@utils/setDocumentTitle";
 import { t } from "i18next";
-import { useQuery } from "@utils/useQuery";
+import { useQuery } from "@/hooks/useQuery";
 import QueryData from "../common/QueryData";
-import languageDetector from "@utils/languageDetector";
+import languageDetector from "@/utils/language-detector";
 import WarningAmberRoundedIcon from "@mui/icons-material/WarningAmberRounded";
 import Rating from "@mui/material/Rating";
 import RadioButtonUncheckedRoundedIcon from "@mui/icons-material/RadioButtonUncheckedRounded";
 import RadioButtonCheckedRoundedIcon from "@mui/icons-material/RadioButtonCheckedRounded";
 import Avatar from "@mui/material/Avatar";
-import stringAvatar from "@utils/stringAvatar";
+import stringAvatar from "@/utils/string-avatar";
 import EditRoundedIcon from "@mui/icons-material/EditRounded";
 import IconButton from "@mui/material/IconButton";
 import Tab from "@mui/material/Tab";
 import TabContext from "@mui/lab/TabContext";
 import TabList from "@mui/lab/TabList";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
-import { useConfigContext } from "@/providers/ConfgProvider";
+import { useConfigContext } from "@/providers/config-provider";
 import DoneIcon from "@mui/icons-material/Done";
 import ClearIcon from "@mui/icons-material/Clear";
 import { useTheme } from "@mui/material/styles";
 import arrowBtn from "../../assets/svg/arrow.svg";
-import PreAttachment from "@components/questions/iconFiles/preAttachments";
-import FileSvg from "@components/questions/iconFiles/fileSvg";
+import PreAttachment from "@/components/common/icons/preAttachments";
+import FileSvg from "@/components/common/icons/FileSvg";
 import Tooltip from "@mui/material/Tooltip";
 import Skeleton from "@mui/material/Skeleton";
 import { farsiFontFamily, primaryFontFamily } from "@config/theme";
-import { ASSESSMENT_MODE, evidenceAttachmentType } from "@utils/enumType";
-import { downloadFile } from "@utils/downloadFile";
+import { ASSESSMENT_MODE, evidenceAttachmentType } from "@/utils/enum-type";
+import { downloadFile } from "@/utils/download-file";
 import CircularProgress from "@mui/material/CircularProgress";
-import { toCamelCase } from "@/utils/MakeCamelcaseString";
+import { toCamelCase } from "@/utils/make-camel-case-string";
 import ArrowBack from "@mui/icons-material/ArrowBack";
 import ArrowForward from "@mui/icons-material/ArrowForward";
 import CheckOutlined from "@mui/icons-material/CheckOutlined";
 import ExpandLess from "@mui/icons-material/ExpandLess";
 import ExpandMore from "@mui/icons-material/ExpandMore";
 import EmptyState from "../kit-designer/common/EmptyState";
-import convertLinksToClickable from "@utils/convertTextToClickableLink";
+import convertLinksToClickable from "@/utils/convert-text-to-clickable-link";
 import { DeleteConfirmationDialog } from "../common/dialogs/DeleteConfirmationDialog";
-import { QuestionGuide } from "./QuestionCard/QuestionGuide";
-import { EvidenceAttachmentsDialogs } from "./QuestionCard/EvidenceAttachmentsDialogs";
+import { QuestionGuide } from "./question-card/QuestionGuide";
+import { EvidenceAttachmentsDialogs } from "./question-card/EvidenceAttachmentsDialogs";
 import Stack from "@mui/material/Stack";
 import Pagination from "@mui/material/Pagination";
-import { getReadableDate } from "@utils/readableDate";
-import { useAssessmentContext } from "@providers/AssessmentProvider";
-import showToast from "@utils/toastError";
-import uniqueId from "@/utils/uniqueId";
-import useScreenResize from "@/utils/useScreenResize";
+import { getReadableDate } from "@/utils/readable-date";
+import { useAssessmentContext } from "@/providers/assessment-provider";
+import showToast from "@/utils/toast-error";
+import uniqueId from "@/utils/unique-id";
+import useScreenResize from "@/hooks/useScreenResize";
 
 interface IQuestionCardProps {
   questionInfo: IQuestionInfo;
@@ -165,25 +165,22 @@ export const QuestionCard = (props: IQuestionCardProps) => {
       >
         <Box>
           <Box sx={{ px: 6, ...styles.rtlStyle(languageDetector(title)) }}>
-            <Typography
-              component="div"
+            <Text
               variant="semiBoldSmall"
               color="background.onVariant"
               sx={{
                 opacity: 0.65,
                 textAlign: [is_farsi ? "right" : "left"],
+                display: "block",
               }}
             >
               <Trans i18nKey="common.question" />
-            </Typography>
-            <Typography
+            </Text>
+            <Text
               letterSpacing={is_farsi ? "0" : ".05em"}
               variant="semiBoldXLarge"
               color="background.containerLow"
               sx={{
-                fontFamily: languageDetector(title)
-                  ? farsiFontFamily
-                  : primaryFontFamily,
                 pt: 0.5,
               }}
             >
@@ -193,7 +190,7 @@ export const QuestionCard = (props: IQuestionCardProps) => {
                   <br />
                 </Fragment>
               ))}
-            </Typography>
+            </Text>
 
             {hint && <QuestionGuide hint={hint} />}
           </Box>
@@ -262,7 +259,7 @@ export const QuestionCard = (props: IQuestionCardProps) => {
                                   : "common.confidenceLevel"
                               }
                             />
-                            <Typography
+                            <Text
                               fontWeight={900}
                               sx={{ borderBottom: "1px solid", mx: 1 }}
                             >
@@ -271,7 +268,7 @@ export const QuestionCard = (props: IQuestionCardProps) => {
                                   `common.${labels[selcetedConfidenceLevel - 1]?.title}`,
                                 )}
                               />
-                            </Typography>
+                            </Text>
                           </Box>
                         </Box>
                       ) : (
@@ -281,7 +278,7 @@ export const QuestionCard = (props: IQuestionCardProps) => {
                             color: `${disabledConfidence ? "background.containerLowest" : "secondary.light"}`,
                           }}
                         >
-                          <Typography>
+                          <Text>
                             <Trans
                               i18nKey={
                                 disabledConfidence
@@ -289,7 +286,7 @@ export const QuestionCard = (props: IQuestionCardProps) => {
                                   : "questions.toContinueToSubmitAnAnswer"
                               }
                             />
-                          </Typography>
+                          </Text>
                         </Box>
                       )}
                       <Box sx={{ position: "relative" }}>
@@ -1138,9 +1135,9 @@ const AnswerTemplate = (props: {
       {notApplicable && (
         <Box sx={{ ...styles.centerV }}>
           <WarningAmberRoundedIcon color="error" />
-          <Typography variant="subtitle2" color="error" mt="4px" ml="4px">
+          <Text variant="subtitle2" color="error" mt="4px" ml="4px">
             <Trans i18nKey="questions.theOptionSelectionIsDisabled" />
-          </Typography>
+          </Text>
         </Box>
       )}
       <Box
@@ -1189,9 +1186,9 @@ const AnswerTemplate = (props: {
               boxSizing="border-box"
               sx={{ ...styles.centerVH }}
             >
-              <Typography variant="labelMedium" color="teritary.light">
+              <Text variant="labelMedium" color="teritary.light">
                 <Trans i18nKey="questions.answerNeedApprove" />
-              </Typography>
+              </Text>
               <Button
                 onClick={onApprove}
                 sx={{
@@ -1203,12 +1200,9 @@ const AnswerTemplate = (props: {
                   },
                 }}
               >
-                <Typography
-                  variant="bodySmall"
-                  color="background.containerLowest"
-                >
+                <Text variant="bodySmall" color="background.containerLowest">
                   <Trans i18nKey="common.approve" />
-                </Typography>
+                </Text>
               </Button>
             </Box>
           )}
@@ -1333,12 +1327,12 @@ const AnswerDetails = ({
         </Box>
       ) : (
         <Box sx={{ ...styles.centerCVH }} textAlign="center">
-          <Typography variant="displayMedium" color="background.onVariant">
+          <Text variant="displayMedium" color="background.onVariant">
             <Trans i18nKey="questions.emptyAnswerHistoryTitle" />
-          </Typography>
-          <Typography variant="bodyLarge" color="background.onVariant">
+          </Text>
+          <Text variant="bodyLarge" color="background.onVariant">
             <Trans i18nKey="questions.emptyAnswerHistoryDescription" />
-          </Typography>
+          </Text>
         </Box>
       )}
     </Box>
@@ -1367,23 +1361,15 @@ const AnswerHistoryItem = (props: any) => {
             height: 46,
           }}
         ></Avatar>
-        <Typography
-          variant="titleMedium"
-          color="primary.dark"
-          sx={{
-            fontFamily: languageDetector(item?.createdBy?.displayName)
-              ? farsiFontFamily
-              : primaryFontFamily,
-          }}
-        >
+        <Text variant="titleMedium" color="primary.dark">
           {item?.createdBy?.displayName}
-        </Typography>
+        </Text>
       </Grid>
       {item.answer.isNotApplicable ? (
         <Grid item xs={12} md={12} lg={5} xl={5}>
-          <Typography variant="titleMedium" color="primary.dark">
+          <Text variant="titleMedium" color="primary.dark">
             <Trans i18nKey="questions.uestionIsMarkedAsNotApplicable" />:
-          </Typography>
+          </Text>
         </Grid>
       ) : (
         <Grid
@@ -1397,9 +1383,9 @@ const AnswerHistoryItem = (props: any) => {
           gap={1.5}
         >
           <Box sx={{ ...styles.centerV }} gap={1.5}>
-            <Typography variant="titleSmall">
+            <Text variant="titleSmall">
               <Trans i18nKey="common.confidence" />:
-            </Typography>
+            </Text>
             <Rating
               disabled={true}
               value={
@@ -1423,30 +1409,20 @@ const AnswerHistoryItem = (props: any) => {
             />
           </Box>
           <Box sx={{ ...styles.centerV }} gap={1.5}>
-            <Typography variant="titleSmall">
+            <Text variant="titleSmall">
               <Trans i18nKey="questions.selectedOption" />:
-            </Typography>
-            <Typography
-              variant="bodyMedium"
-              maxWidth="400px"
-              sx={{
-                fontFamily: languageDetector(
-                  item?.answer?.selectedOption?.title,
-                )
-                  ? farsiFontFamily
-                  : primaryFontFamily,
-              }}
-            >
+            </Text>
+            <Text variant="bodyMedium" maxWidth="400px">
               {item?.answer?.selectedOption ? (
                 <>
                   {" "}
-                  {item?.answer?.selectedOption?.index}.
-                  {item?.answer?.selectedOption?.title}
+                  {t("common.option")} {" "}
+                  {item?.answer?.selectedOption?.index}
                 </>
               ) : (
                 <Trans i18nKey="questions.noOptionSelected" />
               )}
-            </Typography>
+            </Text>
           </Box>
         </Grid>
       )}
@@ -1459,9 +1435,9 @@ const AnswerHistoryItem = (props: any) => {
         display="flex"
         justifyContent="flex-end"
       >
-        <Typography variant="bodyMedium">
+        <Text variant="bodyMedium">
           {getReadableDate(item.creationTime, "relativeWithDate", true)}
-        </Typography>
+        </Text>
       </Grid>
     </Grid>
   );
@@ -1814,12 +1790,12 @@ const Evidence = (props: any) => {
                     />
                   }
                   label={
-                    <Typography color="text.primary" variant="titleSmall">
+                    <Text color="text.primary" variant="titleSmall">
                       <Trans i18nKey="questions.needsToAddAttachments" />
-                    </Typography>
+                    </Text>
                   }
                 />
-                <Typography
+                <Text
                   color={valueCount.length > LIMITED ? "#D81E5B" : "#9DA7B3"}
                   style={is_farsi || rtl ? { left: 10 } : { right: 10 }}
                   sx={{
@@ -1830,7 +1806,7 @@ const Evidence = (props: any) => {
                   }}
                 >
                   {valueCount.length ?? 0} / {LIMITED}
-                </Typography>
+                </Text>
                 <Grid
                   item
                   xs={12}
@@ -2215,7 +2191,7 @@ const EvidenceDetail = (props: any) => {
               >
                 <Grid container display={"flex"} justifyContent={"end"}>
                   <Grid item xs={12} position={"relative"}>
-                    <Typography
+                    <Text
                       color={evidenceBG.borderColor}
                       sx={{
                         fontSize: "1.125rem",
@@ -2228,7 +2204,7 @@ const EvidenceDetail = (props: any) => {
                       }}
                     >
                       <Trans i18nKey="common.edit" />
-                    </Typography>
+                    </Text>
                     <InputFieldUC
                       multiline
                       minRows={3}
@@ -2247,7 +2223,7 @@ const EvidenceDetail = (props: any) => {
                       isFarsi={is_farsi}
                       isEditing={isEditing}
                     />
-                    <Typography
+                    <Text
                       color={
                         valueCount.length > LIMITED ? "#D81E5B" : "#9DA7B3"
                       }
@@ -2260,7 +2236,7 @@ const EvidenceDetail = (props: any) => {
                       }}
                     >
                       {valueCount.length ?? 0} / {LIMITED}
-                    </Typography>
+                    </Text>
                     <Grid
                       item
                       xs={12}
@@ -2349,14 +2325,9 @@ const EvidenceDetail = (props: any) => {
                   gap="1.7rem"
                   minWidth={{ xs: "auto", sm: "320px" }}
                 >
-                  <Typography
+                  <Text
                     variant="bodyLarge"
                     fontWeight="normal"
-                    sx={{
-                      fontFamily: languageDetector(description)
-                        ? farsiFontFamily
-                        : primaryFontFamily,
-                    }}
                     dangerouslySetInnerHTML={{
                       __html: convertLinksToClickable(description),
                     }}
@@ -2368,24 +2339,20 @@ const EvidenceDetail = (props: any) => {
                         sx={{ display: "flex", cursor: "pointer" }}
                       >
                         {!attachmentsCount ? (
-                          <Typography
+                          <Text
                             variant="titleMedium"
                             sx={{
                               fontSize: { xs: "10px", sm: "unset" },
                             }}
                           >
                             <Trans i18nKey={"questions.addAttachment"} />
-                          </Typography>
+                          </Text>
                         ) : (
-                          <Typography
-                            variant="titleMedium"
-                            display="flex"
-                            gap="5px"
-                          >
+                          <Text variant="titleMedium" display="flex" gap="5px">
                             {t("questions.attachmentCount", {
                               attachmentsCount,
                             })}
-                          </Typography>
+                          </Text>
                         )}
                         <img
                           style={
@@ -2469,7 +2436,7 @@ const EvidenceDetail = (props: any) => {
                       </Box>
                       {attachments.length == 5 && (
                         <Box>
-                          <Typography
+                          <Text
                             color="#821237"
                             fontSize="11px"
                             alignItems="start"
@@ -2486,26 +2453,20 @@ const EvidenceDetail = (props: any) => {
                               }}
                             />
                             <Trans i18nKey="questions.evidenceIsLimited" />
-                          </Typography>
+                          </Text>
                         </Box>
                       )}
                     </Grid>
-                    <Typography
+                    <Text
                       fontSize="12px"
                       variant="overline"
                       whiteSpace="nowrap"
                       lineHeight="12px"
                       mt={-2}
                       textAlign="end"
-                      sx={{
-                        fontFamily:
-                          theme.direction == "rtl"
-                            ? farsiFontFamily
-                            : primaryFontFamily,
-                      }}
                     >
                       {getReadableDate(lastModificationTime)}
-                    </Typography>
+                    </Text>
                   </Box>
                 </Box>
               </Box>
@@ -2590,7 +2551,7 @@ const FileIcon = (props: any): any => {
     <Tooltip
       title={
         <>
-          <Typography
+          <Text
             sx={{
               fontSize: "11px",
               lineHeight: "12px",
@@ -2598,8 +2559,8 @@ const FileIcon = (props: any): any => {
             }}
           >
             {name}
-          </Typography>
-          <Typography
+          </Text>
+          <Text
             sx={{
               fontSize: "11px",
               lineHeight: "12px",
@@ -2607,7 +2568,7 @@ const FileIcon = (props: any): any => {
             }}
           >
             {item?.description}
-          </Typography>
+          </Text>
         </>
       }
     >

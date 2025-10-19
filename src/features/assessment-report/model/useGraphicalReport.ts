@@ -1,11 +1,11 @@
 import { useCallback, useEffect } from "react";
 import { useLocation, useParams } from "react-router-dom";
-import { useQuery } from "@/utils/useQuery";
+import { useQuery } from "@/hooks/useQuery";
 import { ErrorCodes, IGraphicalReport, PathInfo, ISubject } from "@/types";
-import { VISIBILITY } from "@/utils/enumType";
+import { VISIBILITY } from "@/utils/enum-type";
 import { getBasePath } from "@/utils/helpers";
-import { useAuthContext } from "@/providers/AuthProvider";
-import { useServiceContext } from "@/providers/ServiceProvider";
+import { useAuthContext } from "@/providers/auth-provider";
+import { useServiceContext } from "@/providers/service-provider";
 import useCalculate from "@/hooks/useCalculate";
 
 export const useGraphicalReport = () => {
@@ -19,7 +19,7 @@ export const useGraphicalReport = () => {
   const fetchPathInfo = useQuery<PathInfo>({
     service: (args, config) =>
       service.common.getPathInfo({ assessmentId, ...(args ?? {}) }, config),
-    runOnMount: !!isAuthenticatedUser,
+    runOnMount: false,
   });
 
   const fetchGraphicalReport = useQuery<IGraphicalReport>({
@@ -71,7 +71,7 @@ export const useGraphicalReport = () => {
   useEffect(() => {
     const code = fetchGraphicalReport.errorObject?.response?.data?.code;
     if (code != null) handleErrorResponse(code);
-}, [
+  }, [
     fetchGraphicalReport.errorObject?.response?.data?.code,
     handleErrorResponse,
   ]);

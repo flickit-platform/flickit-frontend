@@ -57,5 +57,6 @@
   "successCreatedAssessmentTitleSecondPart": " created successfully",
   "tryCreatingNewAssessment": "There is no assessment in this space. Try creating one.",
   "updateAssessment": "Update assessment",
-  "areYouSureYouWantDeleteAssessment": "Your assessment will be deleted. Do you want to continue?"
+  "areYouSureYouWantDeleteAssessment": "Your assessment will be deleted. Do you want to continue?",
+  "editKit": "Edit Kit"
 }

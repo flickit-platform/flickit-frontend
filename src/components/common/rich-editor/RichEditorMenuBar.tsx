@@ -1,8 +1,8 @@
 import Box from "@mui/material/Box";
 import { Editor } from "@tiptap/react";
 import RichEditorMenuItem, { IRichEditorMenuItem } from "./RichEditorMenuItem";
-import defaultGetMenuItems from "./defaultGetMenuItems";
-import uniqueId from "@/utils/uniqueId";
+import defaultGetMenuItems from "./DefaultMenuItems";
+import uniqueId from "@/utils/unique-id";
 
 interface IRichEditorMenuBarProps {
   editor: Editor;

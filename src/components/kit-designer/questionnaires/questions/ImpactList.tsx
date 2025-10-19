@@ -1,6 +1,5 @@
 import { useState } from "react";
 import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
 import Chip from "@mui/material/Chip";
@@ -18,8 +17,9 @@ import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import InputLabel from "@mui/material/InputLabel";
 import FormControl from "@mui/material/FormControl";
-import uniqueId from "@/utils/uniqueId";
+import uniqueId from "@/utils/unique-id";
 import { styles } from "@styles";
+import { Text } from "@/components/common/Text";
 
 interface OptionValue {
   optionId: number;
@@ -226,12 +226,12 @@ const ImpactDetails = ({
     ) : (
       <>
         <Box display="flex">
-          <Typography variant="bodyLarge" sx={{ ml: 2, fontWeight: "bold" }}>
+          <Text variant="bodyLarge" sx={{ ml: 2, fontWeight: "bold" }}>
             {attribute.title}
-          </Typography>
-          <Typography variant="bodyLarge" sx={{ ml: 0.5 }}>
+          </Text>
+          <Text variant="bodyLarge" sx={{ ml: 0.5 }}>
             {t("kitDesigner.impactsOn") + " " + item.maturityLevel?.title}
-          </Typography>
+          </Text>
         </Box>
         {hasWeight && (
           <Chip

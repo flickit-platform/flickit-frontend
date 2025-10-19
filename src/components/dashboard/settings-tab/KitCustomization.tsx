@@ -1,23 +1,23 @@
 import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
 import { Trans } from "react-i18next";
 import { useEffect, useState } from "react";
 import Divider from "@mui/material/Divider";
 import Grid from "@mui/material/Grid";
 import { useParams } from "react-router";
-import { useServiceContext } from "@providers/ServiceProvider";
-import { useQuery } from "@utils/useQuery";
-import firstCharDetector from "@utils/firstCharDetector";
+import { useServiceContext } from "@/providers/service-provider";
+import { useQuery } from "@/hooks/useQuery";
+import firstCharDetector from "@/utils/first-char-detector";
 import EditRoundedIcon from "@mui/icons-material/EditRounded";
 import { useForm } from "react-hook-form";
 import KitCustomizationTable from "./kitCustomizationTable";
 import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import LoadingButton from "@mui/lab/LoadingButton";
-import { ICustomError } from "@/utils/CustomError";
+import { ICustomError } from "@/utils/custom-error";
 import { styles } from "@styles";
 import InputCustomEditor from "@common/fields/InputCustomEditor";
-import showToast from "@/utils/toastError";
+import showToast from "@/utils/toast-error";
+import { Text } from "@/components/common/Text";
 
 const KitCustomization = (props: any) => {
   const { kitInfo } = props;
@@ -193,7 +193,7 @@ const KitCustomization = (props: any) => {
           gap={2}
         >
           <Box height={"100%"} width={"100%"}>
-            <Typography
+            <Text
               sx={{
                 width: "100%",
                 display: "inline-block",
@@ -202,7 +202,7 @@ const KitCustomization = (props: any) => {
               variant="headlineSmall"
             >
               <Trans i18nKey="settings.kitCustomization" />
-            </Typography>
+            </Text>
             <Divider
               sx={{
                 width: "100%",
@@ -218,9 +218,9 @@ const KitCustomization = (props: any) => {
                   ...styles.centerVH,
                 }}
               >
-                <Typography color="text.primary" variant="semiBoldLarge">
+                <Text color="text.primary" variant="semiBoldLarge">
                   <Trans i18nKey="settings.kitCustomTitle" />
-                </Typography>
+                </Text>
 
                 <Box width={{ md: "350px" }} sx={{ ...styles.centerVH }}>
                   <OnHoverInputCustomTitle
@@ -242,7 +242,7 @@ const KitCustomization = (props: any) => {
               }}
             />
             <Box sx={{ mb: 2 }}>
-              <Typography
+              <Text
                 component="div"
                 variant="titleMedium"
                 color="text.primary"
@@ -251,10 +251,10 @@ const KitCustomization = (props: any) => {
                 }}
               >
                 <Trans i18nKey="dashboard.customizingSubjectAndAttributes" />
-              </Typography>
-              <Typography variant="bodyMedium" color="text.primary">
+              </Text>
+              <Text variant="bodyMedium" color="text.primary">
                 <Trans i18nKey="settings.viewTheWeightAndSubject" />
-              </Typography>
+              </Text>
             </Box>
             <Box>
               <KitCustomizationTable
@@ -391,12 +391,12 @@ const OnHoverInputCustomTitle = (props: any) => {
               handleCancel={handleCancel}
             />
             {hasError && (
-              <Typography
+              <Text
                 color="error"
                 sx={{ fontSize: "0.75rem", marginTop: "4px" }}
               >
                 <Trans i18nKey="errors.requiredFieldError" />
-              </Typography>
+              </Text>
             )}
           </Box>
         ) : (
@@ -413,14 +413,14 @@ const OnHoverInputCustomTitle = (props: any) => {
             }}
             onClick={() => setShow(!show)}
           >
-            <Typography
+            <Text
               color="#004F83"
               fontWeight={500}
               sx={{ fontSize: { xs: "1rem", sm: "1.375rem" }, mr: 1 }}
               lineHeight={"normal"}
             >
               {inputData.title}
-            </Typography>
+            </Text>
             {!displayEdit && (
               <EditRoundedIcon
                 sx={{ color: "#9DA7B3", position: "absolute", right: -10 }}

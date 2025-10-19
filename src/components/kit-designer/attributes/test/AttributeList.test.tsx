@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import { vi } from "vitest";
 import SubjectTable from "@components/kit-designer/attributes/SubjectTable";
-import { KitLanguageProvider } from "@/providers/KitProvider";
+import { KitLanguageProvider } from "@/providers/kit-provider";
 
 const mockAttributeList = [
   {

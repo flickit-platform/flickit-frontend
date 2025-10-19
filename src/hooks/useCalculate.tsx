@@ -1,5 +1,5 @@
-import { useServiceContext } from "@/providers/ServiceProvider";
-import { useQuery } from "@/utils/useQuery";
+import { useServiceContext } from "@/providers/service-provider";
+import { useQuery } from "@/hooks/useQuery";
 import { useCallback } from "react";
 import { useParams } from "react-router-dom";
 

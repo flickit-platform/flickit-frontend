@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
+import { Text } from "@/components/common/Text";
 import Tooltip from "@mui/material/Tooltip";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
@@ -9,15 +9,15 @@ import Grid from "@mui/material/Grid";
 import { Trans } from "react-i18next";
 import OptionList from "./OptionsList";
 import OptionForm from "./OptionForm";
-import { useServiceContext } from "@/providers/ServiceProvider";
-import { useQuery } from "@/utils/useQuery";
-import { ICustomError } from "@/utils/CustomError";
+import { useServiceContext } from "@/providers/service-provider";
+import { useQuery } from "@/hooks/useQuery";
+import { ICustomError } from "@/utils/custom-error";
 import { dropdownStyle } from "./ImpactForm";
-import languageDetector from "@/utils/languageDetector";
+import languageDetector from "@/utils/language-detector";
 import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
 import EmptyState from "../../common/EmptyState";
 import { t } from "i18next";
-import showToast from "@/utils/toastError";
+import showToast from "@/utils/toast-error";
 import { styles } from "@styles";
 
 const OptionsSection = ({
@@ -160,9 +160,9 @@ const OptionsSection = ({
         gap={2}
         sx={{ ...styles.centerV }}
       >
-        <Typography variant="body2">
+        <Text variant="body2">
           <Trans i18nKey="kitDesigner.answerOptions" />
-        </Typography>
+        </Text>
         <Tooltip
           title={
             fetchAnswerRanges?.data?.items.length === 0 &&

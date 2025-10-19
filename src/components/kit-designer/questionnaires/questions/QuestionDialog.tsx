@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import {
   Grid,
   Box,
-  Typography,
   Divider,
   Switch,
   DialogProps,
@@ -10,9 +9,9 @@ import {
 } from "@mui/material";
 import { Trans } from "react-i18next";
 import { useForm } from "react-hook-form";
-import { useServiceContext } from "@/providers/ServiceProvider";
-import { ICustomError } from "@/utils/CustomError";
-import { useQuery } from "@/utils/useQuery";
+import { useServiceContext } from "@/providers/service-provider";
+import { ICustomError } from "@/utils/custom-error";
+import { useQuery } from "@/hooks/useQuery";
 import { styles } from "@styles";
 import {
   CEDialog,
@@ -26,11 +25,12 @@ import ImpactSection from "./ImpactSection";
 import AutocompleteAsyncField, {
   useConnectAutocompleteField,
 } from "@/components/common/fields/AutocompleteAsyncField";
-import { kitActions, useKitDesignerContext } from "@providers/KitProvider";
+import { kitActions, useKitDesignerContext } from "@/providers/kit-provider";
 import { useTranslationUpdater } from "@/hooks/useTranslationUpdater";
 import MultiLangTextField from "@common/fields/MultiLangTextField";
 import NavigationButtons from "@/components/common/buttons/NavigationButtons";
-import showToast from "@/utils/toastError";
+import showToast from "@/utils/toast-error";
+import { Text } from "@/components/common/Text";
 
 interface ITempValue {
   title: string;
@@ -220,12 +220,12 @@ const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
         }}
       >
         <Box display="flex" flexDirection="column" gap={1}>
-          <Typography variant="semiBoldXLarge" gutterBottom>
+          <Text variant="semiBoldXLarge" gutterBottom>
             <Trans i18nKey="questions.questionAndOptions" />
-          </Typography>
-          <Typography variant="bodyMedium" color="textSecondary">
+          </Text>
+          <Text variant="bodyMedium" color="textSecondary">
             <Trans i18nKey="questions.questionAndOptionsDescription" />
-          </Typography>
+          </Text>
         </Box>
 
         <Grid container spacing={2} mt={2}>
@@ -297,20 +297,20 @@ const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
         <Divider sx={{ my: 1, mt: 4 }} />
 
         <Box display="flex" flexDirection="column" gap={1} mt={4}>
-          <Typography variant="semiBoldXLarge" gutterBottom>
+          <Text variant="semiBoldXLarge" gutterBottom>
             <Trans i18nKey="questions.advancedSettings" />
-          </Typography>
-          <Typography variant="bodyMedium" color="textSecondary">
+          </Text>
+          <Text variant="bodyMedium" color="textSecondary">
             <Trans i18nKey="questions.advancedSettingsDescription" />
-          </Typography>
+          </Text>
         </Box>
 
         <Grid container spacing={2} alignItems="center" mt={1}>
           <Grid item xs={6}>
             <Box sx={styles.centerVH}>
-              <Typography variant="semiBoldMedium">
+              <Text variant="semiBoldMedium">
                 <Trans i18nKey="questions.notApplicable" />
-              </Typography>
+              </Text>
               <Switch
                 {...formMethods.register("mayNotBeApplicable")}
                 checked={formMethods.watch("mayNotBeApplicable")}
@@ -318,9 +318,9 @@ const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
             </Box>
           </Grid>
           <Grid item xs={6}>
-            <Typography variant="semiBoldMedium">
+            <Text variant="semiBoldMedium">
               <Trans i18nKey="questions.notAdvisable" />
-            </Typography>
+            </Text>
             <Switch
               {...formMethods.register("advisable")}
               checked={formMethods.watch("advisable")}

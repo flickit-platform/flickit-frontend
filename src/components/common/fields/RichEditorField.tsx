@@ -3,9 +3,9 @@ import FormHelperText from "@mui/material/FormHelperText";
 import InputLabel from "@mui/material/InputLabel";
 import { useState } from "react";
 import { Controller, useFormContext } from "react-hook-form";
-import getFieldError from "@utils/getFieldError";
+import getFieldError from "@/utils/get-field-error";
 import RichEditor from "../rich-editor/RichEditor";
-import firstCharDetector from "@utils/firstCharDetector";
+import firstCharDetector from "@/utils/first-char-detector";
 
 const RichEditorField = (props: any) => {
   const {

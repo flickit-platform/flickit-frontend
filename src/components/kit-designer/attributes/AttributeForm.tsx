@@ -4,10 +4,10 @@ import IconButton from "@mui/material/IconButton";
 import CheckIcon from "@mui/icons-material/Check";
 import CloseIcon from "@mui/icons-material/Close";
 import { Trans } from "react-i18next";
-import Typography from "@mui/material/Typography";
 import MultiLangTextField from "@common/fields/MultiLangTextField";
 import { styles } from "@styles";
 import SwapVertRoundedIcon from "@mui/icons-material/SwapVertRounded";
+import { Text } from "@/components/common/Text";
 
 interface AttributeFormProps {
   newAttribute: any;
@@ -36,9 +36,9 @@ const AttributeForm = ({
   ) => (
     <Box gap={0.5} sx={{ ...styles.centerCH }}>
       {label && (
-        <Typography variant="caption" color="textSecondary">
+        <Text variant="caption" color="textSecondary">
           <Trans i18nKey={label} />
-        </Typography>
+        </Text>
       )}
       <TextField
         name={name}
@@ -89,7 +89,7 @@ const AttributeForm = ({
           mr={2}
           px={1.5}
         >
-          <Typography variant="semiBoldLarge">{1}</Typography>
+          <Text variant="semiBoldLarge">{1}</Text>
           <IconButton
             disableRipple
             disableFocusRipple

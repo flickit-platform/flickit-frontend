@@ -5,10 +5,10 @@ import Navbar from "@common/Navbar";
 import { styles } from "@styles";
 import { useLocation, useParams } from "react-router-dom";
 import FloatButton from "@/components/common/buttons/FloatButton";
-import useDialog from "@utils/useDialog";
+import useDialog from "@/hooks/useDialog";
 import ContactUsDialog from "@/components/common/dialogs/ContactUsDialog";
-import { isPathMatching } from "@/utils/pathMatcher";
-import PendingKitBanner from "@/components/common/dialogs/PendingKitBanner";
+import { isPathMatching } from "@/utils/path-matcher";
+import PendingBanner from "@/components/common/dialogs/PendingBanner";
 
 const AppLayout = (props: PropsWithChildren<{}>) => {
   const { children } = props;
@@ -47,7 +47,7 @@ const AppLayout = (props: PropsWithChildren<{}>) => {
         </Suspense>
         <FloatButton onClick={() => dialogProps.openDialog({})} />
       </Box>
-      <PendingKitBanner />
+      <PendingBanner />
       <ContactUsDialog {...dialogProps} />
     </Box>
   );

@@ -1,7 +1,8 @@
-import { Button, Box, Typography } from "@mui/material";
+import { Button, Box } from "@mui/material";
 import { ArrowBackIos, ArrowForwardIos } from "@mui/icons-material";
 import { Trans } from "react-i18next";
 import { styles } from "@styles";
+import { Text } from "../Text";
 
 interface NavigationButtonsProps {
   onPrevious?: () => void;
@@ -36,9 +37,9 @@ const NavigationButtons: React.FC<NavigationButtonsProps> = ({
             transform: direction === "rtl" ? "scaleX(-1)" : "none",
           }}
         />
-        <Typography variant="semiBoldLarge" sx={{ fontSize: "12px" }}>
+        <Text variant="semiBoldLarge" sx={{ fontSize: "12px" }}>
           <Trans i18nKey={previousTextKey} />
-        </Typography>
+        </Text>
       </Button>
       <Button
         data-testid="question-modal-next-question"
@@ -46,9 +47,9 @@ const NavigationButtons: React.FC<NavigationButtonsProps> = ({
         disabled={isNextDisabled}
         sx={{ ...styles.centerVH, gap: 1, cursor: "pointer" }}
       >
-        <Typography variant="semiBoldLarge" sx={{ fontSize: "12px" }}>
+        <Text variant="semiBoldLarge" sx={{ fontSize: "12px" }}>
           <Trans i18nKey={nextTextKey} />
-        </Typography>
+        </Text>
         <ArrowForwardIos
           sx={{
             fontSize: ".7rem",

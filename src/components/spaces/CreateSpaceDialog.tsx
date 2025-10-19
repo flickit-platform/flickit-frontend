@@ -6,25 +6,25 @@ import { Trans } from "react-i18next";
 import { InputFieldUC } from "@common/fields/InputField";
 import { CEDialog, CEDialogActions } from "@common/dialogs/CEDialog";
 import FormProviderWithForm from "@common/FormProviderWithForm";
-import { useServiceContext } from "@providers/ServiceProvider";
-import { ICustomError } from "@utils/CustomError";
-import setServerFieldErrors from "@utils/setServerFieldError";
+import { useServiceContext } from "@/providers/service-provider";
+import { ICustomError } from "@/utils/custom-error";
+import setServerFieldErrors from "@/utils/set-server-field-error";
 import CreateNewFolderRoundedIcon from "@mui/icons-material/CreateNewFolderRounded";
 import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import { t } from "i18next";
-import Check from "@components/spaces/Icons/check";
+import Check from "@/components/common/icons/Check";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
-import { SpaceSmallIcon } from "@common/icons/spaceSmallIcon";
-import UniqueId from "@utils/uniqueId";
+import { SpaceSmallIcon } from "@/components/common/icons/Space";
+import UniqueId from "@/utils/unique-id";
 import {
   assessmentActions,
   useAssessmentContext,
-} from "@/providers/AssessmentProvider";
-import showToast from "@utils/toastError";
+} from "@/providers/assessment-provider";
+import showToast from "@/utils/toast-error";
 import { v3Tokens } from "@/config/tokens";
 import { styles } from "@styles";
+import { Text } from "../common/Text";
 
 const PremiumBox = [
   {
@@ -55,7 +55,6 @@ const BasicBox = [
 
 const CreateSpaceDialog = (props: any) => {
   const [loading, setLoading] = useState(false);
-  const [isFocused, setIsFocused] = useState(true);
   const [selectedType, setSelectedType] = useState<string>("");
   const [step, setStep] = useState(1);
   const { service } = useServiceContext();
@@ -72,9 +71,13 @@ const CreateSpaceDialog = (props: any) => {
   const { type: spaceDefaultType } = data;
   const defaultValues =
     type === "update" ? data : { title: "", code: nanoid(5) };
-  const formMethods = useForm({ shouldUnregister: true });
+  const formMethods = useForm({
+    shouldUnregister: true,
+    mode: "onSubmit",
+    reValidateMode: "onSubmit",
+  });
   const abortController = useMemo(() => new AbortController(), [rest.open]);
-  const { dispatch, pendingKitData } = useAssessmentContext();
+  const { dispatch, pendingKitData, pendingReportData } = useAssessmentContext();
 
   useEffect(() => {
     if (!spaceDefaultType?.code) {
@@ -92,6 +95,14 @@ const CreateSpaceDialog = (props: any) => {
             ...pendingKitData,
             display: true,
           }),
+        );
+      }
+      if (pendingReportData?.spaceId) {
+        dispatch(
+            assessmentActions.setPendingShareReport({
+              ...pendingReportData,
+              display: true,
+            }),
         );
       }
     }
@@ -136,30 +147,47 @@ const CreateSpaceDialog = (props: any) => {
       } else if (type === "create" && step !== 3) {
         setSelectedType("PREMIUM");
       }
-      const handleKeyDown = (e: KeyboardEvent) => {
-        if (e.key === "Enter") {
-          setIsFocused(false);
-          setTimeout(() => {
-            setIsFocused(true);
-          }, 500);
-          formMethods.handleSubmit((data) => onSubmit(data, e))();
-        }
-      };
-
-      document.addEventListener("keydown", handleKeyDown);
-
-      return () => {
-        document.removeEventListener("keydown", handleKeyDown);
-        abortController.abort();
-      };
     }
   }, [openDialog]);
 
+  useEffect(() => {
+    if (!openDialog || step !== 1) return;
+  
+    const controller = new AbortController();
+  
+    const isEditable = (el: EventTarget | null) => {
+      const node = el as HTMLElement | null;
+      if (!node) return false;
+      const tag = node.tagName?.toLowerCase();
+      const editableTags = ["input", "textarea", "select", "button"];
+      return (
+        editableTags.includes(tag) ||
+        (node as HTMLElement).isContentEditable
+      );
+    };
+  
+    const onEnterUp = (e: KeyboardEvent) => {
+      // فقط وقتی Enter رها میشه، تریگر کن؛ نه روی نگه‌داشتن کلید
+      if (e.key !== "Enter" || e.repeat) return;
+      // اگر فوکوس در فیلد نوشتنیه، کاری نکن
+      if (isEditable(e.target)) return;
+      if (!selectedType) return;
+  
+      e.preventDefault();
+      setStep(2);
+    };
+  
+    // keyup + capture → بعد از بسته‌شدن دیالوگ اول، همین Enter رها شده عمل می‌کنه
+    window.addEventListener("keyup", onEnterUp, { signal: controller.signal, capture: true });
+    return () => controller.abort();
+  }, [openDialog, step, selectedType]);
+  
+
   const renderStepOne = () => (
     <Box sx={{ pt: 4, px: 4, pb: 0, height: "100%" }}>
-      <Typography variant="semiBoldLarge" color="text.primary">
+      <Text variant="semiBoldLarge" color="text.primary">
         <Trans i18nKey="spaces.selectYourSpaceType" />
-      </Typography>
+      </Text>
       <Box sx={{ py: 2, height: "82%" }}>
         <Grid container spacing={{ xs: 5, sm: 10, md: 3 }}>
           {[PremiumBox, BasicBox].map((list, idx) => (
@@ -190,9 +218,9 @@ const CreateSpaceDialog = (props: any) => {
             data-testid="next-step-modal"
             onClick={() => setStep(2)}
           >
-            <Typography>
+            <Text>
               <Trans i18nKey="common.next" />
-            </Typography>
+            </Text>
           </Button>
         </Box>
       </Box>
@@ -201,9 +229,9 @@ const CreateSpaceDialog = (props: any) => {
 
   const renderStepTwo = () => (
     <Box sx={{ pt: 4, px: 4, pb: 0, height: "100%" }}>
-      <Typography variant="semiBoldLarge" color="text.primary">
+      <Text variant="semiBoldLarge" color="text.primary">
         <Trans i18nKey="spaces.setAName" />
-      </Typography>
+      </Text>
       <FormProviderWithForm formMethods={formMethods} style={{ height: "96%" }}>
         <Box
           sx={{
@@ -222,7 +250,7 @@ const CreateSpaceDialog = (props: any) => {
               placeholder={t("spaces.spaceName") ?? ""}
               required
               label={<Trans i18nKey="user.name" />}
-              isFocused={isFocused}
+              isFocused
             />
           </Grid>
           <Box
@@ -360,7 +388,7 @@ const BoxType = ({
       <Box sx={{ mb: { xs: 0.1, sm: 1 } }}>
         <Box gap={0.5} sx={{ ...styles.centerV }}>
           <SpaceSmallIcon type={type} allowCreateBasic={allowCreateBasic} />
-          <Typography
+          <Text
             variant="semiBoldMedium"
             color={textColor}
             sx={{
@@ -372,9 +400,9 @@ const BoxType = ({
             }}
           >
             <Trans i18nKey={title} />
-          </Typography>
+          </Text>
         </Box>
-        <Typography
+        <Text
           variant="labelSmall"
           color="background.onVariant"
           sx={{
@@ -383,7 +411,7 @@ const BoxType = ({
           }}
         >
           <Trans i18nKey={subTitle} />
-        </Typography>
+        </Text>
       </Box>
 
       <Box>
@@ -395,7 +423,7 @@ const BoxType = ({
             sx={{ ...styles.centerV }}
           >
             <Check type={type} allowCreateBasic={allowCreateBasic} />
-            <Typography
+            <Text
               variant="labelSmall"
               color={textColor}
               sx={{
@@ -408,15 +436,15 @@ const BoxType = ({
             >
               <Trans i18nKey={text} />
               {!allowCreateBasic && isBasic && index === 1 && (
-                <Typography
+                <Text
                   variant="labelSmall"
                   color="error.main"
                   sx={{ display: "inline-block" }}
                 >
                   (<Trans i18nKey="spaces.reachedLimit" />)
-                </Typography>
+                </Text>
               )}
-            </Typography>
+            </Text>
           </Box>
         ))}
       </Box>
@@ -433,9 +461,9 @@ const BoxType = ({
           }}
         >
           <InfoOutlinedIcon fontSize="small" />
-          <Typography variant="labelSmall">
+          <Text variant="labelSmall">
             <Trans i18nKey="spaces.spacePremiumInfo" />
-          </Typography>
+          </Text>
         </Box>
       )}
     </Box>

@@ -1,7 +1,7 @@
 import Box from "@mui/material/Box";
 import { styles } from "@styles";
 import { ECustomErrorType, ErrorCodes } from "@/types/index";
-import { ICustomError } from "@utils/CustomError";
+import { ICustomError } from "@/utils/custom-error";
 import ErrorEmptyData from "./errors/ErrorEmptyData";
 import ErrorDataLoading from "./errors/ErrorDataLoading";
 import ErrorRecalculating from "./errors/ErrorRecalculating";
@@ -30,7 +30,7 @@ interface IQueryBatchDataProps<T> {
     errorComponent: JSX.Element,
   ) => JSX.Element;
   isDataEmpty?: (data?: T[]) => boolean;
-  queryBatchData: IQueryData<T>[];
+  queryBatchData: IQueryData<any>[];
   data?: T[];
   loading?: boolean;
   error?: boolean;

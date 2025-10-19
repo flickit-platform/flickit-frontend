@@ -1,13 +1,12 @@
 import Box from "@mui/material/Box";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
-import uniqueId from "@/utils/uniqueId";
+import uniqueId from "@/utils/unique-id";
 import { farsiFontFamily, primaryFontFamily } from "@config/theme";
-import Typography from "@mui/material/Typography";
 import { Trans } from "react-i18next";
 import { Link, NavLink, useParams } from "react-router-dom";
-import { useServiceContext } from "@/providers/ServiceProvider";
-import { useQuery } from "@/utils/useQuery";
+import { useServiceContext } from "@/providers/service-provider";
+import { useQuery } from "@/hooks/useQuery";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { LoadingSkeleton } from "../common/loadings/LoadingSkeleton";
 import {
@@ -15,15 +14,16 @@ import {
   assessmentActions,
   useAssessmentContext,
   useAssessmentDispatch,
-} from "@/providers/AssessmentProvider";
-import { ASSESSMENT_MODE } from "@utils/enumType";
+} from "@/providers/assessment-provider";
+import { ASSESSMENT_MODE } from "@/utils/enum-type";
 import { styles } from "@styles";
 import { Button, ListItemText, Menu, MenuItem, useTheme } from "@mui/material";
-import useScreenResize from "@/utils/useScreenResize";
+import useScreenResize from "@/hooks/useScreenResize";
 import { ArrowDropDownRounded, ArrowDropUpRounded } from "@mui/icons-material";
-import languageDetector from "@/utils/languageDetector";
-import useMenu from "@/utils/useMenu";
+import languageDetector from "@/utils/language-detector";
+import useMenu from "@/hooks/useMenu";
 import { t } from "i18next";
+import { Text } from "../common/Text";
 
 type TabItem = {
   label: string;
@@ -233,9 +233,9 @@ const MainTabs = (props: any) => {
                           }}
                           label={
                             <Box gap={1} sx={{ ...styles.centerVH }}>
-                              <Typography variant="semiBoldLarge">
+                              <Text variant="semiBoldLarge">
                                 <Trans i18nKey={tab.label} />
-                              </Typography>
+                              </Text>
                             </Box>
                           }
                         />

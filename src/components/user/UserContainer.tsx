@@ -2,7 +2,7 @@ import { SyntheticEvent, useEffect, useState } from "react";
 import { styles } from "@styles";
 import { Trans } from "react-i18next";
 import { useNavigate, useParams } from "react-router-dom";
-import { authActions, useAuthContext } from "@providers/AuthProvider";
+import { authActions, useAuthContext } from "@/providers/auth-provider";
 //-------------- mui imports
 import Tab from "@mui/material/Tab";
 import Box from "@mui/material/Box";

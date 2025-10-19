@@ -1,12 +1,11 @@
 import { useEffect } from "react";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
-import Typography from "@mui/material/Typography";
 import QueryBatchData from "@common/QueryBatchData";
 import { useParams } from "react-router-dom";
-import { useQuery } from "@utils/useQuery";
+import { useQuery } from "@/hooks/useQuery";
 import { AssessmentSubjectList } from "./AssessmentSubjectList";
-import { useServiceContext } from "@providers/ServiceProvider";
+import { useServiceContext } from "@/providers/service-provider";
 import LoadingSkeletonOfAssessmentReport from "@common/loadings/LoadingSkeletonOfAssessmentReport";
 import { RolesType } from "@/types/index";
 import { styles } from "@styles";
@@ -15,9 +14,10 @@ import PermissionControl from "../../../common/PermissionControl";
 import { t } from "i18next";
 import { Gauge } from "../../../common/charts/Gauge";
 import { Trans } from "react-i18next";
-import { IssuesItem } from "../todoBox";
-import uniqueId from "@/utils/uniqueId";
+import { IssuesItem } from "../DashboardTopSection";
+import uniqueId from "@/utils/unique-id";
 import { LoadingSkeleton } from "../../../common/loadings/LoadingSkeleton";
+import { Text } from "@/components/common/Text";
 
 const AssessmentReportContainer = (props: any) => {
   const { service } = useServiceContext();
@@ -194,9 +194,9 @@ const AssessmentReportContainer = (props: any) => {
                 </Box>
               </Box>
 
-              <Typography color="outline.outline" variant="semiBoldMedium">
+              <Text color="outline.outline" variant="semiBoldMedium">
                 <Trans i18nKey="common.subjects" />
-              </Typography>
+              </Text>
               <AssessmentSubjectList
                 maturityLevelCount={kit?.maturityLevelsCount ?? 5}
                 subjects={subjects}

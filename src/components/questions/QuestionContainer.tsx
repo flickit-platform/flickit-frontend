@@ -1,7 +1,7 @@
 import { useRef } from "react";
 import Collapse from "@mui/material/Collapse";
 import Box from "@mui/material/Box";
-import { useQuestionContext } from "@providers/QuestionProvider";
+import { useQuestionContext } from "@/providers/question-provider";
 import { QuestionCard } from "./QuestionCard";
 import { Review } from "./QuestionsReview";
 import { TransitionGroup } from "react-transition-group";

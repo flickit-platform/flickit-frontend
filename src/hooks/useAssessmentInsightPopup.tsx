@@ -1,8 +1,8 @@
 import { useCallback } from "react";
-import Typography from "@mui/material/Typography";
+import { Text } from "@/components/common/Text";
 import { t } from "i18next";
 import { styles } from "@styles";
-import { useConfigContext } from "@/providers/ConfgProvider";
+import { useConfigContext } from "@/providers/config-provider";
 import FaWandMagicSparkles from "@/components/common/icons/FaWandMagicSparkles";
 import { useTheme } from "@mui/material";
 
@@ -167,14 +167,14 @@ const useInsightPopup = ({
 
   const getPopupTexts = useCallback((): PopupTexts => {
     const buttonLabel = (
-      <Typography variant="labelMedium" sx={{ ...styles.centerVH, gap: 1 }}>
+      <Text variant="labelMedium" sx={{ ...styles.centerVH, gap: 1 }}>
         <FaWandMagicSparkles
           styles={{
             color: getColorScheme().main,
           }}
         />{" "}
         {getButtonLabelText()}
-      </Typography>
+      </Text>
     );
 
     return {

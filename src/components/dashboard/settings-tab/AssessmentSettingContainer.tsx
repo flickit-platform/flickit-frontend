@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import QueryBatchData from "@common/QueryBatchData";
-import { useQuery } from "@utils/useQuery";
-import { useServiceContext } from "@providers/ServiceProvider";
+import { useQuery } from "@/hooks/useQuery";
+import { useServiceContext } from "@/providers/service-provider";
 import { useLocation, useParams } from "react-router-dom";
 import LoadingSkeletonOfAssessmentRoles from "@common/loadings/LoadingSkeletonOfAssessmentRoles";
 import { Trans } from "react-i18next";
@@ -16,9 +16,9 @@ import AddMemberDialog from "./addMemberDialog";
 import ConfirmRemoveMemberDialog from "./confirmRemoveMemberDialog";
 import KitCustomization from "./KitCustomization";
 import PermissionControl from "@common/PermissionControl";
-import { kitActions, useKitDesignerContext } from "@/providers/KitProvider";
-import { useAssessmentContext } from "@/providers/AssessmentProvider";
-import { ASSESSMENT_MODE } from "@/utils/enumType";
+import { kitActions, useKitDesignerContext } from "@/providers/kit-provider";
+import { useAssessmentContext } from "@/providers/assessment-provider";
+import { ASSESSMENT_MODE } from "@/utils/enum-type";
 
 const AssessmentSettingContainer = () => {
   const { service } = useServiceContext();

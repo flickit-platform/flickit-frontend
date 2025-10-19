@@ -5,7 +5,7 @@ import MenuItem from "@mui/material/MenuItem";
 import Select, { SelectProps } from "@mui/material/Select";
 
 import { useFormContext, UseFormRegister } from "react-hook-form";
-import getFieldError from "@utils/getFieldError";
+import getFieldError from "@/utils/get-field-error";
 import ColorLensRoundedIcon from "@mui/icons-material/ColorLensRounded";
 import Box from "@mui/material/Box";
 import { styles } from "@styles";
@@ -13,7 +13,7 @@ import { LoadingSkeleton } from "../loadings/LoadingSkeleton";
 import ListItemButton from "@mui/material/ListItemButton";
 import { Trans } from "react-i18next";
 import { useEffect } from "react";
-import uniqueId from "@/utils/uniqueId";
+import uniqueId from "@/utils/unique-id";
 
 const selectField = () => {
   return <div>selectField</div>;

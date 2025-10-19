@@ -1,4 +1,4 @@
-import { Typography } from "@mui/material";
+import { Text } from "@/components/common/Text";
 import AdviceItemsAccordion from "@/components/dashboard/advice-tab/advice-items/AdviceItemsAccordions";
 import { styles } from "@styles";
 import { t } from "i18next";
@@ -6,8 +6,12 @@ import { t } from "i18next";
 export default function AdviceSection({ advice, lng, rtl }: any) {
   return advice?.narration || advice?.adviceItems?.length ? (
     <>
-      <Typography textAlign="justify" variant="bodyMedium" sx={{ ...styles.rtlStyle(rtl) }}
-        dangerouslySetInnerHTML={{ __html: advice?.narration }} />
+      <Text
+        textAlign="justify"
+        variant="bodyMedium"
+        sx={{ ...styles.rtlStyle(rtl) }}
+        dangerouslySetInnerHTML={{ __html: advice?.narration }}
+      />
       <AdviceItemsAccordion
         items={advice?.adviceItems}
         onDelete={() => {}}
@@ -18,8 +22,14 @@ export default function AdviceSection({ advice, lng, rtl }: any) {
       />
     </>
   ) : (
-    <Typography textAlign="justify" variant="titleSmall" fontWeight="light" mt={2} sx={{ ...styles.rtlStyle(rtl) }}>
+    <Text
+      textAlign="justify"
+      variant="titleSmall"
+      fontWeight="light"
+      mt={2}
+      sx={{ ...styles.rtlStyle(rtl) }}
+    >
       {t("common.unavailable", { lng })}
-    </Typography>
+    </Text>
   );
 }

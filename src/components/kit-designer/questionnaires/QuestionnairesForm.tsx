@@ -9,7 +9,7 @@ import { MultiLangs } from "@/types";
 import MultiLangTextField from "@common/fields/MultiLangTextField";
 import { useState } from "react";
 import { useTranslationUpdater } from "@/hooks/useTranslationUpdater";
-import { useKitDesignerContext } from "@/providers/KitProvider";
+import { useKitDesignerContext } from "@/providers/kit-provider";
 import { Trans } from "react-i18next";
 
 interface QuestionnairesFormProps {

@@ -1,13 +1,13 @@
 import Box from "@mui/material/Box";
-import { useServiceContext } from "@providers/ServiceProvider";
+import { useServiceContext } from "@/providers/service-provider";
 import { useParams } from "react-router-dom";
-import { useQuery } from "@utils/useQuery";
+import { useQuery } from "@/hooks/useQuery";
 import QueryBatchData from "@common/QueryBatchData";
 import { Trans } from "react-i18next";
 import SupTitleBreadcrumb from "@common/SupTitleBreadcrumb";
 import { t } from "i18next";
 import setDocumentTitle from "@utils/setDocumentTitle";
-import { useConfigContext } from "@/providers/ConfgProvider";
+import { useConfigContext } from "@/providers/config-provider";
 import MemberList from "@/components/assessment-kit/AssessmentKitMemberList";
 import Title from "@common/Title";
 

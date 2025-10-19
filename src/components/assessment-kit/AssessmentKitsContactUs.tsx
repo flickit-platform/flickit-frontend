@@ -1,12 +1,12 @@
 import Box from "@mui/material/Box";
-import useDialog from "@/utils/useDialog";
+import useDialog from "@/hooks/useDialog";
 import { t } from "i18next";
 import { useMediaQuery } from "@mui/material";
-import contactUs from "@/assets/svg/contactUs.svg";
-import Typography from "@mui/material/Typography";
+import TeamworkBlocks from "@/assets/svg/teamwork-blocks.svg";
 import Button from "@mui/material/Button";
 import ContactUsDialog from "@/components/common/dialogs/ContactUsDialog";
 import { styles } from "@styles";
+import { Text } from "../common/Text";
 
 const AssessmentKitsContactUs = () => {
   const dialogProps = useDialog();
@@ -27,28 +27,28 @@ const AssessmentKitsContactUs = () => {
     >
       <Box
         component={"img"}
-        src={contactUs}
-        alt="Contact Us"
+        src={TeamworkBlocks}
+        alt="Teamwork Blocks"
         width={{ xs: "100%", md: "495px" }}
         height={{ xs: "256px", md: "291px" }}
         onClick={() => dialogProps.openDialog({})}
       />
       <Box sx={{ ...styles.centerCV }}>
-        <Typography
+        <Text
           color="text.primary"
           variant="headlineMedium"
           maxWidth={{ xs: "80%", sm: "unset" }}
           mb={{ xs: "12px", sm: 4 }}
         >
           {t("assessmentKit.lookingForSomethingSpecific")}
-        </Typography>
-        <Typography
+        </Text>
+        <Text
           variant="semiBoldXLarge"
           color="background.onVariant"
           mb={{ xs: 2, sm: 4 }}
         >
           {t("assessmentKit.dropUsNote")}
-        </Typography>
+        </Text>
         <Button
           variant="contained"
           onClick={() => dialogProps.openDialog({})}

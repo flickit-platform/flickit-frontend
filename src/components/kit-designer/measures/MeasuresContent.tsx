@@ -1,23 +1,23 @@
 import { useEffect, useState } from "react";
 import Box from "@mui/material/Box";
 import Divider from "@mui/material/Divider";
-import Typography from "@mui/material/Typography";
 import PermissionControl from "../../common/PermissionControl";
 import QueryBatchData from "../../common/QueryBatchData";
-import { useServiceContext } from "@/providers/ServiceProvider";
-import { useQuery } from "@/utils/useQuery";
+import { useServiceContext } from "@/providers/service-provider";
+import { useQuery } from "@/hooks/useQuery";
 import ListOfItems from "../common/GeneralList";
 import EmptyState from "../common/EmptyState";
 import { Trans } from "react-i18next";
 import { useParams } from "react-router-dom";
-import { ICustomError } from "@/utils/CustomError";
+import { ICustomError } from "@/utils/custom-error";
 import debounce from "lodash/debounce";
 import { LoadingSkeletonKitCard } from "@/components/common/loadings/LoadingSkeletonKitCard";
 import KitDesignerHeader from "@/components/kit-designer/common/KitHeader";
 import MeasureForm from "./MeasureForm";
 import { MultiLangs } from "@/types";
 import { t } from "i18next";
-import showToast from "@/utils/toastError";
+import showToast from "@/utils/toast-error";
+import { Text } from "@/components/common/Text";
 
 const MeasuresContent = () => {
   const { service } = useServiceContext();
@@ -180,9 +180,9 @@ const MeasuresContent = () => {
           description="kitDesigner.measuresKitDesignerDescription"
         />
         {fetchMeasures.loaded && fetchMeasures.data.items.length !== 0 && (
-          <Typography variant="bodyMedium" mt={1}>
+          <Text variant="bodyMedium" mt={1}>
             <Trans i18nKey="kitDesigner.changeOrderHelper" />
-          </Typography>
+          </Text>
         )}
         <Divider sx={{ my: 1 }} />
 

@@ -2,42 +2,39 @@ import { useEffect, useRef, useState } from "react";
 import { Trans } from "react-i18next";
 import QueryData from "@common/QueryData";
 import ErrorEmptyData from "@common/errors/ErrorEmptyData";
-import AssessmentEmptyState from "@assets/svg/assessmentEmptyState.svg";
-import { useServiceContext } from "@providers/ServiceProvider";
-import useDialog from "@utils/useDialog";
+import AssessmentEmptyState from "@/assets/svg/assessment-empty-state.svg";
+import { useServiceContext } from "@/providers/service-provider";
+import useDialog from "@/hooks/useDialog";
 import { AssessmentsList } from "./AssessmentList";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
-import { ICustomError } from "@utils/CustomError";
+import { ICustomError } from "@/utils/custom-error";
 import { useParams, useNavigate } from "react-router-dom";
-import toastError from "@utils/toastError";
+import toastError from "@/utils/toast-error";
 import { ToolbarCreateItemBtn } from "@common/buttons/ToolbarCreateItemBtn";
 import AddRoundedIcon from "@mui/icons-material/AddRounded";
 import { styles, animations } from "@styles";
 import AssessmentCEFromDialog from "./AssessmentCEFromDialog";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
-import { useAuthContext } from "@providers/AuthProvider";
 import AssessmentTitle from "./AssessmentTitle";
 import PermissionControl from "../common/PermissionControl";
-import SettingIcon from "@/assets/icons/settingIcon";
-import NewAssessmentIcon from "@/assets/icons/newAssessment";
+import SettingIcon from "@/components/common/icons/Settings";
+import NewAssessmentIcon from "@/components/common/icons/NewAssessment";
 import AssessmenetInfoDialog from "@components/assessments/AssessmenetInfoDialog";
-import { useQuery } from "@/utils/useQuery";
-import useScreenResize from "@utils/useScreenResize";
+import { useQuery } from "@/hooks/useQuery";
+import useScreenResize from "@/hooks/useScreenResize";
 import LoadingAssessmentCards from "../common/loadings/LoadingAssessmentCards";
 import { useTheme } from "@mui/material";
 import Title from "@common/Title";
+import { Text } from "../common/Text";
 
 const AssessmentContainer = () => {
-  const { service } = useServiceContext();
   const dialogProps = useDialog();
   const infoDialogProps = useDialog();
-  const { currentSpace } = useAuthContext();
   const { spaceId, page } = useParams();
   const navigate = useNavigate();
-  const { fetchAssessments, ...rest } = useFetchAssessments(
+  const { fetchAssessments, fetchSpaceInfo, ...rest } = useFetchAssessments(
     Number(page) - 1,
     Number(spaceId),
   );
@@ -56,27 +53,21 @@ const AssessmentContainer = () => {
     navigate(`/${spaceId}/assessments/${pageCount}`);
   }
 
-  const fetchSpaceInfo = useQuery({
-    service: (args, config) => {
-      const payload = args?.spaceId ? args : { spaceId };
-      return service.space.getById(payload, config);
-    },
-    runOnMount: false,
-  });
-
-  useEffect(() => {
-    fetchSpaceInfo.query();
-  }, [data.length]);
   const isSmallScreen = useScreenResize("sm");
 
   const theme = useTheme();
 
+  const refetchData = () => {
+    fetchAssessments();
+    fetchSpaceInfo.query();
+  };
+
   return (
     <PermissionControl error={[errorObject?.response]}>
       <Box display="flex" flexDirection="column" m="auto">
-        <AssessmentTitle data={currentSpace} />
+        <AssessmentTitle title={fetchSpaceInfo.data?.title} />
         {!fetchSpaceInfo.data?.canCreateAssessment && (
-          <Typography
+          <Text
             variant="semiBoldSmall"
             onClick={() => infoDialogProps.openDialog({})}
             sx={{
@@ -88,7 +79,7 @@ const AssessmentContainer = () => {
             color="primary"
           >
             <Trans i18nKey="assessment.learnWhyThisIsUnavailable" />
-          </Typography>
+          </Text>
         )}
         <Box sx={{ ...styles.centerVH, mb: "40px", mt: 1 }}>
           <Title
@@ -136,7 +127,10 @@ const AssessmentContainer = () => {
                       dialogProps.openDialog({
                         type: "create",
                         data: {
-                          space: { id: spaceId, title: currentSpace?.title },
+                          space: {
+                            id: spaceId,
+                            title: fetchSpaceInfo.data?.title,
+                          },
                         },
                       })
                     }
@@ -157,7 +151,9 @@ const AssessmentContainer = () => {
               )
             }
           >
-            <Trans i18nKey="assessment.assessments" />
+            <Text variant="headlineLarge">
+              <Trans i18nKey="assessment.assessments" />
+            </Text>
           </Title>
           {}
         </Box>
@@ -168,7 +164,7 @@ const AssessmentContainer = () => {
               alt={"No assesment here!"}
               width="240px"
             />
-            <Typography
+            <Text
               textAlign="center"
               variant="h3"
               color="#9DA7B3"
@@ -179,8 +175,8 @@ const AssessmentContainer = () => {
               }}
             >
               <Trans i18nKey="assessment.noAssesmentHere" />
-            </Typography>
-            <Typography
+            </Text>
+            <Text
               textAlign="center"
               variant="h1"
               color="#9DA7B3"
@@ -191,7 +187,7 @@ const AssessmentContainer = () => {
               }}
             >
               <Trans i18nKey="assessment.createAnAssessmentWith" />
-            </Typography>
+            </Text>
             <Box>
               <Button
                 startIcon={<AddRoundedIcon />}
@@ -207,14 +203,14 @@ const AssessmentContainer = () => {
                   dialogProps.openDialog({
                     type: "create",
                     data: {
-                      space: { id: spaceId, title: currentSpace?.title },
+                      space: { id: spaceId, title: fetchSpaceInfo.data?.title },
                     },
                   })
                 }
               >
-                <Typography sx={{ fontSize: "1.25rem" }} variant="button">
+                <Text sx={{ fontSize: "1.25rem" }} variant="button">
                   <Trans i18nKey="assessment.newAssessment" />
-                </Typography>
+                </Text>
               </Button>
             </Box>
           </Box>
@@ -227,9 +223,9 @@ const AssessmentContainer = () => {
             <ErrorEmptyData
               emptyMessage={<Trans i18nKey="notification.nothingToSeeHere" />}
               suggests={
-                <Typography variant="subtitle1" textAlign="center">
+                <Text variant="subtitle1" textAlign="center">
                   <Trans i18nKey="assessment.tryCreatingNewAssessment" />
-                </Typography>
+                </Text>
               }
             />
           }
@@ -239,7 +235,7 @@ const AssessmentContainer = () => {
                 <AssessmentsList
                   {...rest}
                   data={data}
-                  space={{ id: spaceId, title: currentSpace?.title }}
+                  space={{ id: spaceId, title: fetchSpaceInfo.data?.title }}
                   dialogProps={dialogProps}
                   fetchAssessments={fetchAssessments}
                 />
@@ -258,10 +254,7 @@ const AssessmentContainer = () => {
             );
           }}
         />
-        <AssessmentCEFromDialog
-          {...dialogProps}
-          onSubmitForm={fetchAssessments}
-        />
+        <AssessmentCEFromDialog {...dialogProps} refetchData={refetchData} />
         <AssessmenetInfoDialog
           {...infoDialogProps}
           titleStyle={{ mb: 0 }}
@@ -281,6 +274,14 @@ export const useFetchAssessments = (page: any, spaceId: any) => {
   );
   const { service } = useServiceContext();
   const abortController = useRef(new AbortController());
+
+  const fetchSpaceInfo = useQuery({
+    service: (args, config) => {
+      const payload = args?.spaceId ? args : { spaceId };
+      return service.space.getById(payload, config);
+    },
+    runOnMount: true,
+  });
 
   useEffect(() => {
     if (spaceId) {
@@ -321,6 +322,7 @@ export const useFetchAssessments = (page: any, spaceId: any) => {
         { signal: abortController.current.signal },
       );
       fetchAssessments();
+      fetchSpaceInfo.query();
     } catch (e) {
       const err = e as ICustomError;
       toastError(err);
@@ -341,6 +343,7 @@ export const useFetchAssessments = (page: any, spaceId: any) => {
     errorObject,
     fetchAssessments,
     deleteAssessment,
+    fetchSpaceInfo,
   };
 };
 
