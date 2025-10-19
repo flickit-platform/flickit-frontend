@@ -77,7 +77,7 @@ const OptionForm = (props: OptionFormProps) => {
       <Box width="20%" mx={1}>
         <TextField
           required
-          label={<Trans i18nKey="common.value" />}
+          label={<Trans i18nKey="common.score" />}
           name="value"
           value={newItem.value}
           onChange={handleInputChange}

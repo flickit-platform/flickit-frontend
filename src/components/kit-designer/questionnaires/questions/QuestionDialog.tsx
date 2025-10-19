@@ -294,10 +294,7 @@ const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
           </Grid>
         </Grid>
 
-        <Divider sx={{ my: 1, mt: 4 }} />
         <ImpactSection question={question} key={question.id} />
-
-        <Divider sx={{ my: 1, mt: 4 }} />
 
         <Box display="flex" flexDirection="column" gap={1} mt={4}>
           <Text variant="semiBoldXLarge" gutterBottom>

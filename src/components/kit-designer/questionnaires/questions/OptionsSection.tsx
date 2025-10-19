@@ -169,35 +169,40 @@ const OptionsSection = ({
             t("kitDesigner.emptyAnswerRange")
           }
         >
-          <Select
-            value={selectedAnswerRange ?? ""}
-            onChange={handleAnswerRangeChange}
-            sx={{
-              ...dropdownStyle,
-              fontFamily: farsiFontFamily,
-              bgcolor: "inherit",
-            }}
-            size="small"
-            displayEmpty
-            disabled={fetchAnswerRanges?.data?.items?.length === 0}
-          >
-            <MenuItem value="" disabled>
-              <Trans i18nKey="kitDesigner.chooseAnswerRange" />
-            </MenuItem>
-            {fetchAnswerRanges?.data?.items?.map((range: any) => (
-              <MenuItem
-                key={range.id}
-                value={range.id}
+          <Box sx={{...styles.centerV, gap: 1.5}}>
+            <Text variant={"bodyMedium"} color={"background.secondaryDark"}>
+              {t("common.answerRange")}:
+            </Text>
+            <Select
+                value={selectedAnswerRange ?? ""}
+                onChange={handleAnswerRangeChange}
                 sx={{
-                  fontFamily: languageDetector(range.title)
-                    ? farsiFontFamily
-                    : primaryFontFamily,
+                  ...dropdownStyle,
+                  fontFamily: farsiFontFamily,
+                  bgcolor: "inherit",
                 }}
-              >
-                {range.title}
+                size="small"
+                displayEmpty
+                disabled={fetchAnswerRanges?.data?.items?.length === 0}
+            >
+              <MenuItem value="" disabled>
+                <Trans i18nKey="kitDesigner.chooseAnswerRange" />
               </MenuItem>
-            ))}
-          </Select>
+              {fetchAnswerRanges?.data?.items?.map((range: any) => (
+                  <MenuItem
+                      key={range.id}
+                      value={range.id}
+                      sx={{
+                        fontFamily: languageDetector(range.title)
+                            ? farsiFontFamily
+                            : primaryFontFamily,
+                      }}
+                  >
+                    {range.title}
+                  </MenuItem>
+              ))}
+            </Select>
+          </Box>
         </Tooltip>
       </Box>
       {fetchOptions?.data?.answerOptions?.length > 0 ? (
@@ -235,7 +240,6 @@ const OptionsSection = ({
           )}
         </>
       )}
-      <Divider sx={{ my: 1, mt: 4 }} />
     </Grid>
   );
 };
