@@ -4,7 +4,6 @@ import { Text } from "@/components/common/Text";
 import Tooltip from "@mui/material/Tooltip";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
-import Divider from "@mui/material/Divider";
 import Grid from "@mui/material/Grid";
 import { Trans } from "react-i18next";
 import OptionList from "./OptionsList";
