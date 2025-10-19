@@ -2,7 +2,7 @@ import { Box, Chip, Divider } from "@mui/material";
 import { IOption } from "../../model/types";
 import { Text } from "@/components/common/Text";
 import { t } from "i18next";
-import { getTranslation } from "../footer/SubjectPanel";
+import { getTranslation } from "@/utils/helpers";
 
 export const OptionsSection = ({ options }: { options: IOption[] }) => {
   return (

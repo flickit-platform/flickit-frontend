@@ -13,8 +13,8 @@ import Chip from "@mui/material/Chip";
 import { KitDetailsType } from "@/features/kit-detail/model/types";
 import { t } from "i18next";
 import { OptionsSection } from "../common/OptionsSection";
-import { getTranslation } from "./SubjectPanel";
 import { sxAccordion } from "./AttributePanel";
+import { getTranslation } from "@/utils/helpers";
 
 const AnswerRangesPanel = ({
   ranges,

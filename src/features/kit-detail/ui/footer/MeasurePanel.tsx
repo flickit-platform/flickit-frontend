@@ -14,11 +14,11 @@ import { Text } from "@/components/common/Text";
 import { useTranslation } from "react-i18next";
 import { useMeasures } from "../../model/footer/useMeasures";
 import { InfoHeader } from "../common/InfoHeader";
-import { getTranslation } from "./SubjectPanel";
 import TitleWithTranslation from "@/components/common/fields/TranslationText";
 import { OptionsSection } from "../common/OptionsSection";
 import { sxAccordion } from "./AttributePanel";
 import { InfoField } from "../common/InfoField";
+import { getTranslation } from "@/utils/helpers";
 
 const MeasurePanel = ({ measure }: { measure: IIndexedItem }) => {
   const { assessmentKitId } = useParams();

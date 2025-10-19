@@ -21,11 +21,11 @@ import { useServiceContext } from "@/providers/service-provider";
 import { useQuery } from "@/hooks/useQuery";
 import { getSemanticColors } from "@/config/colors";
 import { InfoHeader } from "../common/InfoHeader";
-import { getTranslation } from "./SubjectPanel";
 import TitleWithTranslation from "@/components/common/fields/TranslationText";
 import { OptionsSection } from "../common/OptionsSection";
 import { sxAccordion } from "./AttributePanel";
 import { InfoField } from "../common/InfoField";
+import { getTranslation } from "@/utils/helpers";
 
 const QuestionnairePanel = ({
   questionnaire,

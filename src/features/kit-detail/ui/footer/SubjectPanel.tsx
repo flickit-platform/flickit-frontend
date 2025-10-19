@@ -11,18 +11,7 @@ import QueryData from "@common/QueryData";
 import { useEffect } from "react";
 import { ISubject } from "../../model/types";
 import { TId } from "@/types";
-
-type Ttranslations = Record<string, any>;
-
-
-export const getTranslation = (
-  obj?: Ttranslations | null,
-  type?: any,
-): string | null => {
-  return obj && Object.keys(obj).length > 0
-    ? (Object.values(obj)[0]?.[type] ?? null)
-    : null;
-};
+import { getTranslation } from "@/utils/helpers";
 
 const SubjectPanel = ({
   subject,

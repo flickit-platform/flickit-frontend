@@ -21,10 +21,10 @@ import QueryData from "@common/QueryData";
 import React, { useEffect, useState, useCallback } from "react";
 import { useAccordion } from "@/hooks/useAccordion";
 import { ExpandMoreRounded } from "@mui/icons-material";
-import { getTranslation } from "./SubjectPanel";
 import { InfoField } from "../common/InfoField";
 import { IIndexedItem } from "../../model/types";
 import { OptionsSection } from "../common/OptionsSection";
+import { getTranslation } from "@/utils/helpers";
 
 const Tags = React.memo(function Tags({ mayNotBeApplicable, advisable }: any) {
   const { t } = useTranslation();

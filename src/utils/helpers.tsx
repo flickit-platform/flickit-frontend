@@ -63,3 +63,14 @@ export const showExpertGroups = () =>
   flagsmith.hasFeature(FLAGS.display_expert_groups) || !flagsmith.initialised;
 
 export const getPercentSymbol = (isRTL?: boolean) => (isRTL ? "٪" : "%");
+
+type Ttranslations = Record<string, any>;
+
+export const getTranslation = (
+  obj?: Ttranslations | null,
+  type?: any,
+): string | null => {
+  return obj && Object.keys(obj).length > 0
+    ? (Object.values(obj)[0]?.[type] ?? null)
+    : null;
+};

@@ -11,7 +11,7 @@ import {
 import { useTranslation } from "react-i18next";
 import { styles } from "@styles";
 import { useMemo } from "react";
-import { getPercentSymbol } from "@/utils/helpers";
+import { getPercentSymbol, getTranslation } from "@/utils/helpers";
 import i18next from "i18next";
 import { useAccordion } from "@/hooks/useAccordion";
 import {
@@ -20,7 +20,6 @@ import {
   withDefaultOverrides,
 } from "@/config/colors";
 import { IMaturityLevelIndexedItem } from "../../model/types";
-import { getTranslation } from "./SubjectPanel";
 import { sxAccordion } from "./AttributePanel";
 import TitleWithTranslation from "@/components/common/fields/TranslationText";
 
