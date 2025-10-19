@@ -219,20 +219,15 @@ const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
           overflow: "auto",
         }}
       >
-        <Box display="flex" flexDirection="column" gap={1}>
-          <Text variant="semiBoldXLarge" gutterBottom>
-            <Trans i18nKey="questions.questionAndOptions" />
-          </Text>
-          <Text variant="bodyMedium" color="textSecondary">
-            <Trans i18nKey="questions.questionAndOptionsDescription" />
-          </Text>
-        </Box>
-
         <Grid container spacing={2} mt={2}>
           <Grid item xs={12}>
             <MultiLangTextField
               id="question-title"
-              label={<Trans i18nKey="common.question" />}
+              label={
+              <Text variant={"bodyMedium"} color={"background.secondaryDark"} >
+                <Trans i18nKey="common.question" />
+              </Text>
+            }
               name="title"
               value={tempValue.title}
               onChange={handleInputChange}
@@ -250,7 +245,11 @@ const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
           <Grid item xs={12}>
             <MultiLangTextField
               id="question-hint"
-              label={<Trans i18nKey="common.hint"/>}
+              label={
+              <Text variant={"bodyMedium"} color={"background.secondaryDark"} >
+                <Trans i18nKey="common.hint"/>
+              </Text>
+            }
               name="hint"
               value={tempValue.hint}
               onChange={handleInputChange}
@@ -271,7 +270,11 @@ const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
                   service.kitVersions.measures.getAll({ kitVersionId }),
               })}
               name="measure"
-              label={<Trans i18nKey="kitDesigner.selectMeasure" />}
+              label={
+                <Text variant={"bodyMedium"} color={"background.secondaryDark"} >
+                  <Trans i18nKey="common.measure" />
+                </Text>
+              }
               getOptionLabel={(option: any) => option?.title ?? ""}
               defaultValue={formMethods.watch("measure")}
               rules={{ required: false }}
@@ -291,10 +294,7 @@ const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
           </Grid>
         </Grid>
 
-        <Divider sx={{ my: 1, mt: 4 }} />
         <ImpactSection question={question} key={question.id} />
-
-        <Divider sx={{ my: 1, mt: 4 }} />
 
         <Box display="flex" flexDirection="column" gap={1} mt={4}>
           <Text variant="semiBoldXLarge" gutterBottom>

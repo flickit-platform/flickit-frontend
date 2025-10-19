@@ -4,7 +4,6 @@ import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
 import Button from "@mui/material/Button";
 import Chip from "@mui/material/Chip";
-import SwapVertRoundedIcon from "@mui/icons-material/SwapVertRounded";
 import CheckRoundedIcon from "@mui/icons-material/CheckRounded";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import TextField from "@mui/material/TextField";
@@ -111,11 +110,11 @@ const OptionList = (props: OptionListProps) => {
             maxHeight={220}
             overflow="auto"
           >
-            {reorderedItems?.map((item, index) => (
+            {reorderedItems?.map((item) => (
               <OptionRow
                 key={item.id}
                 item={item}
-                index={index}
+                index={item.index}
                 editMode={editMode}
                 tempValues={tempValues}
                 setTempValues={setTempValues}
@@ -228,8 +227,8 @@ const OptionTitleSection = ({
 }: any) => (
   <Box sx={{ display: "flex", alignItems: "center", flexGrow: 1 }}>
     <Text
-      variant="body2"
-      color="background.container"
+      variant="bodyMedium"
+      color="background.secondaryDark"
       sx={{
         display: "inline-flex",
         alignItems: "center",
@@ -238,10 +237,7 @@ const OptionTitleSection = ({
         borderRadius: "8px",
       }}
     >
-      <IconButton size="small" sx={{ display: "inline-flex", mr: 0.5 }}>
-        <SwapVertRoundedIcon fontSize="small" />
-      </IconButton>
-      {`${t("option")} ${index + 1}:`}
+      {index}.
     </Text>
     {isEditing ? (
       <TextField
@@ -294,7 +290,7 @@ const OptionValueSection = ({
         }
         variant="outlined"
         size="small"
-        label={<Trans i18nKey="common.value" />}
+        label={<Trans i18nKey="common.score" />}
         sx={{
           fontSize: 14,
           "& .MuiInputBase-root": { fontSize: 14, overflow: "auto" },
@@ -303,7 +299,7 @@ const OptionValueSection = ({
       />
     ) : (
       <Chip
-        label={t("common.value") + ": " + item.value}
+        label={t("common.score") + ": " + item.value}
         color="primary"
         size="small"
         sx={{ ml: 2, fontSize: 12 }}
