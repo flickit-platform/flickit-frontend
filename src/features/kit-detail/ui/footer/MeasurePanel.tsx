@@ -120,13 +120,13 @@ const MeasurePanel = ({ measure }: { measure: IIndexedItem }) => {
                         <Grid item xs={12} md={6}>
                           <InfoField
                             label={t("common.questionnaire")}
-                            value={question.questionnaire.title}
+                            value={question?.questionnaire?.title}
                           />
                         </Grid>
                         <Grid item xs={12} md={6}>
                           <InfoField
                             label={t("common.answerRange")}
-                            value={question.answerRange.title}
+                            value={question?.answerRange?.title}
                           />
                         </Grid>
                       </Grid>
