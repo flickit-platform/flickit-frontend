@@ -6,6 +6,7 @@ import {
   AccordionSummary,
   Box,
   Divider,
+  Stack,
 } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import { styles } from "@styles";
@@ -66,7 +67,6 @@ const MaturityLevelsPanel = ({
                 <ExpandMoreRounded sx={{ color: colorPallet[index] }} />
               }
               sx={{
-                "&.Mui-expanded": { minHeight: "48px" },
                 "& .MuiAccordionSummary-content": {
                   alignItems: "flex-start",
                   width: "100%",
@@ -101,44 +101,42 @@ const MaturityLevelsPanel = ({
                   </Text>
                 )}
               </Box>
-              {0 < level.competences.length && (
+              {Boolean(level.competences.length) && (
                 <Box display="flex" gap={2} flex={1}>
-                  <Text variant="semiBoldMedium">
-                    {t("common.competences")}
-                  </Text>
-                  <Box
-                    display="flex"
-                    gap={1}
-                    flexDirection={{ xs: "column", md: "row" }}
+                  <Stack
+                    direction="row"
+                    alignItems="center"
+                    flexWrap="nowrap"
+                    spacing={1}
+                    divider={
+                      <Divider
+                        orientation="vertical"
+                        flexItem
+                        sx={{
+                          mx: 1,
+                          display: { xs: "none", md: "block" },
+                          bgcolor: isExpanded(level.index)
+                            ? "background.on"
+                            : "background.containerLowest",
+                        }}
+                      />
+                    }
                   >
-                    {level.competences.map((competence, i) => {
-                      const isLast = i === level.competences.length - 1;
-                      return (
-                        <Box key={competence.title} sx={{ ...styles.centerV }}>
-                          <Text variant="bodyMedium" lines={1}>
-                            {competence.title}:
-                          </Text>
-                          <Text variant="bodyMedium" marginInlineStart={0.5}>
-                            {competence.value}
-                          </Text>
-                          {getPercentSymbol(i18next.language === "fa")}
-                          {!isLast && (
-                            <Divider
-                              flexItem
-                              orientation="vertical"
-                              sx={{
-                                marginInlineStart: "8px",
-                                bgcolor: isExpanded(level.index)
-                                  ? "background.on"
-                                  : "background.containerLowest",
-                                display: { xs: "none", md: "flex" },
-                              }}
-                            />
-                          )}
-                        </Box>
-                      );
-                    })}
-                  </Box>
+                    <Text variant="semiBoldMedium">
+                      {t("common.competences")}
+                    </Text>
+                    {level.competences.map((competence) => (
+                      <Box key={competence.title} sx={{ ...styles.centerV }}>
+                        <Text variant="bodyMedium" lines={1}>
+                          {competence.title}:
+                        </Text>
+                        <Text variant="bodyMedium" marginInlineStart={0.5}>
+                          {competence.value}
+                        </Text>
+                        {getPercentSymbol(i18next.language === "fa")}
+                      </Box>
+                    ))}
+                  </Stack>
                 </Box>
               )}
             </AccordionSummary>

@@ -22,6 +22,7 @@ import React, { useEffect, useState, useCallback } from "react";
 import { useAccordion } from "@/hooks/useAccordion";
 import { ExpandMoreRounded } from "@mui/icons-material";
 import { OptionsSection } from "../common/OptionsSection";
+import { getTranslation } from "./SubjectPanel";
 
 const Tags = React.memo(function Tags({ mayNotBeApplicable, advisable }: any) {
   const { t } = useTranslation();
@@ -117,6 +118,7 @@ export const sxSummary = (expanded: boolean) => ({
   borderTopLeftRadius: "12px !important",
   borderTopRightRadius: "12px !important",
   backgroundColor: expanded ? "#66809914" : "",
+  borderBottom: expanded ? `1px solid #C7CCD1` : "",
 });
 
 const sxDetails = { display: "flex", flexDirection: "column", p: 0 };
@@ -150,14 +152,6 @@ interface IsubjectProp {
   title: string;
 }
 type IattributeProp = Omit<IsubjectProp, "attributes">;
-
-const getTranslation = (
-  obj?: TTranslations | null,
-  type: keyof { title?: string; description?: string } = "title",
-): string | null =>
-  obj && Object.keys(obj).length > 0
-    ? (Object.values(obj)[0]?.[type] ?? null)
-    : null;
 
 const AttributePanel = ({
   subject,

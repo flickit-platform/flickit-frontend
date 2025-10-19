@@ -1,4 +1,4 @@
-import { Box, Chip } from "@mui/material";
+import { Box, Chip, Stack } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import { InfoHeader } from "../common/InfoHeader";
 import { styles } from "@styles";
@@ -112,77 +112,59 @@ const SubjectPanel = ({
               <Text variant="semiBoldMedium" color={"background.secondaryDark"}>
                 {t("kitDetail.includedAttribute")}:
               </Text>
-              <Box
-                sx={{
-                  justifyContent: "flex-start",
-                  mt: 2,
-                  display: "flex",
-                  alignItems: "center",
-                  flexDirection: { xs: "column", md: "row" },
-                }}
+              <Stack
+                direction={{ xs: "column", md: "row" }}
+                alignItems="center"
+                flexWrap="wrap"
+                mt={2}
+                divider={
+                  <Box
+                    sx={{
+                      bgcolor: "outline.variant",
+                      alignSelf: "stretch",
+                      width: { xs: "100%", md: "1px" },
+                      height: { xs: "1px", md: "auto" },
+                      my: { xs: 1, md: 0 },
+                      mx: { xs: 0, md: 1 },
+                    }}
+                  />
+                }
               >
-                {attributes?.map(
-                  (
-                    {
-                      title,
-                      weight,
-                      id,
-                    }: { title: string; weight: number; id: number },
-                    idx: number,
-                  ) => {
-                    const isLast = attributes.length - 1 === idx;
-                    return (
-                      <>
-                        <Box
-                          sx={{
-                            display: "flex",
-                            flexDirection: "column",
-                            gap: "10px",
-                            justifyContent: "center",
-                            alignItems: "center",
-                            px: 2,
-                            py: 1,
-                          }}
+                {attributes?.map((attr) => (
+                  <Box
+                    sx={{
+                      display: "flex",
+                      flexDirection: "column",
+                      gap: "10px",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      px: 2,
+                      py: 1,
+                    }}
+                  >
+                    <Text
+                      onClick={() => goToAttribute(attr.id)}
+                      variant="semiBoldMedium"
+                      color="primary.main"
+                      textAlign="center"
+                      sx={{ cursor: "pointer" }}
+                    >
+                      {attr.title}
+                    </Text>
+                    <Chip
+                      label={
+                        <Text
+                          variant="semiBoldSmall"
+                          color="background.contrastText"
                         >
-                          <Text
-                            onClick={() => goToAttribute(id)}
-                            variant="semiBoldMedium"
-                            color="primary.main"
-                            textAlign="center"
-                            sx={{ cursor: "pointer" }}
-                          >
-                            {title}
-                          </Text>
-                          <Chip
-                            label={
-                              <Text
-                                variant="semiBoldSmall"
-                                color="background.contrastText"
-                              >
-                                {`${t("common.weight")} ${weight}`}
-                              </Text>
-                            }
-                            sx={{ bgcolor: "outline.variant", borderRadius: 4 }}
-                          />
-                        </Box>
-                        {!isLast && (
-                          <Divider
-                            flexItem
-                            orientation="vertical"
-                            sx={{
-                              marginInline: "8px",
-                              bgcolor: "outline.variant",
-                              alignSelf: "stretch",
-                              mt: "12px",
-                              mb: "12px",
-                            }}
-                          />
-                        )}
-                      </>
-                    );
-                  },
-                )}
-              </Box>
+                          {`${t("common.weight")} ${attr.weight}`}
+                        </Text>
+                      }
+                      sx={{ bgcolor: "primary.states.hover", borderRadius: 4 }}
+                    />
+                  </Box>
+                ))}
+              </Stack>
             </Box>
           </Box>
         );
