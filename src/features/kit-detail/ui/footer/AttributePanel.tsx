@@ -98,7 +98,7 @@ export const sxAccordion = {
   "&.Mui-expanded": { margin: 0 },
 };
 export const sxSummary = (expanded: boolean) => ({
-  px: 0,
+  px: 2,
   py: 0,
   minHeight: 0,
   "&.Mui-expanded": { minHeight: 0 },
@@ -325,7 +325,6 @@ const AttributePanel = ({ attribute }: { attribute: IIndexedItem }) => {
                                   <ExpandMoreRounded
                                     sx={{
                                       color: "surface.on",
-                                      marginInlineEnd: "4px",
                                     }}
                                   />
                                 }
@@ -346,7 +345,7 @@ const AttributePanel = ({ attribute }: { attribute: IIndexedItem }) => {
                                     sx={{
                                       minWidth: 0,
                                       py: "12px",
-                                      px: "16px",
+                                      paddingInlineEnd: "16px",
                                     }}
                                   >
                                     <Grid
