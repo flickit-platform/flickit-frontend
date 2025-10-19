@@ -324,7 +324,10 @@ const AttributePanel = ({ attribute }: { attribute: IIndexedItem }) => {
                               <AccordionSummary
                                 expandIcon={
                                   <ExpandMoreRounded
-                                    sx={{ color: "surface.on" }}
+                                    sx={{
+                                      color: "surface.on",
+                                      marginInlineEnd: "4px",
+                                    }}
                                   />
                                 }
                                 sx={sxSummary(expanded)}
