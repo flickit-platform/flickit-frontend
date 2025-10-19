@@ -10,6 +10,7 @@ import {
   Chip,
   Divider,
   Grid,
+  Stack,
 } from "@mui/material";
 import { useAccordion } from "@/hooks/useAccordion";
 import { ExpandMoreRounded } from "@mui/icons-material";
@@ -20,9 +21,11 @@ import { useServiceContext } from "@/providers/service-provider";
 import { useQuery } from "@/hooks/useQuery";
 import { getSemanticColors } from "@/config/colors";
 import { InfoHeader } from "../common/InfoHeader";
-import { getTranslation } from "./SubjectPanel";
 import TitleWithTranslation from "@/components/common/fields/TranslationText";
-import { OptionPill } from "./AnswerRangesPanel";
+import { OptionsSection } from "../common/OptionsSection";
+import { sxAccordion } from "./AttributePanel";
+import { InfoField } from "../common/InfoField";
+import { getTranslation } from "@/utils/helpers";
 
 const QuestionnairePanel = ({
   questionnaire,
@@ -31,6 +34,9 @@ const QuestionnairePanel = ({
   questionnaire: IIndexedItem;
   maturityLevelsCount: number;
 }) => {
+  const bgColors = getSemanticColors(maturityLevelsCount, "bg");
+  const textColors = getSemanticColors(maturityLevelsCount, "text");
+
   const { service } = useServiceContext();
   const { assessmentKitId } = useParams();
   const { fetcQuestionnaireDetailslQuery, questionnaireDetails } =
@@ -67,7 +73,9 @@ const QuestionnairePanel = ({
                 "title",
               )}
               sectionName={t("common.questionnaire")}
-              firstTag={`${_questionnaire.questions.length} ${t("kitDetail.questions")}`}
+              tags={[
+                `${_questionnaire.questions.length} ${t("kitDetail.questions")}`,
+              ]}
             />
             <Box>
               <Text variant="semiBoldLarge" color={"background.secondaryDark"}>
@@ -100,23 +108,13 @@ const QuestionnairePanel = ({
                     key={question.id}
                     expanded={isExpanded(question.id)}
                     onChange={onChange(question.id)}
-                    sx={{
-                      boxShadow: "none !important",
-                      borderRadius: "16px !important",
-                      border: `1px solid #C7CCD1`,
-                      bgcolor: "initial",
-                      "&:before": { content: "none" },
-                      position: "relative",
-                      transition: "background-position .4s ease",
-                      "&.Mui-expanded": { margin: 0 },
-                    }}
+                    sx={sxAccordion}
                   >
                     <AccordionSummary
                       expandIcon={
                         <ExpandMoreRounded sx={{ color: "surface.on" }} />
                       }
                       sx={{
-                        "&.Mui-expanded": { minHeight: "48px" },
                         "& .MuiAccordionSummary-content": {
                           alignItems: "center",
                           width: "100%",
@@ -197,7 +195,6 @@ const QuestionnairePanel = ({
                               {getTranslation(ques?.translations, "title") && (
                                 <>
                                   <Grid item md={12}>
-                                    {" "}
                                     <Text variant="titleSmall" mb={0.5}>
                                       {t("kitDetail.questionTranslation")}
                                     </Text>
@@ -234,178 +231,129 @@ const QuestionnairePanel = ({
                                 </Grid>
                               )}
 
-                              <Grid item md={6}>
-                                {ques?.measure?.title && (
-                                  <>
-                                    <Text variant="titleSmall" sx={{ mb: 1 }}>
-                                      {t("common.measure")}
-                                    </Text>
-                                    <Box
-                                      sx={{
-                                        padding: "4px 16px",
-                                        borderRadius: "4px",
-                                        border: "1px solid",
-                                        borderColor: "outline.variant",
-                                        bgcolor: "primary.bg",
-                                        width: "fit-content",
-                                        color: "primary.main",
-                                      }}
-                                    >
-                                      <Text variant="bodyMedium">
-                                        {ques.measure.title}
-                                      </Text>
-                                    </Box>
-                                  </>
-                                )}
+                              <Grid item xs={12} md={6}>
+                                <InfoField
+                                  label={t("common.measure")}
+                                  value={ques.measure?.title}
+                                />
                               </Grid>
-                              <Grid item md={6}>
-                                {ques?.answerRange && (
-                                  <>
-                                    <Text variant="titleSmall" sx={{ mb: 1 }}>
-                                      {t("common.answerRange")}
-                                    </Text>
-                                    <Box
-                                      sx={{
-                                        padding: "4px 16px",
-                                        borderRadius: "4px",
-                                        border: "1px solid",
-                                        borderColor: "outline.variant",
-                                        bgcolor: "primary.bg",
-                                        width: "fit-content",
-                                        color: "primary.main",
-                                      }}
-                                    >
-                                      <Text variant="bodyMedium">
-                                        {ques?.answerRange?.title}
-                                      </Text>
-                                    </Box>
-                                  </>
-                                )}
+                              <Grid item xs={12} md={6}>
+                                <InfoField
+                                  label={t("common.answerRange")}
+                                  value={ques.answerRange?.title}
+                                />
                               </Grid>
                               {Boolean(ques.options?.length) && (
                                 <Box mt={2}>
-                                  <Text variant="titleSmall" mb={1}>
-                                    {t("common.options")}
-                                  </Text>
-                                  <Box
-                                    sx={{ display: "flex", flexWrap: "wrap" }}
-                                  >
-                                    {ques.options?.map((opt: any) => (
-                                      <OptionPill
-                                        key={opt.index}
-                                        option={opt}
-                                      />
-                                    ))}
-                                  </Box>
+                                  <OptionsSection options={ques.options} />
                                 </Box>
                               )}
                               <Box my={2}>
                                 <Text variant="titleSmall" sx={{ mb: 2 }}>
                                   {t("kitDetail.affectedAttributes")}
                                 </Text>
-                                <Box display="flex" flexWrap="wrap" rowGap={1}>
-                                  {ques?.attributeImpacts?.map(
-                                    (impact, index) => {
-                                      const isLast =
-                                        index ===
-                                        ques.attributeImpacts.length - 1;
-                                      return (
-                                        <Box display="flex">
-                                          <Box
-                                            display="flex"
-                                            flexDirection="column"
-                                            alignItems="center"
-                                            gap="10px"
-                                          >
-                                            <Box px="18px" py="8px 0px">
-                                              <Text
-                                                textAlign="center"
-                                                variant="semiBoldLarge"
-                                                color="primary"
-                                              >
-                                                {" "}
-                                                {impact.title}
-                                              </Text>
-                                            </Box>
-                                            {impact.affectedLevels.map(
-                                              (level) => {
-                                                return (
-                                                  <Chip
-                                                    sx={{
-                                                      width: "fit-content",
-                                                      ".MuiChip-label": {
-                                                        px: "12px",
-                                                        py: "4px",
-                                                        color:
-                                                          "background.contrastText",
-                                                      },
-                                                      background:
-                                                        getSemanticColors(
-                                                          maturityLevelsCount,
-                                                          "bg",
-                                                        )[
-                                                          level.maturityLevel
-                                                            .index - 1
-                                                        ],
-                                                      border: "1px solid",
-                                                      borderColor:
-                                                        getSemanticColors(
-                                                          maturityLevelsCount,
-                                                          "text",
-                                                        )[
-                                                          level.maturityLevel
-                                                            .index - 1
-                                                        ],
-                                                    }}
-                                                    label={
-                                                      <Box display="flex">
-                                                        <Text variant="semiBoldMedium">
-                                                          {
-                                                            level.maturityLevel
-                                                              .title
-                                                          }
-                                                        </Text>
-                                                        <Divider
-                                                          flexItem
-                                                          orientation="vertical"
-                                                          sx={{
-                                                            mx: 1,
-                                                            borderColor:
-                                                              "text.primary",
-                                                            height: 16,
-                                                            display: "flex",
-                                                            alignSelf: "center",
-                                                          }}
-                                                        />
+                                <Stack
+                                  direction="row"
+                                  flexWrap="wrap"
+                                  rowGap={1}
+                                  columnGap={2}
+                                  divider={
+                                    <Divider
+                                      orientation="vertical"
+                                      flexItem
+                                      sx={{
+                                        mx: 1.5,
+                                        alignSelf: "stretch",
+                                        borderColor: "outline.variant",
+                                      }}
+                                    />
+                                  }
+                                >
+                                  {ques.attributeImpacts?.map((impact) => (
+                                    <Stack
+                                      key={impact.id ?? impact.title}
+                                      alignItems="center"
+                                      gap={1.25}
+                                      sx={{ minWidth: 180 }}
+                                    >
+                                      <Box
+                                        sx={{
+                                          px: "18px",
+                                          py: "8px",
+                                          textAlign: "center",
+                                        }}
+                                      >
+                                        <Text
+                                          variant="semiBoldLarge"
+                                          color="primary"
+                                        >
+                                          {impact.title}
+                                        </Text>
+                                      </Box>
 
-                                                        <Text variant="semiBoldMedium">
-                                                          {t("common.weight")}
-                                                          {": "}
-                                                          {level.weight}
-                                                        </Text>
-                                                      </Box>
-                                                    }
+                                      <Stack
+                                        direction="column"
+                                        alignItems="center"
+                                        gap={1}
+                                      >
+                                        {impact.affectedLevels.map((level) => {
+                                          const idx = Math.max(
+                                            0,
+                                            (level.maturityLevel.index ?? 1) -
+                                              1,
+                                          );
+                                          return (
+                                            <Chip
+                                              key={level.maturityLevel.id}
+                                              label={
+                                                <Box
+                                                  display="flex"
+                                                  alignItems="center"
+                                                >
+                                                  <Text variant="semiBoldMedium">
+                                                    {level.maturityLevel.title}
+                                                  </Text>
+
+                                                  <Divider
+                                                    orientation="vertical"
+                                                    flexItem
+                                                    sx={{
+                                                      mx: 1,
+                                                      height: 16,
+                                                      alignSelf: "center",
+                                                      borderColor:
+                                                        "text.primary",
+                                                    }}
                                                   />
-                                                );
-                                              },
-                                            )}
-                                          </Box>
-                                          {!isLast && (
-                                            <Divider
-                                              flexItem
-                                              orientation="vertical"
+
+                                                  <Text variant="semiBoldMedium">
+                                                    {t("common.weight")}:{" "}
+                                                    {level.weight}
+                                                  </Text>
+                                                </Box>
+                                              }
                                               sx={{
-                                                mx: 1,
-                                                height: 36,
-                                                borderColor: "outline.variant",
+                                                width: "fit-content",
+                                                border: "1px solid",
+                                                background: bgColors[idx],
+                                                borderColor: textColors[idx],
+                                                ".MuiChip-label": {
+                                                  px: "12px",
+                                                  py: "4px",
+                                                  color:
+                                                    "background.contrastText",
+                                                  display: "flex",
+                                                  alignItems: "center",
+                                                  gap: 1,
+                                                },
                                               }}
                                             />
-                                          )}
-                                        </Box>
-                                      );
-                                    },
-                                  )}
-                                </Box>
+                                          );
+                                        })}
+                                      </Stack>
+                                    </Stack>
+                                  ))}
+                                </Stack>
                               </Box>
                             </Grid>
                           );

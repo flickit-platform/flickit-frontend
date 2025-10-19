@@ -1,6 +1,5 @@
 import {
   Accordion,
-  AccordionDetails,
   AccordionSummary,
   Box,
   Grid,
@@ -8,6 +7,7 @@ import {
   Tab,
   Chip,
   Divider,
+  AccordionDetails,
 } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import { InfoHeader } from "../common/InfoHeader";
@@ -21,9 +21,11 @@ import QueryData from "@common/QueryData";
 import React, { useEffect, useState, useCallback } from "react";
 import { useAccordion } from "@/hooks/useAccordion";
 import { ExpandMoreRounded } from "@mui/icons-material";
-import { OptionPill as RawOptionPill } from "@/features/kit-detail/ui/footer/AnswerRangesPanel";
+import { InfoField } from "../common/InfoField";
+import { IIndexedItem } from "../../model/types";
+import { OptionsSection } from "../common/OptionsSection";
+import { getTranslation } from "@/utils/helpers";
 
-const OptionPill = React.memo(RawOptionPill);
 const Tags = React.memo(function Tags({ mayNotBeApplicable, advisable }: any) {
   const { t } = useTranslation();
   const tags = [
@@ -84,18 +86,18 @@ const sxTab = {
     "&:hover": { bgcolor: "background.containerLowest", border: "none" },
   },
 };
-const sxAccordion = {
+export const sxAccordion = {
   boxShadow: "none !important",
   borderRadius: "16px !important",
-  border: "1px solid #C7CCD1",
+  border: "1px solid",
+  borderColor: "outline.variant",
   bgcolor: "initial",
   "&:before": { content: "none" },
   position: "relative",
   transition: "background-position .4s ease",
-  mb: 1,
-  "&.Mui-expanded": { marginTop: 0 },
+  "&.Mui-expanded": { margin: 0 },
 };
-const sxSummary = (expanded: boolean) => ({
+export const sxSummary = (expanded: boolean) => ({
   px: 0,
   py: 0,
   minHeight: 0,
@@ -112,18 +114,15 @@ const sxSummary = (expanded: boolean) => ({
     padding: 0,
   },
   "& .MuiAccordionSummary-expandIconWrapper": {
-    m: 0,
-    p: 0,
+    marginInline: "4px",
   },
   borderTopLeftRadius: "12px !important",
   borderTopRightRadius: "12px !important",
   backgroundColor: expanded ? "#66809914" : "",
+  borderBottom: expanded ? `1px solid #C7CCD1` : "",
 });
 
-const sxDetails = { display: "flex", flexDirection: "column", p: 0 };
-
 type TTranslations = Record<string, { title?: string; description?: string }>;
-type TAttribute = { title: string; weight: number; id: number; index: number };
 type TMaturityLevels = {
   questionCount: number;
   title: string;
@@ -143,30 +142,7 @@ interface IattributeData {
   title: string;
 }
 
-interface IsubjectProp {
-  attributes: TAttribute[];
-  id: number;
-  index: number;
-  translations: TTranslations;
-  title: string;
-}
-type IattributeProp = Omit<IsubjectProp, "attributes">;
-
-const getTranslation = (
-  obj?: TTranslations | null,
-  type: keyof { title?: string; description?: string } = "title",
-): string | null =>
-  obj && Object.keys(obj).length > 0
-    ? (Object.values(obj)[0]?.[type] ?? null)
-    : null;
-
-const AttributePanel = ({
-  subject,
-  attribute,
-}: {
-  subject: IsubjectProp;
-  attribute: IattributeProp;
-}) => {
+const AttributePanel = ({ attribute }: { attribute: IIndexedItem }) => {
   const { service } = useServiceContext();
   const { t } = useTranslation();
   const { assessmentKitId = "" } = useParams();
@@ -251,8 +227,10 @@ const AttributePanel = ({
               title={attribute?.title}
               translations={getTranslation(translations, "title")}
               sectionName={t("kitDetail.attribute")}
-              firstTag={`${questionCount} ${t("kitDetail.questions")}`}
-              secondTag={`${t("common.weight")}: ${weight}`}
+              tags={[
+                `${questionCount} ${t("kitDetail.questions")}`,
+                `${t("common.weight")}: ${weight}`,
+              ]}
             />
 
             <Box>
@@ -319,8 +297,8 @@ const AttributePanel = ({
                     const { questions = [] } = maturityData ?? {};
 
                     return (
-                      <Box>
-                        {questions.map((q: any, i: number) => {
+                      <Box display="flex" flexDirection="column" gap={1}>
+                        {questions.map((question: any, index: number) => {
                           const {
                             id,
                             title,
@@ -331,21 +309,24 @@ const AttributePanel = ({
                             answerOptions,
                             measure,
                             answerRange,
-                          } = q;
+                          } = question;
 
-                          const expanded = isExpanded(i);
+                          const expanded = isExpanded(id);
 
                           return (
                             <Accordion
-                              key={id ?? i}
+                              key={id}
                               expanded={expanded}
-                              onChange={onChange(i)}
+                              onChange={onChange(id)}
                               sx={sxAccordion}
                             >
                               <AccordionSummary
                                 expandIcon={
                                   <ExpandMoreRounded
-                                    sx={{ color: "surface.on" }}
+                                    sx={{
+                                      color: "surface.on",
+                                      marginInlineEnd: "4px",
+                                    }}
                                   />
                                 }
                                 sx={sxSummary(expanded)}
@@ -385,7 +366,7 @@ const AttributePanel = ({
                                       >
                                         <Box display="flex" gap={0.5}>
                                           <Text variant="bodyMedium">
-                                            {i + 1}.{" "}
+                                            {index + 1}.{" "}
                                           </Text>
                                           <Text
                                             variant="bodyMedium"
@@ -486,83 +467,22 @@ const AttributePanel = ({
                                   </Box>
                                 </Box>
                               </AccordionSummary>
-
-                              <AccordionDetails sx={sxDetails}>
-                                <Grid container p={2} pt={2}>
-                                  <Grid item xs={answerRange ? 6 : 12}>
-                                    <Text variant="titleSmall" sx={{ mb: 1 }}>
-                                      {t("common.measure")}
-                                    </Text>
-                                    <Box
-                                      sx={{
-                                        display: "flex",
-                                        alignItems: "center",
-                                        px: 2,
-                                        py: 0.5,
-                                        borderRadius: 1,
-                                        border: "1px solid",
-                                        borderColor: "outline.variant",
-                                        bgcolor: "primary.bg",
-                                        width: "fit-content",
-                                        color: "primary.main",
-                                      }}
-                                    >
-                                      <Text variant="bodyMedium">
-                                        {measure?.title}
-                                      </Text>
-                                    </Box>
+                              <AccordionDetails>
+                                <Grid container spacing={0} p={2}>
+                                  <Grid item xs={12} md={6}>
+                                    <InfoField
+                                      label={t("common.measure")}
+                                      value={measure?.title}
+                                    />
                                   </Grid>
-
-                                  {answerRange && (
-                                    <Grid item xs={6}>
-                                      <Text variant="titleSmall" sx={{ mb: 1 }}>
-                                        {t("kitDesigner.answerRanges")}
-                                      </Text>
-                                      <Box
-                                        sx={{
-                                          px: 2,
-                                          py: 0.5,
-                                          borderRadius: 1,
-                                          border: "1px solid",
-                                          borderColor: "outline.variant",
-                                          bgcolor: "primary.bg",
-                                          width: "fit-content",
-                                          color: "primary.main",
-                                        }}
-                                      >
-                                        <Text variant="bodyMedium">
-                                          {answerRange?.title}
-                                        </Text>
-                                      </Box>
-                                    </Grid>
-                                  )}
+                                  <Grid item xs={12} md={6}>
+                                    <InfoField
+                                      label={t("common.answerRange")}
+                                      value={answerRange?.title}
+                                    />
+                                  </Grid>
                                 </Grid>
-
-                                {Array.isArray(answerOptions) &&
-                                  answerOptions.length > 0 && (
-                                    <Box px={2} pb={2}>
-                                      <Text variant="titleSmall" sx={{ mb: 1 }}>
-                                        {t("common.options")}
-                                      </Text>
-                                      <Box
-                                        sx={{
-                                          display: "flex",
-                                          flexWrap: "wrap",
-                                        }}
-                                      >
-                                        {answerOptions.map((opt: any) => (
-                                          <OptionPill
-                                            key={
-                                              opt.index ??
-                                              opt.id ??
-                                              `${id}-${opt.value}`
-                                            }
-                                            option={opt}
-                                          />
-                                        ))}
-                                      </Box>
-                                    </Box>
-                                  )}
+                                <OptionsSection options={answerOptions} />
                               </AccordionDetails>
                             </Accordion>
                           );

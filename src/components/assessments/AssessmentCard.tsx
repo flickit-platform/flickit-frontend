@@ -380,7 +380,8 @@ const Header = ({
           ...styles.centerVH,
           backgroundColor: "#F9FAFB",
           borderRadius: "4px",
-          border: "0.5px solid #C7CCD1",
+          border: "0.5px solid",
+          borderColor: "outline.variant",
           p: 0.5,
         }}
       >
@@ -389,11 +390,7 @@ const Header = ({
         </Text>
       </Box>
       <Divider orientation="vertical" flexItem sx={{ mx: "8px" }} />
-      <Text
-        variant="labelSmall"
-        sx={{ textAlign: "center" }}
-        color="info.main"
-      >
+      <Text variant="labelSmall" sx={{ textAlign: "center" }} color="info.main">
         <Trans i18nKey="common.lastUpdated" />{" "}
         {getReadableDate(lastModificationTime)}
       </Text>

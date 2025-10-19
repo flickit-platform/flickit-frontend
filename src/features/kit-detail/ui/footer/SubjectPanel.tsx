@@ -1,4 +1,4 @@
-import { Box, Chip } from "@mui/material";
+import { Box, Chip, Stack } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import { InfoHeader } from "../common/InfoHeader";
 import { styles } from "@styles";
@@ -8,41 +8,16 @@ import { useQuery } from "@/hooks/useQuery";
 import { useServiceContext } from "@providers/service-provider";
 import { useParams } from "react-router-dom";
 import QueryData from "@common/QueryData";
-import Divider from "@mui/material/Divider";
 import { useEffect } from "react";
-
-type Ttranslations = Record<string, any>;
-type TAttribute = { title: string; weight: number; id: number; index: number };
-
-interface IsubjectData {
-  attributes: TAttribute[];
-  description: string;
-  questionsCount: number;
-  translations?: Ttranslations;
-  weight: number;
-}
-interface IsubjectProp {
-  attributes: TAttribute[];
-  id: number;
-  index: number;
-  translations: Ttranslations;
-  title: string;
-}
-
-export const getTranslation = (
-  obj?: Ttranslations | null,
-  type?: any,
-): string | null => {
-  return obj && Object.keys(obj).length > 0
-    ? (Object.values(obj)[0]?.[type] ?? null)
-    : null;
-};
+import { ISubject } from "../../model/types";
+import { TId } from "@/types";
+import { getTranslation } from "@/utils/helpers";
 
 const SubjectPanel = ({
   subject,
   onSelect,
 }: {
-  subject: IsubjectProp;
+  subject: ISubject;
   onSelect: any;
 }) => {
   const { service } = useServiceContext();
@@ -60,7 +35,7 @@ const SubjectPanel = ({
     fetchSubjectDetail.query();
   }, [subject.id]);
 
-  const goToAttribute = (attributeId: number) => {
+  const goToAttribute = (attributeId: TId) => {
     const nodeId = `attribute-${subject.id}-${attributeId}`;
     window.location.hash = nodeId;
     onSelect?.(nodeId);
@@ -69,7 +44,7 @@ const SubjectPanel = ({
   return (
     <QueryData
       {...fetchSubjectDetail}
-      render={(data: IsubjectData) => {
+      render={(data: ISubject) => {
         const {
           weight,
           description,
@@ -84,8 +59,10 @@ const SubjectPanel = ({
               title={subject?.title}
               translations={getTranslation(subject?.translations, "title")}
               sectionName={t("kitDetail.subject")}
-              firstTag={`${questionsCount} ${t("common.questions")}`}
-              secondTag={`${t("common.weight")}: ${weight}`}
+              tags={[
+                `${questionsCount} ${t("common.questions")}`,
+                `${t("common.weight")}: ${weight}`,
+              ]}
             />
 
             <Box>
@@ -110,77 +87,59 @@ const SubjectPanel = ({
               <Text variant="semiBoldMedium" color={"background.secondaryDark"}>
                 {t("kitDetail.includedAttribute")}:
               </Text>
-              <Box
-                sx={{
-                  justifyContent: "flex-start",
-                  mt: 2,
-                  display: "flex",
-                  alignItems: "center",
-                  flexDirection: { xs: "column", md: "row" },
-                }}
+              <Stack
+                direction={{ xs: "column", md: "row" }}
+                alignItems="center"
+                flexWrap="wrap"
+                mt={2}
+                divider={
+                  <Box
+                    sx={{
+                      bgcolor: "outline.variant",
+                      alignSelf: "stretch",
+                      width: { xs: "100%", md: "1px" },
+                      height: { xs: "1px", md: "auto" },
+                      my: { xs: 1, md: 0 },
+                      mx: { xs: 0, md: 1 },
+                    }}
+                  />
+                }
               >
-                {attributes?.map(
-                  (
-                    {
-                      title,
-                      weight,
-                      id,
-                    }: { title: string; weight: number; id: number },
-                    idx: number,
-                  ) => {
-                    const isLast = attributes.length - 1 === idx;
-                    return (
-                      <>
-                        <Box
-                          sx={{
-                            display: "flex",
-                            flexDirection: "column",
-                            gap: "10px",
-                            justifyContent: "center",
-                            alignItems: "center",
-                            px: 2,
-                            py: 1,
-                          }}
+                {attributes?.map((attr) => (
+                  <Box
+                    sx={{
+                      display: "flex",
+                      flexDirection: "column",
+                      gap: "10px",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      px: 2,
+                      py: 1,
+                    }}
+                  >
+                    <Text
+                      onClick={() => goToAttribute(attr.id)}
+                      variant="semiBoldMedium"
+                      color="primary.main"
+                      textAlign="center"
+                      sx={{ cursor: "pointer" }}
+                    >
+                      {attr.title}
+                    </Text>
+                    <Chip
+                      label={
+                        <Text
+                          variant="semiBoldSmall"
+                          color="background.contrastText"
                         >
-                          <Text
-                            onClick={() => goToAttribute(id)}
-                            variant="semiBoldMedium"
-                            color="primary.main"
-                            textAlign="center"
-                            sx={{ cursor: "pointer" }}
-                          >
-                            {title}
-                          </Text>
-                          <Chip
-                            label={
-                              <Text
-                                variant="semiBoldSmall"
-                                color="background.contrastText"
-                              >
-                                {`${t("common.weight")} ${weight}`}
-                              </Text>
-                            }
-                            sx={{ background: "#66809914", borderRadius: 4 }}
-                          />
-                        </Box>
-                        {!isLast && (
-                          <Divider
-                            flexItem
-                            orientation="vertical"
-                            sx={{
-                              marginInline: "8px",
-                              bgcolor: "#C7CCD1",
-                              alignSelf: "stretch",
-                              mt: "12px",
-                              mb: "12px",
-                            }}
-                          />
-                        )}
-                      </>
-                    );
-                  },
-                )}
-              </Box>
+                          {`${t("common.weight")} ${attr.weight}`}
+                        </Text>
+                      }
+                      sx={{ bgcolor: "primary.states.hover", borderRadius: 4 }}
+                    />
+                  </Box>
+                ))}
+              </Stack>
             </Box>
           </Box>
         );

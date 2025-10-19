@@ -13,10 +13,12 @@ import { ExpandMoreRounded } from "@mui/icons-material";
 import { Text } from "@/components/common/Text";
 import { useTranslation } from "react-i18next";
 import { useMeasures } from "../../model/footer/useMeasures";
-import { OptionPill } from "./AnswerRangesPanel";
 import { InfoHeader } from "../common/InfoHeader";
-import { getTranslation } from "./SubjectPanel";
 import TitleWithTranslation from "@/components/common/fields/TranslationText";
+import { OptionsSection } from "../common/OptionsSection";
+import { sxAccordion } from "./AttributePanel";
+import { InfoField } from "../common/InfoField";
+import { getTranslation } from "@/utils/helpers";
 
 const MeasurePanel = ({ measure }: { measure: IIndexedItem }) => {
   const { assessmentKitId } = useParams();
@@ -38,7 +40,7 @@ const MeasurePanel = ({ measure }: { measure: IIndexedItem }) => {
               title={_measure.title}
               translations={getTranslation(measure?.translations, "title")}
               sectionName={t("common.measure")}
-              firstTag={`${_measure.questions.length} ${t("common.question")}`}
+              tags={[`${_measure.questions.length} ${t("common.question")}`]}
             />
             <Box>
               <Text variant="semiBoldLarge" color={"background.secondaryDark"}>
@@ -68,19 +70,10 @@ const MeasurePanel = ({ measure }: { measure: IIndexedItem }) => {
               {_measure.questions.map((question, index) => {
                 return (
                   <Accordion
-                    key={question.title}
-                    expanded={isExpanded(question.title)}
-                    onChange={onChange(question.title)}
-                    sx={{
-                      boxShadow: "none !important",
-                      borderRadius: "16px !important",
-                      border: `1px solid #C7CCD1`,
-                      bgcolor: "initial",
-                      "&:before": { content: "none" },
-                      position: "relative",
-                      transition: "background-position .4s ease",
-                      "&.Mui-expanded": { margin: 0 },
-                    }}
+                    key={question.id}
+                    expanded={isExpanded(question.id)}
+                    onChange={onChange(question.id)}
+                    sx={sxAccordion}
                   >
                     <AccordionSummary
                       expandIcon={
@@ -99,15 +92,15 @@ const MeasurePanel = ({ measure }: { measure: IIndexedItem }) => {
                         },
                         borderTopLeftRadius: "12px !important",
                         borderTopRightRadius: "12px !important",
-                        backgroundColor: isExpanded(question.title)
+                        backgroundColor: isExpanded(question.id)
                           ? "#66809914"
                           : "",
-                        borderBottom: isExpanded(question.title)
+                        borderBottom: isExpanded(question.id)
                           ? `1px solid #C7CCD1`
                           : "",
                       }}
                     >
-                      <Box>
+                      <Box display="flex" gap={0.5}>
                         <Text variant="bodyMedium">{index + 1}.</Text>{" "}
                         <Text variant="bodyMedium" textAlign="justify">
                           {" "}
@@ -123,62 +116,22 @@ const MeasurePanel = ({ measure }: { measure: IIndexedItem }) => {
                         gap: 2,
                       }}
                     >
-                      <Grid container>
-                        {question?.questionnaire.title && (
-                          <Grid item md={6}>
-                            <Text variant="titleSmall" sx={{ mb: 1 }}>
-                              {t("common.questionnaire")}
-                            </Text>
-                            <Box
-                              sx={{
-                                padding: "4px 16px",
-                                borderRadius: "4px",
-                                border: "1px solid",
-                                borderColor: "outline.variant",
-                                bgcolor: "primary.bg",
-                                width: "fit-content",
-                                color: "primary.main",
-                              }}
-                            >
-                              <Text variant="bodyMedium">
-                                {question.questionnaire.title}
-                              </Text>
-                            </Box>
-                          </Grid>
-                        )}
-                        {question?.answerRange && (
-                          <Grid item md={6}>
-                            <Text variant="titleSmall" sx={{ mb: 1 }}>
-                              {t("common.answerRange")}
-                            </Text>
-                            <Box
-                              sx={{
-                                padding: "4px 16px",
-                                borderRadius: "4px",
-                                border: "1px solid",
-                                borderColor: "outline.variant",
-                                bgcolor: "primary.bg",
-                                width: "fit-content",
-                                color: "primary.main",
-                              }}
-                            >
-                              {question?.answerRange?.title}
-                            </Box>
-                          </Grid>
-                        )}
+                      <Grid container spacing={0}>
+                        <Grid item xs={12} md={6}>
+                          <InfoField
+                            label={t("common.questionnaire")}
+                            value={question.questionnaire.title}
+                          />
+                        </Grid>
+                        <Grid item xs={12} md={6}>
+                          <InfoField
+                            label={t("common.answerRange")}
+                            value={question.answerRange.title}
+                          />
+                        </Grid>
                       </Grid>
-                      {question?.options?.length && (
-                        <>
-                          <Text variant="titleSmall" sx={{ mb: 1 }}>
-                            {t("common.options")}
-                          </Text>
-                          <Box sx={{ display: "flex", flexWrap: "wrap" }}>
-                            {question.options?.map((opt: any) => (
-                              <OptionPill key={opt.index} option={opt} />
-                            ))}
-                          </Box>
-                        </>
-                      )}
+
+                      <OptionsSection options={question?.options} />
                     </AccordionDetails>
                   </Accordion>
                 );

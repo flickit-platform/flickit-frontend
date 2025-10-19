@@ -3,26 +3,23 @@ import { styles } from "@styles";
 import Chip from "@mui/material/Chip";
 import { Text } from "@common/Text";
 
+const ChipStyle = {
+  ".MuiChip-label": {
+    px: "12px",
+    py: "4px",
+  },
+};
 export const InfoHeader = ({
   title,
   translations,
   sectionName,
-  firstTag,
-  secondTag,
+  tags,
 }: {
   title: string;
   translations: any;
   sectionName: string;
-  firstTag: string;
-  secondTag?: string;
+  tags?: string[];
 }) => {
-  const ChipStyle = {
-    ".MuiChip-label": {
-      px: "12px",
-      py: "4px",
-    },
-  };
-
   return (
     <Box
       sx={{
@@ -44,7 +41,7 @@ export const InfoHeader = ({
         <Chip
           sx={{
             ...ChipStyle,
-            background: "#6680991f",
+            bgcolor: "background.states.selected",
           }}
           label={
             <Text variant="semiBoldMedium" color={"background.secondaryDark"}>
@@ -60,30 +57,21 @@ export const InfoHeader = ({
         </Text>
       </Box>
       <Box sx={{ ...styles.centerV, gap: 2 }}>
-        <Chip
-          sx={{
-            ...ChipStyle,
-            background: "#2466A80A",
-          }}
-          label={
-            <Text variant="semiBoldMedium" color={"primary.main"}>
-              {firstTag}
-            </Text>
-          }
-        />
-        {secondTag && (
-          <Chip
-            sx={{
-              ...ChipStyle,
-              background: "#2466A80A",
-            }}
-            label={
-              <Text variant="semiBoldMedium" color={"primary.main"}>
-                {secondTag}
-              </Text>
-            }
-          />
-        )}
+        {tags?.map((tag) => {
+          return (
+            <Chip
+              sx={{
+                ...ChipStyle,
+                bgcolor: "primary.states.selected",
+              }}
+              label={
+                <Text variant="semiBoldMedium" color={"primary.main"}>
+                  {tag}
+                </Text>
+              }
+            />
+          );
+        })}
       </Box>
     </Box>
   );
