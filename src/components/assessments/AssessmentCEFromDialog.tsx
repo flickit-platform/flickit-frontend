@@ -229,7 +229,7 @@ const AssessmentCEFromDialog = (props: IAssessmentCEFromDialogProps) => {
                 }
                 options={languages}
                 data-cy="language"
-                data-testid="inputLanguage"
+                data-testid="language-value"
                 disabled={languages.length === 1}
                 required
                 helperText={

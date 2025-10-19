@@ -54,7 +54,7 @@ describe("create new assessment by dialog", () => {
     expect(shortTitle).toBeInTheDocument();
   });
 
-    it("submits assessment form and calls axios.post", async () => {
+    it("create new assessment", async () => {
         renderDialog();
 
         const inputBox = within(screen.getByTestId("input-title")).getByRole("textbox");
@@ -65,9 +65,10 @@ describe("create new assessment by dialog", () => {
         await userEvent.type(shortTitleBox, "MNA");
         expect(screen.getByDisplayValue("MNA")).toBeInTheDocument();
 
-        const languageInput = screen.getByTestId("inputLanguage");
+        const languageInput = screen.getByTestId("language-value");
         await userEvent.type(languageInput, "fa");
 
+        // todo
         expect(screen.getByTestId("submit")).toBeInTheDocument();
         await userEvent.click(screen.getByTestId("submit"));
 
