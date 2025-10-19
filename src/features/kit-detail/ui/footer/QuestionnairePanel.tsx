@@ -304,10 +304,7 @@ const QuestionnairePanel = ({
                                           );
                                           return (
                                             <Chip
-                                              key={
-                                                level.maturityLevel.id ??
-                                                `${impact.title}-${idx}`
-                                              }
+                                              key={level.maturityLevel.id}
                                               label={
                                                 <Box
                                                   display="flex"

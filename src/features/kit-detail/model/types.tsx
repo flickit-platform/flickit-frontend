@@ -45,6 +45,7 @@ export interface IIndexedItem {
   id: TId;
   title: string;
   index: number;
+  weight?: number;
   description?: string;
   translations?: Record<string, { title?: string; description?: string }>;
 }
@@ -58,11 +59,16 @@ export type IAnswerRangeIndexedItem = Omit<IIndexedItem, "index"> & {
   answerOptions: IOption[];
   translations: Record<string, { title: string }>;
 };
+
+export type ISubject = IIndexedItem & {
+  attributes: IIndexedItem[];
+  questionsCount?: number;
+};
 export interface KitDetailsType {
   maturityLevels: IMaturityLevelIndexedItem[];
   measures: IIndexedItem[];
   questionnaires: IIndexedItem[];
-  subjects: (IIndexedItem & { attributes: IIndexedItem[] })[];
+  subjects: ISubject[];
   answerRanges: IAnswerRangeIndexedItem[];
 }
 

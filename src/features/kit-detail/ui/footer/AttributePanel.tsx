@@ -299,7 +299,7 @@ const AttributePanel = ({ attribute }: { attribute: IIndexedItem }) => {
 
                     return (
                       <Box display="flex" flexDirection="column" gap={1}>
-                        {questions.map((q: any, i: number) => {
+                        {questions.map((question: any, i: number) => {
                           const {
                             id,
                             title,
@@ -310,7 +310,7 @@ const AttributePanel = ({ attribute }: { attribute: IIndexedItem }) => {
                             answerOptions,
                             measure,
                             answerRange,
-                          } = q;
+                          } = question;
 
                           const expanded = isExpanded(i);
 

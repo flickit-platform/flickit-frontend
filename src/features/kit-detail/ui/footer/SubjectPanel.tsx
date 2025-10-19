@@ -9,24 +9,11 @@ import { useServiceContext } from "@providers/service-provider";
 import { useParams } from "react-router-dom";
 import QueryData from "@common/QueryData";
 import { useEffect } from "react";
+import { ISubject } from "../../model/types";
+import { TId } from "@/types";
 
 type Ttranslations = Record<string, any>;
-type TAttribute = { title: string; weight: number; id: number; index: number };
 
-interface IsubjectData {
-  attributes: TAttribute[];
-  description: string;
-  questionsCount: number;
-  translations?: Ttranslations;
-  weight: number;
-}
-interface IsubjectProp {
-  attributes: TAttribute[];
-  id: number;
-  index: number;
-  translations: Ttranslations;
-  title: string;
-}
 
 export const getTranslation = (
   obj?: Ttranslations | null,
@@ -41,7 +28,7 @@ const SubjectPanel = ({
   subject,
   onSelect,
 }: {
-  subject: IsubjectProp;
+  subject: ISubject;
   onSelect: any;
 }) => {
   const { service } = useServiceContext();
@@ -59,7 +46,7 @@ const SubjectPanel = ({
     fetchSubjectDetail.query();
   }, [subject.id]);
 
-  const goToAttribute = (attributeId: number) => {
+  const goToAttribute = (attributeId: TId) => {
     const nodeId = `attribute-${subject.id}-${attributeId}`;
     window.location.hash = nodeId;
     onSelect?.(nodeId);
@@ -68,7 +55,7 @@ const SubjectPanel = ({
   return (
     <QueryData
       {...fetchSubjectDetail}
-      render={(data: IsubjectData) => {
+      render={(data: ISubject) => {
         const {
           weight,
           description,
