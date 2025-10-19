@@ -1,13 +1,14 @@
 import { useState } from "react";
-import { Box, IconButton, TextField, Typography } from "@mui/material";
+import { Box, IconButton, TextField } from "@mui/material";
 import CheckIcon from "@mui/icons-material/Check";
 import CloseIcon from "@mui/icons-material/Close";
 import { Trans } from "react-i18next";
 import MultiLangTextField from "@/components/common/fields/MultiLangTextField";
 import { styles } from "@/config/styles";
-import { useKitDesignerContext } from "@/providers/KitProvider";
+import { useKitDesignerContext } from "@/providers/kit-provider";
 import { MultiLangs } from "@/types";
 import { useTranslationUpdater } from "@/hooks/useTranslationUpdater";
+import { Text } from "@/components/common/Text";
 
 interface SubjectFormProps {
   newSubject: {
@@ -51,9 +52,9 @@ const SubjectForm = ({
   ) => (
     <Box gap={0.5} sx={{ ...styles.centerCH }}>
       {label && (
-        <Typography variant="caption" color="textSecondary">
+        <Text variant="caption" color="textSecondary">
           <Trans i18nKey={label} />
-        </Typography>
+        </Text>
       )}
       <TextField
         name={name}

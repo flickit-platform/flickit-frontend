@@ -9,22 +9,22 @@ import Divider from "@mui/material/Divider";
 import EditRoundedIcon from "@mui/icons-material/EditRounded";
 import { Link } from "react-router-dom";
 import { styles } from "@styles";
-import useMenu from "@utils/useMenu";
+import useMenu from "@/hooks/useMenu";
 import MoreActions from "@common/MoreActions";
 import { useQueryDataContext } from "@common/QueryData";
-import { useServiceContext } from "@providers/ServiceProvider";
-import { useQuery } from "@utils/useQuery";
+import { useServiceContext } from "@/providers/service-provider";
+import { useQuery } from "@/hooks/useQuery";
 import { Trans } from "react-i18next";
-import useDialog from "@utils/useDialog";
+import useDialog from "@/hooks/useDialog";
 import ExpertGroupCEFormDialog from "./ExpertGroupCEFormDialog";
 import Tooltip from "@mui/material/Tooltip";
 import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
-import { ICustomError } from "@utils/CustomError";
-import languageDetector from "@utils/languageDetector";
+import { ICustomError } from "@/utils/custom-error";
+import languageDetector from "@/utils/language-detector";
 import { farsiFontFamily, primaryFontFamily } from "@config/theme";
-import { FLAGS, TId } from "@/types";
-import flagsmith from "flagsmith";
-import showToast from "@utils/toastError";
+import { TId } from "@/types";
+import showToast from "@/utils/toast-error";
+import { showExpertGroups } from "@/utils/helpers";
 
 interface IExpertGroupsItemProps {
   data: any;
@@ -190,7 +190,7 @@ const Actions = (props: any) => {
     });
   };
   
-  const showGroups = flagsmith.hasFeature(FLAGS.display_expert_groups) || !flagsmith.initialised;
+  const showGroups = showExpertGroups()
   const menu  = useMenu();
 
   return (

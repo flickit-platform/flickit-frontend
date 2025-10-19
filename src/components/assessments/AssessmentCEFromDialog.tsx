@@ -5,42 +5,33 @@ import { useForm } from "react-hook-form";
 import { Trans } from "react-i18next";
 import { InputFieldUC } from "@common/fields/InputField";
 import { styles } from "@styles";
-import { useServiceContext } from "@providers/ServiceProvider";
-import setServerFieldErrors from "@utils/setServerFieldError";
+import { useServiceContext } from "@/providers/service-provider";
+import setServerFieldErrors from "@/utils/set-server-field-error";
 import NoteAddRoundedIcon from "@mui/icons-material/NoteAddRounded";
-import { ICustomError } from "@utils/CustomError";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { ICustomError } from "@/utils/custom-error";
+import { useNavigate, useParams } from "react-router-dom";
 import { CEDialog, CEDialogActions } from "@common/dialogs/CEDialog";
 import FormProviderWithForm from "@common/FormProviderWithForm";
 import AutocompleteAsyncField, {
   useConnectAutocompleteField,
 } from "@common/fields/AutocompleteAsyncField";
-import CheckmarkGif from "../common/success/Checkmark";
-import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
-import showToast from "@utils/toastError";
-import { useAuthContext } from "@/providers/AuthProvider";
-import { t } from "i18next";
+import showToast from "@/utils/toast-error";
+import { useAuthContext } from "@/providers/auth-provider";
 
 interface IAssessmentCEFromDialogProps extends DialogProps {
   onClose: () => void;
-  onSubmitForm?: () => void;
+  refetchData?: () => void;
   openDialog?: any;
   context?: any;
 }
 
 const AssessmentCEFromDialog = (props: IAssessmentCEFromDialogProps) => {
   const [loading, setLoading] = useState(false);
-  const [isSubmitted, setIsSubmitted] = useState(false);
-  const [submittedTitle, setSubmittedTitle] = useState("");
-  const [isFocused, setIsFocused] = useState(true);
-  const [createdKitId, setCreatedKitId] = useState("");
   const [createdKitSpaceId, setCreatedKitSpaceId] = useState(undefined);
   const { service } = useServiceContext();
   const {
     onClose: closeDialog,
-    onSubmitForm,
+    refetchData,
     context = {},
     openDialog,
     ...rest
@@ -49,13 +40,16 @@ const AssessmentCEFromDialog = (props: IAssessmentCEFromDialogProps) => {
   const { id: assessmentId } = data;
   const defaultValues = type === "update" ? data : {};
   const { spaceId } = useParams();
-  const formMethods = useForm({ shouldUnregister: true });
+  const formMethods = useForm({
+    shouldUnregister: true,
+    mode: "onSubmit",
+    reValidateMode: "onSubmit",
+  });
   const abortController = useMemo(() => new AbortController(), [rest.open]);
   const navigate = useNavigate();
   const close = () => {
     abortController.abort();
     closeDialog();
-    setIsSubmitted(false);
     !!staticData.assessment_kit &&
       createdKitSpaceId &&
       navigate(`/${createdKitSpaceId}/assessments/1`);
@@ -88,32 +82,25 @@ const AssessmentCEFromDialog = (props: IAssessmentCEFromDialogProps) => {
             },
             { signal: abortController.signal },
           )
-        : await service.assessments.info
-            .create(
-              {
-                data: {
-                  spaceId: spaceId ?? space?.id ?? defaultSpaceId,
-                  assessmentKitId: assessment_kit?.id,
-                  title: title,
-                  shortTitle: shortTitle === "" ? null : (shortTitle ?? null),
-                  colorId: color,
-                  lang: language.code,
-                },
+        : await service.assessments.info.create(
+            {
+              data: {
+                spaceId: spaceId ?? space?.id ?? defaultSpaceId,
+                assessmentKitId: assessment_kit?.id,
+                title: title,
+                shortTitle: shortTitle === "" ? null : (shortTitle ?? null),
+                colorId: color,
+                lang: language.code,
               },
-              { signal: abortController.signal },
-            )
-            .then((res: any) => {
-              setCreatedKitId(res.data?.id);
-            });
+            },
+            { signal: abortController.signal },
+          );
+
       setLoading(false);
-      setSubmittedTitle(title);
-      setIsSubmitted(true);
-      if (onSubmitForm !== undefined) {
-        onSubmitForm();
+      if (refetchData !== undefined) {
+        refetchData();
       }
-      if (type === "update") {
-        close();
-      }
+      close();
       setCreatedKitSpaceId(spaceId ?? space?.id ?? defaultSpaceId);
     } catch (e) {
       const err = e as ICustomError;
@@ -133,28 +120,6 @@ const AssessmentCEFromDialog = (props: IAssessmentCEFromDialogProps) => {
     };
   }, []);
 
-  useEffect(() => {
-    if (openDialog) {
-      const handleKeyDown = (e: KeyboardEvent) => {
-        if (e.key === "Enter") {
-          setIsFocused(false);
-          setTimeout(() => {
-            setIsFocused(true);
-          }, 500);
-          formMethods.handleSubmit((data) =>
-            onSubmit(formMethods.getValues(), e),
-          )();
-        }
-      };
-
-      document.addEventListener("keydown", handleKeyDown);
-
-      return () => {
-        document.removeEventListener("keydown", handleKeyDown);
-        abortController.abort();
-      };
-    }
-  }, [openDialog, formMethods, abortController]);
   const [languages, setLanguages] = useState<any[]>([]);
 
   useEffect(() => {
@@ -189,105 +154,64 @@ const AssessmentCEFromDialog = (props: IAssessmentCEFromDialogProps) => {
         </>
       }
     >
-      {!isSubmitted ? (
-        <FormProviderWithForm formMethods={formMethods}>
-          <Grid container spacing={2} sx={styles.formGrid}>
-            <Grid item xs={12} md={12}>
-              <InputFieldUC
-                autoFocus={true}
-                defaultValue={defaultValues.title ?? ""}
-                name="title"
-                required={true}
-                label={<Trans i18nKey="common.title" />}
-                data-cy="title"
-                isFocused={isFocused}
-              />
-            </Grid>
-            <Grid item xs={12} md={12}>
-              <InputFieldUC
-                autoFocus={false}
-                defaultValue={defaultValues.shortTitle ?? null}
-                name="shortTitle"
-                required={false}
-                label={<Trans i18nKey="assessment.shortTitle" />}
-                data-cy="title"
-                helperText={<Trans i18nKey="assessment.shortTitleInfo" />}
-              />
-            </Grid>
-            <Grid item xs={12} md={7}>
-              <AssessmentKitField
-                staticData={staticData?.assessment_kit}
-                defaultValue={defaultValues?.assessment_kit}
-              />
-            </Grid>
-            <Grid item xs={12} md={5}>
-              {" "}
-              <AutocompleteAsyncField
-                name="language"
-                label={
-                  <Trans i18nKey="assessment.assessmentAndReportLanguage" />
-                }
-                options={languages}
-                data-cy="language"
-                data-testid="inputLanguage"
-                disabled={languages.length === 1}
-                required
-                helperText={
-                  languages.length === 1 ? (
-                    <Trans i18nKey="assessment.availableLanguage" />
-                  ) : (
-                    ""
-                  )
-                }
-              />
-            </Grid>
+      <FormProviderWithForm formMethods={formMethods}>
+        <Grid container spacing={2} sx={styles.formGrid}>
+          <Grid item xs={12} md={12}>
+            <InputFieldUC
+              autoFocus={true}
+              defaultValue={defaultValues.title ?? ""}
+              name="title"
+              required
+              label={<Trans i18nKey="common.title" />}
+              data-cy="title"
+              isFocused
+            />
           </Grid>
-          <CEDialogActions
-            closeDialog={close}
-            loading={loading}
-            type={type}
-            onSubmit={formMethods.handleSubmit(onSubmit)}
-          />
-        </FormProviderWithForm>
-      ) : (
-        <FormProviderWithForm formMethods={formMethods}>
-          <Box textAlign="center" sx={{ ...styles.centerCVH }}>
-            <CheckmarkGif />
-            <Typography variant="titleLarge">
-              <Trans
-                i18nKey="assessment.successCreatedAssessmentTitleFirstPart"
-                values={{ title: submittedTitle }}
-              />{" "}
-              <Typography variant="headlineMedium">{submittedTitle}</Typography>{" "}
-              <Trans
-                i18nKey="assessment.successCreatedAssessmentTitleSecondPart"
-                values={{ title: submittedTitle }}
-              />
-            </Typography>
-            <Typography variant="displaySmall" mt={2}>
-              <Trans i18nKey="assessment.successCreatedAssessmentMessage" />
-            </Typography>
-          </Box>
-          <CEDialogActions
-            closeDialog={close}
-            loading={loading}
-            type={undefined}
-            cancelLabel={t("common.close")}
-            hideSubmitButton
-          >
-            <Link
-              to={`/${
-                spaceId ?? createdKitSpaceId ?? defaultSpaceId
-              }/assessments/1/${createdKitId}/settings/`}
-              style={{ textDecoration: "none" }}
-            >
-              <Button variant="contained">
-                <Trans i18nKey="assessment.assessmentSettings" />
-              </Button>
-            </Link>
-          </CEDialogActions>
-        </FormProviderWithForm>
-      )}
+          <Grid item xs={12} md={12}>
+            <InputFieldUC
+              autoFocus={false}
+              defaultValue={defaultValues.shortTitle ?? null}
+              name="shortTitle"
+              required={false}
+              label={<Trans i18nKey="assessment.shortTitle" />}
+              data-cy="title"
+              helperText={<Trans i18nKey="assessment.shortTitleInfo" />}
+            />
+          </Grid>
+          <Grid item xs={12} md={7}>
+            <AssessmentKitField
+              staticData={staticData?.assessment_kit}
+              defaultValue={defaultValues?.assessment_kit}
+            />
+          </Grid>
+          <Grid item xs={12} md={5}>
+            {" "}
+            <AutocompleteAsyncField
+              name="language"
+              label={<Trans i18nKey="assessment.assessmentAndReportLanguage" />}
+              options={languages}
+              data-cy="language"
+              disabled={languages.length === 1}
+              required
+              helperText={
+                languages.length === 1 ? (
+                  <Trans i18nKey="assessment.availableLanguage" />
+                ) : (
+                  ""
+                )
+              }
+            />
+          </Grid>
+        </Grid>
+        <CEDialogActions
+          closeDialog={close}
+          loading={loading}
+          type={type}
+          onSubmit={(...args) =>
+            formMethods.handleSubmit((data) => onSubmit(data, ...args))()
+          }
+        />
+      </FormProviderWithForm>
     </CEDialog>
   );
 };

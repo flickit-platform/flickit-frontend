@@ -1,6 +1,6 @@
 import { useState, useCallback } from "react";
 import { CEDialog, CEDialogActions } from "@common/dialogs/CEDialog";
-import Typography from "@mui/material/Typography";
+import { Text } from "@/components/common/Text";
 import Box from "@mui/material/Box";
 import { t } from "i18next";
 import { styles } from "@styles";
@@ -82,21 +82,21 @@ const InnerAccordion = ({
     sx={accordionBaseStyle}
   >
     <AccordionSummary
-      expandIcon={<ExpandMoreIcon sx={{ color: "surface.onVariant" }} />}
+      expandIcon={<ExpandMoreIcon sx={{ color: "background.onVariant" }} />}
       sx={accordionSummaryStyle}
     >
-      <Typography
+      <Text
         variant="titleSmall"
-        color={"surface.inverse"}
+        color={"background.inverse"}
         sx={{
           ...styles.rtlStyle(lng == "fa"),
         }}
       >
         {t(`assessmentReport.${title}`, { lng })}
-      </Typography>
-      <Typography
+      </Text>
+      <Text
         variant="bodyMedium"
-        color={"surface.onVariant"}
+        color="background.onVariant"
         sx={{
           ...styles.rtlStyle(lng == "fa"),
         }}
@@ -109,7 +109,7 @@ const InnerAccordion = ({
           { lng },
         )}
         )
-      </Typography>
+      </Text>
     </AccordionSummary>
 
     <AccordionDetails
@@ -126,21 +126,21 @@ const InnerAccordion = ({
                 display: "flex",
               }}
             >
-              <Typography variant="bodyMedium" fontWeight="bold">
+              <Text variant="bodyMedium" fontWeight="bold">
                 Q
-              </Typography>
-              <Typography variant="bodyMedium" fontWeight="bold">
+              </Text>
+              <Text variant="bodyMedium" fontWeight="bold">
                 .{item.question.index}
-              </Typography>
+              </Text>
             </Box>
-            <Typography
+            <Text
               variant="bodySmall"
               sx={{
                 ...styles.rtlStyle(lng == "fa"),
               }}
             >
               {item.question.title}
-            </Typography>
+            </Text>
           </Box>
 
           <Box
@@ -161,14 +161,14 @@ const InnerAccordion = ({
                 }}
               >
                 <CheckBoxIcon sx={{ color: "#6C8093" }} />
-                <Typography
+                <Text
                   variant="bodySmall"
                   sx={{
                     ...styles.rtlStyle(lng == "fa"),
                   }}
                 >
                   {item.answer.title}
-                </Typography>
+                </Text>
               </Box>
             ) : (
               <Box
@@ -181,7 +181,7 @@ const InnerAccordion = ({
                 }}
               >
                 <ErrorOutlineIcon sx={{ color: "error.main" }} />
-                <Typography
+                <Text
                   variant="bodySmall"
                   color={"error.main"}
                   sx={{
@@ -189,14 +189,14 @@ const InnerAccordion = ({
                   }}
                 >
                   {t("subject.noQuestionHasBeenAnswered", { lng })}
-                </Typography>
+                </Text>
               </Box>
             )}
 
-            <Typography
+            <Text
               component={Link}
               to={`./../../1/${assessmentId}/questionnaires/${measureId}/${item?.question?.index}`}
-              target={"_blank"}
+              target="_blank"
               variant="bodyMedium"
               color="primary.main"
               sx={{
@@ -205,7 +205,7 @@ const InnerAccordion = ({
               }}
             >
               {t("assessmentReport.goToQuestion", { lng })}
-            </Typography>
+            </Text>
           </Box>
 
           {index !== data.length - 1 && <Divider sx={{ my: 1 }} />}
@@ -253,14 +253,14 @@ const QuestionReportDialog = (props: IQuestionReportDialog) => {
       title={
         <Box sx={{ ...styles.centerV, gap: 0.7 }}>
           <StickyNote2Icon fontSize={"small"} />
-          <Typography
+          <Text
             variant="semiBoldXLarge"
             sx={{
               ...styles.rtlStyle(lng == "fa"),
             }}
           >
             {t("assessmentReport.viewCodeQualityMeasure", { lng })}
-          </Typography>
+          </Text>
         </Box>
       }
       sx={{ direction: isRTL ? "rtl" : "ltr" }}

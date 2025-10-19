@@ -1,8 +1,8 @@
 import { lazy, useEffect, useRef, useState } from "react";
 import { Trans } from "react-i18next";
-import { useParams, NavLink, useNavigate } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { styles } from "@styles";
-import { authActions, useAuthContext } from "@providers/AuthProvider";
+import { useAuthContext } from "@/providers/auth-provider";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import ListItemIcon from "@mui/material/ListItemIcon";
@@ -16,7 +16,6 @@ import ListItemButton from "@mui/material/ListItemButton";
 import ListItemText from "@mui/material/ListItemText";
 import MenuIcon from "@mui/icons-material/Menu";
 import Toolbar from "@mui/material/Toolbar";
-import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import Avatar from "@mui/material/Avatar";
 import Menu from "@mui/material/Menu";
@@ -26,25 +25,23 @@ import ArrowDropUpRoundedIcon from "@mui/icons-material/ArrowDropUpRounded";
 import AccountBoxRoundedIcon from "@mui/icons-material/AccountBoxRounded";
 import EngineeringIcon from "@mui/icons-material/Engineering";
 import LogoutRoundedIcon from "@mui/icons-material/LogoutRounded";
-import { useServiceContext } from "@providers/ServiceProvider";
-import { useQuery } from "@utils/useQuery";
-import { FLAGS } from "@/types/index";
 import keycloakService from "@/service//keycloakService";
-import { useConfigContext } from "@/providers/ConfgProvider";
+import { useConfigContext } from "@/providers/config-provider";
 import { IMessage } from "@novu/notification-center";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import ArrowBackIos from "@mui/icons-material/ArrowBackIos";
 import ArrowForwardIos from "@mui/icons-material/ArrowForwardIos";
-import NotificationEmptyState from "@/assets/svg/notificationEmptyState.svg";
+import NotificationEmptyState from "@/assets/svg/notification-empty-state.svg";
 import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
 import LanguageSelector from "./LangSelector";
 import i18n from "i18next";
 import { MULTILINGUALITY } from "@/config/constants";
-import languageDetector from "@utils/languageDetector";
-import { getReadableDate } from "@utils/readableDate";
-import flagsmith from "flagsmith";
+import languageDetector from "@/utils/language-detector";
+import { getReadableDate } from "@/utils/readable-date";
 import { useTheme } from "@mui/material";
 import CircularProgress from "@mui/material/CircularProgress";
+import { Text } from "./Text";
+import { showExpertGroups } from "@/utils/helpers";
 
 const NotificationCenter = lazy(() =>
   import("@novu/notification-center").then((module) => ({
@@ -101,7 +98,7 @@ const NotificationItem = ({
         justifyContent={theme.direction === "rtl" ? "flex-end" : "flex-start"}
         sx={{ ...styles.centerV }}
       >
-        <Typography
+        <Text
           variant="titleSmall"
           color="text.primary"
           fontWeight={message.seen ? 400 : 600}
@@ -111,7 +108,7 @@ const NotificationItem = ({
           dangerouslySetInnerHTML={{ __html: message.content }}
         />
       </Box>
-      <Typography
+      <Text
         variant="labelSmall"
         color="#3D4D5C"
         marginInlineStart="8px"
@@ -119,7 +116,7 @@ const NotificationItem = ({
         whiteSpace="nowrap"
       >
         {getReadableDate(message.createdAt, "relative")}
-      </Typography>
+      </Text>
       <ArrowForwardIos
         sx={{
           fontSize: "16px",
@@ -196,7 +193,7 @@ const NotificationCenterComponent = ({ setNotificationCount }: any) => {
           width={{ md: 420, sm: 320 }}
         >
           <Box className="nc-header" height="55px" sx={{ ...styles.centerV }}>
-            <Typography
+            <Text
               className="nc-header-title"
               color="#525266"
               textAlign="left"
@@ -215,7 +212,7 @@ const NotificationCenterComponent = ({ setNotificationCount }: any) => {
                 />
               </IconButton>
               <Trans i18nKey="notification.notificationDetails" />
-            </Typography>
+            </Text>
           </Box>
           <Box className="nc-notifications-list" height={400}>
             <Box
@@ -244,29 +241,29 @@ const NotificationCenterComponent = ({ setNotificationCount }: any) => {
                 display="flex"
                 flexDirection="column"
               >
-                <Typography variant="titleMedium">
+                <Text variant="titleMedium">
                   {(selectedMessage as any)?.payload?.title}
-                </Typography>
+                </Text>
                 <Box
                   flexGrow={1}
                   display="flex"
                   alignItems="flex-start"
                   gap={1}
                 >
-                  <Typography
+                  <Text
                     variant="bodyMedium"
                     dangerouslySetInnerHTML={{
                       __html: getLinkedContent(selectedMessage),
                     }}
                   />
                 </Box>
-                <Typography variant="labelSmall" color="#3D4D5C">
+                <Text variant="labelSmall" color="#3D4D5C">
                   {getReadableDate(
                     selectedMessage?.createdAt,
                     "relativeWithDate",
                     true,
                   )}
-                </Typography>
+                </Text>
               </Box>
             </Box>
           </Box>
@@ -284,9 +281,9 @@ const NotificationCenterComponent = ({ setNotificationCount }: any) => {
               gap={1}
             >
               <img src={NotificationEmptyState} alt={"No assesment here!"} />
-              <Typography variant="bodyMedium" color="primary">
+              <Text variant="bodyMedium" color="primary">
                 <Trans i18nKey="notification.notificationEmptyState" />
-              </Typography>
+              </Text>
             </Box>
           }
           listItem={(
@@ -308,34 +305,16 @@ const NotificationCenterComponent = ({ setNotificationCount }: any) => {
 };
 
 const Navbar = () => {
-  const { userInfo, dispatch } = useAuthContext();
+  const { userInfo } = useAuthContext();
   const { config } = useConfigContext();
-  const { spaceId } = useParams();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [notificationCenterOpen, setNotificationCenterOpen] = useState(false);
   const [notificationCount, setNotificationCount] = useState(0);
   const notificationCenterRef = useRef(null);
   const bellButtonRef = useRef(null);
-  const { service } = useServiceContext();
   const theme = useTheme();
 
   const isAuthenticated = keycloakService.isLoggedIn();
-  const navigate = useNavigate();
-
-  const fetchPathInfo = useQuery({
-    service: (args, config) =>
-      service.common.getPathInfo({ spaceId, ...(args ?? {}) }, config),
-    runOnMount: false,
-  });
-
-  const fetchSpaceInfo = async () => {
-    const res = await fetchPathInfo.query();
-    dispatch(authActions.setCurrentSpace(res?.space));
-  };
-
-  useEffect(() => {
-    if (spaceId) fetchSpaceInfo();
-  }, [spaceId]);
 
   const handleDrawerToggle = () => setMobileOpen((p) => !p);
   const toggleNotificationCenter = () => setNotificationCenterOpen((p) => !p);
@@ -455,7 +434,7 @@ const Navbar = () => {
             </IconButton>
           )}
 
-          <Typography
+          <Text
             variant="h6"
             component={NavLink}
             sx={{
@@ -483,7 +462,7 @@ const Navbar = () => {
                 />
               </Box>
             )}
-          </Typography>
+          </Text>
 
           <Box
             sx={{
@@ -641,8 +620,7 @@ const AccountDropDownButton = ({ userInfo }: any) => {
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) =>
     setAnchorEl(event.currentTarget);
   const handleClose = () => setAnchorEl(null);
-  const showGroups =
-    flagsmith.hasFeature(FLAGS.display_expert_groups) || !flagsmith.initialised;
+  const showGroups = showExpertGroups()
 
   return (
     <>

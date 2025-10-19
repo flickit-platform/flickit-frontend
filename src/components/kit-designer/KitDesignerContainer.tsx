@@ -1,23 +1,24 @@
 import { useEffect, useState } from "react";
-import { Box, Grid, Typography, Tabs, Tab } from "@mui/material";
+import { Box, Grid, Tabs, Tab } from "@mui/material";
 import { Trans } from "react-i18next";
 import { useParams } from "react-router-dom";
 
 import KitDesignerTitle from "./KitDesignerContainerTitle";
-import MaturityLevelsContent from "./maturityLevels/MaturityLevelsContent";
+import MaturityLevelsContent from "./maturity-levels/MaturityLevelsContent";
 import SubjectsContent from "./subjects/SubjectsContent";
 import AttributesContent from "./attributes/AttributeContent";
-import AnaweRangeContent from "./answerRange/AnswerRangeContent";
+import AnaweRangeContent from "./answer-range/AnswerRangeContent";
 import MeasuresContent from "./measures/MeasuresContent";
 import QuestionnairesContent from "./questionnaires/QuestionnairesContent";
 import PublishContent from "./publish/PublishContent";
 import GeneralContent from "./general/GeneralContent";
 
 import QueryBatchData from "../common/QueryBatchData";
-import { useServiceContext } from "@/providers/ServiceProvider";
-import { useQuery } from "@/utils/useQuery";
+import { useServiceContext } from "@/providers/service-provider";
+import { useQuery } from "@/hooks/useQuery";
 import { IKitVersion, ILanguage } from "@/types";
-import { useKitDesignerContext, kitActions } from "@/providers/KitProvider";
+import { useKitDesignerContext, kitActions } from "@/providers/kit-provider";
+import { Text } from "../common/Text";
 
 const tabMap = [
   { key: "General", title: "common.general", Component: GeneralContent },
@@ -104,13 +105,13 @@ const KitDesignerContainer = () => {
 
             <Grid container spacing={1} columns={12}>
               <Grid item sm={12} xs={12} mt={1}>
-                <Typography
+                <Text
                   color="primary"
                   textAlign="left"
                   variant="headlineLarge"
                 >
                   <Trans i18nKey="kitDesigner.kitDesigner" />
-                </Typography>
+                </Text>
               </Grid>
 
               <Grid container sm={12} xs={12} mt={6}>
@@ -151,9 +152,9 @@ const KitDesignerContainer = () => {
                         key={tab.key}
                         sx={{ alignItems: "flex-start", textTransform: "none" }}
                         label={
-                          <Typography variant="semiBoldLarge">
+                          <Text variant="semiBoldLarge">
                             <Trans i18nKey={tab.title} />
-                          </Typography>
+                          </Text>
                         }
                       />
                     ))}

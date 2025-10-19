@@ -1,7 +1,8 @@
-import { Box, Typography } from "@mui/material";
+import { Box } from "@mui/material";
 import ChipsRow from "@/components/common/fields/ChipsRow";
 import { styles } from "@styles";
 import { t } from "i18next";
+import { Text } from "@/components/common/Text";
 
 export default function ReportHeader({
   rtl,
@@ -14,13 +15,13 @@ export default function ReportHeader({
 }>) {
   return (
     <Box justifyContent="space-between" width="100%" sx={{ ...styles.centerV }}>
-      <Typography
+      <Text
         variant="headlineMedium"
         color="primary"
         sx={{ ...styles.rtlStyle(rtl) }}
       >
         {t("assessmentReport.assessmentResult", { lng })}
-      </Typography>
+      </Text>
       <ChipsRow items={infoItems} lng={lng} />
     </Box>
   );

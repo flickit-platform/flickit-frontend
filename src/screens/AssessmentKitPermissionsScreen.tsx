@@ -1,6 +1,6 @@
 import { t } from "i18next";
 import AssessmentKitPermissionsContainer from "@/components/assessment-kit/AssessmentKitPermissionsContainer";
-import useDocumentTitle from "@utils/useDocumentTitle";
+import useDocumentTitle from "@/hooks/useDocumentTitle";
 
 const AssessmentKitPermissionsScreen = () => {
   useDocumentTitle(t("assessmentKit.assessmentKit") as string);

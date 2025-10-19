@@ -1,6 +1,5 @@
 import { useState, useRef, useEffect, useMemo } from "react";
 import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import Popper from "@mui/material/Popper";
 import Paper from "@mui/material/Paper";
@@ -10,6 +9,7 @@ import Tooltip from "@mui/material/Tooltip";
 import LoadingButton from "@mui/lab/LoadingButton";
 import ExpandMoreOutlined from "@mui/icons-material/ExpandMoreOutlined";
 import ExpandLessOutlined from "@mui/icons-material/ExpandLessOutlined";
+import { Text } from "../Text";
 
 interface ActionPopupProps {
   status: "default" | "pending" | "approved" | "expired";
@@ -195,14 +195,14 @@ const ConfirmDialog = ({
   setOpen,
 }: any) => (
   <>
-    <Typography
+    <Text
+      variant="bodySmall"
       color={colorScheme.main}
       textAlign="justify"
       mb={1}
-      sx={(theme) => ({ ...theme.typography.bodySmall })}
     >
       {texts.confirmMessage}
-    </Typography>
+    </Text>
     <Grid container spacing={1}>
       <Grid item xs={12} sm={7.5}>
         <LoadingButton
@@ -250,16 +250,14 @@ const ActionContent = ({
   setOpen,
 }: any) => (
   <>
-    <Typography
+    <Text
+      variant="bodySmall"
       color={colorScheme.main}
       textAlign="justify"
       mb={1}
-      sx={(theme) => ({
-        ...theme.typography.bodySmall,
-      })}
     >
       {texts.description}
-    </Typography>
+    </Text>
     <Box sx={{ display: "flex", flexDirection: "column", gap: "10px" }}>
       {(status === "pending" || status === "expired") && (
         <LoadingButton

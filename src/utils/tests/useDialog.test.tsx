@@ -1,5 +1,5 @@
 import { act, renderHook } from "@testing-library/react";
-import useDialog from "../useDialog";
+import useDialog from "../../hooks/useDialog";
 import { describe, expect, it } from "vitest";
 
 describe("useDialog hook", () => {

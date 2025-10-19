@@ -1,8 +1,8 @@
 import { t } from "i18next";
 import ExpertGroupContainer from "@components/expert-groups/ExpertGroupContainer";
-import { useAuthContext } from "@providers/AuthProvider";
-import getUserName from "@utils/getUserName";
-import useDocumentTitle from "@utils/useDocumentTitle";
+import { useAuthContext } from "@/providers/auth-provider";
+import getUserName from "@/utils/get-username";
+import useDocumentTitle from "@/hooks/useDocumentTitle";
 
 const ExpertGroupScreen = () => {
   const { userInfo } = useAuthContext();

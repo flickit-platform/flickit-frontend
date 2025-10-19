@@ -1,13 +1,12 @@
 import { useCallback, useMemo, ReactNode, ComponentProps } from "react";
 import { Trans } from "react-i18next";
-import { useServiceContext } from "@providers/ServiceProvider";
-import { useQuery } from "@utils/useQuery";
+import { useServiceContext } from "@/providers/service-provider";
+import { useQuery } from "@/hooks/useQuery";
 import AutocompleteAsyncField from "@common/fields/AutocompleteAsyncField";
 import { t } from "i18next";
 
 type SpaceOption = { id: number | string; title: string; selected?: boolean };
 
-// تمام پراپ‌های AutocompleteAsyncField بجز این چند مورد
 type AutoProps = Omit<
   ComponentProps<typeof AutocompleteAsyncField>,
   "options" | "name" | "defaultValue" | "createItemQuery" | "label"
@@ -76,6 +75,8 @@ export const SpaceField = ({
       label={label ?? <Trans i18nKey="spaces.space" />}
       createItemQuery={createItemQuery}
       showIconBeforeOption={true}
+      disableClearable
+      isFocused
       {...rest}
     />
   );

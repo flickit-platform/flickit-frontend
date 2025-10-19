@@ -1,6 +1,7 @@
 import { useTheme } from "@mui/material";
-import Typography, { TypographyProps } from "@mui/material/Typography";
+import { TypographyProps } from "@mui/material/Typography";
 import { Trans } from "react-i18next";
+import { Text } from "./Text";
 
 interface IQANumberIndicatorProps extends TypographyProps {
   q?: number;
@@ -13,7 +14,7 @@ const QANumberIndicator = (props: IQANumberIndicatorProps) => {
   const { q = 0,variant="labelSmall" , ...rest } = props;
   const isFarsi = theme.direction === "rtl";
   return q === undefined ? null : (
-    <Typography
+    <Text
       sx={{
         whiteSpace: "nowrap",
         textTransform: "capitalize",
@@ -23,7 +24,7 @@ const QANumberIndicator = (props: IQANumberIndicatorProps) => {
       {...rest}
     >
       {q} <Trans i18nKey={isFarsi ? "common.question" : "common.questions"} />
-    </Typography>
+    </Text>
   );
 };
 

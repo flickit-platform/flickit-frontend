@@ -5,10 +5,10 @@ import { useForm } from "react-hook-form";
 import { Trans } from "react-i18next";
 import { InputFieldUC } from "@common/fields/InputField";
 import { styles } from "@styles";
-import { useServiceContext } from "@providers/ServiceProvider";
-import setServerFieldErrors from "@utils/setServerFieldError";
+import { useServiceContext } from "@/providers/service-provider";
+import setServerFieldErrors from "@/utils/set-server-field-error";
 import NoteAddRoundedIcon from "@mui/icons-material/NoteAddRounded";
-import { ICustomError } from "@utils/CustomError";
+import { ICustomError } from "@/utils/custom-error";
 import { useNavigate, useParams } from "react-router-dom";
 import { CEDialog, CEDialogActions } from "@common/dialogs/CEDialog";
 import FormProviderWithForm from "@common/FormProviderWithForm";
@@ -19,18 +19,18 @@ import UploadField from "@common/fields/UploadField";
 import RichEditorField from "@common/fields/RichEditorField";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
 import Alert from "@mui/material/Alert";
 import Divider from "@mui/material/Divider";
 import { keyframes } from "@emotion/react";
-import convertToBytes from "@/utils/convertToBytes";
-import { useQuery } from "@utils/useQuery";
+import convertToBytes from "@/utils/convert-to-bytes";
+import { useQuery } from "@/hooks/useQuery";
 import LoadingButton from "@mui/lab/LoadingButton";
-import SelectLanguage from "@utils/selectLanguage";
-import uniqueId from "@/utils/uniqueId";
+import uniqueId from "@/utils/unique-id";
 import i18n from "i18next";
-import showToast from "@utils/toastError";
+import showToast from "@/utils/toast-error";
 import { v3Tokens } from "@/config/tokens";
+import { Text } from "../common/Text";
+import SelectLanguage from "../common/SelectLanguage";
 
 interface IAssessmentKitCEFromDialogProps extends DialogProps {
   onClose: () => void;
@@ -70,7 +70,11 @@ const AssessmentKitCEFromDialog = (props: IAssessmentKitCEFromDialogProps) => {
   const { id, expertGroupId = fallbackExpertGroupId, languages } = data;
   const [lang, setLang] = useState({ code: "", title: "" });
   const defaultValues = type === "update" ? data : {};
-  const formMethods = useForm({ shouldUnregister: true });
+  const formMethods = useForm({
+    shouldUnregister: true,
+    mode: "onSubmit",
+    reValidateMode: "onSubmit",
+  });
   const abortController = useMemo(() => new AbortController(), [rest.open]);
   const navigate = useNavigate();
   const close = () => {
@@ -232,10 +236,10 @@ const AssessmentKitCEFromDialog = (props: IAssessmentKitCEFromDialogProps) => {
     <FormProviderWithForm formMethods={formMethods}>
       <Grid container spacing={type != "convert" ? 2 : 0} sx={styles.formGrid}>
         <Grid item xs={12} md={12} display={activeStep === 0 ? "" : "none"}>
-          {type === "convert" && buttonStep == 0 && !convertData && (
+          {type === "convert" && buttonStep == 0  && (
             <Box pb="10px">
               <Box
-                bgcolor="background.containerHigher"
+                bgcolor="background.containerHighest"
                 width="fit-content"
                 px={1}
                 sx={{ ...styles.centerV }}
@@ -261,7 +265,7 @@ const AssessmentKitCEFromDialog = (props: IAssessmentKitCEFromDialogProps) => {
           {type === "convert" && buttonStep == 1 && (
             <Box pb="10px">
               <Box
-                bgcolor="background.containerHigher"
+                bgcolor="background.containerHighest"
                 width="fit-content"
                 px={1}
                 sx={{ ...styles.centerV }}
@@ -331,6 +335,7 @@ const AssessmentKitCEFromDialog = (props: IAssessmentKitCEFromDialogProps) => {
             label={<Trans i18nKey="common.title" />}
             required
             defaultValue={defaultValues.title ?? ""}
+            isFocused
           />
         </Grid>
         <Grid
@@ -448,9 +453,9 @@ const AssessmentKitCEFromDialog = (props: IAssessmentKitCEFromDialogProps) => {
   );
   const syntaxErrorContent = (
     <Box>
-      <Typography ml={1} variant="h6">
+      <Text ml={1} variant="h6">
         <Trans i18nKey="errors.youveGotSyntaxErrorsInYourDslFile" />
-      </Typography>
+      </Text>
       <Divider />
       <Box mt={4} maxHeight="260px" overflow="scroll">
         {syntaxErrorObject?.map((e: any) => {
@@ -458,7 +463,7 @@ const AssessmentKitCEFromDialog = (props: IAssessmentKitCEFromDialogProps) => {
             <Box ml={1} key={uniqueId()}>
               <Alert severity="error" sx={{ my: 2 }}>
                 <Box display="flex" flexDirection="column">
-                  <Typography variant="subtitle2" color="error">
+                  <Text variant="subtitle2" color="error">
                     <Trans
                       i18nKey="errors.errorAtLine"
                       values={{
@@ -468,15 +473,15 @@ const AssessmentKitCEFromDialog = (props: IAssessmentKitCEFromDialogProps) => {
                         column: e.column,
                       }}
                     />
-                  </Typography>
-                  <Typography variant="subtitle2" color="error">
+                  </Text>
+                  <Text variant="subtitle2" color="error">
                     <Trans
                       i18nKey="errors.errorLine"
                       values={{
                         errorLine: e.errorLine,
                       }}
                     />
-                  </Typography>
+                  </Text>
                 </Box>
               </Alert>
             </Box>
@@ -567,7 +572,7 @@ const IsPrivateSwitch = (props: any) => {
               ...styles.centerVH,
             }}
           >
-            <Typography
+            <Text
               variant="body2"
               fontWeight="700"
               textTransform={"uppercase"}
@@ -575,7 +580,7 @@ const IsPrivateSwitch = (props: any) => {
               fontSize="0.825rem"
             >
               <Trans i18nKey="common.private" />
-            </Typography>
+            </Text>
           </Box>
           <Box
             onClick={() => handleToggle(false)}
@@ -591,7 +596,7 @@ const IsPrivateSwitch = (props: any) => {
               ...styles.centerVH,
             }}
           >
-            <Typography
+            <Text
               variant="body2"
               fontWeight="700"
               textTransform="uppercase"
@@ -599,7 +604,7 @@ const IsPrivateSwitch = (props: any) => {
               fontSize="0.825rem"
             >
               <Trans i18nKey="common.public" />
-            </Typography>
+            </Text>
           </Box>
         </Box>
       </Box>

@@ -1,16 +1,16 @@
 import { useMemo, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
-import { useAuthContext } from "@/providers/AuthProvider";
-import { setSurveyBox, useConfigContext } from "@providers/ConfgProvider";
+import { useAuthContext } from "@/providers/auth-provider";
+import { setSurveyBox, useConfigContext } from "@/providers/config-provider";
 import { useGraphicalReport } from "./useGraphicalReport";
 import { useReportChips } from "@/features/assessment-report/model/hooks/useReportChips";
 import { useIntersectOnce } from "@/utils/helpers";
-import { ASSESSMENT_MODE } from "@/utils/enumType";
+import { ASSESSMENT_MODE } from "@/utils/enum-type";
 import type { IGraphicalReport } from "@/types";
-import useDialog from "@/utils/useDialog";
+import useDialog from "@/hooks/useDialog";
 import keycloakService from "@/service/keycloakService";
-import { Typography } from "@mui/material";
 import { t } from "i18next";
+import { Text } from "@/components/common/Text";
 
 export function useAssessmentReportVM() {
   const location = useLocation();
@@ -56,7 +56,7 @@ export function useAssessmentReportVM() {
         email,
         dialogTitle: t("assessmentReport.contactExpertGroup", { lng }),
         children: (
-          <Typography
+          <Text
             textAlign="justify"
             variant="bodyLarge"
             fontFamily="inherit"
@@ -71,40 +71,32 @@ export function useAssessmentReportVM() {
     };
   }, []);
 
-  const handleGoToQuestionnaire = () => {
+  const navigateDashboard = () => {
+    navigate(`/${spaceId}/assessments/1/${assessmentId}/dashboard`);
+  };
+
+  const navigateQuestionnaire = () => {
     navigate(`/${spaceId}/assessments/1/${assessmentId}/questionnaires`);
   };
 
   return {
-    // fetchers
     fetchGraphicalReport,
     fetchPathInfo,
     reload,
-
-    // flags & i18n
     isAuthenticatedUser,
     lng,
     rtl,
     isQuickMode: !!isQuickMode,
     hasInvalidReport,
-
-    // chips
     infoItems,
     gotoItems,
-
-    // selection state shared between sections
     selectedId,
     setSelectedId,
-
-    // raw
     report,
-
-    // dialogs
     shareDialog,
     expertDialog,
     expertContext,
-
-    //buttons
-    handleGoToQuestionnaire,
+    navigateDashboard,
+    navigateQuestionnaire
   };
 }

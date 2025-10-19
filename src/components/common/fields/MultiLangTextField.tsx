@@ -1,23 +1,18 @@
 import { useState } from "react";
-import {
-  Box,
-  IconButton,
-  Typography,
-  TextField,
-  TextFieldProps,
-} from "@mui/material";
+import { Box, IconButton, TextField, TextFieldProps } from "@mui/material";
 import LanguageIcon from "@mui/icons-material/LanguageRounded";
-import GlobePlus from "@/assets/svg/globePlus.svg";
-import GlobeSub from "@/assets/svg/globeSub.svg";
+import AddLanguage from "@/assets/svg/add-language.svg";
+import RemoveLanguage from "@/assets/svg/remove-language.svg";
 import RichEditor from "../rich-editor/RichEditor";
-import firstCharDetector from "@utils/firstCharDetector";
-import { useKitDesignerContext } from "@/providers/KitProvider";
-import languageDetector from "@/utils/languageDetector";
+import firstCharDetector from "@/utils/first-char-detector";
+import { useKitDesignerContext } from "@/providers/kit-provider";
+import languageDetector from "@/utils/language-detector";
 import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
 import { t } from "i18next";
 import { styles } from "@styles";
 import CheckRoundedIcon from "@mui/icons-material/CheckRounded";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
+import { Text } from "../Text";
 
 interface MultiLangTextFieldProps extends Omit<TextFieldProps, "variant"> {
   name: string;
@@ -141,7 +136,7 @@ const MultiLangTextField = ({
         <Box sx={{ flexGrow: 1, width: "100%" }}>
           {renderInput(value, onChange, label, `${name}-id`)}
         </Box>
-        <Box sx={{ ...styles.centerCH }}>
+        <Box sx={{ ...styles.centerH }}>
           {!!langCode && (
             <IconButton
               onClick={(e) => handleShowTranslation(e, !showTranslation)}
@@ -154,7 +149,7 @@ const MultiLangTextField = ({
             >
               <Box
                 component="img"
-                src={showTranslation ? GlobeSub : GlobePlus}
+                src={showTranslation ? RemoveLanguage : AddLanguage}
                 alt="Toggle Translation"
                 sx={{ width: "100%", height: "100%", objectFit: "contain" }}
               />
@@ -197,9 +192,9 @@ const MultiLangTextField = ({
             sx={{ ...styles.centerCVH }}
           >
             <LanguageIcon fontSize="small" color="info" />
-            <Typography variant="caption" fontSize={10}>
+            <Text variant="caption" fontSize={10}>
               {langCode.toUpperCase()}
-            </Typography>
+            </Text>
           </Box>
 
           <Box sx={{ flexGrow: 1, width: "100%" }}>

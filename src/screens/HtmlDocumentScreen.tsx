@@ -1,5 +1,5 @@
 import { t } from "i18next";
-import useDocumentTitle from "@utils/useDocumentTitle";
+import useDocumentTitle from "@/hooks/useDocumentTitle";
 import AssessmentReport from "../features/assessment-report/ui/AssessmentReportPage";
 
 const AssessmentReportScreen = () => {

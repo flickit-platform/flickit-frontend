@@ -3,6 +3,8 @@ import LoadingButton from "@mui/lab/LoadingButton";
 import ShareIcon from "@mui/icons-material/ShareOutlined";
 import { styles } from "@styles";
 import { t } from "i18next";
+import ChecklistRtlRoundedIcon from "@mui/icons-material/ChecklistRtlRounded";
+import ChecklistRoundedIcon from "@mui/icons-material/ChecklistRounded";
 
 type SidebarQuickModeProps = Readonly<{
   show: boolean | null;
@@ -10,7 +12,9 @@ type SidebarQuickModeProps = Readonly<{
   rtl: boolean;
   canShare: boolean;
   onShare: () => void;
+  navigate: any;
   ContactBox: React.ReactNode;
+  canViewQuestionnaires: boolean;
 }>;
 
 export default function SidebarQuickMode({
@@ -19,11 +23,13 @@ export default function SidebarQuickMode({
   rtl,
   canShare,
   onShare,
+  navigate,
   ContactBox,
+  canViewQuestionnaires,
 }: SidebarQuickModeProps) {
   if (!show) return null;
   return (
-    <Box sx={{ ...styles.centerCV }} gap={3} width="100%">
+    <Box sx={{ ...styles.centerCV }} gap={2} width="100%">
       <LoadingButton
         variant="contained"
         startIcon={
@@ -39,6 +45,25 @@ export default function SidebarQuickMode({
       >
         {t("assessmentReport.shareReport", { lng })}
       </LoadingButton>
+      {canViewQuestionnaires && (
+        <LoadingButton
+          variant="outlined"
+          size="small"
+          startIcon={
+            rtl ? (
+              <ChecklistRoundedIcon fontSize="small" />
+            ) : (
+              <ChecklistRtlRoundedIcon fontSize="small" />
+            )
+          }
+          onClick={() => navigate("questionnaire")}
+          sx={{
+            ...styles.rtlStyle(rtl),
+          }}
+        >
+          {t("common.questionnaires", { lng })}
+        </LoadingButton>
+      )}
       {ContactBox}
     </Box>
   );

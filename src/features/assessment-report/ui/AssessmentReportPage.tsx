@@ -1,5 +1,5 @@
 "use client";
-import { Box, Grid, Typography } from "@mui/material";
+import { Box, Grid } from "@mui/material";
 import LoadingButton from "@mui/lab/LoadingButton";
 import ShareIcon from "@mui/icons-material/ShareOutlined";
 import PermissionControl from "@/components/common/PermissionControl";
@@ -8,7 +8,7 @@ import GraphicalReportSkeleton from "@/features/assessment-report/ui/loading/Gra
 import { styles } from "@styles";
 import { t } from "i18next";
 import type { PathInfo } from "@/types";
-import { useCallback } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 import { useAssessmentReportVM } from "../../assessment-report/model/useAssessmentReportVM";
 import AssessmentReportTitle from "./AssessmentReportTitle";
@@ -24,8 +24,13 @@ import SidebarQuickMode from "./sections/header/SidebarQuickMode";
 import ContactUsDialog from "@/components/common/dialogs/ContactUsDialog";
 import ReportActionsRow from "./ReportActionsRow";
 import HowIsItMade from "@/features/assessment-report/ui/sections/howIsItMade";
-import { ASSESSMENT_MODE } from "@utils/enumType";
+import { ASSESSMENT_MODE } from "@/utils/enum-type";
 import AIGenerated from "@/components/common/icons/AIGenerated";
+import ChecklistRtlRoundedIcon from "@mui/icons-material/ChecklistRtlRounded";
+import ChecklistRoundedIcon from "@mui/icons-material/ChecklistRounded";
+import { Dashboard } from "@mui/icons-material";
+import { Text } from "@/components/common/Text";
+import { useParams } from "react-router-dom";
 
 export default function AssessmentReportPage() {
   const {
@@ -42,20 +47,39 @@ export default function AssessmentReportPage() {
     selectedId,
     setSelectedId,
     report,
-    handleGoToQuestionnaire,
+    navigateDashboard,
+    navigateQuestionnaire,
     expertContext,
     expertDialog,
     shareDialog,
   } = useAssessmentReportVM();
+  const { spaceId } = useParams();
 
+  const [step, setStep] = useState(0);
   const onShare = useCallback(() => shareDialog.openDialog({}), [shareDialog]);
   const onExpert = useCallback(
     () => expertDialog.openDialog({}),
     [expertDialog],
   );
-  const onQuestionnaires = useCallback(handleGoToQuestionnaire, [
-    handleGoToQuestionnaire,
-  ]);
+
+  useEffect(() => {
+    if (globalThis.location.hash === "#shareDialog") {
+      shareDialog.openDialog({ type: "create" });
+      setStep(0);
+      const cleanUrl = globalThis.location?.href?.split("#")[0] ?? "";
+      globalThis.history.replaceState(
+        null,
+        globalThis.document.title,
+        cleanUrl,
+      );
+    }
+  }, []);
+
+  useEffect(() => {
+    if (isAuthenticatedUser) {
+      fetchPathInfo.query();
+    }
+  }, [spaceId]);
 
   return (
     <PermissionControl error={[fetchGraphicalReport.errorObject]}>
@@ -78,6 +102,8 @@ export default function AssessmentReportPage() {
             rtl,
             canShare:
               permissions.canShareReport || permissions.canManageVisibility,
+            navigate: navigateQuestionnaire,
+            canViewQuestionnaires: permissions.canViewQuestionnaires,
             onShare,
             ContactBox: (
               <ContactExpertBox lng={lng} rtl={rtl} onOpen={onExpert} />
@@ -104,32 +130,84 @@ export default function AssessmentReportPage() {
                     {...fetchPathInfo}
                     render={(pathInfo: PathInfo) => (
                       <AssessmentReportTitle
+                        permissions={permissions}
                         pathInfo={pathInfo}
                         rtlLanguage={rtl}
+                        lng={lng}
                       >
                         {!isQuickMode && (
-                          <LoadingButton
-                            variant="contained"
-                            startIcon={
+                          <Box sx={{ ...styles.centerVH }} gap={2}>
+                            {(permissions.canViewDashboard ||
+                              permissions.canViewQuestionnaires) && (
+                              <LoadingButton
+                                variant="outlined"
+                                size="small"
+                                startIcon={
+                                  rtl ? (
+                                    permissions.canViewDashboard ? (
+                                      <Dashboard
+                                        fontSize="small"
+                                        sx={{
+                                          ...styles.iconDirectionStyle(lng),
+                                        }}
+                                      />
+                                    ) : (
+                                      <ChecklistRoundedIcon
+                                        fontSize="small"
+                                        sx={{
+                                          ...styles.iconDirectionStyle(lng),
+                                        }}
+                                      />
+                                    )
+                                  ) : permissions.canViewDashboard ? (
+                                    <Dashboard
+                                      fontSize="small"
+                                      sx={{ ...styles.iconDirectionStyle(lng) }}
+                                    />
+                                  ) : (
+                                    <ChecklistRtlRoundedIcon
+                                      fontSize="small"
+                                      sx={{ ...styles.iconDirectionStyle(lng) }}
+                                    />
+                                  )
+                                }
+                                onClick={
+                                  permissions.canViewDashboard
+                                    ? navigateDashboard
+                                    : navigateQuestionnaire
+                                }
+                                sx={{
+                                  ...styles.rtlStyle(rtl),
+                                  height: "100%",
+                                }}
+                              >
+                                {permissions.canViewDashboard
+                                  ? t("dashboard.dashboard", { lng })
+                                  : t("common.questionnaires", { lng })}
+                              </LoadingButton>
+                            )}
+                            <LoadingButton
+                              variant="contained"
+                              size="small"
+                              onClick={onShare}
+                              disabled={
+                                !permissions.canShareReport &&
+                                !permissions.canManageVisibility
+                              }
+                              sx={{
+                                ...styles.rtlStyle(rtl),
+                                minWidth: "30px",
+                                py: 0.5,
+                                px: 0,
+                              }}
+                            >
+                              {" "}
                               <ShareIcon
                                 fontSize="small"
-                                sx={{ ...styles.iconDirectionStyle(lng) }}
+                                sx={{ paddingY: 0.2 }}
                               />
-                            }
-                            size="small"
-                            onClick={onShare}
-                            disabled={
-                              !permissions.canShareReport &&
-                              !permissions.canManageVisibility
-                            }
-                            sx={{
-                              ...styles.rtlStyle(rtl),
-                              height: "100%",
-                              width: 290,
-                            }}
-                          >
-                            {t("assessmentReport.shareReport", { lng })}
-                          </LoadingButton>
+                            </LoadingButton>
+                          </Box>
                         )}
                       </AssessmentReportTitle>
                     )}
@@ -178,15 +256,15 @@ export default function AssessmentReportPage() {
                       flexDirection="column"
                     >
                       <Box display="flex" flexDirection="column" gap={1} mb={1}>
-                        <Typography
+                        <Text
                           variant="titleLarge"
                           color="text.primary"
                           sx={{ ...styles.rtlStyle(rtl) }}
                         >
                           {t("assessmentReport.attributesStatus", { lng })}
-                        </Typography>
+                        </Text>
                         {!isQuickMode && (
-                          <Typography
+                          <Text
                             component="div"
                             textAlign="justify"
                             variant="bodyMedium"
@@ -240,7 +318,8 @@ export default function AssessmentReportPage() {
                     isQuickMode={isQuickMode}
                     onShare={onShare}
                     onExpert={onExpert}
-                    onQuestionnaires={onQuestionnaires}
+                    onQuestionnaires={navigateQuestionnaire}
+                    canViewQuestionnaire={permissions.canViewQuestionnaires}
                   />
 
                   {isAdvancedMode && <HowIsItMade report={report} lng={lng} />}
@@ -250,7 +329,14 @@ export default function AssessmentReportPage() {
                   <SidebarQuickMode {...sidebarProps} />
                 </Box>
 
-                <ShareDialog {...shareDialog} {...report} lng={lng} />
+                <ShareDialog
+                  {...shareDialog}
+                  {...report}
+                  lng={lng}
+                  fetchGraphicalReport={fetchGraphicalReport}
+                  setStep={setStep}
+                  step={step}
+                />
                 <ContactUsDialog
                   {...expertDialog}
                   context={expertContext}

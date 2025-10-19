@@ -6,7 +6,7 @@ import Menu from "@mui/material/Menu";
 import MenuItem, { MenuItemProps } from "@mui/material/MenuItem";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import uniqueId from "@/utils/uniqueId";
+import uniqueId from "@/utils/unique-id";
 
 interface IMoreActionsProps {
   boxProps?: BoxProps;
@@ -51,6 +51,7 @@ const MoreActions = (props: IMoreActionsProps) => {
       {!hideInnerIconButton && (
         <IconButton
           data-cy="more-action-btn"
+          data-testid="more-action-btn"
           onClick={(e) => {
             e.preventDefault();
             e.stopPropagation();

@@ -11,8 +11,7 @@ import { IPermissions, IQuestionnairesInfo, TId } from "@/types/index";
 import Chip from "@mui/material/Chip";
 import Collapse from "@mui/material/Collapse";
 import IconButton from "@mui/material/IconButton";
-import Typography from "@mui/material/Typography";
-import languageDetector from "@/utils/languageDetector";
+import languageDetector from "@/utils/language-detector";
 import { useRef, useState } from "react";
 import InfoOutlined from "@mui/icons-material/InfoOutlined";
 import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
@@ -20,6 +19,7 @@ import Grid from "@mui/material/Grid";
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 import { useTheme } from "@mui/material";
 import Title from "@common/Title";
+import { Text } from "@/components/common/Text";
 
 interface IQuestionnaireCardProps {
   data: IQuestionnairesInfo;
@@ -67,7 +67,7 @@ const QuestionnaireCard = (props: IQuestionnaireCardProps) => {
       >
         <Box>
           <Box flex={1}>
-            <Title size="small" sx={{width:"100%"}} fontWeight={"bold"}>
+            <Title size="small" sx={{ width: "100%" }} fontWeight={"bold"}>
               <Box ref={mainBoxRef} flex="1" sx={{ ...styles.centerV }}>
                 <Title
                   fontWeight={"bold"}
@@ -218,16 +218,7 @@ const QuestionDescription = ({ description, collapse }: any) => {
             }}
           >
             <Box display="flex" alignItems={"baseline"} sx={{ width: "100%" }}>
-              <Typography
-                variant="bodyLarge"
-                fontFamily={
-                  languageDetector(description)
-                    ? farsiFontFamily
-                    : primaryFontFamily
-                }
-              >
-                {description}
-              </Typography>
+              <Text variant="bodyLarge">{description}</Text>
             </Box>
           </Box>
         </Collapse>
@@ -314,13 +305,13 @@ const ActionButton = ({
     variant={variant}
     {...rest}
   >
-    <Typography
+    <Text
       variant="semiBoldMedium"
       color={variant ? "primary.contrastText" : "primary.main"}
       textTransform="capitalize"
     >
       <Trans i18nKey={text} />
-    </Typography>
+    </Text>
   </Button>
 );
 
@@ -339,9 +330,9 @@ const ErrorChip = ({ i18nKey, value }: { i18nKey: string; value?: number }) => {
               fontSize={"small"}
               style={{ fill: theme.palette.error.main }}
             />
-            <Typography variant="bodyMedium" color="error.main">
+            <Text variant="bodyMedium" color="error.main">
               <Trans i18nKey={i18nKey} />: {value}
-            </Typography>
+            </Text>
           </Box>
         </Grid>
       }

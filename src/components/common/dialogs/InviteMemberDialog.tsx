@@ -8,7 +8,7 @@ import Grid from "@mui/material/Grid";
 import { PropsWithChildren } from "react";
 import { Trans } from "react-i18next";
 import { styles } from "@styles";
-import useScreenResize from "@utils/useScreenResize";
+import useScreenResize from "@/hooks/useScreenResize";
 
 interface ICEDialogProps extends Omit<DialogProps, "title"> {
   closeDialog?: () => void;

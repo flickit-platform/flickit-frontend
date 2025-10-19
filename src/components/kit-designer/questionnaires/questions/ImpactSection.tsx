@@ -1,16 +1,16 @@
 import { useState } from "react";
 import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
 import { Trans } from "react-i18next";
 import AttributeImpactList from "./ImpactList";
 import ImpactForm from "./ImpactForm";
 import EmptyState from "../../common/EmptyState";
-import { useQuery } from "@/utils/useQuery";
-import { useServiceContext } from "@/providers/ServiceProvider";
+import { useQuery } from "@/hooks/useQuery";
+import { useServiceContext } from "@/providers/service-provider";
 import { useParams } from "react-router-dom";
-import { ICustomError } from "@/utils/CustomError";
+import { ICustomError } from "@/utils/custom-error";
 import { t } from "i18next";
-import showToast from "@/utils/toastError";
+import showToast from "@/utils/toast-error";
+import { Text } from "@/components/common/Text";
 
 const ImpactSection: React.FC<{ question: any }> = ({ question }) => {
   const { kitVersionId = "" } = useParams();
@@ -55,7 +55,7 @@ const ImpactSection: React.FC<{ question: any }> = ({ question }) => {
 
   const deleteImpact = useQuery({
     service: (args, config) =>
-      service.kitVersions.questionImpacts.update(args, config),
+      service.kitVersions.questionImpacts.remove(args, config),
   });
 
   const handleSave = async () => {
@@ -131,12 +131,12 @@ const ImpactSection: React.FC<{ question: any }> = ({ question }) => {
   return (
     <>
       <Box display="flex" flexDirection="column" gap={1} mt={4}>
-        <Typography variant="semiBoldXLarge" gutterBottom>
+        <Text variant="semiBoldXLarge" gutterBottom>
           <Trans i18nKey="kitDesigner.questionImpacts" />
-        </Typography>
-        <Typography variant="bodyMedium" color="textSecondary">
+        </Text>
+        <Text variant="bodyMedium" color="textSecondary">
           <Trans i18nKey="kitDesigner.optionsImpactsDescription" />
-        </Typography>
+        </Text>
       </Box>
 
       <>

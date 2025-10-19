@@ -3,10 +3,10 @@ import i18next, { t } from "i18next";
 import { BASE_URL } from "@constants";
 import keycloakService from "@/service//keycloakService";
 
-import * as assessmentKitService from "./assessmentKits";
+import * as assessmentKitService from "./assessment-kits";
 import * as assessmentsService from "./assessments";
-import * as expertGroupsService from "./expertGroups";
-import * as kitVersionsService from "./kitVersions";
+import * as expertGroupsService from "./expert-groups";
+import * as kitVersionsService from "./kit-versions";
 import * as questionsService from "./questions";
 import commonService from "./ commonService";
 import spaceService from "./spaceService";

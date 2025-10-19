@@ -1,4 +1,4 @@
-import DashbordContainer from "@components/dashboard/dashbordContainer";
+import DashbordContainer from "@/components/dashboard/AssessmentContainer";
 
 const DashboardScreen = () => {
 

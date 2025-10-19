@@ -1,13 +1,10 @@
-import Visibility from "@mui/icons-material/Visibility";
-import VisibilityOff from "@mui/icons-material/VisibilityOff";
-import InputAdornment from "@mui/material/InputAdornment";
 import TextField, { OutlinedTextFieldProps } from "@mui/material/TextField";
-import { ReactNode, useState, useRef, useEffect, ChangeEvent } from "react";
+import { ReactNode, useRef, useEffect, ChangeEvent } from "react";
 import { useFormContext } from "react-hook-form";
-import getFieldError from "@utils/getFieldError";
+import getFieldError from "@/utils/get-field-error";
 import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
-import { evidenceAttachmentInput } from "@utils/enumType";
-import languageDetector from "@utils/languageDetector";
+import { evidenceAttachmentInput } from "@/utils/enum-type";
+import languageDetector from "@/utils/language-detector";
 import i18next, { t } from "i18next";
 import { styles } from "@styles";
 import { useTheme } from "@mui/material";
@@ -40,8 +37,7 @@ const InputFieldUC = (props: IInputFieldUCProps) => {
     name,
     required,
     InputLabelProps,
-    type,
-    minLength,
+    minLength = 3,
     maxLength,
     helperText,
     isFocused,
@@ -63,19 +59,21 @@ const InputFieldUC = (props: IInputFieldUCProps) => {
 
   const inputRef = useRef<HTMLInputElement | null>(null);
 
-  const {
-    register,
-    formState: { errors },
-  } = useFormContext();
+  const { register, getFieldState, formState } = useFormContext();
 
-  const [showPassword, toggleShowPassword] = usePasswordFieldAdornment();
-  const { hasError, errorMessage } = getFieldError(
-    errors,
+  const fieldState = getFieldState(name, formState);
+  const showErrorAfterSubmit = formState.submitCount > 0 && !!fieldState.error;
+
+  const { errorMessage } = getFieldError(
+    formState.errors,
     name,
     minLength,
     maxLength,
     lng,
   );
+  const effectiveHelperText: ReactNode = showErrorAfterSubmit
+    ? (errorMessage as ReactNode)
+    : helperText;
 
   useEffect(() => {
     if (isFocused && inputRef.current) {
@@ -95,7 +93,7 @@ const InputFieldUC = (props: IInputFieldUCProps) => {
 
     let direction: "rtl" | "ltr";
     if (valueIsEmpty) {
-      direction = rtl ? "rtl" : "ltr";
+      direction = i18next.language === "fa" ? "rtl" : "ltr";
     } else {
       direction = isFarsiText ? "rtl" : "ltr";
     }
@@ -104,7 +102,7 @@ const InputFieldUC = (props: IInputFieldUCProps) => {
     inputEl.style.fontFamily = isFarsiText
       ? farsiFontFamily
       : primaryFontFamily;
-  }, [isFocused]);
+  }, [isFocused, rtl]);
 
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
@@ -113,26 +111,21 @@ const InputFieldUC = (props: IInputFieldUCProps) => {
       setValueCount(value);
     }
 
-    if (type !== "password") {
-      const isFarsiText = languageDetector(value);
-      const valueIsEmpty = value.length === 0;
+    const isFarsiText = languageDetector(value);
+    const valueIsEmpty = value.length === 0;
 
-      let direction;
-      if (valueIsEmpty) {
-        direction = rtl ? "rtl" : "ltr";
-      } else {
-        direction = isFarsiText ? "rtl" : "ltr";
-      }
+    const direction = valueIsEmpty
+      ? rtl
+        ? "rtl"
+        : "ltr"
+      : isFarsiText
+        ? "rtl"
+        : "ltr";
 
-      event.target.dir = direction;
-      event.target.style.fontFamily = isFarsiText
-        ? farsiFontFamily
-        : primaryFontFamily;
-    }
-
-    if (type === "password" && inputRef.current) {
-      inputRef.current.focus();
-    }
+    event.target.dir = direction;
+    event.target.style.fontFamily = isFarsiText
+      ? farsiFontFamily
+      : primaryFontFamily;
   };
 
   let inputStyle = {};
@@ -147,24 +140,32 @@ const InputFieldUC = (props: IInputFieldUCProps) => {
   if (name === "email") {
     validationRules.pattern = {
       value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
-      message: t("errors.invalidEmail"),
+      message: t("errors.invalidEmail", { lng }),
     };
   }
   if (minLength) validationRules.minLength = minLength;
   if (maxLength) validationRules.maxLength = maxLength;
 
+  const registered = register(name, {
+    ...validationRules,
+    onChange: handleInputChange,
+  });
+
+  const mergedInputRef = (el: HTMLInputElement | null) => {
+    inputRef.current = el;
+    registered.ref(el);
+  };
+
   return (
     <TextField
       {...rest}
-      {...register(name, validationRules)}
+      {...registered}
       data-testid={`input-${name}`}
-      type={showPassword ? "text" : type}
       fullWidth
       size="small"
       variant="outlined"
-      inputRef={inputRef}
+      inputRef={mergedInputRef}
       placeholder={placeholder}
-      onChange={handleInputChange}
       sx={{
         "& ::placeholder": { ...theme.typography.bodyMedium },
         bgcolor: pallet?.background,
@@ -205,38 +206,11 @@ const InputFieldUC = (props: IInputFieldUCProps) => {
         },
       }}
       InputLabelProps={{ ...InputLabelProps, required }}
-      InputProps={
-        type === "password"
-          ? {
-              endAdornment: (
-                <InputAdornment
-                  sx={{ cursor: "pointer" }}
-                  position="end"
-                  onClick={toggleShowPassword}
-                  onMouseDown={(e: any) => {
-                    e.preventDefault();
-                  }}
-                >
-                  {showPassword ? <VisibilityOff /> : <Visibility />}
-                </InputAdornment>
-              ),
-            }
-          : {
-              sx: inputStyle,
-            }
-      }
-      error={hasError || error}
-      helperText={(errorMessage as ReactNode) || helperText}
+      InputProps={{ sx: inputStyle }}
+      error={showErrorAfterSubmit || !!error}
+      helperText={effectiveHelperText}
     />
   );
-};
-
-export const usePasswordFieldAdornment: () => [boolean, () => void] = () => {
-  const [showPassword, setShowPassword] = useState(false);
-  const toggleShowPassword = () => {
-    setShowPassword((state) => !state);
-  };
-  return [showPassword, toggleShowPassword];
 };
 
 export { InputFieldUC, InputField };

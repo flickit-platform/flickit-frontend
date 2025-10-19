@@ -2,12 +2,12 @@ import LoadingButton from "@mui/lab/LoadingButton";
 import Box from "@mui/material/Box";
 import { Trans } from "react-i18next";
 import { useNavigate, useParams } from "react-router-dom";
-import { useServiceContext } from "@providers/ServiceProvider";
-import { ICustomError } from "@utils/CustomError";
-import { useQuery } from "@utils/useQuery";
+import { useServiceContext } from "@/providers/service-provider";
+import { ICustomError } from "@/utils/custom-error";
+import { useQuery } from "@/hooks/useQuery";
 import QueryData from "@common/QueryData";
 import ExpertGroupsItem from "./ExpertGroupsItem";
-import showToast from "@utils/toastError";
+import showToast from "@/utils/toast-error";
 import { HOME_URL } from "@/config/constants";
 import Title from "@common/Title";
 

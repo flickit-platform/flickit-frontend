@@ -1,5 +1,5 @@
 import { Trans } from "react-i18next";
-import ErrorImage from "@assets/img/errorBoundary.png";
+import ErrorImage from "@/assets/img/error-boundary.png";
 import { Component } from "react";
 import Button from "@mui/material/Button";
 import { HOME_URL } from "@/config/constants";

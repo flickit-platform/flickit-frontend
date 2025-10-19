@@ -1,16 +1,16 @@
 import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
 import Skeleton from "@mui/material/Skeleton";
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
 import { styles } from "@styles";
-import MatirytySkeleton from "@assets/svg/matirytySkeleton.svg";
+import MaturityLevelSkeleton from "@/assets/svg/maturity-level-skeleton.svg";
 import { t } from "i18next";
 import { useTheme } from "@mui/material";
 import Accordion from "@mui/material/Accordion";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
-import uniqueId from "@/utils/uniqueId";
+import uniqueId from "@/utils/unique-id";
+import { Text } from "@/components/common/Text";
 
 const DotsLoading = () => {
   const theme = useTheme();
@@ -80,13 +80,13 @@ const GraphicalReportSkeleton = ({ isAuthenticatedUser, lang }: any) => (
     minHeight="100vh"
   >
     <Box bgcolor="primary.bgVariant" height={48} sx={{ ...styles.centerVH }}>
-      <Typography
+      <Text
         variant="semiBoldLarge"
         color="primary"
         sx={{ ...styles.centerV }}
       >
         {t("notification.generatingFinalReport")}
-      </Typography>
+      </Text>
       <DotsLoading />
     </Box>
 
@@ -133,7 +133,7 @@ const GraphicalReportSkeleton = ({ isAuthenticatedUser, lang }: any) => (
                 </Grid>
                 <Grid item xs={12} sm={6} md={4} mt={{ xs: 2, md: 5 }}>
                   <img
-                    src={MatirytySkeleton}
+                    src={MaturityLevelSkeleton}
                     alt="MatirytySkeleton"
                     width={200}
                     height={140}

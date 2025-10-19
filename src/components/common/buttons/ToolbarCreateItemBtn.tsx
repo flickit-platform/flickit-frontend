@@ -1,5 +1,5 @@
 import Button, { ButtonProps } from "@mui/material/Button";
-import useScreenResize from "@utils/useScreenResize";
+import useScreenResize from "@/hooks/useScreenResize";
 import { animations } from "@styles";
 import { Trans } from "react-i18next";
 

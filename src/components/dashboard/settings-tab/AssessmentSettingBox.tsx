@@ -5,7 +5,6 @@ import Divider from "@mui/material/Divider";
 import FormControl from "@mui/material/FormControl";
 import IconButton from "@mui/material/IconButton";
 import Tooltip from "@mui/material/Tooltip";
-import Typography from "@mui/material/Typography";
 import { Trans } from "react-i18next";
 import EditRoundedIcon from "@mui/icons-material/EditRounded";
 import { useEffect, useMemo, useState } from "react";
@@ -14,10 +13,10 @@ import Button from "@mui/material/Button";
 import AddIcon from "@mui/icons-material/Add";
 import { useForm } from "react-hook-form";
 import { useParams } from "react-router";
-import { useServiceContext } from "@providers/ServiceProvider";
-import { useQuery } from "@utils/useQuery";
-import { ICustomError } from "@utils/CustomError";
-import firstCharDetector from "@utils/firstCharDetector";
+import { useServiceContext } from "@/providers/service-provider";
+import { useQuery } from "@/hooks/useQuery";
+import { ICustomError } from "@/utils/custom-error";
+import firstCharDetector from "@/utils/first-char-detector";
 import Grid from "@mui/material/Grid";
 import TableContainer from "@mui/material/TableContainer";
 import Table from "@mui/material/Table";
@@ -26,32 +25,33 @@ import TableRow from "@mui/material/TableRow";
 import TableCell from "@mui/material/TableCell";
 import TableBody from "@mui/material/TableBody";
 import Avatar from "@mui/material/Avatar";
-import stringAvatar from "@utils/stringAvatar";
+import stringAvatar from "@/utils/string-avatar";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
 import { Link } from "react-router-dom";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
-import { SelectHeight } from "@utils/selectHeight";
+import { SelectHeight } from "@/utils/select-height";
 import InfoOutlined from "@mui/icons-material/InfoOutlined";
 import { farsiFontFamily, primaryFontFamily } from "@config/theme";
-import languageDetector from "@/utils/languageDetector";
+import languageDetector from "@/utils/language-detector";
 import TablePagination from "@mui/material/TablePagination";
 import { t } from "i18next";
 import InputCustomEditor from "@common/fields/InputCustomEditor";
-import { getReadableDate } from "@utils/readableDate";
+import { getReadableDate } from "@/utils/readable-date";
 import { FormControlLabel, Switch } from "@mui/material";
-import { ASSESSMENT_MODE } from "@/utils/enumType";
+import { ASSESSMENT_MODE } from "@/utils/enum-type";
 import {
   CEDialog,
   CEDialogActions,
 } from "@/components/common/dialogs/CEDialog";
-import useDialog from "@/utils/useDialog";
+import useDialog from "@/hooks/useDialog";
 import {
   assessmentActions,
   useAssessmentContext,
-} from "@/providers/AssessmentProvider";
-import showToast from "@utils/toastError";
+} from "@/providers/assessment-provider";
+import showToast from "@/utils/toast-error";
+import { Text } from "@/components/common/Text";
 
 type InfoField = "creator" | "assessmentKit" | "created" | "lastModified";
 
@@ -118,13 +118,13 @@ export const AssessmentSettingGeneralBox: React.FC<Props> = ({
   return (
     <Box sx={{ ...styles.boxStyle }} gap={2}>
       <Box height={"100%"} width={"100%"}>
-        <Typography
+        <Text
           color="text.primary"
           sx={{ width: "100%", display: "inline-block" }}
           variant="headlineSmall"
         >
           <Trans i18nKey="common.general" />
-        </Typography>
+        </Text>
 
         <Divider sx={{ width: "100%", mt: "24px", mb: "10px !important" }} />
 
@@ -136,9 +136,9 @@ export const AssessmentSettingGeneralBox: React.FC<Props> = ({
             justifyContent="space-between"
             sx={{ ...styles.centerV }}
           >
-            <Typography variant="semiBoldLarge" color="text.primary">
+            <Text variant="semiBoldLarge" color="text.primary">
               <Trans i18nKey="assessment.assessmentTitle" />
-            </Typography>
+            </Text>
             <Box
               sx={{
                 ...styles.centerVH,
@@ -163,13 +163,13 @@ export const AssessmentSettingGeneralBox: React.FC<Props> = ({
                 color="background.onVariant"
                 gap={1}
               >
-                <Typography
+                <Text
                   variant="semiBoldLarge"
                   color="text.primary"
                   lineHeight="normal"
                 >
                   <Trans i18nKey="assessment.shortTitle" />
-                </Typography>
+                </Text>
                 <Tooltip title={<Trans i18nKey="assessment.shortTitleInfo" />}>
                   <InfoOutlined
                     fontSize="small"
@@ -217,7 +217,7 @@ export const AssessmentSettingGeneralBox: React.FC<Props> = ({
               mb="10px"
               sx={{ ...styles.centerV }}
             >
-              <Typography
+              <Text
                 color="background.onVariant"
                 whiteSpace="nowrap"
                 sx={{
@@ -228,27 +228,18 @@ export const AssessmentSettingGeneralBox: React.FC<Props> = ({
                 variant="bodyLarge"
               >
                 <Trans i18nKey={field.i18n} />
-              </Typography>
-              <Typography
+              </Text>
+              <Text
                 color="text.primary"
                 variant="semiBoldLarge"
                 sx={{
                   display: "flex",
                   justifyContent: "flex-start",
                   width: { md: "350px" },
-                  fontFamily: languageDetector(
-                    getInfoFieldValue(
-                      field.key,
-                      assessmentInfo,
-                      getReadableDate,
-                    ),
-                  )
-                    ? farsiFontFamily
-                    : primaryFontFamily,
                 }}
               >
                 {getInfoFieldValue(field.key, assessmentInfo, getReadableDate)}
-              </Typography>
+              </Text>
             </Grid>
           ))}
         </Grid>
@@ -307,13 +298,13 @@ const QuickAssessmentSwitch = () => {
     <Box sx={{ ...styles.centerV }} color="background.onVariant" gap={1}>
       <FormControlLabel
         control={
-          <Switch checked={isQuickMode} onChange={handleToggleQuickMode} />
+          <Switch data-testid="assessment-switch-mode-btn" checked={isQuickMode} onChange={handleToggleQuickMode} />
         }
         label={
           <Box gap={1} sx={{ ...styles.centerV }}>
-            <Typography variant="semiBoldLarge" color="text.primary">
+            <Text variant="semiBoldLarge" color="text.primary">
               <Trans i18nKey="assessment.quickAssessmentMode" />
-            </Typography>
+            </Text>
             <Tooltip
               title={
                 <Trans i18nKey="assessment.quickAssessmentModeDescription" />
@@ -338,6 +329,7 @@ const QuickAssessmentSwitch = () => {
 
       <CEDialog
         open={dialogProps.open}
+        data-testid={"assessment-switch-mode-dialog"}
         closeDialog={dialogProps.onClose}
         title={
           <Trans
@@ -353,7 +345,7 @@ const QuickAssessmentSwitch = () => {
         }
         maxWidth="sm"
       >
-        <Typography color="text.primary">
+        <Text color="text.primary">
           <Trans
             i18nKey={
               assessmentInfo?.mode?.code === ASSESSMENT_MODE.QUICK
@@ -361,7 +353,7 @@ const QuickAssessmentSwitch = () => {
                 : "assessment.quickAssessmentSwitchTitle"
             }
           />
-        </Typography>
+        </Text>
 
         <CEDialogActions
           type="delete"
@@ -412,12 +404,12 @@ export const AssessmentSettingMemberBox = (props: {
     handleChangePage,
     rowsPerPage,
     handleChangeRowsPerPage,
-    kitInfo
+    kitInfo,
   } = props;
 
-  const isGrantedRolesActive = useMemo(()=>{
-    return kitInfo?.space?.isDefault
-  },[kitInfo?.space?.isDefault])
+  const isGrantedRolesActive = useMemo(() => {
+    return kitInfo?.space?.isDefault;
+  }, [kitInfo?.space?.isDefault]);
 
   useEffect(() => {
     inviteesMemberList.query();
@@ -525,9 +517,9 @@ export const AssessmentSettingMemberBox = (props: {
     >
       <Box height={"100%"} width={"100%"}>
         <Box position="relative" width="100%" sx={{ ...styles.centerVH }}>
-          <Typography color="text.primary" variant="headlineSmall">
+          <Text color="text.primary" variant="headlineSmall">
             <Trans i18nKey="settings.grantedRoles" />
-          </Typography>
+          </Text>
           <Box
             sx={{
               marginInlineStart: "auto",
@@ -552,7 +544,7 @@ export const AssessmentSettingMemberBox = (props: {
               <Trans i18nKey="dashboard.grantAccess" />
             </Button>
             {isGrantedRolesActive && (
-              <Typography
+              <Text
                 variant={"bodySmall"}
                 sx={{
                   width: { xs: "50%", sm: "35%" },
@@ -563,7 +555,7 @@ export const AssessmentSettingMemberBox = (props: {
                 }}
               >
                 {t("dashboard.needMoveItToSpace")}
-              </Typography>
+              </Text>
             )}
           </Box>
         </Box>
@@ -615,12 +607,9 @@ export const AssessmentSettingMemberBox = (props: {
                       },
                     }}
                   >
-                    <Typography
-                      color="rgba(0, 0, 0, 0.56)"
-                      variant="semiBoldLarge"
-                    >
+                    <Text color="rgba(0, 0, 0, 0.56)" variant="semiBoldLarge">
                       <Trans i18nKey={`${column.label}`} />
-                    </Typography>
+                    </Text>
                   </TableCell>
                 ))}
               </TableRow>
@@ -659,21 +648,16 @@ export const AssessmentSettingMemberBox = (props: {
                               display: { xs: "none", sm: "flex" },
                             }}
                           />
-                          <Typography
+                          <Text
                             color="#1B1B1E"
                             textOverflow="ellipsis"
                             overflow="hidden"
                             whiteSpace="nowrap"
                             fontSize="0.875rem"
                             fontWeight={500}
-                            sx={{
-                              fontFamily: languageDetector(row.displayName)
-                                ? farsiFontFamily
-                                : primaryFontFamily,
-                            }}
                           >
                             {row.displayName}
-                          </Typography>
+                          </Text>
                           {!row.editable && (
                             <Chip
                               sx={{
@@ -695,7 +679,7 @@ export const AssessmentSettingMemberBox = (props: {
                         justifyContent="center"
                         width={{ xs: "5rem", md: "20vw" }}
                       >
-                        <Typography
+                        <Text
                           color="#1B1B1E"
                           textOverflow="ellipsis"
                           overflow="hidden"
@@ -704,7 +688,7 @@ export const AssessmentSettingMemberBox = (props: {
                           fontWeight={300}
                         >
                           {row.email}
-                        </Typography>
+                        </Text>
                       </Box>
                       <Box
                         justifyContent="flex-start"
@@ -798,9 +782,9 @@ export const AssessmentSettingMemberBox = (props: {
               position="relative"
               gap="10px"
             >
-              <Typography color="#78818b" variant="headlineSmall">
+              <Text color="#78818b" variant="headlineSmall">
                 <Trans i18nKey="common.invitees" />
-              </Typography>
+              </Text>
             </Box>
 
             {/* Moved Divider outside the TableHead */}
@@ -883,7 +867,7 @@ export const AssessmentSettingMemberBox = (props: {
                             alignItems="center"
                             width={{ xs: "10rem", md: "30vw" }}
                           >
-                            <Typography
+                            <Text
                               color="#1B1B1E"
                               textOverflow="ellipsis"
                               overflow="hidden"
@@ -892,7 +876,7 @@ export const AssessmentSettingMemberBox = (props: {
                               fontWeight={300}
                             >
                               {row.email}
-                            </Typography>
+                            </Text>
                           </Box>
                           <Box
                             gap={{ xs: "0px", md: ".7rem" }}
@@ -964,9 +948,9 @@ export const AssessmentSettingMemberBox = (props: {
                                     textAlign="center"
                                     borderBottom="1px solid #78818b"
                                   >
-                                    <Typography fontSize="0.875rem">
+                                    <Text fontSize="0.875rem">
                                       <Trans i18nKey="settings.chooseARole" />
-                                    </Typography>
+                                    </Text>
                                   </Box>
                                   {listOfRoles?.map(
                                     (role: any, index: number) => (
@@ -1001,7 +985,7 @@ export const AssessmentSettingMemberBox = (props: {
                                           fontWeight={500}
                                           paddingY="1rem"
                                         >
-                                          <Typography
+                                          <Text
                                             color={
                                               role.id === row.role.id
                                                 ? "#004F83"
@@ -1010,7 +994,7 @@ export const AssessmentSettingMemberBox = (props: {
                                             fontSize="0.875rem"
                                           >
                                             {role.title}
-                                          </Typography>
+                                          </Text>
 
                                           <div
                                             style={{
@@ -1134,9 +1118,9 @@ const SelectionRole = (props: any) => {
         textAlign="center"
         borderBottom="1px solid #78818b"
       >
-        <Typography fontSize="0.875rem">
+        <Text fontSize="0.875rem">
           <Trans i18nKey="settings.chooseARole" />
-        </Typography>
+        </Text>
       </Box>
 
       {listOfRoles?.map((role: any, index: number) => (
@@ -1156,14 +1140,15 @@ const SelectionRole = (props: any) => {
           }}
         >
           <Box maxWidth="240px" paddingY="1rem">
-            <Typography
+            <Text
               color={role.id === row.role.id ? "#004F83" : "#1B1B1E"}
               fontSize="0.875rem"
               fontWeight={500}
+              sx={{ display: "block" }}
             >
               {role.title}
-            </Typography>
-            <Typography
+            </Text>
+            <Text
               color="text.primary"
               fontSize="0.875rem"
               fontWeight={300}
@@ -1171,7 +1156,7 @@ const SelectionRole = (props: any) => {
               whiteSpace="break-spaces"
             >
               {role.description}
-            </Typography>
+            </Text>
           </Box>
           {listOfRoles.length > index + 1 && (
             <Box height="0.5px" width="80%" bgcolor="#78818b" mx="auto" />
@@ -1316,19 +1301,11 @@ const OnHoverInputTitleSetting = (props: any) => {
             onMouseOver={handleMouseOver}
             onMouseOut={handleMouseOut}
           >
-            <Typography
-              color="#004F83"
-              sx={{
-                fontFamily: languageDetector(data)
-                  ? farsiFontFamily
-                  : primaryFontFamily,
-              }}
-              variant="semiBoldLarge"
-            >
+            <Text color="#004F83" variant="semiBoldLarge" data-testid={`${type}-assessmentInfo`}>
               {type == "title" && data?.replace(/<\/?p>/g, "")}
               {type == "shortTitle" &&
                 assessmentInfo?.shortTitle?.replace(/<\/?p>/g, "")}
-            </Typography>
+            </Text>
             {(isHovering || !assessmentInfo?.shortTitle) && (
               <EditRoundedIcon
                 sx={{ color: "#78818b", position: "absolute", right: -10 }}

@@ -1,10 +1,10 @@
 import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import { Trans } from "react-i18next";
 import { styles } from "@/config/styles";
 import Tooltip from "@mui/material/Tooltip";
 import { ReactElement } from "react";
+import { Text } from "@/components/common/Text";
 
 interface EmptyStateProps {
   onAddNewRow?: () => void;
@@ -29,12 +29,12 @@ const EmptyState = ({
     width="100%"
     gap={2}
   >
-    <Typography variant="semiBoldXLarge" color="rgba(61, 77, 92, 0.5)">
+    <Text variant="semiBoldXLarge" color="rgba(61, 77, 92, 0.5)">
       <Trans i18nKey={title} />
-    </Typography>
-    <Typography variant="bodyMedium">
+    </Text>
+    <Text variant="bodyMedium">
       <Trans i18nKey={SubTitle} />
-    </Typography>
+    </Text>
     {btnTitle && (
       <Tooltip disableHoverListener={!disabled} title={disableTextBox}>
         <div>

@@ -1,5 +1,5 @@
 import { Location, Navigate, useLocation } from "react-router-dom";
-import { useAuthContext } from "@providers/AuthProvider";
+import { useAuthContext } from "@/providers/auth-provider";
 import { IAuthContext } from "@/types";
 
 const Redirect = () => {

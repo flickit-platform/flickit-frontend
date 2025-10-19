@@ -1,8 +1,8 @@
 import Box, { BoxProps } from "@mui/material/Box";
 import LinearProgress from "@mui/material/LinearProgress";
-import Typography from "@mui/material/Typography";
 import { Trans } from "react-i18next";
 import { styles } from "@styles";
+import { Text } from "../Text";
 
 interface IGettingThingsReadyLoadingProps extends BoxProps {}
 
@@ -22,12 +22,12 @@ const ErrorRecalculating = (props: IGettingThingsReadyLoadingProps) => {
       }}
     >
       <Box sx={{ ...styles.centerCH }}>
-        <Typography variant="h5">
+        <Text variant="h5">
           <Trans i18nKey="notification.insightsAreRecalculating" />
-        </Typography>
-        <Typography variant="h5">
+        </Text>
+        <Text variant="h5">
           <Trans i18nKey="notification.pleaseWait" />
-        </Typography>
+        </Text>
       </Box>
       <LinearProgress color="inherit" sx={{ marginTop: "12px" }} />
     </Box>

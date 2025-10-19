@@ -7,7 +7,7 @@ export const v3Tokens = {
     dark: blue[30],
     light: blue[50],
     on: blue[100],
-    bg: grayBlue[96],
+    bg: blue[95],
     bgVar: blue[90],
   },
   secondary: {
@@ -53,7 +53,7 @@ export const v3Tokens = {
     containerLow: grayBlue[98],
     container: grayBlue[96],
     containerHigh: grayBlue[94],
-    containerHigher: grayBlue[92],
+    containerHighest: grayBlue[92],
   },
   states: {
     hover: 0.08,          
@@ -75,7 +75,7 @@ export const v3Tokens = {
   },
   outline: {
     outline: gray[50],
-    variant: gray[60],
+    variant: gray[80],
   },
   components: {
     tooltipBg: "#576675E6",

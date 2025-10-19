@@ -1,19 +1,19 @@
 import { useEffect, useMemo, useState } from "react";
 import Box from "@mui/material/Box";
 import IconButton from "@mui/material/IconButton";
-import ContactSupport from "@assets/svg/ContactSupport.svg";
-import polygon from "@assets/svg/dialogPolygon.svg";
-import Typography from "@mui/material/Typography";
+import ContactSupport from "@/assets/svg/contact-support.svg";
+import ArrowDown from "@/assets/svg/arrow-down.svg";
 import { Trans } from "react-i18next";
 import Button from "@mui/material/Button";
 import Checkbox from "@mui/material/Checkbox";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import { Close } from "@mui/icons-material";
 import { useLocation, useParams } from "react-router-dom";
-import { setSurveyBox, useConfigContext } from "@providers/ConfgProvider";
-import { authActions, useAuthContext } from "@providers/AuthProvider";
-import { useQuery } from "@utils/useQuery";
-import { useServiceContext } from "@providers/ServiceProvider";
+import { setSurveyBox, useConfigContext } from "@/providers/config-provider";
+import { authActions, useAuthContext } from "@/providers/auth-provider";
+import { useQuery } from "@/hooks/useQuery";
+import { useServiceContext } from "@/providers/service-provider";
+import { Text } from "../Text";
 
 const SurveyBoxSection = (props: any) => {
   const [showFeedback, setShowFeedback] = useState(true);
@@ -95,14 +95,14 @@ const SurveyBoxSection = (props: any) => {
         >
           <Close />
         </IconButton>
-        <Typography
+        <Text
           display="block"
           color="background.containerLowest"
           variant="semiBoldXLarge"
         >
           <Trans i18nKey={"common.gotMinute"} />
-        </Typography>
-        <Typography
+        </Text>
+        <Text
           variant="bodyMedium"
           color="background.containerLowest"
           marginBottom={1}
@@ -113,7 +113,7 @@ const SurveyBoxSection = (props: any) => {
             i18nKey={"common.helpUsToImprove"}
             values={{ appName: appTitle }}
           />
-        </Typography>
+        </Text>
         <Button
           onClick={goToSurvey}
           variant="contained"
@@ -149,14 +149,14 @@ const SurveyBoxSection = (props: any) => {
             />
           }
           label={
-            <Typography variant="bodySmall" display="inline-block">
+            <Text variant="bodySmall" display="inline-block">
               <Trans i18nKey={"common.dontShowAgain"} />
-            </Typography>
+            </Text>
           }
         />
         <Box
           component={"img"}
-          src={polygon}
+          src={ArrowDown}
           position="absolute"
           bottom="-10px"
           right="20px"

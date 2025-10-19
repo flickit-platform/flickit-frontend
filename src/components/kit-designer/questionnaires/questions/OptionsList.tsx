@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
 import Button from "@mui/material/Button";
@@ -15,8 +14,9 @@ import { Trans } from "react-i18next";
 import { t } from "i18next";
 import OptionForm from "./OptionForm";
 import Add from "@mui/icons-material/Add";
-import { useKitDesignerContext } from "@providers/KitProvider";
+import { useKitDesignerContext } from "@/providers/kit-provider";
 import TitleWithTranslation from "@/components/common/fields/TranslationText";
+import { Text } from "@/components/common/Text";
 
 interface OptionListProps {
   Options: Array<IOption>;
@@ -227,7 +227,7 @@ const OptionTitleSection = ({
   langCode,
 }: any) => (
   <Box sx={{ display: "flex", alignItems: "center", flexGrow: 1 }}>
-    <Typography
+    <Text
       variant="body2"
       color="background.container"
       sx={{
@@ -242,7 +242,7 @@ const OptionTitleSection = ({
         <SwapVertRoundedIcon fontSize="small" />
       </IconButton>
       {`${t("option")} ${index + 1}:`}
-    </Typography>
+    </Text>
     {isEditing ? (
       <TextField
         required
