@@ -161,7 +161,7 @@ const OptionsSection = ({
         sx={{ ...styles.centerV }}
       >
         <Text variant="body2">
-          <Trans i18nKey="kitDesigner.answerOptions" />
+          <Trans i18nKey="common.options" />
         </Text>
         <Tooltip
           title={
