@@ -1,6 +1,5 @@
 import {
   Accordion,
-  AccordionDetails,
   AccordionSummary,
   Box,
   Grid,
@@ -8,6 +7,7 @@ import {
   Tab,
   Chip,
   Divider,
+  AccordionDetails,
 } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import { InfoHeader } from "../common/InfoHeader";
@@ -21,8 +21,10 @@ import QueryData from "@common/QueryData";
 import React, { useEffect, useState, useCallback } from "react";
 import { useAccordion } from "@/hooks/useAccordion";
 import { ExpandMoreRounded } from "@mui/icons-material";
-import { OptionsSection } from "../common/OptionsSection";
 import { getTranslation } from "./SubjectPanel";
+import { InfoField } from "../common/InfoField";
+import { IIndexedItem } from "../../model/types";
+import { OptionsSection } from "../common/OptionsSection";
 
 const Tags = React.memo(function Tags({ mayNotBeApplicable, advisable }: any) {
   const { t } = useTranslation();
@@ -121,10 +123,7 @@ export const sxSummary = (expanded: boolean) => ({
   borderBottom: expanded ? `1px solid #C7CCD1` : "",
 });
 
-const sxDetails = { display: "flex", flexDirection: "column", p: 0 };
-
 type TTranslations = Record<string, { title?: string; description?: string }>;
-type TAttribute = { title: string; weight: number; id: number; index: number };
 type TMaturityLevels = {
   questionCount: number;
   title: string;
@@ -144,22 +143,7 @@ interface IattributeData {
   title: string;
 }
 
-interface IsubjectProp {
-  attributes: TAttribute[];
-  id: number;
-  index: number;
-  translations: TTranslations;
-  title: string;
-}
-type IattributeProp = Omit<IsubjectProp, "attributes">;
-
-const AttributePanel = ({
-  subject,
-  attribute,
-}: {
-  subject: IsubjectProp;
-  attribute: IattributeProp;
-}) => {
+const AttributePanel = ({ attribute }: { attribute: IIndexedItem }) => {
   const { service } = useServiceContext();
   const { t } = useTranslation();
   const { assessmentKitId = "" } = useParams();
@@ -481,58 +465,21 @@ const AttributePanel = ({
                                   </Box>
                                 </Box>
                               </AccordionSummary>
-
-                              <AccordionDetails sx={sxDetails}>
-                                <Grid container p={2} pt={2}>
-                                  <Grid item xs={answerRange ? 6 : 12}>
-                                    <Text variant="titleSmall" sx={{ mb: 1 }}>
-                                      {t("common.measure")}
-                                    </Text>
-                                    <Box
-                                      sx={{
-                                        display: "flex",
-                                        alignItems: "center",
-                                        px: 2,
-                                        py: 0.5,
-                                        borderRadius: 1,
-                                        border: "1px solid",
-                                        borderColor: "outline.variant",
-                                        bgcolor: "primary.bg",
-                                        width: "fit-content",
-                                        color: "primary.main",
-                                      }}
-                                    >
-                                      <Text variant="bodyMedium">
-                                        {measure?.title}
-                                      </Text>
-                                    </Box>
+                              <AccordionDetails>
+                                <Grid container spacing={0} p={2}>
+                                  <Grid item xs={12} md={6}>
+                                    <InfoField
+                                      label={t("common.measure")}
+                                      value={measure?.title}
+                                    />
                                   </Grid>
-
-                                  {answerRange && (
-                                    <Grid item xs={6}>
-                                      <Text variant="titleSmall" sx={{ mb: 1 }}>
-                                        {t("kitDesigner.answerRanges")}
-                                      </Text>
-                                      <Box
-                                        sx={{
-                                          px: 2,
-                                          py: 0.5,
-                                          borderRadius: 1,
-                                          border: "1px solid",
-                                          borderColor: "outline.variant",
-                                          bgcolor: "primary.bg",
-                                          width: "fit-content",
-                                          color: "primary.main",
-                                        }}
-                                      >
-                                        <Text variant="bodyMedium">
-                                          {answerRange?.title}
-                                        </Text>
-                                      </Box>
-                                    </Grid>
-                                  )}
+                                  <Grid item xs={12} md={6}>
+                                    <InfoField
+                                      label={t("common.answerRange")}
+                                      value={answerRange?.title}
+                                    />
+                                  </Grid>
                                 </Grid>
-
                                 <OptionsSection options={answerOptions} />
                               </AccordionDetails>
                             </Accordion>

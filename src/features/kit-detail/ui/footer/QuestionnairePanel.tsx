@@ -25,6 +25,7 @@ import { getTranslation } from "./SubjectPanel";
 import TitleWithTranslation from "@/components/common/fields/TranslationText";
 import { OptionsSection } from "../common/OptionsSection";
 import { sxAccordion } from "./AttributePanel";
+import { InfoField } from "../common/InfoField";
 
 const QuestionnairePanel = ({
   questionnaire,
@@ -230,53 +231,17 @@ const QuestionnairePanel = ({
                                 </Grid>
                               )}
 
-                              <Grid item md={6}>
-                                {ques?.measure?.title && (
-                                  <>
-                                    <Text variant="titleSmall" sx={{ mb: 1 }}>
-                                      {t("common.measure")}
-                                    </Text>
-                                    <Box
-                                      sx={{
-                                        padding: "4px 16px",
-                                        borderRadius: "4px",
-                                        border: "1px solid",
-                                        borderColor: "outline.variant",
-                                        bgcolor: "primary.bg",
-                                        width: "fit-content",
-                                        color: "primary.main",
-                                      }}
-                                    >
-                                      <Text variant="bodyMedium">
-                                        {ques.measure.title}
-                                      </Text>
-                                    </Box>
-                                  </>
-                                )}
+                              <Grid item xs={12} md={6}>
+                                <InfoField
+                                  label={t("common.measure")}
+                                  value={ques.measure?.title}
+                                />
                               </Grid>
-                              <Grid item md={6}>
-                                {ques?.answerRange && (
-                                  <>
-                                    <Text variant="titleSmall" sx={{ mb: 1 }}>
-                                      {t("common.answerRange")}
-                                    </Text>
-                                    <Box
-                                      sx={{
-                                        padding: "4px 16px",
-                                        borderRadius: "4px",
-                                        border: "1px solid",
-                                        borderColor: "outline.variant",
-                                        bgcolor: "primary.bg",
-                                        width: "fit-content",
-                                        color: "primary.main",
-                                      }}
-                                    >
-                                      <Text variant="bodyMedium">
-                                        {ques?.answerRange?.title}
-                                      </Text>
-                                    </Box>
-                                  </>
-                                )}
+                              <Grid item xs={12} md={6}>
+                                <InfoField
+                                  label={t("common.answerRange")}
+                                  value={ques.answerRange?.title}
+                                />
                               </Grid>
                               {Boolean(ques.options?.length) && (
                                 <Box mt={2}>
@@ -309,7 +274,7 @@ const QuestionnairePanel = ({
                                       key={impact.id ?? impact.title}
                                       alignItems="center"
                                       gap={1.25}
-                                      sx={{ minWidth: 180 }} // بنا به نیاز
+                                      sx={{ minWidth: 180 }}
                                     >
                                       <Box
                                         sx={{

@@ -18,6 +18,7 @@ import { getTranslation } from "./SubjectPanel";
 import TitleWithTranslation from "@/components/common/fields/TranslationText";
 import { OptionsSection } from "../common/OptionsSection";
 import { sxAccordion } from "./AttributePanel";
+import { InfoField } from "../common/InfoField";
 
 const MeasurePanel = ({ measure }: { measure: IIndexedItem }) => {
   const { assessmentKitId } = useParams();
@@ -115,50 +116,21 @@ const MeasurePanel = ({ measure }: { measure: IIndexedItem }) => {
                         gap: 2,
                       }}
                     >
-                      <Grid container>
-                        {question?.questionnaire.title && (
-                          <Grid item md={6}>
-                            <Text variant="titleSmall" sx={{ mb: 1 }}>
-                              {t("common.questionnaire")}
-                            </Text>
-                            <Box
-                              sx={{
-                                padding: "4px 16px",
-                                borderRadius: "4px",
-                                border: "1px solid",
-                                borderColor: "outline.variant",
-                                bgcolor: "primary.bg",
-                                width: "fit-content",
-                                color: "primary.main",
-                              }}
-                            >
-                              <Text variant="bodyMedium">
-                                {question.questionnaire.title}
-                              </Text>
-                            </Box>
-                          </Grid>
-                        )}
-                        {question?.answerRange && (
-                          <Grid item md={6}>
-                            <Text variant="titleSmall" sx={{ mb: 1 }}>
-                              {t("common.answerRange")}
-                            </Text>
-                            <Box
-                              sx={{
-                                padding: "4px 16px",
-                                borderRadius: "4px",
-                                border: "1px solid",
-                                borderColor: "outline.variant",
-                                bgcolor: "primary.bg",
-                                width: "fit-content",
-                                color: "primary.main",
-                              }}
-                            >
-                              {question?.answerRange?.title}
-                            </Box>
-                          </Grid>
-                        )}
+                      <Grid container spacing={0}>
+                        <Grid item xs={12} md={6}>
+                          <InfoField
+                            label={t("common.questionnaire")}
+                            value={question.questionnaire.title}
+                          />
+                        </Grid>
+                        <Grid item xs={12} md={6}>
+                          <InfoField
+                            label={t("common.answerRange")}
+                            value={question.answerRange.title}
+                          />
+                        </Grid>
                       </Grid>
+
                       <OptionsSection options={question?.options} />
                     </AccordionDetails>
                   </Accordion>
