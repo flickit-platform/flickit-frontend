@@ -8,7 +8,6 @@ import { useQuery } from "@/hooks/useQuery";
 import { useServiceContext } from "@providers/service-provider";
 import { useParams } from "react-router-dom";
 import QueryData from "@common/QueryData";
-import Divider from "@mui/material/Divider";
 import { useEffect } from "react";
 
 type Ttranslations = Record<string, any>;
