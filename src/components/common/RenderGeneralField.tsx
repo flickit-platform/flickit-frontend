@@ -154,7 +154,6 @@ export function RenderGeneralField(props: any) {
       <TitleWithTranslation
         title={fieldValue ?? ""}
         translation={translationFieldValue}
-        variant="semiBoldMedium"
         multiline={useRichEditor}
       />
       {editable && (

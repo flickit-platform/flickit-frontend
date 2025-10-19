@@ -95,7 +95,7 @@ export const sxAccordion = {
   "&:before": { content: "none" },
   position: "relative",
   transition: "background-position .4s ease",
-  "&.Mui-expanded": { marginTop: 0 },
+  "&.Mui-expanded": { margin: 0 },
 };
 export const sxSummary = (expanded: boolean) => ({
   px: 0,
@@ -114,8 +114,7 @@ export const sxSummary = (expanded: boolean) => ({
     padding: 0,
   },
   "& .MuiAccordionSummary-expandIconWrapper": {
-    m: 0,
-    p: 0,
+    marginInline: "4px",
   },
   borderTopLeftRadius: "12px !important",
   borderTopRightRadius: "12px !important",
@@ -299,7 +298,7 @@ const AttributePanel = ({ attribute }: { attribute: IIndexedItem }) => {
 
                     return (
                       <Box display="flex" flexDirection="column" gap={1}>
-                        {questions.map((question: any, i: number) => {
+                        {questions.map((question: any, index: number) => {
                           const {
                             id,
                             title,
@@ -312,13 +311,13 @@ const AttributePanel = ({ attribute }: { attribute: IIndexedItem }) => {
                             answerRange,
                           } = question;
 
-                          const expanded = isExpanded(i);
+                          const expanded = isExpanded(id);
 
                           return (
                             <Accordion
-                              key={id ?? i}
+                              key={id}
                               expanded={expanded}
-                              onChange={onChange(i)}
+                              onChange={onChange(id)}
                               sx={sxAccordion}
                             >
                               <AccordionSummary
@@ -367,7 +366,7 @@ const AttributePanel = ({ attribute }: { attribute: IIndexedItem }) => {
                                       >
                                         <Box display="flex" gap={0.5}>
                                           <Text variant="bodyMedium">
-                                            {i + 1}.{" "}
+                                            {index + 1}.{" "}
                                           </Text>
                                           <Text
                                             variant="bodyMedium"
