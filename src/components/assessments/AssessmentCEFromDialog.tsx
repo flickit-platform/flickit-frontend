@@ -191,6 +191,7 @@ const AssessmentCEFromDialog = (props: IAssessmentCEFromDialogProps) => {
               label={<Trans i18nKey="assessment.assessmentAndReportLanguage" />}
               options={languages}
               data-cy="language"
+              data-testid="language-value"
               disabled={languages.length === 1}
               required
               helperText={
