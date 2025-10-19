@@ -66,11 +66,15 @@ const MaturityLevelsPanel = ({
                 <ExpandMoreRounded sx={{ color: colorPallet[index] }} />
               }
               sx={{
+                "&.Mui-expanded": { minHeight: "unset" },
                 "& .MuiAccordionSummary-content": {
                   alignItems: "flex-start",
                   width: "100%",
                   gap: 2,
                   flexWrap: "wrap",
+                },
+                "& .MuiAccordionSummary-content.Mui-expanded": {
+                  marginBlock: "12px !important",
                 },
                 borderTopLeftRadius: "12px !important",
                 borderTopRightRadius: "12px !important",

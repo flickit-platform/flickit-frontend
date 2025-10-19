@@ -40,6 +40,7 @@ const AnswerRangesPanel = ({
               <AccordionSummary
                 expandIcon={<ExpandMoreRounded sx={{ color: "surface.on" }} />}
                 sx={{
+                  "&.Mui-expanded": { minHeight: "48px" },
                   "& .MuiAccordionSummary-content": {
                     alignItems: "center",
                     width: "100%",
