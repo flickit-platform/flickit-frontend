@@ -11,8 +11,8 @@ import { styles } from "@styles";
 import { useAccordion } from "@/hooks/useAccordion";
 import Chip from "@mui/material/Chip";
 import { KitDetailsType } from "@/features/kit-detail/model/types";
-import { memo } from "react";
 import { t } from "i18next";
+import { OptionsSection } from "../common/OptionsSection";
 
 const AnswerRangesPanel = ({
   ranges,
@@ -68,14 +68,7 @@ const AnswerRangesPanel = ({
               <AccordionDetails
                 sx={{ display: "flex", flexDirection: "column", p: 2 }}
               >
-                <Text variant="titleSmall" sx={{ mb: 1 }}>
-                  {t("common.options")}
-                </Text>
-                <Box sx={{ display: "flex", flexWrap: "wrap" }}>
-                  {range.answerOptions.map((opt: any) => (
-                    <OptionPill key={opt.index} option={opt} />
-                  ))}
-                </Box>
+                <OptionsSection options={range.answerOptions} />
               </AccordionDetails>
             </Accordion>
           );
@@ -130,73 +123,5 @@ const AccordionSummaryContent = (props: any) => {
   );
 };
 
-export const OptionPill = memo(function OptionPill({
-  option,
-}: {
-  option: {
-    index: number;
-    title: string;
-    value: number;
-    translations: Record<string, { title: string }>;
-  };
-}) {
-  type TranslationMap = Record<string, { title: string }>;
-
-  const getPrimaryTranslationTitle = (
-    map?: TranslationMap | null,
-  ): string | null =>
-    map && Object.keys(map).length > 0
-      ? (Object.values(map)[0]?.title ?? null)
-      : null;
-
-  const translate = getPrimaryTranslationTitle(option.translations);
-
-  return (
-    <Box
-      key={option.index}
-      sx={{
-        display: "flex",
-        alignItems: "center",
-        gap: 4,
-        marginInlineEnd: 3,
-        mb: 2,
-        py: 1,
-        px: 2,
-        borderRadius: 2,
-        border: "0.5px solid #C7CCD1",
-        width: "fit-content",
-      }}
-    >
-      <Box display="flex" flexDirection="column">
-        {" "}
-        <Box>
-          <Text variant="bodyMedium">{option.index}.</Text>{" "}
-          <Text variant="bodyMedium"> {option.title}</Text>
-        </Box>
-        {translate && (
-          <>
-            <Divider variant="fullWidth" orientation="horizontal" flexItem />
-            <Text variant="bodyMedium">{translate}</Text>
-          </>
-        )}
-      </Box>
-
-      <Chip
-        label={
-          <Box>
-            <Text variant="bodySmall">{t("common.score")}</Text>:{" "}
-            <Text variant="bodySmall" sx={{ paddingInlineStart: "2.5px" }}>
-              {option.value}
-            </Text>
-          </Box>
-        }
-        sx={{
-          borderRadius: "16px",
-          bgcolor: "background.container",
-        }}
-      />
-    </Box>
-  );
-});
 
 export default AnswerRangesPanel;

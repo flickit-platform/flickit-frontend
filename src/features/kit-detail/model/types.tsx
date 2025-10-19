@@ -49,13 +49,13 @@ export interface IIndexedItem {
   translations?: Record<string, { title?: string; description?: string }>;
 }
 
-type options = Omit<IIndexedItem, "id"> & { value: number };
+export type IOption = Omit<IIndexedItem, "id"> & { value: number };
 export type IMaturityLevelIndexedItem = IIndexedItem & {
   description: string;
   competences: LevelCompetence[];
 };
 export type IAnswerRangeIndexedItem = Omit<IIndexedItem, "index"> & {
-  answerOptions: options[];
+  answerOptions: IOption[];
   translations: Record<string, { title: string }>;
 };
 export interface KitDetailsType {
@@ -81,7 +81,7 @@ export interface QuestionnaireDetails {
 
 export interface QuestionDetailss {
   hint?: string;
-  options: options[];
+  options: IOption[];
   attributeImpacts: {
     id: TId;
     title: string;
@@ -106,7 +106,7 @@ export interface MeasureDetails {
   title: string;
   description: string;
   questions: (QuestionDetaisl & {
-    options: options[];
+    options: IOption[];
     answerRange: { title: string; id: TId };
     questionnaire: IIndexedItem;
   })[];

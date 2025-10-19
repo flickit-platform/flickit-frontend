@@ -21,9 +21,8 @@ import QueryData from "@common/QueryData";
 import React, { useEffect, useState, useCallback } from "react";
 import { useAccordion } from "@/hooks/useAccordion";
 import { ExpandMoreRounded } from "@mui/icons-material";
-import { OptionPill as RawOptionPill } from "@/features/kit-detail/ui/footer/AnswerRangesPanel";
+import { OptionsSection } from "../common/OptionsSection";
 
-const OptionPill = React.memo(RawOptionPill);
 const Tags = React.memo(function Tags({ mayNotBeApplicable, advisable }: any) {
   const { t } = useTranslation();
   const tags = [
@@ -251,8 +250,10 @@ const AttributePanel = ({
               title={attribute?.title}
               translations={getTranslation(translations, "title")}
               sectionName={t("kitDetail.attribute")}
-              firstTag={`${questionCount} ${t("kitDetail.questions")}`}
-              secondTag={`${t("common.weight")}: ${weight}`}
+              tags={[
+                `${questionCount} ${t("kitDetail.questions")}`,
+                `${t("common.weight")}: ${weight}`,
+              ]}
             />
 
             <Box>
@@ -538,31 +539,7 @@ const AttributePanel = ({
                                   )}
                                 </Grid>
 
-                                {Array.isArray(answerOptions) &&
-                                  answerOptions.length > 0 && (
-                                    <Box px={2} pb={2}>
-                                      <Text variant="titleSmall" sx={{ mb: 1 }}>
-                                        {t("common.options")}
-                                      </Text>
-                                      <Box
-                                        sx={{
-                                          display: "flex",
-                                          flexWrap: "wrap",
-                                        }}
-                                      >
-                                        {answerOptions.map((opt: any) => (
-                                          <OptionPill
-                                            key={
-                                              opt.index ??
-                                              opt.id ??
-                                              `${id}-${opt.value}`
-                                            }
-                                            option={opt}
-                                          />
-                                        ))}
-                                      </Box>
-                                    </Box>
-                                  )}
+                                <OptionsSection options={answerOptions} />
                               </AccordionDetails>
                             </Accordion>
                           );

@@ -84,8 +84,10 @@ const SubjectPanel = ({
               title={subject?.title}
               translations={getTranslation(subject?.translations, "title")}
               sectionName={t("kitDetail.subject")}
-              firstTag={`${questionsCount} ${t("common.questions")}`}
-              secondTag={`${t("common.weight")}: ${weight}`}
+              tags={[
+                `${questionsCount} ${t("common.questions")}`,
+                `${t("common.weight")}: ${weight}`,
+              ]}
             />
 
             <Box>

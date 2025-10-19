@@ -22,7 +22,7 @@ import { getSemanticColors } from "@/config/colors";
 import { InfoHeader } from "../common/InfoHeader";
 import { getTranslation } from "./SubjectPanel";
 import TitleWithTranslation from "@/components/common/fields/TranslationText";
-import { OptionPill } from "./AnswerRangesPanel";
+import { OptionsSection } from "../common/OptionsSection";
 
 const QuestionnairePanel = ({
   questionnaire,
@@ -67,7 +67,9 @@ const QuestionnairePanel = ({
                 "title",
               )}
               sectionName={t("common.questionnaire")}
-              firstTag={`${_questionnaire.questions.length} ${t("kitDetail.questions")}`}
+              tags={[
+                `${_questionnaire.questions.length} ${t("kitDetail.questions")}`,
+              ]}
             />
             <Box>
               <Text variant="semiBoldLarge" color={"background.secondaryDark"}>
@@ -284,19 +286,7 @@ const QuestionnairePanel = ({
                               </Grid>
                               {Boolean(ques.options?.length) && (
                                 <Box mt={2}>
-                                  <Text variant="titleSmall" mb={1}>
-                                    {t("common.options")}
-                                  </Text>
-                                  <Box
-                                    sx={{ display: "flex", flexWrap: "wrap" }}
-                                  >
-                                    {ques.options?.map((opt: any) => (
-                                      <OptionPill
-                                        key={opt.index}
-                                        option={opt}
-                                      />
-                                    ))}
-                                  </Box>
+                                  <OptionsSection options={ques.options} />
                                 </Box>
                               )}
                               <Box my={2}>

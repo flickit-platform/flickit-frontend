@@ -13,10 +13,10 @@ import { ExpandMoreRounded } from "@mui/icons-material";
 import { Text } from "@/components/common/Text";
 import { useTranslation } from "react-i18next";
 import { useMeasures } from "../../model/footer/useMeasures";
-import { OptionPill } from "./AnswerRangesPanel";
 import { InfoHeader } from "../common/InfoHeader";
 import { getTranslation } from "./SubjectPanel";
 import TitleWithTranslation from "@/components/common/fields/TranslationText";
+import { OptionsSection } from "../common/OptionsSection";
 
 const MeasurePanel = ({ measure }: { measure: IIndexedItem }) => {
   const { assessmentKitId } = useParams();
@@ -38,7 +38,7 @@ const MeasurePanel = ({ measure }: { measure: IIndexedItem }) => {
               title={_measure.title}
               translations={getTranslation(measure?.translations, "title")}
               sectionName={t("common.measure")}
-              firstTag={`${_measure.questions.length} ${t("common.question")}`}
+              tags={[`${_measure.questions.length} ${t("common.question")}`]}
             />
             <Box>
               <Text variant="semiBoldLarge" color={"background.secondaryDark"}>
@@ -107,7 +107,7 @@ const MeasurePanel = ({ measure }: { measure: IIndexedItem }) => {
                           : "",
                       }}
                     >
-                      <Box>
+                      <Box display="flex" gap={0.5}>
                         <Text variant="bodyMedium">{index + 1}.</Text>{" "}
                         <Text variant="bodyMedium" textAlign="justify">
                           {" "}
@@ -167,18 +167,7 @@ const MeasurePanel = ({ measure }: { measure: IIndexedItem }) => {
                           </Grid>
                         )}
                       </Grid>
-                      {question?.options?.length && (
-                        <>
-                          <Text variant="titleSmall" sx={{ mb: 1 }}>
-                            {t("common.options")}
-                          </Text>
-                          <Box sx={{ display: "flex", flexWrap: "wrap" }}>
-                            {question.options?.map((opt: any) => (
-                              <OptionPill key={opt.index} option={opt} />
-                            ))}
-                          </Box>
-                        </>
-                      )}
+                      <OptionsSection options={question?.options} />
                     </AccordionDetails>
                   </Accordion>
                 );
