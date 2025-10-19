@@ -13,6 +13,8 @@ import Chip from "@mui/material/Chip";
 import { KitDetailsType } from "@/features/kit-detail/model/types";
 import { t } from "i18next";
 import { OptionsSection } from "../common/OptionsSection";
+import { getTranslation } from "./SubjectPanel";
+import { sxAccordion } from "./AttributePanel";
 
 const AnswerRangesPanel = ({
   ranges,
@@ -33,15 +35,7 @@ const AnswerRangesPanel = ({
               key={range.id}
               expanded={isExpanded(range.id)}
               onChange={onChange(range.id)}
-              sx={{
-                boxShadow: "none !important",
-                borderRadius: "16px !important",
-                border: `1px solid #C7CCD1`,
-                bgcolor: "initial",
-                "&:before": { content: "none" },
-                position: "relative",
-                transition: "background-position .4s ease",
-              }}
+              sx={sxAccordion}
             >
               <AccordionSummary
                 expandIcon={<ExpandMoreRounded sx={{ color: "surface.on" }} />}
@@ -60,10 +54,38 @@ const AnswerRangesPanel = ({
                   borderBottom: isExpanded(range.id) ? `1px solid #C7CCD1` : "",
                 }}
               >
-                <AccordionSummaryContent
-                  range={range}
-                  isExpanded={isExpanded}
-                />
+                <>
+                  <Box width="250px" sx={{ ...styles.centerV }}>
+                    <Text variant="semiBoldLarge" lines={1}>
+                      {range.title}
+                    </Text>
+                    {getTranslation(range.translations, "title") && (
+                      <>
+                        <Divider
+                          flexItem
+                          orientation="vertical"
+                          sx={{
+                            mx: "8px",
+                            bgcolor: isExpanded(range.id)
+                              ? "background.on"
+                              : "background.containerLowest",
+                          }}
+                        />
+                        <Text variant="bodyMedium" lines={1}>
+                          {getTranslation(range.translations, "title")}
+                        </Text>
+                      </>
+                    )}
+                  </Box>
+                  <Chip
+                    label={
+                      <Text variant="semiBoldMedium">
+                        {range.answerOptions.length} {t("kitDetail.options")}
+                      </Text>
+                    }
+                    sx={{ background: "#66809914", borderRadius: 4 }}
+                  />
+                </>
               </AccordionSummary>
               <AccordionDetails
                 sx={{ display: "flex", flexDirection: "column", p: 2 }}
@@ -77,51 +99,5 @@ const AnswerRangesPanel = ({
     </Box>
   );
 };
-
-const AccordionSummaryContent = (props: any) => {
-  const { range, isExpanded } = props;
-
-  const translation = range?.translations as Record<string, { title: string }>;
-  const hasTranslation = Object.keys(translation || {}).length > 0;
-  const translatedTitleSummary = hasTranslation
-    ? Object.values(translation ?? {})[0]?.title
-    : null;
-
-  return (
-    <>
-      <Box width="250px" sx={{ ...styles.centerV }}>
-        <Text variant="semiBoldLarge" lines={1}>
-          {range.title}
-        </Text>
-        {hasTranslation && (
-          <>
-            <Divider
-              flexItem
-              orientation="vertical"
-              sx={{
-                mx: "8px",
-                bgcolor: isExpanded(range.id)
-                  ? "background.on"
-                  : "background.containerLowest",
-              }}
-            />
-            <Text variant="bodyMedium" lines={1}>
-              {translatedTitleSummary}
-            </Text>
-          </>
-        )}
-      </Box>
-      <Chip
-        label={
-          <Text variant="semiBoldMedium">
-            {range.answerOptions.length} {t("kitDetail.options")}
-          </Text>
-        }
-        sx={{ background: "#66809914", borderRadius: 4 }}
-      />
-    </>
-  );
-};
-
 
 export default AnswerRangesPanel;

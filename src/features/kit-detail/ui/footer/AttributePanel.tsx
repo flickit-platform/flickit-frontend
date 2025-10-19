@@ -83,18 +83,18 @@ const sxTab = {
     "&:hover": { bgcolor: "background.containerLowest", border: "none" },
   },
 };
-const sxAccordion = {
+export const sxAccordion = {
   boxShadow: "none !important",
   borderRadius: "16px !important",
-  border: "1px solid #C7CCD1",
+  border: "1px solid",
+  borderColor: "outline.variant",
   bgcolor: "initial",
   "&:before": { content: "none" },
   position: "relative",
   transition: "background-position .4s ease",
-  mb: 1,
   "&.Mui-expanded": { marginTop: 0 },
 };
-const sxSummary = (expanded: boolean) => ({
+export const sxSummary = (expanded: boolean) => ({
   px: 0,
   py: 0,
   minHeight: 0,
@@ -320,7 +320,7 @@ const AttributePanel = ({
                     const { questions = [] } = maturityData ?? {};
 
                     return (
-                      <Box>
+                      <Box display="flex" flexDirection="column" gap={1}>
                         {questions.map((q: any, i: number) => {
                           const {
                             id,

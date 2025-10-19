@@ -7,7 +7,7 @@ import { getTranslation } from "../footer/SubjectPanel";
 export const OptionsSection = ({ options }: { options: IOption[] }) => {
   return (
     <>
-      {Boolean(options.length) && (
+      {Boolean(options?.length) && (
         <Box px={2} pb={2}>
           <Text variant="titleSmall" sx={{ mb: 1 }}>
             {t("common.options")}
@@ -30,7 +30,8 @@ export const OptionsSection = ({ options }: { options: IOption[] }) => {
                   py: 1,
                   px: 2,
                   borderRadius: 2,
-                  border: "0.5px solid #C7CCD1",
+                  border: "0.5px solid",
+                  borderColor: "outline.variant",
                   width: "fit-content",
                 }}
               >

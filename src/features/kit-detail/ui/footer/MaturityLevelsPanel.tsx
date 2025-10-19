@@ -20,6 +20,8 @@ import {
 } from "@/config/colors";
 import { IMaturityLevelIndexedItem } from "../../model/types";
 import { getTranslation } from "./SubjectPanel";
+import { sxAccordion } from "./AttributePanel";
+import TitleWithTranslation from "@/components/common/fields/TranslationText";
 
 const localPalette = withDefaultOverrides(BASE_PALETTE, { C5: "#C7CCD1" });
 
@@ -54,15 +56,9 @@ const MaturityLevelsPanel = ({
             expanded={isExpanded(level.index)}
             onChange={onChange(level.index)}
             sx={{
-              boxShadow: "none !important",
-              borderRadius: "16px !important",
+              ...sxAccordion,
               border: `1px solid ${colorPallet[index]}`,
               borderInlineStart: `8px solid ${colorPallet[index]}`,
-              bgcolor: "initial",
-              "&:before": { content: "none" },
-              position: "relative",
-              transition: "background-position .4s ease",
-              "&.Mui-expanded": { margin: 0 },
             }}
           >
             <AccordionSummary
@@ -156,17 +152,13 @@ const MaturityLevelsPanel = ({
               >
                 <Text variant="semiBoldMedium">{t("common.description")}</Text>
                 <Box width="100%">
-                  <Text variant="bodyMedium">{level.description}</Text>
-
-                  {getTranslation(level.translations, "description") && (
-                    <>
-                      <Divider flexItem sx={{ my: 1 }} />
-
-                      <Text variant="bodyMedium" lines={1}>
-                        {getTranslation(level.translations, "description")}
-                      </Text>
-                    </>
-                  )}
+                  <TitleWithTranslation
+                    title={level.description}
+                    translation={getTranslation(
+                      level.translations,
+                      "description",
+                    )}
+                  />
                 </Box>
               </Box>
             </AccordionDetails>

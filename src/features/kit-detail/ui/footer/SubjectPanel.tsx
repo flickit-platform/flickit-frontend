@@ -162,7 +162,7 @@ const SubjectPanel = ({
                                 {`${t("common.weight")} ${weight}`}
                               </Text>
                             }
-                            sx={{ background: "#66809914", borderRadius: 4 }}
+                            sx={{ bgcolor: "outline.variant", borderRadius: 4 }}
                           />
                         </Box>
                         {!isLast && (
@@ -171,7 +171,7 @@ const SubjectPanel = ({
                             orientation="vertical"
                             sx={{
                               marginInline: "8px",
-                              bgcolor: "#C7CCD1",
+                              bgcolor: "outline.variant",
                               alignSelf: "stretch",
                               mt: "12px",
                               mb: "12px",

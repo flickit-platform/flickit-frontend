@@ -1,4 +1,4 @@
-import { createTheme } from "@mui/material/styles";
+import { TypeBackground, createTheme } from "@mui/material/styles";
 import { v3Tokens } from "./tokens";
 import { gray, grayBlue, orange } from "./colors";
 const fontSize = ["12px", "14px", "14px", "16px", "16px"];
@@ -18,6 +18,13 @@ declare module "@mui/material/styles/createPalette" {
     container: string;
     containerHigh: string;
     containerHighest: string;
+    states?: {
+      hover: string;
+      selected: string;
+      focus: string;
+      focusVisible: string;
+      outlineBorder: string;
+    };
   }
   interface PaletteOptions {
     grayBlue?: any;
@@ -253,6 +260,7 @@ export const getTheme = (lang: any) => {
         container: v3Tokens.surface.container,
         containerHigh: v3Tokens.surface.containerHigh,
         containerHighest: v3Tokens.surface.containerHighest,
+        states: makeStates("#668099"),
       },
 
       text: { primary: v3Tokens.surface.on, secondary: grayBlue[50] },

@@ -17,6 +17,7 @@ import { InfoHeader } from "../common/InfoHeader";
 import { getTranslation } from "./SubjectPanel";
 import TitleWithTranslation from "@/components/common/fields/TranslationText";
 import { OptionsSection } from "../common/OptionsSection";
+import { sxAccordion } from "./AttributePanel";
 
 const MeasurePanel = ({ measure }: { measure: IIndexedItem }) => {
   const { assessmentKitId } = useParams();
@@ -71,16 +72,7 @@ const MeasurePanel = ({ measure }: { measure: IIndexedItem }) => {
                     key={question.title}
                     expanded={isExpanded(question.title)}
                     onChange={onChange(question.title)}
-                    sx={{
-                      boxShadow: "none !important",
-                      borderRadius: "16px !important",
-                      border: `1px solid #C7CCD1`,
-                      bgcolor: "initial",
-                      "&:before": { content: "none" },
-                      position: "relative",
-                      transition: "background-position .4s ease",
-                      "&.Mui-expanded": { margin: 0 },
-                    }}
+                    sx={sxAccordion}
                   >
                     <AccordionSummary
                       expandIcon={
