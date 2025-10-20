@@ -1,5 +1,5 @@
 import React, { useMemo, useState, useCallback, useEffect } from "react";
-import { TreeView, TreeItem } from "@mui/lab";
+import { RichTreeView, TreeItem } from '@mui/x-tree-view';
 import ExpandMoreRounded from "@mui/icons-material/ExpandMoreRounded";
 import ExpandLessRounded from "@mui/icons-material/ExpandLessRounded";
 import i18next from "i18next";
@@ -100,7 +100,7 @@ function renderNodes(
   return nodes.map((n) => (
     <TreeItem
       key={n.nodeId}
-      nodeId={n.nodeId}
+      itemId={n.nodeId}
       label={<NodeLabel>{n.title}</NodeLabel>}
       sx={{
         ...sectionActiveSx(n.nodeId === activeRoot),
@@ -196,17 +196,22 @@ export default function KitDetailsTreeView({
   }, [parentById, selectedId]);
 
   return (
-    <TreeView
+    <RichTreeView
       aria-label="navigator"
-      defaultCollapseIcon={<ExpandLessRounded fontSize="small" />}
-      defaultExpandIcon={<ExpandMoreRounded fontSize="small" />}
-      selected={highlightId ?? undefined}
-      onNodeSelect={handleSelect}
-      expanded={expanded}
-      onNodeToggle={handleToggle}
+      slots={{
+        expandIcon: () => <ExpandMoreRounded fontSize="small" />,
+        collapseIcon: () => <ExpandLessRounded fontSize="small" />,
+      }}
+      getItemId={(item) => item.nodeId}
+      getItemLabel={(item) => item.title}
+      selectedItems={highlightId ?? undefined}
+      onItemSelectionToggle={handleSelect}
+      expandedItems={expanded}
+      onExpandedItemsChange={handleToggle}
       sx={makeTreeSx(isRTL)}
+      items={nodes}
     >
       {renderNodes(nodes, activeRoot)}
-    </TreeView>
+    </RichTreeView>
   );
 }

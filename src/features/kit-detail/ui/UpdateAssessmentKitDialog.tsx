@@ -182,12 +182,12 @@ const UpdateAssessmentKitDialog = (props: any) => {
         })}
       </Box>
       <Grid mt={4} container spacing={2} justifyContent="flex-end">
-        <Grid item>
+        <Grid>
           <Button onClick={close} data-cy="cancel">
             <Trans i18nKey="common.cancel" />
           </Button>
         </Grid>
-        <Grid item>
+        <Grid>
           <Button variant="contained" onClick={() => setShowErrorLog(false)}>
             <Trans i18nKey="common.back" />
           </Button>

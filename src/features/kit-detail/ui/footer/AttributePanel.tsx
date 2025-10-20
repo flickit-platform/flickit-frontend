@@ -355,13 +355,7 @@ const AttributePanel = ({ attribute }: { attribute: IIndexedItem }) => {
                                       sx={{ m: 0, width: "100%" }}
                                     >
                                       <Grid
-                                        item
-                                        xs={12}
-                                        md={
-                                          mayNotBeApplicable || !advisable
-                                            ? 8
-                                            : 12
-                                        }
+                                        size={{xs: 12, md: mayNotBeApplicable || !advisable ? 8 : 12 }}
                                       >
                                         <Box display="flex" gap={0.5}>
                                           <Text variant="bodyMedium">
@@ -377,9 +371,7 @@ const AttributePanel = ({ attribute }: { attribute: IIndexedItem }) => {
                                       </Grid>
                                       {(mayNotBeApplicable || !advisable) && (
                                         <Grid
-                                          item
-                                          xs={12}
-                                          md={3}
+                                          size={{xs: 12, md: 3}}
                                           sx={{ ...styles.centerVH, gap: 1 }}
                                         >
                                           <Tags
@@ -474,13 +466,13 @@ const AttributePanel = ({ attribute }: { attribute: IIndexedItem }) => {
                                   gap={1}
                                 >
                                   <Grid container spacing={0}>
-                                    <Grid item xs={12} md={6}>
+                                    <Grid size={{xs: 12, md: 6}}>
                                       <InfoField
                                         label={t("common.measure")}
                                         value={measure?.title}
                                       />
                                     </Grid>
-                                    <Grid item xs={12} md={6}>
+                                    <Grid size={{xs: 12, md: 6}}>
                                       <InfoField
                                         label={t("common.answerRange")}
                                         value={answerRange?.title}
