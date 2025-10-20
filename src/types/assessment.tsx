@@ -16,23 +16,6 @@ export interface IAssessmentKit {
   kit?: IAssessmentKit;
 }
 
-type LevelCompetence = {
-  title: string;
-  value: number;
-  maturityLevelId: number;
-};
-
-interface AssessmentKitStatsSubjects {
-  title: string;
-}
-
-interface AssessmentKitDetailsMaturityLevel {
-  id: number;
-  title: string;
-  index: number;
-  competences: LevelCompetence[];
-}
-
 export interface IAssessmentKitReportModel {
   id: number;
   title: string;
@@ -150,7 +133,7 @@ export interface IGraphicalReport {
   lang: ILanguage;
   visibility: VISIBILITY;
   linkHash: string;
-  isAdvisable: boolean
+  isAdvisable: boolean;
 }
 
 type insight = {
@@ -169,12 +152,6 @@ export interface IAssessmentResponse {
   assessment: any;
   subjects: any[];
   assessmentPermissions: IAssessmentPermissions;
-}
-
-export interface AssessmentKitDetailsType {
-  maturityLevel: AssessmentKitDetailsMaturityLevel;
-  subjects: { id: number; title: string; index: number }[];
-  questionnaires: { id: number; title: string; index: number }[];
 }
 
 export interface IAssessmentKitInfo {
@@ -198,36 +175,6 @@ export interface IAssessmentKitInfo {
   questionnaires: IQuestionnaire[];
   maturityLevels: IMaturityLevel[];
   tags: { id: TId; title: string }[];
-}
-
-export interface AssessmentKitStatsType {
-  creationTime: string;
-  lastModificationTime: string;
-  questionnairesCount: number;
-  attributesCount: number;
-  questionsCount: number;
-  maturityLevelsCount: number;
-  likes: number;
-  assessmentCounts: number;
-  subjects: AssessmentKitStatsSubjects[];
-  expertGroup: IExpertGroup[];
-}
-
-export interface AssessmentKitInfoType {
-  id: number;
-  title: string;
-  summary: string;
-  published: boolean;
-  isPrivate: boolean;
-  price: number;
-  about: string;
-  tags: [];
-  editable?: boolean;
-  hasActiveVersion?: boolean;
-  mainLanguage?: { code: string; title: string };
-  metadata?: { context: string; goal: string };
-  translations?: any;
-  languages: {code: string, title: string}[]
 }
 
 export interface IAssessmentModel extends IDefaultModel<IAssessment> {

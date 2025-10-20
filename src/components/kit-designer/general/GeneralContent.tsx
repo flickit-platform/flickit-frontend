@@ -31,11 +31,11 @@ const generalFields = [
     multiline: false,
     useRichEditor: false,
   },
-  { name: "about", label: "common.what", multiline: true, useRichEditor: true },
-  { name: "goal", label: "common.when", multiline: true, useRichEditor: true },
+  { name: "about", label: "kitDetail.whatIsThisKit", multiline: true, useRichEditor: true },
+  { name: "goal", label: "kitDetail.whoNeedsThisKit", multiline: true, useRichEditor: true },
   {
     name: "context",
-    label: "common.who",
+    label: "kitDetail.whenToUseThisKit",
     multiline: true,
     useRichEditor: true,
   },
@@ -223,7 +223,7 @@ const GeneralContent = ({ kitVersion }: { kitVersion: IKitVersion }) => {
         </Button>
         <Button
           variant="contained"
-          onClick={handleSaveEdit}
+          onClick={() => handleSaveEdit()}
           disabled={updateKitInfoQuery.loading || editableFields.size === 0}
         >
           {updateKitInfoQuery.loading ? (

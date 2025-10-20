@@ -42,7 +42,7 @@ export const details = {
     {
       assessmentKitId,
       questionnaireId,
-    }: { assessmentKitId: TId; questionnaireId: TId },
+    }: { assessmentKitId: string | undefined; questionnaireId: TId },
     config?: AxiosRequestConfig,
   ) {
     return axios.get(
@@ -59,6 +59,21 @@ export const details = {
   ) {
     return axios.get(
       `/api/v2/assessment-kits/${assessmentKitId}/details/questions/${questionId}`,
+      {
+        ...(config ?? {}),
+      },
+    );
+  },
+
+  getMeasures(
+    {
+      assessmentKitId,
+      measureId,
+    }: { assessmentKitId: string | undefined; measureId: TId },
+    config?: AxiosRequestConfig,
+  ) {
+    return axios.get(
+      `/api/v2/assessment-kits/${assessmentKitId}/details/measures/${measureId}`,
       {
         ...(config ?? {}),
       },

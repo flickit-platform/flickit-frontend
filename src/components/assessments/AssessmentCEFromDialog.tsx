@@ -20,7 +20,7 @@ import { useAuthContext } from "@/providers/auth-provider";
 
 interface IAssessmentCEFromDialogProps extends DialogProps {
   onClose: () => void;
-  onSubmitForm?: () => void;
+  refetchData?: () => void;
   openDialog?: any;
   context?: any;
 }
@@ -31,7 +31,7 @@ const AssessmentCEFromDialog = (props: IAssessmentCEFromDialogProps) => {
   const { service } = useServiceContext();
   const {
     onClose: closeDialog,
-    onSubmitForm,
+    refetchData,
     context = {},
     openDialog,
     ...rest
@@ -96,8 +96,8 @@ const AssessmentCEFromDialog = (props: IAssessmentCEFromDialogProps) => {
           );
 
       setLoading(false);
-      if (onSubmitForm !== undefined) {
-        onSubmitForm();
+      if (refetchData !== undefined) {
+        refetchData();
       }
       close();
       setCreatedKitSpaceId(spaceId ?? space?.id ?? defaultSpaceId);

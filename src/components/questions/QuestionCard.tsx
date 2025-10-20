@@ -1404,8 +1404,8 @@ const AnswerHistoryItem = (props: any) => {
               {item?.answer?.selectedOption ? (
                 <>
                   {" "}
-                  {item?.answer?.selectedOption?.index}.
-                  {item?.answer?.selectedOption?.title}
+                  {t("common.option")} {" "}
+                  {item?.answer?.selectedOption?.index}
                 </>
               ) : (
                 <Trans i18nKey="questions.noOptionSelected" />

@@ -1,4 +1,5 @@
-import { Box, IconButton, useTheme } from "@mui/material";
+import { SxProps, Theme } from "@mui/material/styles";
+import { Box, Divider, IconButton, useTheme } from "@mui/material";
 import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
 import languageDetector from "@/utils/language-detector";
 import { useState } from "react";
@@ -9,11 +10,13 @@ import { t } from "i18next";
 import { Text } from "../Text";
 
 interface TitleWithTranslationProps {
-  title: string;
-  translation?: string;
+  title?: string;
+  translation?: string | null;
   variant?: any;
   multiline?: boolean;
   showCopyIcon?: boolean;
+  titleSx?: SxProps<Theme>;
+  translationSx?: SxProps<Theme>;
 }
 
 const RenderText = ({
@@ -24,6 +27,7 @@ const RenderText = ({
   variant,
   multiline,
   showCopyIcon,
+  sx,
 }: {
   text: string;
   isFarsi: boolean;
@@ -32,18 +36,20 @@ const RenderText = ({
   variant?: string;
   multiline?: boolean;
   showCopyIcon?: boolean;
+  sx?: any;
 }) => {
   const theme = useTheme();
 
   const baseProps = {
     component: "div" as const,
-    variant: variantOverride ?? variant,
+    variant: variant ?? variantOverride,
     sx: {
       mt: !multiline ? 0.5 : 0,
       color: color ?? "inherit",
       fontFamily: isFarsi ? farsiFontFamily : primaryFontFamily,
       textAlign: multiline ? "justify" : "unset",
       width: "fit-content",
+      ...sx,
     },
   };
   const [isHovered, setIsHovered] = useState(false);
@@ -91,25 +97,43 @@ const RenderText = ({
 
 const TitleWithTranslation = ({
   title,
-  translation= "",
+  translation = "",
+  titleSx,
+  translationSx,
   ...rest
 }: TitleWithTranslationProps) => {
-  const theme = useTheme()
+  const theme = useTheme();
   const isFarsiTitle = languageDetector(title);
   const isFarsiTranslation = translation
     ? languageDetector(translation)
     : false;
   return (
     <Box display="flex" flexDirection="column" flexGrow={1}>
-      <RenderText text={title} isFarsi={isFarsiTitle} {...rest} />
+      <RenderText
+        text={title ?? ""}
+        isFarsi={isFarsiTitle}
+        sx={titleSx}
+        {...rest}
+        variantOverride="bodyMedium"
+      />
       {translation && (
-        <RenderText
-          text={translation}
-          isFarsi={isFarsiTranslation}
-          color={theme.palette.background.onVariant}
-          variantOverride={"body2"}
-          {...rest}
-        />
+        <>
+          <Divider
+            sx={{
+              marginBlockStart: rest.multiline ? -1 : 1,
+              marginBlockEnd: rest.multiline ? -1 : 0,
+            }}
+          />
+
+          <RenderText
+            text={translation}
+            isFarsi={isFarsiTranslation}
+            color={theme.palette.background.onVariant}
+            sx={translationSx}
+            variantOverride="bodyMedium"
+            {...rest}
+          />
+        </>
       )}
     </Box>
   );

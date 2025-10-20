@@ -1,4 +1,4 @@
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import Box from "@mui/material/Box";
 import IconButton from "@mui/material/IconButton";
 import SwapVertRoundedIcon from "@mui/icons-material/SwapVertRounded";
@@ -501,7 +501,7 @@ const ActionButtons = ({
         size="small"
         onClick={handleEditClick}
         sx={{ mx: 1 }}
-        color={item.questionsCount === 0 ? "error" : "success"}
+        color={"success"}
         data-testid="items-edit-icon"
       >
         <EditRoundedIcon fontSize="small" />
@@ -509,7 +509,10 @@ const ActionButtons = ({
       {setOpenDeleteDialog && (
         <IconButton
           size="small"
-          onClick={() => setOpenDeleteDialog({ status: true, id: item.id })}
+          onClick={(e) => {
+            e.stopPropagation();
+            setOpenDeleteDialog({ status: true, id: item.id });
+          }}
           sx={{ mx: 1 }}
           color="secondary"
           data-testid="items-delete-icon"
@@ -676,6 +679,15 @@ const QuestionsSection = ({
     value: questionnaireLogic.kitState.questions.length + 1,
     id: null,
   });
+
+  useEffect(() => {
+    setNewQuestion({
+      title: "",
+      index: questionnaireLogic.kitState.questions.length + 1,
+      value: questionnaireLogic.kitState.questions.length + 1,
+      id: null,
+    });
+  }, [questionnaireLogic.kitState.questions.length]);
 
   const handleQuestionDragEnd = (result: any) => {
     if (!result.destination) return;

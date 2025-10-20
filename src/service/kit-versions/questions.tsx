@@ -40,6 +40,16 @@ export const questions = {
     );
   },
 
+  remove(
+    { kitVersionId, questionId }: { kitVersionId: TId; questionId: TId },
+    config?: AxiosRequestConfig<any>,
+  ) {
+    return axios.delete(
+      `/api/v1/kit-versions/${kitVersionId}/questions/${questionId}`,
+      config,
+    );
+  },
+
   getImpacts(
     { kitVersionId, questionId }: { kitVersionId: TId; questionId: any },
     config?: AxiosRequestConfig<any>,

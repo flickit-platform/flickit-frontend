@@ -1,9 +1,8 @@
-import { createTheme } from "@mui/material/styles";
+import { TypeBackground, createTheme } from "@mui/material/styles";
 import { v3Tokens } from "./tokens";
 import { gray, grayBlue, orange } from "./colors";
 const fontSize = ["12px", "14px", "14px", "16px", "16px"];
-export const primaryFontFamily = "NotoSans";
-export const secondaryFontFamily = "OpenSans";
+export const primaryFontFamily = "OpenSans";
 export const farsiFontFamily = "'Sahel','Arial','sans-serif'";
 
 declare module "@mui/material/styles/createPalette" {
@@ -19,6 +18,13 @@ declare module "@mui/material/styles/createPalette" {
     container: string;
     containerHigh: string;
     containerHighest: string;
+    states?: {
+      hover: string;
+      selected: string;
+      focus: string;
+      focusVisible: string;
+      outlineBorder: string;
+    };
   }
   interface PaletteOptions {
     grayBlue?: any;
@@ -126,7 +132,6 @@ declare module "@mui/material/styles" {
     bgVariant?: string;
     bg?: string;
     states?: {
-      base: string;
       hover: string;
       selected: string;
       focus: string;
@@ -164,39 +169,15 @@ declare module "@mui/material/Typography" {
     semiBoldSmall?: true;
   }
 }
-const alphaToSolid = (
-  base: string,
-  alphaValue: number,
-  bg: string = "#FFFFFF",
-) => {
-  const hexToRgb = (hex: string) => {
-    const c = hex.replace("#", "");
-    const bigint = parseInt(c, 16);
-    return [(bigint >> 16) & 255, (bigint >> 8) & 255, bigint & 255];
-  };
-
-  const rgbToHex = (r: number, g: number, b: number) =>
-    `#${[r, g, b].map((x) => x.toString(16).padStart(2, "0")).join("")}`;
-
-  const [r1, g1, b1] = hexToRgb(base);
-  const [r2, g2, b2] = hexToRgb(bg);
-
-  const r = Math.round(r1 * alphaValue + r2 * (1 - alphaValue));
-  const g = Math.round(g1 * alphaValue + g2 * (1 - alphaValue));
-  const b = Math.round(b1 * alphaValue + b2 * (1 - alphaValue));
-
-  return rgbToHex(r, g, b);
-};
 
 const makeStates = (base: string) => {
   const bg = v3Tokens.surface.containerLowest;
   return {
-    base,
-    hover: alphaToSolid(base, v3Tokens.states.hover, bg),
-    selected: alphaToSolid(base, v3Tokens.states.selected, bg),
-    focus: alphaToSolid(base, v3Tokens.states.focus, bg),
-    focusVisible: alphaToSolid(base, v3Tokens.states.focusVisible, bg),
-    outlineBorder: alphaToSolid(base, v3Tokens.states.outlineBorder, bg),
+    hover: base + "0A",
+    selected: base + "14",
+    focus: base + "1F",
+    focusVisible: base + "4D",
+    outlineBorder: base + "80",
   };
 };
 
@@ -279,6 +260,7 @@ export const getTheme = (lang: any) => {
         container: v3Tokens.surface.container,
         containerHigh: v3Tokens.surface.containerHigh,
         containerHighest: v3Tokens.surface.containerHighest,
+        states: makeStates("#668099"),
       },
 
       text: { primary: v3Tokens.surface.on, secondary: grayBlue[50] },
@@ -307,7 +289,6 @@ export const getTheme = (lang: any) => {
       subSmall: {
         fontFamily: is_farsi ? farsiFontFamily : primaryFontFamily,
         fontWeight: 500,
-        lineHeight: 1.57,
         letterSpacing: is_farsi ? "0px" : "0.09em",
         textTransform: "none",
         color: "GrayText",
@@ -315,36 +296,31 @@ export const getTheme = (lang: any) => {
       subMedium: {
         fontFamily: is_farsi ? farsiFontFamily : primaryFontFamily,
         fontWeight: 500,
-        lineHeight: 1.57,
         letterSpacing: is_farsi ? "0px" : "0.09em",
         color: "GrayText",
       },
       subLarge: {
         fontFamily: is_farsi ? farsiFontFamily : primaryFontFamily,
         fontWeight: 500,
-        lineHeight: 1.57,
         letterSpacing: is_farsi ? "0px" : "0.09em",
         color: "GrayText",
       },
       headlineSmall: {
-        fontFamily: is_farsi ? farsiFontFamily : secondaryFontFamily,
+        fontFamily: is_farsi ? farsiFontFamily : primaryFontFamily,
         fontWeight: "bold",
         fontSize: "1.5rem",
-        lineHeight: "2rem",
         letterSpacing: is_farsi ? "0px" : "-3%",
       },
       headlineMedium: {
-        fontFamily: is_farsi ? farsiFontFamily : secondaryFontFamily,
+        fontFamily: is_farsi ? farsiFontFamily : primaryFontFamily,
         fontWeight: "bold",
         fontSize: "2rem",
-        lineHeight: "2.25rem",
         letterSpacing: is_farsi ? "0px" : "0",
       },
       headlineLarge: {
-        fontFamily: is_farsi ? farsiFontFamily : secondaryFontFamily,
+        fontFamily: is_farsi ? farsiFontFamily : primaryFontFamily,
         fontWeight: "bold",
         fontSize: "2.5rem",
-        lineHeight: "2.7rem",
         letterSpacing: is_farsi ? "0px" : "0",
       },
       displaySmall: {
@@ -357,21 +333,18 @@ export const getTheme = (lang: any) => {
         fontFamily: is_farsi ? farsiFontFamily : primaryFontFamily,
         fontSize: "1.75rem",
         fontWeight: "bold",
-        lineHeight: "2.25rem",
         letterSpacing: is_farsi ? "0px" : "0",
       },
       displayLarge: {
-        fontFamily: is_farsi ? farsiFontFamily : secondaryFontFamily,
+        fontFamily: is_farsi ? farsiFontFamily : primaryFontFamily,
         fontSize: "4rem",
         fontWeight: "bold",
-        lineHeight: "5.75rem",
         letterSpacing: is_farsi ? "0px" : "0",
       },
       titleSmall: {
         fontFamily: is_farsi ? farsiFontFamily : primaryFontFamily,
         fontWeight: "bold",
-        fontSize: "0.875rem",
-        lineHeight: "1.25rem",
+        fontSize: "1rem",
         letterSpacing: is_farsi ? "0px" : ".1px",
       },
       titleMedium: {
@@ -384,85 +357,76 @@ export const getTheme = (lang: any) => {
         fontFamily: is_farsi ? farsiFontFamily : primaryFontFamily,
         fontWeight: "bold",
         fontSize: "1.375rem",
-        lineHeight: "1.75rem",
         letterSpacing: is_farsi ? "0px" : "0",
       },
       bodySmall: {
-        fontFamily: is_farsi ? farsiFontFamily : secondaryFontFamily,
+        fontFamily: is_farsi ? farsiFontFamily : primaryFontFamily,
         fontWeight: "400",
-        fontSize: "0.75rem",
+        fontSize: "13px",
         letterSpacing: is_farsi ? "0px" : "0.4px",
       },
       bodyMedium: {
-        fontFamily: is_farsi ? farsiFontFamily : secondaryFontFamily,
+        fontFamily: is_farsi ? farsiFontFamily : primaryFontFamily,
         fontWeight: 400,
-        fontSize: "0.875rem",
-        lineHeight: "1.5rem",
+        fontSize: "16px",
         letterSpacing: is_farsi ? "0px" : "0.25px",
       },
       bodyLarge: {
-        fontFamily: is_farsi ? farsiFontFamily : secondaryFontFamily,
+        fontFamily: is_farsi ? farsiFontFamily : primaryFontFamily,
         fontWeight: 400,
-        fontSize: "1rem",
+        fontSize: "18px",
         letterSpacing: is_farsi ? "0px" : "0.5px",
       },
       labelSmall: {
-        fontFamily: is_farsi ? farsiFontFamily : secondaryFontFamily,
+        fontFamily: is_farsi ? farsiFontFamily : primaryFontFamily,
         fontWeight: "400",
-        fontSize: "0.68rem",
-        lineHeight: "1rem",
+        fontSize: "11px",
         letterSpacing: "0px",
       },
       labelMedium: {
-        fontFamily: is_farsi ? farsiFontFamily : secondaryFontFamily,
+        fontFamily: is_farsi ? farsiFontFamily : primaryFontFamily,
         fontWeight: 500,
-        fontSize: "0.75rem",
-        lineHeight: "1rem",
+        fontSize: "13px",
         letterSpacing: is_farsi ? "0px" : "0.5px",
       },
       labelLarge: {
         fontFamily: is_farsi ? farsiFontFamily : primaryFontFamily,
         fontWeight: "bold",
-        fontSize: "0.875rem",
-        lineHeight: "1.125rem",
+        fontSize: "15px",
         letterSpacing: is_farsi ? "0px" : "0.1px",
       },
       labelCondensed: {
-        fontFamily: is_farsi ? farsiFontFamily : secondaryFontFamily,
+        fontFamily: is_farsi ? farsiFontFamily : primaryFontFamily,
         fontWeight: 500,
-        fontSize: "0.75rem",
-        lineHeight: "0.75rem",
+        fontSize: "12px",
         letterSpacing: "0.5px",
       },
       semiBoldSmall: {
-        fontFamily: is_farsi ? farsiFontFamily : secondaryFontFamily,
-        fontWeight: "500",
-        fontSize: "0.75rem",
-        lineHeight: "1rem",
+        fontFamily: is_farsi ? farsiFontFamily : primaryFontFamily,
+        fontWeight: 500,
+        fontSize: "13px",
         letterSpacing: is_farsi ? "0px" : "0.5px",
       },
-      semiBoldLarge: {
-        fontFamily: is_farsi ? farsiFontFamily : secondaryFontFamily,
-        fontWeight: "500",
-        fontSize: "1rem",
-        letterSpacing: is_farsi ? "0px" : "0.15px",
-      },
       semiBoldMedium: {
-        fontFamily: is_farsi ? farsiFontFamily : secondaryFontFamily,
-        fontWeight: "500",
-        fontSize: "0.875rem",
-        lineHeight: "1.25rem",
+        fontFamily: is_farsi ? farsiFontFamily : primaryFontFamily,
+        fontWeight: 500,
+        fontSize: "16px",
         letterSpacing: is_farsi ? "0px" : "0.1px",
       },
+      semiBoldLarge: {
+        fontFamily: is_farsi ? farsiFontFamily : primaryFontFamily,
+        fontWeight: 500,
+        fontSize: "18px",
+        letterSpacing: is_farsi ? "0px" : "0.15px",
+      },
       semiBoldXLarge: {
-        fontFamily: is_farsi ? farsiFontFamily : secondaryFontFamily,
-        fontWeight: "500",
+        fontFamily: is_farsi ? farsiFontFamily : primaryFontFamily,
+        fontWeight: 500,
         fontSize: "1.375rem",
-        lineHeight: "1.75rem",
         letterSpacing: "0px",
       },
       button: {
-        fontFamily: is_farsi ? farsiFontFamily : secondaryFontFamily,
+        fontFamily: is_farsi ? farsiFontFamily : primaryFontFamily,
         letterSpacing: is_farsi ? "0px" : ".05em",
       },
       h3: {
@@ -477,8 +441,7 @@ export const getTheme = (lang: any) => {
         opacity: 0.85,
       },
       h6: {
-        fontFamily: is_farsi ? farsiFontFamily : secondaryFontFamily,
-        lineHeight: 1.6,
+        fontFamily: is_farsi ? farsiFontFamily : primaryFontFamily,
         opacity: 0.85,
       },
     },
@@ -610,7 +573,7 @@ export const getTheme = (lang: any) => {
         defaultProps: {
           bgcolor: "primary.main",
           color: "primary.contrastText",
-          fontFamily: is_farsi ? farsiFontFamily : secondaryFontFamily,
+          fontFamily: is_farsi ? farsiFontFamily : primaryFontFamily,
           marginBottom: "8px",
         },
         styleOverrides: {
@@ -848,7 +811,7 @@ export const getTheme = (lang: any) => {
       MuiSlider: {
         styleOverrides: {
           valueLabel: {
-            fontFamily: is_farsi ? farsiFontFamily : secondaryFontFamily,
+            fontFamily: is_farsi ? farsiFontFamily : primaryFontFamily,
           },
           thumb: {
             height: "13px !important",

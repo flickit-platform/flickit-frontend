@@ -30,7 +30,7 @@ interface IQueryBatchDataProps<T> {
     errorComponent: JSX.Element,
   ) => JSX.Element;
   isDataEmpty?: (data?: T[]) => boolean;
-  queryBatchData: IQueryData<T>[];
+  queryBatchData: IQueryData<any>[];
   data?: T[];
   loading?: boolean;
   error?: boolean;

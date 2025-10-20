@@ -37,7 +37,7 @@ export default function MaturitySlider({
     [baseTheme],
   );
 
-  const total = Math.max(MIN, maturityLevels.length);
+  const total = Math.max(MIN, maturityLevels?.length);
   const defaultPct = useMemo(
     () => (total > MIN ? ((defaultValue - MIN) / (total - MIN)) * 100 : 0),
     [defaultValue, total],
@@ -55,7 +55,7 @@ export default function MaturitySlider({
     [total],
   );
   const markTitles = useMemo(
-    () => maturityLevels.map((m) => m.title),
+    () => maturityLevels?.map((m) => m.title),
     [maturityLevels],
   );
 

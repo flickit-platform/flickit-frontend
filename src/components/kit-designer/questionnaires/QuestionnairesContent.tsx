@@ -7,7 +7,7 @@ import { useServiceContext } from "@/providers/service-provider";
 import { useQuery } from "@/hooks/useQuery";
 import ListOfItems from "./QuestionnaireList";
 import EmptyState from "../common/EmptyState";
-import { Trans } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
 import { ICustomError } from "@/utils/custom-error";
 import debounce from "lodash/debounce";
@@ -16,10 +16,16 @@ import KitDesignerHeader from "@components/kit-designer/common/KitHeader";
 import QuestionnairesForm from "./QuestionnairesForm";
 import showToast from "@/utils/toast-error";
 import { Text } from "@/components/common/Text";
+import { DeleteConfirmationDialog } from "@/components/common/dialogs/DeleteConfirmationDialog";
 
 const QuestionnairesContent = () => {
+  const { t } = useTranslation();
   const { service } = useServiceContext();
   const { kitVersionId = "" } = useParams();
+  const [openDeleteDialog, setOpenDeleteDialog] = useState<{
+    status: boolean;
+    id: string;
+  }>({ status: false, id: "" });
 
   const fetchQuestionnairesKit = useQuery({
     service: (args, config) =>
@@ -39,6 +45,25 @@ const QuestionnairesContent = () => {
       service.kitVersions.questionnaires.update(args, config),
     runOnMount: false,
   });
+
+  const deleteQuestionnaireKit = useQuery({
+    service: (args, config) =>
+      service.kitVersions.questionnaires.remove(args, config),
+    runOnMount: false,
+  });
+
+  const handleDelete = async () => {
+    try {
+      let questionnaireId = openDeleteDialog.id;
+      await deleteQuestionnaireKit.query({ kitVersionId, questionnaireId });
+      await fetchQuestionnairesKit.query();
+      handleCancel();
+    } catch (e) {
+      const err = e as ICustomError;
+      showToast(err);
+    }
+    setOpenDeleteDialog({ ...openDeleteDialog, status: false })
+  };
 
   const [showNewQuestionnairesForm, setShowNewQuestionnairesForm] =
     useState(false);
@@ -221,6 +246,7 @@ const QuestionnairesContent = () => {
                       fetchQuery={fetchQuestionnairesKit}
                       onEdit={handleEdit}
                       onReorder={handleReorder}
+                      setOpenDeleteDialog={setOpenDeleteDialog}
                     />
                   </Box>
                 ) : (
@@ -245,6 +271,15 @@ const QuestionnairesContent = () => {
               </>
             );
           }}
+        />
+        <DeleteConfirmationDialog
+          open={openDeleteDialog.status}
+          onClose={() =>
+            setOpenDeleteDialog({ ...openDeleteDialog, status: false })
+          }
+          onConfirm={handleDelete}
+          title="warning"
+          content={t("kitDesigner.deleteQuestionnaire")}
         />
       </Box>
     </PermissionControl>

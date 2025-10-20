@@ -469,7 +469,7 @@ const AdviceItemAccordion: React.FC<{
           );
           setDisplayedItems(updatedItems);
         }}
-        title={t("deleteItem")}
+        title={t("common.warning")}
         content={t("advice.deleteItemConfirmation", { title: item.title })}
       />
     </>

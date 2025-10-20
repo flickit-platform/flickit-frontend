@@ -136,7 +136,7 @@ const MultiLangTextField = ({
         <Box sx={{ flexGrow: 1, width: "100%" }}>
           {renderInput(value, onChange, label, `${name}-id`)}
         </Box>
-        <Box sx={{ ...styles.centerCH }}>
+        <Box sx={{ ...styles.centerH }}>
           {!!langCode && (
             <IconButton
               onClick={(e) => handleShowTranslation(e, !showTranslation)}

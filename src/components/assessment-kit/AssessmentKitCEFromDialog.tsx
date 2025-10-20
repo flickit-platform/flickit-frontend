@@ -25,12 +25,12 @@ import { keyframes } from "@emotion/react";
 import convertToBytes from "@/utils/convert-to-bytes";
 import { useQuery } from "@/hooks/useQuery";
 import LoadingButton from "@mui/lab/LoadingButton";
-import SelectLanguage from "@/utils/select-language";
 import uniqueId from "@/utils/unique-id";
 import i18n from "i18next";
 import showToast from "@/utils/toast-error";
 import { v3Tokens } from "@/config/tokens";
 import { Text } from "../common/Text";
+import SelectLanguage from "../common/SelectLanguage";
 
 interface IAssessmentKitCEFromDialogProps extends DialogProps {
   onClose: () => void;
@@ -236,7 +236,7 @@ const AssessmentKitCEFromDialog = (props: IAssessmentKitCEFromDialogProps) => {
     <FormProviderWithForm formMethods={formMethods}>
       <Grid container spacing={type != "convert" ? 2 : 0} sx={styles.formGrid}>
         <Grid size={{xs: 12, md: 12}} display={activeStep === 0 ? "" : "none"}>
-          {type === "convert" && buttonStep == 0 && !convertData && (
+          {type === "convert" && buttonStep == 0 && (
             <Box pb="10px">
               <Box
                 bgcolor="background.containerHighest"

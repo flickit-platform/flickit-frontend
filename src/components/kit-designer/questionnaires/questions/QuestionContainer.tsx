@@ -3,23 +3,40 @@ import Box from "@mui/material/Box";
 import { styles } from "@styles";
 import IconButton from "@mui/material/IconButton";
 import ModeEditOutlineOutlinedIcon from "@mui/icons-material/ModeEditOutlineOutlined";
+import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import QuestionDialog from "./QuestionDialog";
 import Divider from "@mui/material/Divider";
 import { Text } from "@/components/common/Text";
 import TitleWithTranslation from "@/components/common/fields/TranslationText";
-import { useKitDesignerContext } from "@/providers/kit-provider";
+import { kitActions, useKitDesignerContext } from "@/providers/kit-provider";
 import useDialog from "@/hooks/useDialog";
+import { DeleteConfirmationDialog } from "@/components/common/dialogs/DeleteConfirmationDialog";
+import { useTranslation } from "react-i18next";
+import { useQuery } from "@/hooks/useQuery";
+import { useServiceContext } from "@/providers/service-provider";
+import { useParams } from "react-router-dom";
+import showToast from "@/utils/toast-error";
+import { ICustomError } from "@/utils/custom-error";
 
 const QuestionContain = (props: any) => {
+  const { t } = useTranslation();
+  const { kitVersionId = "" } = useParams();
+  const { service } = useServiceContext();
   const { index } = props;
   const [selectedQuestionIndex, setSelectedQuestionIndex] = useState<
     number | null
   >(null);
-  const { kitState } = useKitDesignerContext();
+  const { kitState, dispatch } = useKitDesignerContext();
   const question = kitState.questions[index];
+  const deleteQuestion = useQuery({
+    service: (args, config) =>
+      service.kitVersions.questions.remove(args, config),
+    runOnMount: false,
+  });
 
   const langCode = kitState.translatedLanguage?.code;
   const dialogProps = useDialog();
+  const deleteDialogProps = useDialog();
 
   const handleQuestionClick = (index: number) => {
     setSelectedQuestionIndex(index);
@@ -54,6 +71,23 @@ const QuestionContain = (props: any) => {
     }
   };
 
+  const handleDelete = async () => {
+    try {
+      let questionId = question.id;
+      await deleteQuestion.query({ kitVersionId, questionId });
+
+      const updatedQuestions = kitState.questions.filter(
+        (q) => q.id !== question.id,
+      );
+
+      dispatch(kitActions.setQuestions(updatedQuestions));
+    } catch (e) {
+      const err = e as ICustomError;
+      showToast(err);
+    }
+    deleteDialogProps.onClose();
+  };
+
   return (
     <>
       <Box sx={{ display: "flex", py: ".5rem", px: "1rem" }}>
@@ -86,11 +120,25 @@ const QuestionContain = (props: any) => {
           >
             <ModeEditOutlineOutlinedIcon fontSize="small" />
           </IconButton>
+          <IconButton onClick={deleteDialogProps.openDialog}>
+            <DeleteOutlineOutlinedIcon fontSize="small" />
+          </IconButton>
         </Box>
       </Box>
       {question.index !== question.total && (
         <Divider sx={{ width: "95%", mx: "auto" }} />
       )}
+      {
+        <DeleteConfirmationDialog
+          open={deleteDialogProps.open}
+          onClose={deleteDialogProps.onClose}
+          onConfirm={handleDelete}
+          title={t("common.warning")}
+          content={t("advice.deleteItemConfirmation", {
+            title: question.title,
+          })}
+        />
+      }
       {dialogProps.open && (
         <QuestionDialog
           {...dialogProps}

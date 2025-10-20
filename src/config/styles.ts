@@ -1,6 +1,4 @@
 import { keyframes, SxProps, Theme } from "@mui/material/styles";
-import { TStatus } from "@/types/index";
-import hasStatus from "@/utils/has-status";
 import { farsiFontFamily, primaryFontFamily } from "./theme";
 import i18next from "i18next";
 import { v3Tokens } from "./tokens";
@@ -58,16 +56,6 @@ const commonStyles = {
       borderRadius: 1,
     },
   }),
-  circularProgressBackgroundStroke: style({
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    [`& .MuiCircularProgress-circle`]: {
-      strokeLinecap: "round",
-    },
-    boxShadow: "0 0 4px #bbb7b7 inset",
-    borderRadius: "100%",
-  }),
   ellipsis: style({
     whiteSpace: "nowrap",
     overflow: "hidden",
@@ -94,24 +82,6 @@ const sharedChipStyles = {
     borderRadius: "8px",
     gap: "4px",
   },
-  box: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    gap: 0.5,
-    fontWeight: "bold",
-  },
-};
-
-const cards = {
-  auth: style({
-    ...commonStyles.centerCH,
-    px: { xs: 2, sm: 4 },
-    py: { xs: 3, sm: 4 },
-    flex: 1,
-    m: 1,
-    maxWidth: "460px",
-  }),
 };
 
 const auth = {
@@ -174,14 +144,6 @@ const box = {
     boxShadow: "0 0 8px 0 #0A234240",
     mb: { xs: "10px", sm: "40px" },
     p: { xs: 3, sm: 4 },
-  }),
-};
-const compare = {
-  compareResultBorder: style({
-    "&:not(:last-of-type) > div": {
-      borderRight: { md: "1px solid #e7e7e7", sm: "transparent" },
-      borderBottom: { md: "transparent", sm: "", xs: "1px solid #e7e7e7" },
-    },
   }),
 };
 
@@ -258,162 +220,10 @@ const carouselStyle = {
 
 export const styles = {
   ...commonStyles,
-  ...auth,
   ...buttons,
-  ...compare,
   ...sharedChipStyles,
   ...box,
   ...carouselStyle,
-  cards,
-};
-
-export const statusColorMap: Record<NonNullable<TStatus>, string> = {
-  WEAK: "#da7930",
-  RISKY: "#da7930",
-  NORMAL: "#faee56",
-  GOOD: "#60a349",
-  OPTIMIZED: "#107e3e",
-  ELEMENTARY: "#ab2317",
-  MODERATE: "#faee56",
-  GREAT: "#ceb04e",
-
-  "Not Calculated": "#b7b7b7",
-};
-
-export const C0 = "#821717";
-export const C1 = "#9B4545";
-export const C2 = "#B47474";
-export const C3 = "#CDA2A2";
-export const C4 = "#E6D1D1";
-export const C5 = "#F3F5F6";
-export const C6 = "#D1E6D8";
-export const C7 = "#A2CDB1";
-export const C8 = "#74B489";
-export const C9 = "#459B62";
-export const C10 = "#17823B";
-
-export const C0BG = "#82171730";
-export const C1BG = "#9B454530";
-export const C2BG = "#B4747430";
-export const C3BG = "#CDA2A230";
-export const C4BG = "#E6D1D130";
-export const C5BG = "#F3F5F630";
-export const C6BG = "#D1E6D830";
-export const C7BG = "#A2CDB130";
-export const C8BG = "#74B48930";
-export const C9BG = "#459B6230";
-export const C10BG = "#17823B30";
-
-export const C4Text = "#661100";
-export const C5Text = "#2B333B";
-export const C6Text = "#0F582E";
-
-export const maturityLevelColorMap: any = {
-  ML1: [C0],
-  ML2: [C0, C10],
-  ML3: [C0, C5, C10],
-  ML4: [C0, C2, C8, C10],
-  ML5: [C0, C2, C5, C8, C10],
-  ML6: [C0, C2, C3, C7, C8, C10],
-  ML7: [C0, C2, C3, C5, C7, C8, C10],
-  ML8: [C0, C1, C2, C3, C7, C8, C9, C10],
-  ML9: [C0, C1, C2, C3, C5, C7, C8, C9, C10],
-  ML10: [C0, C1, C2, C3, C4, C6, C7, C8, C9, C10],
-};
-
-export const maturityLevelBGColorMap: any = {
-  ML1: [C0BG],
-  ML2: [C0BG, C10BG],
-  ML3: [C0BG, C5BG, C10BG],
-  ML4: [C0BG, C2BG, C8BG, C10BG],
-  ML5: [C0BG, C2BG, C5BG, C8BG, C10BG],
-  ML6: [C0BG, C2BG, C3BG, C7BG, C8BG, C10BG],
-  ML7: [C0BG, C2BG, C3BG, C5BG, C7BG, C8BG, C10BG],
-  ML8: [C0BG, C1BG, C2BG, C3BG, C7BG, C8BG, C9BG, C10BG],
-  ML9: [C0BG, C1BG, C2BG, C3BG, C5BG, C7BG, C8BG, C9BG, C10BG],
-  ML10: [C0BG, C1BG, C2BG, C3BG, C4BG, C6BG, C7BG, C8BG, C9BG, C10BG],
-};
-
-export const maturityLevelTextColorMap: any = {
-  ML1: [C0],
-  ML2: [C0, C10],
-  ML3: [C0, C5Text, C10],
-  ML4: [C0, C2, C8, C10],
-  ML5: [C0, C2, C5Text, C8, C10],
-  ML6: [C0, C2, C3, C7, C8, C10],
-  ML7: [C0, C2, C3, C5Text, C7, C8, C10],
-  ML8: [C0, C1, C2, C3, C7, C8, C9, C10],
-  ML9: [C0, C1, C2, C3, C5Text, C7, C8, C9, C10],
-  ML10: [C0, C1, C2, C3, C4Text, C6Text, C7, C8, C9, C10],
-};
-
-export const C1_PREV = "#B71515";
-export const C2_PREV = "#D74427";
-export const C3_PREV = "#F55C3D";
-export const C4_PREV = "#F2995A";
-export const C8_PREV = "#4FB34C";
-export const C10_PREV = "#0A5C25";
-
-export const confidenceColor = [
-  C1_PREV,
-  C2_PREV,
-  C4_PREV,
-  C8_PREV,
-  C10_PREV,
-  C10_PREV,
-];
-export const getMaturityLevelColors = (
-  maturity_level_number: number,
-  bg?: boolean,
-  text?: boolean,
-) => {
-  let maturityInstance = maturityLevelColorMap;
-  if (bg) {
-    maturityInstance = maturityLevelBGColorMap;
-  }
-  if (text) {
-    maturityInstance = maturityLevelTextColorMap;
-  }
-  switch (maturity_level_number) {
-    case 1:
-      return maturityInstance.ML1;
-    case 2:
-      return maturityInstance.ML2;
-    case 3:
-      return maturityInstance.ML3;
-    case 4:
-      return maturityInstance.ML4;
-    case 5:
-      return maturityInstance.ML5;
-    case 6:
-      return maturityInstance.ML6;
-    case 7:
-      return maturityInstance.ML7;
-    case 8:
-      return maturityInstance.ML8;
-    case 9:
-      return maturityInstance.ML9;
-    case 10:
-      return maturityInstance.ML10;
-  }
-};
-
-export const generateColorFromString = (
-  str: string,
-  palette: Record<
-    string,
-    { backgroundColor: string; color: string }
-  > = chipColorPalette,
-) => {
-  let hash = 0;
-  for (let i = 0; i < str?.length; i++) {
-    hash = str.charCodeAt(i) + ((hash << 5) - hash);
-  }
-
-  const keys = Object.keys(palette);
-  const chipIndex = Math.abs(hash) % keys.length;
-
-  return palette[keys[chipIndex]];
 };
 
 export const chipColorPalette: any = {
@@ -471,27 +281,22 @@ export const chipColorPalette: any = {
   },
 };
 
-export const customSemiCircleChartapPalette = {
-  chip1: { backgroundColor: "#FDEAEA", color: "#B71515" },
-  chip2: { backgroundColor: "#FBE1E1", color: "#8A1C1C" },
-  chip3: { backgroundColor: "#DCEEFF", color: "#005BBB" },
-  chip4: { backgroundColor: "#E5F0F9", color: "#1A73E8" },
-  chip5: { backgroundColor: "#FFF7E6", color: "#FFBC00" },
-  chip6: { backgroundColor: "#FAF0D5", color: "#A05A00" },
-  chip7: { backgroundColor: "#FFEFE2", color: "#E96B11" },
-  chip8: { backgroundColor: "#FFF2E0", color: "#CC5C00" },
-  chip9: { backgroundColor: "#F3F1F9", color: "#6A1B9A" },
-  chip10: { backgroundColor: "#F5F5F5", color: "#616161" },
-};
-
-export const getColorOfStatus = (
-  status: TStatus,
-  fallBackColor: string = "#b7b7b7",
+export const generateColorFromString = (
+  str: string,
+  palette: Record<
+    string,
+    { backgroundColor: string; color: string }
+  > = chipColorPalette,
 ) => {
-  if (hasStatus(status)) {
-    return statusColorMap[status as NonNullable<TStatus>];
+  let hash = 0;
+  for (let i = 0; i < str?.length; i++) {
+    hash = str.charCodeAt(i) + ((hash << 5) - hash);
   }
-  return fallBackColor;
+
+  const keys = Object.keys(palette);
+  const chipIndex = Math.abs(hash) % keys.length;
+
+  return palette[keys[chipIndex]];
 };
 
 const pomp = keyframes`

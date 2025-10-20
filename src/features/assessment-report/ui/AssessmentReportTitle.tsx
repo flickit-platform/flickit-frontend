@@ -92,7 +92,7 @@ const AssessmentReportTitle = (props: any) => {
       sup={<SupTitleBreadcrumb routes={routes} displayChip />}
     >
       <Box
-        mt={4}
+        mt={3.125}
         display="flex"
         justifyContent="space-between"
         width="100%"

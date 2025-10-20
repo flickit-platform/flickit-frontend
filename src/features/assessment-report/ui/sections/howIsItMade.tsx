@@ -9,8 +9,9 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { t } from "i18next";
 import { ISubject } from "@/types";
 import uniqueId from "@/utils/unique-id";
-import { getMaturityLevelColors, styles } from "@styles";
+import { styles } from "@styles";
 import { v3Tokens } from "@config/tokens";
+import { getSemanticColors } from "@/config/colors";
 
 interface Props {
   readonly title: string;
@@ -266,11 +267,11 @@ export default function HowIsItMade({ lng, report }: any) {
             >
               {t("assessmentReport.assessmentKitEvaluatesMaturity", { lng })}
             </Text>
-            {maturityLevels.map((level: any) => (
+            {maturityLevels?.map((level: any) => (
               <Box key={uniqueId()} sx={{ ...styles.centerV }} gap={2}>
                 <Box
                   bgcolor={
-                    getMaturityLevelColors(maturityLevelCount)[level.value - 1]
+                    getSemanticColors(maturityLevelCount)[level.value - 1]
                   }
                   height="10px"
                   width="27px"
@@ -279,7 +280,7 @@ export default function HowIsItMade({ lng, report }: any) {
                 <Text
                   component="span"
                   color={
-                    getMaturityLevelColors(maturityLevelCount)[level.value - 1]
+                    getSemanticColors(maturityLevelCount)[level.value - 1]
                   }
                   variant="body2"
                   minWidth="70px"

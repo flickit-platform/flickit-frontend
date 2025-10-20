@@ -20,14 +20,9 @@ type Props = TypographyProps & ExtraProps;
 
 export function hasNoFaOrEnLetters(input: unknown): boolean {
   let string: string;
-
-  if (typeof input === "string") {
-    string = input;
-  } else if (input == null) {
-    string = "";
-  } else {
-    string = String(input);
-  }
+  if (typeof input === "string") string = input;
+  else if (input == null) string = "";
+  else string = String(input);
 
   const sanitized = string.replaceAll(/[%\u066A]/g, "");
   const letters = /[\p{Script=Latin}\p{Script=Arabic}]/u;
@@ -104,13 +99,25 @@ export const Text = React.forwardRef<any, Props>(function Text(
       : (i18next.language || "").toLowerCase().startsWith("fa");
 
   const clampSx: SxProps<Theme> =
-    lines && lines > 0
-      ? {
-          display: "-webkit-box",
-          WebkitBoxOrient: "vertical",
-          WebkitLineClamp: lines,
-          overflow: "hidden",
-        }
+    typeof lines === "number"
+      ? lines <= 0
+        ? {}
+        : lines === 1
+          ? {
+              display: "block",
+              overflow: "hidden",
+              whiteSpace: "nowrap",
+              textOverflow: "ellipsis",
+              minWidth: 0,
+            }
+          : {
+              display: "-webkit-box",
+              WebkitBoxOrient: "vertical",
+              WebkitLineClamp: lines,
+              overflow: "hidden",
+              wordBreak: "break-word",
+              whiteSpace: "normal",
+            }
       : {};
 
   return (
@@ -120,7 +127,20 @@ export const Text = React.forwardRef<any, Props>(function Text(
       variant={variant}
       color={color}
       sx={{
-        display: component === "div" ? "block" : "inline-block",
+        display:
+          component === "li"
+            ? "list-item"
+            : component === "div"
+              ? "block"
+              : "inline-block",
+
+        ...(component === "li"
+          ? {
+              listStylePosition: "outside",
+              marginInline: i18next.language === "fa" ? 4 : 0,
+            }
+          : {}),
+
         fontFamily:
           isFa ||
           (hasNoFaOrEnLetters(content as string) && i18next.language === "fa")

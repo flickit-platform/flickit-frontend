@@ -6,36 +6,13 @@ import { MemoryRouter } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 
 
-const assessmentMoveTargetSpy = vi.fn().mockResolvedValue({ ok: true });
+const MoveAssessmentSpy = vi.fn().mockResolvedValue({ ok: true });
 
 vi.mock("@/providers/service-provider", () => ({
   useServiceContext: () => ({
     service: {
       assessments: {
-        info: { AssessmentMoveTarget: assessmentMoveTargetSpy },
-      },
-    },
-  }),
-  ServiceProvider: ({ children }: any) => <>{children}</>,
-}));
-
-vi.mock("@providers/service-provider", () => ({
-  useServiceContext: () => ({
-    service: {
-      assessments: {
-        info: { AssessmentMoveTarget: assessmentMoveTargetSpy },
-      },
-    },
-  }),
-  ServiceProvider: ({ children }: any) => <>{children}</>,
-}));
-
-
-vi.mock("../../../providers/service-provider", () => ({
-  useServiceContext: () => ({
-    service: {
-      assessments: {
-        info: { AssessmentMoveTarget: assessmentMoveTargetSpy },
+        info: { moveAssessment: MoveAssessmentSpy },
       },
     },
   }),
@@ -49,12 +26,11 @@ const useQueryMockImpl = (opts: any) => ({
   error: undefined,
 });
 vi.mock("@/hooks/useQuery", () => ({ useQuery: useQueryMockImpl }));
-vi.mock("../../../hooks/useQuery", () => ({ useQuery: useQueryMockImpl }));
 
 
 let MoveAssessmentDialog: any;
 beforeEach(async () => {
-  assessmentMoveTargetSpy.mockClear();
+  MoveAssessmentSpy.mockClear();
   ({ default: MoveAssessmentDialog } = await import("../MoveAssessmentDialog"));
 });
 
@@ -143,9 +119,9 @@ describe("MoveAssessmentDialog", () => {
     await u.click(submitBtn);
 
     await waitFor(() => {
-      expect(assessmentMoveTargetSpy).toHaveBeenCalledTimes(1);
+      expect(MoveAssessmentSpy).toHaveBeenCalledTimes(1);
 
-      expect(assessmentMoveTargetSpy).toHaveBeenCalledWith(
+      expect(MoveAssessmentSpy).toHaveBeenCalledWith(
         { id: "assessmentId", targetSpaceId: 1 },
         undefined,
       );

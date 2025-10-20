@@ -7,12 +7,13 @@ import Grid from "@mui/material/Grid";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { Trans } from "react-i18next";
-import { getMaturityLevelColors, styles } from "@styles";
-import { ISubjectInfo, IMaturityLevel } from "@/types";
+import { styles } from "@styles";
+import { ISubjectInfo, IMaturityLevel } from "@/types/index";
 import CompletionRing from "@/components/common/charts/completion-ring/CompletionRing";
 import SubjectContainer from "../../../subject-report/SubjectContainer";
 import FlatGaugeComponent from "@/components/common/FlatGaugeComponent";
 import { Text } from "@/components/common/Text";
+import { getSemanticColors } from "@/config/colors";
 
 interface IAssessmentSubjectCardProps extends ISubjectInfo {
   maturity_level?: IMaturityLevel;
@@ -39,7 +40,7 @@ export const AssessmentSubjectAccordion = (
     theme.breakpoints.down("md"),
   );
 
-  const darkColors = getMaturityLevelColors(maturityLevelCount);
+  const darkColors = getSemanticColors(maturityLevelCount);
 
   const handleAccordionChange = (
     event: React.SyntheticEvent,
