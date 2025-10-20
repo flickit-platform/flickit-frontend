@@ -220,7 +220,21 @@ const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
         }}
       >
         <Grid container spacing={2} mt={2}>
-          <Grid item xs={12}>
+          <Grid item display={"flex"} xs={12}>
+            <Box
+              sx={{
+                ...styles.centerVH,
+                width: { xs: "45px" },
+                justifyContent: "space-around",
+              }}
+              borderRadius="0.5rem"
+              mx={1.3}
+             >
+              <Text
+                data-testid="question-index"
+                variant="semiBoldLarge"
+              >{`Q. ${question?.index}`}</Text>
+            </Box>
             <MultiLangTextField
               id="question-title"
               label={
