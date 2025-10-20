@@ -78,6 +78,7 @@ const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
 
   const fetchMeasures = useQuery({
     service: () => service.kitVersions.measures.getAll({ kitVersionId }),
+    runOnMount: false
   });
   const fetchOptions = useQuery({
     service: () =>
@@ -88,16 +89,18 @@ const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
   });
 
   useEffect(() => {
-    const measureObject = fetchMeasures.data?.items?.find(
-      (m: any) => m.id === question.measureId,
-    );
-    formMethods.setValue("measure", measureObject);
+    if (fetchMeasures?.data?.items){
+      const measureObject = fetchMeasures.data?.items?.find(
+        (m: any) => m.id === question.measureId,
+      );
+      formMethods.setValue("measure", measureObject);
+    }
   }, [fetchMeasures?.data?.items]);
 
   useEffect(() => {
     if (rest.open && question.id) {
       const resultFunc = async () => {
-        const [,fetchMeasure] = await Promise.all([fetchOptions.query(), fetchMeasures.query()])
+        const fetchMeasure = await fetchMeasures.query()
         const initial = {
           options: question.options ?? [{ text: "" }],
           mayNotBeApplicable: question.mayNotBeApplicable ?? false,
@@ -279,10 +282,7 @@ const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
 
           <Grid item xs={12}>
             <AutocompleteAsyncField
-              {...useConnectAutocompleteField({
-                service: (args, config) =>
-                  service.kitVersions.measures.getAll({ kitVersionId }),
-              })}
+              options={fetchMeasures?.data?.items.map((measure: any) => measure)}
               name="measure"
               label={
                 <Text variant={"bodyMedium"} color={"background.secondaryDark"} >
