@@ -501,7 +501,7 @@ const ActionButtons = ({
         size="small"
         onClick={handleEditClick}
         sx={{ mx: 1 }}
-        color={item.questionsCount === 0 ? "error" : "success"}
+        color={"success"}
         data-testid="items-edit-icon"
       >
         <EditRoundedIcon fontSize="small" />
@@ -509,7 +509,10 @@ const ActionButtons = ({
       {setOpenDeleteDialog && (
         <IconButton
           size="small"
-          onClick={() => setOpenDeleteDialog({ status: true, id: item.id })}
+          onClick={(e) => {
+            e.stopPropagation();
+            setOpenDeleteDialog({ status: true, id: item.id });
+          }}
           sx={{ mx: 1 }}
           color="secondary"
           data-testid="items-delete-icon"
