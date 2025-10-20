@@ -97,7 +97,7 @@ const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
   useEffect(() => {
     if (rest.open && question.id) {
       const resultFunc = async () => {
-        const [,fetchMeasure] = await Promise.all([fetchOptions.query(), fetchMeasures.query()])
+        const fetchMeasure = await fetchMeasures.query()
         const initial = {
           options: question.options ?? [{ text: "" }],
           mayNotBeApplicable: question.mayNotBeApplicable ?? false,
