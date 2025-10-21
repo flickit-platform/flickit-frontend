@@ -44,7 +44,7 @@ import RadioButtonUncheckedRoundedIcon from "@mui/icons-material/RadioButtonUnch
 import RadioButtonCheckedRoundedIcon from "@mui/icons-material/RadioButtonCheckedRounded";
 import Avatar from "@mui/material/Avatar";
 import stringAvatar from "@/utils/string-avatar";
-import EditRoundedIcon from "@mui/icons-material/EditRounded";
+import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import IconButton from "@mui/material/IconButton";
 import Tab from "@mui/material/Tab";
 import TabContext from "@mui/lab/TabContext";
@@ -2486,7 +2486,7 @@ const EvidenceDetail = (props: any) => {
                     sx={{ boxShadow: 2, p: 1 }}
                     onClick={onUpdate}
                   >
-                    <EditRoundedIcon
+                    <EditOutlinedIcon
                       fontSize="small"
                       style={{ color: "#004F83" }}
                     />

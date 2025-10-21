@@ -6,7 +6,7 @@ import { Trans } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { useServiceContext } from "@/providers/service-provider";
 import { useQuery } from "@/hooks/useQuery";
-import EditRoundedIcon from "@mui/icons-material/EditRounded";
+import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import ExitToAppRoundedIcon from "@mui/icons-material/ExitToAppRounded";
 import useMenu from "@/hooks/useMenu";
 import { ICustomError } from "@/utils/custom-error";
@@ -175,7 +175,7 @@ export const SpaceCard = (props: ISpaceCardProps) => {
               setShowTooltip(false);
               e.stopPropagation();
             }}
-            title={<Trans i18nKey="common.moreAction" />}
+            title={<Trans i18nKey="common.moreActions" />}
           >
             <Box>
               <Actions
@@ -262,7 +262,7 @@ const Actions = (props: any) => {
       loading={loading || editLoading || leaveSpaceQuery.loading}
       items={[
         isOwner && {
-          icon: <EditRoundedIcon fontSize="small" />,
+          icon: <EditOutlinedIcon fontSize="small" />,
           text: <Trans i18nKey="common.edit" />,
           onClick: openEditDialog,
         },

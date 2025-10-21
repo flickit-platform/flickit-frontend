@@ -9,7 +9,7 @@ import IconButton from "@mui/material/IconButton";
 import Grid from "@mui/material/Grid";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import DeleteRounded from "@mui/icons-material/DeleteRounded";
-import EditRounded from "@mui/icons-material/EditRounded";
+import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import AttachMoneyOutlinedIcon from "@mui/icons-material/AttachMoneyOutlined";
 import { AdviceItem } from "@/types/index";
 import i18next, { t } from "i18next";
@@ -430,7 +430,7 @@ const AdviceItemAccordion: React.FC<{
                       onEdit(item.id);
                     }}
                   >
-                    <EditRounded fontSize="small" />
+                    <EditOutlinedIcon fontSize="small" />
                   </IconButton>
 
                   <IconButton

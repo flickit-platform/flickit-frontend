@@ -6,7 +6,7 @@ import Chip from "@mui/material/Chip";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import Add from "@mui/icons-material/Add";
-import EditRoundedIcon from "@mui/icons-material/EditRounded";
+import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
 import CheckRoundedIcon from "@mui/icons-material/CheckRounded";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
@@ -277,7 +277,7 @@ const ActionButtons = ({
       ) : (
         <>
           <IconButton size="small" onClick={onEdit} sx={{ ml: 1 }}>
-            <EditRoundedIcon fontSize="small" />
+            <EditOutlinedIcon fontSize="small" />
           </IconButton>
           <IconButton size="small" sx={{ ml: 1 }} onClick={onDelete}>
             <DeleteRoundedIcon fontSize="small" />

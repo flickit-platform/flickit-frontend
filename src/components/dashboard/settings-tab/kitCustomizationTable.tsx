@@ -8,7 +8,7 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import IconButton from "@mui/material/IconButton";
 import TextField from "@mui/material/TextField";
-import EditIcon from "@mui/icons-material/Edit";
+import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import CheckIcon from "@mui/icons-material/Check";
 import CloseIcon from "@mui/icons-material/Close";
 import { Trans } from "react-i18next";
@@ -247,7 +247,7 @@ const KitCustomizationTable: React.FC<SubjectTableProps> = ({
                       color="success"
                       onClick={() => toggleEdit(subject.id)}
                     >
-                      <EditIcon fontSize="small" />
+                      <EditOutlinedIcon fontSize="small" />
                     </IconButton>
                   )}
                 </TableCell>
@@ -318,7 +318,7 @@ const KitCustomizationTable: React.FC<SubjectTableProps> = ({
                         color="success"
                         onClick={() => toggleEdit(attribute.id)}
                       >
-                        <EditIcon fontSize="small" />
+                        <EditOutlinedIcon fontSize="small" />
                       </IconButton>
                     )}
                   </TableCell>

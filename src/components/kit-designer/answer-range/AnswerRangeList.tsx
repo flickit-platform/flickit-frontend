@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Box from "@mui/material/Box";
 import IconButton from "@mui/material/IconButton";
-import EditRoundedIcon from "@mui/icons-material/EditRounded";
+import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
 import CheckRoundedIcon from "@mui/icons-material/CheckRounded";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
@@ -326,7 +326,7 @@ const ListOfItems = ({
               color={hasNoQuestions ? "error" : "success"}
               data-testid="edit-icon-id"
             >
-              <EditRoundedIcon fontSize="small" />
+              <EditOutlinedIcon fontSize="small" />
             </IconButton>
             {onDelete && (
               <IconButton

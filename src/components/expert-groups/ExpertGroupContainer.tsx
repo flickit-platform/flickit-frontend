@@ -41,12 +41,12 @@ import MoreActions from "@common/MoreActions";
 import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
 import EmailRoundedIcon from "@mui/icons-material/EmailRounded";
 import useDocumentTitle from "@/hooks/useDocumentTitle";
-import BorderColorRoundedIcon from "@mui/icons-material/BorderColorRounded";
+import BorderColorOutlinedIcon from "@mui/icons-material/BorderColorOutlined";
 import ExpertGroupCEFormDialog from "./ExpertGroupCEFormDialog";
 import PersonRoundedIcon from "@mui/icons-material/PersonRounded";
 import Tooltip from "@mui/material/Tooltip";
 import DeleteIcon from "@mui/icons-material/Delete";
-import EditIcon from "@mui/icons-material/Edit";
+import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import AddIcon from "@mui/icons-material/Add";
 import formatBytes from "@/utils/format-bytes";
 import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
@@ -133,7 +133,7 @@ const ExpertGroupContainer = () => {
     }
   };
 
-  const showGroups = showExpertGroups()
+  const showGroups = showExpertGroups();
 
   return (
     <>
@@ -627,7 +627,7 @@ const AvatarComponent = (props: any) => {
                   component="label"
                   sx={{ padding: 0, color: "whitesmoke" }}
                 >
-                  {hover && <EditIcon />}
+                  {hover && <EditOutlinedIcon />}
                   <input
                     type="file"
                     accept="image/*"
@@ -679,7 +679,7 @@ const EditExpertGroupButton = (props: any) => {
     <>
       <LoadingButton
         loading={queryData.loading}
-        startIcon={<BorderColorRoundedIcon />}
+        startIcon={<BorderColorOutlinedIcon />}
         size="small"
         onClick={openEditDialog}
       >
@@ -698,7 +698,7 @@ const ExpertGroupMembers = (props: any) => {
   const { hasAccess, query, inviteeQuery } = props;
   const [openInvitees, setOpenInvitees] = useState(false);
   const [openAddMembers, setOpenAddMembers] = useState(false);
-  const showGroups = showExpertGroups()
+  const showGroups = showExpertGroups();
 
   return (
     <Box>
@@ -1098,7 +1098,7 @@ const AssessmentKitsList = (props: any) => {
   const handleClose = () => {
     setAnchorEl(null);
   };
-  const showGroups = showExpertGroups()
+  const showGroups = showExpertGroups();
 
   if (!assessmentKitQuery) {
     console.warn(

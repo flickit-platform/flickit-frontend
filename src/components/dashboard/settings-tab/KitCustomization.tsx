@@ -7,7 +7,7 @@ import { useParams } from "react-router";
 import { useServiceContext } from "@/providers/service-provider";
 import { useQuery } from "@/hooks/useQuery";
 import firstCharDetector from "@/utils/first-char-detector";
-import EditRoundedIcon from "@mui/icons-material/EditRounded";
+import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import { useForm } from "react-hook-form";
 import KitCustomizationTable from "./kitCustomizationTable";
 import Button from "@mui/material/Button";
@@ -422,7 +422,7 @@ const OnHoverInputCustomTitle = (props: any) => {
               {inputData.title}
             </Text>
             {!displayEdit && (
-              <EditRoundedIcon
+              <EditOutlinedIcon
                 sx={{ color: "#9DA7B3", position: "absolute", right: -10 }}
                 fontSize="small"
                 width={"32px"}

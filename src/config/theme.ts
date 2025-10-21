@@ -170,14 +170,31 @@ declare module "@mui/material/Typography" {
   }
 }
 
+const _hx = (s: string) => s.replace("#", "");
+const _rgb = (h: string) =>
+  [0, 2, 4].map((i) => parseInt(h.slice(i, i + 2), 16));
+const _hex = (n: number) =>
+  Math.round(n).toString(16).padStart(2, "0").toUpperCase();
+const _pack = ([r, g, b]: number[]) => `#${_hex(r)}${_hex(g)}${_hex(b)}`;
+const _blend = (bg: string, base: string, aHex: string) => {
+  const A = parseInt(aHex, 16) / 255;
+  const [br, bg_, bb] = _rgb(_hx(bg));
+  const [sr, sg, sb] = _rgb(_hx(base));
+  return _pack([
+    A * sr + (1 - A) * br,
+    A * sg + (1 - A) * bg_,
+    A * sb + (1 - A) * bb,
+  ]);
+};
+
 const makeStates = (base: string) => {
-  const bg = v3Tokens.surface.containerLowest;
+  const bg = v3Tokens.surface.containerLow;
   return {
-    hover: base + "0A",
-    selected: base + "14",
-    focus: base + "1F",
-    focusVisible: base + "4D",
-    outlineBorder: base + "80",
+    hover: _blend(bg, base, "0A"),
+    selected: _blend(bg, base, "1F"),
+    focus: _blend(bg, base, "2F"),
+    focusVisible: _blend(bg, base, "4D"),
+    outlineBorder: _blend(bg, base, "80"),
   };
 };
 

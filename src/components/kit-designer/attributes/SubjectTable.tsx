@@ -8,7 +8,7 @@ import TableBody from "@mui/material/TableBody";
 import IconButton from "@mui/material/IconButton";
 import Box from "@mui/material/Box";
 import SwapVertRoundedIcon from "@mui/icons-material/SwapVertRounded";
-import EditIcon from "@mui/icons-material/Edit";
+import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import AttributeForm from "./AttributeForm";
 import { Trans } from "react-i18next";
@@ -374,7 +374,7 @@ const SubjectTable: React.FC<SubjectTableProps> = ({
                                             size="small"
                                             color="success"
                                           >
-                                            <EditIcon fontSize="small" />
+                                            <EditOutlinedIcon fontSize="small" />
                                           </IconButton>
                                         </TableCell>
                                       </>

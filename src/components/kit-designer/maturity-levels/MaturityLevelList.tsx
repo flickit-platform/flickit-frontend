@@ -3,7 +3,7 @@ import { Box, Divider, IconButton } from "@mui/material";
 import SwapVertRounded from "@mui/icons-material/SwapVertRounded";
 import CheckRoundedIcon from "@mui/icons-material/CheckRounded";
 import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
-import EditRoundedIcon from "@mui/icons-material/EditRounded";
+import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { styles } from "@/config/styles";
@@ -205,7 +205,7 @@ const MaturityLevelList = ({
                         color="success"
                         data-testid="edit-icon-id"
                       >
-                        <EditRoundedIcon fontSize="small" />
+                        <EditOutlinedIcon fontSize="small" />
                       </IconButton>
                       <IconButton
                         size="small"

@@ -6,7 +6,7 @@ import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import CardHeader from "@mui/material/CardHeader";
 import Divider from "@mui/material/Divider";
-import EditRoundedIcon from "@mui/icons-material/EditRounded";
+import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import { Link } from "react-router-dom";
 import { styles } from "@styles";
 import useMenu from "@/hooks/useMenu";
@@ -203,7 +203,7 @@ const Actions = (props: any) => {
             loading={loading}
             items={[
               {
-                icon: <EditRoundedIcon fontSize="small" />,
+                icon: <EditOutlinedIcon fontSize="small" />,
                 text: <Trans i18nKey="common.edit" />,
                 onClick: openEditDialog,
               },

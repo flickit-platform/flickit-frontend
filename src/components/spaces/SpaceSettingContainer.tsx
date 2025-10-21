@@ -16,7 +16,7 @@ import SupTitleBreadcrumb from "@common/SupTitleBreadcrumb";
 import useDialog from "@/hooks/useDialog";
 import CreateSpaceDialog from "./CreateSpaceDialog";
 import LoadingButton from "@mui/lab/LoadingButton";
-import BorderColorRoundedIcon from "@mui/icons-material/BorderColorRounded";
+import BorderColorOutlinedIcon from "@mui/icons-material/BorderColorOutlined";
 import Title from "@common/Title";
 import { useState } from "react";
 
@@ -106,7 +106,7 @@ const EditSpaceButton = (props: any) => {
     <>
       <LoadingButton
         loading={queryData.loading}
-        startIcon={<BorderColorRoundedIcon />}
+        startIcon={<BorderColorOutlinedIcon />}
         size="small"
         onClick={openEditDialog}
       >
