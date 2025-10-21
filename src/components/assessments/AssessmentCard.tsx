@@ -191,7 +191,7 @@ const AssessmentCard = ({
           />
         )}
 
-        <Grid container sx={{ textDecoration: "none", height: "100%" }}>
+        <Grid container sx={{ textDecoration: "none", height: "100%", width: "100%" }}>
           {/* Header */}
           <Grid size={{ xs: 12 }}>
             <Header
