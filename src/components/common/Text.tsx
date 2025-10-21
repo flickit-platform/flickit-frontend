@@ -37,8 +37,6 @@ function stripHtml(html: string): string {
     .replaceAll(/<script[^>]*>[\s\S]*?<\/script>/gi, "")
     .replaceAll(/<br\s*\/?>/gi, "\n")
     .replaceAll(/<\/(p|div|li|h[1-6])>/gi, "\n")
-    .replaceAll(/<[^>]+>/g, "")
-    .replace(/\n{3,}/g, "\n\n")
     .trim();
 }
 
