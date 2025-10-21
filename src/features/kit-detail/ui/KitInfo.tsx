@@ -127,7 +127,7 @@ const KitInfo = ({ fetchAssessmentKitInfoQuery, info }: Props) => {
                     </Text>
                   </Box>
                   <Box
-                    sx={{ display: "flex", width: "50%" }}
+                    sx={{ display: "flex", alignItems: "center", width: "50%" }}
                     color="outline.variant"
                   >
                     <LanguagePicker

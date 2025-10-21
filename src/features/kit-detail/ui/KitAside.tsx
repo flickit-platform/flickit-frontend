@@ -109,7 +109,7 @@ const TwoColRow = ({
       flex: 1,
     }}
   >
-    <Grid container>
+    <Grid container sx={{width: "100%"}}>
       <Grid size={{xs: 7}}>
         <StatCard {...left} />
       </Grid>
