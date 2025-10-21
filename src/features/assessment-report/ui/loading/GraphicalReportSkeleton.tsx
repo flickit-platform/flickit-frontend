@@ -221,7 +221,7 @@ const GraphicalReportSkeleton = ({ isAuthenticatedUser, lang }: any) => (
             </Box>
           )}
         </Grid>
-        <Grid container>
+        <Grid width={"100%"} container>
           <Paper
             elevation={3}
             sx={{
@@ -261,7 +261,7 @@ const GraphicalReportSkeleton = ({ isAuthenticatedUser, lang }: any) => (
             />
           </Paper>
         </Grid>
-        <Grid container mt={4}>
+        <Grid width={"100%"} container mt={4}>
           <Box
             sx={{
               width: "100%",
