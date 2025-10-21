@@ -2,8 +2,8 @@ import { ChangeEvent, useState } from "react";
 import Box from "@mui/material/Box";
 import IconButton from "@mui/material/IconButton";
 import SwapVertRoundedIcon from "@mui/icons-material/SwapVertRounded";
-import EditRoundedIcon from "@mui/icons-material/EditRounded";
-import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
+import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
+import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
 import CheckRoundedIcon from "@mui/icons-material/CheckRounded";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import TextField from "@mui/material/TextField";
@@ -259,7 +259,7 @@ const ListOfItems = ({
                               color="success"
                               data-testid="items-edit-icon"
                             >
-                              <EditRoundedIcon fontSize="small" />
+                              <EditOutlinedIcon fontSize="small" />
                             </IconButton>
                             {setOpenDeleteDialog && (
                               <IconButton
@@ -274,7 +274,7 @@ const ListOfItems = ({
                                 color="secondary"
                                 data-testid="items-delete-icon"
                               >
-                                <DeleteRoundedIcon fontSize="small" />
+                                <DeleteOutlinedIcon fontSize="small" />
                               </IconButton>
                             )}
                           </>

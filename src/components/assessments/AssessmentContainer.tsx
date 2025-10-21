@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { Trans } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 import QueryData from "@common/QueryData";
 import ErrorEmptyData from "@common/errors/ErrorEmptyData";
 import AssessmentEmptyState from "@/assets/svg/assessment-empty-state.svg";
@@ -28,16 +28,17 @@ import LoadingAssessmentCards from "../common/loadings/LoadingAssessmentCards";
 import { useTheme } from "@mui/material";
 import Title from "@common/Title";
 import { Text } from "../common/Text";
+import { DeleteConfirmationDialog } from "../common/dialogs/DeleteConfirmationDialog";
+import { TId } from "@/types";
+import showToast from "@/utils/toast-error";
 
 const AssessmentContainer = () => {
   const dialogProps = useDialog();
   const infoDialogProps = useDialog();
   const { spaceId, page } = useParams();
   const navigate = useNavigate();
-  const { fetchAssessments, fetchSpaceInfo, ...rest } = useFetchAssessments(
-    Number(page) - 1,
-    Number(spaceId),
-  );
+  const { deleteAssessment, fetchAssessments, fetchSpaceInfo, ...rest } =
+    useFetchAssessments(Number(page) - 1, Number(spaceId));
   const { data, errorObject, size, total, loading } = rest;
   const isEmpty = data.length === 0;
   const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
@@ -52,6 +53,17 @@ const AssessmentContainer = () => {
   if (Math.ceil(total / size) < Number(page) && pageCount) {
     navigate(`/${spaceId}/assessments/${pageCount}`);
   }
+  const { t } = useTranslation();
+
+  const [deleteDialog, setDeleteDialog] = useState<{
+    open: boolean;
+    assessmentId: TId;
+    assessmentTitle: string;
+  }>({
+    open: false,
+    assessmentId: 0,
+    assessmentTitle: "",
+  });
 
   const isSmallScreen = useScreenResize("sm");
 
@@ -61,6 +73,7 @@ const AssessmentContainer = () => {
     fetchAssessments();
     fetchSpaceInfo.query();
   };
+
 
   return (
     <PermissionControl error={[errorObject?.response]}>
@@ -237,6 +250,7 @@ const AssessmentContainer = () => {
                   space={{ id: spaceId, title: fetchSpaceInfo.data?.title }}
                   dialogProps={dialogProps}
                   fetchAssessments={fetchAssessments}
+                  deleteAssessment={deleteAssessment}
                 />
                 {pageCount > 1 && !isEmpty && (
                   <Stack spacing={2} mt={3} sx={{ ...styles.centerVH }}>
@@ -260,6 +274,7 @@ const AssessmentContainer = () => {
           contentStyle={{ p: 0 }}
         />
       </Box>
+ 
     </PermissionControl>
   );
 };

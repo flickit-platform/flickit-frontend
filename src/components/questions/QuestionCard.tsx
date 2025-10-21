@@ -6,7 +6,7 @@ import ToggleButton from "@mui/material/ToggleButton";
 import Button from "@mui/material/Button";
 import { Text } from "@/components/common/Text";
 import { useNavigate, useParams } from "react-router-dom";
-import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
+import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import {
   questionActions,
@@ -44,7 +44,7 @@ import RadioButtonUncheckedRoundedIcon from "@mui/icons-material/RadioButtonUnch
 import RadioButtonCheckedRoundedIcon from "@mui/icons-material/RadioButtonCheckedRounded";
 import Avatar from "@mui/material/Avatar";
 import stringAvatar from "@/utils/string-avatar";
-import EditRoundedIcon from "@mui/icons-material/EditRounded";
+import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import IconButton from "@mui/material/IconButton";
 import Tab from "@mui/material/Tab";
 import TabContext from "@mui/lab/TabContext";
@@ -81,6 +81,7 @@ import { useAssessmentContext } from "@/providers/assessment-provider";
 import showToast from "@/utils/toast-error";
 import uniqueId from "@/utils/unique-id";
 import useScreenResize from "@/hooks/useScreenResize";
+import { CEDialog, CEDialogActions } from "../common/dialogs/CEDialog";
 
 interface IQuestionCardProps {
   questionInfo: IQuestionInfo;
@@ -1228,16 +1229,36 @@ const AnswerTemplate = (props: {
             />
           </Box>
         )}
-        <DeleteConfirmationDialog
+        <CEDialog
           open={openDeleteDialog.status}
-          onClose={() =>
+          closeDialog={() =>
             setOpenDeleteDialog({ ...openDeleteDialog, status: false })
           }
-          onConfirm={() => goToQuestion("asc")}
-          title="common.warning"
-          content="questions.areYouSureYouWantSkipThisQuestion"
-          confirmButtonText={t("common.continue")}
-        />
+          title={
+            <>
+              <Trans i18nKey="common.warning" />
+            </>
+          }
+          maxWidth="sm"
+        >
+          <Text sx={{ color: "#0A2342" }}>
+            <Trans i18nKey={"questions.areYouSureYouWantSkipThisQuestion"} />
+          </Text>
+
+          <CEDialogActions
+            type="delete"
+            loading={false}
+            onClose={() =>
+              setOpenDeleteDialog({
+                ...openDeleteDialog,
+                status: false,
+              })
+            }
+            submitButtonLabel={t("common.continue")}
+            cancelLabel={t("common.cancel")}
+            onSubmit={() => goToQuestion("asc")}
+          />
+        </CEDialog>
       </Box>
     </>
   );
@@ -1416,8 +1437,7 @@ const AnswerHistoryItem = (props: any) => {
               {item?.answer?.selectedOption ? (
                 <>
                   {" "}
-                  {t("common.option")} {" "}
-                  {item?.answer?.selectedOption?.index}
+                  {t("common.option")} {item?.answer?.selectedOption?.index}
                 </>
               ) : (
                 <Trans i18nKey="questions.noOptionSelected" />
@@ -1942,8 +1962,9 @@ const Evidence = (props: any) => {
           open={expandedDeleteDialog}
           onClose={() => setExpandedDeleteDialog(false)}
           onConfirm={deleteItem}
-          title="common.warning"
-          content="questions.areYouSureYouWantDeleteThisItem"
+          content={{
+            category: t(`questions.${type}`),
+          }}
         />
         <DeleteConfirmationDialog
           open={expandedDeleteAttachmentDialog.expended}
@@ -1954,8 +1975,9 @@ const Evidence = (props: any) => {
             })
           }
           onConfirm={deleteAttachment}
-          title="common.warning"
-          content="questions.areYouSureYouWantDeleteThisAttachment"
+          content={{
+            category: t("common.attachment"),
+          }}
           confirmButtonText={t("common.yesDeleteIt")}
           cancelButtonText={t("common.letMeSeeItAgain")}
         />
@@ -2486,10 +2508,7 @@ const EvidenceDetail = (props: any) => {
                     sx={{ boxShadow: 2, p: 1 }}
                     onClick={onUpdate}
                   >
-                    <EditRoundedIcon
-                      fontSize="small"
-                      style={{ color: "#004F83" }}
-                    />
+                    <EditOutlinedIcon fontSize="small" color="primary" />
                   </IconButton>
                 )}
                 {permissions?.deleteEvidence && deletable && (
@@ -2502,10 +2521,7 @@ const EvidenceDetail = (props: any) => {
                       setEvidenceId(id);
                     }}
                   >
-                    <DeleteRoundedIcon
-                      fontSize="small"
-                      style={{ color: "#D81E5B" }}
-                    />
+                    <DeleteOutlinedIcon fontSize="small" color="primary" />
                   </IconButton>
                 )}
                 {resolvable && !permissions.readonly && (

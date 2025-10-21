@@ -15,7 +15,7 @@ import TableRow from "@mui/material/TableRow";
 import TableCell from "@mui/material/TableCell";
 import TableBody from "@mui/material/TableBody";
 import Grid from "@mui/material/Grid";
-import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
+import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
 import { CEDialog, CEDialogActions } from "@common/dialogs/CEDialog";
 import FormProviderWithForm from "@common/FormProviderWithForm";
 import { styles } from "@styles";
@@ -256,7 +256,7 @@ const DeleteActionCell = ({ row, deleteEGMember }: any) => (
           disabled={!row.editable}
           onClick={() => deleteEGMember(row.id)}
         >
-          <DeleteRoundedIcon />
+          <DeleteOutlinedIcon />
         </IconButton>
       </Box>
     </Tooltip>

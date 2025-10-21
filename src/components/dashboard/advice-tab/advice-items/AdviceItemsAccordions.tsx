@@ -8,8 +8,8 @@ import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
 import Grid from "@mui/material/Grid";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import DeleteRounded from "@mui/icons-material/DeleteRounded";
-import EditRounded from "@mui/icons-material/EditRounded";
+import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
+import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import AttachMoneyOutlinedIcon from "@mui/icons-material/AttachMoneyOutlined";
 import { AdviceItem } from "@/types/index";
 import i18next, { t } from "i18next";
@@ -27,6 +27,7 @@ import { useTheme } from "@mui/material";
 import { v3Tokens } from "@/config/tokens";
 import { styles } from "@styles";
 import { Text } from "@/components/common/Text";
+import useDialog from "@/hooks/useDialog";
 
 enum ELevel {
   HIGH = "HIGH",
@@ -201,9 +202,9 @@ const AdviceItemAccordion: React.FC<{
 }) => {
   const { service } = useServiceContext();
   const { assessmentId = "" } = useParams();
-  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const isFarsi = i18next.language === "fa";
   const [errorMessage, setErrorMessage] = useState({});
+  const deleteDialogProps = useDialog();
 
   const [newAdvice, setNewAdvice] = useState({
     title: "",
@@ -430,7 +431,7 @@ const AdviceItemAccordion: React.FC<{
                       onEdit(item.id);
                     }}
                   >
-                    <EditRounded fontSize="small" />
+                    <EditOutlinedIcon fontSize="small" />
                   </IconButton>
 
                   <IconButton
@@ -438,10 +439,10 @@ const AdviceItemAccordion: React.FC<{
                     color="primary"
                     onClick={(e) => {
                       e.stopPropagation();
-                      setIsDeleteDialogOpen(true);
+                      deleteDialogProps.openDialog({});
                     }}
                   >
-                    <DeleteRounded fontSize="small" />
+                    <DeleteOutlinedIcon fontSize="small" />
                   </IconButton>
                 </Grid>
               </Grid>
@@ -462,8 +463,7 @@ const AdviceItemAccordion: React.FC<{
       </Accordion>
 
       <DeleteConfirmationDialog
-        open={isDeleteDialogOpen}
-        onClose={() => setIsDeleteDialogOpen(false)}
+        {...deleteDialogProps}
         onConfirm={() => {
           onDelete(item.id);
           const updatedItems = items.filter(
@@ -471,8 +471,7 @@ const AdviceItemAccordion: React.FC<{
           );
           setDisplayedItems(updatedItems);
         }}
-        title={t("common.warning")}
-        content={t("advice.deleteItemConfirmation", { title: item.title })}
+        content={{ category: t("advice.advice"), title: item.title }}
       />
     </>
   );

@@ -1,5 +1,7 @@
 import * as React from "react";
 import Typography, { TypographyProps } from "@mui/material/Typography";
+import Tooltip from "@mui/material/Tooltip";
+import Box from "@mui/material/Box";
 import { SxProps, Theme } from "@mui/material/styles";
 import languageDetector from "@/utils/language-detector";
 import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
@@ -30,10 +32,14 @@ export function hasNoFaOrEnLetters(input: unknown): boolean {
 }
 
 function stripHtml(html: string): string {
-  const withoutTags = html
+  return html
     .replaceAll(/<style[^>]*>[\s\S]*?<\/style>/gi, "")
-    .replaceAll(/<script[^>]*>[\s\S]*?<\/script>/gi, "");
-  return withoutTags;
+    .replaceAll(/<script[^>]*>[\s\S]*?<\/script>/gi, "")
+    .replaceAll(/<br\s*\/?>/gi, "\n")
+    .replaceAll(/<\/(p|div|li|h[1-6])>/gi, "\n")
+    .replaceAll(/<[^>]+>/g, "")
+    .replace(/\n{3,}/g, "\n\n")
+    .trim();
 }
 
 function extractText(node: React.ReactNode): string | undefined {
@@ -67,6 +73,30 @@ function extractText(node: React.ReactNode): string | undefined {
   return undefined;
 }
 
+function renderTooltipContent(
+  raw: React.ReactNode,
+  isFa: boolean,
+  fallback?: string,
+) {
+  const text =
+    (typeof raw === "string" ? raw : extractText(raw)) ??
+    (typeof fallback === "string" ? fallback : "") ??
+    "";
+
+  return (
+    <Box
+      sx={{
+        whiteSpace: "pre-line",
+        direction: isFa ? "rtl" : "ltr",
+        fontFamily: isFa ? farsiFontFamily : primaryFontFamily,
+        lineHeight: 1.6,
+      }}
+    >
+      {text}
+    </Box>
+  );
+}
+
 export const Text = React.forwardRef<any, Props>(function Text(
   {
     text,
@@ -77,6 +107,7 @@ export const Text = React.forwardRef<any, Props>(function Text(
     lines,
     sx,
     component,
+    title: _nativeTitle,
     ...rest
   },
   ref,
@@ -120,7 +151,7 @@ export const Text = React.forwardRef<any, Props>(function Text(
             }
       : {};
 
-  return (
+  const typo = (
     <Typography
       ref={ref}
       {...(component ? { component } : {})}
@@ -133,25 +164,50 @@ export const Text = React.forwardRef<any, Props>(function Text(
             : component === "div"
               ? "block"
               : "inline-block",
-
         ...(component === "li"
           ? {
               listStylePosition: "outside",
               marginInline: i18next.language === "fa" ? 4 : 0,
             }
           : {}),
-
         fontFamily:
           isFa ||
-          (hasNoFaOrEnLetters(content as string) && i18next.language === "fa")
+          (hasNoFaOrEnLetters(content as string) &&
+            i18next.language === "fa")
             ? farsiFontFamily
             : primaryFontFamily,
         ...clampSx,
         ...sx,
       }}
-      {...rest}
+      {...((): Omit<TypographyProps, "title"> => {
+        const { title, ...restNoTitle } = rest as any;
+        return restNoTitle;
+      })()}
     >
       {content}
     </Typography>
+  );
+
+  const shouldShowTooltip =
+    typeof lines === "number" && lines > 0 && !!sourceForDetection;
+
+  return shouldShowTooltip ? (
+    <Tooltip
+      title={renderTooltipContent(content, isFa, htmlText)}
+      arrow
+      disableInteractive
+      componentsProps={{
+        tooltip: {
+          sx: {
+            maxWidth: 600,
+            p: 1,
+          },
+        },
+      }}
+    >
+      {typo}
+    </Tooltip>
+  ) : (
+    typo
   );
 });

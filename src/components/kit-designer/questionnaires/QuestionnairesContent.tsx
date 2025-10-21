@@ -25,7 +25,8 @@ const QuestionnairesContent = () => {
   const [openDeleteDialog, setOpenDeleteDialog] = useState<{
     status: boolean;
     id: string;
-  }>({ status: false, id: "" });
+    title: string;
+  }>({ status: false, id: "", title: "" });
 
   const fetchQuestionnairesKit = useQuery({
     service: (args, config) =>
@@ -62,7 +63,7 @@ const QuestionnairesContent = () => {
       const err = e as ICustomError;
       showToast(err);
     }
-    setOpenDeleteDialog({ ...openDeleteDialog, status: false })
+    setOpenDeleteDialog({ ...openDeleteDialog, status: false });
   };
 
   const [showNewQuestionnairesForm, setShowNewQuestionnairesForm] =
@@ -278,8 +279,10 @@ const QuestionnairesContent = () => {
             setOpenDeleteDialog({ ...openDeleteDialog, status: false })
           }
           onConfirm={handleDelete}
-          title="warning"
-          content={t("kitDesigner.deleteQuestionnaire")}
+          content={{
+            category: t("common.questionnaire"),
+            title: openDeleteDialog.title,
+          }}
         />
       </Box>
     </PermissionControl>

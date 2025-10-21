@@ -4,7 +4,7 @@ import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
 import { useCallback, useEffect, useState } from "react";
 import { Accept, DropEvent, FileRejection, useDropzone } from "react-dropzone";
-import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
+import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
 import Box from "@mui/material/Box";
 import CircularProgress from "@mui/material/CircularProgress";
 import FormControl from "@mui/material/FormControl";
@@ -312,7 +312,7 @@ const Uploader = (props: IUploadProps) => {
                           setConvertData(null);
                         }}
                       >
-                        <DeleteRoundedIcon fontSize="small" />
+                        <DeleteOutlinedIcon fontSize="small" />
                       </IconButton>
                     )}
                   </Box>

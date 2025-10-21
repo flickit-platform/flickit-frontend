@@ -1,14 +1,17 @@
-import { Trans, useTranslation } from "react-i18next";
+import { useTranslation } from "react-i18next";
 import { CEDialog, CEDialogActions } from "./CEDialog";
-import Warning from "@mui/icons-material/Warning";
 import { Text } from "../Text";
+import i18next, { DefaultTFuncReturn } from "i18next";
 
 interface IDeleteConfirmationDialogProps {
   open: boolean;
   onClose: () => void;
   onConfirm: () => void;
-  title: string;
-  content: string;
+  content?: {
+    category?: DefaultTFuncReturn;
+    title?: DefaultTFuncReturn;
+    hideCategory?: boolean;
+  };
   confirmButtonText?: string | null;
   cancelButtonText?: string | null;
 }
@@ -17,34 +20,53 @@ export const DeleteConfirmationDialog = ({
   open,
   onClose,
   onConfirm,
-  title,
   content,
   confirmButtonText,
   cancelButtonText,
 }: IDeleteConfirmationDialogProps) => {
   const { t } = useTranslation();
 
+  const getDialogTitle = () => {
+    if (!content?.category) return t("common.delete");
+
+    return t("common.deleteWithCategory", {
+      category: content.category.toLocaleLowerCase(),
+    });
+  };
+
+  const getDialogContent = () => {
+    if (content?.title) {
+      const categoryText =
+        !content.hideCategory && content?.category
+          ? (i18next.language === "en" ? "the " : "") +
+            content.category.toLocaleLowerCase()
+          : "";
+
+      return t("common.deleteItemWithTitle", {
+        category: categoryText,
+        title: content.title,
+      });
+    }
+
+    return t("common.deleteItemWithoutTitle", {
+      category: content?.category,
+    });
+  };
+
   return (
     <CEDialog
       open={open}
       closeDialog={onClose}
-      title={
-        <>
-          <Warning />
-          <Trans i18nKey="common.warning" />
-        </>
-      }
+      title={<>{getDialogTitle()}</>}
       maxWidth="sm"
+      sx={{
+        "& .MuiDialog-paper": {
+          minWidth: "500px",
+          width: "auto",
+        },
+      }}
     >
-      <Text sx={{ color: "#0A2342" }}>
-        <Trans
-          i18nKey={content}
-          values={{ title }}
-          components={{
-            title: <span style={{ fontWeight: "bold", color: "#B86A77" }} />,
-          }}
-        />
-      </Text>
+      <Text sx={{ color: "#0A2342" }}>{getDialogContent()}</Text>
 
       <CEDialogActions
         type="delete"

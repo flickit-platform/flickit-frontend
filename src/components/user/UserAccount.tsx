@@ -11,11 +11,11 @@ import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import Avatar from "@mui/material/Avatar";
 import IconButton from "@mui/material/IconButton";
-import BorderColorRoundedIcon from "@mui/icons-material/BorderColorRounded";
+import BorderColorOutlinedIcon from "@mui/icons-material/BorderColorOutlined";
 import { useEffect, useState } from "react";
 import CircularProgress from "@mui/material/CircularProgress";
 import Tooltip from "@mui/material/Tooltip";
-import EditIcon from "@mui/icons-material/Edit";
+import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import AddIcon from "@mui/icons-material/Add";
 import formatBytes from "@/utils/format-bytes";
 import { ICustomError } from "@/utils/custom-error";
@@ -159,7 +159,7 @@ const UserAccount = () => {
                     component="label"
                     sx={{ padding: 0, color: "whitesmoke" }}
                   >
-                    {hover && <EditIcon />}
+                    {hover && <EditOutlinedIcon />}
                     <input
                       type="file"
                       accept="image/*"
@@ -200,7 +200,7 @@ const UserAccount = () => {
                 color="primary"
                 size="small"
               >
-                <BorderColorRoundedIcon />
+                <BorderColorOutlinedIcon />
               </IconButton>
               <AccountCEFormDialog {...dialogProps} onSubmitForm={onSubmit} />
             </>

@@ -8,7 +8,7 @@ import PersonRoundedIcon from "@mui/icons-material/PersonRounded";
 import Avatar from "@mui/material/Avatar";
 import useMenu from "@/hooks/useMenu";
 import { Trans } from "react-i18next";
-import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
+import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
 import AddRoundedIcon from "@mui/icons-material/AddRounded";
 import InputAdornment from "@mui/material/InputAdornment";
 import TextField from "@mui/material/TextField";
@@ -50,7 +50,8 @@ export const SpaceMembers = (props: any) => {
   const [openDeleteDialog, setOpenDeleteDialog] = useState<{
     status: boolean;
     id: string;
-  }>({ status: false, id: "" });
+    title: string;
+  }>({ status: false, id: "", title: "" });
   const spaceMembersQueryData = useQuery({
     service: (args, config) =>
       service.space.getMembers({ spaceId, page: page - 1, size: 10 }, config),
@@ -72,7 +73,7 @@ export const SpaceMembers = (props: any) => {
     try {
       await deleteSpaceMember.query();
       await spaceMembersQueryData.query();
-      setOpenDeleteDialog({ status: false, id: "" });
+      setOpenDeleteDialog({ status: false, id: "", title: "" });
     } catch (e) {
       const err = e as ICustomError;
       showToast(err);
@@ -329,9 +330,11 @@ export const SpaceMembers = (props: any) => {
             setOpenDeleteDialog({ ...openDeleteDialog, status: false })
           }
           onConfirm={deleteItem}
-          title="common.warning"
-          content="spaces.areYouSureYouWantDeleteThisMember"
-          confirmButtonText={t("common.continue")}
+          content={{
+            category: t("common.member"),
+            title: openDeleteDialog.title,
+            hideCategory: true,
+          }}
         />
         <QueryData
           {...spaceMembersInviteeQueryData}
@@ -550,16 +553,21 @@ const Actions = (props: any) => {
           : undefined,
         isInvitees &&
           editable && {
-            icon: <DeleteRoundedIcon fontSize="small" />,
+            icon: <DeleteOutlinedIcon fontSize="small" />,
             text: <Trans i18nKey="common.cancelInvitation" />,
             onClick: deleteItemInvite,
           },
         !isInvitees &&
           !isOwner &&
           editable && {
-            icon: <DeleteRoundedIcon fontSize="small" />,
+            icon: <DeleteOutlinedIcon fontSize="small" />,
             text: <Trans i18nKey="common.remove" />,
-            onClick: () => setOpenDeleteDialog({ status: true, id: member.id }),
+            onClick: () =>
+              setOpenDeleteDialog({
+                status: true,
+                id: member.id,
+                title: member.displayName,
+              }),
           },
       ]}
     />

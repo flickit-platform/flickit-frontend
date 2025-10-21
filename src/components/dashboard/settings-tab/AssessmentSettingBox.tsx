@@ -6,7 +6,7 @@ import FormControl from "@mui/material/FormControl";
 import IconButton from "@mui/material/IconButton";
 import Tooltip from "@mui/material/Tooltip";
 import { Trans } from "react-i18next";
-import EditRoundedIcon from "@mui/icons-material/EditRounded";
+import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import { useEffect, useMemo, useState } from "react";
 import { styles } from "@styles";
 import Button from "@mui/material/Button";
@@ -28,7 +28,7 @@ import Avatar from "@mui/material/Avatar";
 import stringAvatar from "@/utils/string-avatar";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
-import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
+import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
 import { Link } from "react-router-dom";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import { SelectHeight } from "@/utils/select-height";
@@ -298,7 +298,11 @@ const QuickAssessmentSwitch = () => {
     <Box sx={{ ...styles.centerV }} color="background.onVariant" gap={1}>
       <FormControlLabel
         control={
-          <Switch data-testid="assessment-switch-mode-btn" checked={isQuickMode} onChange={handleToggleQuickMode} />
+          <Switch
+            data-testid="assessment-switch-mode-btn"
+            checked={isQuickMode}
+            onChange={handleToggleQuickMode}
+          />
         }
         label={
           <Box gap={1} sx={{ ...styles.centerV }}>
@@ -751,7 +755,7 @@ export const AssessmentSettingMemberBox = (props: {
                                 openRemoveModal(row.displayName, row.id)
                               }
                             >
-                              <DeleteRoundedIcon />
+                              <DeleteOutlinedIcon />
                             </IconButton>
                           </Box>
                         </Tooltip>
@@ -1032,7 +1036,7 @@ export const AssessmentSettingMemberBox = (props: {
                                   openRemoveModal(row.email, row.id, true)
                                 }
                               >
-                                <DeleteRoundedIcon />
+                                <DeleteOutlinedIcon />
                               </IconButton>{" "}
                             </Box>
                           </Box>
@@ -1301,19 +1305,17 @@ const OnHoverInputTitleSetting = (props: any) => {
             onMouseOver={handleMouseOver}
             onMouseOut={handleMouseOut}
           >
-            <Text color="#004F83" variant="semiBoldLarge" data-testid={`${type}-assessmentInfo`}>
+            <Text
+              color="#004F83"
+              variant="semiBoldLarge"
+              data-testid={`${type}-assessmentInfo`}
+            >
               {type == "title" && data?.replace(/<\/?p>/g, "")}
               {type == "shortTitle" &&
                 assessmentInfo?.shortTitle?.replace(/<\/?p>/g, "")}
             </Text>
             {(isHovering || !assessmentInfo?.shortTitle) && (
-              <EditRoundedIcon
-                sx={{ color: "#78818b", position: "absolute", right: -10 }}
-                fontSize="small"
-                width={"32px"}
-                height={"32px"}
-                onClick={() => setShow(!show)}
-              />
+              <EditOutlinedIcon fontSize="small" color="primary"/>
             )}
           </Box>
         )}
