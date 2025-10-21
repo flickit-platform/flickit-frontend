@@ -20,7 +20,7 @@ import {
   SPACE_LEVELS,
   TQueryFunction,
 } from "@/types/index";
-import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
+import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
 import premium from "@/assets/svg/premium.svg";
 import { t } from "i18next";
 import Grid from "@mui/material/Grid";
@@ -267,7 +267,7 @@ const Actions = (props: any) => {
           onClick: openEditDialog,
         },
         isOwner && {
-          icon: <DeleteRoundedIcon fontSize="small" />,
+          icon: <DeleteOutlinedIcon fontSize="small" />,
           text: <Trans i18nKey="common.delete" />,
           onClick: deleteItem,
         },

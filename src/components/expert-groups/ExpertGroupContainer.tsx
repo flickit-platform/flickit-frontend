@@ -38,14 +38,13 @@ import { useAuthContext } from "@/providers/auth-provider";
 import EventBusyRoundedIcon from "@mui/icons-material/EventBusyRounded";
 import useMenu from "@/hooks/useMenu";
 import MoreActions from "@common/MoreActions";
-import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
+import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
 import EmailRoundedIcon from "@mui/icons-material/EmailRounded";
 import useDocumentTitle from "@/hooks/useDocumentTitle";
 import BorderColorOutlinedIcon from "@mui/icons-material/BorderColorOutlined";
 import ExpertGroupCEFormDialog from "./ExpertGroupCEFormDialog";
 import PersonRoundedIcon from "@mui/icons-material/PersonRounded";
 import Tooltip from "@mui/material/Tooltip";
-import DeleteIcon from "@mui/icons-material/Delete";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import AddIcon from "@mui/icons-material/Add";
 import formatBytes from "@/utils/format-bytes";
@@ -615,7 +614,7 @@ const AvatarComponent = (props: any) => {
                   sx={{ padding: 0, color: "whitesmoke" }}
                 >
                   {hover && (
-                    <DeleteIcon
+                    <DeleteOutlinedIcon
                       onClick={deletePicture}
                       sx={{ color: "whitesmoke" }}
                     />
@@ -920,7 +919,7 @@ const MemberActions = (props: any) => {
             }
           : undefined,
         {
-          icon: <DeleteRoundedIcon fontSize="small" />,
+          icon: <DeleteOutlinedIcon fontSize="small" />,
           text: <Trans i18nKey="common.cancelInvitation" />,
           onClick: deleteItem,
         },
@@ -1386,7 +1385,7 @@ const ExpertGroupMembersDetail = (props: any) => {
                                     size="small"
                                     color="secondary"
                                   >
-                                    <DeleteRoundedIcon fontSize="small" />
+                                    <DeleteOutlinedIcon fontSize="small" />
                                   </IconButton>
                                 </Tooltip>
                               )}

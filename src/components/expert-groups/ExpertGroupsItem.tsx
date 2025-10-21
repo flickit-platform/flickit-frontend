@@ -18,7 +18,7 @@ import { Trans } from "react-i18next";
 import useDialog from "@/hooks/useDialog";
 import ExpertGroupCEFormDialog from "./ExpertGroupCEFormDialog";
 import Tooltip from "@mui/material/Tooltip";
-import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
+import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
 import { ICustomError } from "@/utils/custom-error";
 import languageDetector from "@/utils/language-detector";
 import { farsiFontFamily, primaryFontFamily } from "@config/theme";
@@ -208,7 +208,7 @@ const Actions = (props: any) => {
                 onClick: openEditDialog,
               },
               {
-                icon: <DeleteRoundedIcon fontSize="small" />,
+                icon: <DeleteOutlinedIcon fontSize="small" />,
                 text: <Trans i18nKey="common.delete" />,
                 onClick: () => setOpenDeleteDialog({status: open, id}),
               },

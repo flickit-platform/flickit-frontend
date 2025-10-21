@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Box, Divider, IconButton } from "@mui/material";
 import SwapVertRounded from "@mui/icons-material/SwapVertRounded";
 import CheckRoundedIcon from "@mui/icons-material/CheckRounded";
-import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
+import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
@@ -215,7 +215,7 @@ const MaturityLevelList = ({
                         color="secondary"
                         data-testid="delete-icon-id"
                       >
-                        <DeleteRoundedIcon fontSize="small" />
+                        <DeleteOutlinedIcon fontSize="small" />
                       </IconButton>
                     </>
                   )}

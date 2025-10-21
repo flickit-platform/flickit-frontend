@@ -8,7 +8,7 @@ import PersonRoundedIcon from "@mui/icons-material/PersonRounded";
 import Avatar from "@mui/material/Avatar";
 import useMenu from "@/hooks/useMenu";
 import { Trans } from "react-i18next";
-import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
+import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
 import AddRoundedIcon from "@mui/icons-material/AddRounded";
 import InputAdornment from "@mui/material/InputAdornment";
 import TextField from "@mui/material/TextField";
@@ -550,14 +550,14 @@ const Actions = (props: any) => {
           : undefined,
         isInvitees &&
           editable && {
-            icon: <DeleteRoundedIcon fontSize="small" />,
+            icon: <DeleteOutlinedIcon fontSize="small" />,
             text: <Trans i18nKey="common.cancelInvitation" />,
             onClick: deleteItemInvite,
           },
         !isInvitees &&
           !isOwner &&
           editable && {
-            icon: <DeleteRoundedIcon fontSize="small" />,
+            icon: <DeleteOutlinedIcon fontSize="small" />,
             text: <Trans i18nKey="common.remove" />,
             onClick: () => setOpenDeleteDialog({ status: true, id: member.id }),
           },

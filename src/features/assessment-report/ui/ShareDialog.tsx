@@ -24,7 +24,7 @@ import {
 } from "@/components/common/dialogs/CEDialog";
 import { InputFieldUC } from "@/components/common/fields/InputField";
 import QueryBatchData from "@/components/common/QueryBatchData";
-import DeleteForeverOutlinedIcon from "@mui/icons-material/DeleteForeverOutlined";
+import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
 import { Button, IconButton } from "@mui/material";
 import FormProviderWithForm from "@/components/common/FormProviderWithForm";
 import SpaceFieldForm from "@/components/common/SpaceFiledForm";
@@ -621,10 +621,7 @@ const UserSection = (props: any) => {
                     : deleteUserRoleHandler(id)
                 }
               >
-                <DeleteForeverOutlinedIcon
-                  fontSize={"medium"}
-                  sx={{ color: "background.onVariant" }}
-                />
+                <DeleteOutlinedIcon color="primary"/>
               </IconButton>
             )}
           </Box>

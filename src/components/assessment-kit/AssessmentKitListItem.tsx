@@ -7,7 +7,7 @@ import { TId } from "@/types/index";
 import useMenu from "@/hooks/useMenu";
 import { useQuery } from "@/hooks/useQuery";
 import MoreActions from "@common/MoreActions";
-import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
+import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
 import { Link, useNavigate } from "react-router-dom";
 import Tooltip from "@mui/material/Tooltip";
 import LoadingButton from "@mui/lab/LoadingButton";
@@ -170,7 +170,7 @@ const Actions = (props: any) => {
       {...menuProps}
       items={[
         {
-          icon: <DeleteRoundedIcon fontSize="small" />,
+          icon: <DeleteOutlinedIcon fontSize="small" />,
           text: <Trans i18nKey="common.delete" />,
           onClick: () => setOpenDeleteDialog({ status: true, id }),
         },

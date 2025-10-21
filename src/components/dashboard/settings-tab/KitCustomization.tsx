@@ -305,7 +305,6 @@ const OnHoverInputCustomTitle = (props: any) => {
     setInputData,
     type,
     editable,
-    displayEdit,
     requiredTitle,
   } = props;
   const [hasError, setHasError] = useState<boolean>(false);
@@ -421,15 +420,7 @@ const OnHoverInputCustomTitle = (props: any) => {
             >
               {inputData.title}
             </Text>
-            {!displayEdit && (
-              <EditOutlinedIcon
-                sx={{ color: "#9DA7B3", position: "absolute", right: -10 }}
-                fontSize="small"
-                width={"32px"}
-                height={"32px"}
-                onClick={() => setShow(!show)}
-              />
-            )}
+            {!show && <EditOutlinedIcon fontSize="small" color="primary"/>}
           </Box>
         )}
       </Box>

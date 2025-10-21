@@ -8,7 +8,7 @@ import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
 import Grid from "@mui/material/Grid";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import DeleteRounded from "@mui/icons-material/DeleteRounded";
+import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import AttachMoneyOutlinedIcon from "@mui/icons-material/AttachMoneyOutlined";
 import { AdviceItem } from "@/types/index";
@@ -441,7 +441,7 @@ const AdviceItemAccordion: React.FC<{
                       setIsDeleteDialogOpen(true);
                     }}
                   >
-                    <DeleteRounded fontSize="small" />
+                    <DeleteOutlinedIcon fontSize="small" />
                   </IconButton>
                 </Grid>
               </Grid>

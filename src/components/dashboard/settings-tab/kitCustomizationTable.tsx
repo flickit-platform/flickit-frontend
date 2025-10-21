@@ -244,10 +244,9 @@ const KitCustomizationTable: React.FC<SubjectTableProps> = ({
                   ) : (
                     <IconButton
                       size="small"
-                      color="success"
                       onClick={() => toggleEdit(subject.id)}
                     >
-                      <EditOutlinedIcon fontSize="small" />
+                      <EditOutlinedIcon fontSize="small" color="primary" />
                     </IconButton>
                   )}
                 </TableCell>
@@ -318,7 +317,7 @@ const KitCustomizationTable: React.FC<SubjectTableProps> = ({
                         color="success"
                         onClick={() => toggleEdit(attribute.id)}
                       >
-                        <EditOutlinedIcon fontSize="small" />
+                        <EditOutlinedIcon fontSize="small" color="primary" />
                       </IconButton>
                     )}
                   </TableCell>

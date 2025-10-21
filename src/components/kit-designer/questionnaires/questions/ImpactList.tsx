@@ -7,7 +7,7 @@ import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import Add from "@mui/icons-material/Add";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
-import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
+import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
 import CheckRoundedIcon from "@mui/icons-material/CheckRounded";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import { Trans } from "react-i18next";
@@ -280,7 +280,7 @@ const ActionButtons = ({
             <EditOutlinedIcon fontSize="small" />
           </IconButton>
           <IconButton size="small" sx={{ ml: 1 }} onClick={onDelete}>
-            <DeleteRoundedIcon fontSize="small" />
+            <DeleteOutlinedIcon fontSize="small" />
           </IconButton>
         </>
       )}

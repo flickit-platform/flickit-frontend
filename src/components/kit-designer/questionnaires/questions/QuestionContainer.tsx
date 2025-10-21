@@ -3,7 +3,7 @@ import Box from "@mui/material/Box";
 import { styles } from "@styles";
 import IconButton from "@mui/material/IconButton";
 import ModeEditOutlineOutlinedIcon from "@mui/icons-material/ModeEditOutlineOutlined";
-import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
+import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
 import QuestionDialog from "./QuestionDialog";
 import Divider from "@mui/material/Divider";
 import { Text } from "@/components/common/Text";
@@ -121,7 +121,7 @@ const QuestionContain = (props: any) => {
             <ModeEditOutlineOutlinedIcon fontSize="small" />
           </IconButton>
           <IconButton onClick={deleteDialogProps.openDialog}>
-            <DeleteOutlineOutlinedIcon fontSize="small" />
+            <DeleteOutlinedIcon fontSize="small" />
           </IconButton>
         </Box>
       </Box>

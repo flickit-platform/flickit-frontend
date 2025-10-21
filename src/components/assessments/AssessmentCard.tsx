@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Gauge } from "@common/charts/Gauge";
 import LoadingGauge from "@common/charts/LoadingGauge";
-import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
+import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
 import useMenu from "@/hooks/useMenu";
 import { useServiceContext } from "@/providers/service-provider";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
@@ -558,7 +558,7 @@ const Actions = ({
   const actions = hasStatus(item.status)
     ? [
         {
-          icon: <DeleteRoundedIcon fontSize="small" />,
+          icon: <DeleteOutlinedIcon fontSize="small" />,
           text: <Trans i18nKey="common.delete" />,
           onClick: deleteItem,
           menuItemProps: { "data-cy": "delete-action-btn" },
@@ -576,7 +576,7 @@ const Actions = ({
           onClick: goToAssessmentSettings,
         },
         {
-          icon: <DeleteRoundedIcon fontSize="small" />,
+          icon: <DeleteOutlinedIcon fontSize="small" />,
           text: <Trans i18nKey="common.delete" />,
           onClick: deleteItem,
           menuItemProps: { "data-cy": "delete-action-btn" },

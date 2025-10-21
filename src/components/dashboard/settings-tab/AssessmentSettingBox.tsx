@@ -28,7 +28,7 @@ import Avatar from "@mui/material/Avatar";
 import stringAvatar from "@/utils/string-avatar";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
-import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
+import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
 import { Link } from "react-router-dom";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import { SelectHeight } from "@/utils/select-height";
@@ -755,7 +755,7 @@ export const AssessmentSettingMemberBox = (props: {
                                 openRemoveModal(row.displayName, row.id)
                               }
                             >
-                              <DeleteRoundedIcon />
+                              <DeleteOutlinedIcon />
                             </IconButton>
                           </Box>
                         </Tooltip>
@@ -1036,7 +1036,7 @@ export const AssessmentSettingMemberBox = (props: {
                                   openRemoveModal(row.email, row.id, true)
                                 }
                               >
-                                <DeleteRoundedIcon />
+                                <DeleteOutlinedIcon />
                               </IconButton>{" "}
                             </Box>
                           </Box>
@@ -1315,13 +1315,7 @@ const OnHoverInputTitleSetting = (props: any) => {
                 assessmentInfo?.shortTitle?.replace(/<\/?p>/g, "")}
             </Text>
             {(isHovering || !assessmentInfo?.shortTitle) && (
-              <EditOutlinedIcon
-                sx={{ color: "#78818b", position: "absolute", right: -10 }}
-                fontSize="small"
-                width={"32px"}
-                height={"32px"}
-                onClick={() => setShow(!show)}
-              />
+              <EditOutlinedIcon fontSize="small" color="primary"/>
             )}
           </Box>
         )}

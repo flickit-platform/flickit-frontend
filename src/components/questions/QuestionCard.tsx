@@ -6,7 +6,7 @@ import ToggleButton from "@mui/material/ToggleButton";
 import Button from "@mui/material/Button";
 import { Text } from "@/components/common/Text";
 import { useNavigate, useParams } from "react-router-dom";
-import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
+import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import {
   questionActions,
@@ -1416,8 +1416,7 @@ const AnswerHistoryItem = (props: any) => {
               {item?.answer?.selectedOption ? (
                 <>
                   {" "}
-                  {t("common.option")} {" "}
-                  {item?.answer?.selectedOption?.index}
+                  {t("common.option")} {item?.answer?.selectedOption?.index}
                 </>
               ) : (
                 <Trans i18nKey="questions.noOptionSelected" />
@@ -2486,10 +2485,7 @@ const EvidenceDetail = (props: any) => {
                     sx={{ boxShadow: 2, p: 1 }}
                     onClick={onUpdate}
                   >
-                    <EditOutlinedIcon
-                      fontSize="small"
-                      style={{ color: "#004F83" }}
-                    />
+                    <EditOutlinedIcon fontSize="small" color="primary" />
                   </IconButton>
                 )}
                 {permissions?.deleteEvidence && deletable && (
@@ -2502,10 +2498,7 @@ const EvidenceDetail = (props: any) => {
                       setEvidenceId(id);
                     }}
                   >
-                    <DeleteRoundedIcon
-                      fontSize="small"
-                      style={{ color: "#D81E5B" }}
-                    />
+                    <DeleteOutlinedIcon fontSize="small" color="primary" />
                   </IconButton>
                 )}
                 {resolvable && !permissions.readonly && (

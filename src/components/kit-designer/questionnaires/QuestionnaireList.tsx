@@ -3,7 +3,7 @@ import Box from "@mui/material/Box";
 import IconButton from "@mui/material/IconButton";
 import SwapVertRoundedIcon from "@mui/icons-material/SwapVertRounded";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
-import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
+import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
 import CheckRoundedIcon from "@mui/icons-material/CheckRounded";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
@@ -517,7 +517,7 @@ const ActionButtons = ({
           color="secondary"
           data-testid="items-delete-icon"
         >
-          <DeleteRoundedIcon fontSize="small" />
+          <DeleteOutlinedIcon fontSize="small" />
         </IconButton>
       )}
     </>

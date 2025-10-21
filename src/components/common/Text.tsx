@@ -179,7 +179,6 @@ export const Text = React.forwardRef<any, Props>(function Text(
         ...clampSx,
         ...sx,
       }}
-      // مهم: title بومی رو پاس نده
       {...((): Omit<TypographyProps, "title"> => {
         const { title, ...restNoTitle } = rest as any;
         return restNoTitle;
