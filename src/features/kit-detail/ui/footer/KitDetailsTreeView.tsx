@@ -7,6 +7,7 @@ import { useTranslation } from "react-i18next";
 import { Text } from "@common/Text";
 import { buildTree, treeConfig } from "../../config/config";
 import { KitDetailsType } from "../../model/types";
+import { useTheme } from "@mui/material";
 
 const INDICATOR_WIDTH = 3;
 const INDICATOR_RADIUS = 2;
@@ -38,7 +39,7 @@ const sectionActiveSx = (active: boolean) =>
       }
     : undefined;
 
-const makeTreeSx = (isRTL: boolean) => ({
+const makeTreeSx = (isRTL: boolean, theme: any) => ({
   flexGrow: 1,
   [isRTL ? "borderLeft" : "borderRight"]: 1,
   borderColor: "divider",
@@ -53,6 +54,7 @@ const makeTreeSx = (isRTL: boolean) => ({
     alignItems: "center",
     color: "background.secondaryDark",
     transition: "background-color .2s, color .2s",
+    "& .MuiTreeItem-label": {...theme.typography.bodyLarge, paddingInline: 0 },
     "&::before": {
       content: '""',
       position: "absolute",
@@ -82,6 +84,9 @@ const makeTreeSx = (isRTL: boolean) => ({
     backgroundColor: "primary.states.hover",
   },
   "& .MuiTreeItem-label": { paddingInline: 0 },
+  '& .MuiTreeItem-groupTransition': {
+    paddingInlineEnd: 0,
+  },
 });
 
 function getActiveRoot(selectedId: string | null): string | null {
@@ -144,7 +149,7 @@ export default function KitDetailsTreeView({
     selectedId ?? null,
   );
   const [expanded, setExpanded] = useState<string[]>([]);
-
+  const theme = useTheme();
   const nodes = useMemo(() => buildTree(details, t as any), [details, t]);
   const activeRoot = useMemo(() => getActiveRoot(selectedId), [selectedId]);
 
@@ -208,7 +213,7 @@ export default function KitDetailsTreeView({
       onItemSelectionToggle={handleSelect}
       expandedItems={expanded}
       onExpandedItemsChange={handleToggle}
-      sx={makeTreeSx(isRTL)}
+      sx={makeTreeSx(isRTL, theme)}
       items={nodes}
     >
       {renderNodes(nodes, activeRoot)}

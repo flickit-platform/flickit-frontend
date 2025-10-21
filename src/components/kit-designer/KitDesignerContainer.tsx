@@ -114,7 +114,7 @@ const KitDesignerContainer = () => {
                 </Text>
               </Grid>
 
-              <Grid container size={{xs: 12, sm: 12}} mt={6}>
+              <Grid container size={{xs: 12, sm: 12}} mt={6} sx={{gap: 0, width: "100%"}}>
                 <Grid
                   size={{xs: 12, sm: 3}}
                   sx={{ display: "flex", flexDirection: "column" }}
