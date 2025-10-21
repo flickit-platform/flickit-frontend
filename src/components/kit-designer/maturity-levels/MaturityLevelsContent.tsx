@@ -9,7 +9,7 @@ import { LoadingSkeleton } from "../../common/loadings/LoadingSkeleton";
 import MaturityLevelForm from "./MaturityLevelForm";
 import MaturityLevelList from "./MaturityLevelList";
 import CompetencesTable from "./CompetencesTable";
-import { Trans } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
 import { ICustomError } from "@/utils/custom-error";
 import debounce from "lodash/debounce";
@@ -23,10 +23,12 @@ import { Text } from "@/components/common/Text";
 const MaturityLevelsContent = () => {
   const { service } = useServiceContext();
   const { kitVersionId = "" } = useParams();
+  const { t } = useTranslation();
 
   const [openDeleteDialog, setOpenDeleteDialog] = useState({
     status: false,
     id: "",
+    title: "",
   });
 
   const maturityLevels = useQuery({
@@ -125,7 +127,7 @@ const MaturityLevelsContent = () => {
       index: (maturityLevels.data?.items.length ?? 0) + 1,
       value: (maturityLevels.data?.items.length ?? 0) + 1,
     });
-    setOpenDeleteDialog({ status: false, id: "" });
+    setOpenDeleteDialog({ status: false, id: "", title: "" });
   };
 
   const handleEdit = async (maturityLevel: any) => {
@@ -292,8 +294,10 @@ const MaturityLevelsContent = () => {
           setOpenDeleteDialog({ ...openDeleteDialog, status: false })
         }
         onConfirm={handleDelete}
-        title="common.warning"
-        content="kitDesigner.deleteMaturityLevel"
+        content={{
+          category: t("common.maturityLevel"),
+          title: openDeleteDialog.title,
+        }}
       />
     </PermissionControl>
   );

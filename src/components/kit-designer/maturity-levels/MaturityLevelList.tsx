@@ -19,7 +19,11 @@ interface MaturityLevelListProps {
   maturityLevels: Array<IMaturityLevel>;
   onEdit: (item: IMaturityLevel) => void;
   onReorder: (reorderedItems: IMaturityLevel[]) => void;
-  setOpenDeleteDialog: (val: { status: boolean; id: any }) => void;
+  setOpenDeleteDialog: (val: {
+    status: boolean;
+    id: any;
+    title: string;
+  }) => void;
 }
 
 const MaturityLevelList = ({
@@ -210,7 +214,11 @@ const MaturityLevelList = ({
                       <IconButton
                         size="small"
                         onClick={() =>
-                          setOpenDeleteDialog({ status: true, id: item.id })
+                          setOpenDeleteDialog({
+                            status: true,
+                            id: item.id,
+                            title: item.title,
+                          })
                         }
                         color="secondary"
                         data-testid="delete-icon-id"

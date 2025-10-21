@@ -50,7 +50,8 @@ export const SpaceMembers = (props: any) => {
   const [openDeleteDialog, setOpenDeleteDialog] = useState<{
     status: boolean;
     id: string;
-  }>({ status: false, id: "" });
+    title: string;
+  }>({ status: false, id: "", title: "" });
   const spaceMembersQueryData = useQuery({
     service: (args, config) =>
       service.space.getMembers({ spaceId, page: page - 1, size: 10 }, config),
@@ -72,7 +73,7 @@ export const SpaceMembers = (props: any) => {
     try {
       await deleteSpaceMember.query();
       await spaceMembersQueryData.query();
-      setOpenDeleteDialog({ status: false, id: "" });
+      setOpenDeleteDialog({ status: false, id: "", title: "" });
     } catch (e) {
       const err = e as ICustomError;
       showToast(err);
@@ -329,9 +330,11 @@ export const SpaceMembers = (props: any) => {
             setOpenDeleteDialog({ ...openDeleteDialog, status: false })
           }
           onConfirm={deleteItem}
-          title="common.warning"
-          content="spaces.areYouSureYouWantDeleteThisMember"
-          confirmButtonText={t("common.continue")}
+          content={{
+            category: t("common.member"),
+            title: openDeleteDialog.title,
+            hideCategory: true,
+          }}
         />
         <QueryData
           {...spaceMembersInviteeQueryData}
@@ -559,7 +562,12 @@ const Actions = (props: any) => {
           editable && {
             icon: <DeleteOutlinedIcon fontSize="small" />,
             text: <Trans i18nKey="common.remove" />,
-            onClick: () => setOpenDeleteDialog({ status: true, id: member.id }),
+            onClick: () =>
+              setOpenDeleteDialog({
+                status: true,
+                id: member.id,
+                title: member.displayName,
+              }),
           },
       ]}
     />

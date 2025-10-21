@@ -29,7 +29,9 @@ import { showExpertGroups } from "@/utils/helpers";
 interface IExpertGroupsItemProps {
   data: any;
   disableActions?: boolean;
-  setOpenDeleteDialog?: React.Dispatch<React.SetStateAction<{status: boolean, id: TId}>>;
+  setOpenDeleteDialog?: React.Dispatch<
+    React.SetStateAction<{ status: boolean; id: TId; title: string }>
+  >;
 }
 
 const ExpertGroupsItem = (props: IExpertGroupsItemProps) => {
@@ -113,7 +115,8 @@ const ExpertGroupsItem = (props: IExpertGroupsItemProps) => {
           }
           subheader={
             <Box sx={{ ...styles.centerCV, textTransform: "lowercase" }}>
-              <Trans i18nKey="expertGroups.publishedAssessmentKits" />: {publishedKitsCount}
+              <Trans i18nKey="expertGroups.publishedAssessmentKits" />:{" "}
+              {publishedKitsCount}
               <Box></Box>
             </Box>
           }
@@ -171,10 +174,10 @@ const ExpertGroupsItem = (props: IExpertGroupsItemProps) => {
 };
 
 const Actions = (props: any) => {
-  const { expertGroup, editable , setOpenDeleteDialog } = props;
+  const { expertGroup, editable, setOpenDeleteDialog } = props;
   const { query: fetchExpertGroups } = useQueryDataContext();
   const { service } = useServiceContext();
-  const { id } = expertGroup;
+  const { id, title } = expertGroup;
   const { query: fetchExpertGroup, loading } = useQuery({
     service: (args, config) =>
       service.expertGroups.info.getById(args ?? { id }, config),
@@ -189,9 +192,9 @@ const Actions = (props: any) => {
       type: "update",
     });
   };
-  
-  const showGroups = showExpertGroups()
-  const menu  = useMenu();
+
+  const showGroups = showExpertGroups();
+  const menu = useMenu();
 
   return (
     <>
@@ -210,7 +213,7 @@ const Actions = (props: any) => {
               {
                 icon: <DeleteOutlinedIcon fontSize="small" />,
                 text: <Trans i18nKey="common.delete" />,
-                onClick: () => setOpenDeleteDialog({status: open, id}),
+                onClick: () => setOpenDeleteDialog({ status: open, id, title }),
               },
             ]}
           />
@@ -219,9 +222,9 @@ const Actions = (props: any) => {
             onSubmitForm={fetchExpertGroups}
           />
         </>
-        )}
+      )}
     </>
-  )
+  );
 };
 
 export default ExpertGroupsItem;

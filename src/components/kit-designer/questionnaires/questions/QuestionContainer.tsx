@@ -133,10 +133,10 @@ const QuestionContain = (props: any) => {
           open={deleteDialogProps.open}
           onClose={deleteDialogProps.onClose}
           onConfirm={handleDelete}
-          title={t("common.warning")}
-          content={t("advice.deleteItemConfirmation", {
-            title: question.title,
-          })}
+          content={{
+            category: t("common.question"),
+            title: question.index,
+          }}
         />
       }
       {dialogProps.open && (

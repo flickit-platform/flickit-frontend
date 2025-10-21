@@ -31,11 +31,6 @@ const AttributesContent = () => {
   const { service } = useServiceContext();
   const { kitVersionId = "" } = useParams();
 
-  const [openDeleteDialog, setOpenDeleteDialog] = useState<{
-    status: boolean;
-    id: string;
-  }>({ status: false, id: "" });
-
   const [subjects, setSubjects] = useState([]);
 
   const fetchSubjectKit = useQuery({
@@ -155,7 +150,6 @@ const AttributesContent = () => {
       weight: 0,
       id: null,
     });
-    setOpenDeleteDialog({ status: false, id: "" });
   };
 
   const handleEdit = async (AttributeItem: any) => {
@@ -188,18 +182,6 @@ const AttributesContent = () => {
         weight: 0,
         id: null,
       });
-    } catch (e) {
-      const err = e as ICustomError;
-      showToast(err);
-    }
-  };
-
-  const handleDelete = async () => {
-    try {
-      let attributeId = openDeleteDialog.id;
-      await deleteAttributeKit.query({ kitVersionId, attributeId });
-      await fetchAttributeKit.query();
-      handleCancel();
     } catch (e) {
       const err = e as ICustomError;
       showToast(err);
@@ -290,15 +272,6 @@ const AttributesContent = () => {
           )}
         />
       </Box>
-      <DeleteConfirmationDialog
-        open={openDeleteDialog.status}
-        onClose={() =>
-          setOpenDeleteDialog({ ...openDeleteDialog, status: false })
-        }
-        onConfirm={handleDelete}
-        title="common.warning"
-        content="kitDesigner.deleteAttribute"
-      />
     </PermissionControl>
   );
 };

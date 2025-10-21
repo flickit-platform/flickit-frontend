@@ -200,7 +200,11 @@ const ItemAccordion = ({
     item: KitDesignListItems,
   ) => (event: React.SyntheticEvent, isExpanded: boolean) => Promise<void>;
   onEdit: (item: KitDesignListItems) => void;
-  setOpenDeleteDialog?: (dialog: { status: boolean; id: TId }) => void;
+  setOpenDeleteDialog?: (dialog: {
+    status: boolean;
+    id: TId;
+    title: string;
+  }) => void;
   showNewQuestionForm: { [key: string]: boolean };
   setShowNewQuestionForm: React.Dispatch<
     React.SetStateAction<{ [key: string]: boolean }>
@@ -511,7 +515,11 @@ const ActionButtons = ({
           size="small"
           onClick={(e) => {
             e.stopPropagation();
-            setOpenDeleteDialog({ status: true, id: item.id });
+            setOpenDeleteDialog({
+              status: true,
+              id: item.id,
+              title: item.title,
+            });
           }}
           sx={{ mx: 1 }}
           color="secondary"

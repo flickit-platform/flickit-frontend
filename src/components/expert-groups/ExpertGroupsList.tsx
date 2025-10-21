@@ -24,7 +24,8 @@ const ExpertGroupsList = (props: IExpertGroupsListProps) => {
   const [openDeleteDialog, setOpenDeleteDialog] = useState<{
     status: boolean;
     id: TId;
-  }>({ status: false, id: "" });
+    title: string;
+  }>({ status: false, id: "", title: "" });
 
   const deleteExpertGroupQuery = useQuery({
     service: (args, config) => service.expertGroups.info.remove(args, config),
@@ -34,7 +35,7 @@ const ExpertGroupsList = (props: IExpertGroupsListProps) => {
 
   const deleteExpertGroup = async () => {
     try {
-      const {id} = openDeleteDialog
+      const { id } = openDeleteDialog;
       await deleteExpertGroupQuery.query({ id });
       await fetchExpertGroups();
     } catch (e) {
@@ -54,7 +55,10 @@ const ExpertGroupsList = (props: IExpertGroupsListProps) => {
         {items?.map((expertGroup: any) => {
           return (
             <Grid item xs={12} sm={6} lg={4} key={expertGroup.id}>
-              <ExpertGroupsItem data={expertGroup} setOpenDeleteDialog={setOpenDeleteDialog} />
+              <ExpertGroupsItem
+                data={expertGroup}
+                setOpenDeleteDialog={setOpenDeleteDialog}
+              />
             </Grid>
           );
         })}
@@ -65,9 +69,10 @@ const ExpertGroupsList = (props: IExpertGroupsListProps) => {
           setOpenDeleteDialog({ ...openDeleteDialog, status: false })
         }
         onConfirm={deleteExpertGroup}
-        title="common.warning"
-        content="expertGroups.areYouSureYouWantDeleteExpertGroup"
-        confirmButtonText={t("common.continue")}
+        content={{
+          category: t("common.expertGroup"),
+          title: openDeleteDialog.title,
+        }}
       />
     </Box>
   );

@@ -28,14 +28,14 @@ interface IAssessmentKitListItemProps {
   is_member?: boolean;
   is_active?: boolean;
   setOpenDeleteDialog: React.Dispatch<
-    React.SetStateAction<{ status: boolean; id: TId }>
+    React.SetStateAction<{ status: boolean; id: TId; title: string }>
   >;
 }
 
 const AssessmentKitListItem = (props: IAssessmentKitListItemProps) => {
   const navigate = useNavigate();
 
-  const showGroups = showExpertGroups()
+  const showGroups = showExpertGroups();
   const { service } = useServiceContext();
   const cloneAssessmentKit = useQuery({
     service: (args, config) => service.assessmentKit.info.clone(args, config),
@@ -162,7 +162,7 @@ const AssessmentKitListItem = (props: IAssessmentKitListItemProps) => {
 
 const Actions = (props: any) => {
   const { assessment_kit, hasAccess, setOpenDeleteDialog } = props;
-  const { id } = assessment_kit;
+  const { id, title } = assessment_kit;
   const menuProps = useMenu();
 
   return hasAccess ? (
@@ -172,7 +172,7 @@ const Actions = (props: any) => {
         {
           icon: <DeleteOutlinedIcon fontSize="small" />,
           text: <Trans i18nKey="common.delete" />,
-          onClick: () => setOpenDeleteDialog({ status: true, id }),
+          onClick: () => setOpenDeleteDialog({ status: true, id, title }),
         },
       ]}
     />

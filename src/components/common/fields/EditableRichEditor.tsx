@@ -223,20 +223,21 @@ export const EditableRichEditor = (props: EditableRichEditorProps) => {
               maxHeight={!showMore ? `${MAX_HEIGHT}px` : "none"}
               sx={{
                 transition: "max-height 0.4s ease",
-                "&::after": !showMore
-                  ? {
-                      content: '""',
-                      position: "absolute",
-                      bottom: 0,
-                      left: 0,
-                      right: 0,
-                      height: "40px",
-                      background: showBtn
-                        ? `linear-gradient(to bottom, rgba(255,255,255,0) 0%, white 100%)`
-                        : "none",
-                      pointerEvents: "none",
-                    }
-                  : undefined,
+                "&::after":
+                  !showMore && tempData
+                    ? {
+                        content: '""',
+                        position: "absolute",
+                        bottom: 0,
+                        left: 0,
+                        right: 0,
+                        height: "40px",
+                        background: showBtn
+                          ? `linear-gradient(to bottom, rgba(255,255,255,0) 0%, white 100%)`
+                          : "none",
+                        pointerEvents: "none",
+                      }
+                    : undefined,
               }}
             >
               <Text

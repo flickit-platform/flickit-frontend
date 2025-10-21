@@ -2,6 +2,8 @@
   "acceptInvitation": "پذیرش دعوت‌نامه",
   "addMember": "افزودن عضو",
   "createExpertGroup": "ایجاد گروه خبرگی",
+  "deleteExpertGroup": "حذف گروه خبرگی",
+  "deleteMember": "حذف عضو",
   "editExpertGroup": "ویرایش گروه خبرگی",
   "expertGroup": "گروه خبرگی",
   "expertGroups": "گروه‌های خبرگی",
@@ -9,10 +11,10 @@
   "groupSummary": "خلاصه گروه",
   "members": "اعضا",
   "publishedAssessmentKits": "کیت‌های ارزیابی منتشر‌شده",
-  "removeMemberExpertGroup": "آیا مطمئن هستید که این عضو حذف شود؟",
+  "removeMemberExpertGroup": "از حذف «{{title}}» مطمئن هستید؟",
   "sueccessJoinToExpertGroup": "شما با موفقیت به این گروه خبرگی افزوده شدید.",
   "unpublishedAssessmentKits": "کیت‌های ارزیابی منتشر‌نشده",
   "updateExpertGroup": "به‌روزرسانی گروه خبرگی",
   "youHaveBeenInvitedToExpertGroup": "شما به این گروه دعوت شده‌اید. آیا می‌خواهید این دعوت‌نامه را بپذیرید؟",
-  "areYouSureYouWantDeleteExpertGroup": "گروه خبرگی شما حذف خواهد شد. آیا مایل به ادامه هستید؟"
+  "areYouSureYouWantDeleteExpertGroup": "از حذف گروه خبرگی «{{title}}» مطمئن هستید؟"
 }

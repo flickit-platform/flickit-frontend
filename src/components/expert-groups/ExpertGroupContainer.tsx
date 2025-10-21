@@ -21,7 +21,7 @@ import RichEditor from "@common/rich-editor/RichEditor";
 import InsertLinkRoundedIcon from "@mui/icons-material/InsertLinkRounded";
 import AssignmentRoundedIcon from "@mui/icons-material/AssignmentRounded";
 import AssignmentLateRoundedIcon from "@mui/icons-material/AssignmentLateRounded";
-import { t } from "i18next";
+import i18next, { t } from "i18next";
 import forLoopComponent from "@/utils/for-loop-component";
 import { LoadingSkeleton } from "@common/loadings/LoadingSkeleton";
 import AssessmentKitListItem from "../assessment-kit/AssessmentKitListItem";
@@ -97,10 +97,6 @@ const ExpertGroupContainer = () => {
         config,
       ),
   });
-  const removeExpertGroupMembers = useQuery({
-    service: (args, config) => service.expertGroups.member.remove(args, config),
-    runOnMount: false,
-  });
 
   const setDocTitle = useDocumentTitle(t("expertGroups.expertGroup") as string);
   const createAssessmentKitDialogProps = useDialog({
@@ -113,24 +109,6 @@ const ExpertGroupContainer = () => {
 
   const [assessmentKitsCounts, setAssessmentKitsCounts] = useState<any>([]);
   const [numberOfMembers, setNumberOfMembers] = useState<any>(Number);
-  const [removeMemberDialog, setRemoveMemberDialog] = useState<{
-    status: boolean;
-    id: string;
-  }>({ status: false, id: "" });
-  const handelRemoveMember = async () => {
-    try {
-      await removeExpertGroupMembers.query({
-        id: expertGroupId,
-        userId: removeMemberDialog.id,
-      });
-      await expertGroupMembersQueryData.query();
-      setRemoveMemberDialog({ status: false, id: "" });
-    } catch (e: any) {
-      const err = e as ICustomError;
-      showToast(err);
-      setRemoveMemberDialog({ status: false, id: "" });
-    }
-  };
 
   const showGroups = showExpertGroups();
 
@@ -260,7 +238,6 @@ const ExpertGroupContainer = () => {
                       inviteeQueryData={expertGroupMembersInviteeQueryData}
                       hasAccess={editable}
                       setNumberOfMembers={setNumberOfMembers}
-                      setRemoveMemberDialog={setRemoveMemberDialog}
                     />
                   </Box>
                 </Grid>
@@ -437,15 +414,6 @@ const ExpertGroupContainer = () => {
           );
         }}
       />
-      <DeleteConfirmationDialog
-        open={removeMemberDialog.status}
-        onClose={() =>
-          setRemoveMemberDialog({ ...removeMemberDialog, status: false })
-        }
-        onConfirm={handelRemoveMember}
-        title="common.warning"
-        content="expertGroups.removeMemberExpertGroup"
-      />
     </>
   );
 };
@@ -611,20 +579,15 @@ const AvatarComponent = (props: any) => {
               <Tooltip title={"Delete Picture"}>
                 <IconButton
                   component="label"
-                  sx={{ padding: 0, color: "whitesmoke" }}
+                  sx={{ padding: 0, color: "background.container" }}
                 >
-                  {hover && (
-                    <DeleteOutlinedIcon
-                      onClick={deletePicture}
-                      sx={{ color: "whitesmoke" }}
-                    />
-                  )}
+                  {hover && <DeleteOutlinedIcon onClick={deletePicture} />}
                 </IconButton>
               </Tooltip>
               <Tooltip title={"Edit Picture"}>
                 <IconButton
                   component="label"
-                  sx={{ padding: 0, color: "whitesmoke" }}
+                  sx={{ padding: 0, color: "background.container" }}
                 >
                   {hover && <EditOutlinedIcon />}
                   <input
@@ -1059,7 +1022,8 @@ const AssessmentKitsList = (props: any) => {
   const [openDeleteDialog, setOpenDeleteDialog] = useState<{
     status: boolean;
     id: TId;
-  }>({ status: false, id: "" });
+    title: string;
+  }>({ status: false, id: "", title: "" });
   const { service } = useServiceContext();
 
   const kitDesignerDialogProps = useDialog({
@@ -1083,7 +1047,7 @@ const AssessmentKitsList = (props: any) => {
         size: 10,
         page: 1,
       });
-      setOpenDeleteDialog({ status: false, id: "" });
+      setOpenDeleteDialog({ status: false, id: "", title: "" });
     } catch (e) {
       const err = e as ICustomError;
       showToast(err);
@@ -1276,9 +1240,10 @@ const AssessmentKitsList = (props: any) => {
             setOpenDeleteDialog({ ...openDeleteDialog, status: false })
           }
           onConfirm={deleteItem}
-          title="common.warning"
-          content="assessment.areYouSureYouWantDeleteAssessmentKit"
-          confirmButtonText={t("common.continue")}
+          content={{
+            category: t("common.assessmentKit"),
+            title: openDeleteDialog.title,
+          }}
         />
       </Box>
     </>
@@ -1286,13 +1251,30 @@ const AssessmentKitsList = (props: any) => {
 };
 
 const ExpertGroupMembersDetail = (props: any) => {
-  const {
-    queryData,
-    inviteeQueryData,
-    hasAccess,
-    setNumberOfMembers,
-    setRemoveMemberDialog,
-  } = props;
+  const { service } = useServiceContext();
+  const { expertGroupId } = useParams();
+
+  const { queryData, inviteeQueryData, hasAccess, setNumberOfMembers } = props;
+  const deleteUserDialogProps = useDialog();
+  const removeExpertGroupMembers = useQuery({
+    service: (args, config) => service.expertGroups.member.remove(args, config),
+    runOnMount: false,
+  });
+
+  const handelRemoveMember = async (id: any) => {
+    try {
+      await removeExpertGroupMembers.query({
+        id: expertGroupId,
+        userId: id,
+      });
+      await queryData.query();
+      deleteUserDialogProps.onClose();
+    } catch (e: any) {
+      const err = e as ICustomError;
+      showToast(err);
+    }
+  };
+
   return (
     <>
       <Title inPageLink="members" size="small">
@@ -1372,18 +1354,19 @@ const ExpertGroupMembersDetail = (props: any) => {
                                 >
                                   <IconButton
                                     onClick={() =>
-                                      setRemoveMemberDialog({
-                                        status: true,
-                                        id,
+                                      deleteUserDialogProps.openDialog({
+                                        data: { ...member },
                                       })
                                     }
                                     sx={{
                                       position: "absolute",
-                                      right: 0,
-                                      top: 0,
+                                      [i18next.language === "fa"
+                                        ? "left"
+                                        : "right"]: 10,
+                                      top: 10,
                                     }}
                                     size="small"
-                                    color="secondary"
+                                    color="primary"
                                   >
                                     <DeleteOutlinedIcon fontSize="small" />
                                   </IconButton>
@@ -1543,6 +1526,20 @@ const ExpertGroupMembersDetail = (props: any) => {
             }}
           />
         )}
+        <DeleteConfirmationDialog
+          open={deleteUserDialogProps.open}
+          onClose={deleteUserDialogProps.onClose}
+          onConfirm={() =>
+            handelRemoveMember(deleteUserDialogProps.context?.data.id)
+          }
+          content={{
+            category: t("common.member"),
+            title:
+              deleteUserDialogProps.context?.data.displayName ??
+              deleteUserDialogProps.context?.data.email,
+            hideCategory: true,
+          }}
+        />
       </Box>
     </>
   );

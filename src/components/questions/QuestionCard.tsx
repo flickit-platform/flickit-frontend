@@ -81,6 +81,7 @@ import { useAssessmentContext } from "@/providers/assessment-provider";
 import showToast from "@/utils/toast-error";
 import uniqueId from "@/utils/unique-id";
 import useScreenResize from "@/hooks/useScreenResize";
+import { CEDialog, CEDialogActions } from "../common/dialogs/CEDialog";
 
 interface IQuestionCardProps {
   questionInfo: IQuestionInfo;
@@ -1228,16 +1229,36 @@ const AnswerTemplate = (props: {
             />
           </Box>
         )}
-        <DeleteConfirmationDialog
+        <CEDialog
           open={openDeleteDialog.status}
-          onClose={() =>
+          closeDialog={() =>
             setOpenDeleteDialog({ ...openDeleteDialog, status: false })
           }
-          onConfirm={() => goToQuestion("asc")}
-          title="common.warning"
-          content="questions.areYouSureYouWantSkipThisQuestion"
-          confirmButtonText={t("common.continue")}
-        />
+          title={
+            <>
+              <Trans i18nKey="common.warning" />
+            </>
+          }
+          maxWidth="sm"
+        >
+          <Text sx={{ color: "#0A2342" }}>
+            <Trans i18nKey={"questions.areYouSureYouWantSkipThisQuestion"} />
+          </Text>
+
+          <CEDialogActions
+            type="delete"
+            loading={false}
+            onClose={() =>
+              setOpenDeleteDialog({
+                ...openDeleteDialog,
+                status: false,
+              })
+            }
+            submitButtonLabel={t("common.continue")}
+            cancelLabel={t("common.cancel")}
+            onSubmit={() => goToQuestion("asc")}
+          />
+        </CEDialog>
       </Box>
     </>
   );
@@ -1941,8 +1962,9 @@ const Evidence = (props: any) => {
           open={expandedDeleteDialog}
           onClose={() => setExpandedDeleteDialog(false)}
           onConfirm={deleteItem}
-          title="common.warning"
-          content="questions.areYouSureYouWantDeleteThisItem"
+          content={{
+            category: t(`questions.${type}`),
+          }}
         />
         <DeleteConfirmationDialog
           open={expandedDeleteAttachmentDialog.expended}
@@ -1953,8 +1975,9 @@ const Evidence = (props: any) => {
             })
           }
           onConfirm={deleteAttachment}
-          title="common.warning"
-          content="questions.areYouSureYouWantDeleteThisAttachment"
+          content={{
+            category: t("common.attachment"),
+          }}
           confirmButtonText={t("common.yesDeleteIt")}
           cancelButtonText={t("common.letMeSeeItAgain")}
         />
