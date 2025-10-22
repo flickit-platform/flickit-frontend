@@ -121,7 +121,9 @@ const AppWithTheme = () => {
 
 const renderApp = () => {
   createRoot(document.getElementById("root") as HTMLElement).render(
- <></>
+    <LangProvider>
+      <AppWithTheme />
+    </LangProvider>
   );
 };
 
