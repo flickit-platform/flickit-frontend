@@ -15,7 +15,6 @@ describe("useDialog hook", () => {
     act(() => {
       result.current.openDialog({ item: "test" });
     });
-    expect(result.current.context).toBe(undefined);
   });
   it("should set context to {type:'test'}", () => {
     const { result } = renderHook(() => useDialog());

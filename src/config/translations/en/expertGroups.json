@@ -2,6 +2,8 @@
   "acceptInvitation": "Accept invitation",
   "addMember": "Add member",
   "createExpertGroup": "Create expert group",
+  "deleteExpertGroup": "Delete expert group",
+  "deleteMember": "Delete member",
   "editExpertGroup": "Edit expert group",
   "expertGroup": "Expert group",
   "expertGroups": "Expert groups",
@@ -9,10 +11,10 @@
   "groupSummary": "Group summary",
   "members": "Members",
   "publishedAssessmentKits": "Published assessment kits",
-  "removeMemberExpertGroup": "Are you sure you want to remove this member?",
+  "removeMemberExpertGroup": "Are you sure you want to delete \"{{title}}\"?",
   "sueccessJoinToExpertGroup": "You have joined this expert group successfully.",
   "unpublishedAssessmentKits": "Unpublished assessment kits",
   "updateExpertGroup": "Update the expert group",
   "youHaveBeenInvitedToExpertGroup": "You have been invited to this group. Do you want to accept this invitation?",
-  "areYouSureYouWantDeleteExpertGroup": "Your Expert group will be Delete. Do you want to continue?"
+  "areYouSureYouWantDeleteExpertGroup":  "Are you sure you want to delete the expert group \"{{title}}\"?"
 }

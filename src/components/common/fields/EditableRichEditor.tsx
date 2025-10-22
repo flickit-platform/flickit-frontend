@@ -5,7 +5,7 @@ import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 import CancelRounded from "@mui/icons-material/CancelRounded";
 import CheckCircleOutlineRounded from "@mui/icons-material/CheckCircleOutlineRounded";
-import EditRounded from "@mui/icons-material/EditRounded";
+import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import { ICustomError } from "@/utils/custom-error";
 import FormProviderWithForm from "@common/FormProviderWithForm";
 import RichEditorField from "@common/fields/RichEditorField";
@@ -223,20 +223,21 @@ export const EditableRichEditor = (props: EditableRichEditorProps) => {
               maxHeight={!showMore ? `${MAX_HEIGHT}px` : "none"}
               sx={{
                 transition: "max-height 0.4s ease",
-                "&::after": !showMore
-                  ? {
-                      content: '""',
-                      position: "absolute",
-                      bottom: 0,
-                      left: 0,
-                      right: 0,
-                      height: "40px",
-                      background: showBtn
-                        ? `linear-gradient(to bottom, rgba(255,255,255,0) 0%, white 100%)`
-                        : "none",
-                      pointerEvents: "none",
-                    }
-                  : undefined,
+                "&::after":
+                  !showMore && tempData
+                    ? {
+                        content: '""',
+                        position: "absolute",
+                        bottom: 0,
+                        left: 0,
+                        right: 0,
+                        height: "40px",
+                        background: showBtn
+                          ? `linear-gradient(to bottom, rgba(255,255,255,0) 0%, white 100%)`
+                          : "none",
+                        pointerEvents: "none",
+                      }
+                    : undefined,
               }}
             >
               <Text
@@ -299,7 +300,7 @@ export const EditableRichEditor = (props: EditableRichEditorProps) => {
                 }}
                 onClick={() => setShowEditor(true)}
               >
-                <EditRounded sx={{ color: "primary.contrastText" }} />
+                <EditOutlinedIcon sx={{ color: "primary.contrastText" }} />
               </IconButton>
             )}
           </Box>

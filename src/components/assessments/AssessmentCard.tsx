@@ -1,24 +1,17 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Gauge } from "@common/charts/Gauge";
 import LoadingGauge from "@common/charts/LoadingGauge";
-import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
+import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
 import useMenu from "@/hooks/useMenu";
 import { useServiceContext } from "@/providers/service-provider";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import { Trans } from "react-i18next";
 import { styles } from "@styles";
-import { ICustomError } from "@/utils/custom-error";
-import toastError from "@/utils/toast-error";
 import MoreActions from "@common/MoreActions";
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
 import Box from "@mui/material/Box";
-import {
-  IAssessment,
-  TId,
-  IQuestionnairesModel,
-  TQueryFunction,
-} from "@/types/index";
+import { IAssessment, TId, IQuestionnairesModel } from "@/types/index";
 import useDialog, { TDialogProps } from "@/hooks/useDialog";
 import Button from "@mui/material/Button";
 import QuizRoundedIcon from "@mui/icons-material/QuizRounded";
@@ -46,20 +39,19 @@ import { Text } from "../common/Text";
 interface IAssessmentCardProps {
   item: IAssessment & { space: any };
   dialogProps: TDialogProps;
-  deleteAssessment: TQueryFunction<any, TId>;
   fetchAssessments: any;
+  onDelete: (assessmentId: TId, assessmentTitle: string) => void;
 }
 
 const AssessmentCard = ({
   item,
   dialogProps,
-  deleteAssessment,
   fetchAssessments,
+  onDelete,
 }: IAssessmentCardProps) => {
   const [show, setShow] = useState<boolean>();
   const [gaugeResult, setGaugeResult] = useState<any>();
   const [progressPercent, setProgressPercent] = useState<string | undefined>();
-  const abortController = useRef(new AbortController());
   const { spaceId } = useParams();
   const {
     userInfo: { defaultSpaceId },
@@ -161,7 +153,7 @@ const AssessmentCard = ({
   if (showQuestionnaires && !(!isQuickMode && showReport && showDashboard))
     buttonTypes.push("questionnaires");
   if (showDashboard && !isQuickMode) buttonTypes.push("dashboard");
-
+console.log(onDelete)
   return (
     <Grid size={{ xs: 12, sm: 6, md: 4, lg: 3 }}>
       <Paper
@@ -182,12 +174,11 @@ const AssessmentCard = ({
       >
         {permissions.canManageSettings && (
           <Actions
-            deleteAssessment={deleteAssessment}
             item={item}
             dialogProps={dialogProps}
-            abortController={abortController}
             fetchAssessments={fetchAssessments}
             spaceId={spaceId ?? defaultSpaceId}
+            onDelete={onDelete}
           />
         )}
 
@@ -495,18 +486,16 @@ const CardButton = ({
 
 // --- Actions ---
 const Actions = ({
-  deleteAssessment,
   item,
-  abortController,
   fetchAssessments,
   spaceId,
+  onDelete,
 }: {
-  deleteAssessment: TQueryFunction<any, TId>;
   item: IAssessment & { space: any };
   dialogProps: TDialogProps;
-  abortController: React.MutableRefObject<AbortController>;
   fetchAssessments: any;
   spaceId: any;
+  onDelete: (assessmentId: TId, assessmentTitle: string) => void;
 }) => {
   const { service } = useServiceContext();
 
@@ -520,11 +509,9 @@ const Actions = ({
   });
 
   const deleteItem = async () => {
-    try {
-      await deleteAssessment(item.id);
-    } catch (e) {
-      toastError(e as ICustomError);
-    }
+    console.log(item)
+    console.log(onDelete)
+    onDelete(item.id, item.title);
   };
 
   const goToAssessmentSettings = () => {
@@ -556,7 +543,7 @@ const Actions = ({
   const actions = hasStatus(item.status)
     ? [
         {
-          icon: <DeleteRoundedIcon fontSize="small" />,
+          icon: <DeleteOutlinedIcon fontSize="small" />,
           text: <Trans i18nKey="common.delete" />,
           onClick: deleteItem,
           menuItemProps: { "data-cy": "delete-action-btn" },
@@ -574,7 +561,7 @@ const Actions = ({
           onClick: goToAssessmentSettings,
         },
         {
-          icon: <DeleteRoundedIcon fontSize="small" />,
+          icon: <DeleteOutlinedIcon fontSize="small" />,
           text: <Trans i18nKey="common.delete" />,
           onClick: deleteItem,
           menuItemProps: { "data-cy": "delete-action-btn" },

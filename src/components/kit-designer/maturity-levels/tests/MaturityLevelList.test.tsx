@@ -90,8 +90,6 @@ describe("MaturityLevelList", () => {
           open={true} // Simulate the dialog being open
           onClose={mockSetOpenDeleteDialog}
           onConfirm={mockOnDelete}
-          title="Warning"
-          content="Are you sure you want to delete this maturity level?"
         />
       </KitLanguageProvider>,
     );

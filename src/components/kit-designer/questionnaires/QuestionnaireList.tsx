@@ -2,8 +2,8 @@ import { ChangeEvent, useEffect, useState } from "react";
 import Box from "@mui/material/Box";
 import IconButton from "@mui/material/IconButton";
 import SwapVertRoundedIcon from "@mui/icons-material/SwapVertRounded";
-import EditRoundedIcon from "@mui/icons-material/EditRounded";
-import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
+import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
+import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
 import CheckRoundedIcon from "@mui/icons-material/CheckRounded";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
@@ -200,7 +200,11 @@ const ItemAccordion = ({
     item: KitDesignListItems,
   ) => (event: React.SyntheticEvent, isExpanded: boolean) => Promise<void>;
   onEdit: (item: KitDesignListItems) => void;
-  setOpenDeleteDialog?: (dialog: { status: boolean; id: TId }) => void;
+  setOpenDeleteDialog?: (dialog: {
+    status: boolean;
+    id: TId;
+    title: string;
+  }) => void;
   showNewQuestionForm: { [key: string]: boolean };
   setShowNewQuestionForm: React.Dispatch<
     React.SetStateAction<{ [key: string]: boolean }>
@@ -504,20 +508,24 @@ const ActionButtons = ({
         color={"success"}
         data-testid="items-edit-icon"
       >
-        <EditRoundedIcon fontSize="small" />
+        <EditOutlinedIcon fontSize="small" />
       </IconButton>
       {setOpenDeleteDialog && (
         <IconButton
           size="small"
           onClick={(e) => {
             e.stopPropagation();
-            setOpenDeleteDialog({ status: true, id: item.id });
+            setOpenDeleteDialog({
+              status: true,
+              id: item.id,
+              title: item.title,
+            });
           }}
           sx={{ mx: 1 }}
           color="secondary"
           data-testid="items-delete-icon"
         >
-          <DeleteRoundedIcon fontSize="small" />
+          <DeleteOutlinedIcon fontSize="small" />
         </IconButton>
       )}
     </>

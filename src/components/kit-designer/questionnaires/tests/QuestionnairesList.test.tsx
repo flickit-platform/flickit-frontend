@@ -68,6 +68,7 @@ describe("questionnairesList", () => {
     expect(mockSetOpenDeleteDialog).toHaveBeenCalledWith({
       status: true,
       id: 1,
+      title: "title test 1",
     });
   });
 });

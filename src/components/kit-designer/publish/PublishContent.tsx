@@ -2,7 +2,7 @@ import Button from "@mui/material/Button";
 import Divider from "@mui/material/Divider";
 import Box from "@mui/material/Box";
 import PermissionControl from "../../common/PermissionControl";
-import { Trans } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 import { useServiceContext } from "@/providers/service-provider";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { ICustomError } from "@/utils/custom-error";
@@ -17,13 +17,15 @@ import CircularProgress from "@mui/material/CircularProgress";
 import showToast from "@/utils/toast-error";
 import { styles } from "@styles";
 import { Text } from "@/components/common/Text";
+import useDialog from "@/hooks/useDialog";
 
 const PublishContent = ({ kitVersion }: { kitVersion: IKitVersion }) => {
   const { service } = useServiceContext();
   const { kitVersionId = "", expertGroupId } = useParams();
-  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
+  const deleteDialogProps = useDialog();
   const handlePublish = async () => {
     try {
       const data = { kitVersionId };
@@ -136,7 +138,7 @@ const PublishContent = ({ kitVersion }: { kitVersion: IKitVersion }) => {
             <Button
               color="secondary"
               variant="outlined"
-              onClick={() => setDeleteDialogOpen(true)}
+              onClick={deleteDialogProps.openDialog}
             >
               <Trans i18nKey="kitDesigner.deleteDraft" />
             </Button>
@@ -168,11 +170,11 @@ const PublishContent = ({ kitVersion }: { kitVersion: IKitVersion }) => {
           </Tooltip>
         </Box>
         <DeleteConfirmationDialog
-          open={deleteDialogOpen}
-          onClose={() => setDeleteDialogOpen(false)}
+          {...deleteDialogProps}
           onConfirm={handleDeleteDraft}
-          title="common.warning"
-          content="kitDesigner.deleteDraftConfirmationMessage"
+          content={{
+            category: t("common.draft"),
+          }}
         />
       </>
     </PermissionControl>

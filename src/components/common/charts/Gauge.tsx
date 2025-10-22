@@ -72,19 +72,19 @@ const Gauge = ({
       {level_value ? (
         <Box
           sx={{
-            width: "100%",
             textAlign: "center",
             px: 1,
-            pointerEvents: "none",
           }}
         >
           <Text
             component="div"
             sx={{
               whiteSpace: "normal",
+              width: "100%",
             }}
             variant={status_font_variant ?? "headlineMedium"}
             color="background.onVariant"
+            lines={2}
           >
             {maturity_level_status}
           </Text>
