@@ -1,4 +1,3 @@
-import * as React from "react";
 import Typography, { TypographyProps } from "@mui/material/Typography";
 import Tooltip from "@mui/material/Tooltip";
 import Box from "@mui/material/Box";
@@ -6,6 +5,7 @@ import { SxProps, Theme } from "@mui/material/styles";
 import languageDetector from "@/utils/language-detector";
 import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
 import i18next from "i18next";
+import { forwardRef, isValidElement } from "react";
 
 type ExtraProps = {
   text?: React.ReactNode;
@@ -47,7 +47,7 @@ function extractText(node: React.ReactNode): string | undefined {
     const parts = node.map(extractText).filter(Boolean) as string[];
     return parts.length ? parts.join(" ") : undefined;
   }
-  if (React.isValidElement(node)) {
+  if (isValidElement(node)) {
     const anyProps: any = node.props ?? {};
 
     const hasI18nKey = typeof anyProps.i18nKey === "string";
@@ -95,7 +95,7 @@ function renderTooltipContent(
   );
 }
 
-export const Text = React.forwardRef<any, Props>(function Text(
+export const Text = forwardRef<any, Props>(function Text(
   {
     text,
     children,

@@ -79,9 +79,9 @@ export const EditableRichEditor = (props: EditableRichEditorProps) => {
     }
   };
 
-  useEffect(() => {
-    setTempData(formMethods.getValues()[fieldName]);
-  }, [formMethods.watch(fieldName)]);
+  // useEffect(() => {
+  //   setTempData(formMethods.getValues()[fieldName]);
+  // }, [formMethods.watch(fieldName)]);
 
   useEffect(() => {
     if (paragraphRef.current && containerRef.current) {

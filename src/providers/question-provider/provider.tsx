@@ -1,11 +1,11 @@
-import { useReducer, FC, useContext, useEffect, createContext } from "react";
+import { useReducer, FC, useContext, useEffect, createContext, ReactElement } from "react";
 import { useParams } from "react-router-dom";
 import { EAssessmentStatus, TQuestionsInfo } from "@/types/index";
 import { questionActions } from "./actions";
-import appReducer from "./reducer";
+import questionReducer from "./reducer";
 
 interface IQuestionProviderProps {
-  children?: JSX.Element | JSX.Element[];
+  children?: ReactElement | ReactElement[];
 }
 
 export interface IQuestionContext {
@@ -37,7 +37,7 @@ const QuestionDispatchContext = createContext<any>({
 });
 
 export const QuestionProvider: FC<IQuestionProviderProps> = ({ children }) => {
-  const [state, dispatch] = useReducer(appReducer, {
+  const [state, dispatch] = useReducer(questionReducer, {
     questionIndex: 1,
     questionsInfo: {
       total_number_of_questions: 0,

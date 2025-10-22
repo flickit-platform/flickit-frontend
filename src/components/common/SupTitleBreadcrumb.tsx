@@ -9,13 +9,14 @@ import { useTheme } from "@mui/material/styles";
 import uniqueId from "@/utils/unique-id";
 import languageDetector from "@/utils/language-detector";
 import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
+import { ReactElement, ReactNode } from "react";
 
 interface ISupTitleBreadcrumbProps {
   routes: {
     sup?: string;
     to?: string;
-    icon?: JSX.Element;
-    title?: string | JSX.Element;
+    icon?: ReactElement;
+    title?: string | ReactNode;
     disabled?: boolean;
   }[];
   displayChip?: boolean;

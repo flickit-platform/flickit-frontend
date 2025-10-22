@@ -12,7 +12,7 @@ import { styles } from "@styles";
 import { LoadingSkeleton } from "../loadings/LoadingSkeleton";
 import ListItemButton from "@mui/material/ListItemButton";
 import { Trans } from "react-i18next";
-import { useEffect } from "react";
+import { ReactElement, useEffect } from "react";
 import uniqueId from "@/utils/unique-id";
 
 const selectField = () => {
@@ -40,15 +40,15 @@ const SelectFieldUC = (props: ISelectFieldUC) => {
 };
 
 interface ISelectField {
-  renderOption?: (option: any) => JSX.Element;
+  renderOption?: (option: any) => ReactElement;
   InputLabelProps?: InputLabelProps;
-  helperText?: string | JSX.Element | Element;
+  helperText?: string | ReactElement | Element;
   options?: any[];
   nullable?: boolean;
   name: string;
   size?: "small" | "medium";
   loading?: boolean;
-  renderLoading?: () => JSX.Element;
+  renderLoading?: () => ReactElement;
   error?: boolean;
   fetchOptions?: any;
   register?: UseFormRegister<any>;
@@ -165,7 +165,7 @@ const ColorOption = ({ value }: { value: string }) => {
 
 const defaultRenderOption = (option: any) => {
   return (
-    <MenuItem value={option.id} key={uniqueId()} sx={{ ...styles.centerV }}>
+    <MenuItem value={option.id} key={option.id} sx={{ ...styles.centerV }}>
       {option.code ? <ColorOption value={option.code} /> : null}
       <Box bgcolor={option.code} width="100%" color={option.code}>
         {option.title}

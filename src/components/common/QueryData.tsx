@@ -1,4 +1,4 @@
-import { createContext, useContext } from "react";
+import { ReactNode, createContext, useContext } from "react";
 import Box from "@mui/material/Box";
 import { styles } from "@styles";
 import {
@@ -15,23 +15,23 @@ import GettingThingsReadyLoading from "./loadings/GettingThingsReadyLoading";
 import ErrorRecalculating from "./errors/ErrorRecalculating";
 
 interface IQueryDataProps<T> {
-  loadingComponent?: JSX.Element;
-  emptyDataComponent?: JSX.Element;
-  errorComponent?: JSX.Element;
+  loadingComponent?: ReactNode;
+  emptyDataComponent?: ReactNode;
+  errorComponent?: ReactNode;
   data: T;
   loading: boolean;
   error: boolean;
   loaded: boolean;
   errorObject?: ICustomError;
   abortController?: AbortController;
-  render: (data: T) => JSX.Element;
-  renderLoading?: () => JSX.Element;
+  render: (data: T) => ReactNode;
+  renderLoading?: () => ReactNode;
   renderError?: (
     err:
       | ICustomError
       | (ICustomError | ICustomError[] | undefined)[]
       | undefined,
-  ) => JSX.Element;
+  ) => ReactNode;
   isDataEmpty?: (data: T) => boolean;
   showEmptyError?: boolean;
   query?: TQueryFunction<T>;
@@ -136,7 +136,7 @@ const defaultIsDataEmpty = (data: any) => {
 
 export const defaultRenderError = (
   err: ICustomError | undefined,
-  errorComponent: JSX.Element = <ErrorDataLoading />,
+  errorComponent: ReactNode = <ErrorDataLoading />,
 ): any => {
   if (!err) {
     return errorComponent;

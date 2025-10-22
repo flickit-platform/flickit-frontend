@@ -2,12 +2,13 @@ import Button, { ButtonProps } from "@mui/material/Button";
 import useScreenResize from "@/hooks/useScreenResize";
 import { animations } from "@styles";
 import { Trans } from "react-i18next";
+import { ReactNode } from "react";
 
 interface IToolbarCreateItemBtnProps extends ButtonProps {
-  icon?: JSX.Element;
+  icon?: ReactNode;
   onClick?: React.MouseEventHandler<HTMLButtonElement>;
   shouldAnimate?: boolean;
-  text: string | JSX.Element;
+  text: string | ReactNode;
   minWidth?: string;
   variantType?: "text" | "outlined" | "contained";
 }

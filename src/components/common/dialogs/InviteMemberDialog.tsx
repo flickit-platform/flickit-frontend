@@ -5,14 +5,14 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import Grid from "@mui/material/Grid";
-import { PropsWithChildren } from "react";
+import { PropsWithChildren, ReactElement } from "react";
 import { Trans } from "react-i18next";
 import { styles } from "@styles";
 import useScreenResize from "@/hooks/useScreenResize";
 
 interface ICEDialogProps extends Omit<DialogProps, "title"> {
   closeDialog?: () => void;
-  title?: JSX.Element;
+  title?: ReactElement;
   inviteButtonLabel?: string;
   loading?: boolean;
   onInvite: (...args: any) => any;

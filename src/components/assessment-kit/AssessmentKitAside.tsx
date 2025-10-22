@@ -23,10 +23,11 @@ import PurchasedIcon from "@/components/common/icons/Purchased";
 import PaidOutlinedIcon from "@mui/icons-material/PaidOutlined";
 import { usePurchaseDialog } from "@/hooks/usePurchaseDialog";
 import { useTheme } from "@mui/material";
-import uniqueId from "@/utils/unique-id";
 import { Text } from "../common/Text";
+import { TId } from "@/types";
 
 interface IlistOfItems {
+  id: TId;
   field: boolean;
   icon: any;
   title?: string;
@@ -50,6 +51,7 @@ const AssessmentKitAside = (props: any) => {
 
   const listOfItems: IlistOfItems[] = [
     {
+      id: 1,
       field: status === "free",
       icon: (
         <PriceIcon
@@ -61,6 +63,7 @@ const AssessmentKitAside = (props: any) => {
       description: "common.free",
     },
     {
+      id: 2,
       field: status === "purchased",
       icon: (
         <PurchasedIcon
@@ -72,6 +75,7 @@ const AssessmentKitAside = (props: any) => {
       description: "common.purchased",
     },
     {
+      id: 3,
       field: status === "paid",
       icon: (
         <PaidOutlinedIcon
@@ -85,6 +89,7 @@ const AssessmentKitAside = (props: any) => {
       description: "common.paid",
     },
     {
+      id: 4,
       field: true,
       icon: (
         <LanguageIcon
@@ -179,7 +184,7 @@ const AssessmentKitAside = (props: any) => {
             {listOfItems
               .filter((filter) => filter.field)
               .map((item) => {
-                return <InfoBox {...item} key={uniqueId()} />;
+                return <InfoBox {...item} key={item.id} />;
               })}
           </Box>
           <Box>
@@ -278,11 +283,7 @@ const InfoBox = (props: any) => {
             {t(`${title}`)}
           </Text>
         )}
-        <Text
-          variant="bodyLarge"
-          color="text.primary"
-          textAlign="justify"
-        >
+        <Text variant="bodyLarge" color="text.primary" textAlign="justify">
           {t(`${description}`)}
         </Text>
       </Box>

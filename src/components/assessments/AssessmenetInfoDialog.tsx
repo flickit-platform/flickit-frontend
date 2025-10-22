@@ -7,7 +7,6 @@ import Button from "@mui/material/Button";
 import { DialogProps } from "@mui/material/Dialog";
 import { useTheme } from "@mui/material";
 import { styles } from "@styles";
-import uniqueId from "@/utils/unique-id";
 import { Text } from "../common/Text";
 
 interface IAssessmentCEFromDialogProps extends DialogProps {
@@ -18,6 +17,13 @@ interface IAssessmentCEFromDialogProps extends DialogProps {
   titleStyle?: any;
   contentStyle?: any;
 }
+
+const listOfText = [
+  "assessment.reachedNumberOfAssessments",
+  "common.youCan",
+  "assessment.deleteExistingAssessments",
+  "spaces.upgradeToPremiumSpace",
+];
 
 const AssessmenetInfoDialog = (props: IAssessmentCEFromDialogProps) => {
   const {
@@ -35,12 +41,7 @@ const AssessmenetInfoDialog = (props: IAssessmentCEFromDialogProps) => {
     abortController.abort();
     closeDialog();
   };
-  const listOfText = [
-    "assessment.reachedNumberOfAssessments",
-    "common.youCan",
-    "assessment.deleteExistingAssessments",
-    "spaces.upgradeToPremiumSpace",
-  ];
+
 
   return (
     <CEDialog
@@ -63,7 +64,7 @@ const AssessmenetInfoDialog = (props: IAssessmentCEFromDialogProps) => {
         {listOfText.map((text: string, index: number) => {
           return (
             <Box
-              key={uniqueId()}
+              key={text}
               justifyContent="flex-start"
               color="text.primary"
               gap="2px"

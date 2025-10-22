@@ -8,7 +8,6 @@ import { CEDialog, CEDialogActions } from "@common/dialogs/CEDialog";
 import FormProviderWithForm from "@common/FormProviderWithForm";
 import { useServiceContext } from "@/providers/service-provider";
 import { ICustomError } from "@/utils/custom-error";
-import setServerFieldErrors from "@/utils/set-server-field-error";
 import CreateNewFolderRoundedIcon from "@mui/icons-material/CreateNewFolderRounded";
 import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
@@ -132,7 +131,6 @@ const CreateSpaceDialog = (props: any) => {
     } catch (e) {
       const err = e as ICustomError;
       showToast(err);
-      setServerFieldErrors(err, formMethods);
     } finally {
       setLoading(false);
     }
@@ -167,9 +165,7 @@ const CreateSpaceDialog = (props: any) => {
     };
   
     const onEnterUp = (e: KeyboardEvent) => {
-      // فقط وقتی Enter رها میشه، تریگر کن؛ نه روی نگه‌داشتن کلید
       if (e.key !== "Enter" || e.repeat) return;
-      // اگر فوکوس در فیلد نوشتنیه، کاری نکن
       if (isEditable(e.target)) return;
       if (!selectedType) return;
   
@@ -177,7 +173,6 @@ const CreateSpaceDialog = (props: any) => {
       setStep(2);
     };
   
-    // keyup + capture → بعد از بسته‌شدن دیالوگ اول، همین Enter رها شده عمل می‌کنه
     window.addEventListener("keyup", onEnterUp, { signal: controller.signal, capture: true });
     return () => controller.abort();
   }, [openDialog, step, selectedType]);

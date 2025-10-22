@@ -5,12 +5,13 @@ import {
   Dispatch,
   createContext,
   useMemo,
+  ReactElement,
 } from "react";
 import assessmentReducer from "./reducer";
 import { IAssessmentInfo } from "@/types";
 
 interface IAssessmentProviderProps {
-  children?: JSX.Element | JSX.Element[];
+  children?: ReactElement | ReactElement[];
 }
 
 export interface IAssessmentContext {

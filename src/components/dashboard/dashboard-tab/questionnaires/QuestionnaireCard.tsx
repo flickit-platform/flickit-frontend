@@ -12,7 +12,7 @@ import Chip from "@mui/material/Chip";
 import Collapse from "@mui/material/Collapse";
 import IconButton from "@mui/material/IconButton";
 import languageDetector from "@/utils/language-detector";
-import { useRef, useState } from "react";
+import { ReactElement, useRef, useState } from "react";
 import InfoOutlined from "@mui/icons-material/InfoOutlined";
 import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
 import Grid from "@mui/material/Grid";
@@ -291,7 +291,7 @@ const ActionButton = ({
 }: {
   to: string;
   text: string;
-  icon?: JSX.Element;
+  icon?: ReactElement;
   state?: any;
   variant?: any;
 }) => (

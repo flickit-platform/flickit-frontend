@@ -6,7 +6,6 @@ import { Trans } from "react-i18next";
 import { InputFieldUC } from "@common/fields/InputField";
 import { styles } from "@styles";
 import { useServiceContext } from "@/providers/service-provider";
-import setServerFieldErrors from "@/utils/set-server-field-error";
 import AccountBoxRoundedIcon from "@mui/icons-material/AccountBoxRounded";
 import { ICustomError } from "@/utils/custom-error";
 import { CEDialog, CEDialogActions } from "@common/dialogs/CEDialog";
@@ -69,7 +68,6 @@ const UserCEFormDialog = (props: IUserCEFormDialogProps) => {
     } catch (e) {
       const err = e as ICustomError;
       setLoading(false);
-      setServerFieldErrors(err, formMethods);
       showToast(err);
     }
   };

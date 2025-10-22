@@ -1,6 +1,6 @@
 import Box from "@mui/material/Box";
 import { Trans } from "react-i18next";
-import { useEffect, useState } from "react";
+import { ReactElement, useEffect, useState } from "react";
 import Divider from "@mui/material/Divider";
 import Grid from "@mui/material/Grid";
 import { useParams } from "react-router";
@@ -66,7 +66,7 @@ const KitCustomization = (props: any) => {
     },
   });
 
-  const [tooltipTitle, setTooltipTitle] = useState<string | JSX.Element>("");
+  const [tooltipTitle, setTooltipTitle] = useState<string | ReactElement>("");
 
   useEffect(() => {
     if (!hasChanges) {

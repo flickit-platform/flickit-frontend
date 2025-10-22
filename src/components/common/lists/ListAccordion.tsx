@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { FC, ReactElement, useState } from "react";
 import Box from "@mui/material/Box";
 import Collapse from "@mui/material/Collapse";
 import { styles } from "@styles";
@@ -6,8 +6,8 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
 interface IListAccordion {
   items: any[];
-  renderItem: (item: any, index: number, isExpanded: boolean) => JSX.Element;
-  LiComponent?: FC<{ render: (expanded: boolean) => JSX.Element }>;
+  renderItem: (item: any, index: number, isExpanded: boolean) => ReactElement;
+  LiComponent?: FC<{ render: (expanded: boolean) => ReactElement }>;
 }
 
 const ListAccordion = (props: IListAccordion) => {
@@ -34,7 +34,7 @@ const ListAccordion = (props: IListAccordion) => {
 };
 
 const UnOrderedListAccordionItem = (props: {
-  render: (expanded: boolean) => JSX.Element;
+  render: (expanded: boolean) => ReactElement;
 }) => {
   const { render } = props;
   const [expanded, setExpanded] = useState<boolean>(false);

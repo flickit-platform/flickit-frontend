@@ -1,8 +1,10 @@
+import { ReactElement } from "react";
+
 const forLoopComponent = (
   numberOfIterations: number,
-  cb: (index: number) => JSX.Element,
+  cb: (index: number) => ReactElement,
 ) => {
-  const components: JSX.Element[] = [];
+  const components: ReactElement[] = [];
   for (let index = 0; index < numberOfIterations; index++) {
     components[index] = cb(index);
   }

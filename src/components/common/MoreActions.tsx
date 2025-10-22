@@ -6,7 +6,7 @@ import Menu from "@mui/material/Menu";
 import MenuItem, { MenuItemProps } from "@mui/material/MenuItem";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import uniqueId from "@/utils/unique-id";
+import { ReactNode } from "react";
 
 interface IMoreActionsProps {
   boxProps?: BoxProps;
@@ -15,7 +15,7 @@ interface IMoreActionsProps {
   closeMenu: (e: any) => void;
   loading?: boolean;
   hideInnerIconButton?: boolean;
-  anchorEl?:   Element | (() => Element | null) | null;
+  anchorEl?: Element | (() => Element | null) | null;
   fontSize?: "inherit" | "small" | "large" | "medium";
   items: any;
   setShowTooltip?: (e: boolean) => void;
@@ -39,9 +39,9 @@ const MoreActions = (props: IMoreActionsProps) => {
   } = props;
 
   const menuItems = items.filter((item: any) => !!item) as {
-    icon?: JSX.Element;
+    icon?: ReactNode;
     onClick?: React.MouseEventHandler<HTMLLIElement>;
-    text: JSX.Element;
+    text: ReactNode;
     menuItemProps?: MenuItemProps & { "data-cy"?: string };
     id: string;
   }[];
@@ -79,11 +79,11 @@ const MoreActions = (props: IMoreActionsProps) => {
             icon,
             text,
             menuItemProps = {},
-            id = "",
+            id,
           } = item ?? {};
           return (
             <MenuItem
-              key={uniqueId()}
+              key={id}
               {...menuItemProps}
               onClick={(e: any) => {
                 closeMenu(e);
