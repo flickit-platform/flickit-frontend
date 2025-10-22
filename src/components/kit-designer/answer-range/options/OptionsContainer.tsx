@@ -2,12 +2,12 @@ import { useState } from "react";
 import Box from "@mui/material/Box";
 import { styles } from "@styles";
 import IconButton from "@mui/material/IconButton";
-import ModeEditOutlineOutlinedIcon from "@mui/icons-material/ModeEditOutlineOutlined";
+import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import Divider from "@mui/material/Divider";
 import { useParams } from "react-router-dom";
 import { IOption, KitDesignListItems, MultiLangs } from "@/types/index";
 import TextField from "@mui/material/TextField";
-import { Trans } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 import CheckRoundedIcon from "@mui/icons-material/CheckRounded";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import { useQuery } from "@/hooks/useQuery";
@@ -19,6 +19,11 @@ import { useTranslationUpdater } from "@/hooks/useTranslationUpdater";
 import { useKitDesignerContext } from "@/providers/kit-provider";
 import TitleWithTranslation from "@/components/common/fields/TranslationText";
 import { Text } from "@/components/common/Text";
+import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
+import { DeleteConfirmationDialog } from "@/components/common/dialogs/DeleteConfirmationDialog";
+import useDialog from "@/hooks/useDialog";
+import { ICustomError } from "@/utils/custom-error";
+import showToast from "@/utils/toast-error";
 
 interface ITempValues {
   title: string;
@@ -27,6 +32,9 @@ interface ITempValues {
 }
 
 const OptionContain = (props: any) => {
+  const deleteDialogProps = useDialog();
+  const { t } = useTranslation();
+
   const { kitState } = useKitDesignerContext();
   const langCode = kitState.translatedLanguage?.code;
 
@@ -44,6 +52,12 @@ const OptionContain = (props: any) => {
   const EditAnswerRangeOption = useQuery({
     service: (args, config) =>
       service.kitVersions.answerOptions.updateOption(args, config),
+    runOnMount: false,
+  });
+
+  const deleteAnswerRangeOption = useQuery({
+    service: (args, config) =>
+      service.kitVersions.answerOptions.remove(args, config),
     runOnMount: false,
   });
   const handleEditClick = (answerOption: KitDesignListItems) => {
@@ -78,26 +92,45 @@ const OptionContain = (props: any) => {
     setEditMode(null);
     setTempValues({ title: "", translations: null, value: 0 });
   };
+
+  const handleDelete = async () => {
+    try {
+      let answerOptionId = answerOption.id;
+
+      await deleteAnswerRangeOption
+        .query({
+          kitVersionId,
+          answerOptionId,
+        })
+        .then(() => {
+          setChangeData((prev: any) => !prev);
+        });
+    } catch (e) {
+      const err = e as ICustomError;
+      showToast(err);
+    }
+    deleteDialogProps.onClose();
+  };
   return (
     <>
       <Box sx={{ display: "flex", py: ".8rem", px: "1rem" }}>
         <Box
+          minWidth="30px"
           sx={{
             ...styles.centerVH,
             bgcolor: "background.container",
-            width: { xs: "65px", md: "95px" },
             justifyContent: "space-around",
           }}
           borderRadius="0.5rem"
-          mr={2}
-          px={0.2}
+          mx={1}
+          px={0.5}
         >
           <Text variant="semiBoldLarge">{`${answerOption?.index}`}</Text>
         </Box>
 
         <Box
           sx={{
-            width: { xs: "50%", md: "60%" },
+            width: { xs: "50%", md: "70%" },
           }}
         >
           {editMode === answerOption.id ? (
@@ -196,20 +229,39 @@ const OptionContain = (props: any) => {
               </IconButton>
             </>
           ) : (
-            <IconButton
-              size="small"
-              data-testid="item-edit-option-icon"
-              onClick={() => handleEditClick(answerOption)}
-              sx={{ ml: 1 }}
-            >
-              <ModeEditOutlineOutlinedIcon fontSize="small" />
-            </IconButton>
+            <Box>
+              <IconButton
+                size="small"
+                data-testid="item-edit-option-icon"
+                onClick={() => handleEditClick(answerOption)}
+                sx={{ ml: 1 }}
+              >
+                <EditOutlinedIcon fontSize="small" />
+              </IconButton>
+              <IconButton
+                size="small"
+                data-testid="item-edit-option-icon"
+                onClick={deleteDialogProps.openDialog}
+                sx={{ ml: 1 }}
+              >
+                <DeleteOutlineIcon fontSize="small" />
+              </IconButton>
+            </Box>
           )}
         </Box>
       </Box>
       {answerOption.index !== answerOption.total && (
         <Divider sx={{ width: "95%", mx: "auto" }} />
       )}
+      <DeleteConfirmationDialog
+        open={deleteDialogProps.open}
+        onClose={deleteDialogProps.onClose}
+        onConfirm={handleDelete}
+        content={{
+          category: t("common.option"),
+          title: answerOption.title,
+        }}
+      />
     </>
   );
 };

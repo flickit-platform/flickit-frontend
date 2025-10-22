@@ -40,4 +40,17 @@ export const answerRanges = {
       config,
     );
   },
+
+  remove(
+    {
+      kitVersionId,
+      answerRangeId,
+    }: { kitVersionId: TId; answerRangeId: TId; data: any },
+    config?: AxiosRequestConfig<any>,
+  ) {
+    return axios.delete(
+      `/api/v1/kit-versions/${kitVersionId}/answer-ranges/${answerRangeId}/`,
+      config,
+    );
+  },
 };

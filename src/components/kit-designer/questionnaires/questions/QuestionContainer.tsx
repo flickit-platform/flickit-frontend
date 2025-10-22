@@ -2,7 +2,7 @@ import { useState } from "react";
 import Box from "@mui/material/Box";
 import { styles } from "@styles";
 import IconButton from "@mui/material/IconButton";
-import ModeEditOutlineOutlinedIcon from "@mui/icons-material/ModeEditOutlineOutlined";
+import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
 import QuestionDialog from "./QuestionDialog";
 import Divider from "@mui/material/Divider";
@@ -17,6 +17,7 @@ import { useServiceContext } from "@/providers/service-provider";
 import { useParams } from "react-router-dom";
 import showToast from "@/utils/toast-error";
 import { ICustomError } from "@/utils/custom-error";
+import { SwapVertRounded } from "@mui/icons-material";
 
 const QuestionContain = (props: any) => {
   const { t } = useTranslation();
@@ -90,22 +91,21 @@ const QuestionContain = (props: any) => {
 
   return (
     <>
-      <Box sx={{ display: "flex", py: ".5rem", px: "1rem" }}>
+      <Box sx={{ display: "flex", py: ".5rem", px: "1rem" }} gap={1}>
         <Box
           sx={{
-            ...styles.centerVH,
+            ...styles.centerCVH,
             bgcolor: "background.container",
-            width: { xs: "65px", md: "95px" },
-            justifyContent: "space-around",
           }}
           borderRadius="0.5rem"
           mr={2}
-          px={0.2}
+          p={0.25}
         >
-          <Text
-            data-testid="question-index"
-            variant="semiBoldLarge"
-          >{`Q. ${question?.index}`}</Text>
+          <Text variant="semiBoldLarge">{index + 1}</Text>
+          <Divider orientation="horizontal" flexItem sx={{ mx: 1 }} />
+          <IconButton size="small">
+            <SwapVertRounded fontSize="small" />
+          </IconButton>
         </Box>
         <TitleWithTranslation
           title={question.title}
@@ -117,10 +117,11 @@ const QuestionContain = (props: any) => {
           <IconButton
             data-testid="question-handel-edit"
             onClick={() => handleQuestionClick(index)}
+            color="primary"
           >
-            <ModeEditOutlineOutlinedIcon fontSize="small" />
+            <EditOutlinedIcon fontSize="small" />
           </IconButton>
-          <IconButton onClick={deleteDialogProps.openDialog}>
+          <IconButton onClick={deleteDialogProps.openDialog} color="primary">
             <DeleteOutlinedIcon fontSize="small" />
           </IconButton>
         </Box>
@@ -128,17 +129,17 @@ const QuestionContain = (props: any) => {
       {question.index !== question.total && (
         <Divider sx={{ width: "95%", mx: "auto" }} />
       )}
-      {
-        <DeleteConfirmationDialog
-          open={deleteDialogProps.open}
-          onClose={deleteDialogProps.onClose}
-          onConfirm={handleDelete}
-          content={{
-            category: t("common.question"),
-            title: question.index,
-          }}
-        />
-      }
+
+      <DeleteConfirmationDialog
+        open={deleteDialogProps.open}
+        onClose={deleteDialogProps.onClose}
+        onConfirm={handleDelete}
+        content={{
+          category: t("common.question"),
+          title: question.index,
+        }}
+      />
+
       {dialogProps.open && (
         <QuestionDialog
           {...dialogProps}

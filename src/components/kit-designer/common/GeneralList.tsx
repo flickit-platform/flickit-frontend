@@ -18,6 +18,8 @@ import { useTranslationUpdater } from "@/hooks/useTranslationUpdater";
 import { useKitDesignerContext } from "@/providers/kit-provider";
 import TitleWithTranslation from "@/components/common/fields/TranslationText";
 import { Text } from "@/components/common/Text";
+import { Divider } from "@mui/material";
+import { SwapVertRounded } from "@mui/icons-material";
 
 interface ListOfItemsProps {
   items: Array<KitDesignListItems>;
@@ -137,6 +139,7 @@ const ListOfItems = ({
                     {...provided.dragHandleProps}
                     mt={1.5}
                     p={1.5}
+                    gap={1}
                     borderRadius="8px"
                     display="flex"
                     alignItems="flex-start"
@@ -149,30 +152,24 @@ const ListOfItems = ({
                     }
                   >
                     <Box
-                      bgcolor="background.container"
-                      width={{ xs: "50px", md: "64px" }}
-                      justifyContent="space-around"
-                      sx={{ ...styles.centerVH }}
+                      sx={{
+                        ...styles.centerCVH,
+                        bgcolor: "background.container",
+                      }}
                       borderRadius="0.5rem"
                       mr={2}
-                      px={1.5}
+                      p={0.25}
                     >
                       <Text variant="semiBoldLarge">{index + 1}</Text>
-                      <IconButton
-                        disableRipple
-                        disableFocusRipple
-                        sx={{
-                          "&:hover": {
-                            backgroundColor: "transparent",
-                            color: "inherit",
-                          },
-                        }}
-                        size="small"
-                      >
-                        <SwapVertRoundedIcon fontSize="small" />
+                      <Divider
+                        orientation="horizontal"
+                        flexItem
+                        sx={{ mx: 1 }}
+                      />
+                      <IconButton size="small">
+                        <SwapVertRounded fontSize="small" />
                       </IconButton>
-                    </Box>
-
+                    </Box>{" "}
                     <Box
                       flexGrow={1}
                       display="flex"
@@ -256,8 +253,8 @@ const ListOfItems = ({
                               size="small"
                               onClick={() => handleEditClick(item)}
                               sx={{ mx: 1 }}
-                              color="success"
                               data-testid="items-edit-icon"
+                              color="primary"
                             >
                               <EditOutlinedIcon fontSize="small" />
                             </IconButton>
@@ -271,7 +268,6 @@ const ListOfItems = ({
                                   })
                                 }
                                 sx={{ mx: 1 }}
-                                color="secondary"
                                 data-testid="items-delete-icon"
                               >
                                 <DeleteOutlinedIcon fontSize="small" />
