@@ -337,9 +337,9 @@ const AdviceItemAccordion: React.FC<{
             width="100%"
             spacing={1}
           >
-            <Grid item xs={12} md={readOnly ? 7 : 8.3}>
+            <Grid size={{xs: 12, md: readOnly ? 7 : 8.3}}>
               <Grid container alignItems="center" spacing={1}>
-                <Grid item xs={12} sx={{ ...styles.centerV }}>
+                <Grid size={{xs: 12}} sx={{ ...styles.centerV }}>
                   <Text
                     sx={{
                       display: "inline-block",
@@ -387,7 +387,7 @@ const AdviceItemAccordion: React.FC<{
               </Grid>
             </Grid>
 
-            <Grid item xs={12} md={readOnly ? 2.8 : 3.7}>
+            <Grid size={{xs: 12, md: readOnly ? 2.8 : 3.7 }}>
               <Grid
                 container
                 justifyContent="flex-start"
@@ -395,9 +395,8 @@ const AdviceItemAccordion: React.FC<{
                 spacing={1}
               >
                 <Grid
-                  item
+                  size={{xs: readOnly ? 12 : 9}}
                   display="flex"
-                  xs={readOnly ? 12 : 9}
                   alignItems={{ xs: "flex-start", md: "center" }}
                   justifyContent={{ xs: "flex-start", md: "flex-end" }}
                   gap={1}
@@ -418,8 +417,7 @@ const AdviceItemAccordion: React.FC<{
                   />
                 </Grid>
                 <Grid
-                  item
-                  xs={3}
+                  size={{xs: 3}}
                   alignItems="center"
                   display={readOnly ? "none" : "flex"}
                 >

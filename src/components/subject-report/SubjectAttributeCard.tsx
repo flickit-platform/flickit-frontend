@@ -241,7 +241,7 @@ const SubjectAttributeCard = (props: any) => {
               alignItems: "center",
             }}
           >
-            <Grid item xs={12} sm={9} sx={{ p: 4 }}>
+            <Grid size={{xs: 12, sm: 9}} sx={{ p: 4 }}>
               <Title>
                 <Text
                   variant="headlineSmall"
@@ -273,7 +273,7 @@ const SubjectAttributeCard = (props: any) => {
                 {description}
               </Text>
             </Grid>
-            <Grid item xs={12} sm={3} height={{ sm: "100%", xs: "unset" }}>
+            <Grid size={{xs: 12, sm: 3}} height={{ sm: "100%", xs: "unset" }}>
               {" "}
               <Box
                 width="100%"
@@ -480,15 +480,15 @@ const SubjectAttributeCard = (props: any) => {
 
               {topTab === 1 && (
                 <Grid container>
-                  <Grid item xs={12} sm={9.5}></Grid>
-                  <Grid item xs={12} sm={2.5}>
+                  <Grid size={{xs: 12, sm: 9.4}}></Grid>
+                  <Grid size={{xs: 12, sm: 2.5}}>
                     <DropDownContent
                       onSortChange={handleSortChange}
                       sortBy={sortBy}
                       sortOrder={sortOrder}
                     />
                   </Grid>
-                  <Grid item xs={12} sm={12}>
+                  <Grid size={{xs: 12, sm: 12}}>
                     <ScoreImpactBarChart
                       measures={fetchMeasures.data.measures}
                       language={i18next.language}

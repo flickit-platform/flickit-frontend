@@ -192,9 +192,7 @@ const CreateSpaceDialog = (props: any) => {
         <Grid container spacing={{ xs: 5, sm: 10, md: 3 }}>
           {[PremiumBox, BasicBox].map((list, idx) => (
             <Grid
-              item
-              xs={12}
-              md={6}
+              size={{xs: 12, md: 6}}
               key={UniqueId()}
               mt={{ xs: list === BasicBox ? 5 : 0, sm: 0 }}
             >
@@ -243,7 +241,7 @@ const CreateSpaceDialog = (props: any) => {
             pb: 1,
           }}
         >
-          <Grid sx={{ m: "32px" }} item>
+          <Grid sx={{ m: "32px" }}>
             <InputFieldUC
               name="title"
               defaultValue={defaultValues.title ?? ""}

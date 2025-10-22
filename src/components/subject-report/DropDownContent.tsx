@@ -83,7 +83,6 @@ const DropdownContent = ({
           value={getSelectedValue()}
           onChange={handleSortChange}
           input={<OutlinedInput label={t("common.orderBy")} />}
-          displayEmpty
           renderValue={(selected) => {
             const selectedOption = sortOptions.find(
               (opt) => opt.value === selected,

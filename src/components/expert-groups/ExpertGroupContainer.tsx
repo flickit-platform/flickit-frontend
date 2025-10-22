@@ -178,7 +178,7 @@ const ExpertGroupContainer = () => {
                 </span>
               </Title>
               <Grid container spacing={3} sx={{ mt: 1 }}>
-                <Grid item xs={12} md={8}>
+                <Grid size={{xs: 12, md: 8}}>
                   {about && (
                     <>
                       <Title size="small">
@@ -241,7 +241,7 @@ const ExpertGroupContainer = () => {
                     />
                   </Box>
                 </Grid>
-                <Grid item xs={12} md={4}>
+                <Grid size={{xs: 12, md: 4}}>
                   <Box
                     p={2}
                     borderRadius={2}
@@ -1332,7 +1332,7 @@ const ExpertGroupMembersDetail = (props: any) => {
                         } = member;
 
                         return (
-                          <Grid item xs={12} sm={6} md={4} key={id}>
+                          <Grid size={{xs: 12, sm: 6, md: 4}} key={id}>
                             <Box
                               sx={{
                                 ...styles.centerV,

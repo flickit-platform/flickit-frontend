@@ -223,7 +223,7 @@ const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
         }}
       >
         <Grid container spacing={2} mt={2}>
-          <Grid item display={"flex"} xs={12}>
+          <Grid size={{xs: 12}} display={"flex"}>
             <Box
               sx={{
                 ...styles.centerVH,
@@ -259,7 +259,7 @@ const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
               bgcolor="inherit"
             />
           </Grid>
-          <Grid item xs={12}>
+          <Grid size={{xs: 12}}>
             <MultiLangTextField
               id="question-hint"
               label={
@@ -280,7 +280,7 @@ const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
             />
           </Grid>
 
-          <Grid item xs={12}>
+          <Grid size={{xs: 12}}>
             <AutocompleteAsyncField
               options={fetchMeasures?.data?.items.map((measure: any) => measure)}
               name="measure"
@@ -296,7 +296,7 @@ const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
             />
           </Grid>
 
-          <Grid item xs={12}>
+          <Grid size={{xs: 12}}>
             <OptionsSection
               question={question}
               kitVersionId={kitVersionId}
@@ -320,7 +320,7 @@ const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
         </Box>
 
         <Grid container spacing={2} alignItems="center" mt={1}>
-          <Grid item xs={6}>
+          <Grid size={{xs: 6}}>
             <Box sx={styles.centerVH}>
               <Text variant="semiBoldMedium">
                 <Trans i18nKey="questions.notApplicable" />
@@ -331,7 +331,7 @@ const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
               />
             </Box>
           </Grid>
-          <Grid item xs={6}>
+          <Grid size={{xs: 6}}>
             <Text variant="semiBoldMedium">
               <Trans i18nKey="questions.notAdvisable" />
             </Text>

@@ -1366,14 +1366,8 @@ const AnswerHistoryItem = (props: any) => {
   return (
     <Grid container spacing={2} px={1}>
       <Grid
-        item
-        xs={12}
-        md={12}
-        lg={4}
-        xl={4}
-        gap={2}
-        width="100%"
-        sx={{ ...styles.centerV }}
+        size={{xs: 12, md: 12, lg: 4, xl: 4}}
+        sx={{ ...styles.centerV, gap: 2, width: "100%" }}
       >
         <Avatar
           src={item?.createdBy?.pictureLink ?? undefined}
@@ -1387,21 +1381,15 @@ const AnswerHistoryItem = (props: any) => {
         </Text>
       </Grid>
       {item.answer.isNotApplicable ? (
-        <Grid item xs={12} md={12} lg={5} xl={5}>
+        <Grid size={{ xs: 12, md: 12, lg: 5, xl: 5 }}>
           <Text variant="titleMedium" color="primary.dark">
             <Trans i18nKey="questions.uestionIsMarkedAsNotApplicable" />:
           </Text>
         </Grid>
       ) : (
         <Grid
-          item
-          xs={12}
-          md={12}
-          lg={5}
-          xl={5}
-          display="flex"
-          flexDirection="column"
-          gap={1.5}
+          size={{ xs: 12, md: 12, lg: 5, xl: 5 }}
+          sx={{display: "flex", flexDirection: "column", gap: 1.5}}
         >
           <Box sx={{ ...styles.centerV }} gap={1.5}>
             <Text variant="titleSmall">
@@ -1447,13 +1435,8 @@ const AnswerHistoryItem = (props: any) => {
         </Grid>
       )}
       <Grid
-        item
-        xs={12}
-        md={12}
-        lg={3}
-        xl={3}
-        display="flex"
-        justifyContent="flex-end"
+        size={{xs: 12, md: 12, lg: 3, xl: 3}}
+        sx={{display: "flex", justifyContent: "flex-end"}}
       >
         <Text variant="bodyMedium">
           {getReadableDate(item.creationTime, "relativeWithDate", true)}
@@ -1760,7 +1743,7 @@ const Evidence = (props: any) => {
                   )}
                 </TabList>
               </TabContext>
-              <Grid item xs={12} position={"relative"}>
+              <Grid size={{xs: 12}} position={"relative"}>
                 <InputFieldUC
                   multiline
                   minRows={3}
@@ -1828,8 +1811,7 @@ const Evidence = (props: any) => {
                   {valueCount.length ?? 0} / {LIMITED}
                 </Text>
                 <Grid
-                  item
-                  xs={12}
+                  size={{ xs: 12 }}
                   sx={
                     is_farsi
                       ? { position: "absolute", top: 15, left: 5 }
@@ -2212,7 +2194,7 @@ const EvidenceDetail = (props: any) => {
                 }}
               >
                 <Grid container display={"flex"} justifyContent={"end"}>
-                  <Grid item xs={12} position={"relative"}>
+                  <Grid size={{xs: 12}} position={"relative"}>
                     <Text
                       color={evidenceBG.borderColor}
                       sx={{
@@ -2260,8 +2242,7 @@ const EvidenceDetail = (props: any) => {
                       {valueCount.length ?? 0} / {LIMITED}
                     </Text>
                     <Grid
-                      item
-                      xs={12}
+                      size={{ xs: 12 }}
                       sx={
                         is_farsi
                           ? { position: "absolute", top: 15, left: 5 }
@@ -2441,7 +2422,6 @@ const EvidenceDetail = (props: any) => {
                         {attachments.length < 5 &&
                           permissions?.addEvidenceAttachment && (
                             <Grid
-                              item
                               onClick={() => {
                                 setExpandedAttachmentsDialogs({
                                   expended: true,

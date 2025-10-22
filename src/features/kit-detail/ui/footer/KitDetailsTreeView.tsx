@@ -1,5 +1,6 @@
 import React, { useMemo, useState, useCallback, useEffect } from "react";
-import { TreeView, TreeItem } from "@mui/lab";
+import { SimpleTreeView } from "@mui/x-tree-view/SimpleTreeView";
+import { TreeItem } from "@mui/x-tree-view/TreeItem";
 import ExpandMoreRounded from "@mui/icons-material/ExpandMoreRounded";
 import ExpandLessRounded from "@mui/icons-material/ExpandLessRounded";
 import i18next from "i18next";
@@ -7,9 +8,6 @@ import { useTranslation } from "react-i18next";
 import { Text } from "@common/Text";
 import { buildTree, treeConfig } from "../../config/config";
 import { KitDetailsType } from "../../model/types";
-
-const INDICATOR_WIDTH = 3;
-const INDICATOR_RADIUS = 2;
 
 const setHash = (nodeId: string, method: "push" | "replace" = "push") => {
   const url = new URL(window.location.href);
@@ -21,9 +19,6 @@ const setHash = (nodeId: string, method: "push" | "replace" = "push") => {
     window.location.hash = nodeId;
   }
 };
-
-const getHashId = () =>
-  decodeURIComponent(window.location.hash.replace(/^#/, ""));
 
 const NodeLabel = ({ children }: { children: React.ReactNode }) => (
   <Text variant="titleSmall">{children}</Text>
@@ -44,33 +39,34 @@ const makeTreeSx = (isRTL: boolean) => ({
   borderColor: "divider",
   backgroundColor: "background.containerLow",
   py: 2,
-  borderStartStartRadius: "12px",
-  borderEndStartRadius: "12px",
+
   "& .MuiTreeItem-content": {
     position: "relative",
     paddingInlineStart: 2,
+    paddingInlineEnd: 0,
     paddingBlock: 1,
     alignItems: "center",
     color: "background.secondaryDark",
     transition: "background-color .2s, color .2s",
-    "&::before": {
-      content: '""',
-      position: "absolute",
-      top: 0,
-      bottom: 0,
-      height: "100%",
-      [isRTL ? "left" : "right"]: 0,
-      width: `${INDICATOR_WIDTH}px`,
-      borderRadius: `${INDICATOR_RADIUS}px`,
-    },
   },
-  "& .MuiTreeItem-content.Mui-selected, & .Mui-selected > .MuiTreeItem-content, & .MuiTreeItem-content:focus":
-    {
-      color: "primary.main",
-      backgroundColor: "primary.states.selected",
-      "&::before": { backgroundColor: "primary.main" },
-    },
-  "& .MuiTreeItem-group": {
+
+  "& .MuiTreeItem-content.Mui-selected::after, \
+       & .MuiTreeItem-content.Mui-focusVisible::after": {
+    content: '""',
+    position: "absolute",
+    top: 0,
+    bottom: 0,
+    [isRTL ? "left" : "right"]: 0,
+    width: "3px",
+    backgroundColor: "primary.main",
+    borderRadius: 0,
+    pointerEvents: "none",
+    zIndex: 1,
+  },
+
+  "& .MuiTreeItem-content::before": { display: "none" },
+
+  "& .MuiTreeItem-groupTransition": {
     marginLeft: 0,
     paddingInlineStart: 1,
   },
@@ -78,9 +74,7 @@ const makeTreeSx = (isRTL: boolean) => ({
     mr: isRTL ? 0 : 0.75,
     ml: isRTL ? 0.75 : 0,
   },
-  "& .MuiTreeItem-content:hover": {
-    backgroundColor: "primary.states.hover",
-  },
+
   "& .MuiTreeItem-label": { paddingInline: 0 },
 });
 
@@ -100,7 +94,7 @@ function renderNodes(
   return nodes.map((n) => (
     <TreeItem
       key={n.nodeId}
-      nodeId={n.nodeId}
+      itemId={n.nodeId}
       label={<NodeLabel>{n.title}</NodeLabel>}
       sx={{
         ...sectionActiveSx(n.nodeId === activeRoot),
@@ -127,7 +121,9 @@ const buildParentMap = (nodes: FlatNode[]) => {
   dfs(nodes, null);
   return m;
 };
-
+const banTreeView = treeConfig.filter((t) => t.component === undefined);
+const getHashId = () =>
+  decodeURIComponent(window.location.hash.replace(/^#/, ""));
 export default function KitDetailsTreeView({
   details,
   onSelect,
@@ -137,13 +133,12 @@ export default function KitDetailsTreeView({
   onSelect?: (nodeId: string) => void;
   selectedId: string;
 }) {
-  const banTreeView = treeConfig.filter((t) => t.component === undefined);
   const isRTL = i18next.language === "fa";
   const { t } = useTranslation();
   const [highlightId, setHighlightId] = useState<string | null>(
     selectedId ?? null,
   );
-  const [expanded, setExpanded] = useState<string[]>([]);
+  const [expandedItems, setExpandedItems] = useState<string[]>([]);
 
   const nodes = useMemo(() => buildTree(details, t as any), [details, t]);
   const activeRoot = useMemo(() => getActiveRoot(selectedId), [selectedId]);
@@ -153,26 +148,32 @@ export default function KitDetailsTreeView({
     [nodes],
   );
 
-  const handleSelect = (_e: React.SyntheticEvent, nodeId: string) => {
-    setHighlightId(nodeId);
-    if (!banTreeView.some((t) => t.rootNodeId === nodeId)) {
-      onSelect?.(nodeId);
-      setHash(nodeId, "push");
-    }
-  };
+  const handleItemSelectionToggle = useCallback(
+    (_e: React.SyntheticEvent, itemId: string, isSelected: boolean) => {
+      if (!isSelected) return;
+      setHighlightId(itemId);
+      if (!banTreeView.some((t) => t.rootNodeId === itemId)) {
+        onSelect?.(itemId);
+        setHash(itemId, "push");
+      }
+    },
+    [banTreeView, onSelect],
+  );
 
-  const handleToggle = useCallback(
+  const handleExpandedItemsChange = useCallback(
     (_e: React.SyntheticEvent, nextIds: string[]) => {
-      const prev = new Set(expanded);
+      const prev = new Set(expandedItems);
       const added = nextIds.find((id) => !prev.has(id));
       if (!added) {
-        setExpanded(nextIds);
+        setExpandedItems(nextIds);
         return;
       }
       const p = parentById[added] ?? null;
-      setExpanded(nextIds.filter((id) => id === added || parentById[id] !== p));
+      setExpandedItems(
+        nextIds.filter((id) => id === added || parentById[id] !== p),
+      );
     },
-    [expanded, parentById],
+    [expandedItems, parentById],
   );
 
   useEffect(() => {
@@ -187,26 +188,24 @@ export default function KitDetailsTreeView({
       path.unshift(p);
       cur = p;
     }
-    setExpanded((prev) => Array.from(new Set([...prev, ...path])));
+    setExpandedItems((prev) => Array.from(new Set([...prev, ...path])));
 
     if (!banTreeView.some((t) => t.rootNodeId === initial)) {
       onSelect?.(initial);
     }
     if (initial !== selectedId) setHash(initial, "replace");
   }, [parentById, selectedId]);
-
   return (
-    <TreeView
+    <SimpleTreeView
       aria-label="navigator"
-      defaultCollapseIcon={<ExpandLessRounded fontSize="small" />}
-      defaultExpandIcon={<ExpandMoreRounded fontSize="small" />}
-      selected={highlightId ?? undefined}
-      onNodeSelect={handleSelect}
-      expanded={expanded}
-      onNodeToggle={handleToggle}
+      slots={{ collapseIcon: ExpandLessRounded, expandIcon: ExpandMoreRounded }}
+      selectedItems={highlightId ?? null}
+      onItemSelectionToggle={handleItemSelectionToggle}
+      expandedItems={expandedItems}
+      onExpandedItemsChange={handleExpandedItemsChange}
       sx={makeTreeSx(isRTL)}
     >
       {renderNodes(nodes, activeRoot)}
-    </TreeView>
+    </SimpleTreeView>
   );
 }

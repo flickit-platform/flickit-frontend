@@ -196,12 +196,12 @@ const QuestionnairePanel = ({
                             <Grid container>
                               {getTranslation(ques?.translations, "title") && (
                                 <>
-                                  <Grid item md={12}>
+                                  <Grid size={{md: 12}}>
                                     <Text variant="titleSmall" mb={0.5}>
                                       {t("kitDetail.questionTranslation")}
                                     </Text>
                                   </Grid>
-                                  <Grid item md={12}>
+                                  <Grid size={{md:12}}>
                                     <Text variant="bodyMedium" mb={1}>
                                       {getTranslation(
                                         ques?.translations,
@@ -213,7 +213,7 @@ const QuestionnairePanel = ({
                               )}
 
                               {ques?.hint && (
-                                <Grid item md={12} mb={2}>
+                                <Grid size={{md: 12}} mb={2}>
                                   <Text variant="titleSmall" mb={0.5}>
                                     {t("common.hint")}
                                   </Text>
@@ -233,13 +233,13 @@ const QuestionnairePanel = ({
                                 </Grid>
                               )}
 
-                              <Grid item xs={12} md={6}>
+                              <Grid size={{xs: 12, md: 6}}>
                                 <InfoField
                                   label={t("common.measure")}
                                   value={ques.measure?.title}
                                 />
                               </Grid>
-                              <Grid item xs={12} md={6}>
+                              <Grid size={{xs: 12, md: 6}}>
                                 <InfoField
                                   label={t("common.answerRange")}
                                   value={ques.answerRange?.title}

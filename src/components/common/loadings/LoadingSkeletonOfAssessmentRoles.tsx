@@ -11,14 +11,14 @@ const LoadingSkeletonOfAssessmentRoles = () => {
         sx={{ width: { xs: "90%", sm: "80%", md: "60%" } }}
       />
       <Grid container columns={14} mt={1}>
-        <Grid item xs={14}>
+        <Grid size={{xs: 14}}>
           <Skeleton
             variant="rectangular"
             sx={{ borderRadius: 2, height: "270px" }}
           />
         </Grid>
 
-        <Grid item sm={14} xs={14} id="subjects">
+        <Grid size={{sm: 14, xs: 14}} id="subjects">
           <Box mt={4}>
             <Skeleton
               height="60px"
@@ -26,7 +26,7 @@ const LoadingSkeletonOfAssessmentRoles = () => {
             />
             <Box mt={3}>
               <Grid container sx={{ px: { lg: 2, md: 4, sm: 9, xs: 0 } }}>
-                <Grid item xs={12}>
+                <Grid size={{xs: 12}}>
                   <LoadingSkeleton height="700px" />
                 </Grid>
               </Grid>

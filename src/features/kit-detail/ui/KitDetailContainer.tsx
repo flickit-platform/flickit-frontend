@@ -42,13 +42,13 @@ const KitDetailContainer = () => {
               expertGroupTitle={_stats.expertGroup.title}
             />
             <Grid container spacing={4}>
-              <Grid item xs={12} md={8}>
+              <Grid size={{xs: 12, md: 8}}>
                 <EditableKitDetail
                   fetchAssessmentKitInfoQuery={fetchKitInfoQuery}
                   info={_info}
                 />
               </Grid>
-              <Grid item xs={12} md={4}>
+              <Grid size={{xs: 12, md: 4}}>
                 <KitDetailsAside
                   stats={_stats}
                   languages={languages}
@@ -56,7 +56,7 @@ const KitDetailContainer = () => {
                   draftVersionId={_info.draftVersionId}
                 />
               </Grid>
-              <Grid item sm={12} xs={12}>
+              <Grid size={{sm: 12, xs: 12}}>
                 {_info.hasActiveVersion && (
                   <QueryData
                     {...fetchKitDetailQuery}

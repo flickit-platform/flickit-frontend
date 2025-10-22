@@ -235,8 +235,8 @@ const AssessmentKitCEFromDialog = (props: IAssessmentKitCEFromDialogProps) => {
   const formContent = (
     <FormProviderWithForm formMethods={formMethods}>
       <Grid container spacing={type != "convert" ? 2 : 0} sx={styles.formGrid}>
-        <Grid item xs={12} md={12} display={activeStep === 0 ? "" : "none"}>
-          {type === "convert" && buttonStep == 0  && (
+        <Grid size={{xs: 12, md: 12}} display={activeStep === 0 ? "" : "none"}>
+          {type === "convert" && buttonStep == 0 && (
             <Box pb="10px">
               <Box
                 bgcolor="background.containerHighest"
@@ -324,10 +324,7 @@ const AssessmentKitCEFromDialog = (props: IAssessmentKitCEFromDialogProps) => {
           )}
         </Grid>
         <Grid
-          item
-          xs={12}
-          sm={8}
-          md={8}
+          size={{xs: 12, sm: 8, md: 8}}
           display={activeStep === 0 ? "none" : ""}
         >
           <InputFieldUC
@@ -339,19 +336,13 @@ const AssessmentKitCEFromDialog = (props: IAssessmentKitCEFromDialogProps) => {
           />
         </Grid>
         <Grid
-          item
-          xs={12}
-          sm={4}
-          md={4}
+          size={{xs: 12, sm: 4, md: 4}}
           display={activeStep === 0 ? "none" : ""}
         >
           <IsPrivateSwitch setIsPrivate={setIsPrivate} isPrivate={isPrivate} />
         </Grid>
         <Grid
-          item
-          xs={12}
-          sm={8}
-          md={8}
+          size={{xs: 12, sm: 8, md: 8}}
           display={activeStep === 0 ? "none" : ""}
         >
           <AutocompleteAsyncField
@@ -367,10 +358,7 @@ const AssessmentKitCEFromDialog = (props: IAssessmentKitCEFromDialogProps) => {
           />
         </Grid>
         <Grid
-          item
-          xs={12}
-          sm={4}
-          md={4}
+          size={{xs: 12, sm: 4, md: 4}}
           display={activeStep === 0 ? "none" : ""}
         >
           <SelectLanguage
@@ -379,7 +367,7 @@ const AssessmentKitCEFromDialog = (props: IAssessmentKitCEFromDialogProps) => {
             languages={languages}
           />
         </Grid>
-        <Grid item xs={12} md={12} display={activeStep === 0 ? "none" : ""}>
+        <Grid size={{xs: 12, md: 12}} display={activeStep === 0 ? "none" : ""}>
           <InputFieldUC
             name="summary"
             label={<Trans i18nKey="common.summary" />}
@@ -387,7 +375,7 @@ const AssessmentKitCEFromDialog = (props: IAssessmentKitCEFromDialogProps) => {
             defaultValue={defaultValues.summary ?? ""}
           />
         </Grid>
-        <Grid item xs={12} md={12} display={activeStep === 0 ? "none" : ""}>
+        <Grid size={{xs: 12, md: 12}} display={activeStep === 0 ? "none" : ""}>
           <RichEditorField
             bgcolor={v3Tokens.primary.bg}
             name="about"
@@ -489,12 +477,12 @@ const AssessmentKitCEFromDialog = (props: IAssessmentKitCEFromDialogProps) => {
         })}
       </Box>
       <Grid mt={4} container spacing={2} justifyContent="flex-end">
-        <Grid item>
+        <Grid>
           <Button onClick={close} data-cy="cancel">
             <Trans i18nKey="common.cancel" />
           </Button>
         </Grid>
-        <Grid item>
+        <Grid>
           <Button variant="contained" onClick={() => setShowErrorLog(false)}>
             <Trans i18nKey="common.back" />
           </Button>

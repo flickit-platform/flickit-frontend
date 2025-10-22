@@ -105,7 +105,10 @@ const MaturityLevelsPanel = ({
                 )}
               </Box>
               {Boolean(level.competences.length) && (
-                <Box display="flex" gap={2} flex={1}>
+                <Box display="flex" gap={1} flex={1}>
+                  <Text variant="semiBoldMedium">
+                    {t("common.competences")}
+                  </Text>
                   <Stack
                     direction="row"
                     alignItems="center"
@@ -125,9 +128,6 @@ const MaturityLevelsPanel = ({
                       />
                     }
                   >
-                    <Text variant="semiBoldMedium">
-                      {t("common.competences")}
-                    </Text>
                     {level.competences.map((competence) => (
                       <Box key={competence.title} sx={{ ...styles.centerV }}>
                         <Text variant="bodyMedium" lines={1}>

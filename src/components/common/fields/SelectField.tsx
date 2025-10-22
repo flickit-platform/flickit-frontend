@@ -2,7 +2,7 @@ import FormControl from "@mui/material/FormControl";
 import FormHelperText from "@mui/material/FormHelperText";
 import InputLabel, { InputLabelProps } from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
-import Select, { SelectProps } from "@mui/material/Select";
+import Select from "@mui/material/Select";
 
 import { useFormContext, UseFormRegister } from "react-hook-form";
 import getFieldError from "@/utils/get-field-error";
@@ -39,7 +39,7 @@ const SelectFieldUC = (props: ISelectFieldUC) => {
   );
 };
 
-interface ISelectField extends SelectProps {
+interface ISelectField {
   renderOption?: (option: any) => JSX.Element;
   InputLabelProps?: InputLabelProps;
   helperText?: string | JSX.Element | Element;
@@ -63,6 +63,9 @@ interface ISelectField extends SelectProps {
   value?: string;
   IconComponent?: any;
   onChange?: (e: any) => void;
+  required?: boolean;
+  defaultValue?: any;
+  label?: any;
 }
 
 export const SelectField = (props: ISelectField) => {

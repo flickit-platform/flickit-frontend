@@ -195,7 +195,7 @@ const MainTabs = (props: any) => {
                     value={selectedTab}
                     onChange={(event, newValue) => onTabChange(event, newValue)}
                     variant="scrollable"
-                    scrollButtons="auto"
+                    scrollButtons={false}
                     aria-label="scrollable auto tabs example"
                     sx={{
                       border: "none",

@@ -63,7 +63,7 @@ const KitInfo = ({ fetchAssessmentKitInfoQuery, info }: Props) => {
 
           return (
             <Fragment key={name}>
-              <Grid item xs={12} md={md}>
+              <Grid size={{xs: 12, md}}>
                 <Box
                   display="flex"
                   justifyContent="space-between"
@@ -116,9 +116,7 @@ const KitInfo = ({ fetchAssessmentKitInfoQuery, info }: Props) => {
 
               {name === "summary" && (
                 <Grid
-                  item
-                  xs={12}
-                  md={6}
+                  size={{xs: 12, md: 6}}
                   display="flex"
                   alignItems="center"
                   gap={2}
@@ -129,7 +127,7 @@ const KitInfo = ({ fetchAssessmentKitInfoQuery, info }: Props) => {
                     </Text>
                   </Box>
                   <Box
-                    sx={{ display: "flex", width: "50%" }}
+                    sx={{ display: "flex", alignItems: "center", width: "50%" }}
                     color="outline.variant"
                   >
                     <LanguagePicker

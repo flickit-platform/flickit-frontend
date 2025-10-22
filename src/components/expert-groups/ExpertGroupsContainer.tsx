@@ -80,7 +80,7 @@ const ExpertGroupsContainer = () => {
             <Grid container spacing={3} mt={1}>
               {forLoopComponent(4, () => {
                 return (
-                  <Grid item key={uniqueId()} xs={12} sm={6} lg={4}>
+                  <Grid size={{xs: 12, sm: 6, lg: 4}} key={uniqueId()}>
                     <LoadingSkeleton height="174px" />
                   </Grid>
                 );

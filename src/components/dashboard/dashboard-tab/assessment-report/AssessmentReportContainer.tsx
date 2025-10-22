@@ -113,9 +113,7 @@ const AssessmentReportContainer = (props: any) => {
                   return (
                     <Grid
                       key={uniqueId()}
-                      item
-                      xs={12}
-                      md={6}
+                      size={{xs: 12, md: 6}}
                       display={value !== 0 ? "block" : "none"}
                     >
                       <IssuesItem

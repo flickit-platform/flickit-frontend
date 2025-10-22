@@ -4,8 +4,8 @@ import { Box, Grid, Skeleton } from "@mui/material";
 const LoadingAssessmentCards = () => {
   return (
     <Grid container spacing={3}>
-      {[...Array(8)].map((_, i) => (
-        <Grid item xs={12} sm={6} md={4} lg={3} key={uniqueId()}>
+      {[...Array(8)].map(() => (
+        <Grid size={{ xs: 12, sm: 6, md: 4, lg: 3 }} key={uniqueId()}>
           <Box
             sx={{
               borderRadius: 2,

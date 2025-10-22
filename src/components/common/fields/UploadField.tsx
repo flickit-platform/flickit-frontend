@@ -288,6 +288,7 @@ const Uploader = (props: IUploadProps) => {
               }}
             >
               <ListItem
+                component={"li"}
                 disabled={loading}
                 secondaryAction={
                   <Box
@@ -317,6 +318,7 @@ const Uploader = (props: IUploadProps) => {
                     )}
                   </Box>
                 }
+                {...({} as any)}
               >
                 <ListItemIcon
                   sx={{

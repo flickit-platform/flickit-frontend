@@ -167,22 +167,16 @@ const NewAssessmentDialog = (props: IAssessmentCEFromDialogProps) => {
       <FormProviderWithForm formMethods={formMethods}>
         {type === "create" ? (
           <>
-            <Text variant="semiBoldLarge" color="text.primary" pb={4}>
+            <Text variant="semiBoldLarge" color="text.primary" sx={{pb:4}}>
               <Trans i18nKey="assessment.createAssessmentConfirmSettings" />
             </Text>
             <Grid container display="flex" alignItems="start">
               <Grid
-                xs={12}
-                sm={langSec ? 5.5 : 12}
-                item
-                py="18px"
-                display={spaceSec ? "relative" : "none"}
+                size={{xs:12, sm: langSec ? 5.5 : 12}}
+                sx={{py: "18px", display: spaceSec ? "relative" : "none"}}
               >
                 <Box
-                  justifyContent="flex-start"
-                  gap="8px"
-                  mb="8px"
-                  sx={{ ...styles.centerV }}
+                  sx={{ ...styles.centerV, justifyContent: "flex-start", gap: "8px", mb: "8px" }}
                 >
                   <FolderOutlinedIcon
                     sx={{
@@ -210,17 +204,11 @@ const NewAssessmentDialog = (props: IAssessmentCEFromDialogProps) => {
                 sx={{ mx: 4, display: spaceSec ? "relative" : "none" }}
               />
               <Grid
-                item
-                xs={12}
-                sm={spaceSec ? 5.5 : 12}
-                py="18px"
-                display={langSec ? "relative" : "none"}
+                size={{xs: 12, sm: spaceSec ? 5.5 : 12}}
+                sx={{py: "18px", display: langSec ? "relative" : "none"}}
               >
                 <Box
-                  justifyContent="flex-start"
-                  gap="8px"
-                  mb="8px"
-                  sx={{ ...styles.centerV }}
+                  sx={{ ...styles.centerV, justifyContent: "flex-start", gap: "8px", mb: "8px" }}
                 >
                   <LanguageIcon
                     sx={{

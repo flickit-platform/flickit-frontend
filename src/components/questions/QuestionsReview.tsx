@@ -4,7 +4,6 @@ import { Trans } from "react-i18next";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Paper from "@mui/material/Paper";
-import Hidden from "@mui/material/Hidden";
 import Rating from "@mui/material/Rating";
 import RadioButtonCheckedRounded from "@mui/icons-material/RadioButtonCheckedRounded";
 import RadioButtonUncheckedRounded from "@mui/icons-material/RadioButtonUncheckedRounded";
@@ -47,7 +46,7 @@ const AnswerStatusImage = ({ status }: { status: string }) => {
     altText = "questionnaire some answered";
   }
 
-  return <img style={{ width: "100%" }} src={imageSrc} alt={altText} />;
+  return <img style={{ width: "300px" }} src={imageSrc} alt={altText} />;
 };
 
 export const Review = () => {
@@ -137,7 +136,7 @@ export const Review = () => {
     switch (status) {
       case "complete":
         return (
-          <>
+          <Box>
             <Text
               component="div"
               variant="headlineMedium"
@@ -182,11 +181,11 @@ export const Review = () => {
                 }
               />
             </Text>
-          </>
+          </Box>
         );
       case "empty":
         return (
-          <>
+          <Box>
             <Text
               variant="h4"
               color="#D81E5B"
@@ -219,12 +218,13 @@ export const Review = () => {
             >
               <Trans i18nKey="questions.weHighlyRecommendAnsweringMoreQuestions" />
             </Text>
-          </>
+          </Box>
         );
       default:
         return (
-          <>
+          <Box>
             <Text
+              component="div"
               variant="h4"
               color="#F9A03F"
               sx={{
@@ -236,6 +236,7 @@ export const Review = () => {
               <Trans i18nKey="questions.nice" />
             </Text>
             <Text
+              component="div"
               variant="h4"
               color="#F9A03F"
               sx={{
@@ -281,7 +282,7 @@ export const Review = () => {
             >
               <Trans i18nKey="questions.someQuestionsHaveNotBeenAnswered" />
             </Text>
-          </>
+          </Box>
         );
     }
   };
@@ -299,11 +300,14 @@ export const Review = () => {
           ...styles.shadowStyle,
         }}
       >
-        <Hidden smDown>
-          <Box mt="-28px" sx={{ ...styles.centerV }}>
-            <AnswerStatusImage status={status} />
-          </Box>
-        </Hidden>
+        <Box
+          sx={{
+            ...styles.centerV,
+            display: { xs: "none", sm: "none", md: "block" },
+          }}
+        >
+          <AnswerStatusImage status={status} />
+        </Box>
         <Box sx={{ ml: { xs: 0, sm: 2, md: 6, lg: 8 } }}>
           {renderStatusText()}
           <Box gap={{ xs: 1, sm: 2 }} sx={{ ...styles.centerV }}>

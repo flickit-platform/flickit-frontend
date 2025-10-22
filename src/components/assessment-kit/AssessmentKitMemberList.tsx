@@ -343,7 +343,7 @@ const AddMemberModal = (props: any) => {
     >
       <FormProviderWithForm formMethods={formMethods}>
         <Grid container spacing={2} sx={styles.formGrid}>
-          <Grid item xs={12}>
+          <Grid size={{xs: 12}}>
             <AddMember inputRef={inputRef} queryData={query} />
           </Grid>
         </Grid>

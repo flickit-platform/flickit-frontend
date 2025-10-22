@@ -9,11 +9,9 @@ function FooterContainer({ details }: { details: KitDetailsType }) {
     useFooterController(details);
 
   return (
-    <Grid container sm={12} xs={12} height="100%" mt={2}>
+    <Grid container width="100%" height="100%" mt={2}>
       <Grid
-        item
-        sm={2.3}
-        xs={12}
+        size={{xs: 12, sm: 2.3}}
         sx={{ display: "flex", flexDirection: "column" }}
       >
         <KitDetailsTreeView
@@ -24,9 +22,7 @@ function FooterContainer({ details }: { details: KitDetailsType }) {
       </Grid>
 
       <Grid
-        item
-        sm={9.7}
-        xs={12}
+        size={{xs: 12, sm: 9.7}}
         sx={{
           height: "100%",
           padding: "16px 32px",

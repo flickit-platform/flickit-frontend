@@ -51,7 +51,7 @@ const InviteMemberDialog = (props: PropsWithChildren<ICEDialogProps>) => {
         }}
       >
         <Grid container spacing={2} justifyContent="flex-end">
-          <Grid item>
+          <Grid>
             <LoadingButton
               type="submit"
               variant="contained"
@@ -64,7 +64,7 @@ const InviteMemberDialog = (props: PropsWithChildren<ICEDialogProps>) => {
               <Trans i18nKey={inviteButtonLabel as string} />
             </LoadingButton>
           </Grid>
-          <Grid item>
+          <Grid>
             <Button onClick={closeDialog as any}>
               <Trans i18nKey="common.cancel" />
             </Button>

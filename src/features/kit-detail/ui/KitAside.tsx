@@ -65,7 +65,10 @@ const StatsGrid = ({
         const showDivider = !isLastInRow && !isLastItem;
         return (
           <React.Fragment key={it.title}>
-            <Grid item xs={12 / columns - 0.05} sx={{ position: "relative" }}>
+            <Grid
+              size={{ xs: 12 / columns - 0.05 }}
+              sx={{ position: "relative" }}
+            >
               <Box
                 sx={{
                   display: "flex",
@@ -106,11 +109,11 @@ const TwoColRow = ({
       flex: 1,
     }}
   >
-    <Grid container>
-      <Grid item xs={7}>
+    <Grid container sx={{width: "100%"}}>
+      <Grid size={{xs: 7}}>
         <StatCard {...left} />
       </Grid>
-      <Grid item xs={5}>
+      <Grid size={{xs: 5}}>
         <StatCard {...right} />
       </Grid>
     </Grid>
@@ -153,7 +156,7 @@ const KitAside = ({
   return (
     <Grid container rowSpacing={2} columnSpacing={3} position="sticky" top={60}>
       {/* Dates */}
-      <Grid item xs={12} md={6}>
+      <Grid size={{ xs: 12, md: 6 }}>
         <Box
           sx={{
             ...styles.centerCH,
@@ -171,7 +174,7 @@ const KitAside = ({
           </Text>
         </Box>
       </Grid>
-      <Grid item xs={12} md={6}>
+      <Grid size={{xs: 12, md: 6}}>
         <Box
           sx={{
             ...styles.centerCH,
@@ -191,23 +194,23 @@ const KitAside = ({
       </Grid>
 
       {/* Grid stats */}
-      <Grid item xs={12}>
+      <Grid size={{xs: 12}}>
         <StatsGrid items={gridItems} columns={3} />
       </Grid>
 
       {/* Rows */}
-      <Grid item xs={12}>
+      <Grid size={{xs: 12}}>
         <TwoColRow
           left={languagePriceRow.left}
           right={languagePriceRow.right}
         />
       </Grid>
-      <Grid item xs={12}>
+      <Grid size={{xs: 12}}>
         <TwoColRow left={row2.left} right={row2.right} />
       </Grid>
 
       {/* Actions */}
-      <Grid item xs={12} md={6}>
+      <Grid size={{xs: 12, md: 6}}>
         <Button
           onClick={handleDownloadDSL}
           variant="outlined"
@@ -220,7 +223,7 @@ const KitAside = ({
       </Grid>
 
       {/* Edit menu */}
-      <Grid item xs={12} md={6}>
+      <Grid size={{xs: 12, md: 6}}>
         <EditMenu
           menu={menu}
           onOpenDsl={() => dslDialog.openDialog({})}

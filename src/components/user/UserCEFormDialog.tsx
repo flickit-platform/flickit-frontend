@@ -89,7 +89,7 @@ const UserCEFormDialog = (props: IUserCEFormDialogProps) => {
     >
       <FormProviderWithForm formMethods={formMethods}>
         <Grid container spacing={2} sx={styles.formGrid}>
-          <Grid item xs={12} sm={12}>
+          <Grid size={{xs: 12, sm: 12}}>
             <InputFieldUC
               autoFocus={true}
               defaultValue={defaultValues.displayName ?? ""}
@@ -99,7 +99,7 @@ const UserCEFormDialog = (props: IUserCEFormDialogProps) => {
               isFarsi={languageDetector(defaultValues?.displayName)}
             />
           </Grid>
-          <Grid item xs={12} sm={8}>
+          <Grid size={{xs: 12, sm: 8}}>
             <InputFieldUC
               multiline
               defaultValue={defaultValues.bio ?? ""}
@@ -108,7 +108,7 @@ const UserCEFormDialog = (props: IUserCEFormDialogProps) => {
               isFarsi={languageDetector(defaultValues?.bio)}
             />
           </Grid>
-          <Grid item xs={12} sm={4}>
+          <Grid size={{xs: 12, sm: 4}}>
             <InputFieldUC
               defaultValue={defaultValues.linkedin ?? ""}
               name="linkedin"

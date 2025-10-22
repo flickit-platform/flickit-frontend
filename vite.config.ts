@@ -70,7 +70,7 @@ export default defineConfig({
       },
       {
         find: /^@mui\/icons-material\/(.*)/,
-        replacement: "@mui/icons-material/esm/$1",
+        replacement: "@mui/icons-material/$1",
       },
     ],
   },

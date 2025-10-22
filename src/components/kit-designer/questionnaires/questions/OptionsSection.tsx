@@ -150,7 +150,7 @@ const OptionsSection = ({
   };
 
   return (
-    <Grid item xs={12}>
+    <Grid size={{xs: 12}}>
       <Box
         mt={1.5}
         p={1.5}
