@@ -530,6 +530,7 @@ export const getTheme = (lang: any) => {
           display: none;
         }
         .nc-layout-wrapper {
+          direction:${is_farsi ? "rtl" : "ltr"};
           background: ${v3Tokens.surface.surface};
           padding: 0;
         }
