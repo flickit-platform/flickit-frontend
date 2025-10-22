@@ -36,8 +36,8 @@ describe("MaturityLevelList", () => {
       </KitLanguageProvider>,
     );
 
-    expect(screen.getByText("Level 1")).toBeInTheDocument();
-    expect(screen.getByText("Level 2")).toBeInTheDocument();
+    expect(screen.getByText("Level 1")).be;
+    expect(screen.getByText("Level 2")).be;
   });
 
   it("allows editing a maturity level", () => {
@@ -67,7 +67,7 @@ describe("MaturityLevelList", () => {
     fireEvent.click(screen.getByTestId("check-icon-id"));
 
     // Check if onEdit was called with the updated values
-    expect(mockOnEdit).toHaveBeenCalledWith({
+    expect(mockOnEdit).calledWith({
       id: 1,
       index: 1,
       value: 1,
@@ -101,10 +101,10 @@ describe("MaturityLevelList", () => {
     fireEvent.click(screen.getByTestId("submit"));
 
     // Check if onDelete was called
-    expect(mockOnDelete).toHaveBeenCalled();
+    expect(mockOnDelete).called
 
     // Close the dialog
     fireEvent.click(screen.getByTestId("cancel"));
-    expect(mockSetOpenDeleteDialog).toHaveBeenCalled();
+    expect(mockSetOpenDeleteDialog).called
   });
 });

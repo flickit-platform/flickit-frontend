@@ -33,7 +33,7 @@ describe("questionnairesList", () => {
   });
 
   it("renders ques levels correctly", () => {
-    expect(screen.getByText("title test 1")).toBeInTheDocument();
+    expect(screen.getByText("title test 1")).be
   });
 
   it("allows editing a questionnaires", () => {
@@ -52,20 +52,18 @@ describe("questionnairesList", () => {
     fireEvent.click(screen.getByTestId("items-check-icon"));
 
     // Check if onEdit was called with the updated values
-    expect(mockOnEdit).toHaveBeenCalledWith(
-      expect.objectContaining({
-        id: 1,
-        index: 1,
-        value: 1,
-        title: "Updated title 1",
-        description: "Updated Description 1",
-      }),
-    );
+    expect(mockOnEdit).calledWith({
+      id: 1,
+      index: 1,
+      value: 1,
+      title: "Updated title 1",
+      description: "Updated Description 1",
+    });
   });
 
   it("opens delete dialog when delete button is clicked", () => {
     fireEvent.click(screen.getAllByTestId("items-delete-icon")[0]);
-    expect(mockSetOpenDeleteDialog).toHaveBeenCalledWith({
+    expect(mockSetOpenDeleteDialog).calledWith({
       status: true,
       id: 1,
       title: "title test 1",

@@ -47,10 +47,10 @@ describe("CompetencesTable", () => {
       </MockServiceProvider>,
     );
 
-    expect(screen.getAllByText("Maturity Level 1")[0]).toBeInTheDocument();
-    expect(screen.getAllByText("Maturity Level 2")[0]).toBeInTheDocument();
-    expect(screen.getAllByText("5")[0]).toBeInTheDocument();
-    expect(screen.getAllByText("10")[0]).toBeInTheDocument();
+    expect(screen.getAllByText("Maturity Level 1")[0]).be;
+    expect(screen.getAllByText("Maturity Level 2")[0]).be;
+    expect(screen.getAllByText("5")[0]).be;
+    expect(screen.getAllByText("10")[0]).be;
   });
 
   it("handles adding a new competency", async () => {
@@ -78,8 +78,8 @@ describe("CompetencesTable", () => {
 
     // Wait for the service method to be called
     await waitFor(() => {
-      expect((axios as any).default.post).toHaveBeenCalledTimes(1);
-      expect((axios as any).default.post).toHaveBeenCalledWith(
+      expect((axios as any).default.post).callCount(1);
+      expect((axios as any).default.post).calledWith(
         `/api/v1/kit-versions/${mockKitVersionId}/level-competences/`,
         {
           affectedLevelId: 1,

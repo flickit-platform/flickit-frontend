@@ -14,7 +14,7 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "types":["cypress","node"],
+    "types":["@testing-library/jest-dom","cypress","node"],
     "jsx": "react-jsx",
     "baseUrl": ".",
     "paths": {

@@ -1,15 +1,15 @@
 import { useTranslation } from "react-i18next";
 import { CEDialog, CEDialogActions } from "./CEDialog";
 import { Text } from "../Text";
-import i18next, { DefaultTFuncReturn } from "i18next";
+import i18next from "i18next";
 
 interface IDeleteConfirmationDialogProps {
   open: boolean;
   onClose: () => void;
   onConfirm: () => void;
   content?: {
-    category?: DefaultTFuncReturn;
-    title?: DefaultTFuncReturn;
+    category?: string;
+    title?: string;
     hideCategory?: boolean;
   };
   confirmButtonText?: string | null;

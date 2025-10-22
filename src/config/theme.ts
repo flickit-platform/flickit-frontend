@@ -109,7 +109,7 @@ declare module "@mui/material/styles" {
     semantics?: Record<string, any>;
     ml: { primary: React.CSSProperties["color"] };
     cl: { primary: React.CSSProperties["color"] };
-    tertiary: PaletteColorOptions;
+    tertiary: SimplePaletteColorOptions;
   }
 
   interface PaletteColor {
@@ -124,11 +124,7 @@ declare module "@mui/material/styles" {
     bgVariant: string;
     bg: string;
   }
-  interface PaletteColorOptions {
-    main: string;
-    dark?: string;
-    light: string;
-    contrastText: string;
+  interface SimplePaletteColorOptions {
     bgVariant?: string;
     bg?: string;
     states?: {

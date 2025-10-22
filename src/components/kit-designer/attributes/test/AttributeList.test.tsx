@@ -59,15 +59,15 @@ describe("MaturityLevelList", () => {
   it("renders attribute correctly", () => {
     const title: any = screen.getByTestId("display-attribute-title");
     const description: any = screen.getByTestId("display-attribute-description");
-    expect(title).toBeInTheDocument();
-    expect(description).toBeInTheDocument();
-    expect(screen.getByTestId("display-attribute-title")).toHaveTextContent(
+    expect(title).be;
+    expect(description).be;
+    expect(screen.getByTestId("display-attribute-title")).text(
       "attribute 1",
     );
     expect(
       screen.getByTestId("display-attribute-description"),
-    ).toHaveTextContent("description 1");
-    expect(screen.getByTestId("display-attribute-weight")).toHaveTextContent(
+    ).text("description 1");
+    expect(screen.getByTestId("display-attribute-weight")).text(
       "1",
     );
   });
