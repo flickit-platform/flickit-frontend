@@ -35,7 +35,7 @@ import showToast from "@/utils/toast-error";
 interface ListOfItemsProps {
   items: any;
   onEdit: (id: any) => void;
-  onDelete?: (id: any) => void;
+  setOpenDeleteDialog?: any;
   onReorder: any;
   fetchQuery?: any;
   setChangeData: any;
@@ -57,7 +57,7 @@ const ListOfItems = ({
   items,
   fetchQuery,
   onEdit,
-  onDelete,
+  setOpenDeleteDialog,
   setChangeData,
 }: ListOfItemsProps) => {
   const { kitState } = useKitDesignerContext();
@@ -220,33 +220,33 @@ const ListOfItems = ({
 
   const theme = useTheme();
 
-  const multiStyles : Record<string, any> = {
-    summaryBg: (isEditing: boolean, hasNoQuestions: boolean)=>{
+  const multiStyles: Record<string, any> = {
+    summaryBg: (isEditing: boolean, hasNoQuestions: boolean) => {
       if (isEditing) return "#F3F5F6";
       if (hasNoQuestions) return alpha(theme.palette.error.main, 0.04);
       return "#fff";
     },
-    expandedBg: (hasNoQuestions: boolean)=>{
+    expandedBg: (hasNoQuestions: boolean) => {
       if (hasNoQuestions) return alpha(theme.palette.error.main, 0.08);
       return "background.container";
     },
-    getDetailsPy: ()=>{
-      if(questionData.length != 0) return "20px";
+    getDetailsPy: () => {
+      if (questionData.length != 0) return "20px";
       return "unset";
     },
-    borderRadius: ()=>{
-      if(questionData.length != 0) return "8px";
+    borderRadius: () => {
+      if (questionData.length != 0) return "8px";
       return "8px 8px 0 0";
     },
-    accordionBg: (isEditing: boolean)=>{
-      if(isEditing) return "background.container";
+    accordionBg: (isEditing: boolean) => {
+      if (isEditing) return "background.container";
       return "background.containerLowest";
     },
     fontFamilyDetect: (text: string) => {
-      if(languageDetector(text)) return farsiFontFamily;
-      return primaryFontFamily
-    }
-  }
+      if (languageDetector(text)) return farsiFontFamily;
+      return primaryFontFamily;
+    },
+  };
 
   return (
     <>
@@ -268,24 +268,21 @@ const ListOfItems = ({
             onChange={(e) => handelChange(e)}
             inputProps={{
               style: {
-                fontFamily: multiStyles["fontFamilyDetect"]?.(tempValues?.title)
+                fontFamily: multiStyles["fontFamilyDetect"]?.(
+                  tempValues?.title,
+                ),
               },
             }}
             translationValue={
               langCode && (tempValues.translations?.[langCode]?.title ?? "")
             }
-            onTranslationChange={updateTranslation(
-              "title",
-              setTempValues,
-            )}
+            onTranslationChange={updateTranslation("title", setTempValues)}
             label={<Trans i18nKey="common.title" />}
           />
         ) : (
           <TitleWithTranslation
             title={item.title}
-            translation={
-              langCode && item.translations?.[langCode]?.title
-            }
+            translation={langCode && item.translations?.[langCode]?.title}
             variant="semiBoldMedium"
             showCopyIcon
           />
@@ -323,18 +320,25 @@ const ListOfItems = ({
               size="small"
               onClick={(e) => handleEditClick(e, item)}
               sx={{ mx: 1 }}
-              color={hasNoQuestions ? "error" : "success"}
               data-testid="edit-icon-id"
+              color="primary"
             >
               <EditOutlinedIcon fontSize="small" />
             </IconButton>
-            {onDelete && (
+            {setOpenDeleteDialog && (
               <IconButton
                 size="small"
-                onClick={() => onDelete(item.id)}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setOpenDeleteDialog({
+                    status: true,
+                    id: item.id,
+                    title: item.title,
+                  });
+                }}
                 sx={{ mx: 1 }}
-                color="secondary"
                 data-testid="delete-icon-id"
+                color="primary"
               >
                 <DeleteOutlinedIcon fontSize="small" />
               </IconButton>
@@ -383,10 +387,7 @@ const ListOfItems = ({
           <DragDropContext onDragEnd={handleQuestionDragEnd}>
             <Droppable droppableId={`questions-${item.id}`}>
               {(provided) => (
-                <Box
-                  {...provided.droppableProps}
-                  ref={provided.innerRef}
-                >
+                <Box {...provided.droppableProps} ref={provided.innerRef}>
                   {item.answerOptions?.map(
                     (answerOption: any, index: number) => (
                       <Draggable
@@ -543,7 +544,9 @@ const ListOfItems = ({
                       <Box sx={{ width: "60%", px: 3 }}>
                         <Chip
                           label={
-                            t("common.options") + " " + item.answerOptions.length
+                            t("common.options") +
+                            " " +
+                            item.answerOptions.length
                           }
                           size="small"
                           sx={{

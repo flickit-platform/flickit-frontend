@@ -34,6 +34,19 @@ export const answerOptions = {
     );
   },
 
+  remove(
+    {
+      kitVersionId,
+      answerOptionId,
+    }: { kitVersionId: TId; answerOptionId: TId; data: any },
+    config?: AxiosRequestConfig<any>,
+  ) {
+    return axios.delete(
+      `/api/v1/kit-versions/${kitVersionId}/answer-options/${answerOptionId}/`,
+      config,
+    );
+  },
+
   createRangeOption(
     { kitVersionId, data }: { kitVersionId: TId; data: any },
     config?: AxiosRequestConfig<any>,

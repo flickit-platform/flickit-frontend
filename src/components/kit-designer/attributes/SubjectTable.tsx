@@ -20,6 +20,8 @@ import { useTranslationUpdater } from "@/hooks/useTranslationUpdater";
 import { MultiLangs } from "@/types";
 import TitleWithTranslation from "@common/fields/TranslationText";
 import { Text } from "@/components/common/Text";
+import { Divider } from "@mui/material";
+import { SwapVertRounded } from "@mui/icons-material";
 
 interface Attribute {
   id: string | number;
@@ -104,7 +106,7 @@ const SubjectTable: React.FC<SubjectTableProps> = ({
 
   const handleEditAttribute = (attribute: Attribute) => {
     setEditAttributeId(String(attribute.id));
-    setEditAttribute({ ...attribute })
+    setEditAttribute({ ...attribute });
   };
 
   const handleSaveEdit = () => {
@@ -284,22 +286,24 @@ const SubjectTable: React.FC<SubjectTableProps> = ({
                                           sx={{ alignContent: "center" }}
                                         >
                                           <Box
-                                            bgcolor="background.container"
-                                            width={{ xs: "50px", md: "64px" }}
+                                            sx={{
+                                              ...styles.centerCVH,
+                                              bgcolor: "background.container",
+                                            }}
                                             borderRadius="0.5rem"
-                                            px={1.5}
-                                            justifyContent="space-around"
-                                            sx={{ ...styles.centerV }}
+                                            mr={2}
+                                            p={0.25}
                                           >
                                             <Text variant="semiBoldLarge">
-                                              {attrIndex + 1}
+                                              {index + 1}
                                             </Text>
-                                            <IconButton
-                                              disableRipple
-                                              disableFocusRipple
-                                              size="small"
-                                            >
-                                              <SwapVertRoundedIcon fontSize="small" />
+                                            <Divider
+                                              orientation="horizontal"
+                                              flexItem
+                                              sx={{ mx: 1 }}
+                                            />
+                                            <IconButton size="small">
+                                              <SwapVertRounded fontSize="small" />
                                             </IconButton>
                                           </Box>
                                         </TableCell>
@@ -372,7 +376,7 @@ const SubjectTable: React.FC<SubjectTableProps> = ({
                                               handleEditAttribute(attribute)
                                             }
                                             size="small"
-                                            color="success"
+                                            color="primary"
                                           >
                                             <EditOutlinedIcon fontSize="small" />
                                           </IconButton>

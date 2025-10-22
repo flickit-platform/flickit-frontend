@@ -31,6 +31,8 @@ import { kitActions, useKitDesignerContext } from "@/providers/kit-provider";
 import TitleWithTranslation from "@/components/common/fields/TranslationText";
 import showToast from "@/utils/toast-error";
 import { Text } from "@/components/common/Text";
+import { Divider } from "@mui/material";
+import { SwapVertRounded } from "@mui/icons-material";
 
 interface ListOfItemsProps {
   items: Array<KitDesignListItems>;
@@ -369,41 +371,6 @@ const ItemAccordion = ({
   );
 };
 
-const IndexBox = ({
-  index,
-  item,
-  theme,
-}: {
-  index: number;
-  item: KitDesignListItems;
-  theme: any;
-}) => (
-  <Box
-    sx={{
-      ...styles.centerVH,
-      background:
-        item.questionsCount === 0
-          ? alpha(theme.palette.error.main, 0.12)
-          : "background.container",
-      width: { xs: "50px", md: "64px" },
-      justifyContent: "space-around",
-    }}
-    borderRadius="0.5rem"
-    mr={2}
-    px={1.5}
-  >
-    <Text variant="semiBoldLarge">{index + 1}</Text>
-    <IconButton
-      disableRipple
-      disableFocusRipple
-      sx={{ "&:hover": { backgroundColor: "transparent", color: "inherit" } }}
-      size="small"
-    >
-      <SwapVertRoundedIcon fontSize="small" />
-    </IconButton>
-  </Box>
-);
-
 const TitleSection = ({
   editMode,
   item,
@@ -505,8 +472,8 @@ const ActionButtons = ({
         size="small"
         onClick={handleEditClick}
         sx={{ mx: 1 }}
-        color={"success"}
         data-testid="items-edit-icon"
+        color="primary"
       >
         <EditOutlinedIcon fontSize="small" />
       </IconButton>
@@ -521,8 +488,8 @@ const ActionButtons = ({
               title: item.title,
             });
           }}
+          color="primary"
           sx={{ mx: 1 }}
-          color="secondary"
           data-testid="items-delete-icon"
         >
           <DeleteOutlinedIcon fontSize="small" />
@@ -604,8 +571,20 @@ const SummaryContent = (props: any) => {
       }}
       pt={1.5}
       px={1.5}
+      gap={1}
     >
-      <IndexBox index={index} item={item} theme={theme} />
+      <Box
+        sx={{ ...styles.centerCVH, bgcolor: "background.container" }}
+        borderRadius="0.5rem"
+        mr={2}
+        p={0.25}
+      >
+        <Text variant="semiBoldLarge">{index + 1}</Text>
+        <Divider orientation="horizontal" flexItem sx={{ mx: 1 }} />
+        <IconButton size="small">
+          <SwapVertRounded fontSize="small" />
+        </IconButton>
+      </Box>{" "}
       <Box
         sx={{ flexGrow: 1, display: "flex", flexDirection: "column", gap: 2 }}
       >

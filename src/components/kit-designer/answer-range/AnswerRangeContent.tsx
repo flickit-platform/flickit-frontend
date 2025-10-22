@@ -12,8 +12,11 @@ import debounce from "lodash/debounce";
 import KitDesignerHeader from "@components/kit-designer/common/KitHeader";
 import AnswerRangeForm from "./AnswerRangeForm";
 import showToast from "@/utils/toast-error";
+import { DeleteConfirmationDialog } from "@/components/common/dialogs/DeleteConfirmationDialog";
+import { useTranslation } from "react-i18next";
 
 const AnaweRangeContent = () => {
+  const { t } = useTranslation();
   const { service } = useServiceContext();
   const { kitVersionId = "" } = useParams();
   const [data, setData] = useState<any>([]);
@@ -24,14 +27,22 @@ const AnaweRangeContent = () => {
     runOnMount: false,
   });
   const postKitAnswerRange = useQuery({
-    service: (args, config) => service.kitVersions.answerRanges.create(args, config),
+    service: (args, config) =>
+      service.kitVersions.answerRanges.create(args, config),
     runOnMount: false,
   });
 
   const updateKitAnswerRange = useQuery({
-    service: (args, config) => service.kitVersions.answerRanges.update(args, config),
+    service: (args, config) =>
+      service.kitVersions.answerRanges.update(args, config),
     runOnMount: false,
   });
+
+  const [openDeleteDialog, setOpenDeleteDialog] = useState<{
+    status: boolean;
+    id: string;
+    title: string;
+  }>({ status: false, id: "", title: "" });
 
   const [showNewAnswerRangeForm, setShowNewAnswerRangeForm] = useState(false);
   const [newAnswerRange, setNewAnswerRange] = useState({
@@ -40,6 +51,25 @@ const AnaweRangeContent = () => {
     index: 1,
     id: null,
   });
+
+  const deleteAnsweRange = useQuery({
+    service: (args, config) =>
+      service.kitVersions.answerRanges.remove(args, config),
+    runOnMount: false,
+  });
+
+  const handleDelete = async () => {
+    try {
+      let answerRangeId = openDeleteDialog.id;
+      await deleteAnsweRange.query({ kitVersionId, answerRangeId });
+      await fetchAnswerRangeKit.query();
+      handleCancel();
+    } catch (e) {
+      const err = e as ICustomError;
+      showToast(err);
+    }
+    setOpenDeleteDialog({ ...openDeleteDialog, status: false });
+  };
 
   useEffect(() => {
     if (fetchAnswerRangeKit.data?.items?.length) {
@@ -144,7 +174,10 @@ const AnaweRangeContent = () => {
         index: idx + 1,
       }));
 
-      await service.kitVersions.questionnaires.reorder({ kitVersionId }, { orders });
+      await service.kitVersions.questionnaires.reorder(
+        { kitVersionId },
+        { orders },
+      );
 
       handleCancel();
     } catch (e) {
@@ -188,6 +221,7 @@ const AnaweRangeContent = () => {
                 onEdit={handleEdit}
                 onReorder={handleReorder}
                 setChangeData={setChangeData}
+                setOpenDeleteDialog={setOpenDeleteDialog}
               />
             </Box>
           ) : (
@@ -212,7 +246,17 @@ const AnaweRangeContent = () => {
             />
           )}
         </>
-        {/*)}*/}
+        <DeleteConfirmationDialog
+          open={openDeleteDialog.status}
+          onClose={() =>
+            setOpenDeleteDialog({ ...openDeleteDialog, status: false })
+          }
+          onConfirm={handleDelete}
+          content={{
+            category: t("common.answerRange"),
+            title: openDeleteDialog.title,
+          }}
+        />
       </Box>
     </PermissionControl>
   );

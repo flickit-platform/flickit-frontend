@@ -206,8 +206,8 @@ const MaturityLevelList = ({
                       <IconButton
                         size="small"
                         onClick={() => handleEdit(item)}
-                        color="success"
                         data-testid="edit-icon-id"
+                        color="primary"
                       >
                         <EditOutlinedIcon fontSize="small" />
                       </IconButton>
@@ -220,7 +220,7 @@ const MaturityLevelList = ({
                             title: item.title,
                           })
                         }
-                        color="secondary"
+                        color="primary"
                         data-testid="delete-icon-id"
                       >
                         <DeleteOutlinedIcon fontSize="small" />
