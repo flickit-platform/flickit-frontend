@@ -52,7 +52,7 @@ describe("AnswerRangeList Component", () => {
         <ListOfItems
           items={mockAnswerRange}
           onEdit={mockOnEdit}
-          onDelete={mockOnDelete}
+          setOpenDeleteDialog={mockOnDelete}
           onReorder={mockOnReorder}
           setChangeData={setChangeData}
         />
