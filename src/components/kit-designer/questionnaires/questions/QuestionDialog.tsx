@@ -78,6 +78,7 @@ const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
 
   const fetchMeasures = useQuery({
     service: () => service.kitVersions.measures.getAll({ kitVersionId }),
+    runOnMount: false
   });
   const fetchOptions = useQuery({
     service: () =>
@@ -88,16 +89,18 @@ const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
   });
 
   useEffect(() => {
-    const measureObject = fetchMeasures.data?.items?.find(
-      (m: any) => m.id === question.measureId,
-    );
-    formMethods.setValue("measure", measureObject);
+    if (fetchMeasures?.data?.items){
+      const measureObject = fetchMeasures.data?.items?.find(
+        (m: any) => m.id === question.measureId,
+      );
+      formMethods.setValue("measure", measureObject);
+    }
   }, [fetchMeasures?.data?.items]);
 
   useEffect(() => {
     if (rest.open && question.id) {
       const resultFunc = async () => {
-        const [,fetchMeasure] = await Promise.all([fetchOptions.query(), fetchMeasures.query()])
+        const fetchMeasure = await fetchMeasures.query()
         const initial = {
           options: question.options ?? [{ text: "" }],
           mayNotBeApplicable: question.mayNotBeApplicable ?? false,
@@ -220,7 +223,21 @@ const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
         }}
       >
         <Grid container spacing={2} mt={2}>
-          <Grid size={{xs: 12}}>
+          <Grid size={{xs: 12}} display={"flex"}>
+            <Box
+              sx={{
+                ...styles.centerVH,
+                width: { xs: "45px" },
+                justifyContent: "space-around",
+              }}
+              borderRadius="0.5rem"
+              mx={1.3}
+             >
+              <Text
+                data-testid="question-index"
+                variant="semiBoldLarge"
+              >{`Q. ${question?.index}`}</Text>
+            </Box>
             <MultiLangTextField
               id="question-title"
               label={
@@ -265,10 +282,7 @@ const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
 
           <Grid size={{xs: 12}}>
             <AutocompleteAsyncField
-              {...useConnectAutocompleteField({
-                service: (args, config) =>
-                  service.kitVersions.measures.getAll({ kitVersionId }),
-              })}
+              options={fetchMeasures?.data?.items.map((measure: any) => measure)}
               name="measure"
               label={
                 <Text variant={"bodyMedium"} color={"background.secondaryDark"} >

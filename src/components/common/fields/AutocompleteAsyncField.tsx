@@ -425,7 +425,6 @@ const AutocompleteBaseField = (
                   ? farsiFontFamily
                   : primaryFontFamily
               }
-              color="background.onVariant"
               gap="4.5px"
               sx={{ ...styles.centerVH }}
             >
