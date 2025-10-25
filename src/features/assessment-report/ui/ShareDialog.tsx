@@ -36,6 +36,13 @@ import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import Tooltip from "@mui/material/Tooltip";
 import { Text } from "@/components/common/Text";
 
+import { GenericPopover } from "@/components/common/PopOver";
+import usePopover from "@/hooks/usePopover";
+import {
+  getDeleteContent,
+  getDeleteTitle,
+} from "@/components/common/dialogs/DeleteConfirmationDialog";
+
 type ShareDialogProps = {
   open: boolean;
   onClose: () => void;
@@ -570,8 +577,27 @@ export default function ShareDialog({
 }
 
 const UserSection = (props: any) => {
+  const popoverState = usePopover();
   const { invitees, users, deleteUserRoleHandler, deleteInviteeHandler, lng } =
     props;
+  const [selectedMember, setSelectedMember] = useState<any>(null);
+  const handleOpenDelete = (e: any, m: any) => {
+    setSelectedMember(m);
+    popoverState.handlePopoverOpen(e);
+  };
+  const handleConfirmDelete = async () => {
+    if (!selectedMember) return;
+    const { id, isInvitee } = selectedMember;
+    try {
+      if (isInvitee) {
+        await deleteInviteeHandler?.(id);
+      } else {
+        await deleteUserRoleHandler?.(id);
+      }
+    } finally {
+      popoverState.handlePopoverClose();
+    }
+  };
   const { t } = useTranslation();
   return (
     <Box
@@ -588,12 +614,12 @@ const UserSection = (props: any) => {
         const { displayName, id, pictureLink, email, deletable, isInvitee } =
           member;
         const isInvited = !!invitees?.some((inv: any) => inv.id === member.id);
-
         return (
           <Box
             key={id}
             sx={{ ...styles.centerV, justifyContent: "space-between" }}
           >
+            {" "}
             <Box key={String(id ?? email)} sx={{ ...styles.centerV }} gap={1}>
               <Avatar
                 {...stringAvatar((displayName ?? "").toUpperCase())}
@@ -614,19 +640,46 @@ const UserSection = (props: any) => {
               )}
             </Box>
             {deletable && (
-              <IconButton
-                onClick={() =>
-                  isInvitee
-                    ? deleteInviteeHandler(id)
-                    : deleteUserRoleHandler(id)
-                }
-              >
-                <DeleteOutlinedIcon color="primary"/>
+              <IconButton onClick={(e) => handleOpenDelete(e, member)}>
+                <DeleteOutlinedIcon color="primary" />
               </IconButton>
             )}
           </Box>
         );
       })}
+
+      <GenericPopover
+        open={popoverState.open}
+        onClose={popoverState.handlePopoverClose}
+        anchorEl={popoverState.anchorEl}
+        title={getDeleteTitle({
+          category: t("common.member", { lng }),
+          lng,
+        })}
+        direction={lng === "fa" ? "rtl" : "ltr"}
+        actions={
+          <>
+            <Button
+              variant="outlined"
+              onClick={popoverState.handlePopoverClose}
+            >
+              <Text variant="labelMedium">{t("common.cancel", { lng })}</Text>
+            </Button>
+            <Button variant="contained" onClick={handleConfirmDelete}>
+              <Text variant="labelMedium">{t("common.confirm", { lng })}</Text>
+            </Button>
+          </>
+        }
+        hideBackdrop
+      >
+        <Text>
+          {getDeleteContent({
+            title: selectedMember?.email ?? selectedMember?.displayName ?? "",
+            category: t("common.member", { lng }),
+            lng,
+          })}
+        </Text>
+      </GenericPopover>
     </Box>
   );
 };
