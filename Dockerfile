@@ -3,8 +3,7 @@ FROM node:22-bookworm AS builder
 WORKDIR /app
 
 COPY package.json package-lock.json ./
-RUN npm i -g npm@11.6.2
-RUN npm ci --legacy-peer-deps || npm install --legacy-peer-deps
+RUN npm install --legacy-peer-deps --f
 
 COPY . .
 RUN npm run build
