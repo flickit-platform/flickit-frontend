@@ -27,8 +27,18 @@ jobs:
         working-directory: ./
     steps:
       - uses: actions/checkout@v2
+      - name: Setup Node.js 22.21.0 
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22.21.0'
+          cache: 'npm'
       - name: Install dependencies
-        run: npm install --f  # Install dependencies using npm
+        run: npm install --force  # Install dependencies using npm
+      - name: Clean npm cache and reinstall  
+        run: |
+          rm -rf node_modules
+          npm cache clean --force
+          npm install
       - name: Test and coverage
         run: npm run test -- --coverage  # Run tests with Vitest and generate coverage
       - name: Upload coverage report
@@ -42,6 +52,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      - name: Setup Node.js 22.21.0 
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22.21.0'
       - name: Download coverage report
         uses: actions/download-artifact@v4
         with:
@@ -89,6 +103,10 @@ jobs:
       TAG: ${{ steps.TAG.outputs.tag }}
     steps:
       - uses: actions/checkout@v2
+      - name: Setup Node.js 22.21.0  
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22.21.0'
       - name: Set output
         id: TAG
         run: echo "tag=${GITHUB_REF#refs/*/}" >> $GITHUB_OUTPUT
