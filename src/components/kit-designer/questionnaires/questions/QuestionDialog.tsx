@@ -294,63 +294,6 @@ const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
               </Grid>
             )
           })}
-          
-          {/*<Grid size={{xs: 12}} display={"flex"}>*/}
-          {/*  <Box*/}
-          {/*    sx={{*/}
-          {/*      ...styles.centerVH,*/}
-          {/*      width: { xs: "45px" },*/}
-          {/*      justifyContent: "space-around",*/}
-          {/*    }}*/}
-          {/*    borderRadius="0.5rem"*/}
-          {/*    mx={1.3}*/}
-          {/*   >*/}
-          {/*    <Text*/}
-          {/*      data-testid="question-index"*/}
-          {/*      variant="semiBoldLarge"*/}
-          {/*    >{`Q. ${question?.index}`}</Text>*/}
-          {/*  </Box>*/}
-          {/*  <MultiLangTextField*/}
-          {/*    id="question-title"*/}
-          {/*    label={*/}
-          {/*    <Text variant={"bodyMedium"} color={"background.secondaryDark"} >*/}
-          {/*      <Trans i18nKey="common.question" />*/}
-          {/*    </Text>*/}
-          {/*  }*/}
-          {/*    name="title"*/}
-          {/*    value={tempValue.title}*/}
-          {/*    onChange={handleInputChange}*/}
-          {/*    translationValue={*/}
-          {/*      langCode*/}
-          {/*        ? (tempValue.translations?.[langCode]?.title ?? "")*/}
-          {/*        : ""*/}
-          {/*    }*/}
-          {/*    onTranslationChange={updateTranslation("title", setTempValue)}*/}
-          {/*    placeholder={t("kitDesigner.questionPlaceholder")?.toString()}*/}
-          {/*    multiline*/}
-          {/*    bgcolor="inherit"*/}
-          {/*  />*/}
-          {/*</Grid>*/}
-          {/*<Grid size={{xs: 12}}>*/}
-          {/*  <MultiLangTextField*/}
-          {/*    id="question-hint"*/}
-          {/*    label={*/}
-          {/*    <Text variant={"bodyMedium"} color={"background.secondaryDark"} >*/}
-          {/*      <Trans i18nKey="common.hint"/>*/}
-          {/*    </Text>*/}
-          {/*  }*/}
-          {/*    name="hint"*/}
-          {/*    value={tempValue.hint}*/}
-          {/*    onChange={handleInputChange}*/}
-          {/*    translationValue={*/}
-          {/*      langCode ? (tempValue.translations?.[langCode]?.hint ?? "") : ""*/}
-          {/*    }*/}
-          {/*    onTranslationChange={updateTranslation("hint", setTempValue)}*/}
-          {/*    placeholder={t("hintPlaceholder")?.toString()}*/}
-          {/*    multiline*/}
-          {/*    bgcolor="inherit"*/}
-          {/*  />*/}
-          {/*</Grid>*/}
 
           <Grid size={{xs: 12}}>
             <AutocompleteAsyncField
