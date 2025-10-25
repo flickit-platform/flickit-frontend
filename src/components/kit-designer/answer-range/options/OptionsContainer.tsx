@@ -7,7 +7,6 @@ import Divider from "@mui/material/Divider";
 import { useParams } from "react-router-dom";
 import { IOption, KitDesignListItems, MultiLangs } from "@/types/index";
 import TextField from "@mui/material/TextField";
-import { Trans } from "react-i18next";
 import CheckRoundedIcon from "@mui/icons-material/CheckRounded";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import { useQuery } from "@/hooks/useQuery";
@@ -19,6 +18,7 @@ import { useTranslationUpdater } from "@/hooks/useTranslationUpdater";
 import { useKitDesignerContext } from "@/providers/kit-provider";
 import TitleWithTranslation from "@/components/common/fields/TranslationText";
 import { Text } from "@/components/common/Text";
+import { useTranslation } from "react-i18next";
 
 interface ITempValues {
   title: string;
@@ -27,6 +27,7 @@ interface ITempValues {
 }
 
 const OptionContain = (props: any) => {
+  const {t} =useTranslation()
   const { kitState } = useKitDesignerContext();
   const langCode = kitState.translatedLanguage?.code;
 
@@ -125,7 +126,7 @@ const OptionContain = (props: any) => {
                   : ""
               }
               onTranslationChange={updateTranslation("title", setTempValues)}
-              label={<Trans i18nKey="common.title" />}
+              label={t("common.title")}
             />
           ) : (
             <TitleWithTranslation
@@ -164,8 +165,8 @@ const OptionContain = (props: any) => {
               bgcolor: "background.containerLowest",
               borderRadius: "8px",
             }}
-            name="title"
-            label={<Trans i18nKey="common.value" />}
+            name="value"
+            label={t("common.value")}
           />
         ) : (
           <Box sx={{ width: { xs: "20%", md: "10%" }, textAlign: "center" }}>

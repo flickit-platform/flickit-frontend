@@ -133,12 +133,11 @@ export const SpaceCard = (props: ISpaceCardProps) => {
   };
   const changeCurrentSpaceAndNavigateToAssessments = async (e: any) => {
     e.preventDefault();
+    navigate(`/${spaceId}/assessments/1`);
     trackSeen();
     service.user
       .getCurrent({ signal: abortController.signal })
-      .then(({ data }) => {
-        navigate(`/${spaceId}/assessments/1`);
-      })
+      .then(({ data }) => {})
       .catch((e) => {});
   };
   return (

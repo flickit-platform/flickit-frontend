@@ -19,8 +19,15 @@ vi.mock("@providers/ServiceProvider", () => ({
 
 vi.mock("axios", () => ({
   default: {
+    defaults: { headers: {}, withCredentials: false },
+    interceptors: {
+      request: { use: vi.fn() },
+      response: { use: vi.fn() },
+    },
+    get: vi.fn(),
     post: vi.fn(),
-  },
+    put: vi.fn(),
+    delete: vi.fn(),  },
 }));
 const mockOnClose = vi.fn();
 const mockOnSubmitForm = vi.fn();
