@@ -15,6 +15,7 @@
   "areYouSureYouWantDelete": "از حذف {{category}} مطمئن هستید؟",
   "areYouSureYouWantSkipThisQuestion": "تغییرات شما از دست خواهد رفت. آیا می‌خواهید ادامه دهید؟",
   "attachmentCount": "{{attachmentsCount}} پیوست",
+  "advisable": "توصیه‌پذیر",
   "comment": "یادداشت",
   "comments": "یادداشت‌ها",
   "createEvidence": "ایجاد {{title}}",

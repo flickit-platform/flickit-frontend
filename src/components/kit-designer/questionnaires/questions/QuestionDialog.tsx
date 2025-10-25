@@ -327,10 +327,7 @@ const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
 
         <Box display="flex" flexDirection="column" gap={1} mt={4}>
           <Text variant="titleSmall" gutterBottom>
-            <Trans i18nKey="questions.advancedSettings" />
-          </Text>
-          <Text variant="titleSmall" color="textSecondary">
-            <Trans i18nKey="questions.advancedSettingsDescription" />
+            <Trans i18nKey="common.settings" />
           </Text>
         </Box>
 
@@ -348,7 +345,7 @@ const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
           </Grid>
           <Grid size={{xs: 6}}>
             <Text variant="semiBoldMedium">
-              <Trans i18nKey="questions.notAdvisable" />
+              <Trans i18nKey="questions.advisable" />
             </Text>
             <Switch
               {...formMethods.register("advisable")}
