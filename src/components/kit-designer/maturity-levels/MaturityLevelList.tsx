@@ -5,7 +5,7 @@ import CheckRoundedIcon from "@mui/icons-material/CheckRounded";
 import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
-import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
 import { styles } from "@/config/styles";
 import { IMaturityLevel, TId } from "@/types/index";
 import { Trans } from "react-i18next";

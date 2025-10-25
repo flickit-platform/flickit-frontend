@@ -67,7 +67,7 @@ const QuestionnairePanel = ({
         return (
           <Box display="flex" flexDirection="column" gap={4}>
             <InfoHeader
-              title={questionnaire.title}
+              title={questionnaire?.title}
               translations={getTranslation(
                 questionnaire?.translations,
                 "title",
