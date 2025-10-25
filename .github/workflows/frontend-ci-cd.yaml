@@ -28,7 +28,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Install dependencies
-        run: npm install  # Install dependencies using npm
+        run: npm install --f  # Install dependencies using npm
       - name: Test and coverage
         run: npx vitest --run --coverage
       - name: Upload coverage report
