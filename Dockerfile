@@ -1,30 +1,28 @@
-# FROM node:18.9.0-alpine
-# WORKDIR /app/frontend
-
-# COPY package.json package-lock.json ./
-# RUN npm install 
-# COPY . ./
-# EXPOSE 3000
-
-
-# Use an official Node runtime as a parent image
-FROM node:22.21.0-alpine
-
-# Set the working directory to /app
+# ---- build (Debian/glibc) ----
+FROM node:22.12.0-bookworm-slim AS build
 WORKDIR /app
 
-# Copy the current directory contents into the container at /app
-COPY . /app
+# npm تازه‌تر
+RUN npm i -g npm@11.6.2
 
-# Install any needed packages specified in package.json
-RUN npm install --f
+# فقط package.json (فعلاً lock را کپی نکن که قفل مک/ویندوز گیج نکند)
+COPY package.json ./
 
-# Build the React app
+# نصب با نادیده گرفتن peer dep های ناسازگار + کشیدن optional ها
+RUN npm install --legacy-peer-deps --include=optional
+
+# بقیه سورس
+COPY . .
+
+# (اختیاری، برای لاگ تشخیصی)
+RUN node -e "console.log('libc=', process.report().header.glibcVersionRuntime || 'musl')"
+
+# بیلد
 RUN npm run build
 
-# Serve the React app using Nginx
+# ---- runtime (Alpine) ----
 FROM nginx:alpine
-COPY --from=0 /app/dist /usr/share/nginx/html
+COPY --from=build /app/dist /usr/share/nginx/html
 COPY nginx/default.conf /etc/nginx/conf.d/default.conf
 COPY env.sh /docker-entrypoint.d/env.sh
 RUN chmod +x /docker-entrypoint.d/env.sh
