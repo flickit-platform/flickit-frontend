@@ -38,7 +38,7 @@ jobs:
         run: |
           rm -rf node_modules
           npm cache clean --force
-          npm install
+          npm install --f
       - name: Test and coverage
         run: npm run test -- --coverage  # Run tests with Vitest and generate coverage
       - name: Upload coverage report
