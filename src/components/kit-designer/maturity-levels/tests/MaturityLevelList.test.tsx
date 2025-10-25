@@ -67,15 +67,14 @@ describe("MaturityLevelList", () => {
     fireEvent.click(screen.getByTestId("check-icon-id"));
 
     // Check if onEdit was called with the updated values
-    expect(mockOnEdit).toHaveBeenCalledWith(
-      expect.objectContaining({
-        id: 1,
-        index: 1,
-        value: 1,
-        title: "Updated title 1",
-        description: "Updated Description 1",
-      }),
-    );
+    expect(mockOnEdit).toHaveBeenCalledWith({
+      id: 1,
+      index: 1,
+      value: 1,
+      title: "Updated Level 1",
+      description: "Updated Description 1",
+      translations: undefined,
+    });
   });
 
   it("allows deleting a maturity level", () => {
