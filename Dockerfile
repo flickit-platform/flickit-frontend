@@ -2,20 +2,12 @@
 FROM node:22.12.0-bookworm-slim AS build
 WORKDIR /app
 
-RUN npm i -g npm@11.6.2
-
-# فقط package.json تا لاکِ سازگار برای لینوکس تولید شود
 COPY package.json ./
-RUN npm install --legacy-peer-deps --include=optional
+RUN npm install --f
 
-# بقیه سورس
 COPY . .
 
-# (اختیاری، ولی بی‌خطر)
-# RUN sh -lc 'cat /etc/os-release; (getconf GNU_LIBC_VERSION || true); (ldd --version 2>&1 | head -n1 || true)'
-
-# بیلد
-RUN npm run build
+RUN npx vite build
 
 # ---- runtime (alpine) ----
 FROM nginx:alpine
