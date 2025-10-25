@@ -1,7 +1,7 @@
 import { TId } from "./common";
 
 export interface IMaturityLevel {
-  id?: TId | null;
+  id: TId | null;
   title: string;
   value: number;
   index: number;

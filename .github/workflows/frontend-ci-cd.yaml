@@ -28,9 +28,9 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Install dependencies
-        run: npm install  # Install dependencies using npm
+        run: npm install --f  # Install dependencies using npm
       - name: Test and coverage
-        run: npm run test -- --coverage  # Run tests with Vitest and generate coverage
+        run: npx vitest run --coverage # Run tests with Vitest and generate coverage
       - name: Upload coverage report
         uses: actions/upload-artifact@v4
         with:

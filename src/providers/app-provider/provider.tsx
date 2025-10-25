@@ -1,8 +1,8 @@
-import { useReducer, FC, useContext, Dispatch, createContext } from "react";
+import { useReducer, FC, useContext, Dispatch, createContext, ReactElement } from "react";
 import appReducer from "./reducer";
 
 interface IAppProviderProps {
-  children?: JSX.Element | JSX.Element[];
+  children?: ReactElement | ReactElement[];
 }
 
 export interface IAppContext {

@@ -1,5 +1,3 @@
-// KitAside.tsx
-import * as React from "react";
 import { Grid, Box, Button, Divider, Menu, MenuItem } from "@mui/material";
 import { Text } from "@/components/common/Text";
 import { styles } from "@styles";
@@ -19,6 +17,7 @@ import { Trans, useTranslation } from "react-i18next";
 import useMenu from "@/hooks/useMenu";
 import { KitStatsType } from "../model/types";
 import { useKitAside } from "../model/useKitAside";
+import { Fragment } from "react/jsx-runtime";
 
 const StatCard = ({
   title,
@@ -64,7 +63,7 @@ const StatsGrid = ({
         const isLastItem = index === arr.length - 1;
         const showDivider = !isLastInRow && !isLastItem;
         return (
-          <React.Fragment key={it.title}>
+          <Fragment key={it.title}>
             <Grid
               size={{ xs: 12 / columns - 0.05 }}
               sx={{ position: "relative" }}
@@ -85,7 +84,7 @@ const StatsGrid = ({
               </Box>
             </Grid>
             {showDivider && <Divider orientation="vertical" flexItem />}
-          </React.Fragment>
+          </Fragment>
         );
       })}
     </Grid>

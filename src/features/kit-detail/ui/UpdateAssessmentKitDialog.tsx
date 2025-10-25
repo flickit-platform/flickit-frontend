@@ -140,7 +140,7 @@ const UpdateAssessmentKitDialog = (props: any) => {
       <Box mt={4} maxHeight="260px" overflow="scroll">
         {syntaxErrorObject?.map((e: any) => {
           return (
-            <Box key={uniqueId()} sx={{ ml: 1 }}>
+            <Box key={e.fileName + "_" + e.errorLine} sx={{ ml: 1 }}>
               <Alert severity="error" sx={{ my: 2 }}>
                 <Box display="flex" flexDirection="column">
                   <Text variant="subtitle2" color="error">

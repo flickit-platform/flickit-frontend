@@ -3,11 +3,12 @@ import HourglassEmptyRoundedIcon from "@mui/icons-material/HourglassEmptyRounded
 import { Trans } from "react-i18next";
 import { styles } from "@styles";
 import { Text } from "../Text";
+import { ReactElement } from "react";
 
 interface IErrorEmptyDataProps extends BoxProps {
-  suggests?: JSX.Element;
-  emptyMessage?: JSX.Element;
-  img?: JSX.Element;
+  suggests?: ReactElement;
+  emptyMessage?: ReactElement;
+  img?: ReactElement;
   useIllustration?: boolean;
   hideMessage?: boolean;
 }

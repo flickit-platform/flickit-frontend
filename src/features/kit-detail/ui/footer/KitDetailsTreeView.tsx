@@ -149,19 +149,20 @@ export default function KitDetailsTreeView({
   );
 
   const handleItemSelectionToggle = useCallback(
-    (_e: React.SyntheticEvent, itemId: string, isSelected: boolean) => {
-      if (!isSelected) return;
+    (_e: React.SyntheticEvent | null, itemId: string | null) => {
+      if (!itemId) return;
       setHighlightId(itemId);
+
       if (!banTreeView.some((t) => t.rootNodeId === itemId)) {
         onSelect?.(itemId);
         setHash(itemId, "push");
       }
     },
-    [banTreeView, onSelect],
+    [onSelect],
   );
 
   const handleExpandedItemsChange = useCallback(
-    (_e: React.SyntheticEvent, nextIds: string[]) => {
+    (_e: React.SyntheticEvent | null, nextIds: string[]) => {
       const prev = new Set(expandedItems);
       const added = nextIds.find((id) => !prev.has(id));
       if (!added) {
@@ -200,7 +201,7 @@ export default function KitDetailsTreeView({
       aria-label="navigator"
       slots={{ collapseIcon: ExpandLessRounded, expandIcon: ExpandMoreRounded }}
       selectedItems={highlightId ?? null}
-      onItemSelectionToggle={handleItemSelectionToggle}
+      onSelectedItemsChange={handleItemSelectionToggle}
       expandedItems={expandedItems}
       onExpandedItemsChange={handleExpandedItemsChange}
       sx={makeTreeSx(isRTL)}

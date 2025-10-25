@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect, useMemo } from "react";
+import { useState, useRef, useEffect, useMemo, ReactNode } from "react";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Popper from "@mui/material/Popper";
@@ -26,7 +26,7 @@ interface ActionPopupProps {
     muiColor: "primary" | "success" | "error";
   };
   texts: {
-    buttonLabel: string | JSX.Element;
+    buttonLabel: string | ReactNode;
     description: string;
     primaryAction: string;
     secondaryAction: string;

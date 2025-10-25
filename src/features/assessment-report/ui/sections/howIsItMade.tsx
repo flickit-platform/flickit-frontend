@@ -1,4 +1,3 @@
-import * as React from "react";
 import Accordion from "@mui/material/Accordion";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
@@ -8,7 +7,6 @@ import Divider from "@mui/material/Divider";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { t } from "i18next";
 import { ISubject } from "@/types";
-import uniqueId from "@/utils/unique-id";
 import { styles } from "@styles";
 import { v3Tokens } from "@config/tokens";
 import { getSemanticColors } from "@/config/colors";
@@ -104,7 +102,7 @@ export default function HowIsItMade({ lng, report }: any) {
   const rowItem = (data: any[]) => (
     <>
       {data?.map((item: any) => (
-        <Box key={uniqueId()} mt={2} sx={{ ...styles.centerV }}>
+        <Box key={item.id} mt={2} sx={{ ...styles.centerV }}>
           <Text
             variant="bodyMedium"
             fontWeight="bold"
@@ -268,7 +266,7 @@ export default function HowIsItMade({ lng, report }: any) {
               {t("assessmentReport.assessmentKitEvaluatesMaturity", { lng })}
             </Text>
             {maturityLevels?.map((level: any) => (
-              <Box key={uniqueId()} sx={{ ...styles.centerV }} gap={2}>
+              <Box key={level.id} sx={{ ...styles.centerV }} gap={2}>
                 <Box
                   bgcolor={
                     getSemanticColors(maturityLevelCount)[level.value - 1]

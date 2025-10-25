@@ -4,7 +4,6 @@ import { useForm } from "react-hook-form";
 import { Trans } from "react-i18next";
 import { styles } from "@styles";
 import { useServiceContext } from "@/providers/service-provider";
-import setServerFieldErrors from "@/utils/set-server-field-error";
 import { ICustomError } from "@/utils/custom-error";
 import { useNavigate, useParams } from "react-router-dom";
 import { CEDialog, CEDialogActions } from "@common/dialogs/CEDialog";
@@ -114,7 +113,6 @@ const NewAssessmentDialog = (props: IAssessmentCEFromDialogProps) => {
     } catch (e) {
       const err = e as ICustomError;
       setLoading(false);
-      setServerFieldErrors(err, formMethods);
       formMethods.clearErrors();
       showToast(err);
       return () => {

@@ -15,7 +15,6 @@ import { t } from "i18next";
 import { Gauge } from "../../../common/charts/Gauge";
 import { Trans } from "react-i18next";
 import { IssuesItem } from "../DashboardTopSection";
-import uniqueId from "@/utils/unique-id";
 import { LoadingSkeleton } from "../../../common/loadings/LoadingSkeleton";
 import { Text } from "@/components/common/Text";
 
@@ -112,7 +111,7 @@ const AssessmentReportContainer = (props: any) => {
                 {Object.entries(issues).map(([key, value]) => {
                   return (
                     <Grid
-                      key={uniqueId()}
+                      key={key}
                       size={{xs: 12, md: 6}}
                       display={value !== 0 ? "block" : "none"}
                     >

@@ -2,7 +2,7 @@ import IconButton from "@mui/material/IconButton";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
-import { useCallback, useEffect, useState } from "react";
+import { ReactElement, useCallback, useEffect, useState } from "react";
 import { Accept, DropEvent, FileRejection, useDropzone } from "react-dropzone";
 import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
 import Box from "@mui/material/Box";
@@ -63,7 +63,7 @@ interface IUploadProps {
   errors: FieldErrorsImpl<{
     [x: string]: any;
   }>;
-  label: string | JSX.Element;
+  label: string | ReactElement;
   accept?: Accept;
   maxSize?: number;
   required?: boolean;

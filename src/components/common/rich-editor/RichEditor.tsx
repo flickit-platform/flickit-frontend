@@ -8,13 +8,13 @@ import { useEffect, useState } from "react";
 import { ControllerRenderProps, FieldValues } from "react-hook-form";
 import firstCharDetector from "@/utils/first-char-detector";
 import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
-import Table from "@tiptap/extension-table";
 import { TableRow } from "@tiptap/extension-table-row";
 import { TableHeader } from "@tiptap/extension-table-header";
 import { TableCell } from "@tiptap/extension-table-cell";
 import Placeholder from "@tiptap/extension-placeholder";
 import languageDetector from "@/utils/language-detector";
 import { useTheme } from "@mui/material";
+import { Table } from "@tiptap/extension-table";
 
 interface IRichEditorProps {
   defaultValue?: string;
@@ -57,9 +57,6 @@ const RichEditor = (props: IRichEditorProps) => {
   const editor = useEditor({
     extensions: [
       StarterKit,
-      Table.configure({
-        resizable: true,
-      }),
       TableRow,
       TableHeader,
       TableCell,
@@ -70,6 +67,7 @@ const RichEditor = (props: IRichEditorProps) => {
       Placeholder.configure({
         placeholder: placeholder,
       }),
+      Table.configure({ resizable: true }),
     ],
     content: defaultValue,
     onUpdate(props) {

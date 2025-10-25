@@ -129,7 +129,6 @@ describe("AnswerRangeList Component", () => {
 
     // Assert changes
     expect(screen.getByTestId("title-id")).toHaveValue("Updated option 1");
-
     // Optionally trigger save
     // fireEvent.click(screen.getByTestId("item-save-option-icon"));
     // Add further assertions if onSave logic exists

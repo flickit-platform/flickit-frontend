@@ -17,7 +17,6 @@ import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import InputLabel from "@mui/material/InputLabel";
 import FormControl from "@mui/material/FormControl";
-import uniqueId from "@/utils/unique-id";
 import { styles } from "@styles";
 import { Text } from "@/components/common/Text";
 
@@ -187,9 +186,9 @@ const ImpactDetails = ({
   <Box justifyContent="space-between" width="100%" sx={{ ...styles.centerV }}>
     {editMode === item.questionImpactId ? (
       <>
-        {fields.map((field: any, idx: number) => (
+        {fields.map((field: any) => (
           <FormControl
-            key={uniqueId()}
+            key={field.id}
             fullWidth
             size="small"
             sx={textFieldStyle}

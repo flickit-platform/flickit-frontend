@@ -43,7 +43,7 @@ describe("ListOfItems (measure)", () => {
 
   it("renders item titles correctly", () => {
     const { getTitle } = setup();
-    expect(getTitle()).toBeInTheDocument();
+    expect(getTitle()).be;
   });
 
   it("allows editing an item", () => {

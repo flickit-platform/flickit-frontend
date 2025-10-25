@@ -1,6 +1,6 @@
 import { SERVICE_ACTIONS_TYPE } from "./actions";
 
-const serviceReducer = (
+export const serviceReducer = (
   prevState: any,
   action: { type: SERVICE_ACTIONS_TYPE; payload: any },
 ) => {
@@ -8,5 +8,3 @@ const serviceReducer = (
     return prevState;
   }
 };
-
-export default serviceReducer;

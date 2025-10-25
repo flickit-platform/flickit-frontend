@@ -1,4 +1,4 @@
-import { FC, PropsWithChildren } from "react";
+import { FC, PropsWithChildren, ReactNode } from "react";
 import Chip from "@mui/material/Chip";
 import { styles } from "@styles";
 import Box from "@mui/material/Box";
@@ -6,13 +6,13 @@ import uniqueId from "@/utils/unique-id";
 import { Text } from "./Text";
 
 interface IInfoItems {
-  renderMap?: Record<string, (...args: any) => JSX.Element>;
+  renderMap?: Record<string, (...args: any) => ReactNode>;
   component?: FC<{ title: string }>;
   info: {
     title: string;
     item: any;
     type?: string;
-    action?: JSX.Element;
+    action?: ReactNode;
   };
   bg?: "white";
 }
@@ -28,7 +28,7 @@ const DefaultInfoItemComponent = (
     title: string;
     bg?: "white";
     itemBg?: string;
-    action?: JSX.Element;
+    action?: ReactNode;
   }>,
 ) => {
   const { title, children, bg, itemBg, action } = props;
@@ -66,7 +66,7 @@ const DefaultInfoItemComponent = (
   );
 };
 
-const defaultRenderMap: Record<string, (...args: any) => JSX.Element> = {
+const defaultRenderMap: Record<string, (...args: any) => ReactNode> = {
   tags: (title: string, items: string[], props: any) => (
     <DefaultInfoItemComponent title={title} {...props}>
       {items.length !== 0
@@ -107,7 +107,7 @@ const renderInfo = (
     title: string;
     item: any;
     type?: string;
-    action?: JSX.Element;
+    action?: ReactNode;
   },
   config: {
     component?: any;

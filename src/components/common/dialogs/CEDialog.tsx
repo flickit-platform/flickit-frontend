@@ -1,4 +1,4 @@
-import { PropsWithChildren } from "react";
+import { PropsWithChildren, ReactElement } from "react";
 import { styles } from "@styles";
 import DialogTitle from "@mui/material/DialogTitle";
 import DialogContent from "@mui/material/DialogContent";
@@ -18,7 +18,7 @@ import { farsiFontFamily, primaryFontFamily } from "@config/theme";
 
 interface ICEDialogProps extends Omit<DialogProps, "title"> {
   closeDialog?: () => void;
-  title: JSX.Element | null;
+  title: ReactElement | null;
   style?: any;
   titleStyle?: any;
   contentStyle?: any;

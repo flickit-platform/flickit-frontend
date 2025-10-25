@@ -1,4 +1,5 @@
 import { t } from "i18next";
+import { ReactElement } from "react";
 import { FieldErrorsImpl } from "react-hook-form";
 import { Trans } from "react-i18next";
 
@@ -28,7 +29,7 @@ type TErrorTypes =
   | "shouldUnregister"
   | "deps";
 
-type TErrorMessagesBaseOnErrorTypes = Partial<Record<TErrorTypes, JSX.Element>>;
+type TErrorMessagesBaseOnErrorTypes = Partial<Record<TErrorTypes, ReactElement>>;
 
 const getFieldError = (
   errors: FieldErrorsImpl<{ [x: string]: any }>,
