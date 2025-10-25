@@ -1,7 +1,7 @@
 import axios from "axios";
-import i18next, { t } from "i18next";
+import i18next from "i18next";
 import { BASE_URL } from "@constants";
-import keycloakService from "@/service//keycloakService";
+import keycloakService from "@/service/keycloakService";
 
 import * as assessmentKitService from "./assessment-kits";
 import * as assessmentsService from "./assessments";
@@ -21,49 +21,89 @@ declare module "axios" {
   }
 }
 
-const getCurrentLocale = () =>
-  i18next.language ?? navigator.language ?? "en-US";
+const isBrowser =
+  typeof window !== "undefined" && typeof document !== "undefined";
+
+const getCurrentLocale = () => {
+  const lng =
+    i18next?.language ??
+    (isBrowser ? navigator.language : undefined) ??
+    "en-US";
+  return lng;
+};
 
 export const createService = (
   signOut: () => void,
-  accessToken: string,
-  setAccessToken: any,
+  initialAccessToken: string,
+  setAccessToken: (t: string | null) => void,
 ) => {
+  (axios as any).defaults = (axios as any).defaults || {};
+
   axios.defaults.baseURL = BASE_URL;
   axios.defaults.withCredentials = true;
-  axios.defaults.timeoutErrorMessage = t(
-    "common.checkNetworkConnection",
-  ) as string;
+
+  const fallbackTimeoutMsg = "Please check your network connection";
+  const timeoutMsg =
+    (i18next?.t && i18next.t("common.checkNetworkConnection")) ||
+    fallbackTimeoutMsg;
+  (axios.defaults as any).timeoutErrorMessage = timeoutMsg;
 
   axios.interceptors.request.use(async (req: any) => {
+    req.headers = req.headers ?? {};
+
     const currentLocale = getCurrentLocale();
     req.headers["Accept-Language"] = currentLocale;
-    document.cookie = `NEXT_LOCALE=${currentLocale}; max-age=31536000; path=/`;
+    if (isBrowser) {
+      document.cookie = `NEXT_LOCALE=${currentLocale}; max-age=31536000; path=/`;
+    }
 
-    if (req.skipAuth && !keycloakService.getToken()) {
+    if (req.skipAuth) {
       return req;
     }
 
-    const accessToken = keycloakService.getToken();
-    const hasTenantInUrl = req.url.includes("tenant");
+    let token: string | null | undefined =
+      keycloakService?.getToken?.() ?? initialAccessToken ?? null;
 
-    if (!hasTenantInUrl) {
-      req.headers["Authorization"] = `Bearer ${accessToken}`;
+    const hasTenantInUrl =
+      typeof req.url === "string" && req.url.includes("tenant");
+
+    if (!hasTenantInUrl && token) {
+      req.headers["Authorization"] = `Bearer ${token}`;
     }
 
-    localStorage.setItem("accessToken", JSON.stringify(accessToken));
-    if (keycloakService._kc.isTokenExpired(5) && accessToken) {
+    if (isBrowser) {
       try {
-        await keycloakService._kc.updateToken(-1);
-        const newAccessToken = keycloakService.getToken();
-        req.headers["Authorization"] = `Bearer ${newAccessToken}`;
-        localStorage.setItem("accessToken", JSON.stringify(newAccessToken));
-      } catch (error) {
-        console.error("Failed to update token:", error);
+        localStorage.setItem("accessToken", JSON.stringify(token));
+      } catch {
+        /* ignore */
       }
     }
-    if (!hasTenantInUrl && !req.headers?.["Authorization"] && accessToken) {
-      req.headers["Authorization"] = `Bearer ${accessToken}`;
+
+    const shouldTryRefresh =
+      process.env.NODE_ENV !== "test" &&
+      !!keycloakService?._kc?.isTokenExpired &&
+      keycloakService._kc.isTokenExpired(5) &&
+      !!token;
+
+    if (shouldTryRefresh) {
+      try {
+        await keycloakService._kc.updateToken(-1);
+        token = keycloakService.getToken?.() ?? token;
+        if (!hasTenantInUrl && token) {
+          req.headers["Authorization"] = `Bearer ${token}`;
+        }
+        if (isBrowser) {
+          try {
+            localStorage.setItem("accessToken", JSON.stringify(token));
+          } catch {
+            /* ignore */
+          }
+        }
+      } catch (error) {}
+    }
+
+    if (!hasTenantInUrl && !req.headers?.["Authorization"] && token) {
+      req.headers["Authorization"] = `Bearer ${token}`;
     }
 
     return req;

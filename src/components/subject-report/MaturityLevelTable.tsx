@@ -217,7 +217,7 @@ const MaturityLevelTable = ({
     row: ItemColumnMapping,
   ) => {
     if (column.field === "questionnaire") {
-      return item.questionnaire.title;
+      return item.questionnaire?.title;
     }
     if (column.field === "gainedScore") {
       return "";

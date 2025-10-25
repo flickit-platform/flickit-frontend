@@ -5,9 +5,9 @@ import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
 import CheckRoundedIcon from "@mui/icons-material/CheckRounded";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
-import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
 import { KitDesignListItems, MultiLangs, TId } from "@/types/index";
-import { Trans } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 import { farsiFontFamily, primaryFontFamily } from "@config/theme";
 import Accordion from "@mui/material/Accordion";
 import AccordionDetails from "@mui/material/AccordionDetails";
@@ -23,7 +23,6 @@ import EmptyStateOptions from "@/components/kit-designer/answer-range/options/Op
 import Divider from "@mui/material/Divider";
 import OptionContain from "@/components/kit-designer/answer-range/options/OptionsContainer";
 import Chip from "@mui/material/Chip";
-import { t } from "i18next";
 import OptionForm from "@/components/kit-designer/answer-range/options/OptionsForm";
 import languageDetector from "@/utils/language-detector";
 import MultiLangTextField from "@common/fields/MultiLangTextField";
@@ -60,6 +59,7 @@ const ListOfItems = ({
   setOpenDeleteDialog,
   setChangeData,
 }: ListOfItemsProps) => {
+  const { t } = useTranslation();
   const { kitState } = useKitDesignerContext();
   const langCode = kitState.translatedLanguage?.code;
 
@@ -277,7 +277,7 @@ const ListOfItems = ({
               langCode && (tempValues.translations?.[langCode]?.title ?? "")
             }
             onTranslationChange={updateTranslation("title", setTempValues)}
-            label={<Trans i18nKey="common.title" />}
+            label={t("common.title")}
           />
         ) : (
           <TitleWithTranslation
@@ -367,10 +367,10 @@ const ListOfItems = ({
               mr={2}
               px={0.2}
             >
-              <Trans i18nKey="common.index" />
+              {t("common.index")}
             </Box>
             <Box sx={{ width: { xs: "50%", md: "60%" } }}>
-              <Trans i18nKey="common.title" />
+              {t("common.title")}
             </Box>
             <Box
               sx={{
@@ -378,7 +378,7 @@ const ListOfItems = ({
                 textAlign: "center",
               }}
             >
-              <Trans i18nKey="common.value" />
+              {t("common.value")}
             </Box>
           </Box>
         );
@@ -436,7 +436,7 @@ const ListOfItems = ({
               onClick={() => handleAddNewOptionClick(item.id)}
             >
               <Add fontSize="small" />
-              <Trans i18nKey="kitDesigner.newOption" />
+              {t("kitDesigner.newOption")}
             </Button>
           </Box>
         );

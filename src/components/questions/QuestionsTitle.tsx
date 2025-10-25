@@ -63,7 +63,7 @@ const QuestionsTitle = (props: { isReview?: boolean; pathInfo: any }) => {
   useEffect(() => {
     if (isComplete) {
       setDocumentTitle(
-        `${questionnaire.title} ${t("questions.questionnaireFinished")}`,
+        `${questionnaire?.title} ${t("questions.questionnaireFinished")}`,
         config.appTitle,
       );
     }
@@ -170,7 +170,7 @@ const QuestionsTitle = (props: { isReview?: boolean; pathInfo: any }) => {
                 )}
               </IconButton>
               <Text display="inline-block" variant="h5" fontWeight={"bold"}>
-                {questionnaire.title}
+                {questionnaire?.title}
               </Text>{" "}
               {assessmentTotalProgress.loading && percent == 0 ? (
                 <Skeleton width={80} />
