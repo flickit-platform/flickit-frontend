@@ -401,14 +401,13 @@ const useQuestionInfo = (langCode: string, question: any, setTempValue: any) =>{
       return next;
     })
 
-    setTempValue((prev)=>{
+    setTempValue((prev: any)=>{
       return {
-        ...question,
+        ...prev,
         translations: {
-          [langCode] : { ...prev.translations[langCode],[field]: question.translations[langCode][field]  }
+          [langCode] : { ...prev.translations[langCode] ?? "",[field]: question.translations[langCode]?.[field]  ?? "" }
         }
       }
-
     })
 
   },[setEditableFields])
