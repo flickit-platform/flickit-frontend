@@ -107,8 +107,6 @@ const OptionList = (props: OptionListProps) => {
             {...provided.droppableProps}
             ref={provided.innerRef}
             paddingX={2}
-            maxHeight={220}
-            overflow="auto"
           >
             {reorderedItems?.map((item) => (
               <OptionRow

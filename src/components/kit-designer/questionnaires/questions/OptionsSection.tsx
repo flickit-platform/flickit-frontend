@@ -205,7 +205,7 @@ const OptionsSection = ({
         </Tooltip>
       </Box>
       {fetchOptions?.data?.answerOptions?.length > 0 ? (
-        <Box maxHeight={500} overflow="auto">
+        <Box>
           <OptionList
             Options={fetchOptions?.data?.answerOptions}
             onEdit={handleAddNewRow}
