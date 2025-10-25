@@ -1,34 +1,21 @@
-# WORKDIR /app/frontend
-
-# COPY package.json package-lock.json ./
-# RUN npm install 
-# COPY . ./
-# EXPOSE 3000
-
-
-# Use an official Node runtime as a parent image
-FROM node:22.12.0
-
-# Set the working directory to /app
+# ---- builder ----
+FROM node:22.12.0 AS builder
 WORKDIR /app
 
-# Copy the current directory contents into the container at /app
-COPY . /app
+COPY package.json package-lock.json ./
 
-RUN rm -rf node_modules package-lock.json && npm install
+RUN npm i -g npm@11.6.2
 
-# Install any needed packages specified in package.json
-RUN npm cache clean --f
+RUN npm ci --legacy-peer-deps || npm install --legacy-peer-deps
 
-# Install any needed packages specified in package.json
-RUN npm install --f
+COPY . .
 
-# Build the React app
+# build
 RUN npm run build
 
-# Serve the React app using Nginx
+# ---- runtime ----
 FROM nginx:alpine
-COPY --from=0 /app/dist /usr/share/nginx/html
+COPY --from=builder /app/dist /usr/share/nginx/html
 COPY nginx/default.conf /etc/nginx/conf.d/default.conf
 COPY env.sh /docker-entrypoint.d/env.sh
 RUN chmod +x /docker-entrypoint.d/env.sh
