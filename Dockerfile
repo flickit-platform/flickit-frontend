@@ -8,7 +8,7 @@
 
 
 # Use an official Node runtime as a parent image
-FROM node:22.10.0
+FROM node:22.12.0
 
 # Set the working directory to /app
 WORKDIR /app
