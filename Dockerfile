@@ -1,26 +1,23 @@
-# ---- build (Debian/glibc) ----
+# ---- build (glibc) ----
 FROM node:22.12.0-bookworm-slim AS build
 WORKDIR /app
 
-# npm تازه‌تر
 RUN npm i -g npm@11.6.2
 
-# فقط package.json (فعلاً lock را کپی نکن که قفل مک/ویندوز گیج نکند)
+# فقط package.json تا لاکِ سازگار برای لینوکس تولید شود
 COPY package.json ./
-
-# نصب با نادیده گرفتن peer dep های ناسازگار + کشیدن optional ها
 RUN npm install --legacy-peer-deps --include=optional
 
 # بقیه سورس
 COPY . .
 
-# (اختیاری، برای لاگ تشخیصی)
-RUN node -e "console.log('libc=', process.report().header.glibcVersionRuntime || 'musl')"
+# (اختیاری، ولی بی‌خطر)
+# RUN sh -lc 'cat /etc/os-release; (getconf GNU_LIBC_VERSION || true); (ldd --version 2>&1 | head -n1 || true)'
 
 # بیلد
 RUN npm run build
 
-# ---- runtime (Alpine) ----
+# ---- runtime (alpine) ----
 FROM nginx:alpine
 COPY --from=build /app/dist /usr/share/nginx/html
 COPY nginx/default.conf /etc/nginx/conf.d/default.conf
