@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import {
   Grid,
   Box,
@@ -19,7 +19,7 @@ import {
 } from "@/components/common/dialogs/CEDialog";
 import FormProviderWithForm from "@/components/common/FormProviderWithForm";
 import OptionsSection from "./OptionsSection";
-import { t } from "i18next";
+import i18next, { t } from "i18next";
 import { useParams } from "react-router-dom";
 import ImpactSection from "./ImpactSection";
 import AutocompleteAsyncField, {
@@ -31,6 +31,7 @@ import MultiLangTextField from "@common/fields/MultiLangTextField";
 import NavigationButtons from "@/components/common/buttons/NavigationButtons";
 import showToast from "@/utils/toast-error";
 import { Text } from "@/components/common/Text";
+import { RenderGeneralField } from "@common/RenderGeneralField";
 
 interface ITempValue {
   title: string;
@@ -75,6 +76,8 @@ const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
   });
   const [isSaving, setIsSaving] = useState(false);
   const [initialData, setInitialData] = useState<any>(null);
+
+  const {handleFieldEdit, editableFields, toggleTranslation, showTranslations, fieldsName, handleCancelTextBox} = useQuestionInfo(langCode, question, setTempValue)
 
   const fetchMeasures = useQuery({
     service: () => service.kitVersions.measures.getAll({ kitVersionId }),
@@ -223,62 +226,131 @@ const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
         }}
       >
         <Grid container spacing={2} mt={2}>
-          <Grid size={{xs: 12}} display={"flex"}>
-            <Box
-              sx={{
-                ...styles.centerVH,
-                width: { xs: "45px" },
-                justifyContent: "space-around",
-              }}
-              borderRadius="0.5rem"
-              mx={1.3}
-             >
-              <Text
-                data-testid="question-index"
-                variant="semiBoldLarge"
-              >{`Q. ${question?.index}`}</Text>
-            </Box>
-            <MultiLangTextField
-              id="question-title"
-              label={
-              <Text variant={"bodyMedium"} color={"background.secondaryDark"} >
-                <Trans i18nKey="common.question" />
-              </Text>
-            }
-              name="title"
-              value={tempValue.title}
-              onChange={handleInputChange}
-              translationValue={
-                langCode
-                  ? (tempValue.translations?.[langCode]?.title ?? "")
-                  : ""
-              }
-              onTranslationChange={updateTranslation("title", setTempValue)}
-              placeholder={t("kitDesigner.questionPlaceholder")?.toString()}
-              multiline
-              bgcolor="inherit"
-            />
-          </Grid>
-          <Grid size={{xs: 12}}>
-            <MultiLangTextField
-              id="question-hint"
-              label={
-              <Text variant={"bodyMedium"} color={"background.secondaryDark"} >
-                <Trans i18nKey="common.hint"/>
-              </Text>
-            }
-              name="hint"
-              value={tempValue.hint}
-              onChange={handleInputChange}
-              translationValue={
-                langCode ? (tempValue.translations?.[langCode]?.hint ?? "") : ""
-              }
-              onTranslationChange={updateTranslation("hint", setTempValue)}
-              placeholder={t("hintPlaceholder")?.toString()}
-              multiline
-              bgcolor="inherit"
-            />
-          </Grid>
+
+
+          {fieldsName.map((field: any)=>{
+
+            const {
+              name,
+              label,
+              multiline,
+              useRichEditor,
+              type,
+              options,
+              disabled,
+              width,
+            } = field;
+
+            return (
+              <Grid size={{ xs: 12 }} display={"flex"}>
+                <Box
+                  display="flex"
+                  justifyContent="space-between"
+                  sx={{
+                    gap: { xs: 0, md: useRichEditor ? 0 : 5 },
+                    flexDirection: {
+                      xs: "column",
+                      md: useRichEditor ? "column" : "row",
+                    },
+                    alignItems: {
+                      xs: "flex-start",
+                      md: useRichEditor ? "flex-start" : "center",
+                    },
+                    flex: 1
+                  }}
+                >
+                  <Text
+                    variant="titleSmall"
+                    mt="2px"
+                    height="100%"
+                    minWidth={width}
+                    whiteSpace="nowrap"
+                  >
+                    <Trans i18nKey={label} />
+                  </Text>
+                  <Box sx={{ display: "flex", width: "100%" }}>
+                    <RenderGeneralField
+                      field={name}
+                      fieldType={type}
+                      data={question}
+                      editableFields={editableFields}
+                      langCode={langCode}
+                      updatedValues={tempValue}
+                      setUpdatedValues={setTempValue}
+                      showTranslations={showTranslations}
+                      handleCancelTextBox={handleCancelTextBox}
+                      toggleTranslation={toggleTranslation}
+                      handleFieldEdit={handleFieldEdit}
+                      multiline={multiline}
+                      useRichEditor={useRichEditor}
+                      updateTranslation={updateTranslation}
+                      options={options}
+                      label={<Trans i18nKey={label} />}
+                      disabled={disabled}
+                      editable={true}
+                    />
+                  </Box>
+                </Box>
+              </Grid>
+            )
+          })}
+          
+          {/*<Grid size={{xs: 12}} display={"flex"}>*/}
+          {/*  <Box*/}
+          {/*    sx={{*/}
+          {/*      ...styles.centerVH,*/}
+          {/*      width: { xs: "45px" },*/}
+          {/*      justifyContent: "space-around",*/}
+          {/*    }}*/}
+          {/*    borderRadius="0.5rem"*/}
+          {/*    mx={1.3}*/}
+          {/*   >*/}
+          {/*    <Text*/}
+          {/*      data-testid="question-index"*/}
+          {/*      variant="semiBoldLarge"*/}
+          {/*    >{`Q. ${question?.index}`}</Text>*/}
+          {/*  </Box>*/}
+          {/*  <MultiLangTextField*/}
+          {/*    id="question-title"*/}
+          {/*    label={*/}
+          {/*    <Text variant={"bodyMedium"} color={"background.secondaryDark"} >*/}
+          {/*      <Trans i18nKey="common.question" />*/}
+          {/*    </Text>*/}
+          {/*  }*/}
+          {/*    name="title"*/}
+          {/*    value={tempValue.title}*/}
+          {/*    onChange={handleInputChange}*/}
+          {/*    translationValue={*/}
+          {/*      langCode*/}
+          {/*        ? (tempValue.translations?.[langCode]?.title ?? "")*/}
+          {/*        : ""*/}
+          {/*    }*/}
+          {/*    onTranslationChange={updateTranslation("title", setTempValue)}*/}
+          {/*    placeholder={t("kitDesigner.questionPlaceholder")?.toString()}*/}
+          {/*    multiline*/}
+          {/*    bgcolor="inherit"*/}
+          {/*  />*/}
+          {/*</Grid>*/}
+          {/*<Grid size={{xs: 12}}>*/}
+          {/*  <MultiLangTextField*/}
+          {/*    id="question-hint"*/}
+          {/*    label={*/}
+          {/*    <Text variant={"bodyMedium"} color={"background.secondaryDark"} >*/}
+          {/*      <Trans i18nKey="common.hint"/>*/}
+          {/*    </Text>*/}
+          {/*  }*/}
+          {/*    name="hint"*/}
+          {/*    value={tempValue.hint}*/}
+          {/*    onChange={handleInputChange}*/}
+          {/*    translationValue={*/}
+          {/*      langCode ? (tempValue.translations?.[langCode]?.hint ?? "") : ""*/}
+          {/*    }*/}
+          {/*    onTranslationChange={updateTranslation("hint", setTempValue)}*/}
+          {/*    placeholder={t("hintPlaceholder")?.toString()}*/}
+          {/*    multiline*/}
+          {/*    bgcolor="inherit"*/}
+          {/*  />*/}
+          {/*</Grid>*/}
 
           <Grid size={{xs: 12}}>
             <AutocompleteAsyncField
@@ -356,5 +428,89 @@ const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
     </CEDialog>
   );
 };
+
+const useQuestionInfo = (langCode: string, question: any, setTempValue: any) =>{
+  const [editableFields, setEditableFields] = useState<Set<string>>(new Set());
+  const [showTranslations, setShowTranslations] = useState({
+    title: false,
+    hint: false
+  });
+  const { translations } = question
+  useEffect(() => {
+    setShowTranslations({
+      title: !!translations[langCode]?.title,
+      hint:  !!translations[langCode]?.hint,
+    })
+  }, []);
+
+  const handleFieldEdit = useCallback((field: string)=>{
+    setEditableFields((prev)=>{
+      const next = new Set(prev)
+      next.add(field)
+      return next;
+    })
+  },[setEditableFields])
+
+  const handleCancelTextBox = useCallback((field: string)=>{
+    setEditableFields((prev)=>{
+      const next = new Set(prev);
+      next.delete(field);
+      return next;
+    })
+
+    setTempValue((prev)=>{
+      return {
+        ...question,
+        translations: {
+          [langCode] : { ...prev.translations[langCode],[field]: question.translations[langCode][field]  }
+        }
+      }
+
+    })
+
+  },[setEditableFields])
+
+  const toggleTranslation = useCallback(
+    (field: "title" | "hint" ) => {
+      setShowTranslations((prev: any) => ({
+        ...prev,
+        [field]: !prev[field],
+      }));
+    },
+    [],
+  );
+
+  const fieldsName =[
+    {
+      name: "title",
+      label: "common.question",
+      multiline: true,
+      useRichEditor: false,
+      type: "text" as const,
+      options: [],
+      disabled: false,
+      width: i18next.language === "fa" ? "35px" : "60px",
+    },
+    {
+      name: "hint",
+      label: "common.hint",
+      multiline: true,
+      useRichEditor: false,
+      type: "text" as const,
+      options: [],
+      disabled: false,
+      width: i18next.language === "fa" ? "35px" : "60px",
+    },
+  ]
+
+  return {
+    editableFields,
+    handleFieldEdit,
+    handleCancelTextBox,
+    toggleTranslation,
+    showTranslations,
+    fieldsName
+  }
+}
 
 export default QuestionDetailsContainer;
