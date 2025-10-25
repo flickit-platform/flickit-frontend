@@ -226,11 +226,17 @@ const ImpactDetails = ({
     ) : (
       <>
         <Box display="flex">
-          <Text variant="bodyLarge" sx={{ ml: 2, fontWeight: "bold" }}>
-            {attribute.title}
-          </Text>
-          <Text variant="bodyLarge" sx={{ ml: 0.5 }}>
-            {t("kitDesigner.impactsOn") + " " + item.maturityLevel?.title}
+          <Text variant="bodyMedium" >
+            <Trans
+              i18nKey="kitDesigner.impactAttributeOnMaturityLevel"
+              values={{
+                maturityLevel: item.maturityLevel?.title,
+                attribute: attribute.title
+              }}
+              components={{
+                attrStyle: <span style={{fontWeight: "bold"}} />,
+              }}
+            />
           </Text>
         </Box>
         {hasWeight && (

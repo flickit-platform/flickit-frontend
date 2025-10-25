@@ -131,7 +131,7 @@ const ImpactSection: React.FC<{ question: any }> = ({ question }) => {
   return (
     <>
       <Box display="flex" flexDirection="column" gap={1} mt={4}>
-        <Text variant="semiBoldXLarge" gutterBottom>
+        <Text variant="titleSmall" gutterBottom>
           <Trans i18nKey="kitDesigner.questionImpacts" />
         </Text>
         <Text variant="bodyMedium" color="textSecondary">

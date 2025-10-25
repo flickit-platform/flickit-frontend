@@ -159,7 +159,7 @@ const OptionsSection = ({
         gap={2}
         sx={{ ...styles.centerV }}
       >
-        <Text variant="body2">
+        <Text variant="titleSmall" >
           <Trans i18nKey="common.options" />
         </Text>
         <Tooltip

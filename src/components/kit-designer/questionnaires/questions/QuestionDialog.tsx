@@ -326,10 +326,10 @@ const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
         <ImpactSection question={question} key={question.id} />
 
         <Box display="flex" flexDirection="column" gap={1} mt={4}>
-          <Text variant="semiBoldXLarge" gutterBottom>
+          <Text variant="titleSmall" gutterBottom>
             <Trans i18nKey="questions.advancedSettings" />
           </Text>
-          <Text variant="bodyMedium" color="textSecondary">
+          <Text variant="titleSmall" color="textSecondary">
             <Trans i18nKey="questions.advancedSettingsDescription" />
           </Text>
         </Box>
