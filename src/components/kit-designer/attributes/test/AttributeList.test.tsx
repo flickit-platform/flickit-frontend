@@ -7,7 +7,12 @@ const mockAttributeList = [
   {
     id: 1,
     title: "attribute 1",
-    translations: {FA: {title: "translations title", description : "translations description"}},
+    translations: {
+      FA: {
+        title: "translations title",
+        description: "translations description",
+      },
+    },
     description: "description 1",
     subject: {
       id: 1,
@@ -58,17 +63,17 @@ describe("MaturityLevelList", () => {
 
   it("renders attribute correctly", () => {
     const title: any = screen.getByTestId("display-attribute-title");
-    const description: any = screen.getByTestId("display-attribute-description");
-    expect(title).be;
-    expect(description).be;
-    expect(screen.getByTestId("display-attribute-title")).text(
+    const description: any = screen.getByTestId(
+      "display-attribute-description",
+    );
+    expect(title).toBeInTheDocument();
+    expect(description).toBeInTheDocument();
+    expect(screen.getByTestId("display-attribute-title")).toHaveTextContent(
       "attribute 1",
     );
-    expect(
-      screen.getByTestId("display-attribute-description"),
-    ).text("description 1");
-    expect(screen.getByTestId("display-attribute-weight")).text(
-      "1",
+    expect(screen.getByTestId("display-attribute-description")).toHaveTextContent(
+      "description 1",
     );
+    expect(screen.getByTestId("display-attribute-weight")).toHaveTextContent("1");
   });
 });

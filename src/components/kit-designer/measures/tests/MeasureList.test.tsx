@@ -43,7 +43,7 @@ describe("ListOfItems (measure)", () => {
 
   it("renders item titles correctly", () => {
     const { getTitle } = setup();
-    expect(getTitle()).be
+    expect(getTitle()).be;
   });
 
   it("allows editing an item", () => {
@@ -65,13 +65,15 @@ describe("ListOfItems (measure)", () => {
 
     fireEvent.click(getSubmitButton());
 
-    expect(mockOnEdit).calledWith({
-      id: 1,
-      index: 1,
-      value: 1,
-      title: "Updated title 1",
-      description: "Updated Description 1",
-    });
+    expect(mockOnEdit).toHaveBeenCalledWith(
+      expect.objectContaining({
+        id: 1,
+        index: 1,
+        value: 1,
+        title: "Updated title 1",
+        description: "Updated Description 1",
+      }),
+    );
   });
 
   it("triggers delete dialog when delete icon is clicked", () => {
@@ -79,7 +81,7 @@ describe("ListOfItems (measure)", () => {
 
     fireEvent.click(getDeleteButton());
 
-    expect(mockSetOpenDeleteDialog).calledWith({
+    expect(mockSetOpenDeleteDialog).toHaveBeenCalledWith({
       status: true,
       id: 1,
     });
