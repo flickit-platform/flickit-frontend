@@ -45,7 +45,7 @@
     "axios": "1.12.2",
     "flagsmith": "^9.3.2",
     "i18next": "25.6.0",
-    "keycloak-js": "^26.2.1",
+    "keycloak-js": "^23.0.3",
     "nanoid": "5.1.6",
     "react": "19.2.0",
     "react-dom": "19.2.0",
