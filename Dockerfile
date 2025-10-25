@@ -15,6 +15,8 @@ WORKDIR /app
 # Copy the current directory contents into the container at /app
 COPY . /app
 
+RUN rm -rf node_modules package-lock.json && npm install
+
 # Install any needed packages specified in package.json
 RUN npm cache clean --f
 
