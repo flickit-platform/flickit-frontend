@@ -30,7 +30,7 @@ jobs:
       - name: Install dependencies
         run: npm install --f  # Install dependencies using npm
       - name: Test and coverage
-        run: npx vitest --run --coverage
+        run: npm run test -- --coverage  # Run tests with Vitest and generate coverage
       - name: Upload coverage report
         uses: actions/upload-artifact@v4
         with:
