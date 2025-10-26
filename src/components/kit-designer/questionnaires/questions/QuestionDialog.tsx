@@ -22,8 +22,7 @@ import OptionsSection from "./OptionsSection";
 import i18next, { t } from "i18next";
 import { useParams } from "react-router-dom";
 import ImpactSection from "./ImpactSection";
-import AutocompleteAsyncField, {
-} from "@/components/common/fields/AutocompleteAsyncField";
+import AutocompleteAsyncField from "@/components/common/fields/AutocompleteAsyncField";
 import { kitActions, useKitDesignerContext } from "@/providers/kit-provider";
 import { useTranslationUpdater } from "@/hooks/useTranslationUpdater";
 import NavigationButtons from "@/components/common/buttons/NavigationButtons";
@@ -107,7 +106,7 @@ const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
         const initial = {
           options: question.options ?? [{ text: "" }],
           mayNotBeApplicable: question.mayNotBeApplicable ?? false,
-          advisable: !question.advisable ?? false,
+          advisable: (!question.advisable) ?? false,
           measure:
             fetchMeasure?.items?.find(
               (m: any) => m.id === question.measureId,
@@ -237,7 +236,7 @@ const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
             } = field;
 
             return (
-              <Grid size={{ xs: 12 }} display={"flex"}>
+              <Grid key={name} size={{ xs: 12 }} display={"flex"}>
                 <Box
                   display="flex"
                   justifyContent="space-between"
