@@ -177,14 +177,6 @@ const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
     })();
   };
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setTempValue((prev: any) => ({
-      ...prev,
-      [name]: value,
-    }));
-  };
-
   const isDirty = () => {
     const currentValues = formMethods.getValues();
     const measureId = currentValues.measure?.id ?? null;
@@ -411,12 +403,13 @@ const useQuestionInfo = (langCode: string, question: any, setTempValue: any) =>{
       return {
         ...prev,
         translations: {
-          [langCode] : { ...prev.translations[langCode] ?? "",[field]: question.translations[langCode]?.[field]  ?? "" }
+          [langCode] : { ...prev.translations[langCode], [field]: question.translations[langCode]?.[field]
+          }
         }
       }
     })
 
-  },[setEditableFields])
+  },[setEditableFields, question])
 
   const toggleTranslation = useCallback(
     (field: "title" | "hint" ) => {
