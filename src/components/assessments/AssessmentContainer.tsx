@@ -156,6 +156,7 @@ const AssessmentContainer = () => {
                         mx: isSmallScreen ? "0px !important" : "unset",
                       },
                     }}
+                    data-testid="create-assessment"
                   />
                 </Box>
               ) : (
