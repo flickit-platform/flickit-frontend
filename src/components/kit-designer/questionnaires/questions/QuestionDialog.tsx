@@ -107,7 +107,7 @@ const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
         const initial = {
           options: question.options ?? [{ text: "" }],
           mayNotBeApplicable: question.mayNotBeApplicable ?? false,
-          advisable: question.advisable ?? false,
+          advisable: !question.advisable ?? false,
           measure:
             fetchMeasure?.items?.find(
               (m: any) => m.id === question.measureId,
@@ -128,10 +128,13 @@ const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
   }, [rest.open, question.id, isSaving]);
 
   const handleSubmit = async (data: any) => {
+    const updateData = {...data}
+    updateData.advisable = !updateData.advisable
+
     try {
       setIsSaving(true);
       const updatedFields = {
-        ...data,
+        ...updateData,
         ...tempValue,
         index: question.index,
         answerRangeId: selectedAnswerRange,
@@ -195,7 +198,7 @@ const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
       measureId !== initialMeasureId ||
      (!!currentValues.mayNotBeApplicable && currentValues.mayNotBeApplicable )!==
         (question.mayNotBeApplicable ?? false) ||
-     (!!currentValues.advisable && currentValues.advisable) !== (question.advisable ?? false)
+     (!!currentValues.advisable && currentValues.advisable) === (question.advisable ?? false)
     );
   };
   const theme = useTheme();
