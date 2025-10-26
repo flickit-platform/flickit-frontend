@@ -38,6 +38,7 @@
   "spacesAreEssentialForCreating": "Spaces are essential for creating and organizing your assessments. You can also collaborate with others by adding them to spaces.",
   "spaceSetting": "Space setting",
   "spaceUpdatedSuccessMessage": "{{title}} updated successfully.",
+  "removeSuccessfully": " \"{{title}}\" remove Successfully",
   "tryCreatingNewSpace": "You don't have access to existing spaces. Try creating one or ask for access.",
   "targetSpace": "Target space",
   "unlimitedAssessmentPerSpace": "<strong>Unlimited</strong> assessment per space.",

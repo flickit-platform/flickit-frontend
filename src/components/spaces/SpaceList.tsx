@@ -3,7 +3,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 import Tooltip from "@mui/material/Tooltip";
 import Box from "@mui/material/Box";
 import { Trans } from "react-i18next";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useServiceContext } from "@/providers/service-provider";
 import { useQuery } from "@/hooks/useQuery";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
@@ -39,26 +39,39 @@ interface ISpaceListProps {
 const SpacesList = (props: ISpaceListProps) => {
   const { dialogProps, data, fetchSpaces } = props;
   const { service } = useServiceContext();
-  const [deleteDialog, setDeleteDialog] = useState<{
+  const [confirmDialog, setConfirmDialog] = useState<{
     open: boolean;
     spaceId: string | null;
     spaceTitle: string;
+    type: string | null
   }>({
     open: false,
     spaceId: null,
     spaceTitle: "",
+    type: null
   });
   const { query: deleteSpace } = useQuery({
     service: (args, config) => service.space.remove(args, config),
     runOnMount: false,
   });
+  const { query: leaveSpace }   = useQuery({
+    service: (args, config) => service.space.leave(args, config),
+    runOnMount: false,
+  });
 
-  const handleConfirmDelete = async () => {
-    if (deleteDialog.spaceId) {
+  const handleConfirmDialog = async () => {
+    if (confirmDialog.spaceId) {
       try {
-        await deleteSpace({ spaceId: deleteDialog.spaceId });
+        if(confirmDialog.type == "delete"){
+          await deleteSpace({ spaceId: confirmDialog.spaceId })
+        }else {
+          await leaveSpace({ spaceId: confirmDialog.spaceId });
+        }
         await fetchSpaces();
-        setDeleteDialog({ open: false, spaceId: null, spaceTitle: "" });
+        showToast(t("spaces.removeSuccessfully", {
+          title: confirmDialog.spaceTitle,
+        }), {variant: "success"})
+        setConfirmDialog({ open: false, spaceId: null, spaceTitle: "", type: null });
       } catch (error) {
         const err = error as ICustomError;
         showToast(err);
@@ -79,8 +92,8 @@ const SpacesList = (props: ISpaceListProps) => {
                 owner={item?.owner}
                 dialogProps={dialogProps}
                 fetchSpaces={fetchSpaces}
-                onDelete={(spaceId, spaceTitle) =>
-                  setDeleteDialog({ open: true, spaceId, spaceTitle })
+                onAction={(spaceId, spaceTitle, type) =>
+                  setConfirmDialog({ open: true, spaceId, spaceTitle, type })
                 }
               />
             </Grid>
@@ -88,12 +101,12 @@ const SpacesList = (props: ISpaceListProps) => {
         })}
       </Grid>{" "}
       <DeleteConfirmationDialog
-        open={deleteDialog.open}
-        onClose={() => setDeleteDialog((prev) => ({ ...prev, open: false }))}
-        onConfirm={handleConfirmDelete}
+        open={confirmDialog.open}
+        onClose={() => setConfirmDialog((prev) => ({ ...prev, open: false }))}
+        onConfirm={handleConfirmDialog}
         content={{
           category: t("common.space"),
-          title: deleteDialog.spaceTitle,
+          title: confirmDialog.spaceTitle,
         }}
       />
     </>
@@ -106,11 +119,11 @@ interface ISpaceCardProps {
   owner: any;
   dialogProps: TDialogProps;
   fetchSpaces: TQueryFunction<ISpacesModel>;
-  onDelete: (spaceId: string, spaceTitle: string) => void;
+  onAction: (spaceId: string, spaceTitle: string, type: string | null) => void;
 }
 
 export const SpaceCard = (props: ISpaceCardProps) => {
-  const { item, isActiveSpace, dialogProps, fetchSpaces, owner, onDelete } =
+  const { item, isActiveSpace, dialogProps, fetchSpaces, owner, onAction } =
     props;
   const [showTooltip, setShowTooltip] = useState<boolean>(false);
   const { service } = useServiceContext();
@@ -232,7 +245,7 @@ export const SpaceCard = (props: ISpaceCardProps) => {
                 is_default_space_for_current_user={
                   is_default_space_for_current_user
                 }
-                onDelete={onDelete}
+                onAction={onAction}
               />
             </Box>
           </Tooltip>
@@ -250,7 +263,7 @@ const Actions = (props: any) => {
     isOwner,
     is_default_space_for_current_user,
     setShowTooltip,
-    onDelete,
+    onAction,
   } = props;
   const { id: spaceId, title: spaceTitle } = space;
   const { service } = useServiceContext();
@@ -282,19 +295,6 @@ const Actions = (props: any) => {
       });
   };
 
-  const deleteItem = async (e: any) => {
-    onDelete(spaceId, spaceTitle);
-  };
-  const leaveSpace = async (e: any) => {
-    try {
-      await leaveSpaceQuery.query();
-      await fetchSpaces();
-    } catch (e) {
-      const err = e as ICustomError;
-      toastError(err);
-    }
-  };
-
   return (
     <MoreActions
       {...useMenu()}
@@ -309,13 +309,13 @@ const Actions = (props: any) => {
         isOwner && {
           icon: <DeleteOutlinedIcon fontSize="small" />,
           text: <Trans i18nKey="common.delete" />,
-          onClick: deleteItem,
+          onClick: ()=> onAction(spaceId, spaceTitle, "delete"),
         },
         !is_default_space_for_current_user &&
           !isOwner && {
             icon: <ExitToAppRoundedIcon fontSize="small" />,
             text: <Trans i18nKey="spaces.leaveSpace" />,
-            onClick: leaveSpace,
+            onClick: ()=> onAction(spaceId, spaceTitle, "leave"),
           },
       ]}
       setShowTooltip={setShowTooltip}
