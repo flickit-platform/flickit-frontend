@@ -1,6 +1,6 @@
-import Keycloak, { KeycloakInstance } from "keycloak-js";
+import Keycloak from "keycloak-js";
 
-const _kc: KeycloakInstance = new Keycloak({
+const _kc: any = new Keycloak({
   url: import.meta.env.VITE_SSO_URL,
   realm: import.meta.env.VITE_SSO_REALM,
   clientId: import.meta.env.VITE_SSO_CLIENT_ID,
@@ -21,7 +21,7 @@ const initKeycloak = (onAuthenticatedCallback: () => void) => {
       onLoad: "check-sso",
       pkceMethod: "S256",
     })
-    .then((authenticated) => {
+    .then((authenticated:any) => {
       const currentPath = location.href;
       if (!authenticated) {
         if (isPublicRoute(currentPath)) {

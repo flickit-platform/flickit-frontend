@@ -114,11 +114,13 @@ const ImpactSection: React.FC<{ question: any }> = ({ question }) => {
 
   const fields = [
     {
+      id: 1,
       name: "attributeId",
       label: t("kitDesigner.attribute"),
       options: fetchAttributeKit?.data?.items ?? [],
     },
     {
+      id: 2,
       name: "maturityLevelId",
       label: t("common.maturityLevel"),
       options: fetchMaturityLevels?.data?.items ?? [],
@@ -161,7 +163,9 @@ const ImpactSection: React.FC<{ question: any }> = ({ question }) => {
               SubTitle="kitDesigner.optionsImpactsEmptyStateDetailed"
               onAddNewRow={() => setShowForm(true)}
               disabled={disabled}
-              disableTextBox={<Trans i18nKey="kitDesigner.optionsImpactsDisabled" />}
+              disableTextBox={
+                <Trans i18nKey="kitDesigner.optionsImpactsDisabled" />
+              }
             />
           )
         )}

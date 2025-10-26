@@ -6,7 +6,6 @@ import { Trans } from "react-i18next";
 import { InputFieldUC } from "@common/fields/InputField";
 import { styles } from "@styles";
 import { useServiceContext } from "@/providers/service-provider";
-import setServerFieldErrors from "@/utils/set-server-field-error";
 import NoteAddRoundedIcon from "@mui/icons-material/NoteAddRounded";
 import { ICustomError } from "@/utils/custom-error";
 import { useNavigate, useParams } from "react-router-dom";
@@ -66,6 +65,7 @@ const AssessmentCEFromDialog = (props: IAssessmentCEFromDialogProps) => {
 
   const onSubmit = async (data: any, event: any, shouldView?: boolean) => {
     const { space, assessment_kit, title, color, shortTitle, language } = data;
+
     setLoading(true);
     try {
       type === "update"
@@ -104,7 +104,6 @@ const AssessmentCEFromDialog = (props: IAssessmentCEFromDialogProps) => {
     } catch (e) {
       const err = e as ICustomError;
       setLoading(false);
-      setServerFieldErrors(err, formMethods);
       formMethods.clearErrors();
       showToast(err);
       return () => {
@@ -190,6 +189,7 @@ const AssessmentCEFromDialog = (props: IAssessmentCEFromDialogProps) => {
               label={<Trans i18nKey="assessment.assessmentAndReportLanguage" />}
               options={languages}
               data-cy="language"
+              data-testid="language-value"
               disabled={languages.length === 1}
               required
               helperText={

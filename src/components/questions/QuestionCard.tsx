@@ -79,7 +79,6 @@ import Pagination from "@mui/material/Pagination";
 import { getReadableDate } from "@/utils/readable-date";
 import { useAssessmentContext } from "@/providers/assessment-provider";
 import showToast from "@/utils/toast-error";
-import uniqueId from "@/utils/unique-id";
 import useScreenResize from "@/hooks/useScreenResize";
 import { CEDialog, CEDialogActions } from "../common/dialogs/CEDialog";
 
@@ -543,7 +542,7 @@ export const QuestionTabsTemplate = (props: any) => {
           scrollButtons="auto"
           variant="scrollable"
           sx={{ ...styles.centerV }}
-          key={uniqueId()}
+          key={value}
         >
           <Tab
             sx={{ textTransform: "none", ...theme.typography.semiBoldLarge }}

@@ -1,7 +1,6 @@
 import Box from "@mui/material/Box";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
-import uniqueId from "@/utils/unique-id";
 import { farsiFontFamily, primaryFontFamily } from "@config/theme";
 import { Trans } from "react-i18next";
 import { Link, NavLink, useParams } from "react-router-dom";
@@ -24,8 +23,10 @@ import languageDetector from "@/utils/language-detector";
 import useMenu from "@/hooks/useMenu";
 import { t } from "i18next";
 import { Text } from "../common/Text";
+import { TId } from "@/types";
 
 type TabItem = {
+  id: TId;
   label: string;
   address: string;
   permission: string;
@@ -33,27 +34,37 @@ type TabItem = {
 
 const tabListTitle: TabItem[] = [
   {
+    id: 1,
     label: "dashboard.dashboard",
     address: "dashboard",
     permission: "viewDashboard",
   },
   {
+    id: 2,
     label: "common.questions",
     address: "questionnaires",
     permission: "viewAssessmentQuestionnaireList",
   },
   {
+    id: 3,
     label: "common.insights",
     address: "insights",
     permission: "viewAssessmentInsights",
   },
-  { label: "advice.advice", address: "advice", permission: "createAdvice" },
   {
+    id: 4,
+    label: "advice.advice",
+    address: "advice",
+    permission: "createAdvice",
+  },
+  {
+    id: 5,
     label: "assessmentReport.reportTitle",
     address: "report",
     permission: "manageReportMetadata",
   },
   {
+    id: 6,
     label: "assessmentReport.reportTitle",
     address: "settings",
     permission: "viewDashboard",
@@ -204,10 +215,10 @@ const MainTabs = (props: any) => {
                       },
                     }}
                   >
-                    {filteredTabList?.map((tab: any) => {
+                    {filteredTabList?.map((tab) => {
                       return (
                         <Tab
-                          key={uniqueId()}
+                          key={tab.id}
                           to={`./${tab.address}/`}
                           component={Link}
                           value={tab.address}

@@ -1,20 +1,58 @@
 import { useTranslation } from "react-i18next";
 import { CEDialog, CEDialogActions } from "./CEDialog";
 import { Text } from "../Text";
-import i18next, { DefaultTFuncReturn } from "i18next";
+import i18next from "i18next";
 
+interface IContent {
+  category?: string;
+  title?: string;
+  hideCategory?: boolean;
+  lng?: string;
+}
 interface IDeleteConfirmationDialogProps {
   open: boolean;
   onClose: () => void;
   onConfirm: () => void;
-  content?: {
-    category?: DefaultTFuncReturn;
-    title?: DefaultTFuncReturn;
-    hideCategory?: boolean;
-  };
+  content?: IContent;
   confirmButtonText?: string | null;
   cancelButtonText?: string | null;
 }
+
+export const getDeleteContent = (content?: IContent) => {
+  const { t } = useTranslation();
+
+  if (content?.title) {
+    const categoryText =
+      !content.hideCategory && content?.category
+        ? (i18next.language === "en" &&
+          (content.lng === undefined || content.lng === "en")
+            ? "the "
+            : "") + content.category.toLocaleLowerCase()
+        : "";
+
+    return t("common.deleteItemWithTitle", {
+      category: categoryText,
+      title: content.title,
+      lng: content?.lng,
+    });
+  }
+
+  return t("common.deleteItemWithoutTitle", {
+    category: content?.category,
+    lng: content?.lng,
+  });
+};
+
+export const getDeleteTitle = (content?: IContent) => {
+  const { t } = useTranslation();
+
+  if (!content?.category) return t("common.delete");
+
+  return t("common.deleteWithCategory", {
+    category: content.category.toLocaleLowerCase(),
+    lng: content?.lng,
+  });
+};
 
 export const DeleteConfirmationDialog = ({
   open,
@@ -26,38 +64,11 @@ export const DeleteConfirmationDialog = ({
 }: IDeleteConfirmationDialogProps) => {
   const { t } = useTranslation();
 
-  const getDialogTitle = () => {
-    if (!content?.category) return t("common.delete");
-
-    return t("common.deleteWithCategory", {
-      category: content.category.toLocaleLowerCase(),
-    });
-  };
-
-  const getDialogContent = () => {
-    if (content?.title) {
-      const categoryText =
-        !content.hideCategory && content?.category
-          ? (i18next.language === "en" ? "the " : "") +
-            content.category.toLocaleLowerCase()
-          : "";
-
-      return t("common.deleteItemWithTitle", {
-        category: categoryText,
-        title: content.title,
-      });
-    }
-
-    return t("common.deleteItemWithoutTitle", {
-      category: content?.category,
-    });
-  };
-
   return (
     <CEDialog
       open={open}
       closeDialog={onClose}
-      title={<>{getDialogTitle()}</>}
+      title={<>{getDeleteTitle(content)}</>}
       maxWidth="sm"
       sx={{
         "& .MuiDialog-paper": {
@@ -66,8 +77,7 @@ export const DeleteConfirmationDialog = ({
         },
       }}
     >
-      <Text sx={{ color: "#0A2342" }}>{getDialogContent()}</Text>
-
+      <Text sx={{ color: "#0A2342" }}>{getDeleteContent(content)}</Text>
       <CEDialogActions
         type="delete"
         loading={false}

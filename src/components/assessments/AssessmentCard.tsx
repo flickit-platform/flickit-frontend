@@ -153,7 +153,6 @@ const AssessmentCard = ({
   if (showQuestionnaires && !(!isQuickMode && showReport && showDashboard))
     buttonTypes.push("questionnaires");
   if (showDashboard && !isQuickMode) buttonTypes.push("dashboard");
-console.log(onDelete)
   return (
     <Grid size={{ xs: 12, sm: 6, md: 4, lg: 3 }}>
       <Paper
@@ -509,8 +508,6 @@ const Actions = ({
   });
 
   const deleteItem = async () => {
-    console.log(item)
-    console.log(onDelete)
     onDelete(item.id, item.title);
   };
 

@@ -1,4 +1,4 @@
-import { useCallback } from "react";
+import { ReactElement, useCallback } from "react";
 import { Text } from "@/components/common/Text";
 import { t } from "i18next";
 import { styles } from "@styles";
@@ -17,7 +17,7 @@ interface ColorScheme {
 }
 
 interface PopupTexts {
-  buttonLabel: JSX.Element;
+  buttonLabel: ReactElement;
   description: string;
   primaryAction: string;
   secondaryAction: string;

@@ -9,13 +9,14 @@ import { useTheme } from "@mui/material/styles";
 import uniqueId from "@/utils/unique-id";
 import languageDetector from "@/utils/language-detector";
 import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
+import { ReactElement, ReactNode } from "react";
 
 interface ISupTitleBreadcrumbProps {
   routes: {
     sup?: string;
     to?: string;
-    icon?: JSX.Element;
-    title?: string | JSX.Element;
+    icon?: ReactElement;
+    title?: string | ReactNode;
     disabled?: boolean;
   }[];
   displayChip?: boolean;
@@ -59,39 +60,37 @@ const SupTitleBreadcrumb = (
               }}
               variant="bodyLarge"
             >
-              {(
-                <Chip
-                  icon={icon}
-                  label={title}
-                  size="small"
-                  sx={{
-                    cursor: isActive ? mouseCursor : "pointer",
-                    alignSelf: "flex-start",
-                    bgcolor: isActive ? "#D0E4FF" : "rgba(206,211,217,0.4)",
-                    color: isActive ? "#2466A8" : "outline.outline",
-                    textTransform: "none",
-                    borderRadius: "8px",
-                    py: "16px",
-                    px: "8px",
-                    display: "inline-flex",
-                    gap: 0.75,
-                    "& .MuiChip-icon": {
-                      color: "currentColor",
-                      marginInlineEnd: -1,
-                      marginInlineStart: 0,
-                      fontSize: 18,
-                    },
+              <Chip
+                icon={icon}
+                label={title}
+                size="small"
+                sx={{
+                  cursor: isActive ? mouseCursor : "pointer",
+                  alignSelf: "flex-start",
+                  bgcolor: isActive ? "#D0E4FF" : "rgba(206,211,217,0.4)",
+                  color: isActive ? "#2466A8" : "outline.outline",
+                  textTransform: "none",
+                  borderRadius: "8px",
+                  py: "16px",
+                  px: "8px",
+                  display: "inline-flex",
+                  gap: 0.75,
+                  "& .MuiChip-icon": {
+                    color: "currentColor",
+                    marginInlineEnd: -1,
+                    marginInlineStart: 0,
+                    fontSize: 18,
+                  },
 
-                    "& .MuiChip-label": {
-                      ...theme.typography.bodyLarge,
-                      fontFamily: languageDetector(title as string)
-                        ? farsiFontFamily
-                        : primaryFontFamily,
-                      fontWeight: 300,
-                    },
-                  }}
-                />
-              ) || <LoadingSkeleton width={"70px"} sx={{ borderRadius: 1 }} />}
+                  "& .MuiChip-label": {
+                    ...theme.typography.bodyLarge,
+                    fontFamily: languageDetector(title as string)
+                      ? farsiFontFamily
+                      : primaryFontFamily,
+                    fontWeight: 300,
+                  },
+                }}
+              />
             </MuiLink>
           </Box>
         );

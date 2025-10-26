@@ -3,9 +3,10 @@ import Dialog from "@mui/material/Dialog";
 import DialogTitle from "@mui/material/DialogTitle";
 import useDialog from "@/hooks/useDialog";
 import { IDialogProps } from "@/types/index";
+import { ReactElement } from "react";
 
 export interface IRichEditorMenuItem {
-  icon?: JSX.Element;
+  icon?: ReactElement;
   title: string;
   action?: (props: IDialogProps) => any;
   isActive?: () => boolean;
@@ -13,7 +14,7 @@ export interface IRichEditorMenuItem {
   disable?: boolean;
   prompt?: {
     title: string;
-    promptBody: (closeModal: () => void) => JSX.Element;
+    promptBody: (closeModal: () => void) => ReactElement;
   };
 }
 
@@ -66,7 +67,7 @@ const PromptForm = (
   props: IDialogProps & {
     prompt: {
       title: string;
-      promptBody: (closeModal: () => void) => JSX.Element;
+      promptBody: (closeModal: () => void) => ReactElement;
     };
   },
 ) => {

@@ -6,7 +6,6 @@ import { Trans } from "react-i18next";
 import { InputFieldUC } from "@common/fields/InputField";
 import { styles } from "@styles";
 import { useServiceContext } from "@/providers/service-provider";
-import setServerFieldErrors from "@/utils/set-server-field-error";
 import NoteAddRoundedIcon from "@mui/icons-material/NoteAddRounded";
 import { ICustomError } from "@/utils/custom-error";
 import { useNavigate, useParams } from "react-router-dom";
@@ -25,7 +24,6 @@ import { keyframes } from "@emotion/react";
 import convertToBytes from "@/utils/convert-to-bytes";
 import { useQuery } from "@/hooks/useQuery";
 import LoadingButton from "@mui/lab/LoadingButton";
-import uniqueId from "@/utils/unique-id";
 import i18n from "i18next";
 import showToast from "@/utils/toast-error";
 import { v3Tokens } from "@/config/tokens";
@@ -165,7 +163,6 @@ const AssessmentKitCEFromDialog = (props: IAssessmentKitCEFromDialogProps) => {
       const err = e as ICustomError;
       showToast(err);
       setLoading(false);
-      setServerFieldErrors(err, formMethods);
       formMethods.clearErrors();
 
       return () => {
@@ -448,7 +445,7 @@ const AssessmentKitCEFromDialog = (props: IAssessmentKitCEFromDialogProps) => {
       <Box mt={4} maxHeight="260px" overflow="scroll">
         {syntaxErrorObject?.map((e: any) => {
           return (
-            <Box ml={1} key={uniqueId()}>
+            <Box ml={1} key={e.fileName + "_" + e.errorLine}>
               <Alert severity="error" sx={{ my: 2 }}>
                 <Box display="flex" flexDirection="column">
                   <Text variant="subtitle2" color="error">

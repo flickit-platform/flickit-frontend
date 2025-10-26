@@ -1,10 +1,10 @@
-import { useReducer, FC, useContext, useMemo, createContext } from "react";
+import { useReducer, FC, useContext, useMemo, createContext, ReactElement } from "react";
 import { createService, TService } from "@service";
 import { authActions, useAuthContext } from "../auth-provider";
-import serviceReducer from "./reducer";
+import { serviceReducer } from "./reducer";
 
 interface IServiceProviderProps {
-  children?: JSX.Element | JSX.Element[];
+  children?: ReactElement | ReactElement[];
 }
 
 export interface IServiceContext {

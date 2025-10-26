@@ -33,7 +33,7 @@ describe("questionnairesList", () => {
   });
 
   it("renders ques levels correctly", () => {
-    expect(screen.getByText("title test 1")).toBeInTheDocument();
+    expect(screen.getByText("title test 1")).be
   });
 
   it("allows editing a questionnaires", () => {

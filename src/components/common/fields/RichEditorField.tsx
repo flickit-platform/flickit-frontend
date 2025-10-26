@@ -67,19 +67,19 @@ const RichEditorFieldBase = (props: any) => {
     <FormControl
       fullWidth
       variant="outlined"
-      onMouseDown={() => {
-        setHover(true);
-      }}
-      onMouseOut={() => {
-        setHover(false);
-      }}
+      onMouseEnter={() => setHover(true)}
+      onMouseLeave={() => setHover(false)}
       onFocus={(e) => {
         if (e.target?.id === "proseMirror") {
           setFocus(true);
           setShrink(true);
         }
       }}
+      onBlurCapture={() => {
+        setHover(false);
+      }}
       onBlur={(e) => {
+        setHover(false);
         if (!field?.value) {
           setFocus(false);
           setShrink(false);

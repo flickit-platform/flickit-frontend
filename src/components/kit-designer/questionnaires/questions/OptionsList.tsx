@@ -7,7 +7,7 @@ import Chip from "@mui/material/Chip";
 import CheckRoundedIcon from "@mui/icons-material/CheckRounded";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import TextField from "@mui/material/TextField";
-import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
 import { IOption } from "@/types/index";
 import { Trans } from "react-i18next";
 import { t } from "i18next";

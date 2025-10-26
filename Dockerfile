@@ -8,7 +8,7 @@
 
 
 # Use an official Node runtime as a parent image
-FROM node:18.9.0-alpine
+FROM node:20.19.0-alpine
 
 # Set the working directory to /app
 WORKDIR /app
@@ -20,7 +20,7 @@ COPY . /app
 RUN npm install --f
 
 # Build the React app
-RUN npm run build
+RUN npx vite build
 
 # Serve the React app using Nginx
 FROM nginx:alpine

@@ -1,4 +1,4 @@
-import { ReactNode, useEffect, useMemo, useRef, useState } from "react";
+import { ReactElement, ReactNode, useEffect, useMemo, useRef, useState } from "react";
 import Autocomplete, { AutocompleteProps } from "@mui/material/Autocomplete";
 import throttle from "lodash/throttle";
 import TextField from "@mui/material/TextField";
@@ -104,7 +104,7 @@ interface IAutocompleteAsyncFieldBase
   formatRequest?: (request: any) => any;
   name: string;
   helperText?: ReactNode;
-  label: string | JSX.Element;
+  label: string | ReactElement;
   filterSelectedOption?: (options: readonly any[], value: any) => any[];
   required?: boolean;
   searchOnType?: boolean;

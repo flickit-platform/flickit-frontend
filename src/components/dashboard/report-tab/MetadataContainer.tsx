@@ -7,7 +7,6 @@ import { t } from "i18next";
 import { useQuery } from "@/hooks/useQuery";
 import { useServiceContext } from "@/providers/service-provider";
 import QueryData from "@common/QueryData";
-import uniqueId from "@/utils/unique-id";
 import { LoadingSkeleton } from "@common/loadings/LoadingSkeleton";
 import AssignmentOutlinedIcon from "@mui/icons-material/AssignmentOutlined";
 import ReportProblemOutlinedIcon from "@mui/icons-material/ReportProblemOutlined";
@@ -15,13 +14,49 @@ import Switch from "@mui/material/Switch";
 import { EditableRichEditor } from "@/components/common/fields/EditableRichEditor";
 import { styles } from "@styles";
 import { Text } from "@/components/common/Text";
+import { TId } from "@/types";
+
+const reportFields: {
+  id: TId;
+  name: string;
+  title: string;
+  placeholder: string;
+}[] = [
+  {
+    id: 1,
+    name: "intro",
+    title: "assessmentReport.introductionReport",
+    placeholder: "assessmentReport.writeIntroduction",
+  },
+  {
+    id: 2,
+    name: "prosAndCons",
+    title: "assessmentReport.maturityMapOfAssessedAttributes",
+    placeholder: "assessmentReport.writeStrengthAndAreas",
+  },
+  {
+    id: 3,
+    name: "steps",
+    title: "assessment.assessmentSteps",
+    placeholder: "assessmentReport.writeStepsForAssessment",
+  },
+  {
+    id: 4,
+    name: "participants",
+    title: "assessmentReport.participants",
+    placeholder: "assessmentReport.writeAboutParticipants",
+  },
+];
 const ReportTab = () => {
   const { spaceId = "", assessmentId = "" } = useParams();
   const { service } = useServiceContext();
 
   const fetchReportFields = useQuery({
     service: (args, config) =>
-      service.assessments.metadata.getMetadata(args ?? { assessmentId }, config),
+      service.assessments.metadata.getMetadata(
+        args ?? { assessmentId },
+        config,
+      ),
     runOnMount: true,
   });
 
@@ -39,28 +74,6 @@ const ReportTab = () => {
     await fetchReportFields.query();
   };
 
-  const reportFields: { name: string; title: string; placeholder: string }[] = [
-    {
-      name: "intro",
-      title: "assessmentReport.introductionReport",
-      placeholder: "assessmentReport.writeIntroduction",
-    },
-    {
-      name: "prosAndCons",
-      title: "assessmentReport.maturityMapOfAssessedAttributes",
-      placeholder: "assessmentReport.writeStrengthAndAreas",
-    },
-    {
-      name: "steps",
-      title: "assessment.assessmentSteps",
-      placeholder: "assessmentReport.writeStepsForAssessment",
-    },
-    {
-      name: "participants",
-      title: "assessmentReport.participants",
-      placeholder: "assessmentReport.writeAboutParticipants",
-    },
-  ];
   return (
     <QueryData
       {...fetchReportFields}
@@ -71,10 +84,10 @@ const ReportTab = () => {
         return (
           <>
             {reportFields.map((field) => {
-              const { name, title, placeholder } = field;
+              const { id, name, title, placeholder } = field;
               return (
                 <Box
-                  key={uniqueId()}
+                  key={id}
                   sx={{
                     display: "flex",
                     justifyContent: "space-between",
@@ -83,12 +96,10 @@ const ReportTab = () => {
                   }}
                 >
                   <Box
-                    key={uniqueId()}
                     sx={{
                       ...styles.boxStyle,
                       gap: 2,
                       minHeight: "190px",
-                      // mt: name == "intro" ? 4 : 5,
                       width:
                         name == "intro" ? { xs: "100%", md: "68%" } : "100%",
                     }}
@@ -211,7 +222,7 @@ const Loading = () => {
     <>
       {count.map((item) => (
         <LoadingSkeleton
-          key={uniqueId()}
+          key={item}
           sx={{ height: "150px", mt: "32px" }}
         />
       ))}

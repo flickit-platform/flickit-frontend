@@ -37,7 +37,6 @@ export default function ContactExpertBox({ lng, rtl, onOpen }: Props) {
         <Trans
           i18nKey="assessmentReport.contactExpertBoxText.intro"
           components={{ strong: <strong /> }}
-          t={(key: any, options?: any) => t(key, { lng, ...options })}
         />
       </Text>
 

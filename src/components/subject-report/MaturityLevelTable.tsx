@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { ReactElement, useState } from "react";
 import TableContainer from "@mui/material/TableContainer";
 import Table from "@mui/material/Table";
 import TableHead from "@mui/material/TableHead";
@@ -17,7 +17,6 @@ import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import { generateColorFromString } from "@/config/styles";
 import languageDetector from "@/utils/language-detector";
-import uniqueId from "@/utils/unique-id";
 import { t } from "i18next";
 import useDialog from "@/hooks/useDialog";
 import QuestionDetailsContainer from "./question-details/QuestionDetailsContainer";
@@ -73,7 +72,7 @@ export interface ItemServerFieldsColumnMapping {
 }
 
 interface ItemColumnMapping {
-  questionnaire: JSX.Element;
+  questionnaire: ReactElement;
   question: string;
   gainedScore: number;
   missedScore: number;
@@ -218,7 +217,7 @@ const MaturityLevelTable = ({
     row: ItemColumnMapping,
   ) => {
     if (column.field === "questionnaire") {
-      return item.questionnaire.title;
+      return item.questionnaire?.title;
     }
     if (column.field === "gainedScore") {
       return "";
@@ -335,13 +334,13 @@ const MaturityLevelTable = ({
       }}
     >
       {[
-        { label: "subject.maxPossibleScore", value: maxPossibleScore },
-        { label: "subject.gainedScores", value: gainedScore },
-        { label: "common.questions", value: questionsCount },
-      ].map((item, index) => (
+        { label: "subject.maxPossibleScore", value: maxPossibleScore, id: 1 },
+        { label: "subject.gainedScores", value: gainedScore, id: 2 },
+        { label: "common.questions", value: questionsCount, id: 3 },
+      ].map((item) => (
         <Grid
-          size={{xs: 12, sm: 4, md: 2}}
-          key={uniqueId()}
+          size={{ xs: 12, sm: 4, md: 2 }}
+          key={item.id}
           sx={{
             ...styles.centerVH,
             gap: 1,
@@ -466,7 +465,7 @@ const MaturityLevelTable = ({
           const row = mapItemToRow(item);
           return (
             <TableRow
-              key={uniqueId()}
+              key={item.id}
               onClick={() => handleQuestionClick(index)}
               data-testid="open-question-details-dialog"
               sx={{
