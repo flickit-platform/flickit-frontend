@@ -395,6 +395,8 @@ const Navbar = () => {
     </Box>
   );
 
+  console.log(MULTILINGUALITY.toString())
+
   return (
     <>
       <AppBar
@@ -522,7 +524,9 @@ const Navbar = () => {
           </Box>
 
           <Box gap={{ xs: 0.8, sm: 2 }} sx={{ ...styles.centerV }}>
-            {MULTILINGUALITY.toString() == "true" ? <LanguageSelector /> : null}
+            {MULTILINGUALITY.toString() == "false" ? null : (
+              <LanguageSelector />
+            )}
             {isAuthenticated ? (
               <IconButton
                 onClick={toggleNotificationCenter}
@@ -620,7 +624,7 @@ const AccountDropDownButton = ({ userInfo }: any) => {
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) =>
     setAnchorEl(event.currentTarget);
   const handleClose = () => setAnchorEl(null);
-  const showGroups = showExpertGroups()
+  const showGroups = showExpertGroups();
 
   return (
     <>

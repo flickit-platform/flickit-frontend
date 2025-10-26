@@ -232,7 +232,10 @@ const AssessmentKitCEFromDialog = (props: IAssessmentKitCEFromDialogProps) => {
   const formContent = (
     <FormProviderWithForm formMethods={formMethods}>
       <Grid container spacing={type != "convert" ? 2 : 0} sx={styles.formGrid}>
-        <Grid size={{xs: 12, md: 12}} display={activeStep === 0 ? "" : "none"}>
+        <Grid
+          size={{ xs: 12, md: 12 }}
+          display={activeStep === 0 ? "" : "none"}
+        >
           {type === "convert" && buttonStep == 0 && (
             <Box pb="10px">
               <Box
@@ -321,7 +324,7 @@ const AssessmentKitCEFromDialog = (props: IAssessmentKitCEFromDialogProps) => {
           )}
         </Grid>
         <Grid
-          size={{xs: 12, sm: 8, md: 8}}
+          size={{ xs: 12, sm: 8, md: 8 }}
           display={activeStep === 0 ? "none" : ""}
         >
           <InputFieldUC
@@ -333,13 +336,13 @@ const AssessmentKitCEFromDialog = (props: IAssessmentKitCEFromDialogProps) => {
           />
         </Grid>
         <Grid
-          size={{xs: 12, sm: 4, md: 4}}
+          size={{ xs: 12, sm: 4, md: 4 }}
           display={activeStep === 0 ? "none" : ""}
         >
           <IsPrivateSwitch setIsPrivate={setIsPrivate} isPrivate={isPrivate} />
         </Grid>
         <Grid
-          size={{xs: 12, sm: 8, md: 8}}
+          size={{ xs: 12, sm: 8, md: 8 }}
           display={activeStep === 0 ? "none" : ""}
         >
           <AutocompleteAsyncField
@@ -355,16 +358,21 @@ const AssessmentKitCEFromDialog = (props: IAssessmentKitCEFromDialogProps) => {
           />
         </Grid>
         <Grid
-          size={{xs: 12, sm: 4, md: 4}}
+          size={{ xs: 12, sm: 4, md: 4 }}
           display={activeStep === 0 ? "none" : ""}
         >
           <SelectLanguage
             handleChange={handleSelectedChange}
-            mainLanguage={lang}
-            languages={languages}
+            mainLanguage={{ value: lang.code, label: lang.title }}
+            languages={languages.map((lng: any) => {
+              return { value: lng.code, label: lng.title };
+            })}
           />
         </Grid>
-        <Grid size={{xs: 12, md: 12}} display={activeStep === 0 ? "none" : ""}>
+        <Grid
+          size={{ xs: 12, md: 12 }}
+          display={activeStep === 0 ? "none" : ""}
+        >
           <InputFieldUC
             name="summary"
             label={<Trans i18nKey="common.summary" />}
@@ -372,7 +380,10 @@ const AssessmentKitCEFromDialog = (props: IAssessmentKitCEFromDialogProps) => {
             defaultValue={defaultValues.summary ?? ""}
           />
         </Grid>
-        <Grid size={{xs: 12, md: 12}} display={activeStep === 0 ? "none" : ""}>
+        <Grid
+          size={{ xs: 12, md: 12 }}
+          display={activeStep === 0 ? "none" : ""}
+        >
           <RichEditorField
             bgcolor={v3Tokens.primary.bg}
             name="about"
