@@ -198,6 +198,7 @@ const AdviceDialog = ({
         <Grid
           container
           rowSpacing={2}
+          pt={4}
           sx={{
             mt: 2,
             paddingInlineStart: 2,
