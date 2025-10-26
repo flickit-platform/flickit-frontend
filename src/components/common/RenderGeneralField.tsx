@@ -145,7 +145,7 @@ export function RenderGeneralField(props: any) {
         minRows={multiline ? 3 : undefined}
         useRichEditor={useRichEditor}
         lang={langCode}
-        handleSaveEdit={() => handleSaveEdit()}
+        handleSaveEdit={handleSaveEdit}
         handleCancelTextBox={handleCancelTextBox}
       />
     </Box>

@@ -75,7 +75,6 @@ const ImpactForm: React.FC<ImpactFormProps> = ({
           displayEmpty
         >
           <MenuItem value="" disabled>
-            <Trans i18nKey="common.select" />{" "}
             <Trans i18nKey={`${field.label}`} />
           </MenuItem>
           {field.options?.map((option) => (

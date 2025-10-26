@@ -155,9 +155,8 @@ const MultiLangTextField = ({
               />
             </IconButton>
           )}
-          {!!handleSaveEdit && !!handleCancelTextBox && (
             <>
-              <IconButton
+              {!!handleSaveEdit && <IconButton
                 size="small"
                 onClick={handleSaveEdit}
                 color="success"
@@ -165,8 +164,8 @@ const MultiLangTextField = ({
                 data-testid="check-icon-id"
               >
                 <CheckRoundedIcon fontSize="small" />
-              </IconButton>
-              <IconButton
+              </IconButton> }
+              {!!handleCancelTextBox && <IconButton
                 size="small"
                 onClick={() => handleCancelTextBox(name)}
                 color="secondary"
@@ -174,9 +173,8 @@ const MultiLangTextField = ({
                 data-testid="close-icon-id"
               >
                 <CloseRoundedIcon fontSize="small" />
-              </IconButton>
+              </IconButton>}
             </>
-          )}
         </Box>
       </Box>
 
