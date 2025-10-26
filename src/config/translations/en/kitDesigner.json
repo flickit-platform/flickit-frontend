@@ -48,6 +48,8 @@
   "noOptionAtTheMoment": "No options for answer at the moment.",
   "noOptionHere": "No option here!",
   "noQuestionHere": "No question here!",
+  "notAdvisableDesc": "When enabled, this question will be excluded from recommendation generation.",
+  "notApplicableDesc": "When enabled, this question can be considered not applicable at the assessor’s discretion.",
   "optionsEmptyState": "No option so far",
   "optionsEmptyStateDetailed": "Options are necessary to create questions! Create your first option here.",
   "optionsImpactsDescription": "To assess the maturity level of attributes, you need to specify how each question's score influences each attribute’s score. A question can affect different maturity levels of various attributes, each with its own specific impact weight.\nIn this section, define how this question impacts the attributes",

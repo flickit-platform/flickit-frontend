@@ -23,15 +23,15 @@ import i18next, { t } from "i18next";
 import { useParams } from "react-router-dom";
 import ImpactSection from "./ImpactSection";
 import AutocompleteAsyncField, {
-  useConnectAutocompleteField,
 } from "@/components/common/fields/AutocompleteAsyncField";
 import { kitActions, useKitDesignerContext } from "@/providers/kit-provider";
 import { useTranslationUpdater } from "@/hooks/useTranslationUpdater";
-import MultiLangTextField from "@common/fields/MultiLangTextField";
 import NavigationButtons from "@/components/common/buttons/NavigationButtons";
 import showToast from "@/utils/toast-error";
 import { Text } from "@/components/common/Text";
 import { RenderGeneralField } from "@common/RenderGeneralField";
+import InfoOutlineIcon from '@mui/icons-material/InfoOutline';
+import Tooltip from "@mui/material/Tooltip";
 
 interface ITempValue {
   title: string;
@@ -334,8 +334,11 @@ const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
         <Grid container spacing={2} alignItems="center" mt={1}>
           <Grid size={{xs: 6}}>
             <Box sx={styles.centerVH}>
-              <Text variant="semiBoldMedium">
+              <Text variant="semiBoldMedium" sx={{display: "flex", alignItems: "center", width: "fit-content"}}>
                 <Trans i18nKey="questions.notApplicable" />
+                <Tooltip title={t("kitDesigner.notApplicableDesc")} sx={{...theme.typography.bodySmall}}  >
+                  <InfoOutlineIcon fontSize={"small"} sx={{mx: .4}}  />
+                </Tooltip>
               </Text>
               <Switch
                 {...formMethods.register("mayNotBeApplicable")}
@@ -343,9 +346,12 @@ const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
               />
             </Box>
           </Grid>
-          <Grid size={{xs: 6}}>
-            <Text variant="semiBoldMedium">
-              <Trans i18nKey="questions.advisable" />
+          <Grid sx={{display: "flex"}} size={{xs: 6}}>
+            <Text variant="semiBoldMedium" sx={{display: "flex", alignItems: "center", width: "fit-content"}}>
+              <Trans i18nKey="questions.notAdvisable" />
+              <Tooltip title={t("kitDesigner.notAdvisableDesc")} sx={{...theme.typography.bodySmall}} >
+                 <InfoOutlineIcon fontSize={"small"} sx={{mx: .4}} />
+              </Tooltip>
             </Text>
             <Switch
               {...formMethods.register("advisable")}
