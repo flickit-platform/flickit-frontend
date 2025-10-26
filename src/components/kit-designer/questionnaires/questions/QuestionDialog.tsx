@@ -106,7 +106,7 @@ const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
         const initial = {
           options: question.options ?? [{ text: "" }],
           mayNotBeApplicable: question.mayNotBeApplicable ?? false,
-          advisable:  !question.advisable,
+          advisable: question.advisable != null ? !question.advisable : false,
           measure:
             fetchMeasure?.items?.find(
               (m: any) => m.id === question.measureId,
