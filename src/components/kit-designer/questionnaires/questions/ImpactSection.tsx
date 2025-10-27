@@ -11,11 +11,13 @@ import { ICustomError } from "@/utils/custom-error";
 import { t } from "i18next";
 import showToast from "@/utils/toast-error";
 import { Text } from "@/components/common/Text";
+import { DeleteConfirmationDialog } from "@common/dialogs/DeleteConfirmationDialog";
+import useDialog from "@/hooks/useDialog";
 
 const ImpactSection: React.FC<{ question: any }> = ({ question }) => {
   const { kitVersionId = "" } = useParams();
   const { service } = useServiceContext();
-
+  const dialogProps = useDialog();
   const [showForm, setShowForm] = useState(false);
   const [impact, setImpact] = useState({
     questionId: question.id,
@@ -94,6 +96,7 @@ const ImpactSection: React.FC<{ question: any }> = ({ question }) => {
         questionImpactId: item.questionImpactId,
       });
       fetchImpacts.query();
+      dialogProps.onClose()
     } catch (err) {
       showToast(err as ICustomError);
     }
@@ -149,7 +152,12 @@ const ImpactSection: React.FC<{ question: any }> = ({ question }) => {
               questionId={question.id}
               isAddingNew={showForm}
               setIsAddingNew={setShowForm}
-              handleDeleteImpact={handleDelete}
+              handleDeleteImpact={(item: any)=>{
+                dialogProps.openDialog({
+                  type: "delete",
+                  data: item
+                })
+              }}
               handleEditImpact={handleEdit}
               fields={fields}
               hasWeight={true}
@@ -179,6 +187,15 @@ const ImpactSection: React.FC<{ question: any }> = ({ question }) => {
           />
         )}
       </>
+      <DeleteConfirmationDialog
+        open={dialogProps.open}
+        onClose={() => dialogProps.onClose()}
+        onConfirm={()=>handleDelete(dialogProps?.context?.data)}
+        content={{
+          category: t("common.impact"),
+          title: "",
+        }}
+      />
     </>
   );
 };

@@ -258,7 +258,6 @@ export const SpaceCard = (props: ISpaceCardProps) => {
 const Actions = (props: any) => {
   const {
     space,
-    fetchSpaces,
     dialogProps,
     isOwner,
     is_default_space_for_current_user,
@@ -269,7 +268,6 @@ const Actions = (props: any) => {
   const { service } = useServiceContext();
   const [editLoading, setEditLoading] = useState(false);
   const {
-    query: deleteSpace,
     loading,
     abortController,
   } = useQuery({
