@@ -5,7 +5,6 @@ import { Text } from "@/components/common/Text";
 import { RenderGeneralField } from "@/components/common/RenderGeneralField";
 import { FieldName, useKitInfo } from "../model/useKitInfo";
 import LanguagePicker from "./LanguagePicker";
-import i18next from "i18next";
 import { KitInfoType } from "../model/types";
 
 type Props = {

@@ -43,7 +43,7 @@ export default function QuestionsSidebarInline({
   rtl = true,
   itemMinHeight = 64,
   showTooltipsWhenCollapsed = true,
-}: Props) {
+}: Readonly<Props>) {
   const dispatch = useQuestionDispatch();
   const [open, setOpen] = useState(initialOpen);
   const isSmall = useMediaQuery("(max-width: 900px)");
@@ -183,7 +183,7 @@ export default function QuestionsSidebarInline({
               <ListItemIcon
                 sx={{
                   minWidth: open ? 36 : 0,
-                  pr: open ? 0 : 0,
+                  pr: 0,
                   alignSelf: "stretch",
                   display: "flex",
                 }}

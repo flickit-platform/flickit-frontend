@@ -1,6 +1,6 @@
 import { useQuestions } from "../model/useQuestion";
 import LoadingSkeletonOfQuestions from "@/components/common/loadings/LoadingSkeletonOfQuestions";
-import { Box, Grid } from "@mui/material";
+import { Box } from "@mui/material";
 import QueryData from "@/components/common/QueryData";
 import Sidebar from "./Sidebar";
 import { useQuestionContext } from "../context";

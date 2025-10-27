@@ -1,5 +1,5 @@
 import { useServiceContext } from "@/providers/service-provider";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { questionActions, useQuestionDispatch } from "../context";
 import { useParams } from "react-router-dom";
 import { IQuestionsModel } from "@/types";
@@ -30,7 +30,7 @@ export const useQuestions = () => {
   const fetchPathInfo = useQuery({
     service: (args, config) =>
       service.common.getPathInfo(
-        { questionnaireId, assessmentId, ...(args ?? {}) },
+        { questionnaireId, assessmentId, ...args },
         config,
       ),
     runOnMount: false,
