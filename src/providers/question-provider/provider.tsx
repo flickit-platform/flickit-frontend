@@ -1,5 +1,4 @@
 import { useReducer, FC, useContext, useEffect, createContext, ReactElement } from "react";
-import { useParams } from "react-router-dom";
 import { EAssessmentStatus, TQuestionsInfo } from "@/types/index";
 import { questionActions } from "./actions";
 import questionReducer from "./reducer";
@@ -49,14 +48,6 @@ export const QuestionProvider: FC<IQuestionProviderProps> = ({ children }) => {
     isSubmitting: false,
     evidences: "",
   });
-  const { subjectId } = useParams();
-
-  useEffect(() => {
-    localStorage.setItem(
-      `${subjectId}_questionIndex`,
-      JSON.stringify(state.questionIndex),
-    );
-  }, [state.questionIndex]);
 
   useEffect(() => {
     if (state.questionIndex > state.questionsInfo.total_number_of_questions) {
