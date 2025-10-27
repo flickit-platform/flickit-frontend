@@ -36,6 +36,10 @@ const SpaceSettingScreen = lazy(() => import("../screens/SpaceSettingScreen"));
 const AssessmentsScreen = lazy(() => import("../screens/AssessmentsScreen"));
 const QuestionsScreen = lazy(() => import("../screens/QuestionsScreen"));
 const QuestionScreen = lazy(() => import("../screens/QuestionScreen"));
+
+const QuestionsTempScreen = lazy(() => import("@/features/questions/screens/QuestionsScreen"));
+const QuestionTempScreen = lazy(() => import("@/features/questions/screens/QuestionScreen"));
+
 const QuestionnairesScreen = lazy(
   () => import("../screens/QuestionnairesScreen"),
 );
@@ -134,12 +138,15 @@ const Routes = () => {
             <Route path="insights/" element={<AssessmentReportScreen />} />
             <Route path="advice/" element={<AdviceScreen />} />
             <Route path="report/" element={<ReportScreen />} />
-            <Route
-              path="questionnaires/:questionIndex"
-              element={<QuestionnairesScreen />}
-            />
             <Route path="questionnaires/" element={<QuestionnairesScreen />} />
 
+            <Route
+              path="questionnaires_temp/:questionnaireId"
+              element={<QuestionsTempScreen />}
+            >
+              <Route path="" element={<QuestionTempScreen />} />
+              <Route path=":questionIndex" element={<QuestionTempScreen />} />
+            </Route>
             <Route
               path="questionnaires/:questionnaireId"
               element={<QuestionsScreen />}

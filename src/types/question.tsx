@@ -15,12 +15,6 @@ export interface IQuestion {
   answer: TAnswer;
 }
 
-export interface IQuestionsModel {
-  items: IQuestion[];
-  assessment_result_id: string;
-  permissions: any;
-  total: number;
-}
 
 export enum EAssessmentStatus {
   "NOT_STARTED" = "NOT_STARTED",
