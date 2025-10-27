@@ -149,7 +149,7 @@ const AttributeImpactList = ({
                 onEdit={() =>
                   toggleEditMode(item.questionImpactId, item, attribute)
                 }
-                onDelete={() => handleDeleteImpact(item)}
+                onDelete={handleDeleteImpact}
               />
             </Box>
           ))}
@@ -252,6 +252,7 @@ const ImpactDetails = ({
 );
 
 const ActionButtons = ({
+  item,
   editMode,
   onSave,
   onCancel,
@@ -284,7 +285,7 @@ const ActionButtons = ({
           <IconButton size="small" onClick={onEdit} sx={{ ml: 1 }}>
             <EditOutlinedIcon fontSize="small" />
           </IconButton>
-          <IconButton size="small" sx={{ ml: 1 }} onClick={onDelete}>
+          <IconButton size="small" sx={{ ml: 1 }} onClick={(e)=> onDelete(e, item)}>
             <DeleteOutlinedIcon fontSize="small" />
           </IconButton>
         </>

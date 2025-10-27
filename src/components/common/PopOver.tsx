@@ -86,7 +86,7 @@ type GenericPopoverBase = {
 
 type GenericPopoverControlled = {
   open: boolean;
-  anchorEl: HTMLElement | null;
+  anchorEl: {status: HTMLElement, data?: any } | null;
   onClose: () => void;
 };
 
@@ -113,7 +113,7 @@ export function GenericPopover({
   return (
     <Popover
       open={open}
-      anchorEl={anchorEl}
+      anchorEl={anchorEl?.status}
       onClose={onClose}
       anchorOrigin={anchorOrigin}
       transformOrigin={transformOrigin}
