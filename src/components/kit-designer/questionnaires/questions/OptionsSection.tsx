@@ -159,7 +159,7 @@ const OptionsSection = ({
         gap={2}
         sx={{ ...styles.centerV }}
       >
-        <Text variant="body2">
+        <Text variant="titleSmall" >
           <Trans i18nKey="common.options" />
         </Text>
         <Tooltip
@@ -205,7 +205,7 @@ const OptionsSection = ({
         </Tooltip>
       </Box>
       {fetchOptions?.data?.answerOptions?.length > 0 ? (
-        <Box maxHeight={500} overflow="auto">
+        <Box>
           <OptionList
             Options={fetchOptions?.data?.answerOptions}
             onEdit={handleAddNewRow}

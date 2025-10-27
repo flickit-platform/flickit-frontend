@@ -214,9 +214,7 @@ const AssessmentKitAside = (props: any) => {
                   cursor: "pointer",
                   textDecoration: "underline",
                 }}
-                onClick={() =>
-                  contactusDialogProps.openDialog({ context: undefined })
-                }
+                onClick={() => contactusDialogProps.openDialog({})}
               >
                 <Trans i18nKey="common.contactUs" />
               </Text>

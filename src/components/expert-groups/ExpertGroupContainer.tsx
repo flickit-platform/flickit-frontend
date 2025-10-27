@@ -178,7 +178,7 @@ const ExpertGroupContainer = () => {
                 </span>
               </Title>
               <Grid container spacing={3} sx={{ mt: 1 }}>
-                <Grid size={{xs: 12, md: 8}}>
+                <Grid size={{ xs: 12, md: 8 }}>
                   {about && (
                     <>
                       <Title size="small">
@@ -241,7 +241,7 @@ const ExpertGroupContainer = () => {
                     />
                   </Box>
                 </Grid>
-                <Grid size={{xs: 12, md: 4}}>
+                <Grid size={{ xs: 12, md: 4 }}>
                   <Box
                     p={2}
                     borderRadius={2}
@@ -1130,24 +1130,33 @@ const AssessmentKitsList = (props: any) => {
                       handleClose();
                       kitDesignerDialogProps.openDialog({
                         context: { type: "draft" },
+                        data: { languages },
                       });
                     }}
                   >
                     <Trans i18nKey="assessmentKit.viaKitDesigner" />
                   </MenuItem>
                 </Menu>
-                <AssessmentKitCEFromDialog
-                  {...dialogProps}
-                  assessmentKits={assessmentKitQuery}
-                />
-                <AssessmentKitCEFromDialog
-                  {...kitDesignerDialogProps}
-                  assessmentKits={assessmentKitQuery}
-                />
-                <AssessmentKitCEFromDialog
-                  {...excelToDslDialogProps}
-                  assessmentKits={assessmentKitQuery}
-                />
+                {Boolean(dialogProps.open) && (
+                  <AssessmentKitCEFromDialog
+                    {...dialogProps}
+                    assessmentKits={assessmentKitQuery}
+                  />
+                )}
+
+                {Boolean(kitDesignerDialogProps.open) && (
+                  <AssessmentKitCEFromDialog
+                    {...kitDesignerDialogProps}
+                    assessmentKits={assessmentKitQuery}
+                  />
+                )}
+
+                {Boolean(excelToDslDialogProps.open) && (
+                  <AssessmentKitCEFromDialog
+                    {...excelToDslDialogProps}
+                    assessmentKits={assessmentKitQuery}
+                  />
+                )}
               </>
             )}
           </Box>
@@ -1332,7 +1341,7 @@ const ExpertGroupMembersDetail = (props: any) => {
                         } = member;
 
                         return (
-                          <Grid size={{xs: 12, sm: 6, md: 4}} key={id}>
+                          <Grid size={{ xs: 12, sm: 6, md: 4 }} key={id}>
                             <Box
                               sx={{
                                 ...styles.centerV,

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import {
   Grid,
   Box,
@@ -19,18 +19,18 @@ import {
 } from "@/components/common/dialogs/CEDialog";
 import FormProviderWithForm from "@/components/common/FormProviderWithForm";
 import OptionsSection from "./OptionsSection";
-import { t } from "i18next";
+import i18next, { t } from "i18next";
 import { useParams } from "react-router-dom";
 import ImpactSection from "./ImpactSection";
-import AutocompleteAsyncField, {
-  useConnectAutocompleteField,
-} from "@/components/common/fields/AutocompleteAsyncField";
+import AutocompleteAsyncField from "@/components/common/fields/AutocompleteAsyncField";
 import { kitActions, useKitDesignerContext } from "@/providers/kit-provider";
 import { useTranslationUpdater } from "@/hooks/useTranslationUpdater";
-import MultiLangTextField from "@common/fields/MultiLangTextField";
 import NavigationButtons from "@/components/common/buttons/NavigationButtons";
 import showToast from "@/utils/toast-error";
 import { Text } from "@/components/common/Text";
+import { RenderGeneralField } from "@common/RenderGeneralField";
+import InfoOutlineIcon from '@mui/icons-material/InfoOutline';
+import Tooltip from "@mui/material/Tooltip";
 
 interface ITempValue {
   title: string;
@@ -76,6 +76,8 @@ const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
   const [isSaving, setIsSaving] = useState(false);
   const [initialData, setInitialData] = useState<any>(null);
 
+  const {handleFieldEdit, editableFields, toggleTranslation, showTranslations, fieldsName, handleCancelTextBox} = useQuestionInfo(langCode, question, setTempValue)
+
   const fetchMeasures = useQuery({
     service: () => service.kitVersions.measures.getAll({ kitVersionId }),
     runOnMount: false
@@ -104,7 +106,7 @@ const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
         const initial = {
           options: question.options ?? [{ text: "" }],
           mayNotBeApplicable: question.mayNotBeApplicable ?? false,
-          advisable: question.advisable ?? false,
+          advisable: question.advisable != null ? !question.advisable : false,
           measure:
             fetchMeasure?.items?.find(
               (m: any) => m.id === question.measureId,
@@ -125,10 +127,13 @@ const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
   }, [rest.open, question.id, isSaving]);
 
   const handleSubmit = async (data: any) => {
+    const updateData = {...data}
+    updateData.advisable = !updateData.advisable
+
     try {
       setIsSaving(true);
       const updatedFields = {
-        ...data,
+        ...updateData,
         ...tempValue,
         index: question.index,
         answerRangeId: selectedAnswerRange,
@@ -171,14 +176,6 @@ const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
     })();
   };
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setTempValue((prev: any) => ({
-      ...prev,
-      [name]: value,
-    }));
-  };
-
   const isDirty = () => {
     const currentValues = formMethods.getValues();
     const measureId = currentValues.measure?.id ?? null;
@@ -192,7 +189,7 @@ const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
       measureId !== initialMeasureId ||
      (!!currentValues.mayNotBeApplicable && currentValues.mayNotBeApplicable )!==
         (question.mayNotBeApplicable ?? false) ||
-     (!!currentValues.advisable && currentValues.advisable) !== (question.advisable ?? false)
+     (!!currentValues.advisable && currentValues.advisable) === (question.advisable ?? false)
     );
   };
   const theme = useTheme();
@@ -223,62 +220,74 @@ const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
         }}
       >
         <Grid container spacing={2} mt={2}>
-          <Grid size={{xs: 12}} display={"flex"}>
-            <Box
-              sx={{
-                ...styles.centerVH,
-                width: { xs: "45px" },
-                justifyContent: "space-around",
-              }}
-              borderRadius="0.5rem"
-              mx={1.3}
-             >
-              <Text
-                data-testid="question-index"
-                variant="semiBoldLarge"
-              >{`Q. ${question?.index}`}</Text>
-            </Box>
-            <MultiLangTextField
-              id="question-title"
-              label={
-              <Text variant={"bodyMedium"} color={"background.secondaryDark"} >
-                <Trans i18nKey="common.question" />
-              </Text>
-            }
-              name="title"
-              value={tempValue.title}
-              onChange={handleInputChange}
-              translationValue={
-                langCode
-                  ? (tempValue.translations?.[langCode]?.title ?? "")
-                  : ""
-              }
-              onTranslationChange={updateTranslation("title", setTempValue)}
-              placeholder={t("kitDesigner.questionPlaceholder")?.toString()}
-              multiline
-              bgcolor="inherit"
-            />
-          </Grid>
-          <Grid size={{xs: 12}}>
-            <MultiLangTextField
-              id="question-hint"
-              label={
-              <Text variant={"bodyMedium"} color={"background.secondaryDark"} >
-                <Trans i18nKey="common.hint"/>
-              </Text>
-            }
-              name="hint"
-              value={tempValue.hint}
-              onChange={handleInputChange}
-              translationValue={
-                langCode ? (tempValue.translations?.[langCode]?.hint ?? "") : ""
-              }
-              onTranslationChange={updateTranslation("hint", setTempValue)}
-              placeholder={t("hintPlaceholder")?.toString()}
-              multiline
-              bgcolor="inherit"
-            />
-          </Grid>
+
+
+          {fieldsName.map((field: any)=>{
+
+            const {
+              name,
+              label,
+              multiline,
+              useRichEditor,
+              type,
+              options,
+              disabled,
+              width,
+            } = field;
+
+            return (
+              <Grid key={name} size={{ xs: 12 }} display={"flex"}>
+                <Box
+                  display="flex"
+                  justifyContent="space-between"
+                  sx={{
+                    gap: { xs: 0, md: useRichEditor ? 0 : 5 },
+                    flexDirection: {
+                      xs: "column",
+                      md: useRichEditor ? "column" : "row",
+                    },
+                    alignItems: {
+                      xs: "flex-start",
+                      md: useRichEditor ? "flex-start" : "center",
+                    },
+                    flex: 1
+                  }}
+                >
+                  <Text
+                    variant="titleSmall"
+                    mt="2px"
+                    height="100%"
+                    minWidth={width}
+                    whiteSpace="nowrap"
+                  >
+                    <Trans i18nKey={label} />
+                  </Text>
+                  <Box sx={{ display: "flex", width: "100%" }}>
+                    <RenderGeneralField
+                      field={name}
+                      fieldType={type}
+                      data={question}
+                      editableFields={editableFields}
+                      langCode={langCode}
+                      updatedValues={tempValue}
+                      setUpdatedValues={setTempValue}
+                      showTranslations={showTranslations}
+                      handleCancelTextBox={handleCancelTextBox}
+                      toggleTranslation={toggleTranslation}
+                      handleFieldEdit={handleFieldEdit}
+                      multiline={multiline}
+                      useRichEditor={useRichEditor}
+                      updateTranslation={updateTranslation}
+                      options={options}
+                      label={<Trans i18nKey={label} />}
+                      disabled={disabled}
+                      editable={true}
+                    />
+                  </Box>
+                </Box>
+              </Grid>
+            )
+          })}
 
           <Grid size={{xs: 12}}>
             <AutocompleteAsyncField
@@ -311,19 +320,19 @@ const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
         <ImpactSection question={question} key={question.id} />
 
         <Box display="flex" flexDirection="column" gap={1} mt={4}>
-          <Text variant="semiBoldXLarge" gutterBottom>
-            <Trans i18nKey="questions.advancedSettings" />
-          </Text>
-          <Text variant="bodyMedium" color="textSecondary">
-            <Trans i18nKey="questions.advancedSettingsDescription" />
+          <Text variant="titleSmall" gutterBottom>
+            <Trans i18nKey="common.settings" />
           </Text>
         </Box>
 
         <Grid container spacing={2} alignItems="center" mt={1}>
           <Grid size={{xs: 6}}>
             <Box sx={styles.centerVH}>
-              <Text variant="semiBoldMedium">
+              <Text variant="semiBoldMedium" sx={{display: "flex", alignItems: "center", width: "fit-content"}}>
                 <Trans i18nKey="questions.notApplicable" />
+                <Tooltip title={t("kitDesigner.notApplicableDesc")} sx={{...theme.typography.bodySmall}}  >
+                  <InfoOutlineIcon fontSize={"small"} sx={{mx: .4}}  />
+                </Tooltip>
               </Text>
               <Switch
                 {...formMethods.register("mayNotBeApplicable")}
@@ -331,9 +340,12 @@ const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
               />
             </Box>
           </Grid>
-          <Grid size={{xs: 6}}>
-            <Text variant="semiBoldMedium">
+          <Grid sx={{display: "flex"}} size={{xs: 6}}>
+            <Text variant="semiBoldMedium" sx={{display: "flex", alignItems: "center", width: "fit-content"}}>
               <Trans i18nKey="questions.notAdvisable" />
+              <Tooltip title={t("kitDesigner.notAdvisableDesc")} sx={{...theme.typography.bodySmall}} >
+                 <InfoOutlineIcon fontSize={"small"} sx={{mx: .4}} />
+              </Tooltip>
             </Text>
             <Switch
               {...formMethods.register("advisable")}
@@ -356,5 +368,89 @@ const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
     </CEDialog>
   );
 };
+
+const useQuestionInfo = (langCode: string, question: any, setTempValue: any) =>{
+  const [editableFields, setEditableFields] = useState<Set<string>>(new Set());
+  const [showTranslations, setShowTranslations] = useState({
+    title: false,
+    hint: false
+  });
+  const { translations } = question
+  useEffect(() => {
+    setShowTranslations({
+      title: !!translations[langCode]?.title,
+      hint:  !!translations[langCode]?.hint,
+    })
+  }, []);
+
+  const handleFieldEdit = useCallback((field: string)=>{
+    setEditableFields((prev)=>{
+      const next = new Set(prev)
+      next.add(field)
+      return next;
+    })
+  },[setEditableFields])
+
+  const handleCancelTextBox = useCallback((field: string)=>{
+    setEditableFields((prev)=>{
+      const next = new Set(prev);
+      next.delete(field);
+      return next;
+    })
+
+    setTempValue((prev: any)=>{
+      return {
+        ...prev,
+        translations: {
+          [langCode] : { ...prev.translations[langCode], [field]: question.translations[langCode]?.[field]
+          }
+        }
+      }
+    })
+
+  },[setEditableFields, question])
+
+  const toggleTranslation = useCallback(
+    (field: "title" | "hint" ) => {
+      setShowTranslations((prev: any) => ({
+        ...prev,
+        [field]: !prev[field],
+      }));
+    },
+    [],
+  );
+
+  const fieldsName =[
+    {
+      name: "title",
+      label: "common.question",
+      multiline: true,
+      useRichEditor: false,
+      type: "text" as const,
+      options: [],
+      disabled: false,
+      width: i18next.language === "fa" ? "35px" : "60px",
+    },
+    {
+      name: "hint",
+      label: "common.hint",
+      multiline: true,
+      useRichEditor: false,
+      type: "text" as const,
+      options: [],
+      disabled: false,
+      width: i18next.language === "fa" ? "35px" : "60px",
+    },
+  ]
+
+  return {
+    editableFields,
+    handleFieldEdit,
+    handleCancelTextBox,
+    toggleTranslation,
+    showTranslations,
+    fieldsName
+  }
+}
 
 export default QuestionDetailsContainer;
