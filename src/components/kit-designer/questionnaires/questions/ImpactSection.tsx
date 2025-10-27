@@ -20,7 +20,7 @@ const ImpactSection: React.FC<{ question: any }> = ({ question }) => {
   const { kitVersionId = "" } = useParams();
   const { service } = useServiceContext();
   const lng = i18next.language
-  const {anchorEl, open, handlePopoverOpen, handlePopoverClose} = usePopover();
+  const {anchorEl, open, handlePopoverOpen, handlePopoverClose, data} = usePopover();
   const [showForm, setShowForm] = useState(false);
   const [impact, setImpact] = useState({
     questionId: question.id,
@@ -135,7 +135,6 @@ const ImpactSection: React.FC<{ question: any }> = ({ question }) => {
 
   const impacts = fetchImpacts?.data?.attributeImpacts ?? [];
   const disabled = fields.some((f) => f.options.length === 0);
-  console.log(anchorEl?.data?.maturityLevel?.title ,"anchorEl?.data?.maturityLevel?.title ");
   return (
     <>
       <Box display="flex" flexDirection="column" gap={1} mt={4}>
@@ -192,8 +191,7 @@ const ImpactSection: React.FC<{ question: any }> = ({ question }) => {
         onClose={handlePopoverClose}
         anchorEl={anchorEl}
         title={getDeleteTitle({
-          category: t("common.impact", { lng }),
-          lng,
+          category: t("common.impact"),
         })}
         direction={lng === "fa" ? "rtl" : "ltr"}
         actions={
@@ -204,7 +202,7 @@ const ImpactSection: React.FC<{ question: any }> = ({ question }) => {
             >
               <Text variant="labelMedium">{t("common.cancel", { lng })}</Text>
             </Button>
-            <Button variant="contained" onClick={() => handleDelete(anchorEl?.data)}>
+            <Button variant="contained" onClick={() => handleDelete(data)}>
               <Text variant="labelMedium">{t("common.confirm", { lng })}</Text>
             </Button>
           </>
@@ -213,8 +211,8 @@ const ImpactSection: React.FC<{ question: any }> = ({ question }) => {
       >
         <Text>
           {getDeleteContent({
-            title:  anchorEl?.data?.maturityLevel?.title ?? "",
-            category: t("common.impact", { lng }),
+            title:  data?.maturityLevel?.title ?? "",
+            category: t("common.impact"),
             lng,
           })}
         </Text>

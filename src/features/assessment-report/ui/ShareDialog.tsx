@@ -577,13 +577,16 @@ export default function ShareDialog({
 }
 
 const UserSection = (props: any) => {
-  const {anchorEl, open, handlePopoverOpen, handlePopoverClose} = usePopover();
+
+  const {anchorEl, open, handlePopoverOpen, handlePopoverClose, data} = usePopover();
   const { invitees, users, deleteUserRoleHandler, deleteInviteeHandler, lng } =
     props;
-
+  const handleOpenDelete = (e: any, m: any) => {
+    handlePopoverOpen(e, m);
+  };
   const handleConfirmDelete = async () => {
-    if (!anchorEl?.data) return;
-    const { id, isInvitee } = anchorEl.data;
+    if (!data) return;
+    const { id, isInvitee } = data;
     try {
       if (isInvitee) {
         await deleteInviteeHandler?.(id);
@@ -636,7 +639,7 @@ const UserSection = (props: any) => {
               )}
             </Box>
             {deletable && (
-              <IconButton onClick={(e) => handlePopoverOpen(e, member)}>
+              <IconButton onClick={(e) => handleOpenDelete(e, member)}>
                 <DeleteOutlinedIcon color="primary" />
               </IconButton>
             )}
@@ -670,7 +673,7 @@ const UserSection = (props: any) => {
       >
         <Text>
           {getDeleteContent({
-            title: anchorEl?.data?.email ?? anchorEl?.data?.displayName ?? "",
+            title: data?.email ?? data?.displayName ?? "",
             category: t("common.member", { lng }),
             lng,
           })}
