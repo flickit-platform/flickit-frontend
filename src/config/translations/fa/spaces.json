@@ -39,6 +39,7 @@
   "spaceSetting": "تنظیمات فضای کاری",
   "spaceUpdatedSuccessMessage": "{{title}} با موفقیت به‌روزرسانی شد.",
   "tryCreatingNewSpace": "در حال حاضر، به هیچ فضای کاری‌ای دسترسی ندارید. می‌توانید یکی ایجاد کنید یا درخواست دسترسی بدهید.",
+  "removeSuccessfully": " \"{{title}}\" باموفقیت حذف شد.",
   "targetSpace": "فضای کاری",
   "unlimitedAssessmentPerSpace": "امکان ایجاد پروژه ارزیابی به صورت <strong>نامحدود</strong>",
   "unlimitedPremiumSpace": "تعداد<strong> نامحدود</strong>",

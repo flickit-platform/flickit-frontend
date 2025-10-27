@@ -8,14 +8,19 @@ import { useQuery } from "@/hooks/useQuery";
 import { useServiceContext } from "@/providers/service-provider";
 import { useParams } from "react-router-dom";
 import { ICustomError } from "@/utils/custom-error";
-import { t } from "i18next";
+import i18next, { t } from "i18next";
 import showToast from "@/utils/toast-error";
 import { Text } from "@/components/common/Text";
+import usePopover from "@/hooks/usePopover";
+import { GenericPopover } from "@common/PopOver";
+import { Button } from "@mui/material";
+import { getDeleteContent, getDeleteTitle } from "@common/dialogs/DeleteConfirmationDialog";
 
 const ImpactSection: React.FC<{ question: any }> = ({ question }) => {
   const { kitVersionId = "" } = useParams();
   const { service } = useServiceContext();
-
+  const lng = i18next.language
+  const {anchorEl, open, handlePopoverOpen, handlePopoverClose, data} = usePopover();
   const [showForm, setShowForm] = useState(false);
   const [impact, setImpact] = useState({
     questionId: question.id,
@@ -94,6 +99,7 @@ const ImpactSection: React.FC<{ question: any }> = ({ question }) => {
         questionImpactId: item.questionImpactId,
       });
       fetchImpacts.query();
+      handlePopoverClose()
     } catch (err) {
       showToast(err as ICustomError);
     }
@@ -129,7 +135,6 @@ const ImpactSection: React.FC<{ question: any }> = ({ question }) => {
 
   const impacts = fetchImpacts?.data?.attributeImpacts ?? [];
   const disabled = fields.some((f) => f.options.length === 0);
-
   return (
     <>
       <Box display="flex" flexDirection="column" gap={1} mt={4}>
@@ -149,7 +154,9 @@ const ImpactSection: React.FC<{ question: any }> = ({ question }) => {
               questionId={question.id}
               isAddingNew={showForm}
               setIsAddingNew={setShowForm}
-              handleDeleteImpact={handleDelete}
+              handleDeleteImpact={(e: any, item: any) => {
+                handlePopoverOpen(e, item);
+              }}
               handleEditImpact={handleEdit}
               fields={fields}
               hasWeight={true}
@@ -179,6 +186,37 @@ const ImpactSection: React.FC<{ question: any }> = ({ question }) => {
           />
         )}
       </>
+      <GenericPopover
+        open={open}
+        onClose={handlePopoverClose}
+        anchorEl={anchorEl}
+        title={getDeleteTitle({
+          category: t("common.impact"),
+        })}
+        direction={lng === "fa" ? "rtl" : "ltr"}
+        actions={
+          <>
+            <Button
+              variant="outlined"
+              onClick={handlePopoverClose}
+            >
+              <Text variant="labelMedium">{t("common.cancel", { lng })}</Text>
+            </Button>
+            <Button variant="contained" onClick={() => handleDelete(data)}>
+              <Text variant="labelMedium">{t("common.confirm", { lng })}</Text>
+            </Button>
+          </>
+        }
+        hideBackdrop
+      >
+        <Text>
+          {getDeleteContent({
+            title:  data?.maturityLevel?.title ?? "",
+            category: t("common.impact"),
+            lng,
+          })}
+        </Text>
+      </GenericPopover>
     </>
   );
 };

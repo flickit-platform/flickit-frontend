@@ -577,17 +577,16 @@ export default function ShareDialog({
 }
 
 const UserSection = (props: any) => {
-  const popoverState = usePopover();
+
+  const {anchorEl, open, handlePopoverOpen, handlePopoverClose, data} = usePopover();
   const { invitees, users, deleteUserRoleHandler, deleteInviteeHandler, lng } =
     props;
-  const [selectedMember, setSelectedMember] = useState<any>(null);
   const handleOpenDelete = (e: any, m: any) => {
-    setSelectedMember(m);
-    popoverState.handlePopoverOpen(e);
+    handlePopoverOpen(e, m);
   };
   const handleConfirmDelete = async () => {
-    if (!selectedMember) return;
-    const { id, isInvitee } = selectedMember;
+    if (!data) return;
+    const { id, isInvitee } = data;
     try {
       if (isInvitee) {
         await deleteInviteeHandler?.(id);
@@ -595,7 +594,7 @@ const UserSection = (props: any) => {
         await deleteUserRoleHandler?.(id);
       }
     } finally {
-      popoverState.handlePopoverClose();
+      handlePopoverClose();
     }
   };
   const { t } = useTranslation();
@@ -649,9 +648,9 @@ const UserSection = (props: any) => {
       })}
 
       <GenericPopover
-        open={popoverState.open}
-        onClose={popoverState.handlePopoverClose}
-        anchorEl={popoverState.anchorEl}
+        open={open}
+        onClose={handlePopoverClose}
+        anchorEl={anchorEl}
         title={getDeleteTitle({
           category: t("common.member", { lng }),
           lng,
@@ -661,7 +660,7 @@ const UserSection = (props: any) => {
           <>
             <Button
               variant="outlined"
-              onClick={popoverState.handlePopoverClose}
+              onClick={handlePopoverClose}
             >
               <Text variant="labelMedium">{t("common.cancel", { lng })}</Text>
             </Button>
@@ -674,7 +673,7 @@ const UserSection = (props: any) => {
       >
         <Text>
           {getDeleteContent({
-            title: selectedMember?.email ?? selectedMember?.displayName ?? "",
+            title: data?.email ?? data?.displayName ?? "",
             category: t("common.member", { lng }),
             lng,
           })}
