@@ -98,6 +98,7 @@ export const QuestionCard = (props: IQuestionCardProps) => {
   const { service } = useServiceContext();
   const { assessmentInfo } = useAssessmentContext();
   const { config } = useConfigContext();
+  console.log(questionsInfo,"questionsInfo")
   useEffect(() => {
     return () => {
       abortController.current.abort();

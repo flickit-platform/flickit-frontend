@@ -79,6 +79,7 @@ const findQuestion = (
 export const useQuestion = () => {
   const { questionIndex, questionsInfo, assessmentStatus, isSubmitting } =
     useQuestionContext();
+  console.log(questionsInfo,"oooo")
   const loaded = !!questionsInfo?.questions;
   const hasAnyQuestion = loaded
     ? (questionsInfo?.questions as any).length > 0

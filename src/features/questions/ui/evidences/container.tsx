@@ -1,9 +1,19 @@
-import EvidenceList from "@/features/questions/ui/evidences/evidenceList";
+import UseEvidence from "@/features/questions/model/useEvidence";
+import EvidenceItem from "@/features/questions/ui/evidences/evidenceItem";
 
-const EvidenceContainer = () =>{
+const EvidenceContainer = ({selectedQuestion}) =>{
+  const { evidenceItems } =  UseEvidence(selectedQuestion?.id)
 
     return (
-        <EvidenceList />
+        <>
+            {evidenceItems.map(evidence =>{
+              return  <EvidenceItem
+                    key={evidence.id}
+                    {...evidence}
+                />
+            })}
+        </>
+
     )
 }
 
