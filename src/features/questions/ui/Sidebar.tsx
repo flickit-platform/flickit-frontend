@@ -6,7 +6,6 @@ import {
   ListItemIcon,
   ListItemText,
   Tooltip,
-  Typography,
   useMediaQuery,
   Paper,
 } from "@mui/material";
@@ -17,6 +16,7 @@ import { useState, useMemo, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { questionActions, useQuestionDispatch } from "../context";
+import { Text } from "@/components/common/Text";
 
 type Question = { id?: string | number; title?: string };
 
@@ -113,9 +113,9 @@ export default function QuestionsSidebarInline({
       >
         {open ? (
           <>
-            <Typography variant="subtitle2" fontWeight={700}>
+            <Text variant="subtitle2" fontWeight={700}>
               {t("common.questions")}
-            </Typography>
+            </Text>
             <IconButton onClick={() => setOpen(false)} size="small">
               {rtl ? <ChevronRightRoundedIcon /> : <ChevronLeftRoundedIcon />}
             </IconButton>
@@ -193,7 +193,7 @@ export default function QuestionsSidebarInline({
 
               {open && (
                 <ListItemText
-                  primary={<Typography variant="body2">{q.title}</Typography>}
+                  primary={<Text variant="body2" textAlign="justify">{q.title}</Text>}
                 />
               )}
             </ListItemButton>
