@@ -143,8 +143,7 @@ const SpaceFieldForm = (props: any) => {
   } = props;
   const { spaceList, queryDataSpaces } = staticData;
 
-  const { anchorEl, open, handlePopoverOpen, handlePopoverClose, data } =
-    usePopover();
+  const { anchorEl, open, handlePopoverOpen, handlePopoverClose } = usePopover();
 
   const handleCloseDialog = () => {
     closeShareDialog();
@@ -199,7 +198,6 @@ const SpaceFieldForm = (props: any) => {
             >
               {t("assessmentReport.newSpace", { lng })}
             </Text>
-            {anchorEl && (
               <GenericPopover
                 open={open}
                 onClose={handlePopoverClose}
@@ -212,7 +210,6 @@ const SpaceFieldForm = (props: any) => {
                   lng={lng}
                 />
               </GenericPopover>
-            )}
           </Grid>
           )}
         </Grid>
