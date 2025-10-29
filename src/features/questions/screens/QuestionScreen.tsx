@@ -6,7 +6,6 @@ import {ASSESSMENT_MODE} from "@utils/enum-type";
 import EvidenceContainer from "@/features/questions/ui/evidences/container";
 
 const QuestionScreen = ({questionsInfo}) => {
-  console.log(questionsInfo,"questionsInfoquestionsInfo")
   const { assessmentInfo } = useAssessmentContext();
 
 

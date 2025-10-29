@@ -1,6 +1,6 @@
 import React from 'react';
 
-const EvidenceList = () => {
+const EvidenceList = (props) => {
     return (
         <div>
             evidence list
