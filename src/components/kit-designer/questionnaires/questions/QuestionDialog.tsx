@@ -318,6 +318,7 @@ const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
               selectedAnswerRange={selectedAnswerRange}
               setSelectedAnswerRange={setSelectedAnswerRange}
               key={question.id}
+              isDragDisabled={true}
             />
           </Grid>
         </Grid>

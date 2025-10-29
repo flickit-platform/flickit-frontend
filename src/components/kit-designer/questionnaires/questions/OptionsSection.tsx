@@ -25,12 +25,14 @@ const OptionsSection = ({
   fetchOptions,
   selectedAnswerRange,
   setSelectedAnswerRange,
+  isDragDisabled
 }: {
   kitVersionId: string;
   question?: any;
   fetchOptions?: any;
   selectedAnswerRange: any;
   setSelectedAnswerRange: any;
+  isDragDisabled: boolean;
 }) => {
   const { service } = useServiceContext();
 
@@ -216,6 +218,7 @@ const OptionsSection = ({
             isAddingNew={showNewOptionForm}
             setIsAddingNew={setShowNewOptionForm}
             disableAddOption={disableAddOption}
+            isDragDisabled={isDragDisabled}
           />
         </Box>
       ) : (
