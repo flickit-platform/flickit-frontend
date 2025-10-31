@@ -21,6 +21,8 @@ import { Text } from "@/components/common/Text";
 import { styles } from "@styles";
 import { IQuestionInfo } from "@/types";
 import i18next from "i18next";
+import { useAssessmentContext } from "@/providers/assessment-provider";
+import { ASSESSMENT_MODE } from "@/utils/enum-type";
 
 type Props = {
   questions: IQuestionInfo[];
@@ -114,6 +116,11 @@ const SidebarHeader = memo(function SidebarHeader({
 }: HeaderProps) {
   const { t } = useTranslation();
   const rtl = i18next.language == "fa";
+  const { assessmentInfo } = useAssessmentContext();
+  const isAdvanceMode = useMemo(() => {
+    return ASSESSMENT_MODE.ADVANCED === assessmentInfo?.mode?.code;
+  }, [assessmentInfo?.mode?.code]);
+
   return (
     <Box
       sx={{
@@ -152,31 +159,33 @@ const SidebarHeader = memo(function SidebarHeader({
           sx={{ ...styles.centerV }}
         >
           <Text variant="semiBoldMedium">{title}</Text>
-          <Box>
-            <Tooltip
-              title={
-                showChips
-                  ? t("questions_temp.hideIssues")
-                  : t("questions_temp.displayIssues")
-              }
-            >
-              <IconButton
-                size="small"
-                color="info"
-                onClick={onToggleChips}
-                aria-label={showChips ? t("common.hide") : t("common.show")}
+          {Boolean(isAdvanceMode) && (
+            <Box>
+              <Tooltip
+                title={
+                  showChips
+                    ? t("questions_temp.hideIssues")
+                    : t("questions_temp.displayIssues")
+                }
               >
-                {showChips ? (
-                  <VisibilityOffOutlinedIcon />
-                ) : (
-                  <VisibilityOutlinedIcon />
-                )}
+                <IconButton
+                  size="small"
+                  color="info"
+                  onClick={onToggleChips}
+                  aria-label={showChips ? t("common.hide") : t("common.show")}
+                >
+                  {showChips ? (
+                    <VisibilityOffOutlinedIcon />
+                  ) : (
+                    <VisibilityOutlinedIcon />
+                  )}
+                </IconButton>
+              </Tooltip>
+              <IconButton size="small" color="info">
+                <FilterAltOutlinedIcon />
               </IconButton>
-            </Tooltip>
-            <IconButton size="small" color="info">
-              <FilterAltOutlinedIcon />
-            </IconButton>
-          </Box>
+            </Box>
+          )}
         </Box>
       )}
     </Box>
@@ -302,7 +311,7 @@ export default function QuestionsSidebarInline({
   const dispatch = useQuestionDispatch();
 
   const [open, setOpen] = useState(true);
-  const [showChips, setShowChips] = useState(true);
+  const [showChips, setShowChips] = useState(false);
   const width = open ? "33%" : 72;
 
   const navigate = useNavigate();
