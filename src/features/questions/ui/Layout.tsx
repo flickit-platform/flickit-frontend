@@ -4,10 +4,12 @@ import { Box } from "@mui/material";
 import QueryData from "@/components/common/QueryData";
 import Sidebar from "./Sidebar";
 import { useQuestionContext } from "../context";
+import useScreenResize from "@/hooks/useScreenResize";
 
 const Layout = ({ children }: any) => {
   const { questionsResultQueryData } = useQuestions();
   const { questions } = useQuestionContext();
+  const isSmallScreen = useScreenResize("md");
 
   return (
     <QueryData
@@ -16,7 +18,7 @@ const Layout = ({ children }: any) => {
       render={(data) => {
         return (
           <Box display="flex">
-            <Sidebar questions={questions} />
+            {!isSmallScreen && <Sidebar questions={questions} />}
             <Box>{children}</Box>{" "}
           </Box>
         );
