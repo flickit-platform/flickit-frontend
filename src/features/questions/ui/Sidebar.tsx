@@ -113,6 +113,7 @@ const SidebarHeader = memo(function SidebarHeader({
   progress,
 }: HeaderProps) {
   const { t } = useTranslation();
+  const rtl = i18next.language == "fa";
   return (
     <Box
       sx={{
@@ -125,7 +126,7 @@ const SidebarHeader = memo(function SidebarHeader({
           content: '""',
           position: "absolute",
           bottom: 0,
-          right: 0,
+          [rtl ? "right" : "left"]: 0,
           width: progress + "%",
           height: "4px",
           backgroundColor: "primary.main",
@@ -134,7 +135,7 @@ const SidebarHeader = memo(function SidebarHeader({
           content: '""',
           position: "absolute",
           bottom: 0,
-          right: progress + "%",
+          [rtl ? "right" : "left"]: progress + "%",
           width: 100 - progress + "%",
           height: "4px",
           backgroundColor: "divider",
