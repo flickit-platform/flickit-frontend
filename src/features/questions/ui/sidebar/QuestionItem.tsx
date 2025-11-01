@@ -5,7 +5,6 @@ import {
   ListItemText,
   Tooltip,
 } from "@mui/material";
-import { useTranslation } from "react-i18next";
 import i18next from "i18next";
 import { Text } from "@/components/common/Text";
 import { QuestionBadge } from "./QuestionBadge";
@@ -31,7 +30,6 @@ export const QuestionItem = memo(({
   showChips,
   onSelect,
 }: QuestionItemProps) => {
-  const { t } = useTranslation();
   const rtl = i18next.language === "fa";
 
   const badge = (

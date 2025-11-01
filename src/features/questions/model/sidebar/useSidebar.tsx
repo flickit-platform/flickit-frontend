@@ -1,4 +1,3 @@
-// hooks/useSidebar.ts
 import { useTranslation } from "react-i18next";
 import i18next from "i18next";
 import { useMemo, useCallback } from "react";
@@ -7,8 +6,7 @@ import { useSidebarUIState } from "./useSidebarUIState";
 import { useSidebarData } from "./useSidebarData";
 
 import type { IQuestionInfo } from "@/types";
-import { QuestionIssue } from "../../types";
-import { getFilterOptionsMeta, getIssueChips } from "./issues.registry";
+import { getFilterOptionsMeta } from "./issues.registry";
 
 export function useSidebar(questions: IQuestionInfo[]) {
   const { t } = useTranslation();
