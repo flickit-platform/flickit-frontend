@@ -1,4 +1,3 @@
-// src/features/questions/model/issueCatalog.ts
 import type { IQuestionInfo } from "@/types";
 import { IssueChipTone, IssueDefinition, QuestionIssue } from "../../types";
 
