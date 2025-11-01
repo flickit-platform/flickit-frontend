@@ -191,7 +191,7 @@ const ImpactSection: React.FC<{ question: any }> = ({ question }) => {
         onClose={handlePopoverClose}
         anchorEl={anchorEl}
         title={getDeleteTitle({
-          category: t("common.impact"),
+          category: t("kitDesigner.impact"),
         })}
         direction={lng === "fa" ? "rtl" : "ltr"}
         actions={
@@ -211,8 +211,8 @@ const ImpactSection: React.FC<{ question: any }> = ({ question }) => {
       >
         <Text>
           {getDeleteContent({
-            title:  data?.maturityLevel?.title ?? "",
-            category: t("common.impact"),
+            title:  "",
+            category: t("kitDesigner.impact"),
             lng,
           })}
         </Text>

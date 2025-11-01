@@ -48,7 +48,7 @@
   "delete": "Delete",
   "deleteWithCategory": "Delete {{category}}",
   "deleteItemWithTitle": "Are you sure you want to delete {{category}} \"{{title}}\"?",
-  "deleteItemWithoutTitle": "Are you sure you want to delete {{category}}?",
+  "deleteItemWithoutTitle": "Are you sure you want to delete this {{category}}?",
   "descending": "Descending",
   "description": "Description",
   "done": "Done",

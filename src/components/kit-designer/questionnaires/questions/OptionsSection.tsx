@@ -25,12 +25,14 @@ const OptionsSection = ({
   fetchOptions,
   selectedAnswerRange,
   setSelectedAnswerRange,
+  isDragDisabled
 }: {
   kitVersionId: string;
   question?: any;
   fetchOptions?: any;
   selectedAnswerRange: any;
   setSelectedAnswerRange: any;
+  isDragDisabled: boolean;
 }) => {
   const { service } = useServiceContext();
 
@@ -152,57 +154,58 @@ const OptionsSection = ({
   return (
     <Grid size={{xs: 12}}>
       <Box
-        mt={1.5}
-        p={1.5}
         borderRadius="8px"
-        justifyContent="space-between"
         gap={2}
-        sx={{ ...styles.centerV }}
-      >
-        <Text variant="titleSmall" >
-          <Trans i18nKey="common.options" />
-        </Text>
+        sx={{ display: "flex", flexDirection: "column", alignItems: "flex-start", width: "100%"}}
+       >
         <Tooltip
           title={
             fetchAnswerRanges?.data?.items.length === 0 &&
             t("kitDesigner.emptyAnswerRange")
           }
+          sx={{width: "100%"}}
         >
-          <Box sx={{...styles.centerV, gap: 1.5}}>
-            <Text variant={"bodyMedium"} color={"background.secondaryDark"}>
+          <Box sx={{...styles.centerV, gap: 1.5, flex: 1, width:"100%"}}>
+            <Text variant={"titleSmall"}>
               {t("common.answerRange")}:
             </Text>
-            <Select
+            <Box sx={{flex: 1}}>
+              <Select
                 value={selectedAnswerRange ?? ""}
                 onChange={handleAnswerRangeChange}
                 sx={{
                   ...dropdownStyle,
                   fontFamily: farsiFontFamily,
                   bgcolor: "inherit",
+                  width: "100%"
                 }}
                 size="small"
                 displayEmpty
                 disabled={fetchAnswerRanges?.data?.items?.length === 0}
-            >
-              <MenuItem value="" disabled>
-                <Trans i18nKey="kitDesigner.chooseAnswerRange" />
-              </MenuItem>
-              {fetchAnswerRanges?.data?.items?.map((range: any) => (
+              >
+                <MenuItem value="" disabled>
+                  <Trans i18nKey="kitDesigner.chooseAnswerRange" />
+                </MenuItem>
+                {fetchAnswerRanges?.data?.items?.map((range: any) => (
                   <MenuItem
-                      key={range.id}
-                      value={range.id}
-                      sx={{
-                        fontFamily: languageDetector(range.title)
-                            ? farsiFontFamily
-                            : primaryFontFamily,
-                      }}
+                    key={range.id}
+                    value={range.id}
+                    sx={{
+                      fontFamily: languageDetector(range.title)
+                        ? farsiFontFamily
+                        : primaryFontFamily,
+                    }}
                   >
                     {range.title}
                   </MenuItem>
-              ))}
-            </Select>
+                ))}
+              </Select>
+            </Box>
           </Box>
         </Tooltip>
+        <Text variant="titleSmall" >
+          <Trans i18nKey="common.options" />
+        </Text>
       </Box>
       {fetchOptions?.data?.answerOptions?.length > 0 ? (
         <Box>
@@ -215,6 +218,7 @@ const OptionsSection = ({
             isAddingNew={showNewOptionForm}
             setIsAddingNew={setShowNewOptionForm}
             disableAddOption={disableAddOption}
+            isDragDisabled={isDragDisabled}
           />
         </Box>
       ) : (

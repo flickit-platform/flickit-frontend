@@ -26,6 +26,7 @@ interface OptionListProps {
   isAddingNew: boolean;
   setIsAddingNew: any;
   disableAddOption: boolean;
+  isDragDisabled: boolean;
 }
 
 const OptionList = (props: OptionListProps) => {
@@ -37,6 +38,7 @@ const OptionList = (props: OptionListProps) => {
     isAddingNew,
     setIsAddingNew,
     disableAddOption,
+    isDragDisabled
   } = props;
 
   const [reorderedItems, setReorderedItems] = useState(Options);
@@ -119,6 +121,7 @@ const OptionList = (props: OptionListProps) => {
                 handleSaveClick={handleSaveClick}
                 handleCancelClick={handleCancelClick}
                 langCode={langCode}
+                isDragDisabled={isDragDisabled}
               />
             ))}
             {provided.placeholder}
@@ -164,6 +167,7 @@ const OptionRow = ({
   handleSaveClick,
   handleCancelClick,
   langCode,
+  isDragDisabled
 }: {
   item: IOption;
   index: number;
@@ -173,10 +177,11 @@ const OptionRow = ({
   handleSaveClick: (item: IOption) => void;
   handleCancelClick: () => void;
   langCode: string;
+  isDragDisabled: boolean;
 }) => {
   const isEditing = editMode === item.id;
   return (
-    <Draggable draggableId={item.id.toString()} index={index}>
+    <Draggable isDragDisabled={isDragDisabled} draggableId={item.id.toString()} index={index}>
       {(draggableProvided: any) => (
         <>
           <Box
