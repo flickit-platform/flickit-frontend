@@ -1,21 +1,25 @@
 import { useQuery } from "@/hooks/useQuery";
 import { useServiceContext } from "@providers/service-provider";
 import { useParams } from "react-router-dom";
-import { lazy, SyntheticEvent, useEffect, useMemo, useState } from "react";
+import { lazy, SyntheticEvent, useEffect, useMemo, useRef, useState } from "react";
 import { t } from "i18next";
 import showToast from "@utils/toast-error";
+import { ICustomError } from "@utils/custom-error";
 
 const EvidenceList = lazy(() => import("../ui/evidences/evidenceList"));
 const AnswerHistory = lazy(() => import("../ui/evidences/answerHistory"));
 
-const UseEvidence = (idx: number): any => {
+const UseEvidence = (selectedQuestion: any): any => {
+  const {id: questionId} = selectedQuestion ?? 0;
+
   const { service } = useServiceContext();
   const { assessmentId = "" } = useParams();
+  const saveId = useRef(0)
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [cacheData, setCacheData] = useState<Record<string, []>>({});
-  const [selectedId, setSelectedId] = useState("evidence");
+  const [selectedTab, setSelectedTab] = useState("evidence");
 
-  let data = cacheData[selectedId] ?? []
+  const data = cacheData[selectedTab] ?? []
   const tabItems = useMemo(() => [
     {
       index: 0,
@@ -38,20 +42,20 @@ const UseEvidence = (idx: number): any => {
   ], [t]);
 
   const handleChange = (event: SyntheticEvent, newValue: string) => {
-    setSelectedId(newValue);
+    setSelectedTab(newValue);
   };
 
   const ActiveComponent = useMemo(() => {
-    const activeTab = tabItems.find((item) => item.value === selectedId);
+    const activeTab = tabItems.find((item) => item.value === selectedTab);
     return activeTab ? activeTab.component : null;
-  }, [selectedId, tabItems]);
+  }, [selectedTab, tabItems]);
 
   const answerHistoryQueryData = useQuery({
     service: (args, config) =>
       service.assessments.answer.getHistory(
         args ??
           ({
-            questionId: idx,
+            questionId: questionId,
             assessmentId,
             page: currentPage,
             size: 10,
@@ -68,7 +72,7 @@ const UseEvidence = (idx: number): any => {
       service.questions.evidences.getAll(
         args ??
           ({
-            questionId: idx,
+            questionId: questionId,
             assessmentId,
             page: currentPage,
             size: 10,
@@ -84,7 +88,7 @@ const UseEvidence = (idx: number): any => {
       service.questions.comments.getAll(
         args ??
           ({
-            questionId: idx,
+            questionId: questionId,
             assessmentId,
             page: currentPage,
             size: 10,
@@ -95,16 +99,26 @@ const UseEvidence = (idx: number): any => {
     runOnMount: false,
   });
 
-  useEffect(() => {
-    const fetchData = async () => {
-      if (cacheData[selectedId]?.length >= 0 ) return;
 
-      const QueryMap = {
+  useEffect(()=>{
+    if(questionId !== saveId.current){
+      setCacheData({})
+      setSelectedTab("evidence")
+      saveId.current = questionId
+    }
+  },[questionId])
+
+  useEffect(() => {
+
+    const fetchData = async () => {
+      if (cacheData[selectedTab]?.length >= 0 ) return;
+
+      const QueryMap : any = {
         evidence: evidencesQueryData,
         comments: commentesQueryData,
         answerHistory: answerHistoryQueryData,
       };
-      const currentQuery = QueryMap[selectedId];
+      const currentQuery = QueryMap[selectedTab];
 
       if (!currentQuery) return;
 
@@ -112,24 +126,25 @@ const UseEvidence = (idx: number): any => {
         const { items } = await currentQuery.query();
             setCacheData(prev =>({
                 ...prev,
-                [selectedId]: items ?? []
+                [selectedTab]: items ?? []
             }))
 
-      } catch (err) {
+      } catch (e) {
+        const err = e as ICustomError;
         showToast(err);
       }
     };
     fetchData().then();
   }, [
-        idx,
-        selectedId,
+        questionId,
+        selectedTab,
         currentPage,
       ]
   );
 
   return {
     data,
-    selectedId,
+    selectedTab,
     tabItems,
     ActiveComponent,
     handleChange,

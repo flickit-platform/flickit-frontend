@@ -5,7 +5,7 @@ import {useMemo} from "react";
 import {ASSESSMENT_MODE} from "@utils/enum-type";
 import EvidenceContainer from "@/features/questions/ui/evidences/container";
 
-const QuestionScreen = ({questionsInfo}) => {
+const QuestionScreen = () => {
   const { assessmentInfo } = useAssessmentContext();
 
 

@@ -6,20 +6,20 @@ import TabContext from '@mui/lab/TabContext';
 import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
 
-const EvidenceContainer = ({ selectedQuestion }) => {
-  const { data,handleChange, selectedId, tabItems, ActiveComponent } = UseEvidence(selectedQuestion?.id);
-
+const EvidenceContainer = ({ selectedQuestion }: {selectedQuestion: any}) => {
+  const { data,handleChange, selectedTab, tabItems, ActiveComponent } = UseEvidence(selectedQuestion);
+  console.log(selectedQuestion,"test select");
   return (
-      <TabContext value={selectedId}>
+      <TabContext value={selectedTab}>
         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
           <TabList onChange={handleChange} aria-label="lab API tabs example">
-            {tabItems.map(item =>{
+            {tabItems.map((item: any) =>{
               return  <Tab key={item.value} label={item.label} value={item.value} />
             })}
           </TabList>
         </Box>
         <Suspense fallback={""}>
-          <TabPanel value={selectedId}>
+          <TabPanel value={selectedTab}>
             <ActiveComponent EvidenceItem={data} />
           </TabPanel>
         </Suspense>
