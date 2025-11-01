@@ -2,6 +2,7 @@ import advice from "./advice.json";
 import assessment from "./assessment.json";
 import assessmentKit from "./assessmentKit.json";
 import assessmentReport from "@/features/assessment-report/i18n/fa.json";
+import questions_temp from "@/features/questions/i18n/fa.json";
 import kitDetail from "@/features/kit-detail/i18n/fa.json";
 import common from "./common.json";
 import dashboard from "./dashboard.json";
@@ -28,6 +29,7 @@ export default {
   kitDesigner,
   notification,
   questions,
+  questions_temp,
   settings,
   spaces,
   subject,

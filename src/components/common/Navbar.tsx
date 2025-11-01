@@ -395,8 +395,6 @@ const Navbar = () => {
     </Box>
   );
 
-  console.log(MULTILINGUALITY.toString())
-
   return (
     <>
       <AppBar
