@@ -358,7 +358,7 @@ const ItemAccordion = ({
               }}
             >
               <QuestionsSection
-                item={item}
+                questionnaire={item}
                 questionnaireLogic={questionnaireLogic}
                 showNewQuestionForm={showNewQuestionForm}
                 setShowNewQuestionForm={setShowNewQuestionForm}
@@ -648,12 +648,12 @@ const SummaryContent = (props: any) => {
 };
 
 const QuestionsSection = ({
-  item,
+  questionnaire,
   questionnaireLogic,
   showNewQuestionForm,
   setShowNewQuestionForm,
 }: {
-  item: KitDesignListItems;
+  questionnaire: KitDesignListItems;
   questionnaireLogic: ReturnType<typeof useQuestionnaireLogic>;
   showNewQuestionForm: { [key: string]: boolean };
   setShowNewQuestionForm: React.Dispatch<
@@ -686,18 +686,27 @@ const QuestionsSection = ({
       ...question,
       index: idx + 1,
     }));
-    questionnaireLogic.handleReorder(reorderedQuestions, item.id);
+    questionnaireLogic.handleReorder(reorderedQuestions, questionnaire.id);
     questionnaireLogic.dispatch(kitActions.setQuestions(reorderedQuestions));
   };
 
   const handleAddNewQuestionClick = () => {
-    setShowNewQuestionForm((prev) => ({ ...prev, [item.id]: true }));
+    setShowNewQuestionForm((prev) => ({ ...prev, [questionnaire.id]: true }));
   };
 
-  const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    const parsedValue = name === "value" ? Number.parseInt(value) || 1 : value;
-    setNewQuestion((prev) => ({ ...prev, [name]: parsedValue }));
+    const parsedValue = name === "value" ? parseInt(value) || 1 : value;
+    setNewQuestion((prev) => ({
+      ...prev,
+      [name]: parsedValue,
+    }));
+    if (name === "value") {
+      setNewQuestion((prev) => ({
+        ...prev,
+        index: parseInt(value) || 1,
+      }));
+    }
   };
 
   const handleSave = async () => {
@@ -709,7 +718,7 @@ const QuestionsSection = ({
         title: newQuestion.title,
         advisable: false,
         mayNotBeApplicable: false,
-        questionnaireId: item.id,
+        questionnaireId: questionnaire.id,
       };
       await questionnaireLogic.postQuestionsKit.query({
         kitVersionId: questionnaireLogic.kitVersionId,
@@ -717,7 +726,7 @@ const QuestionsSection = ({
       });
       const newData = await questionnaireLogic.fetchQuestionListKit.query({
         kitVersionId: questionnaireLogic.kitVersionId,
-        questionnaireId: item.id,
+        questionnaireId: questionnaire.id,
       });
       questionnaireLogic.dispatch(
         kitActions.setQuestions(newData?.items || []),
@@ -728,7 +737,10 @@ const QuestionsSection = ({
         value: (newQuestion.index ?? 0) + 1,
         id: null,
       });
-      setShowNewQuestionForm((prev) => ({ ...prev, [item.id]: false }));
+      setShowNewQuestionForm((prev) => ({
+        ...prev,
+        [questionnaire.id]: false,
+      }));
     } catch (e) {
       const err = e as ICustomError;
       showToast(err);
@@ -736,7 +748,7 @@ const QuestionsSection = ({
   };
 
   const handleCancel = () => {
-    setShowNewQuestionForm((prev) => ({ ...prev, [item.id]: false }));
+    setShowNewQuestionForm((prev) => ({ ...prev, [questionnaire.id]: false }));
     setNewQuestion({ ...newQuestion, title: "", id: null });
   };
 
@@ -758,14 +770,14 @@ const QuestionsSection = ({
           {questionnaireLogic.kitState.questions.length >= 1 ? (
             <>
               <DragDropContext onDragEnd={handleQuestionDragEnd}>
-                <Droppable droppableId={`questions-${item.id}`}>
+                <Droppable droppableId={`questions-${questionnaire.id}`}>
                   {(provided) => (
                     <Box {...provided.droppableProps} ref={provided.innerRef}>
                       {questionnaireLogic.kitState.questions.map(
                         (question: any, index: number) => (
                           <Draggable
                             key={question.id}
-                            draggableId={question.id.toString()}
+                            draggableId={question?.id?.toString()}
                             index={index}
                           >
                             {(provided) => (
@@ -778,6 +790,10 @@ const QuestionsSection = ({
                                 <QuestionContainer
                                   key={question.id}
                                   index={index}
+                                  handleReorder={
+                                    questionnaireLogic.handleReorder
+                                  }
+                                  questionnaireId={questionnaire.id}
                                 />
                               </Box>
                             )}
@@ -789,7 +805,7 @@ const QuestionsSection = ({
                   )}
                 </Droppable>
               </DragDropContext>
-              {!showNewQuestionForm[item.id] && (
+              {!showNewQuestionForm[questionnaire.id] && (
                 <Box sx={{ display: "flex", justifyContent: "center", mt: 2 }}>
                   <Button
                     size="small"
@@ -805,7 +821,7 @@ const QuestionsSection = ({
             </>
           ) : (
             <>
-              {!showNewQuestionForm[item.id] && (
+              {!showNewQuestionForm[questionnaire.id] && (
                 <EmptyStateQuestion
                   btnTitle="questions.addFirstQuestion"
                   title="kitDesigner.noQuestionHere"
@@ -817,7 +833,7 @@ const QuestionsSection = ({
           )}
         </>
       )}
-      {showNewQuestionForm[item.id] && (
+      {showNewQuestionForm[questionnaire.id] && (
         <Box sx={{ mt: 2 }}>
           <QuestionForm
             newItem={newQuestion}

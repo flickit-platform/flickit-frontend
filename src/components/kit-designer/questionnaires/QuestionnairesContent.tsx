@@ -57,7 +57,10 @@ const QuestionnairesContent = () => {
     try {
       let questionnaireId = openDeleteDialog.id;
       await deleteQuestionnaireKit.query({ kitVersionId, questionnaireId });
-      await fetchQuestionnairesKit.query();
+      await fetchQuestionnairesKit.query().then((res) => {
+        const { items } = res;
+        handleReorder(items);
+      });
       handleCancel();
     } catch (e) {
       const err = e as ICustomError;
@@ -96,6 +99,13 @@ const QuestionnairesContent = () => {
       ...prev,
       [name]: parsedValue,
     }));
+
+    if (name === "value") {
+      setNewQuestionnaires((prev) => ({
+        ...prev,
+        index: parseInt(value) || 1,
+      }));
+    }
   };
 
   const handleAddNewRow = () => {
