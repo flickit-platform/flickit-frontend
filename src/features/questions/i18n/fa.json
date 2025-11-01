@@ -3,5 +3,7 @@
   "hideIssues": "پنهان کردن مسئله‌ها",
   "lowConfidence": "ضریب اطمینان کم",
   "noEvidence": "بدون شاهد",
-  "questionsList": "فهرست پرسش‌ها ({{count}} پرسش)"
+  "questionsList": "فهرست پرسش‌ها ({{count}} پرسش)",
+  "unanswered": "بدون پاسخ"
+
 }

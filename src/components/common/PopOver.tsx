@@ -86,7 +86,7 @@ type GenericPopoverBase = {
 
 type GenericPopoverControlled = {
   open: boolean;
-  anchorEl: HTMLElement| null;
+  anchorEl: HTMLElement | null;
   onClose: () => void;
 };
 
@@ -118,12 +118,20 @@ export function GenericPopover({
       anchorOrigin={anchorOrigin}
       transformOrigin={transformOrigin}
       PaperProps={{ sx: { borderRadius: 2 }, ...PaperProps }}
-      sx={{ direction }}
+      sx={{
+        direction,
+      }}
       aria-labelledby={headingId}
       {...rest}
     >
       <ClickAwayListener onClickAway={onClose}>
-        <Box sx={{ maxWidth: 360 }}>
+        <Box
+          sx={{
+            maxWidth: 360,
+            minWidth: 220,
+            bgcolor: (theme) => theme.palette.background.background,
+          }}
+        >
           {/* Header / Title */}
           {header ? (
             <Box>{header}</Box>

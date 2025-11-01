@@ -1,4 +1,4 @@
-import { TypeBackground, createTheme } from "@mui/material/styles";
+import { createTheme } from "@mui/material/styles";
 import { v3Tokens } from "./tokens";
 import { gray, grayBlue, orange } from "./colors";
 const fontSize = ["12px", "14px", "14px", "16px", "16px"];
@@ -7,6 +7,7 @@ export const farsiFontFamily = "'Sahel','Arial','sans-serif'";
 
 declare module "@mui/material/styles/createPalette" {
   interface TypeBackground {
+    background?: string;
     secondary?: string;
     secondaryDark?: string;
     variant: string;
@@ -260,6 +261,7 @@ export const getTheme = (lang: any) => {
       },
 
       background: {
+        background: grayBlue[98],
         default: v3Tokens.surface.surface,
         paper: v3Tokens.surface.containerLowest,
         secondary: v3Tokens.primary.bg,
