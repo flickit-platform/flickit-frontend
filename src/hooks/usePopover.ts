@@ -6,7 +6,9 @@ export default function usePopover() {
   const handlePopoverOpen = useCallback(
     (event: React.MouseEvent<HTMLElement>, receivedData?: any) => {
       setAnchorEl(event.currentTarget );
+      if(receivedData){
       setData(receivedData)
+      }
     },
     [],
   );
