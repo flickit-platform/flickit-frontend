@@ -50,6 +50,12 @@ const UseEvidence = (selectedQuestion: any): any => {
     return activeTab ? activeTab.component : null;
   }, [selectedTab, tabItems]);
 
+  const deleteEvidence = useQuery({
+    service: (args , config) =>
+      service.questions.evidences.remove(args , config),
+    runOnMount: false,
+  });
+
   const answerHistoryQueryData = useQuery({
     service: (args, config) =>
       service.assessments.answer.getHistory(
@@ -108,32 +114,35 @@ const UseEvidence = (selectedQuestion: any): any => {
     }
   },[questionId])
 
-  useEffect(() => {
 
-    const fetchData = async () => {
-      if (cacheData[selectedTab]?.length >= 0 ) return;
+  const fetchData = async () => {
 
-      const QueryMap : any = {
-        evidence: evidencesQueryData,
-        comments: commentesQueryData,
-        answerHistory: answerHistoryQueryData,
-      };
-      const currentQuery = QueryMap[selectedTab];
+    if (cacheData[selectedTab]?.length >= 0 ) return;
 
-      if (!currentQuery) return;
-
-      try {
-        const { items } = await currentQuery.query();
-            setCacheData(prev =>({
-                ...prev,
-                [selectedTab]: items ?? []
-            }))
-
-      } catch (e) {
-        const err = e as ICustomError;
-        showToast(err);
-      }
+    const QueryMap : any = {
+      evidence: evidencesQueryData,
+      comments: commentesQueryData,
+      answerHistory: answerHistoryQueryData,
     };
+    const currentQuery = QueryMap[selectedTab];
+
+    if (!currentQuery) return;
+
+    try {
+      const { items } = await currentQuery.query();
+      setCacheData(prev =>({
+        ...prev,
+        [selectedTab]: items ?? []
+      }))
+
+    } catch (e) {
+      const err = e as ICustomError;
+      showToast(err);
+    }
+  };
+
+
+  useEffect(() => {
     fetchData().then();
   }, [
         questionId,
@@ -148,6 +157,10 @@ const UseEvidence = (selectedQuestion: any): any => {
     tabItems,
     ActiveComponent,
     handleChange,
+    setCacheData,
+    deleteEvidence,
+    evidencesQueryData,
+    commentesQueryData
   };
 };
 

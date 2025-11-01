@@ -7,8 +7,8 @@ import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
 
 const EvidenceContainer = ({ selectedQuestion }: {selectedQuestion: any}) => {
-  const { data,handleChange, selectedTab, tabItems, ActiveComponent } = UseEvidence(selectedQuestion);
-  console.log(selectedQuestion,"test select");
+  const { handleChange, selectedTab, tabItems, ActiveComponent, ...rest } = UseEvidence(selectedQuestion);
+
   return (
       <TabContext value={selectedTab}>
         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
@@ -20,7 +20,7 @@ const EvidenceContainer = ({ selectedQuestion }: {selectedQuestion: any}) => {
         </Box>
         <Suspense fallback={""}>
           <TabPanel value={selectedTab}>
-            <ActiveComponent EvidenceItem={data} />
+            <ActiveComponent {...rest} />
           </TabPanel>
         </Suspense>
       </TabContext>
