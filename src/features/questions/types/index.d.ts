@@ -6,9 +6,8 @@ type SideBarProps = {
 
 type QuestionIssue = NonNullable<IQuestionInfo["issues"]>;
 
-export type IssueChipTone = "error" | "tertiary";
-
-export interface IssueDefinition {
+type IssueChipTone = "error" | "tertiary";
+interface IssueDefinition {
   id: string;
   i18nKey: string;
   chipTone: IssueChipTone;
@@ -17,21 +16,54 @@ export interface IssueDefinition {
   matches: (questionIssues: QuestionIssue) => boolean;
 }
 
-type FilterKey =
-  | "unanswered"
-  | "unresolved"
-  | "noevidence"
-  | "unapproved"
-  | "lowconf";
+interface IIssueService {
+  getIssueChips: (issues: QuestionIssue, t: TFunction) => IssueChip[];
+  isQuestionMatchingAnyActiveFilter: (
+    question: IQuestionInfo,
+    activeFilters: Set<string>,
+  ) => boolean;
+  getFilterOptionsMeta: (
+    activeFilters: Set<string>,
+    t: TFunction,
+  ) => FilterOption[];
+  getAvailableFilters: () => string[];
+}
 
-type HeaderProps = {
-  title: string;
-  open: boolean;
-  onToggleOpen: () => void;
-  showChips: boolean;
-  onToggleChips: () => void;
-  progress: number;
-  onOpenFilter: (e: React.MouseEvent<HTMLElement>) => void;
+interface SidebarNavigation {
+  selectedIndex: number;
+  selectByIndex: (index: number) => void;
+  buildQuestionUrl: (index: number) => string;
+}
+
+interface SidebarUIState {
+  isOpen: boolean;
+  showIssueChips: boolean;
+  activeFilters: Set<IssueId>;
+  toggleSidebar: () => void;
+  toggleIssueChips: () => void;
+  setFilterEnabled: (id: string, enabled: boolean) => void;
+  getIssueChipsForQuestion: (issues: QuestionIssue) => {
+    id: IssueId;
+    label: string;
+    tone: IssueChipTone;
+  }[];
+}
+
+interface SidebarData {
+  completionPercent: number;
   hasActiveFilters: boolean;
-  isAdvancedMode: boolean;
-};
+  listItems: ListItem[];
+  filteredQuestions: IQuestionInfo[];
+}
+
+interface IIssueFilter {
+  getIssueChips(issues: QuestionIssue, t: TFunction): IssueChip[];
+  isQuestionMatchingAnyActiveFilter(
+    question: IQuestionInfo,
+    activeFilters: Set<string>,
+  ): boolean;
+  getFilterOptionsMeta(
+    activeFilters: Set<string>,
+    t: TFunction,
+  ): FilterOption[];
+}
