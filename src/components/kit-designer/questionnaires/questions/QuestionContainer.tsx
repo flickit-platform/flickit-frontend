@@ -23,7 +23,7 @@ const QuestionContain = (props: any) => {
   const { t } = useTranslation();
   const { kitVersionId = "" } = useParams();
   const { service } = useServiceContext();
-  const { index } = props;
+  const { index, handleReorder, questionnaireId } = props;
   const [selectedQuestionIndex, setSelectedQuestionIndex] = useState<
     number | null
   >(null);
@@ -81,7 +81,13 @@ const QuestionContain = (props: any) => {
         (q) => q.id !== question.id,
       );
 
-      dispatch(kitActions.setQuestions(updatedQuestions));
+      handleReorder(updatedQuestions, questionnaireId);
+      const orders = updatedQuestions.map((item, idx) => ({
+        ...item,
+        questionId: item.id,
+        index: idx + 1,
+      }));
+      dispatch(kitActions.setQuestions(orders));
     } catch (e) {
       const err = e as ICustomError;
       showToast(err);

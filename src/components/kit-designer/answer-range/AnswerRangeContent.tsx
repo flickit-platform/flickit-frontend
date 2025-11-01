@@ -61,8 +61,11 @@ const AnaweRangeContent = () => {
   const handleDelete = async () => {
     try {
       let answerRangeId = openDeleteDialog.id;
-      await deleteAnsweRange.query({ kitVersionId, answerRangeId });
-      await fetchAnswerRangeKit.query();
+      await deleteAnsweRange.query({ kitVersionId, answerRangeId }).then(() => {
+        const tempData = data.filter((el: any) => el.id !== answerRangeId);
+        setData(tempData);
+      });
+
       handleCancel();
     } catch (e) {
       const err = e as ICustomError;
