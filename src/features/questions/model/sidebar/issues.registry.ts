@@ -45,8 +45,7 @@ export const ISSUE_CATALOG = [
     chipTone: "error",
     showAsChip: false,
     showInFilter: true,
-    matches: (questionIssues: QuestionIssue) =>
-      !!questionIssues.isUnanswered,
+    matches: (questionIssues: QuestionIssue) => !!questionIssues.isUnanswered,
   },
 ] as const satisfies Readonly<IssueDefinition[]>;
 
@@ -56,13 +55,13 @@ export function getIssueChips(
   issues: QuestionIssue,
   t: (i18nKey: string) => string,
 ) {
-  return ISSUE_CATALOG
-    .filter((def) => def.showAsChip && def.matches(issues))
-    .map((def) => ({
-      id: def.id,
-      label: t(def.i18nKey),
-      tone: def.chipTone as IssueChipTone,
-    }));
+  return ISSUE_CATALOG.filter(
+    (def) => def.showAsChip && def.matches(issues),
+  ).map((def) => ({
+    id: def.id,
+    label: t(def.i18nKey),
+    tone: def.chipTone as IssueChipTone,
+  }));
 }
 
 export function isQuestionMatchingAnyActiveFilter(
@@ -70,7 +69,7 @@ export function isQuestionMatchingAnyActiveFilter(
   activeFilterIds: Set<IssueId>,
 ) {
   if (activeFilterIds.size === 0) return true;
-  const questionIssues = (question.issues ?? {}) as QuestionIssue;
+  const questionIssues = question.issues ?? {};
   for (const def of ISSUE_CATALOG) {
     if (activeFilterIds.has(def.id) && def.matches(questionIssues)) return true;
   }
@@ -81,11 +80,9 @@ export function getFilterOptionsMeta(
   activeFilterIds: Set<IssueId>,
   t: (i18nKey: string) => string,
 ) {
-  return ISSUE_CATALOG
-    .filter((def) => def.showInFilter)
-    .map((def) => ({
-      id: def.id as IssueId,
-      label: t(def.i18nKey),
-      checked: activeFilterIds.has(def.id),
-    }));
+  return ISSUE_CATALOG.filter((def) => def.showInFilter).map((def) => ({
+    id: def.id,
+    label: t(def.i18nKey),
+    checked: activeFilterIds.has(def.id),
+  }));
 }

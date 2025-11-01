@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 import i18next from "i18next";
 import { useAssessmentContext } from "@/providers/assessment-provider";
 import { ASSESSMENT_MODE } from "@/utils/enum-type";
-import type { IQuestionInfo } from "@/types";
+import type { IQuestionInfo, TId } from "@/types";
 import { useParams, useNavigate } from "react-router-dom";
 import { questionActions, useQuestionDispatch } from "../../context";
 import {
@@ -47,7 +47,7 @@ export function useSidebar(questions: IQuestionInfo[]) {
 
   const [uiState, dispatchUIState] = useReducer(uiStateReducer, {
     isOpen: true,
-    showIssueChips: !!isAdvancedMode,
+    showIssueChips: isAdvancedMode,
     activeFilters: new Set<IssueId>(),
   });
 
@@ -114,16 +114,16 @@ export function useSidebar(questions: IQuestionInfo[]) {
   const activeQuestion = questions[selectedIndex];
 
   const listItems = useMemo(() => {
-    const indexById = new Map<string, number>();
-    questions.forEach(
-      (question: any, idx) => question.id && indexById.set(question.id, idx),
-    );
-
+    const indexById = new Map<TId, number>();
+    for (const [idx, q] of questions.entries()) {
+      const id = q?.id;
+      if (id) indexById.set(id, idx);
+    }
     return filteredQuestions.map((question: any, i) => {
       const fullIndex =
-        question.id != null
-          ? (indexById.get(question.id) ?? questions.indexOf(question))
-          : questions.indexOf(question);
+        question.id == null
+          ? questions.indexOf(question)
+          : (indexById.get(question.id) ?? questions.indexOf(question));
       const isActive = question.id
         ? question.id === activeQuestion?.id
         : fullIndex === selectedIndex;

@@ -106,10 +106,10 @@ const SidebarHeader = memo(function SidebarHeader({
                   onClick={onToggleChips}
                   aria-label={showChips ? t("common.hide") : t("common.show")}
                 >
-                  {!showChips ? (
-                    <VisibilityOffOutlinedIcon />
-                  ) : (
+                  {showChips ? (
                     <VisibilityOutlinedIcon />
+                  ) : (
+                    <VisibilityOffOutlinedIcon />
                   )}
                 </IconButton>
               </Tooltip>
