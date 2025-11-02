@@ -1,6 +1,4 @@
-import Accordion from '@mui/material/Accordion';
-import AccordionDetails from '@mui/material/AccordionDetails';
-import AccordionSummary from '@mui/material/AccordionSummary';
+
 import { Box, IconButton } from "@mui/material";
 import { Text } from "@common/Text";
 import Avatar from "@mui/material/Avatar";
@@ -10,8 +8,6 @@ import { t } from "i18next";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import { Trans } from "react-i18next";
 import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
-import RichEditorField from "@common/fields/RichEditorField";
-import FormProviderWithForm from "@common/FormProviderWithForm";
 import EvidenceDetail from "@/features/questions/ui/evidences/EvidenceDetail";
 
 type EvidenceType = "Positive" | "Negative" | "comment";
@@ -47,8 +43,8 @@ const GeneralType = type == "Negative" || type == "Positive" ? "evidence" : "com
 
 
     return (
-      <Accordion sx={{ mb: 2 }}>
-          <AccordionSummary
+      <Box sx={{ mb: 2 }}>
+          <Box
             aria-controls="panel1-content"
             id="panel1-header"
             sx={{
@@ -79,12 +75,12 @@ const GeneralType = type == "Negative" || type == "Positive" ? "evidence" : "com
                 <ActionButton type={GeneralType} setConfirmDeleteDialog={setConfirmDeleteDialog} evidenceId={id} />
               </Box>
           </Box>
-          </AccordionSummary>
-          <AccordionDetails>
+          </Box>
+          <Box>
 
-            <EvidenceDetail/>
-          </AccordionDetails>
-      </Accordion>
+            {/*<EvidenceDetail/>*/}
+          </Box>
+          </Box>
     );
 };
 
