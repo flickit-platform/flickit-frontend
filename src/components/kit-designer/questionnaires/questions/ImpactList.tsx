@@ -98,6 +98,8 @@ const AttributeImpactList = ({
   };
 
   const handleInputChange = (field: string, value: any) => {
+    const isValidInteger = /^\d*$/.test(value);
+    if (field === "weight" && !isValidInteger) return;
     setTempValues((prev) => ({ ...prev, [field]: value }));
   };
 
@@ -211,7 +213,7 @@ const ImpactDetails = ({
 
         {hasWeight && (
           <TextField
-            type="number"
+            type="text"
             required
             value={tempValues.weight}
             onChange={(e) => handleInputChange("weight", e.target.value)}
