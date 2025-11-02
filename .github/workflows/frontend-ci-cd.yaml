@@ -52,48 +52,34 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GH_PACKAGES_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
-    Frontend_Push_Latest_Image:
+  Frontend_Push_Latest_Image:
     if: ${{ (github.event_name == 'push' && github.ref == 'refs/heads/main') }}
     needs: Sonar
     runs-on: ubuntu-latest
-
-    container:
-      image: hamravesh/darkube-cli:v1.1
-      options: --user root
-
-    env:
-      IMAGE_NAME: ghcr.io/flickit-platform/flickit-frontend
-
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v2
+      - name: create image from repository
+        run: docker build -t ghcr.io/flickit-platform/flickit-frontend:"${GITHUB_SHA:0:7}" ./
+      - name: login to GitHub Container Registry
+        uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: flickit-platform
+          password: ${{ secrets.GH_PACKAGES_TOKEN }}
+      - name: push image to GitHub Container Registry
+        run: docker push ghcr.io/flickit-platform/flickit-frontend:"${GITHUB_SHA:0:7}"
 
-      - name: Build and push image with Darkube
-        run: |
-          darkube build --push \
-            -t $IMAGE_NAME:${GITHUB_SHA:0:7} \
-            -t $IMAGE_NAME:${GITHUB_REF_NAME} \
-            --docker-auth-config ${{ secrets.DOCKER_AUTH_CONFIG }} \
-            --workdir . \
-            --file ./Dockerfile \
-            --build-context .
-
-  Frontend_Deploy_Latest_Image:
+  Frontend_Deploy_With_Webhook:
     needs: Frontend_Push_Latest_Image
     runs-on: ubuntu-latest
-
-    container:
-      image: hamravesh/darkube-cli:v1.1
-      options: --user root
-
     steps:
-      - name: Deploy via Darkube
+      - name: Deploy service on Webhook
         run: |
-          darkube deploy \
-            --token ${{ secrets.DEPLOY_TOKEN_FRONTEND_FLICKIT_STAGE_HAMRAVESH_C13 }} \
-            --app-id ${{ secrets.APP_ID_FRONTEND_FLICKIT_STAGE_HAMRAVESH_C13 }} \
-            --image-tag ${GITHUB_SHA:0:7} \
-            --job-id ${GITHUB_RUN_ID}
+          status_code=$(curl --silent --output /dev/null --write-out "%{http_code}" -X POST "${{ secrets.DEPLOY_WEBHOOK_URL }}?FRONTEND_VERSION=${GITHUB_SHA:0:7}")
+          if [ "$status_code" -ne 204 ]; then
+            echo "Unexpected status code: $status_code"
+            exit 1
+          fi
 
   Frontend_Push_Image:
     if: ${{ github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v') }}
