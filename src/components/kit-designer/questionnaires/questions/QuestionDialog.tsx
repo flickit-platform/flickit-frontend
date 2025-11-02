@@ -260,7 +260,7 @@ const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
                     minWidth={width}
                     whiteSpace="nowrap"
                   >
-                    {name === "title" ? `${index + 1}. ` : ""}<Trans i18nKey={label} />
+                   <Trans i18nKey={label} /> {name === "title" ? ` ${index + 1} ` : ""}
                   </Text>
                   <Box sx={{ display: "flex", width: "100%" }}>
                     <RenderGeneralField
