@@ -4,11 +4,13 @@ import { styles } from "@styles";
 import RichEditorField from "@common/fields/RichEditorField";
 import { t } from "i18next";
 import { useForm } from "react-hook-form";
+import {Text} from "@/components/common/Text"
 
-const EvidenceDetail = () => {
+const EvidenceDetail = (props: any) => {
+  const {edit , description, id: evidenceId} = props
   return (
     <div>
-      <DescriptionEvidence/>
+      <DescriptionEvidence description={description} edit={edit} evidenceId={evidenceId}/>
       <AttachmentEvidence/>
     </div>
   );
@@ -18,25 +20,30 @@ const AttachmentEvidence= () =>{
   return <></>
 }
 
-const DescriptionEvidence = () =>{
+const DescriptionEvidence = (props: any) =>{
+  const {description, edit, evidenceId} = props
   const formMethods = useForm({ shouldUnregister: true });
-
   return (
     <FormProviderWithForm formMethods={formMethods}>
       <Box
         width="100%"
         justifyContent="space-between"
-        mt={{ xs: 26, sm: 17, md: 11, xl: 7 }}
+        // mt={{ xs: 26, sm: 17, md: 11, xl: 7 }}
         sx={{ ...styles.centerV }}
       >
-        <RichEditorField
+        {edit == evidenceId ?  <RichEditorField
           name="evidence-description"
           label={t("common.description")}
           disable_label={false}
           required={true}
-          defaultValue={formMethods.getValues("evidence-description")}
-          showEditorMenu={true}
-        />
+          defaultValue={description}
+          showEditorMenu={false}
+        /> :
+        <Text  dangerouslySetInnerHTML={{
+          __html: description,
+        }} ></Text>
+        }
+
       </Box>
     </FormProviderWithForm>
   )

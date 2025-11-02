@@ -8,19 +8,25 @@ import { getReadableDate } from "@utils/readable-date";
 import { Text } from "@/components/common/Text";
 import { t } from "i18next";
 import CheckIcon from "@mui/icons-material/Check";
+import EvidenceDetail from "@/features/questions/ui/evidences/EvidenceDetail";
+import { useState } from "react";
 
 const EvidenceItem = (props: any) => {
 
+  const [edit, setEdit] = useState<string | null>(null)
+  const toggleEditMode = (id:any) =>{
+    setEdit(prev => prev != id ? id : null)
+  }
   return (
     <Box sx={{ mb: 2 }}>
-      <HeaderItem {...props}/>
-      {/*<DetailItem/>*/}
+      <HeaderItem {...props} toggleEditMode={toggleEditMode}/>
+      <EvidenceDetail {...props} edit={edit}/>
     </Box>
   );
 };
 
 const HeaderItem = (props: any) =>{
-  const { createdBy, lastModificationTime, type, id, setConfirmDeleteDialog } = props;
+  const { createdBy, lastModificationTime, type, id, setConfirmDeleteDialog, editable, toggleEditMode } = props;
   const { displayName, pictureLink } = createdBy;
    const { boxType } = useEvidenceBox(type)
 
@@ -58,6 +64,8 @@ const HeaderItem = (props: any) =>{
             type={boxType?.type}
             setConfirmDeleteDialog={setConfirmDeleteDialog}
             evidenceId={id}
+            editable={editable}
+            toggleEditMode={toggleEditMode}
           />
         </Box>
       </Box>
@@ -66,7 +74,7 @@ const HeaderItem = (props: any) =>{
 
 const ActionButton = (props: any) => {
 
-  const { setConfirmDeleteDialog, evidenceId, type } = props;
+  const { setConfirmDeleteDialog, evidenceId, type, editable, toggleEditMode } = props;
 
   const items = [
     ...(type === "comment"
@@ -75,15 +83,12 @@ const ActionButton = (props: any) => {
         onClick: () => {},
       }]
       : []),
-    {
-      icon: (
-        <EditOutlinedIcon
-          fontSize="small"
-          sx={{ width: "24px", height: "24px" }}
-        />
-      ),
-      onClick: () => {},
-    },
+    ...(editable
+      ? [{
+        icon: <EditOutlinedIcon fontSize="small" sx={{ width: 24, height: 24 }} />,
+        onClick: ()=> toggleEditMode(evidenceId),
+      }]
+      : []),
     {
       icon: (
         <DeleteOutlinedIcon
