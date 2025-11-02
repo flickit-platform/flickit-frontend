@@ -577,8 +577,8 @@ export default function ShareDialog({
 }
 
 const UserSection = (props: any) => {
-
-  const {anchorEl, open, handlePopoverOpen, handlePopoverClose, data} = usePopover();
+  const { anchorEl, open, handlePopoverOpen, handlePopoverClose, data } =
+    usePopover();
   const { invitees, users, deleteUserRoleHandler, deleteInviteeHandler, lng } =
     props;
   const handleOpenDelete = (e: any, m: any) => {
@@ -604,7 +604,7 @@ const UserSection = (props: any) => {
       flexDirection="column"
       my={1}
       gap={2}
-      sx={{ maxHeight: "250px" }}
+      sx={{ maxHeight: "200px", overflow: "auto" }}
     >
       {[
         ...users.map((u: any) => ({ ...u, isInvitee: false })),
@@ -658,10 +658,7 @@ const UserSection = (props: any) => {
         direction={lng === "fa" ? "rtl" : "ltr"}
         actions={
           <>
-            <Button
-              variant="outlined"
-              onClick={handlePopoverClose}
-            >
+            <Button variant="outlined" onClick={handlePopoverClose}>
               <Text variant="labelMedium">{t("common.cancel", { lng })}</Text>
             </Button>
             <Button variant="contained" onClick={handleConfirmDelete}>
