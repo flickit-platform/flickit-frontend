@@ -1,18 +1,18 @@
 import Accordion from '@mui/material/Accordion';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
-import { Box } from "@mui/material";
+import { Box, IconButton } from "@mui/material";
 import { Text } from "@common/Text";
 import Avatar from "@mui/material/Avatar";
 import { styles } from "@styles";
 import { getReadableDate } from "@utils/readable-date";
 import { t } from "i18next";
-import MoreActions from "@common/MoreActions";
-import useMenu from "@/hooks/useMenu";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import { Trans } from "react-i18next";
 import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
-import { v3Tokens } from "@config/tokens";
+import RichEditorField from "@common/fields/RichEditorField";
+import FormProviderWithForm from "@common/FormProviderWithForm";
+import EvidenceDetail from "@/features/questions/ui/evidences/EvidenceDetail";
 
 type EvidenceType = "Positive" | "Negative" | "comment";
 interface StyleItem {
@@ -76,51 +76,43 @@ const GeneralType = type == "Negative" || type == "Positive" ? "evidence" : "com
             </Box>
               <Box sx={{...styles.centerVH, gap: 1}}>
                 <Text variant={"labelSmall"} sx={{color: typeStyle.color, background: typeStyle.background, p: "4px 8px"}} >{t(typeStyle.label)}</Text>
-                <Actions
-                  type={GeneralType}
-                  setConfirmDeleteDialog={setConfirmDeleteDialog}
-                  evidenceId={id}
-                />
+                <ActionButton type={GeneralType} setConfirmDeleteDialog={setConfirmDeleteDialog} evidenceId={id} />
               </Box>
-
           </Box>
-
           </AccordionSummary>
           <AccordionDetails>
 
+            <EvidenceDetail/>
           </AccordionDetails>
       </Accordion>
     );
 };
 
-const Actions = (props: any) => {
-const { setConfirmDeleteDialog, evidenceId, type } = props
-  const editEvidence = () =>{
-
-  }
-
+const ActionButton = (props: any) =>{
+  const { setConfirmDeleteDialog, evidenceId, type } = props
+  const items = [
+    {
+      icon:  <EditOutlinedIcon fontSize="small"   sx={{width: "24px", height: "24px"}} />,
+      lable: <Trans i18nKey="common.edit" />,
+      onClick: () => {}
+    },
+    {
+      icon: <DeleteOutlinedIcon fontSize="small"  sx={{width: "24px", height: "24px"}} />,
+      text: <Trans i18nKey="common.delete" />,
+      onClick: () => setConfirmDeleteDialog({ open: true, evidenceId, type })
+    }
+  ]
 
   return (
-    <MoreActions
-      {...useMenu()}
-      boxProps={{ ml: 0.2 }}
-      // loading={}
-      items={[
-        {
-          icon: <EditOutlinedIcon fontSize="small" />,
-          text: <Trans i18nKey="common.edit" />,
-          onClick: editEvidence,
-        },
-        {
-          icon: <DeleteOutlinedIcon fontSize="small" />,
-          text: <Trans i18nKey="common.delete" />,
-          onClick: () => setConfirmDeleteDialog({ open: true, evidenceId, type })
-        }
-      ]}
-      color={v3Tokens.surface.on}
-      IconButtonProps={{ width: "20px", height: "20px" }}
-      hideInnerIconButton={false}
-    />
+    <Box sx={{...styles.centerV, gap: 1}} onClick={(e)=>e.stopPropagation()}>
+      {items.map(item =>{
+        return (
+          <Box>
+            <IconButton onClick={item.onClick} sx={{p: 0.4}} >{item.icon}</IconButton>
+          </Box>
+        )
+      })}
+    </Box>
   )
 }
 
