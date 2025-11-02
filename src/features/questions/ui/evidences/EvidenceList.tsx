@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import EvidenceItem from "@/features/questions/ui/evidences/evidenceItem";
+import EvidenceItem from "@/features/questions/ui/evidences/EvidenceItem";
 import { DeleteConfirmationDialog } from "@common/dialogs/DeleteConfirmationDialog";
 import { t } from "i18next";
 import showToast from "@utils/toast-error";

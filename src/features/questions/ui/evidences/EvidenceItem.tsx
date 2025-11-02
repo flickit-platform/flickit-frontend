@@ -1,4 +1,3 @@
-
 import { Box, IconButton } from "@mui/material";
 import { Text } from "@common/Text";
 import Avatar from "@mui/material/Avatar";

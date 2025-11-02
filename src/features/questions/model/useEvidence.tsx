@@ -6,8 +6,8 @@ import { t } from "i18next";
 import showToast from "@utils/toast-error";
 import { ICustomError } from "@utils/custom-error";
 
-const EvidenceList = lazy(() => import("../ui/evidences/evidenceList"));
-const AnswerHistory = lazy(() => import("../ui/evidences/answerHistory"));
+const EvidenceList = lazy(() => import("../ui/evidences/EvidenceList"));
+const AnswerHistory = lazy(() => import("../ui/evidences/AnswerHistory"));
 
 const UseEvidence = (selectedQuestion: any): any => {
   const {id: questionId} = selectedQuestion ?? 0;
