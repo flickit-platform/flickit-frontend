@@ -4,6 +4,7 @@ import { DeleteConfirmationDialog } from "@common/dialogs/DeleteConfirmationDial
 import { t } from "i18next";
 import showToast from "@utils/toast-error";
 import { ICustomError } from "@utils/custom-error";
+import { Box } from "@mui/material";
 
 const EvidenceList = (props: any) => {
   const { data: evidenceItems, deleteEvidence, setCacheData, evidencesQueryData, commentesQueryData } = props
@@ -44,7 +45,7 @@ const EvidenceList = (props: any) => {
   };
 
     return (
-        <div>
+        <Box>
           {evidenceItems. map((item: any) => {
             return <EvidenceItem key={item.id} {...item} setConfirmDeleteDialog={setConfirmDeleteDialog}/>
           })}
@@ -57,7 +58,7 @@ const EvidenceList = (props: any) => {
               title: ""
             }}
           />
-        </div>
+        </Box>
     );
 };
 

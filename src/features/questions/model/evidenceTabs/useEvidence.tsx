@@ -6,10 +6,10 @@ import { t } from "i18next";
 import showToast from "@utils/toast-error";
 import { ICustomError } from "@utils/custom-error";
 
-const EvidenceList = lazy(() => import("../ui/evidences/EvidenceList"));
-const AnswerHistory = lazy(() => import("../ui/evidences/AnswerHistory"));
+const EvidenceList = lazy(() => import("../../ui/evidences/EvidenceList"));
+const AnswerHistory = lazy(() => import("../../ui/evidences/AnswerHistory"));
 
-const UseEvidence = (selectedQuestion: any): any => {
+const useEvidence = (selectedQuestion: any): any => {
   const {id: questionId} = selectedQuestion ?? 0;
 
   const { service } = useServiceContext();
@@ -164,4 +164,4 @@ const UseEvidence = (selectedQuestion: any): any => {
   };
 };
 
-export default UseEvidence;
+export default useEvidence;
