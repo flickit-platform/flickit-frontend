@@ -3,5 +3,6 @@
   "hideIssues": "Hide issues",
   "lowConfidence": "Low confidence",
   "noEvidence": "No evidence",
-  "questionsList": "Questions list ({{count}} questions)"
+  "questionsList": "Questions list ({{count}} questions)",
+  "unanswered": "Unanswered"
 }

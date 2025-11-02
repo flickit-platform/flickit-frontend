@@ -260,7 +260,7 @@ const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
                     minWidth={width}
                     whiteSpace="nowrap"
                   >
-                    <Trans i18nKey={label} />
+                   <Trans i18nKey={label} /> {name === "title" ? ` ${index + 1} ` : ""}
                   </Text>
                   <Box sx={{ display: "flex", width: "100%" }}>
                     <RenderGeneralField
@@ -289,20 +289,25 @@ const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
             )
           })}
 
-          <Grid size={{xs: 12}}>
-            <AutocompleteAsyncField
-              options={fetchMeasures?.data?.items.map((measure: any) => measure)}
-              name="measure"
-              label={
-                <Text variant={"bodyMedium"} color={"background.secondaryDark"} >
-                  <Trans i18nKey="common.measure" />
-                </Text>
-              }
-              getOptionLabel={(option: any) => option?.title ?? ""}
-              defaultValue={formMethods.watch("measure")}
-              rules={{ required: false }}
-              filterFields={["title"]}
-            />
+          <Grid size={{xs: 12}} sx={{...styles.centerV, gap: 1.5, flex: 1 }}>
+            <Text variant={"titleSmall"}>
+              <Trans i18nKey="common.measure" />:
+            </Text>
+            <Box sx={{flex: 1}}>
+              <AutocompleteAsyncField
+                options={fetchMeasures?.data?.items.map((measure: any) => measure)}
+                name="measure"
+                label={
+                  <Text variant={"bodyMedium"} color={"background.secondaryDark"} >
+                    <Trans i18nKey="common.measure" />
+                  </Text>
+                }
+                getOptionLabel={(option: any) => option?.title ?? ""}
+                defaultValue={formMethods.watch("measure")}
+                rules={{ required: false }}
+                filterFields={["title"]}
+              />
+            </Box>
           </Grid>
 
           <Grid size={{xs: 12}}>
@@ -313,6 +318,7 @@ const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
               selectedAnswerRange={selectedAnswerRange}
               setSelectedAnswerRange={setSelectedAnswerRange}
               key={question.id}
+              isDragDisabled={true}
             />
           </Grid>
         </Grid>

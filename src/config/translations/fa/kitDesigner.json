@@ -19,6 +19,7 @@
   "disableAttributeMessage": "تا زمانی که موضوعی ایجاد نکرده‌اید، نمی‌توانید ویژگی اضافه کنید.",
   "emptyAnswerRange": "هنوز هیچ دامنه‌ای برای پاسخ‌ها ایجاد نشده است.",
   "impactAttributeOnMaturityLevel": "اثرگذار بر سطح {{maturityLevel}} از شاخص <attrStyle>{{attribute}}</attrStyle>",
+  "impact": "تاثیرگذاری",
   "kitDesigner": "طراح کیت",
   "addLanguage": "افزودن زبان",
   "availableLanguages": "زبان‌های موجود",

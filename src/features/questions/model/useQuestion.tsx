@@ -13,7 +13,7 @@ export const useQuestions = () => {
   const { questionnaireId = "", assessmentId = "" } = useParams();
   const pageSize = 50;
 
-  const questionsResultQueryData = useQuery<IQuestionsModel>({
+  const questionsQuery = useQuery<IQuestionsModel>({
     service: (args, config) =>
       service.assessments.questionnaire.getQuestionnaireAnswers(
         {
@@ -37,7 +37,7 @@ export const useQuestions = () => {
   });
 
   useEffect(() => {
-    questionsResultQueryData
+    questionsQuery
       .query({ page: 0 })
       .then((response) => {
         if (response) {
@@ -50,5 +50,5 @@ export const useQuestions = () => {
       });
   }, [questionnaireId]);
 
-  return { fetchPathInfo, questionsResultQueryData };
+  return { fetchPathInfo, questionsQuery };
 };
