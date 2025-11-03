@@ -43,7 +43,7 @@ interface IRichEditorProps {
 function stripText(html?: string): string {
   if (!html) return "";
   const doc = new DOMParser().parseFromString(html, "text/html");
-  return doc.body.textContent?.replace(/\u00A0/g, " ").trim() ?? "";
+  return doc.body.textContent?.replaceAll(/\u00A0/g, " ").trim() ?? "";
 }
 
 function isDefined<T>(v: T | undefined | null): v is T {
@@ -80,11 +80,11 @@ const RichEditor = (props: IRichEditorProps) => {
   let externalValue: string;
 
   if (hasFieldValue) {
-    initialContent = field!.value as string;
-    externalValue = field!.value as string;
+    initialContent = field!.value;
+    externalValue = field!.value;
   } else if (hasPropValue) {
-    initialContent = value as string;
-    externalValue = value as string;
+    initialContent = value;
+    externalValue = value;
   } else {
     initialContent = defaultValue;
     externalValue = defaultValue;
