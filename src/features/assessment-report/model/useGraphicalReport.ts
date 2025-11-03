@@ -1,20 +1,16 @@
-import { useCallback, useEffect } from "react";
-import { useLocation, useParams } from "react-router-dom";
+import { useEffect } from "react";
+import { useParams } from "react-router-dom";
 import { useQuery } from "@/hooks/useQuery";
-import { ErrorCodes, IGraphicalReport, PathInfo, ISubject } from "@/types";
-import { VISIBILITY } from "@/utils/enum-type";
-import { getBasePath } from "@/utils/helpers";
+import { IGraphicalReport, PathInfo } from "@/types";
 import { useAuthContext } from "@/providers/auth-provider";
 import { useServiceContext } from "@/providers/service-provider";
 import useCalculate from "@/hooks/useCalculate";
 
 export const useGraphicalReport = () => {
-  const location = useLocation();
   const { isAuthenticatedUser } = useAuthContext();
   const { service } = useServiceContext();
 
   const { assessmentId = "", linkHash = "" } = useParams();
-  const { calculate, calculateConfidence } = useCalculate();
 
   const fetchPathInfo = useQuery<PathInfo>({
     service: (args, config) =>
@@ -36,86 +32,40 @@ export const useGraphicalReport = () => {
     runOnMount: true,
   });
 
-  // --- error handling (self-heal)
-  const errorActions: Partial<
-    Record<ErrorCodes | "DEPRECATED", () => Promise<boolean>>
-  > = {
-    [ErrorCodes.CalculateNotValid]: () => calculate(),
-    [ErrorCodes.ConfidenceCalculationNotValid]: () => calculateConfidence(),
-    DEPRECATED: () =>
-      service.assessments.info
-        .migrateKitVersion({ assessmentId })
-        .then(() => true)
-        .catch(() => false),
-  };
-
-  const handleErrorResponse = useCallback(
-    async (code: unknown) => {
-      if (typeof code !== "string" && typeof code !== "number") return;
-      const action =
-        errorActions[code as ErrorCodes | "DEPRECATED"] ??
-        errorActions[String(code) as ErrorCodes | "DEPRECATED"];
-      if (!action) return;
-      const ok = await action();
-      if (ok) fetchGraphicalReport.query();
-    },
-    [
-      assessmentId,
-      calculate,
-      calculateConfidence,
-      fetchGraphicalReport,
-      service.assessments.info,
-    ],
-  );
+  const { calculate, calculateConfidence } = useCalculate();
 
   useEffect(() => {
-    const code = fetchGraphicalReport.errorObject?.response?.data?.code;
-    if (code != null) handleErrorResponse(code);
-  }, [
-    fetchGraphicalReport.errorObject?.response?.data?.code,
-    handleErrorResponse,
-  ]);
-
-  const reload = () => fetchGraphicalReport.query();
-
-  // --- sync public URL (only once when data changes)
-  useEffect(() => {
-    const data = fetchGraphicalReport.data as IGraphicalReport | undefined;
-    if (data?.visibility === VISIBILITY.PUBLIC && data?.linkHash) {
-      const basePath = getBasePath(location.pathname);
-      const newPath = `${basePath}${data.linkHash}/`;
-      if (location.pathname !== newPath) {
-        window.history.replaceState({}, "", newPath);
-      }
+    if (
+      fetchGraphicalReport.errorObject?.response?.data?.code ==
+      "CALCULATE_NOT_VALID"
+    ) {
+      calculate().then(() => {
+        reload();
+      });
     }
-  }, [fetchGraphicalReport.data, location.pathname]);
+    if (
+      fetchGraphicalReport.errorObject?.response?.data?.code ==
+      "CONFIDENCE_CALCULATION_NOT_VALID"
+    ) {
+      calculateConfidence().then(() => {
+        reload();
+      });
+    }
+    if (
+      fetchGraphicalReport?.errorObject?.response?.data?.code === "DEPRECATED"
+    ) {
+      service.assessments.info.migrateKitVersion({ assessmentId }).then(() => {
+        reload();
+      });
+    }
+  }, [fetchGraphicalReport.errorObject]);
 
-  // --- helpers (feature-specific)
-  const computeInvalid = useCallback(
-    (
-      subjects: ISubject[] = [],
-      advice:
-        | { narration?: string; adviceItems?: unknown[] }
-        | null
-        | undefined,
-      isAdvisable: boolean,
-      quickMode: boolean,
-    ) => {
-      if (!quickMode || !isAuthenticatedUser) return false;
-      const hasMissingInsight = (subjects ?? []).some((s) => !s?.insight);
-      const hasMissingAdvice =
-        isAdvisable &&
-        (!advice?.narration?.trim?.() ||
-          (advice?.adviceItems?.length ?? 0) === 0);
-      return hasMissingInsight || hasMissingAdvice;
-    },
-    [isAuthenticatedUser],
-  );
-
+  const reload = () => {
+    fetchGraphicalReport.query();
+  };
   return {
     fetchPathInfo,
     fetchGraphicalReport,
     reload,
-    computeInvalid,
   };
 };

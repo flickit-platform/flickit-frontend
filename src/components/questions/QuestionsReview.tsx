@@ -364,12 +364,8 @@ export const Review = () => {
 
               {/* Answer */}
               {q.answer?.selectedOption && (
-                <Box mt={3}>
-                  <Text
-                    variant="subMedium"
-                    color="#b3b3b3"
-                    sx={{ display: "block" }}
-                  >
+                <Box mt={3} display="flex" flexDirection="column">
+                  <Text variant="subMedium" color="#b3b3b3">
                     <Trans i18nKey="common.yourAnswer" />
                   </Text>
                   <Text variant="h6" fontWeight="bold">

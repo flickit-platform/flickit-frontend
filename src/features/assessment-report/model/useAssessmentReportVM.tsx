@@ -21,7 +21,7 @@ export function useAssessmentReportVM() {
 
   const { isAuthenticatedUser } = useAuthContext();
   const { dispatch } = useConfigContext();
-  const { fetchPathInfo, fetchGraphicalReport, reload, computeInvalid } =
+  const { fetchPathInfo, fetchGraphicalReport, reload } =
     useGraphicalReport();
 
   useIntersectOnce("recommendations", () => dispatch(setSurveyBox(true)));
@@ -36,9 +36,7 @@ export function useAssessmentReportVM() {
 
   const hasInvalidReport = useMemo(() => {
     if (!report) return false;
-    const { subjects, advice, isAdvisable } = report;
-    return computeInvalid(subjects, advice, isAdvisable, !!isQuickMode);
-  }, [report, computeInvalid, isQuickMode]);
+  }, [report, isQuickMode]);
 
   const { infoItems, gotoItems } = useReportChips(report, lng, rtl);
 
