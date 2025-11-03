@@ -167,7 +167,7 @@ const ExpertGroupCEFormDialog = (props: IExpertGroupCEFromDialogProps) => {
           </Grid>
           <Grid size={{xs: 12}}>
             <RichEditorField
-              bgcolor={v3Tokens.primary.bg}
+              bgcolor="transparent"
               name="about"
               label={<Trans i18nKey="common.about" />}
               defaultValue={defaultValues.about ?? ""}

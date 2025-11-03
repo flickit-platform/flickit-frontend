@@ -26,7 +26,6 @@ import { useQuery } from "@/hooks/useQuery";
 import LoadingButton from "@mui/lab/LoadingButton";
 import i18n from "i18next";
 import showToast from "@/utils/toast-error";
-import { v3Tokens } from "@/config/tokens";
 import { Text } from "../common/Text";
 import SelectLanguage from "../common/SelectLanguage";
 
@@ -385,7 +384,7 @@ const AssessmentKitCEFromDialog = (props: IAssessmentKitCEFromDialogProps) => {
           display={activeStep === 0 ? "none" : ""}
         >
           <RichEditorField
-            bgcolor={v3Tokens.primary.bg}
+            bgcolor="transparent"
             name="about"
             label={<Trans i18nKey="common.about" />}
             defaultValue={defaultValues.about ?? ""}
