@@ -26,7 +26,7 @@ const questionReducer = (
         ...prevState,
         questionsInfo: {
           ...prevState.questionsInfo,
-          questions: prevState.questionsInfo.questions.map(
+          questions: prevState.questionsInfo?.questions?.map(
             (question: IQuestionInfo) => {
               if (action.payload.index !== question.index) {
                 return question;

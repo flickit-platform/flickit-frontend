@@ -335,7 +335,7 @@ export const Review = () => {
 
       {/* Answer Review List */}
       <Box mt={2}>
-        {questionsInfo.questions.map((q) => {
+        {questionsInfo?.questions?.map((q) => {
           const is_farsi_title = languageDetector(q.title);
 
           return (
