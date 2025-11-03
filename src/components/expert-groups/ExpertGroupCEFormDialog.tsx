@@ -16,7 +16,6 @@ import UploadField from "@common/fields/UploadField";
 import convertToBytes from "@/utils/convert-to-bytes";
 import { useQuery } from "@/hooks/useQuery";
 import showToast from "@/utils/toast-error";
-import { v3Tokens } from "@/config/tokens";
 
 interface IExpertGroupCEFromDialogProps extends DialogProps {
   onClose: () => void;
