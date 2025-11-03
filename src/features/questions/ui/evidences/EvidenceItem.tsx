@@ -15,7 +15,7 @@ import { useQuery } from "@/hooks/useQuery";
 import { useServiceContext } from "@providers/service-provider";
 
 const EvidenceItem = (props: any) => {
-  const {id} = props
+  const {id, refreshTab} = props
   const [editId, setEditId] = useState<string | null>(null);
   const [newDesc,setNewDesc] = useState("")
   const { service } = useServiceContext();
@@ -35,6 +35,7 @@ const EvidenceItem = (props: any) => {
       id: id,
       type: type == "Comment" ? null :  type.toUpperCase(),
     });
+    await refreshTab(type === "Comment" ? "comment" : "evidence");
   }
 
 

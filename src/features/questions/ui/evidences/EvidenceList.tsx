@@ -7,7 +7,7 @@ import { ICustomError } from "@utils/custom-error";
 import { Box } from "@mui/material";
 
 const EvidenceList = (props: any) => {
-  const { data: evidenceItems, deleteEvidence, setCacheData, evidencesQueryData, commentesQueryData } = props
+  const { data: evidenceItems, deleteItemAndRefresh, refreshTab } = props
   const [confirmDeleteDialog, setConfirmDeleteDialog] = useState<{
     open: boolean;
     evidenceId: string | null;
@@ -21,32 +21,21 @@ const EvidenceList = (props: any) => {
   const handleConfirmDeleteDialog = async () => {
     const { evidenceId, type } = confirmDeleteDialog;
     if (!evidenceId || !type) return;
-    try {
-      await deleteEvidence.query({ id: evidenceId });
-      setConfirmDeleteDialog({ open: false, evidenceId: null, type: null });
-      setCacheData((prev: any) => ({
-        ...prev,
-        [type]: prev[type]?.filter((item: any) => item.id !== evidenceId) ?? [],
-      }));
-      const queryMap: Record<string, any> = {
-        evidence: evidencesQueryData,
-        comments: commentesQueryData,
-      };
-
-      const queryToRun = queryMap[type];
-      if (queryToRun) {
-        await queryToRun.query();
-      }
-    } catch (e) {
-      const err = e as ICustomError;
-      showToast(err);
+    const result = deleteItemAndRefresh(evidenceId, type)
+    if(result){
+      setConfirmDeleteDialog({
+        open: false,
+        evidenceId: null,
+        type: null
+      })
     }
+
   };
 
     return (
         <Box sx={{py: 2, px: 4}}>
           {evidenceItems. map((item: any) => {
-            return <EvidenceItem key={item.id} {...item} setConfirmDeleteDialog={setConfirmDeleteDialog}/>
+            return <EvidenceItem key={item.id} {...item} refreshTab={refreshTab} setConfirmDeleteDialog={setConfirmDeleteDialog}/>
           })}
           <DeleteConfirmationDialog
             open={confirmDeleteDialog.open}

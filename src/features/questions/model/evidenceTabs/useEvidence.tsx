@@ -10,36 +10,25 @@ const EvidenceList = lazy(() => import("../../ui/evidences/EvidenceList"));
 const AnswerHistory = lazy(() => import("../../ui/evidences/AnswerHistory"));
 
 const useEvidence = (selectedQuestion: any): any => {
-  const {id: questionId} = selectedQuestion ?? 0;
-
+  const { id: questionId } = selectedQuestion ?? { id: 0 };
   const { service } = useServiceContext();
   const { assessmentId = "" } = useParams();
-  const saveId = useRef(0)
-  const [currentPage, setCurrentPage] = useState<number>(1);
-  const [cacheData, setCacheData] = useState<Record<string, []>>({});
-  const [selectedTab, setSelectedTab] = useState("evidence");
 
-  const data = cacheData[selectedTab] ?? []
-  const tabItems = useMemo(() => [
-    {
-      index: 0,
-      label: t("common.evidence"),
-      value: "evidence",
-      component: EvidenceList,
-    },
-    {
-      index: 1,
-      label: t("questions.comments"),
-      value: "comments",
-      component: EvidenceList,
-    },
-    {
-      index: 2,
-      label: t("questions.answerHistory"),
-      value: "answerHistory",
-      component: AnswerHistory,
-    },
-  ], [t]);
+  const saveId = useRef<number | null>(null);
+  const [currentPage, setCurrentPage] = useState<number>(1);
+
+  // cache per tab: { evidence: [...], comments: [...], answerHistory: [...] }
+  const [data, setData] = useState<Record<string, any[]>>({});
+  const [selectedTab, setSelectedTab] = useState<string>("evidence");
+
+  const tabItems = useMemo(
+    () => [
+      { index: 0, label: t("common.evidence"), value: "evidence", component: EvidenceList },
+      { index: 1, label: t("questions.comments"), value: "comment", component: EvidenceList },
+      { index: 2, label: t("questions.answerHistory"), value: "answerHistory", component: AnswerHistory },
+    ],
+    [t],
+  );
 
   const handleChange = (event: SyntheticEvent, newValue: string) => {
     setSelectedTab(newValue);
@@ -50,9 +39,9 @@ const useEvidence = (selectedQuestion: any): any => {
     return activeTab ? activeTab.component : null;
   }, [selectedTab, tabItems]);
 
+  // queries
   const deleteEvidence = useQuery({
-    service: (args , config) =>
-      service.questions.evidences.remove(args , config),
+    service: (args, config) => service.questions.evidences.remove(args, config),
     runOnMount: false,
   });
 
@@ -60,29 +49,28 @@ const useEvidence = (selectedQuestion: any): any => {
     service: (args, config) =>
       service.assessments.answer.getHistory(
         args ??
-          ({
-            questionId: questionId,
-            assessmentId,
-            page: currentPage,
-            size: 10,
-          } as any),
+        ({
+          questionId,
+          assessmentId,
+          page: currentPage,
+          size: 10,
+        } as any),
         config,
       ),
     toastError: true,
     runOnMount: false,
-    // runOnMount: Boolean(questionsInfo?.permissions?.viewAnswerHistory),
   });
 
   const evidencesQueryData = useQuery({
     service: (args, config) =>
       service.questions.evidences.getAll(
         args ??
-          ({
-            questionId: questionId,
-            assessmentId,
-            page: currentPage,
-            size: 10,
-          } as any),
+        ({
+          questionId,
+          assessmentId,
+          page: currentPage,
+          size: 10,
+        } as any),
         config,
       ),
     toastError: true,
@@ -93,74 +81,97 @@ const useEvidence = (selectedQuestion: any): any => {
     service: (args, config) =>
       service.questions.comments.getAll(
         args ??
-          ({
-            questionId: questionId,
-            assessmentId,
-            page: currentPage,
-            size: 10,
-          } as any),
+        ({
+          questionId,
+          assessmentId,
+          page: currentPage,
+          size: 10,
+        } as any),
         config,
       ),
     toastError: true,
     runOnMount: false,
   });
 
-
-  useEffect(()=>{
-    if(questionId !== saveId.current){
-      setCacheData({})
-      setSelectedTab("evidence")
-      saveId.current = questionId
+  // reset cache when question changes
+  useEffect(() => {
+    if (questionId !== saveId.current) {
+      saveId.current = questionId;
+      setSelectedTab("evidence"); // default tab
+      setData({}); // clear cache for new question
     }
-  },[questionId])
+  }, [questionId]);
 
 
-  const fetchData = async () => {
+  const fetchData = async (tab = selectedTab, options?: { force?: boolean }) => {
+    const force = options?.force ?? false;
 
-    if (cacheData[selectedTab]?.length >= 0 ) return;
+    if (!force && Array.isArray(data[tab])) {
+      return;
+    }
 
-    const QueryMap : any = {
+    const QueryMap: Record<string, any> = {
       evidence: evidencesQueryData,
-      comments: commentesQueryData,
+      comment: commentesQueryData,
       answerHistory: answerHistoryQueryData,
     };
-    const currentQuery = QueryMap[selectedTab];
 
+    const currentQuery = QueryMap[tab];
     if (!currentQuery) return;
 
     try {
       const { items } = await currentQuery.query();
-      setCacheData(prev =>({
+      setData((prev) => ({
         ...prev,
-        [selectedTab]: selectedTab == "comments" ? items.map((item: any) => ({...item, type: "Comment"})) : items ?? []
-      }))
-
+        [tab]: tab === "comment" ? (items ?? []).map((it: any) => ({ ...it, type: "Comment" })) : items ?? [],
+      }));
     } catch (e) {
       const err = e as ICustomError;
       showToast(err);
     }
   };
 
-
   useEffect(() => {
-    fetchData().then();
-  }, [
-        questionId,
-        selectedTab,
-        currentPage,
-      ]
-  );
+    fetchData(selectedTab).then();
+  }, [selectedTab, questionId, currentPage]);
+
+
+  const invalidateTab = (tab: string) => {
+    setData((prev) => {
+      const copy = { ...prev };
+      delete copy[tab];
+      return copy;
+    });
+  };
+
+  const deleteItemAndRefresh = async (evidenceId: number, tabToRefresh = "evidence") => {
+    try {
+      await deleteEvidence.query({ id: evidenceId });
+      // پس از حذف، فقط کش تب مربوطه را پاک کن و مجدداً آن تب را fetch کن
+      invalidateTab(tabToRefresh);
+      await fetchData(tabToRefresh, { force: true });
+    } catch (err) {
+      const e = err as ICustomError;
+      showToast(e);
+    }
+  };
+
+  const refreshTab = async (tab = selectedTab) => {
+    invalidateTab(tab);
+    await fetchData(tab, { force: true });
+  };
 
   return {
-    data,
+    data: data[selectedTab] ?? [],
     selectedTab,
     tabItems,
     ActiveComponent,
     handleChange,
-    setCacheData,
-    deleteEvidence,
-    evidencesQueryData,
-    commentesQueryData
+    deleteItemAndRefresh, // استفاده در کامپوننت حذف
+    fetchData, // در صورت نیاز مستقیم
+    refreshTab,
+    setCurrentPage,
+    rawCache: data, // (اختیاری) برای دیباگ یا نمایش تعداد آیتم‌ها
   };
 };
 
