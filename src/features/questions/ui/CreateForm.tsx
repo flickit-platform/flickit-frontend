@@ -26,7 +26,7 @@ enum EVIDENCE_TYPE {
 
 type FormValues = {
   description: string;
-  type: EVIDENCE_TYPE;
+  type: EVIDENCE_TYPE | null;
   addAttachment: boolean;
 };
 
@@ -40,28 +40,30 @@ function stripHtml(input: string | undefined): string {
     .trim();
 }
 
-const CreateEvidenceForm = () => {
+const CreateForm = ({ showTabs }: { showTabs?: boolean }) => {
+  const defaultType = showTabs ? EVIDENCE_TYPE.POSITIVE : null;
+
   const { t } = useTranslation();
   const { service } = useServiceContext();
-  const { assessmentId, questionId } = useParams();
+  const { assessmentId } = useParams();
   const createEvidence = useQuery({
     service: (args, config) => service.evidence.create(args, config),
     runOnMount: false,
   });
   const { selectedQuestion } = useQuestionContext();
 
-  const [tab, setTab] = useState<EVIDENCE_TYPE>(EVIDENCE_TYPE.POSITIVE);
+  const [tab, setTab] = useState<EVIDENCE_TYPE | null>(defaultType);
 
   const formMethods = useForm<FormValues>({
     shouldUnregister: true,
     defaultValues: {
       description: "",
-      type: EVIDENCE_TYPE.POSITIVE,
+      type: defaultType,
       addAttachment: false,
     },
   });
 
-  const { setValue, register, handleSubmit, watch } = formMethods;
+  const { setValue, handleSubmit, watch } = formMethods;
 
   useEffect(() => {
     setValue("type", tab, { shouldDirty: true });
@@ -100,39 +102,41 @@ const CreateEvidenceForm = () => {
     <Box width="100%">
       <FormProviderWithForm formMethods={formMethods}>
         {/* Tabs */}
-        <Tabs
-          value={tab}
-          onChange={handleTabChange}
-          aria-label="evidence tabs"
-          variant="fullWidth"
-          sx={{
-            border: "1px solid",
-            borderColor: "outline.variant",
-            bgcolor: "background.background",
-            minHeight: 36,
-            borderRadius: "4px 4px 0px 0px",
-            px: 0,
-            "& .MuiTab-root": { minHeight: 36, textTransform: "none" },
-            "& .MuiTabs-indicator": { height: 2 },
-          }}
-        >
-          <Tab
-            value={EVIDENCE_TYPE.POSITIVE}
-            label={
-              <Text variant="semiBoldSmall">
-                {t("questions_temp.positiveEvidence")}
-              </Text>
-            }
-          />
-          <Tab
-            value={EVIDENCE_TYPE.NEGATIVE}
-            label={
-              <Text variant="semiBoldSmall">
-                {t("questions_temp.negativeEvidence")}
-              </Text>
-            }
-          />
-        </Tabs>
+        {showTabs && (
+          <Tabs
+            value={tab}
+            onChange={handleTabChange}
+            aria-label="evidence tabs"
+            variant="fullWidth"
+            sx={{
+              border: "1px solid",
+              borderColor: "outline.variant",
+              bgcolor: "background.background",
+              minHeight: 36,
+              borderRadius: "4px 4px 0px 0px",
+              px: 0,
+              "& .MuiTab-root": { minHeight: 36, textTransform: "none" },
+              "& .MuiTabs-indicator": { height: 2 },
+            }}
+          >
+            <Tab
+              value={EVIDENCE_TYPE.POSITIVE}
+              label={
+                <Text variant="semiBoldSmall">
+                  {t("questions_temp.positiveEvidence")}
+                </Text>
+              }
+            />
+            <Tab
+              value={EVIDENCE_TYPE.NEGATIVE}
+              label={
+                <Text variant="semiBoldSmall">
+                  {t("questions_temp.negativeEvidence")}
+                </Text>
+              }
+            />
+          </Tabs>
+        )}
 
         {/* Editor */}
         <Box mt={5.5}>
@@ -158,12 +162,13 @@ const CreateEvidenceForm = () => {
               border: "1px solid",
               borderColor: "outline.variant",
               borderBottom: "0px",
-              borderRadius: "0px !important",
+              borderRadius: showTabs
+                ? "0px !important"
+                : "4px  4px 0px 0px !important",
             }}
           />
         </Box>
 
-        {/* Footer box: checkbox + counter */}
         <Box
           sx={{
             display: "flex",
@@ -227,4 +232,4 @@ const CreateEvidenceForm = () => {
   );
 };
 
-export default CreateEvidenceForm;
+export default CreateForm;
