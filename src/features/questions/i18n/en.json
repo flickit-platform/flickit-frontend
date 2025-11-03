@@ -1,8 +1,12 @@
 {
+  "addAttachmentAfterCreation": "Add attachments (after creation)",
+  "createEvidence": "Create evidence",
   "displayIssues": "Display issues",
   "hideIssues": "Hide issues",
   "lowConfidence": "Low confidence",
+  "negativeEvidence": "Negative evidence",
   "noEvidence": "No evidence",
+  "positiveEvidence": "Positive evidence",
   "questionsList": "Questions list ({{count}} questions)",
   "unanswered": "Unanswered"
 }

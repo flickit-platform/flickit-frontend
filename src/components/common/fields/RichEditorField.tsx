@@ -25,7 +25,7 @@ const RichEditorField = (props: any) => {
       rules={{ ...rules, required }}
       shouldUnregister={true}
       defaultValue={defaultValue}
-      render={({ field, fieldState, formState }) => {
+      render={({ field }) => {
         return (
           <RichEditorFieldBase
             {...rest}

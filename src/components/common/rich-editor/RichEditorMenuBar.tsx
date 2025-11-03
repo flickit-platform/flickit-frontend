@@ -24,7 +24,7 @@ const RichEditorMenuBar = (props: IRichEditorMenuBarProps) => {
   const {
     editor,
     getMenuItems = defaultGetMenuItems,
-    includeTable,
+    includeTable = true,
     hasPermission,
     top = "-11px",
     boxShadow = " 2px 2px 12px -3px #9d9d9d61",
@@ -32,8 +32,6 @@ const RichEditorMenuBar = (props: IRichEditorMenuBarProps) => {
   } = props;
 
   const menuItems = getMenuItems(editor, { includeTable, hasPermission });
-
-  console.log(menuItems)
   return (
     <Box
       className="rich-editor--menu"
@@ -53,6 +51,7 @@ const RichEditorMenuBar = (props: IRichEditorMenuBarProps) => {
         transition: "z-index .2s .1s ease, opacity .2s .1s ease",
         top,
         boxShadow,
+        justifyContent: includeTable ? "flex-start" : "center",
         ...rest,
       }}
       onClick={(e) => {

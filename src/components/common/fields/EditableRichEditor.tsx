@@ -41,47 +41,58 @@ export const EditableRichEditor = (props: EditableRichEditorProps) => {
     required = true,
     showEditorMenu,
   } = props;
+
   const theme = useTheme();
   const { t } = useTranslation();
+
   const [isHovering, setIsHovering] = useState(false);
   const [showEditor, setShowEditor] = useState(false);
   const [showMore, setShowMore] = useState(false);
   const [showBtn, setShowBtn] = useState(false);
   const [showUnsavedDialog, setShowUnsavedDialog] = useState(false);
+
   const paragraphRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const editorRef = useRef<HTMLDivElement>(null);
+
   const formMethods = useForm({
     defaultValues: { [fieldName]: defaultValue ?? "" },
+    shouldUnregister: true,
   });
+
   const [tempData, setTempData] = useState(defaultValue ?? "");
 
+  // هر بار defaultValue تغییر کرد، هم state نمایشی و هم فرم را sync کن
   useEffect(() => {
-    setTempData(defaultValue);
-  }, [defaultValue]);
+    setTempData(defaultValue ?? "");
+    formMethods.reset({ [fieldName]: defaultValue ?? "" });
+  }, [defaultValue, fieldName, formMethods]);
 
-  const handleMouseOver = () => editable && setIsHovering(true);
-  const handleMouseOut = () => setIsHovering(false);
+
+  const openEditor = () => {
+    if (!editable) return;
+    formMethods.reset({ [fieldName]: tempData ?? "" });
+    setShowEditor(true);
+  };
 
   const handleCancel = () => {
     setShowEditor(false);
     formMethods.reset({ [fieldName]: defaultValue ?? "" });
   };
 
-  const handleSubmit = async (data: any, event: any) => {
+  const onSubmitInternal = async (data: any, event: any) => {
     try {
       await onSubmit(data, event);
       await infoQuery();
+      const newVal = data?.[fieldName] ?? "";
+      setTempData(newVal);
       setShowEditor(false);
+      formMethods.reset({ [fieldName]: newVal });
     } catch (e) {
       const err = e as ICustomError;
       showToast(err);
     }
   };
-
-  // useEffect(() => {
-  //   setTempData(formMethods.getValues()[fieldName]);
-  // }, [formMethods.watch(fieldName)]);
 
   useEffect(() => {
     if (paragraphRef.current && containerRef.current) {
@@ -90,11 +101,9 @@ export const EditableRichEditor = (props: EditableRichEditorProps) => {
         containerRef.current.scrollHeight > containerRef.current.clientHeight;
       setShowBtn(isOverflowing);
     }
-  }, [tempData]);
+  }, [tempData, showMore]);
 
-  const toggleShowMore = () => {
-    setShowMore((prev) => !prev);
-  };
+  const toggleShowMore = () => setShowMore((prev) => !prev);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -106,21 +115,11 @@ export const EditableRichEditor = (props: EditableRichEditorProps) => {
         setShowUnsavedDialog(true);
       }
     };
-
-    if (showEditor) {
-      document.addEventListener("mousedown", handleClickOutside);
-    } else {
-      document.removeEventListener("mousedown", handleClickOutside);
-    }
-
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
+    if (showEditor) document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [showEditor]);
 
-  const cancelLeaveEditor = () => {
-    setShowUnsavedDialog(false);
-  };
+  const cancelLeaveEditor = () => setShowUnsavedDialog(false);
 
   return (
     <Box
@@ -148,41 +147,30 @@ export const EditableRichEditor = (props: EditableRichEditorProps) => {
           >
             <RichEditorField
               name={fieldName}
-              label={<Box></Box>}
-              disable_label={true}
+              label={<Box />}
+              disable_label
               required={required}
               defaultValue={defaultValue ?? ""}
               textAlign="justify"
               showEditorMenu={showEditorMenu}
             />
-            <Box
-              sx={{
-                ...styles.centerCVH,
-                height: !tempData ? "100%" : "initial",
-              }}
-            >
+            <Box sx={{ ...styles.centerCVH, height: !tempData ? "100%" : "initial" }}>
               <IconButton
                 sx={{
                   bgcolor: "primary.main",
                   "&:hover": { bgcolor: "primary.dark" },
-                  borderRadius: languageDetector(tempData)
-                    ? "8px 0 0 0"
-                    : "0 8px 0 0",
+                  borderRadius: languageDetector(tempData) ? "8px 0 0 0" : "0 8px 0 0",
                   height: "49%",
                 }}
-                onClick={formMethods.handleSubmit(handleSubmit)}
+                onClick={formMethods.handleSubmit(onSubmitInternal)}
               >
-                <CheckCircleOutlineRounded
-                  sx={{ color: "primary.contrastText" }}
-                />
+                <CheckCircleOutlineRounded sx={{ color: "primary.contrastText" }} />
               </IconButton>
               <IconButton
                 sx={{
                   bgcolor: "primary.main",
                   "&:hover": { bgcolor: "primary.dark" },
-                  borderRadius: languageDetector(tempData)
-                    ? "0 0 0 8px"
-                    : "0 0 8px 0",
+                  borderRadius: languageDetector(tempData) ? "0 0 0 8px" : "0 0 8px 0",
                   height: "49%",
                 }}
                 onClick={handleCancel}
@@ -211,9 +199,9 @@ export const EditableRichEditor = (props: EditableRichEditorProps) => {
                 borderColor: editable ? "primary.main" : "unset",
               },
             }}
-            onClick={() => editable && setShowEditor(true)}
-            onMouseOver={handleMouseOver}
-            onMouseOut={handleMouseOut}
+            onClick={openEditor}
+            onMouseOver={() => editable && setIsHovering(true)}
+            onMouseOut={() => setIsHovering(false)}
           >
             <Box
               ref={containerRef}
@@ -283,6 +271,7 @@ export const EditableRichEditor = (props: EditableRichEditorProps) => {
                 ref={paragraphRef}
               />
             </Box>
+
             {isHovering && editable && (
               <IconButton
                 title="Edit"
@@ -298,18 +287,15 @@ export const EditableRichEditor = (props: EditableRichEditorProps) => {
                   left: languageDetector(tempData) ? 0 : "unset",
                   top: 0,
                 }}
-                onClick={() => setShowEditor(true)}
+                onClick={openEditor}
               >
                 <EditOutlinedIcon sx={{ color: "primary.contrastText" }} />
               </IconButton>
             )}
           </Box>
+
           {showBtn && (
-            <Button
-              variant="text"
-              onClick={toggleShowMore}
-              sx={{ textTransform: "none" }}
-            >
+            <Button variant="text" onClick={toggleShowMore} sx={{ textTransform: "none" }}>
               {showMore ? t("common.showLess") : t("common.showMore")}
             </Button>
           )}
@@ -337,7 +323,7 @@ export const EditableRichEditor = (props: EditableRichEditorProps) => {
           submitButtonLabel={t("common.okGotIt")}
           onSubmit={cancelLeaveEditor}
           closeDialog={cancelLeaveEditor}
-          hideCancelButton={true}
+          hideCancelButton
         />
       </CEDialog>
     </Box>
