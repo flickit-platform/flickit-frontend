@@ -26,7 +26,7 @@ export const QuestionThumb = (props: any) => {
         <Text variant="h6">{question?.title}</Text>
       </Box>
       {question.answer?.selectedOption && (
-        <Box mt={3}>
+        <Box mt={3} display="flex" flexDirection="column">
           <Text variant="subMedium" textTransform="uppercase">
             <Trans i18nKey="common.yourAnswer" />
           </Text>

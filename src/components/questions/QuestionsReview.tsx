@@ -335,7 +335,7 @@ export const Review = () => {
 
       {/* Answer Review List */}
       <Box mt={2}>
-        {questionsInfo.questions.map((q) => {
+        {questionsInfo?.questions?.map((q) => {
           const is_farsi_title = languageDetector(q.title);
 
           return (
@@ -364,12 +364,8 @@ export const Review = () => {
 
               {/* Answer */}
               {q.answer?.selectedOption && (
-                <Box mt={3}>
-                  <Text
-                    variant="subMedium"
-                    color="#b3b3b3"
-                    sx={{ display: "block" }}
-                  >
+                <Box mt={3} display="flex" flexDirection="column">
+                  <Text variant="subMedium" color="#b3b3b3">
                     <Trans i18nKey="common.yourAnswer" />
                   </Text>
                   <Text variant="h6" fontWeight="bold">

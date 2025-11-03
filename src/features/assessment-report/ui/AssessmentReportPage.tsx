@@ -82,7 +82,7 @@ export default function AssessmentReportPage() {
   }, [spaceId]);
 
   return (
-    <PermissionControl error={[fetchGraphicalReport.errorObject]}>
+    <PermissionControl error={[fetchGraphicalReport.errorObject?.response?.data]}>
       <QueryData
         {...fetchGraphicalReport}
         renderLoading={() => (

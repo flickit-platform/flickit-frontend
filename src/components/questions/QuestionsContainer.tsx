@@ -20,6 +20,7 @@ import { ICustomError } from "@/utils/custom-error";
 import { useQuestion } from "./QuestionContainer";
 import showToast from "@/utils/toast-error";
 import { styles } from "@styles";
+import useCalculate from "@/hooks/useCalculate";
 
 const QuestionsContainer = (
   props: PropsWithChildren<{ isReview?: boolean }>,
@@ -137,10 +138,15 @@ export const useQuestions = () => {
   const questionsResultQueryData = useQuery<IQuestionsModel>({
     service: (args, config) =>
       service.assessments.questionnaire.getQuestionnaireAnswers(
-        { questionnaireId, assessmentId, page: args?.page ?? 0, size: pageSize },
+        {
+          questionnaireId,
+          assessmentId,
+          page: args?.page ?? 0,
+          size: pageSize,
+        },
         config,
       ),
-    runOnMount: false, // We'll handle the initial run ourselves
+    runOnMount: false,
   });
 
   const fetchPathInfo = useQuery({
@@ -149,11 +155,39 @@ export const useQuestions = () => {
         { questionnaireId, assessmentId, ...(args ?? {}) },
         config,
       ),
-    runOnMount: true,
+    runOnMount: false,
   });
 
-  // Fetch the initial set of questions (page 0) on mount
+  const { calculate, calculateConfidence } = useCalculate();
+
   useEffect(() => {
+    if (
+      questionsResultQueryData.errorObject?.response?.data?.code ==
+      "CALCULATE_NOT_VALID"
+    ) {
+      calculate().then(() => {
+        fetchData();
+      });
+    }
+    if (
+      questionsResultQueryData.errorObject?.response?.data?.code ==
+      "CONFIDENCE_CALCULATION_NOT_VALID"
+    ) {
+      calculateConfidence().then(() => {
+        fetchData();
+      });
+    }
+    if (
+      questionsResultQueryData?.errorObject?.response?.data?.code ===
+      "DEPRECATED"
+    ) {
+      service.assessments.info.migrateKitVersion({ assessmentId }).then(() => {
+        fetchData();
+      });
+    }
+  }, [questionsResultQueryData.errorObject]);
+
+  const fetchData = () => {
     questionsResultQueryData
       .query({ page: 0 })
       .then((response) => {
@@ -175,6 +209,10 @@ export const useQuestions = () => {
         console.error("Failed to load initial questions", e);
         showToast(e as ICustomError);
       });
+  };
+  // Fetch the initial set of questions (page 0) on mount
+  useEffect(() => {
+    fetchData();
   }, [questionnaireId]);
 
   const loadMoreQuestions = async (newPage: number) => {
