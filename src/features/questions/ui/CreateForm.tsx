@@ -40,7 +40,13 @@ function stripHtml(input: string | undefined): string {
     .trim();
 }
 
-const CreateForm = ({ showTabs }: { showTabs?: boolean }) => {
+const CreateForm = ({
+  showTabs,
+  submitLabel,
+}: {
+  showTabs?: boolean;
+  submitLabel?: string;
+}) => {
   const defaultType = showTabs ? EVIDENCE_TYPE.POSITIVE : null;
 
   const { t } = useTranslation();
@@ -224,7 +230,7 @@ const CreateForm = ({ showTabs }: { showTabs?: boolean }) => {
             onClick={handleSubmit(onSubmit)}
             loading={createEvidence.loading}
           >
-            {t("questions_temp.createEvidence")}
+            {submitLabel ?? t("questions_temp.createEvidence")}
           </LoadingButton>
         </Box>
       </FormProviderWithForm>
