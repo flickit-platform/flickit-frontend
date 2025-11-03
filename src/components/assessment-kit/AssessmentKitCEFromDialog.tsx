@@ -388,7 +388,6 @@ const AssessmentKitCEFromDialog = (props: IAssessmentKitCEFromDialogProps) => {
             bgcolor={v3Tokens.primary.bg}
             name="about"
             label={<Trans i18nKey="common.about" />}
-            required={true}
             defaultValue={defaultValues.about ?? ""}
           />
         </Grid>

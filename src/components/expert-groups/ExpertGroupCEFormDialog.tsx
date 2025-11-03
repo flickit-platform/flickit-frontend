@@ -171,7 +171,6 @@ const ExpertGroupCEFormDialog = (props: IExpertGroupCEFromDialogProps) => {
               name="about"
               label={<Trans i18nKey="common.about" />}
               defaultValue={defaultValues.about ?? ""}
-              required
             />
           </Grid>
         </Grid>
