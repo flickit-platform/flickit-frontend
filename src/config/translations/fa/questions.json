@@ -16,6 +16,7 @@
   "areYouSureYouWantSkipThisQuestion": "تغییرات شما از دست خواهد رفت. آیا می‌خواهید ادامه دهید؟",
   "attachmentCount": "{{attachmentsCount}} پیوست",
   "advisable": "توصیه‌پذیر",
+  "attachments": "پیوست‌ها",
   "comment": "یادداشت",
   "comments": "یادداشت‌ها",
   "createEvidence": "ایجاد {{title}}",

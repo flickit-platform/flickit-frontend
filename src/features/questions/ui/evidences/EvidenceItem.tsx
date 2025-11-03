@@ -17,7 +17,7 @@ import { useServiceContext } from "@providers/service-provider";
 const EvidenceItem = (props: any) => {
   const {id, refreshTab} = props
   const [editId, setEditId] = useState<string | null>(null);
-  const [newDesc,setNewDesc] = useState("")
+  const [newDescription,setNewDescription] = useState("")
   const { service } = useServiceContext();
   const isEditing = editId === id;
   const toggleEditMode = (id:any) =>{
@@ -31,7 +31,7 @@ const EvidenceItem = (props: any) => {
 
   const submit = async (id: any, type: any) => {
     await addEvidence.query({
-      description: newDesc,
+      description: newDescription,
       id: id,
       type: type == "Comment" ? null :  type.toUpperCase(),
     });
@@ -42,7 +42,7 @@ const EvidenceItem = (props: any) => {
   return (
     <Box sx={{ mb: 2 }}>
       <HeaderItem {...props} toggleEditMode={toggleEditMode} editId={editId} submit={submit} isEditing={isEditing}/>
-      <EvidenceDetail {...props} editId={editId} setNewDesc={setNewDesc} newDesc={newDesc} isEditing={isEditing}/>
+      <EvidenceDetail {...props} editId={editId} setNewDescription={setNewDescription} newDescription={newDescription} isEditing={isEditing}/>
     </Box>
   );
 };
@@ -63,16 +63,16 @@ const HeaderItem = (props: any) =>{
             src={pictureLink}
             sx={{ width: 24, height: 24, fontSize: 16 }}
           />
-          <Text variant={"bodyMedium"} color={"background.secondaryDark"}>
+          <Text variant="bodyMedium" color={"background.secondaryDark"}>
             {displayName}
           </Text>
-          <Text variant={"bodySmall"} color={"info.main"}>
+          <Text variant="bodySmall" color={"info.main"}>
             {getReadableDate(lastModificationTime, "absolute", false)}
           </Text>
         </Box>
         <Box sx={{ ...styles.centerVH, gap: 1 }}>
           <Text
-            variant={"labelSmall"}
+            variant="labelSmall"
             sx={{
               color: boxType.color,
               p: "4px 8px",

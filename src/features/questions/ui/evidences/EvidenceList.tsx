@@ -33,7 +33,8 @@ const EvidenceList = (props: any) => {
     return (
         <Box sx={{py: 2, px: 4}}>
           {evidenceItems. map((item: any) => {
-            return <EvidenceItem key={item.id} {...item} refreshTab={refreshTab} setConfirmDeleteDialog={setConfirmDeleteDialog}/>
+
+            return <EvidenceItem key={item.id} {...item} {...props} setConfirmDeleteDialog={setConfirmDeleteDialog}/>
           })}
           <DeleteConfirmationDialog
             open={confirmDeleteDialog.open}
