@@ -2,8 +2,6 @@ import React, { useState } from "react";
 import EvidenceItem from "@/features/questions/ui/evidences/EvidenceItem";
 import { DeleteConfirmationDialog } from "@common/dialogs/DeleteConfirmationDialog";
 import { t } from "i18next";
-import showToast from "@utils/toast-error";
-import { ICustomError } from "@utils/custom-error";
 import { Box } from "@mui/material";
 
 const EvidenceList = (props: any) => {

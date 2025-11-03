@@ -167,11 +167,11 @@ const useEvidence = (selectedQuestion: any): any => {
     tabItems,
     ActiveComponent,
     handleChange,
-    deleteItemAndRefresh, // استفاده در کامپوننت حذف
-    fetchData, // در صورت نیاز مستقیم
+    deleteItemAndRefresh,
+    fetchData,
     refreshTab,
     setCurrentPage,
-    rawCache: data, // (اختیاری) برای دیباگ یا نمایش تعداد آیتم‌ها
+    rawCache: data,
   };
 };
 
