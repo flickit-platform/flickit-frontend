@@ -1,8 +1,7 @@
-import { useQuery } from "@/hooks/useQuery";
-import { useServiceContext } from "@providers/service-provider";
-import { useParams } from "react-router-dom";
 import { lazy, SyntheticEvent, useEffect, useMemo, useRef, useState } from "react";
+import { useParams } from "react-router-dom";
 import { t } from "i18next";
+import { useServiceContext } from "@providers/service-provider";
 import showToast from "@utils/toast-error";
 import { ICustomError } from "@utils/custom-error";
 import UseEvidenceApi from "@/features/questions/model/evidenceTabs/useEvidenceAPI";
@@ -10,37 +9,71 @@ import UseEvidenceApi from "@/features/questions/model/evidenceTabs/useEvidenceA
 const EvidenceList = lazy(() => import("../../ui/evidences/EvidenceList"));
 const AnswerHistory = lazy(() => import("../../ui/evidences/AnswerHistory"));
 
-const useEvidence = (selectedQuestion: any): any => {
+type TabValue = "evidence" | "comment" | "answerHistory";
+
+interface TabItem {
+  index: number;
+  label: string;
+  value: TabValue;
+  component: React.LazyExoticComponent<any>;
+}
+
+interface FetchOptions {
+  force?: boolean;
+}
+
+interface EvidenceData {
+  items?: any[];
+}
+
+const TAB_ITEMS: TabItem[] = [
+  { index: 0, label: "common.evidence", value: "evidence", component: EvidenceList },
+  { index: 1, label: "questions.comments", value: "comment", component: EvidenceList },
+  { index: 2, label: "questions.answerHistory", value: "answerHistory", component: AnswerHistory },
+];
+
+const useEvidence = (selectedQuestion: any) => {
   const { id: questionId } = selectedQuestion ?? { id: 0 };
-  const { service } = useServiceContext();
-  const { assessmentId = "" } = useParams();
 
   const saveId = useRef<number | null>(null);
   const [currentPage, setCurrentPage] = useState<number>(1);
-
   const [data, setData] = useState<Record<string, any[]>>({});
-  const [selectedTab, setSelectedTab] = useState<string>("evidence");
+  const [selectedTab, setSelectedTab] = useState<TabValue>("evidence");
 
   const tabItems = useMemo(
-    () => [
-      { index: 0, label: t("common.evidence"), value: "evidence", component: EvidenceList },
-      { index: 1, label: t("questions.comments"), value: "comment", component: EvidenceList },
-      { index: 2, label: t("questions.answerHistory"), value: "answerHistory", component: AnswerHistory },
-    ],
-    [t],
+      () =>
+          TAB_ITEMS.map((item) => ({
+            ...item,
+            label: t(item.label),
+          })),
+      []
   );
 
-  const handleChange = (event: SyntheticEvent, newValue: string) => {
+  const handleTabChange = (_event: SyntheticEvent, newValue: TabValue) => {
     setSelectedTab(newValue);
   };
 
   const ActiveComponent = useMemo(() => {
     const activeTab = tabItems.find((item) => item.value === selectedTab);
-    return activeTab ? activeTab.component : null;
+    return activeTab?.component ?? null;
   }, [selectedTab, tabItems]);
 
-  // queries
-  const {evidencesQueryData, commentesQueryData, answerHistoryQueryData, deleteEvidence, fetchEvidenceAttachments} = UseEvidenceApi(questionId)
+  const {
+    evidencesQueryData,
+    commentesQueryData,
+    answerHistoryQueryData,
+    deleteEvidence,
+    fetchEvidenceAttachments,
+  } = UseEvidenceApi(questionId);
+
+  const QUERY_MAP = useMemo(
+      () => ({
+        evidence: evidencesQueryData,
+        comment: commentesQueryData,
+        answerHistory: answerHistoryQueryData,
+      }),
+      [evidencesQueryData, commentesQueryData, answerHistoryQueryData]
+  );
 
   useEffect(() => {
     if (questionId !== saveId.current) {
@@ -50,73 +83,70 @@ const useEvidence = (selectedQuestion: any): any => {
     }
   }, [questionId]);
 
+  const transformCommentData = (items: any[]) => {
+    return items.map((item) => ({ ...item, type: "Comment" }));
+  };
 
-  const fetchData = async (tab = selectedTab, options?: { force?: boolean }) => {
-    const force = options?.force ?? false;
+  const fetchData = async (tab: TabValue = selectedTab, options: FetchOptions = {}) => {
+    const { force = false } = options;
 
     if (!force && Array.isArray(data[tab])) {
       return;
     }
 
-    const QueryMap: Record<string, any> = {
-      evidence: evidencesQueryData,
-      comment: commentesQueryData,
-      answerHistory: answerHistoryQueryData,
-    };
-
-    const currentQuery = QueryMap[tab];
-    if (!currentQuery) return;
+    const currentQuery = QUERY_MAP[tab];
+    if (!currentQuery) {
+      return;
+    }
 
     try {
-      const { items } = await currentQuery.query();
+      const response: EvidenceData = await currentQuery.query();
+      const items = response.items ?? [];
+
       setData((prev) => ({
         ...prev,
-        [tab]: tab === "comment" ? (items ?? []).map((it: any) => ({ ...it, type: "Comment" })) : items ?? [],
+        [tab]: tab === "comment" ? transformCommentData(items) : items,
       }));
-    } catch (e) {
-      const err = e as ICustomError;
-      showToast(err);
+    } catch (error) {
+      const customError = error as ICustomError;
+      showToast(customError);
     }
   };
 
   useEffect(() => {
-    fetchData(selectedTab).then();
+    fetchData(selectedTab);
   }, [selectedTab, questionId, currentPage]);
-
 
   const invalidateTab = (tab: string) => {
     setData((prev) => {
-      const copy = { ...prev };
-      delete copy[tab];
-      return copy;
+      const { [tab]: _, ...rest } = prev;
+      return rest;
     });
   };
 
-  const deleteItemAndRefresh = async (evidenceId: number, tabToRefresh = "evidence") => {
+  const deleteItemAndRefresh = async (evidenceId: number, tabToRefresh: TabValue = "evidence") => {
     try {
       await deleteEvidence.query({ id: evidenceId });
       invalidateTab(tabToRefresh);
       await fetchData(tabToRefresh, { force: true });
-    } catch (err) {
-      const e = err as ICustomError;
-      showToast(e);
+      return true
+    } catch (error) {
+      const customError = error as ICustomError;
+      showToast(customError);
     }
   };
 
-  const fetchAttachment = async (evidenceId: number, tabToRefresh = "evidence") =>{
+  const fetchAttachment = async (evidenceId: number, tabToRefresh: TabValue = "evidence") => {
     try {
-
       const result = await fetchEvidenceAttachments.query({ evidence_id: evidenceId });
-      // invalidateTab(tabToRefresh);
-      // await fetchData(tabToRefresh, { force: true });
-      return result
-    } catch (err) {
-      const e = err as ICustomError;
-      showToast(e);
+      return result;
+    } catch (error) {
+      const customError = error as ICustomError;
+      showToast(customError);
     }
-  }
+  };
 
-  const refreshTab = async (tab = selectedTab) => {
+  const refreshTab = async (tab: TabValue = selectedTab) => {
     invalidateTab(tab);
     await fetchData(tab, { force: true });
   };
@@ -126,13 +156,13 @@ const useEvidence = (selectedQuestion: any): any => {
     selectedTab,
     tabItems,
     ActiveComponent,
-    handleChange,
+    handleChange: handleTabChange,
     deleteItemAndRefresh,
     fetchData,
     refreshTab,
     setCurrentPage,
     rawCache: data,
-    fetchAttachment
+    fetchAttachment,
   };
 };
 

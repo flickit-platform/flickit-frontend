@@ -1,52 +1,78 @@
 import React, { useState } from "react";
+import { Box } from "@mui/material";
+import { t } from "i18next";
 import EvidenceItem from "@/features/questions/ui/evidences/EvidenceItem";
 import { DeleteConfirmationDialog } from "@common/dialogs/DeleteConfirmationDialog";
-import { t } from "i18next";
-import { Box } from "@mui/material";
 
-const EvidenceList = (props: any) => {
-  const { data: evidenceItems, deleteItemAndRefresh, refreshTab } = props
-  const [confirmDeleteDialog, setConfirmDeleteDialog] = useState<{
-    open: boolean;
-    evidenceId: string | null;
-    type: string | null
-  }>({
-    open: false,
-    evidenceId: null,
-    type: null
-  });
+interface ConfirmDeleteDialogState {
+  open: boolean;
+  evidenceId: string | null;
+  type: string | null;
+}
 
-  const handleConfirmDeleteDialog = async () => {
+interface EvidenceListProps {
+  data: any[];
+  deleteItemAndRefresh: (evidenceId: string, type: string) => Promise<any>;
+  refreshTab: () => Promise<void>;
+}
+
+const INITIAL_DELETE_DIALOG_STATE: ConfirmDeleteDialogState = {
+  open: false,
+  evidenceId: null,
+  type: null,
+};
+
+const EvidenceList: React.FC<EvidenceListProps> = ({
+                                                     data: evidenceItems,
+                                                     deleteItemAndRefresh,
+                                                     refreshTab,
+                                                     ...restProps
+                                                   }) => {
+  const [confirmDeleteDialog, setConfirmDeleteDialog] = useState<ConfirmDeleteDialogState>(
+      INITIAL_DELETE_DIALOG_STATE
+  );
+
+  const handleConfirmDelete = async () => {
     const { evidenceId, type } = confirmDeleteDialog;
-    if (!evidenceId || !type) return;
-    const result = deleteItemAndRefresh(evidenceId, type)
-    if(result){
-      setConfirmDeleteDialog({
-        open: false,
-        evidenceId: null,
-        type: null
-      })
+
+    if (!evidenceId || !type) {
+      return;
     }
 
+    const result = await deleteItemAndRefresh(evidenceId, type);
+
+    if (result) {
+      setConfirmDeleteDialog(INITIAL_DELETE_DIALOG_STATE);
+    }
   };
 
-    return (
-        <Box sx={{py: 2, px: 4}}>
-          {evidenceItems. map((item: any) => {
+  const handleCloseDialog = () => {
+    setConfirmDeleteDialog((prev) => ({ ...prev, open: false }));
+  };
 
-            return <EvidenceItem key={item.id} {...item} {...props} setConfirmDeleteDialog={setConfirmDeleteDialog}/>
-          })}
-          <DeleteConfirmationDialog
+  return (
+      <Box sx={{ py: 2, px: 4 }}>
+        {evidenceItems.map((item) => (
+            <EvidenceItem
+                key={item.id}
+                {...item}
+                {...restProps}
+                setConfirmDeleteDialog={setConfirmDeleteDialog}
+                refreshTab={refreshTab}
+            />
+        ))}
+
+        <DeleteConfirmationDialog
             open={confirmDeleteDialog.open}
-            onClose={() => setConfirmDeleteDialog((prev) => ({ ...prev, open: false }))}
-            onConfirm={handleConfirmDeleteDialog}
+            onClose={handleCloseDialog}
+            onConfirm={handleConfirmDelete}
             content={{
               category: t("questions.evidence"),
-              title: ""
+              title: "",
             }}
-          />
-        </Box>
-    );
+        />
+      </Box>
+  );
 };
 
 export default EvidenceList;
