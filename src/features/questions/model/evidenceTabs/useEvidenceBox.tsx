@@ -1,7 +1,7 @@
 
-const useEvidenceBox = (type: string = "comment") => {
+const useEvidenceBox = (type: any, isEditing: boolean) => {
 
-  type EvidenceType = "Positive" | "Negative" | "comment" | "Edit";
+  type EvidenceType = "Positive" | "Negative" | "Comment" | "Edit";
 
   interface StyleItem {
     color: string;
@@ -21,19 +21,19 @@ const useEvidenceBox = (type: string = "comment") => {
       label: "questions.positiveEvidence",
       type: "evidence"
     },
-    comment: {
+    Comment: {
       color: "#73808C",
       label: "questions.comment",
       type: "comment"
     },
     Edit: {
-      color: "#6680991F",
+      color: "#2466A8",
       label: "questions.editing",
-      type: ""
+      type: type
     },
   };
 
-  const boxType = box[type as EvidenceType] ?? box.Edit
+  const boxType = isEditing ? box.Edit : box[type as EvidenceType]
 
   return {
     boxType

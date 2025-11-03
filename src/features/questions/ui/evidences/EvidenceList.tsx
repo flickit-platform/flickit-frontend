@@ -8,7 +8,6 @@ import { Box } from "@mui/material";
 
 const EvidenceList = (props: any) => {
   const { data: evidenceItems, deleteEvidence, setCacheData, evidencesQueryData, commentesQueryData } = props
-
   const [confirmDeleteDialog, setConfirmDeleteDialog] = useState<{
     open: boolean;
     evidenceId: string | null;
@@ -45,7 +44,7 @@ const EvidenceList = (props: any) => {
   };
 
     return (
-        <Box>
+        <Box sx={{py: 2, px: 4}}>
           {evidenceItems. map((item: any) => {
             return <EvidenceItem key={item.id} {...item} setConfirmDeleteDialog={setConfirmDeleteDialog}/>
           })}

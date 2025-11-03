@@ -5,12 +5,13 @@ import RichEditorField from "@common/fields/RichEditorField";
 import { t } from "i18next";
 import { useForm } from "react-hook-form";
 import {Text} from "@/components/common/Text"
+import { useEffect } from "react";
 
 const EvidenceDetail = (props: any) => {
-  const {edit , description, id: evidenceId} = props
+  const {editId , description, id: evidenceId, setNewDesc, newDesc, isEditing} = props
   return (
     <div>
-      <DescriptionEvidence description={description} edit={edit} evidenceId={evidenceId}/>
+      <DescriptionEvidence description={description} editId={editId} evidenceId={evidenceId} setNewDesc={setNewDesc} newDesc={newDesc} isEditing={isEditing}/>
       <AttachmentEvidence/>
     </div>
   );
@@ -21,8 +22,16 @@ const AttachmentEvidence= () =>{
 }
 
 const DescriptionEvidence = (props: any) =>{
-  const {description, edit, evidenceId} = props
+  const {description, editId, evidenceId, setNewDesc, newDesc, isEditing} = props
   const formMethods = useForm({ shouldUnregister: true });
+  const watchedDesc = formMethods.watch("evidence-description");
+  useEffect(() => {
+    setNewDesc(description);
+  }, [isEditing]);
+  useEffect(() => {
+    setNewDesc(formMethods.getValues()["evidence-description"] ?? description);
+  }, [watchedDesc]);
+
   return (
     <FormProviderWithForm formMethods={formMethods}>
       <Box
@@ -31,19 +40,21 @@ const DescriptionEvidence = (props: any) =>{
         // mt={{ xs: 26, sm: 17, md: 11, xl: 7 }}
         sx={{ ...styles.centerV }}
       >
-        {edit == evidenceId ?  <RichEditorField
+        {editId == evidenceId ?  <RichEditorField
           name="evidence-description"
           label={t("common.description")}
           disable_label={false}
           required={true}
-          defaultValue={description}
+          defaultValue={newDesc ?? ""}
+          setNewAdvice={setNewDesc}
           showEditorMenu={false}
         /> :
-        <Text  dangerouslySetInnerHTML={{
-          __html: description,
-        }} ></Text>
+          <Box sx={{py: 1, px: 2, width: "100%"}}>
+            <Text  variant="bodyMedium" color="background.secondaryDark" dangerouslySetInnerHTML={{
+              __html: description,
+            }} ></Text>
+          </Box>
         }
-
       </Box>
     </FormProviderWithForm>
   )

@@ -132,7 +132,7 @@ const useEvidence = (selectedQuestion: any): any => {
       const { items } = await currentQuery.query();
       setCacheData(prev =>({
         ...prev,
-        [selectedTab]: items ?? []
+        [selectedTab]: selectedTab == "comments" ? items.map((item: any) => ({...item, type: "Comment"})) : items ?? []
       }))
 
     } catch (e) {

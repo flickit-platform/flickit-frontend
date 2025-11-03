@@ -10,25 +10,46 @@ import { t } from "i18next";
 import CheckIcon from "@mui/icons-material/Check";
 import EvidenceDetail from "@/features/questions/ui/evidences/EvidenceDetail";
 import { useState } from "react";
+import CloseIcon from "@mui/icons-material/Close";
+import { useQuery } from "@/hooks/useQuery";
+import { useServiceContext } from "@providers/service-provider";
 
 const EvidenceItem = (props: any) => {
-
-  const [edit, setEdit] = useState<string | null>(null)
+  const {id} = props
+  const [editId, setEditId] = useState<string | null>(null);
+  const [newDesc,setNewDesc] = useState("")
+  const { service } = useServiceContext();
+  const isEditing = editId === id;
   const toggleEditMode = (id:any) =>{
-    setEdit(prev => prev != id ? id : null)
+    setEditId(prev => prev != id ? id : null)
   }
+
+  const addEvidence = useQuery({
+    service: (args, config) => service.questions.evidences.save(args, config),
+    runOnMount: false,
+  });
+
+  const submit = async (id: any, type: any) => {
+    await addEvidence.query({
+      description: newDesc,
+      id: id,
+      type: type == "Comment" ? null :  type.toUpperCase(),
+    });
+  }
+
+
   return (
     <Box sx={{ mb: 2 }}>
-      <HeaderItem {...props} toggleEditMode={toggleEditMode}/>
-      <EvidenceDetail {...props} edit={edit}/>
+      <HeaderItem {...props} toggleEditMode={toggleEditMode} editId={editId} submit={submit} isEditing={isEditing}/>
+      <EvidenceDetail {...props} editId={editId} setNewDesc={setNewDesc} newDesc={newDesc} isEditing={isEditing}/>
     </Box>
   );
 };
 
 const HeaderItem = (props: any) =>{
-  const { createdBy, lastModificationTime, type, id, setConfirmDeleteDialog, editable, toggleEditMode } = props;
+  const { createdBy, lastModificationTime, type, id, setConfirmDeleteDialog, editable, toggleEditMode, editId, submit, isEditing } = props;
   const { displayName, pictureLink } = createdBy;
-   const { boxType } = useEvidenceBox(type)
+  const { boxType } = useEvidenceBox(type, isEditing);
 
   return (
       <Box
@@ -66,6 +87,8 @@ const HeaderItem = (props: any) =>{
             evidenceId={id}
             editable={editable}
             toggleEditMode={toggleEditMode}
+            isEditing={isEditing}
+            submit={submit}
           />
         </Box>
       </Box>
@@ -74,9 +97,12 @@ const HeaderItem = (props: any) =>{
 
 const ActionButton = (props: any) => {
 
-  const { setConfirmDeleteDialog, evidenceId, type, editable, toggleEditMode } = props;
+  const { setConfirmDeleteDialog, evidenceId, type, editable, toggleEditMode, isEditing, submit } = props;
+  const handleDelete = () => {
+    setConfirmDeleteDialog({ open: true, evidenceId, type });
+  };
 
-  const items = [
+  const normalButtons  = [
     ...(type === "comment"
       ? [{
         icon: <CheckIcon fontSize="small" sx={{ width: 24, height: 24 }} />,
@@ -89,6 +115,7 @@ const ActionButton = (props: any) => {
         onClick: ()=> toggleEditMode(evidenceId),
       }]
       : []),
+
     {
       icon: (
         <DeleteOutlinedIcon
@@ -96,16 +123,37 @@ const ActionButton = (props: any) => {
           sx={{ width: "24px", height: "24px" }}
         />
       ),
-      onClick: () => setConfirmDeleteDialog({ open: true, evidenceId, type }),
+      onClick: handleDelete,
     }
   ];
 
+  const editButtons  = [
+    {
+      icon: (
+        <CheckIcon
+          fontSize="small"
+          sx={{ width: "24px", height: "24px" }}
+        />
+      ),
+      onClick: ()=> submit(evidenceId, type),
+    },
+    {
+      icon: (
+        <CloseIcon
+          fontSize="small"
+          sx={{ width: "24px", height: "24px" }}
+        />
+      ),
+      onClick: () => toggleEditMode(evidenceId),
+    }
+  ]
+  const buttons = isEditing ? editButtons : normalButtons;
   return (
     <Box
       sx={{ ...styles.centerV, gap: 1 }}
       onClick={(e) => e.stopPropagation()}
     >
-      {items.map((item) => {
+      {buttons.map((item) => {
         return (
           <Box>
             <IconButton onClick={item.onClick} sx={{ p: 0.4 }}>
