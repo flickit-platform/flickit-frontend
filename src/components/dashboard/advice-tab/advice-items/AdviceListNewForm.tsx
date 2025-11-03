@@ -262,10 +262,8 @@ const AdviceListNewForm = ({
                 disable_label={false}
                 required={true}
                 defaultValue={newAdvice.description}
-                setNewAdvice={setNewAdvice}
-                removeDescriptionAdvice={removeDescriptionAdvice}
                 errorMessage={errormessage?.description}
-                type={errormessage?.description ? "reportTab" : ""}
+                type={errormessage?.description ? "error" : ""}
                 showEditorMenu={true}
               />
             </Box>

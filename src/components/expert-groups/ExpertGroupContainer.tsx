@@ -199,7 +199,7 @@ const ExpertGroupContainer = () => {
                               : primaryFontFamily,
                           }}
                         >
-                          <RichEditor content={about} />
+                          <RichEditor value={about} />
                         </Box>
                       </Box>
                     </>

@@ -1,8 +1,13 @@
 {
+  "addAttachmentAfterCreation": "افزودن پیوست (پس از ایجاد شاهد)",
+  "createComment": "ایجاد یادداشت",
+  "createEvidence": "ایجاد شاهد",
   "displayIssues": "نمایش مسئله‌ها",
   "hideIssues": "پنهان کردن مسئله‌ها",
   "lowConfidence": "ضریب اطمینان کم",
+  "negativeEvidence": "شاهد منفی",
   "noEvidence": "بدون شاهد",
+  "positiveEvidence": "شاهد مثبت",
   "questionsList": "فهرست پرسش‌ها ({{count}} پرسش)",
   "unanswered": "بدون پاسخ"
 

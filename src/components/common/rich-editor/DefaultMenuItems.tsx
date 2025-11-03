@@ -35,10 +35,17 @@ import TableCellMergeIcon from "@atlaskit/icon/core/table-cell-merge";
 import TableCellSplitIcon from "@atlaskit/icon/core/table-cell-split";
 import showToast from "@/utils/toast-error";
 
-const defaultGetMenuItems = (
+type Divider = { type: "divider" };
+type MenuItem = IRichEditorMenuItem | Divider;
+
+export const defaultGetMenuItems = (
   editor: Editor,
-): (IRichEditorMenuItem | { type: "divider" })[] => {
-  return [
+  opts?: {
+    includeTable?: boolean;
+    hasPermission?: (perm: string) => boolean;
+  },
+): MenuItem[] => {
+  const core: MenuItem[] = [
     {
       title: "H1",
       action: () => editor.chain().focus().toggleHeading({ level: 1 }).run(),
@@ -99,10 +106,7 @@ const defaultGetMenuItems = (
         (editor.chain().focus() as any).setTextAlign("justify").run(),
       isActive: () => editor.isActive({ textAlign: "justify" }),
     },
-    {
-      type: "divider",
-    },
-
+    { type: "divider" },
     {
       icon: <FormatListBulletedRoundedIcon fontSize="small" />,
       title: "Bullet List",
@@ -128,7 +132,7 @@ const defaultGetMenuItems = (
         promptBody(closePrompt) {
           return <PromptLinkBody editor={editor} closePrompt={closePrompt} />;
         },
-        title: t("common.addLink") as string,
+        title: "common.addLink",
       },
       action: editor.isActive("link")
         ? () => editor.chain().focus().unsetLink().run()
@@ -140,9 +144,7 @@ const defaultGetMenuItems = (
       title: "Horizontal Rule",
       action: () => editor.chain().focus().setHorizontalRule().run(),
     },
-    {
-      type: "divider",
-    },
+    { type: "divider" },
     {
       icon: <SubdirectoryArrowLeftRoundedIcon fontSize="small" />,
       title: "Hard Break",
@@ -153,9 +155,7 @@ const defaultGetMenuItems = (
       title: "Clear Format",
       action: () => editor.chain().focus().clearNodes().unsetAllMarks().run(),
     },
-    {
-      type: "divider",
-    },
+    { type: "divider" },
     {
       icon: <UndoRoundedIcon fontSize="small" />,
       title: "Undo",
@@ -166,9 +166,26 @@ const defaultGetMenuItems = (
       title: "Redo",
       action: () => editor.chain().focus().redo().run(),
     },
+  ];
+
+  const allowTable =
+    typeof opts?.includeTable === "boolean"
+      ? opts.includeTable
+      : opts?.hasPermission
+        ? opts.hasPermission("rich:table")
+        : true;
+
+  if (!allowTable) return core;
+
+  const hasTable = editor?.extensionManager?.extensions?.some?.(
+    (ext: any) => ext?.name === "table",
+  );
+  if (!hasTable) return core;
+
+  const table: MenuItem[] = [
     { type: "divider" },
     {
-      icon: <TableChartIcon fontSize={"small"} />,
+      icon: <TableChartIcon fontSize="small" />,
       title: "table",
       action: () =>
         editor
@@ -181,57 +198,50 @@ const defaultGetMenuItems = (
       icon: <TableColumnAddLeftIcon label="" />,
       title: "Add column before",
       action: () => editor.chain().focus().addColumnBefore().run(),
-      // disable: !editor.can().addColumnBefore(),
     },
     {
       icon: <TableColumnAddRightIcon label="" />,
       title: "Add column after",
       action: () => editor.chain().focus().addColumnAfter().run(),
-      // disable: !editor.can().addColumnAfter(),
     },
     {
       icon: <TableColumnDeleteIcon label="" />,
       title: "Delete column",
       action: () => editor.chain().focus().deleteColumn().run(),
-      // disable: !editor.can().deleteColumn(),
     },
     {
       icon: <TableRowAddAboveIcon label="" />,
       title: "Add row before",
       action: () => editor.chain().focus().addRowBefore().run(),
-      // disable: !editor.can().addRowBefore(),
     },
     {
       icon: <TableRowAddBelowIcon label="" />,
       title: "Add row after",
       action: () => editor.chain().focus().addRowAfter().run(),
-      // disable: !editor.can().addRowAfter(),
     },
     {
       icon: <TableRowDeleteIcon label="" />,
       title: "Delete row",
       action: () => editor.chain().focus().deleteRow().run(),
-      // disable: !editor.can().deleteRow(),
     },
     {
       icon: <TableCellClearIcon label="" />,
       title: "Delete table",
       action: () => editor.chain().focus().deleteTable().run(),
-      // disable: !editor.can().deleteTable(),
     },
     {
       icon: <TableCellMergeIcon label="" />,
       title: "Merge cells",
       action: () => editor.chain().focus().mergeCells().run(),
-      // disable: !editor.can().mergeCells(),
     },
     {
       icon: <TableCellSplitIcon label="" />,
       title: "Split cell",
       action: () => editor.chain().focus().splitCell().run(),
-      // disable: !editor.can().splitCell(),
     },
   ];
+
+  return [...core, ...table];
 };
 
 const PromptLinkBody = (props: { editor: Editor; closePrompt: () => void }) => {

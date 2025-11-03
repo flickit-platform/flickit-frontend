@@ -4,6 +4,7 @@ import DialogTitle from "@mui/material/DialogTitle";
 import useDialog from "@/hooks/useDialog";
 import { IDialogProps } from "@/types/index";
 import { ReactElement } from "react";
+import { Theme } from "@mui/material";
 
 export interface IRichEditorMenuItem {
   icon?: ReactElement;
@@ -33,17 +34,15 @@ const RichEditorMenuItem = (props: IRichEditorMenuItemProps) => {
     <>
       <Button
         id={`proseMirror-menu-btn`}
-        sx={{
+        sx={(theme: Theme) => ({
           minWidth: "34px",
           minHeight: "34px",
           m: 0.1,
           mx: 0,
-          color: "GrayText",
-          bgcolor: isActive && isActive() ? "#dddddd" : undefined,
-          "&:hover": {
-            bgcolor: isActive && isActive() ? "#cccccc" : undefined,
-          },
-        }}
+          color: theme.palette.info.main,
+          bgcolor:
+            isActive && isActive() ? theme.palette.info.states.selected : undefined,
+        })}
         disabled={disable}
         size="small"
         type="button"

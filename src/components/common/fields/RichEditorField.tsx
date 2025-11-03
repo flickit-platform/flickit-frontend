@@ -25,7 +25,7 @@ const RichEditorField = (props: any) => {
       rules={{ ...rules, required }}
       shouldUnregister={true}
       defaultValue={defaultValue}
-      render={({ field, fieldState, formState }) => {
+      render={({ field }) => {
         return (
           <RichEditorFieldBase
             {...rest}
@@ -53,6 +53,8 @@ const RichEditorFieldBase = (props: any) => {
     type,
     showEditorMenu,
     bgcolor,
+    menuProps,
+    richEditorProps,
   } = props;
   const [shrink, setShrink] = useState(() => Boolean(defaultValue));
   const [focus, setFocus] = useState(false);
@@ -122,6 +124,8 @@ const RichEditorFieldBase = (props: any) => {
         type={type}
         showEditorMenu={showEditorMenu || hover}
         bgcolor={bgcolor}
+        menuProps={menuProps}
+        richEditorProps={richEditorProps}
       />
       <FormHelperText style={{ marginTop: 0, marginLeft: 0, marginRight: 0 }}>
         {errorMessage as string}
