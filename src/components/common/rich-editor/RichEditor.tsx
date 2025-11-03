@@ -23,12 +23,13 @@ interface IRichEditorProps {
   className?: string;
   field?: ControllerRenderProps<FieldValues, any>;
   content?: string;
-  boxProps?: BoxProps;
   checkLang?: boolean;
   placeholder?: any;
   type?: string;
   showEditorMenu?: boolean;
   bgcolor?: string;
+  menuProps?: any;
+  richEditorProps?: any;
 }
 
 const RichEditor = (props: IRichEditorProps) => {
@@ -39,12 +40,13 @@ const RichEditor = (props: IRichEditorProps) => {
     editorProps = {},
     className,
     field,
-    boxProps = {},
     checkLang,
     placeholder,
     type,
     showEditorMenu,
     bgcolor,
+    menuProps,
+    richEditorProps,
   } = props;
 
   const [isFarsi, setIsFarsi] = useState<any>(checkLang);
@@ -112,12 +114,10 @@ const RichEditor = (props: IRichEditorProps) => {
 
   return (
     <Box
-      {...boxProps}
       className={className}
       sx={
         isEditable
           ? {
-              ...(boxProps.sx ?? {}),
               direction: `${isFarsi ? "rtl" : "ltr"}`,
               textAlign: `${isFarsi ? "right" : "left"}`,
               cursor: "text",
@@ -126,20 +126,23 @@ const RichEditor = (props: IRichEditorProps) => {
               marginTop: "0px !important",
               width: "100%",
               "&.Mui-focused .ProseMirror": {
-                borderColor: `${editor?.isEmpty && type === "reportTab" ? "#8A0F2480" : "#1976d2"}`,
+                borderColor: `${editor?.isEmpty && type === "error" ? "#8A0F2480" : "#1976d2"}`,
                 borderWidth: "2px",
+                ...richEditorProps,
               },
               "&.Mui-focused:hover .ProseMirror": {
-                borderColor: `${editor?.isEmpty && type === "reportTab" ? "#8A0F2480" : "#1976d2"}`,
+                borderColor: `${editor?.isEmpty && type === "error" ? "#8A0F2480" : "#1976d2"}`,
+                ...richEditorProps
               },
               "&.Mui-error .ProseMirror": {
                 borderColor: "#d32f2f",
               },
               "&.Mui-error:hover .ProseMirror": {
-                borderColor: `${editor?.isEmpty && type === "reportTab" ? "#8A0F2480" : "#d32f2f"}`,
+                borderColor: `${editor?.isEmpty && type === "error" ? "#8A0F2480" : "#d32f2f"}`,
               },
               "&:hover .ProseMirror": {
-                borderColor: `${editor?.isEmpty && type === "reportTab" ? "#8A0F2480" : "rgba(0, 0, 0, 0.87)"}`,
+                borderColor: `${editor?.isEmpty && type === "error" ? "#8A0F2480" : "rgba(0, 0, 0, 0.87)"}`,
+                ...richEditorProps,
               },
               "& .rich-editor--menu":
                 editor?.isFocused || showEditorMenu
@@ -158,8 +161,8 @@ const RichEditor = (props: IRichEditorProps) => {
               },
               "& .ProseMirror": {
                 outline: "none",
-                minHeight: `${editor?.isEmpty && type === "reportTab" ? "100px" : "110px"}`,
-                border: `1px solid ${editor?.isEmpty && type === "reportTab" ? "#8A0F2480" : "rgba(0, 0, 0, 0.23)"}`,
+                minHeight: `${editor?.isEmpty && type === "error" ? "100px" : "110px"}`,
+                border: `1px solid ${editor?.isEmpty && type === "error" ? "#8A0F2480" : "rgba(0, 0, 0, 0.23)"}`,
                 borderRadius: 1,
                 bgcolor: bgcolor ?? "white",
                 paddingInline: 1.5,
@@ -174,6 +177,8 @@ const RichEditor = (props: IRichEditorProps) => {
                       unicodeBidi: "plaintext",
                       textAlign: "initial",
                     },
+
+                ...richEditorProps,
               },
               "& .ProseMirror table": {
                 direction: theme.direction,
@@ -181,10 +186,12 @@ const RichEditor = (props: IRichEditorProps) => {
                 borderCollapse: "collapse",
               },
             }
-          : { ...(boxProps.sx ?? {}) }
+          : {}
       }
     >
-      {editor && isEditable && <RichEditorMenuBar editor={editor} />}
+      {editor && isEditable && (
+        <RichEditorMenuBar editor={editor} {...menuProps} />
+      )}
       <EditorContent
         editor={editor}
         style={{

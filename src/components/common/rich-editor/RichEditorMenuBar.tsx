@@ -2,20 +2,38 @@ import Box from "@mui/material/Box";
 import { Editor } from "@tiptap/react";
 import RichEditorMenuItem, { IRichEditorMenuItem } from "./RichEditorMenuItem";
 import defaultGetMenuItems from "./DefaultMenuItems";
-import uniqueId from "@/utils/unique-id";
+
+type Divider = { type: "divider" };
+type MenuItem = IRichEditorMenuItem | Divider;
+
+type GetMenuItemsOpts = {
+  includeTable?: boolean;
+  hasPermission?: (perm: string) => boolean;
+};
 
 interface IRichEditorMenuBarProps {
   editor: Editor;
-  getMenuItems?: (
-    editor: Editor,
-  ) => (IRichEditorMenuItem | { type: "divider" })[];
+  getMenuItems?: (editor: Editor, opts?: GetMenuItemsOpts) => MenuItem[];
+  includeTable?: boolean;
+  hasPermission?: (perm: string) => boolean;
+  top?: string;
+  boxShadow?: string;
 }
 
 const RichEditorMenuBar = (props: IRichEditorMenuBarProps) => {
-  const { editor, getMenuItems = defaultGetMenuItems } = props;
+  const {
+    editor,
+    getMenuItems = defaultGetMenuItems,
+    includeTable,
+    hasPermission,
+    top = "-11px",
+    boxShadow = " 2px 2px 12px -3px #9d9d9d61",
+    ...rest
+  } = props;
 
-  const menuItems = getMenuItems(editor);
+  const menuItems = getMenuItems(editor, { includeTable, hasPermission });
 
+  console.log(menuItems)
   return (
     <Box
       className="rich-editor--menu"
@@ -27,14 +45,15 @@ const RichEditorMenuBar = (props: IRichEditorMenuBarProps) => {
         zIndex: -1,
         right: 0,
         opacity: 0,
-        top: "-11px",
         transform: "translateY(-100%)",
         py: 0.5,
         px: 0.6,
         maxWidth: "100%",
-        boxShadow: " 2px 2px 12px -3px #9d9d9d61",
         borderRadius: 1,
         transition: "z-index .2s .1s ease, opacity .2s .1s ease",
+        top,
+        boxShadow,
+        ...rest,
       }}
       onClick={(e) => {
         e.preventDefault();
@@ -43,35 +62,41 @@ const RichEditorMenuBar = (props: IRichEditorMenuBarProps) => {
       onFocus={(e) => e.preventDefault()}
       tabIndex={-1}
     >
-      {menuItems.map((menuItem) => (
-        <Box
-          key={uniqueId()}
-          sx={{ display: "flex", flexWrap: "wrap" }}
-          onFocus={(e) => e.preventDefault()}
-          onClick={(e) => {
-            e.preventDefault();
-            e.stopPropagation();
-          }}
-        >
-          {menuItem.type === "divider" ? (
-            <Box
-              sx={{
-                height: "20px",
-                width: "1px",
-                backgroundColor: "#f1f1f1",
-                my: 1,
-                mx: 0.6,
-              }}
-              onClick={(e) => {
-                e.preventDefault();
-                e.stopPropagation();
-              }}
-            />
-          ) : (
-            <RichEditorMenuItem menuItem={menuItem} />
-          )}
-        </Box>
-      ))}
+      {menuItems.map((menuItem, idx) => {
+        return (
+          <Box
+            key={
+              menuItem.type === "divider"
+                ? `divider-${idx}`
+                : `${(menuItem as IRichEditorMenuItem).title ?? "item"}-${idx}`
+            }
+            sx={{ display: "flex", flexWrap: "wrap" }}
+            onFocus={(e) => e.preventDefault()}
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+            }}
+          >
+            {menuItem.type === "divider" ? (
+              <Box
+                sx={{
+                  height: "20px",
+                  width: "1px",
+                  backgroundColor: "#f1f1f1",
+                  my: 1,
+                  mx: 0.6,
+                }}
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                }}
+              />
+            ) : (
+              <RichEditorMenuItem menuItem={menuItem} />
+            )}
+          </Box>
+        );
+      })}
     </Box>
   );
 };

@@ -19,7 +19,7 @@ const Layout = ({ children }: any) => {
         return (
           <Box display="flex">
             {!isSmallScreen && <Sidebar questions={questions} />}
-            <Box>{children}</Box>{" "}
+            <Box width="100%">{children}</Box>{" "}
           </Box>
         );
       }}
