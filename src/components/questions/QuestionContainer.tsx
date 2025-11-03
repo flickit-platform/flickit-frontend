@@ -84,8 +84,9 @@ export const useQuestion = () => {
     ? (questionsInfo?.questions as any).length > 0
     : false;
   const realIndex =
-    questionsInfo.questions.findIndex((item) => item.index === questionIndex) +
-    1;
+    questionsInfo?.questions?.findIndex(
+      (item) => item.index === questionIndex,
+    ) + 1;
 
   const questionInfo = findQuestion(questionsInfo.questions, questionIndex);
   const hasNextQuestion =

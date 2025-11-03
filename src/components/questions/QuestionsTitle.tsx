@@ -44,7 +44,7 @@ const itemNames = [
   },
 ];
 
-const QuestionsTitle = (props: { isReview?: boolean; pathInfo: any }) => {
+const QuestionsTitle = (props: { isReview?: boolean; pathInfo?: any }) => {
   const { isReview, pathInfo } = props;
   const { questionIndex, questionnaireId } = useParams();
   const isComplete = questionIndex === "completed";
@@ -71,13 +71,13 @@ const QuestionsTitle = (props: { isReview?: boolean; pathInfo: any }) => {
 
   useEffect(() => {
     if (initialQuestionsRef.current.length === 0) {
-      initialQuestionsRef.current = [...questionsInfo.questions];
+      initialQuestionsRef.current = [...(questionsInfo?.questions ?? "")];
     }
 
-    const filteredItems = questionsInfo.questions.map(
+    const filteredItems = questionsInfo?.questions?.map(
       (currentItem: any, index: number) => {
         const initialItem = initialQuestionsRef.current[index];
-        const updatedIssues = { ...currentItem.issues };
+        const updatedIssues = { ...(currentItem?.issues ?? {}) };
         if (initialItem?.issues) {
           Object.keys(initialItem?.issues).forEach((key) => {
             if (!(key in updatedIssues)) {
@@ -92,7 +92,7 @@ const QuestionsTitle = (props: { isReview?: boolean; pathInfo: any }) => {
           }
         });
 
-        return { ...currentItem, issues: updatedIssues };
+        return { ...(currentItem ?? undefined), issues: updatedIssues };
       },
     );
 
