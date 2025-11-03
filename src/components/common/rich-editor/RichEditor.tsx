@@ -40,12 +40,10 @@ interface IRichEditorProps {
   richEditorProps?: any;
 }
 
-function stripText(html?: string) {
+function stripText(html?: string): string {
   if (!html) return "";
-  return html
-    .replace(/<[^>]+>/g, "")
-    .replace(/&nbsp;/g, " ")
-    .trim();
+  const doc = new DOMParser().parseFromString(html, "text/html");
+  return doc.body.textContent?.replace(/\u00A0/g, " ").trim() ?? "";
 }
 
 function isDefined<T>(v: T | undefined | null): v is T {
@@ -78,21 +76,19 @@ const RichEditor = (props: IRichEditorProps) => {
   const hasFieldValue = !!field && isDefined(field.value);
   const hasPropValue = isDefined(value);
 
-  const initialContent = (
-    hasFieldValue
-      ? (field!.value as string)
-      : hasPropValue
-        ? (value as string)
-        : defaultValue
-  ) as string;
+  let initialContent: string;
+  let externalValue: string;
 
-  const externalValue = (
-    hasFieldValue
-      ? (field!.value as string)
-      : hasPropValue
-        ? (value as string)
-        : defaultValue
-  ) as string;
+  if (hasFieldValue) {
+    initialContent = field!.value as string;
+    externalValue = field!.value as string;
+  } else if (hasPropValue) {
+    initialContent = value as string;
+    externalValue = value as string;
+  } else {
+    initialContent = defaultValue;
+    externalValue = defaultValue;
+  }
 
   const [isFarsi, setIsFarsi] = useState<boolean>(() =>
     isDefined(checkLang)

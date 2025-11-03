@@ -1,14 +1,6 @@
 import { useState, useMemo, useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
-import {
-  Box,
-  Theme,
-  Tabs,
-  Tab,
-  Checkbox,
-  FormControlLabel,
-  Button,
-} from "@mui/material";
+import { Box, Theme, Tabs, Tab, Checkbox, FormControlLabel } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import FormProviderWithForm from "@/components/common/FormProviderWithForm";
 import RichEditorField from "@/components/common/fields/RichEditorField";
@@ -32,13 +24,13 @@ type FormValues = {
 
 const LIMIT = 500;
 
-function stripHtml(input: string | undefined): string {
+function stripHtml(input?: string): string {
   if (!input) return "";
-  return input
-    .replace(/<[^>]+>/g, "")
-    .replace(/&nbsp;/g, " ")
-    .trim();
+  const parser = new DOMParser();
+  const doc = parser.parseFromString(input, "text/html");
+  return doc.body.textContent?.replace(/\u00A0/g, " ").trim() ?? "";
 }
+
 
 const CreateForm = ({
   showTabs,

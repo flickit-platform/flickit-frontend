@@ -67,7 +67,7 @@ const RichEditorMenuBar = (props: IRichEditorMenuBarProps) => {
             key={
               menuItem.type === "divider"
                 ? `divider-${idx}`
-                : `${(menuItem as IRichEditorMenuItem).title ?? "item"}-${idx}`
+                : `${menuItem.title ?? "item"}-${idx}`
             }
             sx={{ display: "flex", flexWrap: "wrap" }}
             onFocus={(e) => e.preventDefault()}

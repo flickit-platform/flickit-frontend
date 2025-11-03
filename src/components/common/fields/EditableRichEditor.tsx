@@ -68,7 +68,6 @@ export const EditableRichEditor = (props: EditableRichEditorProps) => {
     formMethods.reset({ [fieldName]: defaultValue ?? "" });
   }, [defaultValue, fieldName, formMethods]);
 
-
   const openEditor = () => {
     if (!editable) return;
     formMethods.reset({ [fieldName]: tempData ?? "" });
@@ -154,23 +153,34 @@ export const EditableRichEditor = (props: EditableRichEditorProps) => {
               textAlign="justify"
               showEditorMenu={showEditorMenu}
             />
-            <Box sx={{ ...styles.centerCVH, height: !tempData ? "100%" : "initial" }}>
+            <Box
+              sx={{
+                ...styles.centerCVH,
+                height: tempData ? "initial" : "100%",
+              }}
+            >
               <IconButton
                 sx={{
                   bgcolor: "primary.main",
                   "&:hover": { bgcolor: "primary.dark" },
-                  borderRadius: languageDetector(tempData) ? "8px 0 0 0" : "0 8px 0 0",
+                  borderRadius: languageDetector(tempData)
+                    ? "8px 0 0 0"
+                    : "0 8px 0 0",
                   height: "49%",
                 }}
                 onClick={formMethods.handleSubmit(onSubmitInternal)}
               >
-                <CheckCircleOutlineRounded sx={{ color: "primary.contrastText" }} />
+                <CheckCircleOutlineRounded
+                  sx={{ color: "primary.contrastText" }}
+                />
               </IconButton>
               <IconButton
                 sx={{
                   bgcolor: "primary.main",
                   "&:hover": { bgcolor: "primary.dark" },
-                  borderRadius: languageDetector(tempData) ? "0 0 0 8px" : "0 0 8px 0",
+                  borderRadius: languageDetector(tempData)
+                    ? "0 0 0 8px"
+                    : "0 0 8px 0",
                   height: "49%",
                 }}
                 onClick={handleCancel}
@@ -295,7 +305,11 @@ export const EditableRichEditor = (props: EditableRichEditorProps) => {
           </Box>
 
           {showBtn && (
-            <Button variant="text" onClick={toggleShowMore} sx={{ textTransform: "none" }}>
+            <Button
+              variant="text"
+              onClick={toggleShowMore}
+              sx={{ textTransform: "none" }}
+            >
               {showMore ? t("common.showLess") : t("common.showMore")}
             </Button>
           )}
