@@ -1,7 +1,6 @@
-import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { useQuery } from "@/hooks/useQuery";
-import { ECustomErrorType, IGraphicalReport, PathInfo } from "@/types";
+import { IGraphicalReport, PathInfo } from "@/types";
 import { useAuthContext } from "@/providers/auth-provider";
 import { useServiceContext } from "@/providers/service-provider";
 import useCalculate from "@/hooks/useCalculate";

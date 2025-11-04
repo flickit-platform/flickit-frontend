@@ -10,13 +10,7 @@ import { useQuery } from "@/hooks/useQuery";
 import LoadingSkeletonOfQuestions from "@common/loadings/LoadingSkeletonOfQuestions";
 import QuestionsTitle from "./QuestionsTitle";
 import QueryBatchData from "@common/QueryBatchData";
-import {
-  EAssessmentStatus,
-  ECustomErrorType,
-  IQuestion,
-  IQuestionnaireModel,
-  IQuestionsModel,
-} from "@/types/index";
+import { EAssessmentStatus, IQuestion, IQuestionnaireModel, IQuestionsModel } from "@/types/index";
 import { ICustomError } from "@/utils/custom-error";
 import { useQuestion } from "./QuestionContainer";
 import showToast from "@/utils/toast-error";

@@ -103,7 +103,7 @@ const AssessmentAdviceContainer = (props: any) => {
     <QueryBatchData
       queryBatchData={[fetchAdviceNarration]}
       renderLoading={() => <Skeleton height={160} />}
-      render={([]) => {
+      render={() => {
         return (
           <Box>
             <AdviceDialog
