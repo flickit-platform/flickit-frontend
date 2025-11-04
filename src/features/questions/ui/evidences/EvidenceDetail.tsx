@@ -1,5 +1,5 @@
 import React, { Fragment, useEffect, useState } from "react";
-import {Box, Chip, Divider, Accordion, AccordionSummary, AccordionDetails, Button} from "@mui/material";
+import {Box, Chip, Divider, Accordion, AccordionSummary, AccordionDetails} from "@mui/material";
 import { useForm } from "react-hook-form";
 import { t } from "i18next";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
@@ -12,9 +12,19 @@ import uniqueId from "@/utils/unique-id";
 import IconButton from "@mui/material/IconButton";
 import {FileDownloadOutlined} from "@mui/icons-material";
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
+import { ICustomError } from "@utils/custom-error";
+import toastError from "@utils/toast-error";
 
 interface Attachment {
     link: string;
+    id: string;
+    creationTime: string;
+    description: string | null;
+    createdBy:{
+    displayName : string;
+    email : string | null;
+    id: string
+  }
 }
 
 interface EvidenceDetailProps {
@@ -176,19 +186,20 @@ const AttachmentEvidence: React.FC<any> = ({
 
                 <AccordionDetails sx={{ background: "#fff", p: 1, borderRadius: 1 }}>
                     {attachments.map((attachment, index) => {
-                        const { id: attachmentId,  } = attachment
+                        const { id: attachmentId  } = attachment
                         const { name, extension } = extractFileName(attachment.link);
                         const isLast = index === attachments.length - 1;
 
                         const handleDownloadAttachment = () =>{
 
                         }
-                        const handleDeleteAttachment = async (attachmentId) =>{
+                        const handleDeleteAttachment = async (attachmentId: any) =>{
                             try {
                                 const evidenceType = type === "Comment" ? "comment" : "evidence"
                                 await removeAttachment(evidenceId,attachmentId,evidenceType )
                             }catch (e){
-
+                              const err = e as ICustomError;
+                              toastError(err);
                             }
                         }
 
@@ -202,15 +213,13 @@ const AttachmentEvidence: React.FC<any> = ({
                                     <Box>
                                         <IconButton
                                             onClick={handleDownloadAttachment}
-                                            fullWidth
                                         >
-                                            <FileDownloadOutlined color="info.main" fontSize={"small"} />
+                                            <FileDownloadOutlined sx={{color: "info.main" }} fontSize={"small"} />
                                         </IconButton>
                                         <IconButton
                                             onClick={()=>handleDeleteAttachment(attachmentId)}
-                                            fullWidth
                                         >
-                                            <DeleteOutlineOutlinedIcon color="info.main" fontSize={"small"} />
+                                            <DeleteOutlineOutlinedIcon sx={{color: "info.main" }} fontSize={"small"} />
                                         </IconButton>
                                     </Box>
                                 </Box>

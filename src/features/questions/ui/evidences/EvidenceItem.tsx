@@ -32,6 +32,7 @@ interface EvidenceItemProps {
   description: string;
   attachmentsCount?: number;
   fetchAttachment?: (id: string, type: string) => Promise<any>;
+  removeAttachment : any
 }
 
 const ICON_SIZE = { width: 24, height: 24 };
