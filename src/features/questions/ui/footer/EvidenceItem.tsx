@@ -1,214 +1,192 @@
-import React, { useEffect, useState } from "react";
-import { Box, IconButton, Avatar } from "@mui/material";
-import { t } from "i18next";
+import React, {useEffect, useState} from "react";
+import {Box, IconButton, Avatar, Button} from "@mui/material";
+import {t} from "i18next";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
 import CheckIcon from "@mui/icons-material/Check";
 import CloseIcon from "@mui/icons-material/Close";
-import { styles } from "@styles";
-import { getReadableDate } from "@utils/readable-date";
-import { Text } from "@/components/common/Text";
-import { useQuery } from "@/hooks/useQuery";
-import { useServiceContext } from "@providers/service-provider";
+import {styles} from "@styles";
+import {getReadableDate} from "@utils/readable-date";
+import {Text} from "@/components/common/Text";
+import {useQuery} from "@/hooks/useQuery";
+import {useServiceContext} from "@providers/service-provider";
 import useEvidenceBox from "@/features/questions/model/evidenceTabs/useEvidenceBox";
 import EvidenceDetail from "@/features/questions/ui/footer/EvidenceDetail";
 import uniqueId from "@utils/unique-id";
 
 interface ButtonConfig {
-  icon: React.ReactNode;
-  onClick: () => void;
+    icon: React.ReactNode;
+    onClick: () => void;
 }
 
 interface EvidenceItemProps {
-  id: string;
-  refreshTab: (type: string) => Promise<void>;
-  createdBy: {
-    displayName: string;
-    pictureLink: string;
-  };
-  lastModificationTime: string;
-  type: string;
-  setConfirmDeleteDialog: (state: any) => void;
-  editable: boolean;
-  description: string;
-  attachmentsCount?: number;
-  fetchAttachment?: (id: string, type: string) => Promise<any>;
-  removeAttachment : any
+    id: string;
+    refreshTab: (type: string) => Promise<void>;
+    createdBy: {
+        displayName: string;
+        pictureLink: string;
+    };
+    lastModificationTime: string;
+    type: string;
+    setConfirmDeleteDialog: (state: any) => void;
+    editable: boolean;
+    description: string;
+    attachmentsCount?: number;
+    fetchAttachment?: (id: string, type: string) => Promise<any>;
+    removeAttachment: any
 }
 
-const ICON_SIZE = { width: 24, height: 24 };
+const ICON_SIZE = {width: 24, height: 24};
 
 const EvidenceItem: React.FC<EvidenceItemProps> = (props) => {
-  const { id, refreshTab, type, description } = props;
-  const [editId, setEditId] = useState<string | null>(null);
-  const [editTemp, setEditTemp] = useState({description: "", selectedType: ""});
-  const { service } = useServiceContext();
+    const {id, refreshTab, type, description} = props;
+    const [editId, setEditId] = useState<string | null>(null);
+    const [editTemp, setEditTemp] = useState({description: "", selectedType: ""});
+    const {service} = useServiceContext();
 
-  const isEditing = editId === id;
+    const isEditing = editId === id;
 
-  const toggleEditMode = (evidenceId: string) => {
-    setEditId((prev) => (prev == evidenceId ? null : evidenceId));
-  };
-  useEffect(() => {
-    setEditTemp({
-      description: description,
-      selectedType: type
-    })
-  }, [id, isEditing]);
+    const toggleEditMode = (evidenceId: string) => {
+        setEditId((prev) => (prev == evidenceId ? null : evidenceId));
+    };
+    useEffect(() => {
+        setEditTemp({
+            description: description,
+            selectedType: type
+        })
+    }, [id, isEditing]);
 
-  const addEvidence = useQuery({
-    service: (args, config) => service.questions.evidences.save(args, config),
-    runOnMount: false,
-  });
-
-  const handleSubmit = async (evidenceId: string) => {
-    await addEvidence.query({
-      description: editTemp.description,
-      id: evidenceId,
-      type: editTemp.selectedType === "Comment" ? null : editTemp.selectedType.toUpperCase(),
+    const addEvidence = useQuery({
+        service: (args, config) => service.questions.evidences.save(args, config),
+        runOnMount: false,
     });
 
-    const tabType = editTemp.selectedType === "Comment" ? "comment" : "evidence";
-    await refreshTab(tabType);
-  };
+    const handleSubmit = async (evidenceId: string) => {
+        await addEvidence.query({
+            description: editTemp.description,
+            id: evidenceId,
+            type: editTemp.selectedType === "Comment" ? null : editTemp.selectedType.toUpperCase(),
+        });
 
-  return (
-      <Box bgcolor={"background.background"} sx={{ mb: 2,borderRadius:1}}>
-        <HeaderItem
-            {...props}
-            toggleEditMode={toggleEditMode}
-            editId={editId}
-            submit={handleSubmit}
-            isEditing={isEditing}
-        />
-        <EvidenceDetail
-            {...props}
-            editId={editId}
-            isEditing={isEditing}
-            editTemp={editTemp}
-            setEditTemp={setEditTemp}
-        />
-      </Box>
-  );
+        const tabType = editTemp.selectedType === "Comment" ? "comment" : "evidence";
+        await refreshTab(tabType);
+    };
+
+    return (
+        <Box bgcolor={"background.background"} sx={{mb: 2, borderRadius: 1}}>
+            <HeaderItem
+                {...props}
+                toggleEditMode={toggleEditMode}
+                editId={editId}
+                submit={handleSubmit}
+                isEditing={isEditing}
+            />
+            <EvidenceDetail
+                {...props}
+                editId={editId}
+                isEditing={isEditing}
+                editTemp={editTemp}
+                setEditTemp={setEditTemp}
+            />
+        </Box>
+    );
 };
 
 const HeaderItem: React.FC<any> = ({
-                                     createdBy,
-                                     lastModificationTime,
-                                     type,
-                                     id,
-                                     setConfirmDeleteDialog,
-                                     editable,
-                                     toggleEditMode,
-                                     editId,
-                                     submit,
-                                     isEditing,
+                                       createdBy,
+                                       lastModificationTime,
+                                       type,
+                                       id,
+                                       setConfirmDeleteDialog,
+                                       editable,
+                                       toggleEditMode,
+                                       editId,
+                                       submit,
+                                       isEditing,
                                    }) => {
-  const { displayName, pictureLink } = createdBy;
-  const { boxType } = useEvidenceBox(type, isEditing);
+    const {displayName, pictureLink} = createdBy;
+    const {boxType} = useEvidenceBox(type, isEditing);
 
-  const headerStyle = {
-    ...styles.centerV,
-    justifyContent: "space-between",
-    flex: 1,
-    px: 2,
-    py: 1,
-    background: "#E8EBEE",
-    borderInlineStart: `4px solid ${boxType.color}`,
-  };
+    const headerStyle = {
+        ...styles.centerV,
+        justifyContent: "space-between",
+        flex: 1,
+        px: 2,
+        py: 1,
+        background: "#E8EBEE",
+        borderInlineStart: `4px solid ${boxType.color}`,
+    };
 
-  const labelStyle = {
-    color: boxType.color,
-    p: "4px 8px",
-    border: `0.5px solid ${boxType.color}`,
-    borderRadius: 1,
-  };
+    const labelStyle = {
+        color: boxType.color,
+        p: "4px 8px",
+        border: `0.5px solid ${boxType.color}`,
+        borderRadius: 1,
+    };
 
-  return (
-      <Box sx={headerStyle}>
-        <Box sx={{ ...styles.centerVH, gap: 1 }}>
-          <Avatar src={pictureLink} sx={{ ...ICON_SIZE, fontSize: 16 }} />
-          <Text variant="bodyMedium" color="background.secondaryDark">
-            {displayName}
-          </Text>
-          <Text variant="bodySmall" color="info.main">
-            {getReadableDate(lastModificationTime, "absolute", false)}
-          </Text>
+    const handleDelete = () => {
+        const type = boxType?.type
+        setConfirmDeleteDialog({open: true, evidenceId: id, type});
+    };
+
+    return (
+        <Box sx={headerStyle}>
+            <Box sx={{...styles.centerVH, gap: 1}}>
+                <Avatar src={pictureLink} sx={{...ICON_SIZE, fontSize: 16}}/>
+                <Text variant="bodyMedium" color="background.secondaryDark">
+                    {displayName}
+                </Text>
+                <Text variant="bodySmall" color="info.main">
+                    {getReadableDate(lastModificationTime, "absolute", false)}
+                </Text>
+            </Box>
+
+            <Box sx={{...styles.centerVH, gap: 1}}>
+                <Text variant="labelSmall" sx={labelStyle}>
+                    {t(boxType.label)}
+                </Text>
+                <ActionButtons
+                  actions={
+                     isEditing ? [
+                                {
+                                    icon: <CheckIcon fontSize="small" sx={ICON_SIZE}/>,
+                                    onClick: () => submit(id)
+                                },
+                                 {
+                                     icon: <CloseIcon fontSize="small" sx={ICON_SIZE}/>,
+                                     onClick: () => toggleEditMode(id)
+                                 }
+                         ] : [
+                                boxType?.type === "comment" && {
+                                    icon: <CheckIcon fontSize="small" sx={ICON_SIZE}/>,
+                                    onClick: () => {
+                                    }
+                                },
+                                editable && {
+                                    icon: <EditOutlinedIcon fontSize="small" sx={ICON_SIZE}/>,
+                                    onClick: () => toggleEditMode(id)
+                                }, {
+                                    icon: <DeleteOutlinedIcon fontSize="small" sx={ICON_SIZE}/>,
+                                    onClick: () => handleDelete()
+                              }
+                        ]
+                    }
+                />
+            </Box>
         </Box>
-
-        <Box sx={{ ...styles.centerVH, gap: 1 }}>
-          <Text variant="labelSmall" sx={labelStyle}>
-            {t(boxType.label)}
-          </Text>
-          <ActionButtons
-              type={boxType?.type}
-              setConfirmDeleteDialog={setConfirmDeleteDialog}
-              evidenceId={id}
-              editable={editable}
-              toggleEditMode={toggleEditMode}
-              isEditing={isEditing}
-              submit={submit}
-          />
-        </Box>
-      </Box>
-  );
+    );
 };
 
-const ActionButtons: React.FC<any> = ({
-                                        setConfirmDeleteDialog,
-                                        evidenceId,
-                                        type,
-                                        editable,
-                                        toggleEditMode,
-                                        isEditing,
-                                        submit,
-                                      }) => {
-  const handleDelete = () => {
-    setConfirmDeleteDialog({ open: true, evidenceId, type });
-  };
-
-  const createButton = (icon: React.ReactNode, onClick: () => void): ButtonConfig => ({
-    icon,
-    onClick,
-  });
-
-  const normalButtons: ButtonConfig[] = [
-    ...(type === "comment"
-        ? [createButton(<CheckIcon fontSize="small" sx={ICON_SIZE} />, () => {})]
-        : []),
-    ...(editable
-        ? [
-          createButton(
-              <EditOutlinedIcon fontSize="small" sx={ICON_SIZE} />,
-              () => toggleEditMode(evidenceId)
-          ),
-        ]
-        : []),
-    createButton(<DeleteOutlinedIcon fontSize="small" sx={ICON_SIZE} />, handleDelete),
-  ];
-
-  const editButtons: ButtonConfig[] = [
-    createButton(
-        <CheckIcon fontSize="small" sx={ICON_SIZE} />,
-        () => submit(evidenceId)
-    ),
-    createButton(
-        <CloseIcon fontSize="small" sx={ICON_SIZE} />,
-        () => toggleEditMode(evidenceId)
-    ),
-  ];
-
-  const buttons = isEditing ? editButtons : normalButtons;
-
-  return (
-      <Box sx={{ ...styles.centerV, gap: 1 }} onClick={(e) => e.stopPropagation()}>
-        {buttons.map((button) => (
-            <IconButton key={uniqueId()} onClick={button.onClick} sx={{ p: 0.4 }}>
-              {button.icon}
-            </IconButton>
-        ))}
-      </Box>
-  );
+const ActionButtons = ({actions}) => {
+    return (
+        <Box sx={{...styles.centerV, gap: 1}} onClick={(e) => e.stopPropagation()}>
+            {actions.map((button) => (
+                <IconButton key={uniqueId()} onClick={button.onClick} sx={{p: 0.4}}>
+                    {button.icon}
+                </IconButton>
+            ))}
+        </Box>
+    )
 };
 
 export default EvidenceItem;
