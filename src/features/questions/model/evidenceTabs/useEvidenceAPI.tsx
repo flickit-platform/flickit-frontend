@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import {useState} from 'react';
 import {useQuery} from "@/hooks/useQuery";
 import {useServiceContext} from "@providers/service-provider";
 import {useParams} from "react-router-dom";
@@ -6,7 +6,7 @@ import {useParams} from "react-router-dom";
 const UseEvidenceApi = (questionId) => {
     const { service } = useServiceContext();
     const { assessmentId = "" } = useParams();
-    const [currentPage, setCurrentPage] = useState<number>(1);
+    const [currentPage] = useState<number>(1);
 
     const deleteEvidence = useQuery({
         service: (args, config) => service.questions.evidences.remove(args, config),

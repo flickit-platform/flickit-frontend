@@ -1,7 +1,5 @@
 import { lazy, SyntheticEvent, useEffect, useMemo, useRef, useState } from "react";
-import { useParams } from "react-router-dom";
 import { t } from "i18next";
-import { useServiceContext } from "@providers/service-provider";
 import showToast from "@utils/toast-error";
 import { ICustomError } from "@utils/custom-error";
 import UseEvidenceApi from "@/features/questions/model/evidenceTabs/useEvidenceAPI";

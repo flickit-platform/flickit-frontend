@@ -159,7 +159,7 @@ const AttachmentEvidence: React.FC<any> = ({
 
     const extractFileName = (link: string) => {
         const regex = /\/([^/?]+)\?/;
-        const match = link?.match(regex);
+        const match = regex.exec(link);
         if (!match) return { name: null, extension: null, fullName: null };
 
         const fullName = match[1];
@@ -295,7 +295,7 @@ const DescriptionEvidence: React.FC<any> = ({
             <Box width="100%" justifyContent="space-between" sx={{ ...styles.centerV, }}>
                 {isEditMode ? (
                     <Box
-                        sx={{my: 2, width: "100%", mt:{xs: 26, sm: 17, md: 13, xl: 8 }}}>
+                        sx={{my: 2, width: "100%", mt:{xs: 26, sm: 17, md: 17, xl: 13 }}}>
                         <RichEditorField
                             name="evidence-description"
                             label={t("common.description")}

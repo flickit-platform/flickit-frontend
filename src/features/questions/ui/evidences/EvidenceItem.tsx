@@ -12,6 +12,7 @@ import { useQuery } from "@/hooks/useQuery";
 import { useServiceContext } from "@providers/service-provider";
 import useEvidenceBox from "@/features/questions/model/evidenceTabs/useEvidenceBox";
 import EvidenceDetail from "@/features/questions/ui/evidences/EvidenceDetail";
+import uniqueId from "@utils/unique-id";
 
 interface ButtonConfig {
   icon: React.ReactNode;
@@ -46,7 +47,7 @@ const EvidenceItem: React.FC<EvidenceItemProps> = (props) => {
   const isEditing = editId === id;
 
   const toggleEditMode = (evidenceId: string) => {
-    setEditId((prev) => (prev !== evidenceId ? evidenceId : null));
+    setEditId((prev) => (prev == evidenceId ? null : evidenceId));
   };
 
   const addEvidence = useQuery({
@@ -195,8 +196,8 @@ const ActionButtons: React.FC<any> = ({
 
   return (
       <Box sx={{ ...styles.centerV, gap: 1 }} onClick={(e) => e.stopPropagation()}>
-        {buttons.map((button, index) => (
-            <IconButton key={index} onClick={button.onClick} sx={{ p: 0.4 }}>
+        {buttons.map((button) => (
+            <IconButton key={uniqueId()} onClick={button.onClick} sx={{ p: 0.4 }}>
               {button.icon}
             </IconButton>
         ))}
