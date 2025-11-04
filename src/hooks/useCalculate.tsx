@@ -3,8 +3,9 @@ import { useQuery } from "@/hooks/useQuery";
 import { useCallback, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { ECustomErrorType } from "@/types";
+import { ICustomError } from "@/utils/custom-error";
 
-const useCalculate = (errorCode?: any, fetchData?: () => void) => {
+const useCalculate = (errorCode?: ICustomError, fetchData?: () => void) => {
   const { service } = useServiceContext();
   const { assessmentId = "" } = useParams();
 
@@ -49,20 +50,21 @@ const useCalculate = (errorCode?: any, fetchData?: () => void) => {
   useEffect(() => {
     if (!errorCode) return;
 
-    if (errorCode === ECustomErrorType.CALCULATE_NOT_VALID) {
+    if (
+      errorCode.response?.data.code === ECustomErrorType.CALCULATE_NOT_VALID
+    ) {
       calculate().then(fetchData);
     } else if (
-      errorCode === ECustomErrorType.CONFIDENCE_CALCULATION_NOT_VALID
+      errorCode.response?.data.code ===
+      ECustomErrorType.CONFIDENCE_CALCULATION_NOT_VALID
     ) {
       calculateConfidence().then(fetchData);
-    } else if (errorCode === ECustomErrorType.DEPRECATED) {
+    } else if (errorCode.response?.data.code === ECustomErrorType.DEPRECATED) {
       service.assessments.info
         .migrateKitVersion({ assessmentId })
         .then(fetchData);
     }
-  }, [errorCode]);
-
-  return { calculate, calculateConfidence };
+  }, [errorCode?.response?.data.code]);
 };
 
 export default useCalculate;

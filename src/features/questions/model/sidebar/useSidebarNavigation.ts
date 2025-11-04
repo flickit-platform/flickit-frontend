@@ -4,10 +4,13 @@ import { questionActions, useQuestionDispatch } from "../../context";
 import type { IQuestionInfo } from "@/types";
 import { SidebarNavigation } from "../../types";
 
-export function useSidebarNavigation(questions: IQuestionInfo[]): SidebarNavigation {
+export function useSidebarNavigation(
+  questions: IQuestionInfo[],
+): SidebarNavigation {
   const dispatch = useQuestionDispatch();
   const navigate = useNavigate();
-  const { spaceId, page, assessmentId, questionnaireId, questionIndex } = useParams();
+  const { spaceId, page, assessmentId, questionnaireId, questionIndex } =
+    useParams();
 
   const selectedIndex = useMemo(() => {
     const oneBased = Number(questionIndex) || 1;
@@ -28,11 +31,11 @@ export function useSidebarNavigation(questions: IQuestionInfo[]): SidebarNavigat
         Math.max(index, 0),
         Math.max(questions.length - 1, 0),
       );
-      const q = questions[safeIndex];
-      if (!q) return;
+      const question = questions[safeIndex];
+      if (!question) return;
 
       navigate(buildQuestionUrl(safeIndex));
-      dispatch(questionActions.setSelectedQuestion(q));
+      dispatch(questionActions.setSelectedQuestion(question));
     },
     [questions, navigate, buildQuestionUrl, dispatch],
   );

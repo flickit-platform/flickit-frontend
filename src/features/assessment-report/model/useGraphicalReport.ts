@@ -35,10 +35,7 @@ export const useGraphicalReport = () => {
     fetchGraphicalReport.query();
   };
 
-  useCalculate(
-    fetchGraphicalReport.errorObject?.response?.data.code,
-    fetchData,
-  );
+  useCalculate(fetchGraphicalReport.errorObject, fetchData);
 
   return {
     fetchPathInfo,
