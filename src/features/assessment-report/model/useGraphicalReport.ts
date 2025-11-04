@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { useQuery } from "@/hooks/useQuery";
 import { IGraphicalReport, PathInfo } from "@/types";
@@ -32,40 +31,18 @@ export const useGraphicalReport = () => {
     runOnMount: true,
   });
 
-  const { calculate, calculateConfidence } = useCalculate();
-
-  useEffect(() => {
-    if (
-      fetchGraphicalReport.errorObject?.response?.data?.code ==
-      "CALCULATE_NOT_VALID"
-    ) {
-      calculate().then(() => {
-        reload();
-      });
-    }
-    if (
-      fetchGraphicalReport.errorObject?.response?.data?.code ==
-      "CONFIDENCE_CALCULATION_NOT_VALID"
-    ) {
-      calculateConfidence().then(() => {
-        reload();
-      });
-    }
-    if (
-      fetchGraphicalReport?.errorObject?.response?.data?.code === "DEPRECATED"
-    ) {
-      service.assessments.info.migrateKitVersion({ assessmentId }).then(() => {
-        reload();
-      });
-    }
-  }, [fetchGraphicalReport.errorObject]);
-
-  const reload = () => {
+  const fetchData = () => {
     fetchGraphicalReport.query();
   };
+
+  useCalculate(
+    fetchGraphicalReport.errorObject?.response?.data.code,
+    fetchData,
+  );
+
   return {
     fetchPathInfo,
     fetchGraphicalReport,
-    reload,
+    fetchData,
   };
 };

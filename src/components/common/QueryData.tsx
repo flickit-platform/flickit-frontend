@@ -1,18 +1,12 @@
 import { ReactNode, createContext, useContext } from "react";
 import Box from "@mui/material/Box";
 import { styles } from "@styles";
-import {
-  ECustomErrorType,
-  ErrorCodes,
-  TQueryFunction,
-  TQueryProps,
-} from "@/types/index";
+import { ECustomErrorType, TQueryFunction, TQueryProps } from "@/types/index";
 import { ICustomError } from "@/utils/custom-error";
 import ErrorEmptyData from "./errors/ErrorEmptyData";
 import ErrorDataLoading from "./errors/ErrorDataLoading";
 import { ErrorNotFoundOrAccessDenied } from "./errors/ErrorNotFoundOrAccessDenied";
 import GettingThingsReadyLoading from "./loadings/GettingThingsReadyLoading";
-import ErrorRecalculating from "./errors/ErrorRecalculating";
 
 interface IQueryDataProps<T> {
   loadingComponent?: ReactNode;
@@ -54,7 +48,7 @@ const QueryDataContext = createContext<TQueryProps>({
  * - You should pass the render method to render your component after request resolve
  * - It will make the data available for all children through context api so you don't need to drill down the data
  */
-const QueryData = <T = any>(props: IQueryDataProps<T>) => {
+const QueryData = <T = any,>(props: IQueryDataProps<T>) => {
   const {
     render,
     data,
@@ -77,7 +71,14 @@ const QueryData = <T = any>(props: IQueryDataProps<T>) => {
     query = async () => null,
   } = props;
 
-  if (loading) {
+  const isRecalculatingError =
+    errorObject?.response?.data?.code ===
+      ECustomErrorType.CALCULATE_NOT_VALID ||
+    errorObject?.response?.data?.code ===
+      ECustomErrorType.CONFIDENCE_CALCULATION_NOT_VALID ||
+    errorObject?.response?.data?.code === ECustomErrorType.DEPRECATED;
+
+  if (loading || isRecalculatingError) {
     return renderLoading();
   }
   if (error) {
@@ -146,12 +147,6 @@ export const defaultRenderError = (
     err.code === ECustomErrorType.ACCESS_DENIED
   ) {
     return <ErrorNotFoundOrAccessDenied />;
-  }
-  if (err?.response?.data?.code == ErrorCodes.CalculateNotValid) {
-    return <ErrorRecalculating />;
-  }
-  if (err?.response?.data?.code == ErrorCodes.ConfidenceCalculationNotValid) {
-    return <ErrorRecalculating />;
   }
   return errorComponent;
 };

@@ -20,6 +20,7 @@ import {
 } from "@/components/common/dialogs/CEDialog";
 import { LoadingAdviceTargetsSkeleton } from "@/components/common/loadings/LoadingAdviceTargetsSkeleton";
 import { Text } from "@/components/common/Text";
+import { ECustomErrorType } from "@/types";
 
 type AdviceDialogProps = {
   open: boolean;
@@ -179,10 +180,7 @@ const AdviceDialog = ({
         pt={{ xs: 0, md: 1 }}
         pb={2}
       >
-        <Text
-          variant="bodyMedium"
-          textAlign="justify"
-        >
+        <Text variant="bodyMedium" textAlign="justify">
           <Trans
             i18nKey={
               step === 1 ? "advice.adviceAssistantDesc" : "advice.reviewAdvice"
@@ -190,9 +188,14 @@ const AdviceDialog = ({
           />
         </Text>
 
-        {(fetchPreAdviceInfo.loading || loading) && (
-          <LoadingAdviceTargetsSkeleton />
-        )}
+        {(fetchPreAdviceInfo.loading ||
+          loading ||
+          fetchPreAdviceInfo.errorObject?.response?.data.code ===
+            ECustomErrorType.CALCULATE_NOT_VALID ||
+          fetchPreAdviceInfo.errorObject?.response?.data.code ===
+            ECustomErrorType.CONFIDENCE_CALCULATION_NOT_VALID ||
+          fetchPreAdviceInfo.errorObject?.response?.data.code ===
+            ECustomErrorType.DEPRECATED) && <LoadingAdviceTargetsSkeleton />}
 
         {/* Step 1: Targets */}
         <Grid
@@ -215,7 +218,7 @@ const AdviceDialog = ({
               (m: any) => m.id == attribute?.maturityLevel.id,
             );
             return (
-              <Grid size={{xs: 12, sm: 6}} key={attribute.id}>
+              <Grid size={{ xs: 12, sm: 6 }} key={attribute.id}>
                 <AdviceSlider
                   defaultValue={current?.value ?? 0}
                   currentState={current}

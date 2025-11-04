@@ -10,12 +10,7 @@ import { useQuery } from "@/hooks/useQuery";
 import LoadingSkeletonOfQuestions from "@common/loadings/LoadingSkeletonOfQuestions";
 import QuestionsTitle from "./QuestionsTitle";
 import QueryBatchData from "@common/QueryBatchData";
-import {
-  EAssessmentStatus,
-  IQuestion,
-  IQuestionnaireModel,
-  IQuestionsModel,
-} from "@/types/index";
+import { EAssessmentStatus, IQuestion, IQuestionnaireModel, IQuestionsModel } from "@/types/index";
 import { ICustomError } from "@/utils/custom-error";
 import { useQuestion } from "./QuestionContainer";
 import showToast from "@/utils/toast-error";
@@ -159,35 +154,6 @@ export const useQuestions = () => {
     runOnMount: false,
   });
 
-  const { calculate, calculateConfidence } = useCalculate();
-
-  useEffect(() => {
-    if (
-      questionsResultQueryData.errorObject?.response?.data?.code ==
-      "CALCULATE_NOT_VALID"
-    ) {
-      calculate().then(() => {
-        fetchData();
-      });
-    }
-    if (
-      questionsResultQueryData.errorObject?.response?.data?.code ==
-      "CONFIDENCE_CALCULATION_NOT_VALID"
-    ) {
-      calculateConfidence().then(() => {
-        fetchData();
-      });
-    }
-    if (
-      questionsResultQueryData?.errorObject?.response?.data?.code ===
-      "DEPRECATED"
-    ) {
-      service.assessments.info.migrateKitVersion({ assessmentId }).then(() => {
-        fetchData();
-      });
-    }
-  }, [questionsResultQueryData.errorObject]);
-
   const fetchData = () => {
     questionsResultQueryData.query({ page: 0 }).then((response) => {
       if (response) {
@@ -205,6 +171,11 @@ export const useQuestions = () => {
       }
     });
   };
+
+  useCalculate(
+    questionsResultQueryData.errorObject?.response?.data.code,
+    fetchData,
+  );
   // Fetch the initial set of questions (page 0) on mount
   useEffect(() => {
     fetchData();

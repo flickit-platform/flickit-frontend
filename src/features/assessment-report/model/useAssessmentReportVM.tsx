@@ -21,7 +21,7 @@ export function useAssessmentReportVM() {
 
   const { isAuthenticatedUser } = useAuthContext();
   const { dispatch } = useConfigContext();
-  const { fetchPathInfo, fetchGraphicalReport, reload } =
+  const { fetchPathInfo, fetchGraphicalReport, fetchData } =
     useGraphicalReport();
 
   useIntersectOnce("recommendations", () => dispatch(setSurveyBox(true)));
@@ -80,7 +80,7 @@ export function useAssessmentReportVM() {
   return {
     fetchGraphicalReport,
     fetchPathInfo,
-    reload,
+    fetchData,
     isAuthenticatedUser,
     lng,
     rtl,
