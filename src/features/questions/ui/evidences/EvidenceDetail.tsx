@@ -84,7 +84,7 @@ const EvidenceDetail: React.FC<EvidenceDetailProps> = ({
     const hasAttachments = attachmentsCount > 0;
 
     return (
-        <div>
+        <Box sx={{px: 2, pb: 2}}>
             <DescriptionEvidence
                 description={description}
                 editId={editId}
@@ -101,7 +101,7 @@ const EvidenceDetail: React.FC<EvidenceDetailProps> = ({
                     attachmentsCount={attachmentsCount}
                 />
             )}
-        </div>
+        </Box>
     );
 };
 
@@ -221,19 +221,22 @@ const DescriptionEvidence: React.FC<any> = ({
 
     return (
         <FormProviderWithForm formMethods={formMethods}>
-            <Box width="100%" justifyContent="space-between" sx={{ ...styles.centerV }}>
+            <Box width="100%" justifyContent="space-between" sx={{ ...styles.centerV, }}>
                 {isEditMode ? (
-                    <RichEditorField
-                        name="evidence-description"
-                        label={t("common.description")}
-                        disable_label={false}
-                        required={true}
-                        defaultValue={newDescription ?? ""}
-                        setNewDescription={setNewDescription}
-                        showEditorMenu={false}
-                    />
+                    <Box
+                        sx={{my: 2, width: "100%", mt:{xs: 26, sm: 17, md: 13, xl: 8 }}}>
+                        <RichEditorField
+                            name="evidence-description"
+                            label={t("common.description")}
+                            disable_label={false}
+                            required={true}
+                            defaultValue={newDescription ?? ""}
+                            setNewDescription={setNewDescription}
+                            showEditorMenu={true}
+                        />
+                    </Box>
                 ) : (
-                    <Box sx={{ py: 1, px: 2, width: "100%" }}>
+                    <Box sx={{  width: "100%", pt: 1 }}>
                         <Text
                             variant="bodyMedium"
                             color="background.secondaryDark"

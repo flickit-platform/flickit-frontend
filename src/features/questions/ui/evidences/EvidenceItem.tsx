@@ -65,7 +65,7 @@ const EvidenceItem: React.FC<EvidenceItemProps> = (props) => {
   };
 
   return (
-      <Box sx={{ mb: 2 }}>
+      <Box bgcolor={"background.background"} sx={{ mb: 2,borderRadius:1}}>
         <HeaderItem
             {...props}
             toggleEditMode={toggleEditMode}
@@ -106,7 +106,6 @@ const HeaderItem: React.FC<any> = ({
     px: 2,
     py: 1,
     background: "#E8EBEE",
-    borderRadius: 1,
     borderInlineStart: `4px solid ${boxType.color}`,
   };
 
