@@ -81,7 +81,7 @@ const SidebarContent = memo(({ questions }: Readonly<SideBarProps>) => {
         ]}
       >
         {listItems.map((item) => (
-          <Box key={item.key} sx={{ ...styles.centerCVH }}>
+          <Box key={item.key} sx={{ ...styles.centerCV }}>
             <QuestionItem
               {...item}
               open={uiState.isOpen}
