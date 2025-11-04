@@ -1,6 +1,4 @@
-import { useReducer, useCallback, useMemo, useEffect, useRef } from "react";
-import { useAssessmentContext } from "@/providers/assessment-provider";
-import { ASSESSMENT_MODE } from "@/utils/enum-type";
+import { useReducer, useCallback, useRef } from "react";
 import { QuestionIssue, SidebarUIState } from "../../types";
 import { getIssueChips } from "./issues.registry";
 import { useTranslation } from "react-i18next";
