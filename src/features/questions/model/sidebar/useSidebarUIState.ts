@@ -39,7 +39,7 @@ export function useSidebarUIState(): SidebarUIState {
 
   const [uiState, dispatchUIState] = useReducer(uiStateReducer, {
     isOpen: true,
-    showIssueChips: false,
+    showIssueChips: true,
     activeFilters: new Set<string>(),
   });
 
