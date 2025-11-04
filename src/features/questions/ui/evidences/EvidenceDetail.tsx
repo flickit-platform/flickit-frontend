@@ -1,5 +1,5 @@
 import React, { Fragment, useEffect, useState } from "react";
-import {Box, Chip, Divider, Accordion, AccordionSummary, AccordionDetails} from "@mui/material";
+import { Box, Chip, Divider, Accordion, AccordionSummary, AccordionDetails, useTheme } from "@mui/material";
 import { useForm } from "react-hook-form";
 import { t } from "i18next";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
@@ -14,6 +14,8 @@ import {FileDownloadOutlined} from "@mui/icons-material";
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
 import { ICustomError } from "@utils/custom-error";
 import toastError from "@utils/toast-error";
+import { downloadFile } from "@utils/download-file";
+import Tooltip from "@mui/material/Tooltip";
 
 interface Attachment {
     link: string;
@@ -130,7 +132,16 @@ const AttachmentEvidence: React.FC<any> = ({
                                            }) => {
     const [expanded, setExpanded] = useState<boolean>(false);
     const [attachments, setAttachments] = useState<Attachment[]>([]);
-
+    const theme = useTheme()
+    const tooltipStyle: any = {
+    sx: {
+      bgcolor: "#66809920",
+        color: theme.palette.text.primary,
+        fontWeight: 400,
+        fontSize: "11px",
+        px: 0.5,
+    } ,
+  }
     const handleAccordionChange = async (
         _event: React.SyntheticEvent,
         isExpanded: boolean
@@ -191,7 +202,7 @@ const AttachmentEvidence: React.FC<any> = ({
                         const isLast = index === attachments.length - 1;
 
                         const handleDownloadAttachment = () =>{
-
+                          downloadFile(attachment)
                         }
                         const handleDeleteAttachment = async (attachmentId: any) =>{
                             try {
@@ -211,16 +222,31 @@ const AttachmentEvidence: React.FC<any> = ({
                                         <Text>{formatFileName(name, extension)}</Text>
                                     </Box>
                                     <Box>
+                                      <Tooltip
+                                        componentsProps={{
+                                          tooltip : tooltipStyle,
+                                          arrow: { sx: { color: "#66809920" } },
+                                        }}
+                                        title={`${t("common.download")} ${name}`} >
                                         <IconButton
-                                            onClick={handleDownloadAttachment}
+                                          onClick={handleDownloadAttachment}
                                         >
-                                            <FileDownloadOutlined sx={{color: "info.main" }} fontSize={"small"} />
+                                          <FileDownloadOutlined sx={{color: "info.main" }} fontSize={"small"} />
                                         </IconButton>
+                                      </Tooltip>
+                                      <Tooltip
+                                        componentsProps={{
+                                          tooltip : tooltipStyle,
+                                          arrow: { sx: { color: "#66809920" } },
+                                        }}
+
+                                        title={t("common.delete")} >
                                         <IconButton
                                             onClick={()=>handleDeleteAttachment(attachmentId)}
                                         >
                                             <DeleteOutlineOutlinedIcon sx={{color: "info.main" }} fontSize={"small"} />
                                         </IconButton>
+                                      </Tooltip>
                                     </Box>
                                 </Box>
                                 {!isLast && (
