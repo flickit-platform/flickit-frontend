@@ -11,22 +11,22 @@ type EvidenceBoxMap = Record<EvidenceType, StyleItem>;
 const EVIDENCE_BOX_STYLES: EvidenceBoxMap = {
   Positive: {
     color: "#17823B",
-    label: "questions.positiveEvidence",
+    label: "questions_temp.positiveEvidence",
     type: "evidence",
   },
   Negative: {
     color: "#821717",
-    label: "questions.negativeEvidence",
+    label: "questions_temp.negativeEvidence",
     type: "evidence",
   },
   Comment: {
     color: "#73808C",
-    label: "questions.comment",
+    label: "questions_temp.comment",
     type: "comment",
   },
   Edit: {
     color: "#2466A8",
-    label: "questions.editing",
+    label: "questions_temp.editing",
     type: "",
   },
 };

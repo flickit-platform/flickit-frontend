@@ -25,9 +25,9 @@ interface EvidenceData {
 }
 
 const TAB_ITEMS: TabItem[] = [
-  { index: 0, label: "common.evidence", value: "evidence", component: EvidenceList },
-  { index: 1, label: "questions.comments", value: "comment", component: EvidenceList },
-  { index: 2, label: "questions.answerHistory", value: "answerHistory", component: AnswerHistory },
+  { index: 0, label: "questions_temp.evidences", value: "evidence", component: EvidenceList },
+  { index: 1, label: "questions_temp.comments", value: "comment", component: EvidenceList },
+  { index: 2, label: "questions_temp.answerHistories", value: "answerHistory", component: AnswerHistory },
 ];
 
 const useEvidence = (selectedQuestion: any) => {
