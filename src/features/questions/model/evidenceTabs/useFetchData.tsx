@@ -3,10 +3,9 @@ import {useQuery} from "@/hooks/useQuery";
 import {useServiceContext} from "@providers/service-provider";
 import {useParams} from "react-router-dom";
 
-const UseEvidenceApi = (questionId: string) => {
+const UseFetchData = (questionId: string) => {
     const { service } = useServiceContext();
     const { assessmentId = "" } = useParams();
-    const [currentPage] = useState<number>(1);
 
     const deleteEvidence = useQuery({
         service: (args, config) => service.questions.evidences.remove(args, config),
@@ -27,7 +26,7 @@ const UseEvidenceApi = (questionId: string) => {
                 ({
                     questionId,
                     assessmentId,
-                    page: currentPage,
+                    page: 1,
                     size: 10,
                 } as any),
                 config,
@@ -43,7 +42,7 @@ const UseEvidenceApi = (questionId: string) => {
                 ({
                     questionId,
                     assessmentId,
-                    page: currentPage,
+                    page: 1,
                     size: 10,
                 } as any),
                 config,
@@ -59,7 +58,7 @@ const UseEvidenceApi = (questionId: string) => {
                 ({
                     questionId,
                     assessmentId,
-                    page: currentPage,
+                    page: 1,
                     size: 10,
                 } as any),
                 config,
@@ -84,4 +83,4 @@ const UseEvidenceApi = (questionId: string) => {
     }
 };
 
-export default UseEvidenceApi;
+export default UseFetchData;

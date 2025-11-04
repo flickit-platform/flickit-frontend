@@ -18,7 +18,7 @@ const QuestionScreen = () => {
   const { selectedQuestion } = useQuestionContext();
   return <>
     {selectedQuestion?.title}
-    {isAdvanceMode && <EvidenceContainer selectedQuestion={selectedQuestion} />}
+    {isAdvanceMode && <EvidenceContainer />}
   </>;
 };
 

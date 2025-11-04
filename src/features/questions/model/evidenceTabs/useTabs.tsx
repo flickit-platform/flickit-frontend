@@ -1,9 +1,9 @@
 import { lazy, SyntheticEvent, useEffect, useMemo, useRef, useState } from "react";
-import { t } from "i18next";
 import showToast from "@utils/toast-error";
 import { ICustomError } from "@utils/custom-error";
-import UseEvidenceApi from "@/features/questions/model/evidenceTabs/useEvidenceAPI";
-
+import useFetchData from "@/features/questions/model/evidenceTabs/useFetchData";
+import {useQuestionContext} from "@/features/questions/context";
+import { useTranslation } from "react-i18next";
 const EvidenceList = lazy(() => import("@/features/questions/ui/footer/EvidenceList"));
 const AnswerHistory = lazy(() => import("@/features/questions/ui/footer/AnswerHistory"));
 
@@ -30,14 +30,14 @@ const TAB_ITEMS: TabItem[] = [
   { index: 2, label: "questions_temp.answerHistories", value: "answerHistory", component: AnswerHistory },
 ];
 
-const useEvidence = (selectedQuestion: any) => {
-  const { id: questionId } = selectedQuestion ?? { id: 0 };
+const useTabs = () => {
+  const {selectedQuestion} = useQuestionContext()
+  const questionId = selectedQuestion?.id
 
-  const saveId = useRef<number | null>(null);
-  const [currentPage, setCurrentPage] = useState<number>(1);
   const [data, setData] = useState<Record<string, any[]>>({});
   const [selectedTab, setSelectedTab] = useState<TabValue>("evidence");
 
+  const { t } = useTranslation()
   const tabItems = useMemo(
       () =>
           TAB_ITEMS.map((item) => ({
@@ -63,9 +63,9 @@ const useEvidence = (selectedQuestion: any) => {
     deleteEvidence,
     fetchEvidenceAttachments,
     RemoveEvidenceAttachments
-  } = UseEvidenceApi(questionId);
+  } = useFetchData(questionId);
 
-  const QUERY_MAP = useMemo(
+  const queryMap = useMemo(
       () => ({
         evidence: evidencesQueryData,
         comment: commentesQueryData,
@@ -74,13 +74,7 @@ const useEvidence = (selectedQuestion: any) => {
       [evidencesQueryData, commentesQueryData, answerHistoryQueryData]
   );
 
-  useEffect(() => {
-    if (questionId !== saveId.current) {
-      saveId.current = questionId;
-      setSelectedTab("evidence");
-      setData({});
-    }
-  }, [questionId]);
+
 
   const transformCommentData = (items: any[]) => {
     return items.map((item) => ({ ...item, type: "Comment" }));
@@ -93,7 +87,7 @@ const useEvidence = (selectedQuestion: any) => {
       return;
     }
 
-    const currentQuery = QUERY_MAP[tab];
+    const currentQuery = queryMap[tab];
     if (!currentQuery) {
       return;
     }
@@ -113,8 +107,15 @@ const useEvidence = (selectedQuestion: any) => {
   };
 
   useEffect(() => {
-    fetchData(selectedTab);
-  }, [selectedTab, questionId, currentPage]);
+    if (questionId) fetchData(selectedTab);
+  }, [selectedTab, questionId]);
+
+  useEffect(() => {
+    if (!questionId) return;
+    setData({});
+    setSelectedTab("evidence");
+    fetchData("evidence", { force: true });
+  }, [questionId]);
 
   const invalidateTab = (tab: string) => {
     setData((prev) => {
@@ -170,11 +171,10 @@ const useEvidence = (selectedQuestion: any) => {
     deleteItemAndRefresh,
     fetchData,
     refreshTab,
-    setCurrentPage,
     rawCache: data,
     fetchAttachment,
     removeAttachment
   };
 };
 
-export default useEvidence;
+export default useTabs;

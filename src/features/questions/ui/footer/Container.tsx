@@ -1,13 +1,13 @@
 import { Suspense } from "react";
-import useEvidence from "@/features/questions/model/evidenceTabs/useEvidence";
+import useTabs from "@/features/questions/model/evidenceTabs/useTabs";
 import Box from "@mui/material/Box";
 import Tab from "@mui/material/Tab";
 import TabContext from '@mui/lab/TabContext';
 import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
 
-const EvidenceContainer = ({ selectedQuestion }: {selectedQuestion: any}) => {
-  const { handleChange, selectedTab, tabItems, ActiveComponent, ...rest } = useEvidence(selectedQuestion);
+const EvidenceContainer = () => {
+  const { handleChange, selectedTab, tabItems, ActiveComponent, ...rest } = useTabs();
 
   return (
       <TabContext value={selectedTab}>
