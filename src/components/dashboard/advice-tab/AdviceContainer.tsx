@@ -38,7 +38,7 @@ const AssessmentAdviceContainer = (props: any) => {
   const fetchData = () => {
     fetchPreAdviceInfo.query();
   };
-  useCalculate(fetchPreAdviceInfo.errorObject?.response?.data.code, fetchData);
+  useCalculate(fetchPreAdviceInfo.errorObject, fetchData);
 
   const [expanded, setExpanded] = useState<boolean>(false);
   const [hasExpandedOnce, setHasExpandedOnce] = useState<boolean>(false);

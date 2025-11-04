@@ -87,10 +87,7 @@ export const useQuestionnaire = () => {
     questionnaireQueryData.query();
   };
 
-  useCalculate(
-    questionnaireQueryData.errorObject?.response?.data.code,
-    fetchData,
-  );
+  useCalculate(questionnaireQueryData.errorObject, fetchData);
 
   return {
     questionnaireQueryData,

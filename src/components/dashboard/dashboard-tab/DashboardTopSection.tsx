@@ -267,10 +267,7 @@ export const IssuesItem = ({
     await fetchDashboard();
   };
 
-  useCalculate(
-    generateInsights.errorObject?.response?.data.code,
-    handleGenerateAll,
-  );
+  useCalculate(generateInsights.errorObject, handleGenerateAll);
 
   const regeneratedAll = async () => {
     if (name == "expiredAdvices") {
