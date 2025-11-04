@@ -147,6 +147,7 @@ export const useQuestions = () => {
         config,
       ),
     runOnMount: false,
+    toastError: false,
   });
 
   const fetchPathInfo = useQuery({
@@ -188,27 +189,21 @@ export const useQuestions = () => {
   }, [questionsResultQueryData.errorObject]);
 
   const fetchData = () => {
-    questionsResultQueryData
-      .query({ page: 0 })
-      .then((response) => {
-        if (response) {
-          const { items = [], permissions, total } = response;
-          setQuestions(items);
-          setTotalQuestions(total);
-          dispatch(
-            questionActions.setQuestionsInfo({
-              total_number_of_questions: total,
-              resultId: "",
-              questions: items,
-              permissions: permissions,
-            }),
-          );
-        }
-      })
-      .catch((e) => {
-        console.error("Failed to load initial questions", e);
-        showToast(e as ICustomError);
-      });
+    questionsResultQueryData.query({ page: 0 }).then((response) => {
+      if (response) {
+        const { items = [], permissions, total } = response;
+        setQuestions(items);
+        setTotalQuestions(total);
+        dispatch(
+          questionActions.setQuestionsInfo({
+            total_number_of_questions: total,
+            resultId: "",
+            questions: items,
+            permissions: permissions,
+          }),
+        );
+      }
+    });
   };
   // Fetch the initial set of questions (page 0) on mount
   useEffect(() => {

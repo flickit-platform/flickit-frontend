@@ -128,8 +128,8 @@ export function useKitInfo(
 
   const visibilityOptions = useMemo(
     () => [
-      { value: "true", label: t("common.public") },
-      { value: "false", label: t("common.private") },
+      { value: "false", label: t("common.public") },
+      { value: "true", label: t("common.private") },
     ],
     [],
   );
