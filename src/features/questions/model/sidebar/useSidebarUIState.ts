@@ -37,12 +37,7 @@ const uiStateReducer = (state: UIState, action: UIAction): UIState => {
 
 export function useSidebarUIState(): SidebarUIState {
   const { t } = useTranslation();
-  const { assessmentInfo } = useAssessmentContext();
 
-  const isAdvancedMode = useMemo(
-    () => assessmentInfo?.mode?.code === ASSESSMENT_MODE.ADVANCED,
-    [assessmentInfo?.mode?.code],
-  );
 
   const [uiState, dispatchUIState] = useReducer(uiStateReducer, {
     isOpen: true,
@@ -56,19 +51,6 @@ export function useSidebarUIState(): SidebarUIState {
     dispatchUIState({ type: "TOGGLE_ISSUE_CHIPS" });
   }, []);
 
-
-  const didSeeAssessmentRef = useRef(false);
-  useEffect(() => {
-    if (assessmentInfo) {
-      didSeeAssessmentRef.current = true;
-      if (!userToggledRef.current) {
-        dispatchUIState({
-          type: "SET_SHOW_ISSUE_CHIPS",
-          value: !!isAdvancedMode,
-        });
-      }
-    }
-  }, [assessmentInfo, isAdvancedMode]);
 
   const toggleSidebar = useCallback(
     () => dispatchUIState({ type: "TOGGLE_SIDEBAR" }),

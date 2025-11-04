@@ -7,9 +7,17 @@ import { useSidebarData } from "./useSidebarData";
 
 import type { IQuestionInfo } from "@/types";
 import { getFilterOptionsMeta } from "./issues.registry";
+import { useAssessmentContext } from "@/providers/assessment-provider";
+import { ASSESSMENT_MODE } from "@/utils/enum-type";
 
 export function useSidebar(questions: IQuestionInfo[]) {
   const { t } = useTranslation();
+  const { assessmentInfo } = useAssessmentContext();
+
+  const isAdvancedMode = useMemo(
+    () => assessmentInfo?.mode?.code === ASSESSMENT_MODE.ADVANCED,
+    [assessmentInfo?.mode?.code],
+  );
 
   const navigation = useSidebarNavigation(questions);
   const uiState = useSidebarUIState();
@@ -54,7 +62,7 @@ export function useSidebar(questions: IQuestionInfo[]) {
 
     sidebarWidth,
     isRTL,
-    isAdvancedMode: uiState.showIssueChips,
+    isAdvancedMode,
 
     toggleSidebar: uiState.toggleSidebar,
     toggleIssueChips: uiState.toggleIssueChips,
