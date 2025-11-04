@@ -141,7 +141,7 @@ const QuestionnairePanel = ({
                         justifyContent="space-between"
                         width="100%"
                       >
-                        <Box>
+                        <Box display="flex" gap={0.5}>
                           <Text variant="bodyMedium">{question.index}.</Text>{" "}
                           <Text variant="bodyMedium" textAlign="justify">
                             {" "}
