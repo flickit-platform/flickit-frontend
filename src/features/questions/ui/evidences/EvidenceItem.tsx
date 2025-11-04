@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Box, IconButton, Avatar } from "@mui/material";
 import { t } from "i18next";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
@@ -39,9 +39,9 @@ interface EvidenceItemProps {
 const ICON_SIZE = { width: 24, height: 24 };
 
 const EvidenceItem: React.FC<EvidenceItemProps> = (props) => {
-  const { id, refreshTab } = props;
+  const { id, refreshTab, type, description } = props;
   const [editId, setEditId] = useState<string | null>(null);
-  const [newDescription, setNewDescription] = useState("");
+  const [editTemp, setEditTemp] = useState({description: "", selectedType: ""});
   const { service } = useServiceContext();
 
   const isEditing = editId === id;
@@ -49,20 +49,26 @@ const EvidenceItem: React.FC<EvidenceItemProps> = (props) => {
   const toggleEditMode = (evidenceId: string) => {
     setEditId((prev) => (prev == evidenceId ? null : evidenceId));
   };
+  useEffect(() => {
+    setEditTemp({
+      description: description,
+      selectedType: type
+    })
+  }, [id, isEditing]);
 
   const addEvidence = useQuery({
     service: (args, config) => service.questions.evidences.save(args, config),
     runOnMount: false,
   });
 
-  const handleSubmit = async (evidenceId: string, evidenceType: string) => {
+  const handleSubmit = async (evidenceId: string) => {
     await addEvidence.query({
-      description: newDescription,
+      description: editTemp.description,
       id: evidenceId,
-      type: evidenceType === "Comment" ? null : evidenceType.toUpperCase(),
+      type: editTemp.selectedType === "Comment" ? null : editTemp.selectedType.toUpperCase(),
     });
 
-    const tabType = evidenceType === "Comment" ? "comment" : "evidence";
+    const tabType = editTemp.selectedType === "Comment" ? "comment" : "evidence";
     await refreshTab(tabType);
   };
 
@@ -78,9 +84,9 @@ const EvidenceItem: React.FC<EvidenceItemProps> = (props) => {
         <EvidenceDetail
             {...props}
             editId={editId}
-            setNewDescription={setNewDescription}
-            newDescription={newDescription}
             isEditing={isEditing}
+            editTemp={editTemp}
+            setEditTemp={setEditTemp}
         />
       </Box>
   );
@@ -184,7 +190,7 @@ const ActionButtons: React.FC<any> = ({
   const editButtons: ButtonConfig[] = [
     createButton(
         <CheckIcon fontSize="small" sx={ICON_SIZE} />,
-        () => submit(evidenceId, type)
+        () => submit(evidenceId)
     ),
     createButton(
         <CloseIcon fontSize="small" sx={ICON_SIZE} />,

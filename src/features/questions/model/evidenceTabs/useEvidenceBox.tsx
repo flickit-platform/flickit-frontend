@@ -16,7 +16,7 @@ const EVIDENCE_BOX_STYLES: EvidenceBoxMap = {
   },
   Negative: {
     color: "#821717",
-    label: "questions.positiveEvidence",
+    label: "questions.negativeEvidence",
     type: "evidence",
   },
   Comment: {

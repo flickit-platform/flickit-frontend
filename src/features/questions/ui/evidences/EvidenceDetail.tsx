@@ -36,13 +36,13 @@ interface EvidenceDetailProps {
     editId: string | null;
     description: string;
     id: string;
-    setNewDescription: (desc: string) => void;
-    newDescription: string;
     isEditing: boolean;
     fetchAttachment?: (id: string, type: string) => Promise<{ attachments: Attachment[] }>;
     attachmentsCount?: number;
     type: string;
     removeAttachment: any;
+    editTemp:{description: string, selectedType: string},
+    setEditTemp: React.Dispatch<React.SetStateAction<{description: string, selectedType: string}>>
 }
 
 const ACCORDION_BASE_STYLE = {
@@ -93,8 +93,8 @@ const EvidenceDetail: React.FC<EvidenceDetailProps> = ({
                                                            editId,
                                                            description,
                                                            id: evidenceId,
-                                                           setNewDescription,
-                                                           newDescription,
+                                                           editTemp,
+                                                           setEditTemp,
                                                            isEditing,
                                                            fetchAttachment,
                                                            attachmentsCount = 0,
@@ -109,8 +109,8 @@ const EvidenceDetail: React.FC<EvidenceDetailProps> = ({
                 description={description}
                 editId={editId}
                 evidenceId={evidenceId}
-                setNewDescription={setNewDescription}
-                newDescription={newDescription}
+                editTemp={editTemp}
+                setEditTemp={setEditTemp}
                 isEditing={isEditing}
             />
             {hasAttachments && fetchAttachment && (
@@ -275,27 +275,23 @@ const DescriptionEvidence: React.FC<any> = ({
                                                 description,
                                                 editId,
                                                 evidenceId,
-                                                setNewDescription,
-                                                newDescription,
-                                                isEditing,
+                                                editTemp,
+                                                setEditTemp,
                                             }) => {
     const formMethods = useForm({ shouldUnregister: true });
     const watchedDesc = formMethods.watch("evidence-description");
 
-    useEffect(() => {
-        setNewDescription(description);
-    }, [isEditing, description, setNewDescription]);
 
     useEffect(() => {
         const currentValue = formMethods.getValues()["evidence-description"] ?? description;
-        setNewDescription(currentValue);
-    }, [watchedDesc, description, formMethods, setNewDescription]);
+      setEditTemp((prev: any) => ({ ...prev, description: currentValue }));
+    }, [watchedDesc, description, formMethods, setEditTemp]);
 
     const isEditMode = editId === evidenceId;
 
-  // const handleEvidenceChange = (event) => {
-  //   setEvidenceType(event.target.value);
-  // };
+  const handleEvidenceChange = (event: any) => {
+    setEditTemp((prev: any) => ({ ...prev, selectedType: event.target.value }));
+  };
     
     return (
 
@@ -303,30 +299,30 @@ const DescriptionEvidence: React.FC<any> = ({
                 {isEditMode ? (
                   <Box sx={{width: "100%", padding: "16px 0px"}}>
                     <FormProviderWithForm formMethods={formMethods}>
-                      <Box sx={{display: "flex", alignItems: "center", gap: 2}}>
+                      {editTemp.selectedType != "Comment" &&  <Box sx={{display: "flex", alignItems: "center", gap: 2}}>
                         <Text variant="bodySmall" color="background.secondaryDark">{t("questions.typeOfEvidence")}</Text>
                         <RadioGroup
                           row
                           aria-labelledby="demo-row-radio-buttons-group-label"
                           name="row-radio-buttons-group"
-                          // value={evidenceType}
-                          // onChange={handleEvidenceChange}
+                          value={editTemp.selectedType}
+                          onChange={handleEvidenceChange}
                         >
                           <FormControlLabel
-                            value="positiveEvidence"
+                            value="Positive"
                             control={<Radio sx={{padding: "4px"}} size="small"/>}
                             label={<Text variant="bodySmall" color="background.secondaryDark">{t("questions.positiveEvidence")}</Text>}
                             sx={{marginRight: 0}}
                           />
                           <FormControlLabel
-                            value="negativeEvidence"
+                            value="Negative"
                             control={<Radio sx={{padding: "4px"}} size="small"/>}
                             label={<Text variant="bodySmall" color="background.secondaryDark">{t("questions.negativeEvidence")}</Text>}
                             sx={{marginRight: "16px"}}
                           />
                         </RadioGroup>
                       </Box>
-
+                      }
                       <Box
                         sx={{
                           width: "100%",
@@ -338,8 +334,8 @@ const DescriptionEvidence: React.FC<any> = ({
                           label={t("common.description")}
                           disable_label={false}
                           required
-                          defaultValue={newDescription ?? ""}
-                          setNewDescription={setNewDescription}
+                          defaultValue={editTemp.description ?? ""}
+                          setEditTemp={setEditTemp}
                           showEditorMenu
                         />
                       </Box>
