@@ -16,6 +16,9 @@ import { ICustomError } from "@utils/custom-error";
 import toastError from "@utils/toast-error";
 import { downloadFile } from "@utils/download-file";
 import Tooltip from "@mui/material/Tooltip";
+import Radio from '@mui/material/Radio';
+import RadioGroup from '@mui/material/RadioGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
 
 interface Attachment {
     link: string;
@@ -290,22 +293,58 @@ const DescriptionEvidence: React.FC<any> = ({
 
     const isEditMode = editId === evidenceId;
 
+  // const handleEvidenceChange = (event) => {
+  //   setEvidenceType(event.target.value);
+  // };
+    
     return (
-        <FormProviderWithForm formMethods={formMethods}>
+
             <Box width="100%" justifyContent="space-between" sx={{ ...styles.centerV, }}>
                 {isEditMode ? (
-                    <Box
-                        sx={{my: 2, width: "100%", mt:{xs: 26, sm: 17, md: 17, xl: 13 }}}>
+                  <Box sx={{width: "100%", padding: "16px 0px"}}>
+                    <FormProviderWithForm formMethods={formMethods}>
+                      <Box sx={{display: "flex", alignItems: "center", gap: 2}}>
+                        <Text variant="bodySmall" color="background.secondaryDark">{t("questions.typeOfEvidence")}</Text>
+                        <RadioGroup
+                          row
+                          aria-labelledby="demo-row-radio-buttons-group-label"
+                          name="row-radio-buttons-group"
+                          // value={evidenceType}
+                          // onChange={handleEvidenceChange}
+                        >
+                          <FormControlLabel
+                            value="positiveEvidence"
+                            control={<Radio sx={{padding: "4px"}} size="small"/>}
+                            label={<Text variant="bodySmall" color="background.secondaryDark">{t("questions.positiveEvidence")}</Text>}
+                            sx={{marginRight: 0}}
+                          />
+                          <FormControlLabel
+                            value="negativeEvidence"
+                            control={<Radio sx={{padding: "4px"}} size="small"/>}
+                            label={<Text variant="bodySmall" color="background.secondaryDark">{t("questions.negativeEvidence")}</Text>}
+                            sx={{marginRight: "16px"}}
+                          />
+                        </RadioGroup>
+                      </Box>
+
+                      <Box
+                        sx={{
+                          width: "100%",
+                          mt: { xs: 26, sm: 17, md: 17, xl: 13 },
+                        }}
+                      >
                         <RichEditorField
-                            name="evidence-description"
-                            label={t("common.description")}
-                            disable_label={false}
-                            required={true}
-                            defaultValue={newDescription ?? ""}
-                            setNewDescription={setNewDescription}
-                            showEditorMenu={true}
+                          name="evidence-description"
+                          label={t("common.description")}
+                          disable_label={false}
+                          required
+                          defaultValue={newDescription ?? ""}
+                          setNewDescription={setNewDescription}
+                          showEditorMenu
                         />
-                    </Box>
+                      </Box>
+                    </FormProviderWithForm>
+                  </Box>
                 ) : (
                     <Box sx={{  width: "100%", pt: 1 }}>
                         <Text
@@ -316,7 +355,7 @@ const DescriptionEvidence: React.FC<any> = ({
                     </Box>
                 )}
             </Box>
-        </FormProviderWithForm>
+
     );
 };
 

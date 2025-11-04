@@ -56,6 +56,7 @@
   "submitAnswerAutomaticallyAndGoToNextQuestion": "Automatically go to the next question after submitting the answer.",
   "theOptionSelectionIsDisabled": "The option selection is disabled as long as the question is marked as not applicable.",
   "toContinueToSubmitAnAnswer": "To continue to submit an answer, select your confidence level.",
+  "typeOfEvidence": "Type of evidence",
   "weHighlyRecommendAnsweringMoreQuestions": "We highly recommend answering more questions for more accurate and comprehensive insights.",
   "youAnsweredQuestionOf": "{{answeredQuestions}} out of {{totalQuestions}} questions in the <style>{{questionnaire}}</style> questionnaire have been answered."
 }

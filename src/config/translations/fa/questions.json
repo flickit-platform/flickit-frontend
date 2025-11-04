@@ -56,6 +56,7 @@
   "submitAnswerAutomaticallyAndGoToNextQuestion": "رفتن به پرسش بعدی پس از ثبت پاسخ",
   "theOptionSelectionIsDisabled": "انتخاب گزینه تا زمانی که پرسش به عنوان «نامرتبط» علامت‌گذاری شده، غیرفعال است.",
   "toContinueToSubmitAnAnswer": "برای ادامه و ارسال یک پاسخ، سطح اطمینان خود را انتخاب کنید",
+  "typeOfEvidence": "نوع شاهد",
   "weHighlyRecommendAnsweringMoreQuestions": "برای اطلاعات دقیق تر و جامع تر، ما به شدت توصیه می‌کنیم به پرسش‌های بیشتری پاسخ دهید.",
   "youAnsweredQuestionOf": "{{answeredQuestions}} از {{totalQuestions}} پرسش برای پرسش‌نامه <style>{{questionnaire}}</style> پاسخ داده شده است."
 }

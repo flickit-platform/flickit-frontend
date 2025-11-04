@@ -3,7 +3,7 @@ import {useQuery} from "@/hooks/useQuery";
 import {useServiceContext} from "@providers/service-provider";
 import {useParams} from "react-router-dom";
 
-const UseEvidenceApi = (questionId) => {
+const UseEvidenceApi = (questionId: string) => {
     const { service } = useServiceContext();
     const { assessmentId = "" } = useParams();
     const [currentPage] = useState<number>(1);
