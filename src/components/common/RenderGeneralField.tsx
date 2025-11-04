@@ -9,6 +9,7 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import FormControl from "@mui/material/FormControl";
 import { EditOutlined } from "@mui/icons-material";
 import { Text } from "./Text";
+import { styles } from "@styles";
 
 export function RenderGeneralField(props: any) {
   const {
@@ -26,12 +27,15 @@ export function RenderGeneralField(props: any) {
     handleCancelTextBox,
     multiline = false,
     useRichEditor = false,
-    fieldType = "text",
+    type = "text",
     options = [],
     disabled,
     editable,
+    addons,
   } = props;
 
+  const renderAddons = (show: boolean) =>
+    addons?.map((a: any) => <Box key={a}>{a.render(show)}</Box>);
   const renderField = useCallback(() => {
     const isEditing = editableFields.has(field);
     const isMetadataField = field === "goal" || field === "context";
@@ -71,10 +75,10 @@ export function RenderGeneralField(props: any) {
     [field, setUpdatedValues, handleSaveEdit],
   );
 
-  if (fieldType === "radio" || fieldType === "select") {
+  if (type === "radio" || type === "select") {
     const v = updatedValues[field];
     const currentValue = v == null || v === "" ? fieldValue : v;
-    if (fieldType === "radio") {
+    if (type === "radio") {
       return (
         <Box flexGrow={1}>
           <FormControl
@@ -91,27 +95,30 @@ export function RenderGeneralField(props: any) {
                 flexWrap: "wrap",
               }}
             >
-              {options.map((option: any) => {
-                const val = String(option.value);
-                return (
-                  <FormControlLabel
-                    key={val}
-                    value={val}
-                    control={<Radio size="small" />}
-                    label={
-                      <Text
-                        variant="bodyMedium"
-                        color="background.secondaryDark"
-                      >
-                        {option.label}
-                      </Text>
-                    }
-                    sx={{
-                      m: 0,
-                    }}
-                  />
-                );
-              })}
+              <Box sx={{ ...styles.centerV }}>
+                {options.map((option: any) => {
+                  const val = String(option.value);
+                  return (
+                    <FormControlLabel
+                      key={val}
+                      value={val}
+                      control={<Radio size="small" />}
+                      label={
+                        <Text
+                          variant="bodyMedium"
+                          color="background.secondaryDark"
+                        >
+                          {option.label}
+                        </Text>
+                      }
+                      sx={{
+                        m: 0,
+                      }}
+                    />
+                  );
+                })}
+                {renderAddons(currentValue)}
+              </Box>
             </RadioGroup>
           </FormControl>
         </Box>

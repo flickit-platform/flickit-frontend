@@ -30,6 +30,8 @@ import Avatar from "@mui/material/Avatar";
 import stringAvatar from "@/utils/string-avatar";
 import showToast from "@/utils/toast-error";
 import { Text } from "../common/Text";
+import { DeleteConfirmationDialog } from "../common/dialogs/DeleteConfirmationDialog";
+import useDialog from "@/hooks/useDialog";
 
 const tableCellStyles = {
   minWidth: {
@@ -74,7 +76,6 @@ export default function MemberList(props: any) {
   const { title, btnLabel, listOfUser, columns, query, hasBtn } = props;
   const { openEGModal, setOpenEGModal, deleteEGMember, onCloseEGModal } =
     useEGPermision({ query });
-
   return (
     <Box
       alignItems="flex-start"
@@ -236,33 +237,44 @@ const UserInfoCell = ({ row }: any) => (
   </Box>
 );
 
-const DeleteActionCell = ({ row, deleteEGMember }: any) => (
-  <Box
-    justifyContent="flex-start"
-    gap={{ xs: "0px", md: ".7rem" }}
-    sx={{ ...styles.centerV }}
-  >
-    <Tooltip
-      disableHoverListener={row.editable}
-      disableFocusListener={row.editable}
-      disableInteractive={row.editable}
-      disableTouchListener={row.editable}
-      title={<Trans i18nKey="spaces.spaceOwnerRoleIsNotEditable" />}
-    >
-      <Box width="30%" sx={{ ...styles.centerVH }}>
-        <IconButton
-          sx={deleteButtonStyles}
-          size="small"
-          disabled={!row.editable}
-          onClick={() => deleteEGMember(row.id)}
-        >
-          <DeleteOutlinedIcon />
-        </IconButton>
-      </Box>
-    </Tooltip>
-  </Box>
-);
+const DeleteActionCell = ({ row, deleteEGMember }: any) => {
+  const deleteDialogProps = useDialog();
 
+  return (
+    <Box
+      justifyContent="flex-start"
+      gap={{ xs: "0px", md: ".7rem" }}
+      sx={{ ...styles.centerV }}
+    >
+      <Tooltip
+        disableHoverListener={row.editable}
+        disableFocusListener={row.editable}
+        disableInteractive={row.editable}
+        disableTouchListener={row.editable}
+        title={<Trans i18nKey="spaces.spaceOwnerRoleIsNotEditable" />}
+      >
+        <Box width="30%" sx={{ ...styles.centerVH }}>
+          <IconButton
+            sx={deleteButtonStyles}
+            size="small"
+            disabled={!row.editable}
+            onClick={() => deleteDialogProps.openDialog({})}
+          >
+            <DeleteOutlinedIcon />
+          </IconButton>
+        </Box>
+      </Tooltip>
+
+      <DeleteConfirmationDialog
+        {...deleteDialogProps}
+        onConfirm={() => {
+          deleteEGMember(row.id);
+        }}
+        content={{ category: t("common.member"), title: row.email }}
+      />
+    </Box>
+  );
+};
 const useEGPermision = (props: any) => {
   const { query } = props;
 
@@ -343,7 +355,7 @@ const AddMemberModal = (props: any) => {
     >
       <FormProviderWithForm formMethods={formMethods}>
         <Grid container spacing={2} sx={styles.formGrid}>
-          <Grid size={{xs: 12}}>
+          <Grid size={{ xs: 12 }}>
             <AddMember inputRef={inputRef} queryData={query} />
           </Grid>
         </Grid>
