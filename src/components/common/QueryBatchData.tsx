@@ -1,6 +1,6 @@
 import Box from "@mui/material/Box";
 import { styles } from "@styles";
-import { ECustomErrorType, ErrorCodes } from "@/types/index";
+import { ECustomErrorType } from "@/types/index";
 import { ICustomError } from "@/utils/custom-error";
 import ErrorEmptyData from "./errors/ErrorEmptyData";
 import ErrorDataLoading from "./errors/ErrorDataLoading";
@@ -60,7 +60,16 @@ const QueryBatchData = <T = any,>(props: IQueryBatchDataProps<T>) => {
     errorObject = reduceErrorObject<T>(queryBatchData),
   } = props;
 
-  if (loading) {
+  const isRecalculatingError = errorObject.find((errorObj?: ICustomError) => {
+    return (
+      errorObj?.response?.data.code === ECustomErrorType.CALCULATE_NOT_VALID ||
+      errorObj?.response?.data.code ===
+        ECustomErrorType.CONFIDENCE_CALCULATION_NOT_VALID ||
+      errorObj?.response?.data.code === ECustomErrorType.DEPRECATED
+    );
+  });
+
+  if (loading || isRecalculatingError) {
     return renderLoading();
   }
   const accessDenied = errorObject.find((errorObj?: ICustomError) => {
@@ -94,18 +103,6 @@ export const defaultRenderError = (
     return errorComponent;
   }
   if (Array.isArray(err)) {
-    for (const item of err) {
-      if (item?.response?.data?.code == ErrorCodes.CalculateNotValid) {
-        return <ErrorRecalculating />;
-      }
-      if (
-        item?.response?.data?.code == ErrorCodes.ConfidenceCalculationNotValid
-      ) {
-        return <ErrorRecalculating />;
-      }
-    }
-  }
-  if (Array.isArray(err)) {
     if (err.length === 0) {
       return errorComponent;
     }
@@ -127,13 +124,6 @@ export const defaultRenderError = (
   ) {
     return <ErrorNotFoundOrAccessDenied />;
   }
-  if (err?.response?.data?.code == ErrorCodes.CalculateNotValid) {
-    return <ErrorRecalculating />;
-  }
-  if (err?.response?.data?.code == ErrorCodes.ConfidenceCalculationNotValid) {
-    return <ErrorRecalculating />;
-  }
-
   return errorComponent;
 };
 

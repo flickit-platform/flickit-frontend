@@ -12,6 +12,7 @@ import QuestionsTitle from "./QuestionsTitle";
 import QueryBatchData from "@common/QueryBatchData";
 import {
   EAssessmentStatus,
+  ECustomErrorType,
   IQuestion,
   IQuestionnaireModel,
   IQuestionsModel,
@@ -159,35 +160,6 @@ export const useQuestions = () => {
     runOnMount: false,
   });
 
-  const { calculate, calculateConfidence } = useCalculate();
-
-  useEffect(() => {
-    if (
-      questionsResultQueryData.errorObject?.response?.data?.code ==
-      "CALCULATE_NOT_VALID"
-    ) {
-      calculate().then(() => {
-        fetchData();
-      });
-    }
-    if (
-      questionsResultQueryData.errorObject?.response?.data?.code ==
-      "CONFIDENCE_CALCULATION_NOT_VALID"
-    ) {
-      calculateConfidence().then(() => {
-        fetchData();
-      });
-    }
-    if (
-      questionsResultQueryData?.errorObject?.response?.data?.code ===
-      "DEPRECATED"
-    ) {
-      service.assessments.info.migrateKitVersion({ assessmentId }).then(() => {
-        fetchData();
-      });
-    }
-  }, [questionsResultQueryData.errorObject]);
-
   const fetchData = () => {
     questionsResultQueryData.query({ page: 0 }).then((response) => {
       if (response) {
@@ -205,6 +177,11 @@ export const useQuestions = () => {
       }
     });
   };
+
+  useCalculate(
+    questionsResultQueryData.errorObject?.response?.data.code,
+    fetchData,
+  );
   // Fetch the initial set of questions (page 0) on mount
   useEffect(() => {
     fetchData();

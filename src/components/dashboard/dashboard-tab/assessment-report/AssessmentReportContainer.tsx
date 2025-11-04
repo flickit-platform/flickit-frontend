@@ -7,7 +7,7 @@ import { useQuery } from "@/hooks/useQuery";
 import { AssessmentSubjectList } from "./AssessmentSubjectList";
 import { useServiceContext } from "@/providers/service-provider";
 import LoadingSkeletonOfAssessmentReport from "@common/loadings/LoadingSkeletonOfAssessmentReport";
-import { RolesType } from "@/types/index";
+import { ECustomErrorType, RolesType } from "@/types/index";
 import { styles } from "@styles";
 import { AssessmentInsight } from "./AssessmentInsight";
 import PermissionControl from "../../../common/PermissionControl";
@@ -64,18 +64,19 @@ const AssessmentReportContainer = (props: any) => {
   useEffect(() => {
     if (
       fetchAssessmentInsight.errorObject?.response?.data?.code ==
-      "CALCULATE_NOT_VALID"
+      ECustomErrorType.CALCULATE_NOT_VALID
     ) {
       calculate();
     }
     if (
       fetchAssessmentInsight.errorObject?.response?.data?.code ==
-      "CONFIDENCE_CALCULATION_NOT_VALID"
+      ECustomErrorType.CONFIDENCE_CALCULATION_NOT_VALID
     ) {
       calculateConfidenceLevel();
     }
     if (
-      fetchAssessmentInsight?.errorObject?.response?.data?.code === "DEPRECATED"
+      fetchAssessmentInsight?.errorObject?.response?.data?.code ===
+      ECustomErrorType.DEPRECATED
     ) {
       service.assessments.info.migrateKitVersion({ assessmentId }).then(() => {
         fetchAssessmentInsight.query();
@@ -112,7 +113,7 @@ const AssessmentReportContainer = (props: any) => {
                   return (
                     <Grid
                       key={key}
-                      size={{xs: 12, md: 6}}
+                      size={{ xs: 12, md: 6 }}
                       display={value !== 0 ? "block" : "none"}
                     >
                       <IssuesItem

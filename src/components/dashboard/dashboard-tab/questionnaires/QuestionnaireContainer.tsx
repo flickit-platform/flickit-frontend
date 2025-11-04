@@ -7,6 +7,7 @@ import { IQuestionnairesModel } from "@/types";
 import { useParams, useSearchParams } from "react-router-dom";
 import PermissionControl from "@common/PermissionControl";
 import { useMemo } from "react";
+import useCalculate from "@/hooks/useCalculate";
 
 const QuestionnaireContainer = () => {
   const { questionnaireQueryData, assessmentTotalProgress } =
@@ -81,6 +82,16 @@ export const useQuestionnaire = () => {
       ),
     runOnMount: true,
   });
+
+  const fetchData = () => {
+    questionnaireQueryData.query();
+  };
+
+  useCalculate(
+    questionnaireQueryData.errorObject?.response?.data.code,
+    fetchData,
+  );
+
   return {
     questionnaireQueryData,
     assessmentTotalProgress,
