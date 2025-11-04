@@ -10,8 +10,6 @@ import setDocumentTitle from "@utils/setDocumentTitle";
 import { useConfigContext } from "@/providers/config-provider";
 import MemberList from "@/components/assessment-kit/AssessmentKitMemberList";
 import Title from "@common/Title";
-import languageDetector from "@/utils/language-detector";
-import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
 
 const AssessmentKitPermissionsContainer = () => {
   const { service } = useServiceContext();
