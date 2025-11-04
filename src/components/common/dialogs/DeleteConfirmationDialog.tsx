@@ -70,12 +70,6 @@ export const DeleteConfirmationDialog = ({
       closeDialog={onClose}
       title={<>{getDeleteTitle(content)}</>}
       maxWidth="sm"
-      sx={{
-        "& .MuiDialog-paper": {
-          minWidth: "500px",
-          width: "auto",
-        },
-      }}
     >
       <Text sx={{ color: "#0A2342" }}>{getDeleteContent(content)}</Text>
       <CEDialogActions

@@ -1,14 +1,16 @@
 import { useCallback, useMemo } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useQuery } from "@/hooks/useQuery";
 import { useServiceContext } from "@/providers/service-provider";
 import { useConfigContext } from "@/providers/config-provider";
 import useGeneralInfoField from "@/hooks/useGeneralInfoField";
 import { useTranslationUpdater } from "@/hooks/useTranslationUpdater";
 import { ILanguage } from "@/types";
-import { useTranslation } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 import i18next from "i18next";
 import { KitInfoType } from "./types";
+import { Box, IconButton, Tooltip } from "@mui/material";
+import { SettingsRounded } from "@mui/icons-material";
 
 export type FieldName =
   | "title"
@@ -26,7 +28,7 @@ export function useKitInfo(
 ) {
   const { t, i18n } = useTranslation();
   const { service } = useServiceContext();
-  const { assessmentKitId } = useParams();
+  const { assessmentKitId, expertGroupId } = useParams();
 
   const {
     handleSaveEdit,
@@ -179,6 +181,34 @@ export function useKitInfo(
         md: 6,
         disabled: false,
         width: "35px",
+        addons: [
+          {
+            position: "end",
+            render: (show: boolean) => {
+              console.log(show);
+              return (
+                show && (
+                  <Box ml={1}>
+                    <Tooltip
+                      title={
+                        <Trans i18nKey="assessmentKit.managePermissions" />
+                      }
+                    >
+                      <IconButton
+                        sx={{ width: 20, height: 20 }}
+                        color="primary"
+                        component={Link}
+                        to={`/user/expert-groups/${expertGroupId}/assessment-kits/${assessmentKitId}/permissions`}
+                      >
+                        <SettingsRounded fontSize="small" />
+                      </IconButton>
+                    </Tooltip>
+                  </Box>
+                )
+              );
+            },
+          },
+        ],
       },
       {
         name: "published",
