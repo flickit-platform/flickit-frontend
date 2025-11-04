@@ -57,7 +57,8 @@ const KitInfo = ({ fetchAssessmentKitInfoQuery, info }: Props) => {
             type,
             options,
             disabled,
-            width
+            width,
+            addons
           } = field;
 
           return (
@@ -90,7 +91,7 @@ const KitInfo = ({ fetchAssessmentKitInfoQuery, info }: Props) => {
                   <Box sx={{ display: "flex", width: "100%" }}>
                     <RenderGeneralField
                       field={name as FieldName}
-                      fieldType={type}
+                      type={type}
                       data={dataForField}
                       editableFields={editableFields}
                       langCode={langCode}
@@ -108,6 +109,7 @@ const KitInfo = ({ fetchAssessmentKitInfoQuery, info }: Props) => {
                       label={<Trans i18nKey={label} />}
                       disabled={disabled}
                       editable={info.editable}
+                      addons={addons}
                     />
                   </Box>
                 </Box>

@@ -20,7 +20,10 @@ const AssessmentKitPermissionsContainer = () => {
   });
   const assessmentKitMinInfoQueryData = useQuery({
     service: (args, config) =>
-      service.assessmentKit.info.getMinInfo(args ?? { assessmentKitId }, config),
+      service.assessmentKit.info.getMinInfo(
+        args ?? { assessmentKitId },
+        config,
+      ),
   });
 
   const { config } = useConfigContext();

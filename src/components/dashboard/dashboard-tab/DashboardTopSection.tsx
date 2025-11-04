@@ -1,4 +1,4 @@
-import { Fragment, useEffect } from "react";
+import { Fragment } from "react";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
@@ -15,7 +15,6 @@ import { ICustomError } from "@/utils/custom-error";
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 import LoadingButton from "@mui/lab/LoadingButton";
 import useCalculate from "@/hooks/useCalculate";
-import { ErrorCodes } from "@/types/index";
 import showToast from "@/utils/toast-error";
 import { useTheme } from "@mui/material";
 import { Text } from "@/components/common/Text";
@@ -72,7 +71,7 @@ const TodoBox = (props: any) => {
                     .filter(([key]) => key !== "name")
                     .map(([key, value]) => {
                       return (
-                        <Grid size={{xs: 12, md: 6}} key={uniqueId()}>
+                        <Grid size={{ xs: 12, md: 6 }} key={uniqueId()}>
                           <IssuesItem
                             originalName={item.name}
                             key={key}
@@ -148,7 +147,7 @@ const TodoBox = (props: any) => {
                     .filter(([key]) => key !== "name")
                     .map(([key, value]) => {
                       return (
-                        <Grid key={uniqueId()} size={{xs: 12, md: 6}}>
+                        <Grid key={uniqueId()} size={{ xs: 12, md: 6 }}>
                           <IssuesItem
                             name={key}
                             value={value}
@@ -192,7 +191,6 @@ export const IssuesItem = ({
   const navigate = useNavigate();
   const { service } = useServiceContext();
   const { assessmentId = "" } = useParams();
-  const { calculate, calculateConfidence } = useCalculate();
 
   const approveInsights = useQuery({
     service: (args, config) =>
@@ -269,6 +267,8 @@ export const IssuesItem = ({
     await fetchDashboard();
   };
 
+  useCalculate(generateInsights.errorObject, handleGenerateAll);
+
   const regeneratedAll = async () => {
     if (name == "expiredAdvices") {
       return navigate(`../advice`);
@@ -314,16 +314,6 @@ export const IssuesItem = ({
     }
   };
 
-  useEffect(() => {
-    const { errorObject } = generateInsights;
-    if (!errorObject) return;
-    const errorCode = errorObject?.response?.data?.code;
-
-    if (errorCode === ErrorCodes.CalculateNotValid)
-      calculate(handleGenerateAll);
-    if (errorCode === ErrorCodes.ConfidenceCalculationNotValid)
-      calculateConfidence(handleGenerateAll);
-  }, [generateInsights.errorObject]);
   const theme = useTheme();
 
   const issueTextMap = {

@@ -25,7 +25,7 @@ export function useSidebarData({
   const completionPercent = useMemo(() => {
     if (!questions.length) return 0;
     const answeredCount = questions.reduce(
-      (acc, q) => acc + Number(q.answer?.selectedOption != null),
+      (acc, question) => acc + Number(question.answer?.selectedOption != null),
       0,
     );
     return Math.ceil((answeredCount / questions.length) * 100);
@@ -35,8 +35,8 @@ export function useSidebarData({
 
   const filteredQuestions = useMemo(() => {
     if (!hasActiveFilters) return questions;
-    return questions.filter((q) =>
-      isQuestionMatchingAnyActiveFilter(q, activeFilters),
+    return questions.filter((question) =>
+      isQuestionMatchingAnyActiveFilter(question, activeFilters),
     );
   }, [questions, activeFilters, hasActiveFilters]);
 
@@ -44,8 +44,8 @@ export function useSidebarData({
 
   const listItems = useMemo(() => {
     const indexById = new Map<TId, number>();
-    for (const [idx, q] of questions.entries()) {
-      const id = q?.id;
+    for (const [idx, question] of questions.entries()) {
+      const id = question?.id;
       if (id) indexById.set(id, idx);
     }
 

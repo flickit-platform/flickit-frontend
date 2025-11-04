@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Trans } from "react-i18next";
 import Box from "@mui/material/Box";
 import Skeleton from "@mui/material/Skeleton";
@@ -11,7 +11,6 @@ import QueryBatchData from "@common/QueryBatchData";
 import AdviceItems from "./advice-items/AdviceItems";
 import { styles } from "@styles";
 import Divider from "@mui/material/Divider";
-import { ErrorCodes } from "@/types/index";
 import useCalculate from "@/hooks/useCalculate";
 import { useAssessmentContext } from "@/providers/assessment-provider";
 import useInsightPopup from "@/hooks/useAssessmentInsightPopup";
@@ -36,45 +35,10 @@ const AssessmentAdviceContainer = (props: any) => {
     toastError: false,
   });
 
-  const { calculate, calculateConfidence } = useCalculate();
-  const [loading, setLoading] = useState<boolean>(false);
-
-  const handleErrorResponse = async (errorCode: any) => {
-    setLoading(true);
-    let shouldRefetch = false;
-
-    switch (errorCode) {
-      case ErrorCodes.CalculateNotValid:
-        shouldRefetch = await calculate();
-        break;
-      case ErrorCodes.ConfidenceCalculationNotValid:
-        shouldRefetch = await calculateConfidence();
-        break;
-      case "DEPRECATED":
-        await service.assessments.info
-          .migrateKitVersion({ assessmentId })
-          .then(() => {
-            shouldRefetch = true;
-          })
-          .catch(() => {
-            shouldRefetch = false;
-          });
-        break;
-      default:
-        break;
-    }
-    if (shouldRefetch) {
-      fetchPreAdviceInfo.query();
-    }
-    setLoading(false);
+  const fetchData = () => {
+    fetchPreAdviceInfo.query();
   };
-
-  useEffect(() => {
-    const errorCode = fetchPreAdviceInfo.errorObject?.response?.data?.code;
-    if (errorCode) {
-      handleErrorResponse(errorCode);
-    }
-  }, [fetchPreAdviceInfo.errorObject]);
+  useCalculate(fetchPreAdviceInfo.errorObject, fetchData);
 
   const [expanded, setExpanded] = useState<boolean>(false);
   const [hasExpandedOnce, setHasExpandedOnce] = useState<boolean>(false);
@@ -139,11 +103,11 @@ const AssessmentAdviceContainer = (props: any) => {
     <QueryBatchData
       queryBatchData={[fetchAdviceNarration]}
       renderLoading={() => <Skeleton height={160} />}
-      render={([narrationComponent]) => {
+      render={() => {
         return (
           <Box>
             <AdviceDialog
-              loading={loading}
+              loading={fetchPreAdviceInfo.loading}
               open={expanded}
               handleClose={handleClose}
               fetchPreAdviceInfo={fetchPreAdviceInfo}

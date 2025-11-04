@@ -36,7 +36,7 @@ export default function AssessmentReportPage() {
   const {
     fetchGraphicalReport,
     fetchPathInfo,
-    reload,
+    fetchData,
     isAuthenticatedUser,
     lng,
     rtl,
@@ -112,7 +112,7 @@ export default function AssessmentReportPage() {
 
           return (
             <Box pb={4}>
-              {hasInvalidReport && <InvalidReportBanner onRetry={reload} />}
+              {hasInvalidReport && <InvalidReportBanner onRetry={fetchData} />}
 
               <Box
                 m="auto"

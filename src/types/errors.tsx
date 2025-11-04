@@ -8,18 +8,15 @@ export enum ECustomErrorType {
   ACCESS_DENIED = "ACCESS_DENIED",
   ERR_BAD_REQUEST = "ERR_BAD_REQUEST",
   REPORT_UNPUBLISHED = "REPORT_UNPUBLISHED",
+  CALCULATE_NOT_VALID = "CALCULATE_NOT_VALID",
+  CONFIDENCE_CALCULATION_NOT_VALID = "CONFIDENCE_CALCULATION_NOT_VALID",
+  DEPRECATED = "DEPRECATED",
 }
 
 export interface ICustomError {
   code: string;
   message: string;
   status: number;
-}
-
-export enum ErrorCodes {
-  CalculateNotValid = "CALCULATE_NOT_VALID",
-  ConfidenceCalculationNotValid = "CONFIDENCE_CALCULATION_NOT_VALID",
-  NotFound = "NOT_FOUND",
 }
 
 export interface FieldErrorData {
