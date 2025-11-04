@@ -13,6 +13,13 @@ const UseEvidenceApi = (questionId) => {
         runOnMount: false,
     });
 
+    const RemoveEvidenceAttachments = useQuery({
+        service: (args, config) =>
+            service.questions.evidences.removeAttachment(args, {}),
+        runOnMount: false,
+    });
+
+
     const answerHistoryQueryData = useQuery({
         service: (args, config) =>
             service.assessments.answer.getHistory(
@@ -72,7 +79,8 @@ const UseEvidenceApi = (questionId) => {
         answerHistoryQueryData,
         evidencesQueryData,
         commentesQueryData,
-        fetchEvidenceAttachments
+        fetchEvidenceAttachments,
+        RemoveEvidenceAttachments
     }
 };
 

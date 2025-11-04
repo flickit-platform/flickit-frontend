@@ -1,5 +1,5 @@
 import React, { Fragment, useEffect, useState } from "react";
-import { Box, Chip, Divider, Accordion, AccordionSummary, AccordionDetails } from "@mui/material";
+import {Box, Chip, Divider, Accordion, AccordionSummary, AccordionDetails, Button} from "@mui/material";
 import { useForm } from "react-hook-form";
 import { t } from "i18next";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
@@ -9,6 +9,9 @@ import RichEditorField from "@common/fields/RichEditorField";
 import { Text } from "@/components/common/Text";
 import { styles } from "@styles";
 import uniqueId from "@/utils/unique-id";
+import IconButton from "@mui/material/IconButton";
+import {FileDownloadOutlined} from "@mui/icons-material";
+import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
 
 interface Attachment {
     link: string;
@@ -24,6 +27,7 @@ interface EvidenceDetailProps {
     fetchAttachment?: (id: string, type: string) => Promise<{ attachments: Attachment[] }>;
     attachmentsCount?: number;
     type: string;
+    removeAttachment: any;
 }
 
 const ACCORDION_BASE_STYLE = {
@@ -80,6 +84,7 @@ const EvidenceDetail: React.FC<EvidenceDetailProps> = ({
                                                            fetchAttachment,
                                                            attachmentsCount = 0,
                                                            type,
+                                                           removeAttachment,
                                                        }) => {
     const hasAttachments = attachmentsCount > 0;
 
@@ -99,6 +104,7 @@ const EvidenceDetail: React.FC<EvidenceDetailProps> = ({
                     fetchAttachment={fetchAttachment}
                     evidenceId={evidenceId}
                     attachmentsCount={attachmentsCount}
+                    removeAttachment={removeAttachment}
                 />
             )}
         </Box>
@@ -110,6 +116,7 @@ const AttachmentEvidence: React.FC<any> = ({
                                                evidenceId,
                                                attachmentsCount,
                                                type,
+                                               removeAttachment
                                            }) => {
     const [expanded, setExpanded] = useState<boolean>(false);
     const [attachments, setAttachments] = useState<Attachment[]>([]);
@@ -169,21 +176,50 @@ const AttachmentEvidence: React.FC<any> = ({
 
                 <AccordionDetails sx={{ background: "#fff", p: 1, borderRadius: 1 }}>
                     {attachments.map((attachment, index) => {
+                        const { id: attachmentId,  } = attachment
                         const { name, extension } = extractFileName(attachment.link);
                         const isLast = index === attachments.length - 1;
 
+                        const handleDownloadAttachment = () =>{
+
+                        }
+                        const handleDeleteAttachment = async (attachmentId) =>{
+                            try {
+                                const evidenceType = type === "Comment" ? "comment" : "evidence"
+                                await removeAttachment(evidenceId,attachmentId,evidenceType )
+                            }catch (e){
+
+                            }
+                        }
+
                         return (
                             <Fragment key={uniqueId()}>
-                                <Box sx={{ p: "6px 8px" }}>
+                                <Box sx={{display: "flex", justifyContent: 'space-between', p: "6px 8px" }}>
                                     <Box sx={{ ...styles.centerV, gap: 1 }}>
                                         <Chip sx={CHIP_STYLE} label={extension} />
                                         <Text>{formatFileName(name, extension)}</Text>
                                     </Box>
+                                    <Box>
+                                        <IconButton
+                                            onClick={handleDownloadAttachment}
+                                            fullWidth
+                                        >
+                                            <FileDownloadOutlined color="info.main" fontSize={"small"} />
+                                        </IconButton>
+                                        <IconButton
+                                            onClick={()=>handleDeleteAttachment(attachmentId)}
+                                            fullWidth
+                                        >
+                                            <DeleteOutlineOutlinedIcon color="info.main" fontSize={"small"} />
+                                        </IconButton>
+                                    </Box>
                                 </Box>
                                 {!isLast && (
                                     <Divider
-                                        sx={{ height: "0.5px" }}
-                                        color="#C7CCD1"
+                                        sx={{
+                                            borderBottomWidth: "0.5px",
+                                            borderColor: "#C7CCD1",
+                                        }}
                                         orientation="horizontal"
                                         flexItem
                                     />

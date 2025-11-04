@@ -64,6 +64,7 @@ const useEvidence = (selectedQuestion: any) => {
     answerHistoryQueryData,
     deleteEvidence,
     fetchEvidenceAttachments,
+    RemoveEvidenceAttachments
   } = UseEvidenceApi(questionId);
 
   const QUERY_MAP = useMemo(
@@ -129,16 +130,27 @@ const useEvidence = (selectedQuestion: any) => {
       await deleteEvidence.query({ id: evidenceId });
       invalidateTab(tabToRefresh);
       await fetchData(tabToRefresh, { force: true });
-      return true
     } catch (error) {
       const customError = error as ICustomError;
       showToast(customError);
     }
+    return true
   };
 
   const fetchAttachment = async (evidenceId: number, tabToRefresh: TabValue = "evidence") => {
     try {
       const result = await fetchEvidenceAttachments.query({ evidence_id: evidenceId });
+      return result;
+    } catch (error) {
+      const customError = error as ICustomError;
+      showToast(customError);
+    }
+  };
+  const removeAttachment = async (evidenceId: number,attachmentId: number, tabToRefresh: TabValue = "evidence") => {
+    try {
+      const result = await RemoveEvidenceAttachments.query({ evidenceId,attachmentId });
+      invalidateTab(tabToRefresh);
+      await fetchData(tabToRefresh, { force: true });
       return result;
     } catch (error) {
       const customError = error as ICustomError;
@@ -163,6 +175,7 @@ const useEvidence = (selectedQuestion: any) => {
     setCurrentPage,
     rawCache: data,
     fetchAttachment,
+    removeAttachment
   };
 };
 
