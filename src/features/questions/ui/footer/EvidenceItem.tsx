@@ -11,7 +11,7 @@ import { Text } from "@/components/common/Text";
 import { useQuery } from "@/hooks/useQuery";
 import { useServiceContext } from "@providers/service-provider";
 import useEvidenceBox from "@/features/questions/model/evidenceTabs/useEvidenceBox";
-import EvidenceDetail from "@/features/questions/ui/evidences/EvidenceDetail";
+import EvidenceDetail from "@/features/questions/ui/footer/EvidenceDetail";
 import uniqueId from "@utils/unique-id";
 
 interface ButtonConfig {

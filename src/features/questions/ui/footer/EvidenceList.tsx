@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Box } from "@mui/material";
 import { t } from "i18next";
-import EvidenceItem from "@/features/questions/ui/evidences/EvidenceItem";
+import EvidenceItem from "@/features/questions/ui/footer/EvidenceItem";
 import { DeleteConfirmationDialog } from "@common/dialogs/DeleteConfirmationDialog";
 
 interface ConfirmDeleteDialogState {

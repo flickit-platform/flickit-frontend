@@ -3,7 +3,7 @@ import { useQuestionContext } from "../context";
 import {useAssessmentContext} from "@providers/assessment-provider";
 import {useMemo} from "react";
 import {ASSESSMENT_MODE} from "@utils/enum-type";
-import EvidenceContainer from "@/features/questions/ui/evidences/Container";
+import EvidenceContainer from "@/features/questions/ui/footer/Container";
 
 const QuestionScreen = () => {
   const { assessmentInfo } = useAssessmentContext();

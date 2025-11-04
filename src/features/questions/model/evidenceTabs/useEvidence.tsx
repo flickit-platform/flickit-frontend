@@ -4,8 +4,8 @@ import showToast from "@utils/toast-error";
 import { ICustomError } from "@utils/custom-error";
 import UseEvidenceApi from "@/features/questions/model/evidenceTabs/useEvidenceAPI";
 
-const EvidenceList = lazy(() => import("../../ui/evidences/EvidenceList"));
-const AnswerHistory = lazy(() => import("../../ui/evidences/AnswerHistory"));
+const EvidenceList = lazy(() => import("@/features/questions/ui/footer/EvidenceList"));
+const AnswerHistory = lazy(() => import("@/features/questions/ui/footer/AnswerHistory"));
 
 type TabValue = "evidence" | "comment" | "answerHistory";
 
