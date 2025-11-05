@@ -5,7 +5,6 @@ import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
 import CheckRoundedIcon from "@mui/icons-material/CheckRounded";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
-import TextField from "@mui/material/TextField";
 import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
 import { styles } from "@styles";
 import { KitDesignListItems } from "@/types/index";

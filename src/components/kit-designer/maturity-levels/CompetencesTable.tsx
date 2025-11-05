@@ -5,7 +5,6 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import TableCell from "@mui/material/TableCell";
 import TableBody from "@mui/material/TableBody";
-import TextField from "@mui/material/TextField";
 import { ICustomError } from "@/utils/custom-error";
 import { useServiceContext } from "@/providers/service-provider";
 import showToast from "@/utils/toast-error";
@@ -44,12 +43,6 @@ const CompetencesTable = ({
     });
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setEditState((prev) => ({
-      ...prev,
-      value: e.target.value,
-    }));
-  };
 
   const handleSave = async (
     rowId: number,

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Box, IconButton, TextField } from "@mui/material";
+import { Box, IconButton } from "@mui/material";
 import CheckIcon from "@mui/icons-material/Check";
 import CloseIcon from "@mui/icons-material/Close";
 import { Trans } from "react-i18next";
@@ -8,7 +8,6 @@ import { styles } from "@/config/styles";
 import { useKitDesignerContext } from "@/providers/kit-provider";
 import { MultiLangs } from "@/types";
 import { useTranslationUpdater } from "@/hooks/useTranslationUpdater";
-import { Text } from "@/components/common/Text";
 import { NumberField } from "@/components/common/fields/NumberField";
 
 interface SubjectFormProps {

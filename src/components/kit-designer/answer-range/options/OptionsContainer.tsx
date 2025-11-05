@@ -6,7 +6,6 @@ import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import Divider from "@mui/material/Divider";
 import { useParams } from "react-router-dom";
 import { IOption, KitDesignListItems, MultiLangs } from "@/types/index";
-import TextField from "@mui/material/TextField";
 import CheckRoundedIcon from "@mui/icons-material/CheckRounded";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import { useQuery } from "@/hooks/useQuery";
@@ -18,7 +17,7 @@ import { useTranslationUpdater } from "@/hooks/useTranslationUpdater";
 import { useKitDesignerContext } from "@/providers/kit-provider";
 import TitleWithTranslation from "@/components/common/fields/TranslationText";
 import { Text } from "@/components/common/Text";
-import { Trans, useTranslation } from "react-i18next";
+import { useTranslation } from "react-i18next";
 import { NumberField } from "@/components/common/fields/NumberField";
 
 interface ITempValues {

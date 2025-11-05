@@ -28,35 +28,42 @@ export const NumberField: React.FC<NumberFieldProps> = ({
   ...textFieldProps
 }) => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    let string = e.target.value;
-    if (acceptComma) string = string.replace(/,/g, ".");
-    if (string === "") {
-      if (allowEmpty) onChange(string);
+    let value = e.target.value;
+
+    if (acceptComma && value.includes(",")) value = value.replace(/,/g, ".");
+
+    if (value === "") {
+      if (allowEmpty) onChange(value);
       return;
     }
-    if (min < 0 && string === "-") {
-      onChange(string);
+    if (min < 0 && value === "-") {
+      onChange(value);
       return;
     }
+
     if (type === "float") {
-      if (
-        string === "." ||
-        string === "0." ||
-        (min < 0 && (string === "-." || string === "-0."))
-      ) {
-        onChange(string);
+      const isInterim =
+      value === "." || value === "0." || (min < 0 && (value === "-." || value === "-0."));
+      if (isInterim) {
+        onChange(value);
         return;
       }
-      if (!/^-?\d*\.?\d*$/.test(string)) return;
+
+      const reFloat = /^-?(?:\d+(?:\.\d*)?|\.\d+)$/;
+      if (!reFloat.test(value)) return;
     } else {
-      if (!/^-?\d*$/.test(string)) return;
+      const reInt = /^-?\d+$/; 
+      if (!reInt.test(value)) return;
     }
-    let num = Number(string);
-    if (!Number.isFinite(num)) return;
-    if (type === "int") num = Math.trunc(num);
-    if (num < min) num = min;
-    if (num > max) num = max;
-    onChange(num);
+
+    let n = Number(value);
+    if (!Number.isFinite(n)) return;
+
+    if (type === "int") n = Math.trunc(n);
+    if (n < min) n = min;
+    if (n > max) n = max;
+
+    onChange(n);
   };
 
   const blockInvalidKeys = (e: React.KeyboardEvent<HTMLInputElement>) => {

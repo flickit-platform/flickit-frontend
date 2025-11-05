@@ -117,11 +117,4 @@ const ImpactForm: React.FC<ImpactFormProps> = ({
   );
 };
 
-const textFieldStyle = {
-  fontSize: 14,
-  ml: 2,
-  "& .MuiInputBase-root": { fontSize: 14, overflow: "auto" },
-  "& .MuiFormLabel-root": { fontSize: 14 },
-};
-
 export default ImpactForm;
