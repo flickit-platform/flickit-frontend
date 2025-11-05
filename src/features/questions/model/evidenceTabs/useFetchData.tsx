@@ -1,11 +1,13 @@
-import {useState} from 'react';
 import {useQuery} from "@/hooks/useQuery";
 import {useServiceContext} from "@providers/service-provider";
 import {useParams} from "react-router-dom";
+import { useQuestionContext } from "@/features/questions/context";
 
-const UseFetchData = (questionId: string) => {
+const UseFetchData = () => {
     const { service } = useServiceContext();
     const { assessmentId = "" } = useParams();
+  const {selectedQuestion} = useQuestionContext()
+  const questionId = selectedQuestion?.id
 
     const deleteEvidence = useQuery({
         service: (args, config) => service.questions.evidences.remove(args, config),

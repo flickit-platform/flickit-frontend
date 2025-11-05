@@ -2,7 +2,7 @@ import { lazy, SyntheticEvent, useEffect, useMemo, useState } from "react";
 import showToast from "@utils/toast-error";
 import { ICustomError } from "@utils/custom-error";
 import useFetchData from "@/features/questions/model/evidenceTabs/useFetchData";
-import {useQuestionContext} from "@/features/questions/context";
+import { setTab, useQuestionContext, useQuestionDispatch } from "@/features/questions/context";
 import { useTranslation } from "react-i18next";
 const EvidenceContainer = lazy(() => import("@/features/questions/ui/footer/EvidenceContainer"));
 const AnswerHistoryContainer = lazy(() => import("@/features/questions/ui/footer/AnswerHistoryContainer"));
@@ -31,11 +31,11 @@ const TAB_ITEMS: TabItem[] = [
 ];
 
 const useTabs = () => {
-  const {selectedQuestion} = useQuestionContext()
+  const {selectedQuestion, tabData} = useQuestionContext()
   const questionId = selectedQuestion?.id
 
-  const [data, setData] = useState<Record<string, any[]>>({});
   const [selectedTab, setSelectedTab] = useState<TabValue>("evidence");
+  const dispatch = useQuestionDispatch()
 
   const { t } = useTranslation()
   const tabItems = useMemo(
@@ -60,10 +60,7 @@ const useTabs = () => {
     evidencesQueryData,
     commentesQueryData,
     answerHistoryQueryData,
-    deleteEvidence,
-    fetchEvidenceAttachments,
-    RemoveEvidenceAttachments
-  } = useFetchData(questionId);
+  } = useFetchData();
 
   const queryMap = useMemo(
       () => ({
@@ -74,32 +71,19 @@ const useTabs = () => {
       [evidencesQueryData, commentesQueryData, answerHistoryQueryData]
   );
 
+  const fetchData = async () => {
 
-
-  const transformCommentData = (items: any[]) => {
-    return items.map((item) => ({ ...item, type: "Comment" }));
-  };
-
-  const fetchData = async (tab: TabValue = selectedTab, options: FetchOptions = {}) => {
-    const { force = false } = options;
-
-    if (!force && Array.isArray(data[tab])) {
-      return;
-    }
-
-    const currentQuery = queryMap[tab];
+    const currentQuery = queryMap[selectedTab];
     if (!currentQuery) {
       return;
     }
 
     try {
+
       const response: EvidenceData = await currentQuery.query();
       const items = response.items ?? [];
+      dispatch(setTab({ activeTab: selectedTab, data: {...tabData.data, [selectedTab]: items } }))
 
-      setData((prev) => ({
-        ...prev,
-        [tab]: tab === "comment" ? transformCommentData(items) : items,
-      }));
     } catch (error) {
       const customError = error as ICustomError;
       showToast(customError);
@@ -107,73 +91,22 @@ const useTabs = () => {
   };
 
   useEffect(() => {
-    if (questionId) fetchData(selectedTab);
-  }, [selectedTab, questionId]);
-
-  useEffect(() => {
-    if (!questionId) return;
-    setData({});
-    setSelectedTab("evidence");
-    fetchData("evidence", { force: true });
+    if (questionId){
+      dispatch(setTab({activeTab: "evidence", data:{}}))
+      fetchData()
+      setSelectedTab("evidence")
+    }
   }, [questionId]);
 
-  const invalidateTab = (tab: string) => {
-    setData((prev) => {
-      const { [tab]: _, ...rest } = prev;
-      return rest;
-    });
-  };
-
-  const deleteItemAndRefresh = async (evidenceId: number, tabToRefresh: TabValue = "evidence") => {
-    try {
-      await deleteEvidence.query({ id: evidenceId });
-      invalidateTab(tabToRefresh);
-      await fetchData(tabToRefresh, { force: true });
-    } catch (error) {
-      const customError = error as ICustomError;
-      showToast(customError);
-    }
-    return true
-  };
-
-  const fetchAttachment = async (evidenceId: number, tabToRefresh: TabValue = "evidence") => {
-    try {
-      const result = await fetchEvidenceAttachments.query({ evidence_id: evidenceId });
-      return result;
-    } catch (error) {
-      const customError = error as ICustomError;
-      showToast(customError);
-    }
-  };
-  const removeAttachment = async (evidenceId: number,attachmentId: number, tabToRefresh: TabValue = "evidence") => {
-    try {
-      const result = await RemoveEvidenceAttachments.query({ evidenceId,attachmentId });
-      invalidateTab(tabToRefresh);
-      await fetchData(tabToRefresh, { force: true });
-      return result;
-    } catch (error) {
-      const customError = error as ICustomError;
-      showToast(customError);
-    }
-  };
-
-  const refreshTab = async (tab: TabValue = selectedTab) => {
-    invalidateTab(tab);
-    await fetchData(tab, { force: true });
-  };
+  useEffect(() => {
+    if (questionId) fetchData();
+  }, [selectedTab]);
 
   return {
-    data: data[selectedTab] ?? [],
     selectedTab,
     tabItems,
     ActiveComponent,
     handleChange: handleTabChange,
-    deleteItemAndRefresh,
-    fetchData,
-    refreshTab,
-    rawCache: data,
-    fetchAttachment,
-    removeAttachment
   };
 };
 

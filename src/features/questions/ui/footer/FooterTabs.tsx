@@ -7,7 +7,7 @@ import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
 
 const FooterTabs = () => {
-  const { handleChange, selectedTab, tabItems, ActiveComponent, ...rest } = useTabs();
+  const { handleChange, selectedTab, tabItems, ActiveComponent,  } = useTabs();
 
   return (
       <TabContext value={selectedTab}>
@@ -20,7 +20,7 @@ const FooterTabs = () => {
         </Box>
         <Suspense fallback={""}>
           <TabPanel value={selectedTab}>
-            <ActiveComponent {...rest} />
+            <ActiveComponent />
           </TabPanel>
         </Suspense>
       </TabContext>

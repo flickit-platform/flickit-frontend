@@ -3,6 +3,7 @@ import { Box } from "@mui/material";
 import { t } from "i18next";
 import EvidenceItem from "@/features/questions/ui/footer/EvidenceItem";
 import { DeleteConfirmationDialog } from "@common/dialogs/DeleteConfirmationDialog";
+import { useQuestionContext } from "@/features/questions/context";
 
 interface ConfirmDeleteDialogState {
   open: boolean;
@@ -50,17 +51,19 @@ const EvidenceContainer: React.FC<EvidenceListProps> = ({
     setConfirmDeleteDialog((prev) => ({ ...prev, open: false }));
   };
 
+  const {tabData} = useQuestionContext()
+
   return (
       <Box sx={{ py: 2, px: 4 }}>
-        {evidenceItems.map((item) => (
-            <EvidenceItem
-                key={item.id}
-                {...item}
-                {...restProps}
-                setConfirmDeleteDialog={setConfirmDeleteDialog}
-                refreshTab={refreshTab}
-            />
-        ))}
+        {/*{tabData?.map((item) => (*/}
+        {/*    <EvidenceItem*/}
+        {/*        key={item.id}*/}
+        {/*        {...item}*/}
+        {/*        {...restProps}*/}
+        {/*        setConfirmDeleteDialog={setConfirmDeleteDialog}*/}
+        {/*        refreshTab={refreshTab}*/}
+        {/*    />*/}
+        {/*))}*/}
 
         <DeleteConfirmationDialog
             open={confirmDeleteDialog.open}
