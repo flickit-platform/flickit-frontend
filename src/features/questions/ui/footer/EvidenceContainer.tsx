@@ -52,18 +52,18 @@ const EvidenceContainer: React.FC<EvidenceListProps> = ({
   };
 
   const {tabData} = useQuestionContext()
-
+  const {data, activeTab} = tabData
   return (
       <Box sx={{ py: 2, px: 4 }}>
-        {/*{tabData?.map((item) => (*/}
-        {/*    <EvidenceItem*/}
-        {/*        key={item.id}*/}
-        {/*        {...item}*/}
-        {/*        {...restProps}*/}
-        {/*        setConfirmDeleteDialog={setConfirmDeleteDialog}*/}
-        {/*        refreshTab={refreshTab}*/}
-        {/*    />*/}
-        {/*))}*/}
+        {data[activeTab]?.map((item: any) => (
+            <EvidenceItem
+                key={item.id}
+                {...item}
+                {...restProps}
+                setConfirmDeleteDialog={setConfirmDeleteDialog}
+                refreshTab={refreshTab}
+            />
+        ))}
 
         <DeleteConfirmationDialog
             open={confirmDeleteDialog.open}
