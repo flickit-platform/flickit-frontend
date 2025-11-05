@@ -134,6 +134,7 @@ const KitCustomizationTable: React.FC<SubjectTableProps> = ({
 
     return (
       <NumberField
+        required
         type="int"
         value={inputValue}
         label={<Trans i18nKey="common.weight" />}

@@ -27,43 +27,45 @@ export const NumberField: React.FC<NumberFieldProps> = ({
   placeholder,
   ...textFieldProps
 }) => {
+  const clamp = (n: number) => Math.min(Math.max(n, min), max);
+  const required = !!textFieldProps.required;
+  const fallbackMin = Number.isFinite(min) ? min : clamp(0);
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    let value = e.target.value;
+    let val = e.target.value;
+    if (acceptComma && val.includes(",")) val = val.replace(/,/g, ".");
 
-    if (acceptComma && value.includes(",")) value = value.replace(/,/g, ".");
-
-    if (value === "") {
-      if (allowEmpty) onChange(value);
+    if (val === "") {
+      onChange(required ? fallbackMin : "");
       return;
     }
-    if (min < 0 && value === "-") {
-      onChange(value);
+
+    if (min < 0 && val === "-") {
+      onChange(required ? fallbackMin : "-");
       return;
     }
 
     if (type === "float") {
       const isInterim =
-      value === "." || value === "0." || (min < 0 && (value === "-." || value === "-0."));
+        val === "." ||
+        val === "0." ||
+        (min < 0 && (val === "-." || val === "-0."));
       if (isInterim) {
-        onChange(value);
+        onChange(required ? fallbackMin : val);
         return;
       }
-
-      const reFloat = /^-?(?:\d+(?:\.\d*)?|\.\d+)$/;
-      if (!reFloat.test(value)) return;
+      const reFloatSafe = /^-?(?:\d+(?:\.\d*)?|\.\d+)$/;
+      if (!reFloatSafe.test(val)) return;
     } else {
-      const reInt = /^-?\d+$/; 
-      if (!reInt.test(value)) return;
+      const reIntSafe = /^-?\d+$/;
+      if (!reIntSafe.test(val)) return;
     }
 
-    let n = Number(value);
+    let n = Number(val);
     if (!Number.isFinite(n)) return;
 
     if (type === "int") n = Math.trunc(n);
-    if (n < min) n = min;
-    if (n > max) n = max;
-
-    onChange(n);
+    onChange(clamp(n));
   };
 
   const blockInvalidKeys = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -94,7 +96,7 @@ export const NumberField: React.FC<NumberFieldProps> = ({
 
   const handlePaste = (e: React.ClipboardEvent<HTMLInputElement>) => {
     const pasted = e.clipboardData.getData("text").replace(/,/g, ".");
-    const re = type === "float" ? /^-?\d*\.?\d*$/ : /^-?\d*$/;
+    const re = type === "float" ? /^-?(?:\d+(?:\.\d*)?|\.\d+)$/ : /^-?\d+$/;
     if (!re.test(pasted)) {
       e.preventDefault();
       return;

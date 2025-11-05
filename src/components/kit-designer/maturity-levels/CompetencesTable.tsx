@@ -43,7 +43,6 @@ const CompetencesTable = ({
     });
   };
 
-
   const handleSave = async (
     rowId: number,
     colId: number,
@@ -162,7 +161,7 @@ const CompetencesTable = ({
                             value: next,
                           }))
                         }
-                        min={0}
+                        min={1}
                         size="small"
                         variant="outlined"
                         onBlur={() =>

@@ -63,6 +63,7 @@ const SubjectForm = ({
         borderRadius="0.5rem"
       >
         <NumberField
+          required
           type="int"
           value={newSubject.value}
           label={<Trans i18nKey="common.index" />}
@@ -145,6 +146,7 @@ const SubjectForm = ({
           </IconButton>
         </Box>
         <NumberField
+          required
           type="int"
           value={newSubject.weight}
           label={<Trans i18nKey="common.weight" />}

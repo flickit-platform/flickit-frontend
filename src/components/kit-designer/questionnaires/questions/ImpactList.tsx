@@ -213,6 +213,7 @@ const ImpactDetails = ({
 
         {hasWeight && (
           <NumberField
+            required
             type="int"
             value={tempValues.weight}
             label={<Trans i18nKey="common.index" />}

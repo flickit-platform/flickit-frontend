@@ -137,6 +137,7 @@ const AttributeForm = ({
 
         <Box gap={0.5} sx={{ ...styles.centerCH }}>
           <NumberField
+            required
             type="int"
             value={newAttribute.weight}
             label={<Trans i18nKey="common.weight" />}
