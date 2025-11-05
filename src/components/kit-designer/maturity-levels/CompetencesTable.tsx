@@ -10,6 +10,7 @@ import { ICustomError } from "@/utils/custom-error";
 import { useServiceContext } from "@/providers/service-provider";
 import showToast from "@/utils/toast-error";
 import { Text } from "@/components/common/Text";
+import { NumberField } from "@/components/common/fields/NumberField";
 
 interface CompetencesTableProps {
   data: Array<{ id: number; title: string; competences: any[] }>;
@@ -159,10 +160,18 @@ const CompetencesTable = ({
                     }
                   >
                     {isEditing ? (
-                      <TextField
-                        type="number"
+                      <NumberField
+                        type="int"
                         value={editState.value}
-                        onChange={handleChange}
+                        onChange={(next) =>
+                          setEditState((prev: any) => ({
+                            ...prev,
+                            value: next,
+                          }))
+                        }
+                        min={0}
+                        size="small"
+                        variant="outlined"
                         onBlur={() =>
                           handleSave(row.id, column.id, competence?.id)
                         }
@@ -170,7 +179,6 @@ const CompetencesTable = ({
                           if (e.key === "Enter")
                             handleSave(row.id, column.id, competence?.id);
                         }}
-                        size="small"
                         sx={{
                           mt: -1,
                           "& .MuiInputBase-input": {
@@ -180,6 +188,9 @@ const CompetencesTable = ({
                           },
                           width: "80px",
                           height: "20px",
+                        }}
+                        inputProps={{
+                          style: { textAlign: "center", width: 40 },
                         }}
                       />
                     ) : (

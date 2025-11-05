@@ -7,7 +7,6 @@ import TableCell from "@mui/material/TableCell";
 import TableBody from "@mui/material/TableBody";
 import IconButton from "@mui/material/IconButton";
 import Box from "@mui/material/Box";
-import SwapVertRoundedIcon from "@mui/icons-material/SwapVertRounded";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
 import AttributeForm from "./AttributeForm";
@@ -90,16 +89,15 @@ const SubjectTable: React.FC<SubjectTableProps> = ({
     mode: "new" | "edit" = "new",
   ) => {
     const { name, value } = e.target;
-    const parsedValue = name === "weight" ? parseInt(value) || 1 : value;
     if (mode === "edit") {
       setEditAttribute((prev) => ({
         ...(prev as any),
-        [name]: parsedValue,
+        [name]: value,
       }));
     } else {
       setNewAttribute((prev: any) => ({
         ...prev,
-        [name]: parsedValue,
+        [name]: value,
       }));
     }
   };
@@ -377,6 +375,7 @@ const SubjectTable: React.FC<SubjectTableProps> = ({
                                             }
                                             size="small"
                                             color="primary"
+                                            sx={{ height: "32px" }}
                                           >
                                             <EditOutlinedIcon fontSize="small" />
                                           </IconButton>

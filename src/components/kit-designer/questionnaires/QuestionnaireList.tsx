@@ -696,17 +696,10 @@ const QuestionsSection = ({
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    const parsedValue = name === "value" ? parseInt(value) || 1 : value;
     setNewQuestion((prev) => ({
       ...prev,
-      [name]: parsedValue,
+      [name]: value,
     }));
-    if (name === "value") {
-      setNewQuestion((prev) => ({
-        ...prev,
-        index: parseInt(value) || 1,
-      }));
-    }
   };
 
   const handleSave = async () => {
@@ -840,6 +833,7 @@ const QuestionsSection = ({
             handleInputChange={handleInputChange}
             handleSave={handleSave}
             handleCancel={handleCancel}
+            setNewItem={setNewQuestion}
           />
         </Box>
       )}

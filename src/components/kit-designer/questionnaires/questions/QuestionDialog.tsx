@@ -29,7 +29,7 @@ import NavigationButtons from "@/components/common/buttons/NavigationButtons";
 import showToast from "@/utils/toast-error";
 import { Text } from "@/components/common/Text";
 import { RenderGeneralField } from "@common/RenderGeneralField";
-import InfoOutlineIcon from '@mui/icons-material/InfoOutline';
+import InfoOutlineIcon from "@mui/icons-material/InfoOutline";
 import Tooltip from "@mui/material/Tooltip";
 
 interface ITempValue {
@@ -76,11 +76,18 @@ const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
   const [isSaving, setIsSaving] = useState(false);
   const [initialData, setInitialData] = useState<any>(null);
 
-  const {handleFieldEdit, editableFields, toggleTranslation, showTranslations, fieldsName, handleCancelTextBox} = useQuestionInfo(langCode, question, setTempValue)
+  const {
+    handleFieldEdit,
+    editableFields,
+    toggleTranslation,
+    showTranslations,
+    fieldsName,
+    handleCancelTextBox,
+  } = useQuestionInfo(langCode, question, setTempValue);
 
   const fetchMeasures = useQuery({
     service: () => service.kitVersions.measures.getAll({ kitVersionId }),
-    runOnMount: false
+    runOnMount: false,
   });
   const fetchOptions = useQuery({
     service: () =>
@@ -91,7 +98,7 @@ const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
   });
 
   useEffect(() => {
-    if (fetchMeasures?.data?.items){
+    if (fetchMeasures?.data?.items) {
       const measureObject = fetchMeasures.data?.items?.find(
         (m: any) => m.id === question.measureId,
       );
@@ -102,7 +109,7 @@ const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
   useEffect(() => {
     if (rest.open && question.id) {
       const resultFunc = async () => {
-        const fetchMeasure = await fetchMeasures.query()
+        const fetchMeasure = await fetchMeasures.query();
         const initial = {
           options: question.options ?? [{ text: "" }],
           mayNotBeApplicable: question.mayNotBeApplicable ?? false,
@@ -121,14 +128,14 @@ const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
           translations: question.translations ?? "",
         });
         setSelectedAnswerRange(question.answerRangeId);
-      }
-      resultFunc()
+      };
+      resultFunc();
     }
   }, [rest.open, question.id, isSaving]);
 
   const handleSubmit = async (data: any) => {
-    const updateData = {...data}
-    updateData.advisable = !updateData.advisable
+    const updateData = { ...data };
+    updateData.advisable = !updateData.advisable;
 
     try {
       setIsSaving(true);
@@ -187,9 +194,11 @@ const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
         JSON.stringify(question.translations ?? {}) ||
       selectedAnswerRange !== question.answerRangeId ||
       measureId !== initialMeasureId ||
-     (!!currentValues.mayNotBeApplicable && currentValues.mayNotBeApplicable )!==
+      (!!currentValues.mayNotBeApplicable &&
+        currentValues.mayNotBeApplicable) !==
         (question.mayNotBeApplicable ?? false) ||
-     (!!currentValues.advisable && currentValues.advisable) === (question.advisable ?? false)
+      (!!currentValues.advisable && currentValues.advisable) ===
+        (question.advisable ?? false)
     );
   };
   const theme = useTheme();
@@ -198,7 +207,7 @@ const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
     <CEDialog
       {...rest}
       closeDialog={closeDialog}
-      sx={{ width: "100%", paddingInline: 4 }}
+      sx={{ width: "100%" }}
       title={<Trans i18nKey="common.editQuestion" />}
     >
       <NavigationButtons
@@ -220,10 +229,7 @@ const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
         }}
       >
         <Grid container spacing={2} mt={2}>
-
-
-          {fieldsName.map((field: any)=>{
-
+          {fieldsName.map((field: any) => {
             const {
               name,
               label,
@@ -250,17 +256,18 @@ const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
                       xs: "flex-start",
                       md: useRichEditor ? "flex-start" : "center",
                     },
-                    flex: 1
+                    flex: 1,
                   }}
                 >
                   <Text
                     variant="titleSmall"
                     mt="2px"
                     height="100%"
-                    minWidth={width}
                     whiteSpace="nowrap"
+                    minWidth="84px"
                   >
-                   <Trans i18nKey={label} /> {name === "title" ? ` ${index + 1} ` : ""}
+                    <Trans i18nKey={label} />{" "}
+                    {name === "title" ? ` ${index + 1} ` : ""}
                   </Text>
                   <Box sx={{ display: "flex", width: "100%" }}>
                     <RenderGeneralField
@@ -286,22 +293,19 @@ const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
                   </Box>
                 </Box>
               </Grid>
-            )
+            );
           })}
 
-          <Grid size={{xs: 12}} sx={{...styles.centerV, gap: 1.5, flex: 1 }}>
-            <Text variant={"titleSmall"}>
-              <Trans i18nKey="common.measure" />:
+          <Grid size={{ xs: 12 }} sx={{ ...styles.centerV, flex: 1 }}>
+            <Text variant={"titleSmall"} minWidth="124px">
+              <Trans i18nKey="common.measure" />
             </Text>
-            <Box sx={{flex: 1}}>
+            <Box sx={{ flex: 1 }}>
               <AutocompleteAsyncField
-                options={fetchMeasures?.data?.items.map((measure: any) => measure)}
+                options={fetchMeasures?.data?.items.map(
+                  (measure: any) => measure,
+                )}
                 name="measure"
-                label={
-                  <Text variant={"bodyMedium"} color={"background.secondaryDark"} >
-                    <Trans i18nKey="common.measure" />
-                  </Text>
-                }
                 getOptionLabel={(option: any) => option?.title ?? ""}
                 defaultValue={formMethods.watch("measure")}
                 rules={{ required: false }}
@@ -310,7 +314,7 @@ const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
             </Box>
           </Grid>
 
-          <Grid size={{xs: 12}}>
+          <Grid size={{ xs: 12 }}>
             <OptionsSection
               question={question}
               kitVersionId={kitVersionId}
@@ -332,12 +336,22 @@ const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
         </Box>
 
         <Grid container spacing={2} alignItems="center" mt={1}>
-          <Grid size={{xs: 6}}>
+          <Grid size={{ xs: 6 }}>
             <Box sx={styles.centerVH}>
-              <Text variant="semiBoldMedium" sx={{display: "flex", alignItems: "center", width: "fit-content"}}>
+              <Text
+                variant="semiBoldMedium"
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  width: "fit-content",
+                }}
+              >
                 <Trans i18nKey="questions.notApplicable" />
-                <Tooltip title={t("kitDesigner.notApplicableDesc")} sx={{...theme.typography.bodySmall}}  >
-                  <InfoOutlineIcon fontSize={"small"} sx={{mx: .4}}  />
+                <Tooltip
+                  title={t("kitDesigner.notApplicableDesc")}
+                  sx={{ ...theme.typography.bodySmall }}
+                >
+                  <InfoOutlineIcon fontSize={"small"} sx={{ mx: 0.4 }} />
                 </Tooltip>
               </Text>
               <Switch
@@ -346,11 +360,21 @@ const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
               />
             </Box>
           </Grid>
-          <Grid sx={{display: "flex"}} size={{xs: 6}}>
-            <Text variant="semiBoldMedium" sx={{display: "flex", alignItems: "center", width: "fit-content"}}>
+          <Grid sx={{ display: "flex" }} size={{ xs: 6 }}>
+            <Text
+              variant="semiBoldMedium"
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                width: "fit-content",
+              }}
+            >
               <Trans i18nKey="questions.notAdvisable" />
-              <Tooltip title={t("kitDesigner.notAdvisableDesc")} sx={{...theme.typography.bodySmall}} >
-                 <InfoOutlineIcon fontSize={"small"} sx={{mx: .4}} />
+              <Tooltip
+                title={t("kitDesigner.notAdvisableDesc")}
+                sx={{ ...theme.typography.bodySmall }}
+              >
+                <InfoOutlineIcon fontSize={"small"} sx={{ mx: 0.4 }} />
               </Tooltip>
             </Text>
             <Switch
@@ -375,58 +399,66 @@ const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
   );
 };
 
-const useQuestionInfo = (langCode: string, question: any, setTempValue: any) =>{
+const useQuestionInfo = (
+  langCode: string,
+  question: any,
+  setTempValue: any,
+) => {
   const [editableFields, setEditableFields] = useState<Set<string>>(new Set());
   const [showTranslations, setShowTranslations] = useState({
     title: false,
-    hint: false
+    hint: false,
   });
-  const { translations } = question
+  const { translations } = question;
   useEffect(() => {
     setShowTranslations({
       title: !!translations[langCode]?.title,
-      hint:  !!translations[langCode]?.hint,
-    })
+      hint: !!translations[langCode]?.hint,
+    });
   }, []);
 
-  const handleFieldEdit = useCallback((field: string)=>{
-    setEditableFields((prev)=>{
-      const next = new Set(prev)
-      next.add(field)
-      return next;
-    })
-  },[setEditableFields])
-
-  const handleCancelTextBox = useCallback((field: string)=>{
-    setEditableFields((prev)=>{
-      const next = new Set(prev);
-      next.delete(field);
-      return next;
-    })
-
-    setTempValue((prev: any)=>{
-      return {
-        ...prev,
-        translations: {
-          [langCode] : { ...prev.translations[langCode], [field]: question.translations[langCode]?.[field]
-          }
-        }
-      }
-    })
-
-  },[setEditableFields, question])
-
-  const toggleTranslation = useCallback(
-    (field: "title" | "hint" ) => {
-      setShowTranslations((prev: any) => ({
-        ...prev,
-        [field]: !prev[field],
-      }));
+  const handleFieldEdit = useCallback(
+    (field: string) => {
+      setEditableFields((prev) => {
+        const next = new Set(prev);
+        next.add(field);
+        return next;
+      });
     },
-    [],
+    [setEditableFields],
   );
 
-  const fieldsName =[
+  const handleCancelTextBox = useCallback(
+    (field: string) => {
+      setEditableFields((prev) => {
+        const next = new Set(prev);
+        next.delete(field);
+        return next;
+      });
+
+      setTempValue((prev: any) => {
+        return {
+          ...prev,
+          translations: {
+            [langCode]: {
+              ...prev.translations[langCode],
+              [field]: question.translations[langCode]?.[field],
+            },
+          },
+        };
+      });
+    },
+    [setEditableFields, question],
+  );
+
+  const toggleTranslation = useCallback((field: "title" | "hint") => {
+    setShowTranslations((prev: any) => ({
+      ...prev,
+      [field]: !prev[field],
+    }));
+  }, []);
+
+  const fieldsName = [
     {
       name: "title",
       label: "common.question",
@@ -447,7 +479,7 @@ const useQuestionInfo = (langCode: string, question: any, setTempValue: any) =>{
       disabled: false,
       width: i18next.language === "fa" ? "35px" : "60px",
     },
-  ]
+  ];
 
   return {
     editableFields,
@@ -455,8 +487,8 @@ const useQuestionInfo = (langCode: string, question: any, setTempValue: any) =>{
     handleCancelTextBox,
     toggleTranslation,
     showTranslations,
-    fieldsName
-  }
-}
+    fieldsName,
+  };
+};
 
 export default QuestionDetailsContainer;

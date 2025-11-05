@@ -11,6 +11,7 @@ import MultiLangTextField from "@common/fields/MultiLangTextField";
 import { useKitDesignerContext } from "@/providers/kit-provider";
 import { useTranslationUpdater } from "@/hooks/useTranslationUpdater";
 import { styles } from "@styles";
+import { NumberField } from "@/components/common/fields/NumberField";
 
 interface OptionFormProps {
   newItem: {
@@ -69,26 +70,23 @@ const OptionForm = ({
         />
       </Box>
       <Box width={{ xs: "20%", md: "10%" }}>
-        <TextField
+        <NumberField
           required
-          label={<Trans i18nKey="common.value" />}
+          label={<Trans i18nKey="common.score" />}
           name="value"
-          value={newItem.value}
-          onChange={handleInputChange}
-          variant="outlined"
-          size="small"
+          value={newItem.value ?? ""}
+          onChange={(next) =>
+            setNewOptions((prev: any) => ({ ...prev, value: next }))
+          }
+          min={0}
+          max={1}
+          type="float"
+          fullWidth
           inputProps={{
-            "data-testid": "option-value-id",
-            style: { textAlign: "center", width: "100%" },
+            "data-testid": "title-id",
+            style: { width: 40, textAlign: "center" },
           }}
-          sx={{
-            fontSize: 14,
-            "& .MuiInputBase-root": {
-              fontSize: 14,
-            },
-            bgcolor: "background.containerLowest",
-            width: "100%",
-          }}
+          margin="normal"
         />
       </Box>
       {/* Check and Close Buttons */}

@@ -8,6 +8,7 @@ import MultiLangTextField from "@common/fields/MultiLangTextField";
 import { styles } from "@styles";
 import SwapVertRoundedIcon from "@mui/icons-material/SwapVertRounded";
 import { Text } from "@/components/common/Text";
+import { NumberField } from "@/components/common/fields/NumberField";
 
 interface AttributeFormProps {
   newAttribute: any;
@@ -28,37 +29,6 @@ const AttributeForm = ({
   setNewAttribute,
   updateTranslation,
 }: AttributeFormProps) => {
-  const renderNumericField = (
-    name: "value" | "weight",
-    value: number,
-    testId?: string,
-    label?: string,
-  ) => (
-    <Box gap={0.5} sx={{ ...styles.centerCH }}>
-      {label && (
-        <Text variant="caption" color="textSecondary">
-          <Trans i18nKey={label} />
-        </Text>
-      )}
-      <TextField
-        name={name}
-        type="number"
-        value={value}
-        onChange={handleInputChange}
-        size="small"
-        variant="outlined"
-        inputProps={{
-          style: { textAlign: "center", width: 40 },
-          ...(testId ? { "data-testid": testId } : {}),
-        }}
-        sx={{
-          bgcolor: "background.containerLowest",
-          borderRadius: "8px",
-        }}
-      />
-    </Box>
-  );
-
   return (
     <Box
       mt={1.5}
@@ -166,12 +136,26 @@ const AttributeForm = ({
           </IconButton>
         </Box>
 
-        {renderNumericField(
-          "weight",
-          newAttribute.weight,
-          "weight-id",
-          "weight",
-        )}
+        <Box gap={0.5} sx={{ ...styles.centerCH }}>
+          <NumberField
+            type="int"
+            value={newAttribute.weight}
+            label={<Trans i18nKey="common.weight" />}
+            onChange={(next) =>
+              setNewAttribute((prev: any) => ({ ...prev, weight: next }))
+            }
+            min={0}
+            size="small"
+            variant="outlined"
+            inputProps={{
+              style: { textAlign: "center", width: 40 },
+            }}
+            sx={{
+              bgcolor: "background.containerLowest",
+              borderRadius: "8px",
+            }}
+          />
+        </Box>
       </Box>
     </Box>
   );

@@ -15,6 +15,7 @@ import { Trans } from "react-i18next";
 import TitleWithTranslation from "@/components/common/fields/TranslationText";
 import { useKitDesignerContext } from "@/providers/kit-provider";
 import { Text } from "@/components/common/Text";
+import { NumberField } from "@/components/common/fields/NumberField";
 
 interface Attribute {
   id: string | number;
@@ -92,12 +93,11 @@ const KitCustomizationTable: React.FC<SubjectTableProps> = ({
   };
 
   const handleInputChange = (
-    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
     id: string | number,
+    name: string,
+    value: any,
     type: "subject" | "attribute",
   ) => {
-    const { name, value } = event.target;
-
     setTempInputData((prevData: any) => {
       const updatedData = { ...prevData };
       const targetArray =
@@ -134,26 +134,20 @@ const KitCustomizationTable: React.FC<SubjectTableProps> = ({
       )?.weight ?? value;
 
     return (
-      <TextField
-        required
+      <NumberField
+        type="int"
+        value={inputValue}
         label={<Trans i18nKey="common.weight" />}
-        name="weight"
-        type="number"
-        value={inputValue ?? ""}
-        onChange={(e: any) => handleInputChange(e, id, type)}
-        fullWidth
-        margin="normal"
+        onChange={(next) => handleInputChange(id, "weight", next, type)}
+        min={0}
+        size="small"
+        variant="outlined"
+        inputProps={{
+          style: { textAlign: "center", width: 40 },
+        }}
         sx={{
-          mt: 1,
-          fontSize: 14,
-          "& .MuiInputBase-root": {
-            height: 40,
-            fontSize: 14,
-          },
-          "& .MuiFormLabel-root": {
-            fontSize: 14,
-          },
           bgcolor: "background.containerLowest",
+          borderRadius: "8px",
         }}
       />
     );

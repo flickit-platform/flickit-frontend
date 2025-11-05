@@ -64,8 +64,7 @@ const MeasuresContent = () => {
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    const parsedValue = name === "value" ? parseInt(value) || 1 : value;
-    setNewMeasure((prev) => ({ ...prev, [name]: parsedValue }));
+    setNewMeasure((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleAddNewRow = () => {

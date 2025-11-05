@@ -18,7 +18,8 @@ import { useTranslationUpdater } from "@/hooks/useTranslationUpdater";
 import { useKitDesignerContext } from "@/providers/kit-provider";
 import TitleWithTranslation from "@/components/common/fields/TranslationText";
 import { Text } from "@/components/common/Text";
-import { useTranslation } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
+import { NumberField } from "@/components/common/fields/NumberField";
 
 interface ITempValues {
   title: string;
@@ -27,7 +28,7 @@ interface ITempValues {
 }
 
 const OptionContain = (props: any) => {
-  const {t} =useTranslation()
+  const { t } = useTranslation();
   const { kitState } = useKitDesignerContext();
   const langCode = kitState.translatedLanguage?.code;
 
@@ -139,35 +140,26 @@ const OptionContain = (props: any) => {
           )}
         </Box>
         {editMode === answerOption.id ? (
-          <TextField
-            required
-            value={tempValues.value}
-            onChange={(e) =>
-              setTempValues({
-                ...tempValues,
-                value: e.target.value,
-              })
-            }
-            variant="outlined"
-            fullWidth
-            size="small"
-            sx={{
-              mb: 1,
-              fontSize: 14,
-              "& .MuiInputBase-root": {
-                fontSize: 14,
-                overflow: "auto",
-              },
-              "& .MuiFormLabel-root": {
-                fontSize: 14,
-              },
-              width: { xs: "20%", md: "10%" },
-              bgcolor: "background.containerLowest",
-              borderRadius: "8px",
-            }}
-            name="value"
-            label={t("common.value")}
-          />
+          <Box sx={{ width: { xs: "20%", md: "10%" }, textAlign: "center" }}>
+            <NumberField
+              required
+              label={<Trans i18nKey="common.score" />}
+              name="value"
+              value={tempValues.value ?? ""}
+              onChange={(next) =>
+                setTempValues((prev: any) => ({ ...prev, value: next }))
+              }
+              min={0}
+              max={1}
+              type="float"
+              fullWidth
+              inputProps={{
+                "data-testid": "title-id",
+                style: { width: 40, textAlign: "center" },
+              }}
+              margin="normal"
+            />
+          </Box>
         ) : (
           <Box sx={{ width: { xs: "20%", md: "10%" }, textAlign: "center" }}>
             {answerOption?.value}

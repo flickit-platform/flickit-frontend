@@ -1,5 +1,4 @@
 import Box from "@mui/material/Box";
-import TextField from "@mui/material/TextField";
 import IconButton from "@mui/material/IconButton";
 import Link from "@mui/material/Link";
 import CheckIcon from "@mui/icons-material/Check";
@@ -11,6 +10,7 @@ import { useState } from "react";
 import { useTranslationUpdater } from "@/hooks/useTranslationUpdater";
 import { useKitDesignerContext } from "@/providers/kit-provider";
 import { Trans } from "react-i18next";
+import { NumberField } from "@/components/common/fields/NumberField";
 
 interface QuestionnairesFormProps {
   newItem: {
@@ -62,26 +62,21 @@ const QuestionnairesForm = ({
         mr={2}
         p={0.25}
       >
-        <TextField
+        <NumberField
           required
-          id="new-item"
-          type="number"
+          label={<Trans i18nKey="common.index" />}
           name="value"
-          value={newItem.value}
-          onChange={handleInputChange}
-          variant="outlined"
-          size="small"
+          value={newItem.value ?? ""}
+          onChange={(next) =>
+            setNewQuestionnaires((prev: any) => ({ ...prev, value: next }))
+          }
+          type="int"
+          fullWidth
           inputProps={{
             "data-testid": "value-id",
-            style: { textAlign: "center", width: "40px" },
+            style: { width: 40, textAlign: "center" },
           }}
-          sx={{
-            fontSize: 14,
-            "& .MuiInputBase-root": {
-              fontSize: 14,
-            },
-            bgcolor: "background.containerLowest",
-          }}
+          margin="normal"
         />
       </Box>
 
