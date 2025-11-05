@@ -67,7 +67,6 @@ const MeasureForm = ({
           fullWidth
           inputProps={{
             "data-testid": "value-id",
-            style: { textAlign: "center", width: 40 },
           }}
           margin="normal"
         />

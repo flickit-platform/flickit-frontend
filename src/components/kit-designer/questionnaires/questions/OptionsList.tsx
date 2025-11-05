@@ -300,7 +300,6 @@ const OptionValueSection = ({
         variant="outlined"
         inputProps={{
           "data-testid": "value-id",
-          style: { textAlign: "center", width: 40 },
         }}
       />
     ) : (

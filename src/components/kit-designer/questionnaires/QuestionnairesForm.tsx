@@ -68,13 +68,17 @@ const QuestionnairesForm = ({
           name="value"
           value={newItem.value ?? ""}
           onChange={(next) =>
-            setNewQuestionnaires((prev: any) => ({ ...prev, value: next }))
+            setNewQuestionnaires((prev: any) => ({
+              ...prev,
+              value: next,
+              index: next,
+            }))
           }
           type="int"
+          min={1}
           fullWidth
           inputProps={{
             "data-testid": "value-id",
-            style: { width: 40, textAlign: "center" },
           }}
           margin="normal"
         />

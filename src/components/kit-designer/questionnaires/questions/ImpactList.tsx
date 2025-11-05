@@ -220,12 +220,11 @@ const ImpactDetails = ({
             onChange={(next) =>
               setTempValues((prev: any) => ({ ...prev, wight: next }))
             }
-            min={0}
+            min={1}
             size="small"
             variant="outlined"
             inputProps={{
               "data-testid": "value-id",
-              style: { textAlign: "center", width: 40 },
             }}
             sx={textFieldStyle}
           />

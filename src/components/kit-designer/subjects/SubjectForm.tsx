@@ -70,12 +70,11 @@ const SubjectForm = ({
           onChange={(next) =>
             setNewSubject((prev: any) => ({ ...prev, value: next }))
           }
-          min={0}
+          min={1}
           size="small"
           variant="outlined"
           inputProps={{
             "data-testid": "value-id",
-            style: { textAlign: "center", width: 40 },
           }}
           sx={{
             bgcolor: "background.containerLowest",
@@ -158,7 +157,6 @@ const SubjectForm = ({
           variant="outlined"
           inputProps={{
             "data-testid": "weight-id",
-            style: { textAlign: "center", width: 40 },
           }}
           sx={{
             bgcolor: "background.containerLowest",

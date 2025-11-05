@@ -373,7 +373,6 @@ const ListOfItems = ({
                                   variant="outlined"
                                   inputProps={{
                                     "data-testid": `${editableFieldKey}-id`,
-                                    style: { textAlign: "center", width: 40 },
                                   }}
                                   sx={{
                                     bgcolor: "background.containerLowest",

@@ -142,9 +142,6 @@ const KitCustomizationTable: React.FC<SubjectTableProps> = ({
         min={0}
         size="small"
         variant="outlined"
-        inputProps={{
-          style: { textAlign: "center", width: 40 },
-        }}
         sx={{
           bgcolor: "background.containerLowest",
           borderRadius: "8px",

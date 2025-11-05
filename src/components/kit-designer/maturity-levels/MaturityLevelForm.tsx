@@ -64,6 +64,7 @@ const MaturityLevelForm = ({
         <NumberField
           required
           name="value"
+          label={<Trans i18nKey="common.index" />}
           value={newMaturityLevel.value ?? ""}
           onChange={(next) =>
             setNewMaturityLevel((prev: any) => ({ ...prev, value: next }))
@@ -73,7 +74,6 @@ const MaturityLevelForm = ({
           fullWidth
           inputProps={{
             "data-testid": "value-id",
-            style: { textAlign: "center", width: 40 },
           }}
           margin="normal"
           sx={{

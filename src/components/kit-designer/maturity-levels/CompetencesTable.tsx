@@ -162,7 +162,7 @@ const CompetencesTable = ({
                     {isEditing ? (
                       <NumberField
                         type="int"
-                        value={editState.value}
+                        value={Number(editState.value)}
                         onChange={(next) =>
                           setEditState((prev: any) => ({
                             ...prev,
@@ -191,7 +191,6 @@ const CompetencesTable = ({
                         }}
                         inputProps={{
                           "data-testid": "value-id",
-                          style: { textAlign: "center", width: 40 },
                         }}
                       />
                     ) : (

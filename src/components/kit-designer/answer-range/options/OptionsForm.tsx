@@ -84,7 +84,6 @@ const OptionForm = ({
           fullWidth
           inputProps={{
             "data-testid": "value-id",
-            style: { width: 40, textAlign: "center" },
           }}
           margin="normal"
         />
