@@ -180,6 +180,7 @@ const ImpactSection: React.FC<{ question: any }> = ({ question }) => {
           <ImpactForm
             newItem={impact}
             handleInputChange={handleInputChange}
+            setNewItem={setImpact}
             handleSave={handleSave}
             handleCancel={handleCancel}
             fields={fields}

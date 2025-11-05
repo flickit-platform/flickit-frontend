@@ -3,7 +3,6 @@ import Box from "@mui/material/Box";
 import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
 import Chip from "@mui/material/Chip";
-import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import Add from "@mui/icons-material/Add";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
@@ -19,6 +18,7 @@ import InputLabel from "@mui/material/InputLabel";
 import FormControl from "@mui/material/FormControl";
 import { styles } from "@styles";
 import { Text } from "@/components/common/Text";
+import { NumberField } from "@/components/common/fields/NumberField";
 
 interface OptionValue {
   optionId: number;
@@ -98,8 +98,6 @@ const AttributeImpactList = ({
   };
 
   const handleInputChange = (field: string, value: any) => {
-    const isValidInteger = /^\d*$/.test(value);
-    if (field === "weight" && !isValidInteger) return;
     setTempValues((prev) => ({ ...prev, [field]: value }));
   };
 
@@ -136,6 +134,7 @@ const AttributeImpactList = ({
                 editMode={editMode}
                 tempValues={tempValues}
                 handleInputChange={handleInputChange}
+                setTempValues={setTempValues}
                 toggleEditMode={() =>
                   toggleEditMode(item.questionImpactId, item, attribute)
                 }
@@ -182,6 +181,7 @@ const ImpactDetails = ({
   editMode,
   tempValues,
   handleInputChange,
+  setTempValues,
   fields,
   hasWeight,
 }: any) => (
@@ -212,14 +212,20 @@ const ImpactDetails = ({
         ))}
 
         {hasWeight && (
-          <TextField
-            type="text"
+          <NumberField
             required
+            type="int"
             value={tempValues.weight}
-            onChange={(e) => handleInputChange("weight", e.target.value)}
-            variant="outlined"
+            label={<Trans i18nKey="common.index" />}
+            onChange={(next) =>
+              setTempValues((prev: any) => ({ ...prev, wight: next }))
+            }
+            min={1}
             size="small"
-            label={t("common.weight")}
+            variant="outlined"
+            inputProps={{
+              "data-testid": "value-id",
+            }}
             sx={textFieldStyle}
           />
         )}
@@ -227,15 +233,15 @@ const ImpactDetails = ({
     ) : (
       <>
         <Box display="flex">
-          <Text variant="bodyMedium" >
+          <Text variant="bodyMedium">
             <Trans
               i18nKey="kitDesigner.impactAttributeOnMaturityLevel"
               values={{
                 maturityLevel: item.maturityLevel?.title,
-                attribute: attribute.title
+                attribute: attribute.title,
               }}
               components={{
-                attrStyle: <span style={{fontWeight: "bold"}} />,
+                bold: <span style={{ fontWeight: "bold" }} />,
               }}
             />
           </Text>
@@ -287,7 +293,11 @@ const ActionButtons = ({
           <IconButton size="small" onClick={onEdit} sx={{ ml: 1 }}>
             <EditOutlinedIcon fontSize="small" />
           </IconButton>
-          <IconButton size="small" sx={{ ml: 1 }} onClick={(e)=> onDelete(e, item)}>
+          <IconButton
+            size="small"
+            sx={{ ml: 1 }}
+            onClick={(e) => onDelete(e, item)}
+          >
             <DeleteOutlinedIcon fontSize="small" />
           </IconButton>
         </>

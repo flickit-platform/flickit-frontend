@@ -29,7 +29,14 @@ const NavigationButtons: React.FC<NavigationButtonsProps> = ({
         data-testid="question-modal-previous-question"
         onClick={onPrevious}
         disabled={isPreviousDisabled}
-        sx={{ ...styles.centerVH, gap: 1, cursor: "pointer" }}
+        sx={{
+          ...styles.centerVH,
+          gap: 1,
+          cursor: "pointer",
+          "&.Mui-disabled": {
+            color: "info.main",
+          },
+        }}
       >
         <ArrowBackIos
           sx={{
@@ -45,7 +52,14 @@ const NavigationButtons: React.FC<NavigationButtonsProps> = ({
         data-testid="question-modal-next-question"
         onClick={onNext}
         disabled={isNextDisabled}
-        sx={{ ...styles.centerVH, gap: 1, cursor: "pointer" }}
+        sx={{
+          ...styles.centerVH,
+          gap: 1,
+          cursor: "pointer",
+          "&.Mui-disabled": {
+            color: "info.main",
+          },
+        }}
       >
         <Text variant="semiBoldLarge" sx={{ fontSize: "12px" }}>
           <Trans i18nKey={nextTextKey} />

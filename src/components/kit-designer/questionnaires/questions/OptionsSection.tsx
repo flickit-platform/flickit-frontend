@@ -18,6 +18,7 @@ import EmptyState from "../../common/EmptyState";
 import { t } from "i18next";
 import showToast from "@/utils/toast-error";
 import { styles } from "@styles";
+import { WIDTH } from "./QuestionDialog";
 
 const OptionsSection = ({
   question,
@@ -25,7 +26,7 @@ const OptionsSection = ({
   fetchOptions,
   selectedAnswerRange,
   setSelectedAnswerRange,
-  isDragDisabled
+  isDragDisabled,
 }: {
   kitVersionId: string;
   question?: any;
@@ -94,8 +95,7 @@ const OptionsSection = ({
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    const parsedValue = name === "value" ? parseInt(value) || 1 : value;
-    setNewOption((prev) => ({ ...prev, [name]: parsedValue }));
+    setNewOption((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleSave = async () => {
@@ -152,24 +152,29 @@ const OptionsSection = ({
   };
 
   return (
-    <Grid size={{xs: 12}}>
+    <Grid size={{ xs: 12 }}>
       <Box
         borderRadius="8px"
         gap={2}
-        sx={{ display: "flex", flexDirection: "column", alignItems: "flex-start", width: "100%"}}
-       >
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "flex-start",
+          width: "100%",
+        }}
+      >
         <Tooltip
           title={
             fetchAnswerRanges?.data?.items.length === 0 &&
             t("kitDesigner.emptyAnswerRange")
           }
-          sx={{width: "100%"}}
+          sx={{ width: "100%" }}
         >
-          <Box sx={{...styles.centerV, gap: 1.5, flex: 1, width:"100%"}}>
-            <Text variant={"titleSmall"}>
-              {t("common.answerRange")}:
+          <Box sx={{ ...styles.centerV, flex: 1, width: "100%" }}>
+            <Text variant={"titleSmall"} width={WIDTH}>
+              {t("common.answerRange")}
             </Text>
-            <Box sx={{flex: 1}}>
+            <Box sx={{ flex: 1 }}>
               <Select
                 value={selectedAnswerRange ?? ""}
                 onChange={handleAnswerRangeChange}
@@ -177,7 +182,7 @@ const OptionsSection = ({
                   ...dropdownStyle,
                   fontFamily: farsiFontFamily,
                   bgcolor: "inherit",
-                  width: "100%"
+                  width: "100%",
                 }}
                 size="small"
                 displayEmpty
@@ -203,7 +208,7 @@ const OptionsSection = ({
             </Box>
           </Box>
         </Tooltip>
-        <Text variant="titleSmall" >
+        <Text variant="titleSmall">
           <Trans i18nKey="common.options" />
         </Text>
       </Box>
@@ -235,7 +240,6 @@ const OptionsSection = ({
             <EmptyState
               btnTitle="kitDesigner.newOption"
               title="kitDesigner.optionsEmptyState"
-              SubTitle="kitDesigner.optionsEmptyStateDetailed"
               onAddNewRow={handleAddNewRow}
               disabled={Boolean(selectedAnswerRange)}
               disableTextBox={<Trans i18nKey="kitDesigner.emptyAnswerRange" />}

@@ -1,5 +1,4 @@
 import { useState } from "react";
-import TextField from "@mui/material/TextField";
 import IconButton from "@mui/material/IconButton";
 import Box from "@mui/material/Box";
 import CheckRoundedIcon from "@mui/icons-material/CheckRounded";
@@ -9,6 +8,7 @@ import { styles } from "@/config/styles";
 import MultiLangTextField from "@/components/common/fields/MultiLangTextField";
 import { useKitDesignerContext } from "@/providers/kit-provider";
 import { useTranslationUpdater } from "@/hooks/useTranslationUpdater";
+import { NumberField } from "@/components/common/fields/NumberField";
 
 interface MaturityLevelFormProps {
   newMaturityLevel: {
@@ -60,17 +60,21 @@ const MaturityLevelForm = ({
         sx={{ ...styles.centerCVH, bgcolor: "background.container" }}
         borderRadius="0.5rem"
       >
-        <TextField
-          type="number"
-          name="value"
+        <NumberField
           required
-          value={newMaturityLevel.value}
-          onChange={handleInputChange}
-          size="small"
+          name="value"
+          label={<Trans i18nKey="common.index" />}
+          value={newMaturityLevel.value ?? ""}
+          onChange={(next) =>
+            setNewMaturityLevel((prev: any) => ({ ...prev, value: next }))
+          }
+          min={1}
+          type="int"
+          fullWidth
           inputProps={{
             "data-testid": "value-id",
-            style: { textAlign: "center", width: 40 },
           }}
+          margin="normal"
           sx={{
             backgroundColor: "background.containerLowest",
             "& .MuiInputBase-root": { fontSize: 14 },

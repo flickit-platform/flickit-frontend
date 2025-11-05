@@ -5,11 +5,11 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import TableCell from "@mui/material/TableCell";
 import TableBody from "@mui/material/TableBody";
-import TextField from "@mui/material/TextField";
 import { ICustomError } from "@/utils/custom-error";
 import { useServiceContext } from "@/providers/service-provider";
 import showToast from "@/utils/toast-error";
 import { Text } from "@/components/common/Text";
+import { NumberField } from "@/components/common/fields/NumberField";
 
 interface CompetencesTableProps {
   data: Array<{ id: number; title: string; competences: any[] }>;
@@ -41,13 +41,6 @@ const CompetencesTable = ({
       value: currentValue,
       originalValue: currentValue,
     });
-  };
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setEditState((prev) => ({
-      ...prev,
-      value: e.target.value,
-    }));
   };
 
   const handleSave = async (
@@ -159,10 +152,18 @@ const CompetencesTable = ({
                     }
                   >
                     {isEditing ? (
-                      <TextField
-                        type="number"
-                        value={editState.value}
-                        onChange={handleChange}
+                      <NumberField
+                        type="int"
+                        value={Number(editState.value)}
+                        onChange={(next) =>
+                          setEditState((prev: any) => ({
+                            ...prev,
+                            value: next,
+                          }))
+                        }
+                        min={1}
+                        size="small"
+                        variant="outlined"
                         onBlur={() =>
                           handleSave(row.id, column.id, competence?.id)
                         }
@@ -170,7 +171,6 @@ const CompetencesTable = ({
                           if (e.key === "Enter")
                             handleSave(row.id, column.id, competence?.id);
                         }}
-                        size="small"
                         sx={{
                           mt: -1,
                           "& .MuiInputBase-input": {
@@ -180,6 +180,9 @@ const CompetencesTable = ({
                           },
                           width: "80px",
                           height: "20px",
+                        }}
+                        inputProps={{
+                          "data-testid": "value-id",
                         }}
                       />
                     ) : (

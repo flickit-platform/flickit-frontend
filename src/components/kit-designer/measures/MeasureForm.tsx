@@ -7,6 +7,7 @@ import { useKitDesignerContext } from "@/providers/kit-provider";
 import MultiLangTextField from "@/components/common/fields/MultiLangTextField";
 import { useTranslationUpdater } from "@/hooks/useTranslationUpdater";
 import { styles } from "@styles";
+import { NumberField } from "@/components/common/fields/NumberField";
 
 interface MeasureFormProps {
   newMeasure: {
@@ -54,21 +55,20 @@ const MeasureForm = ({
         px={1.25}
         sx={{ ...styles.centerH }}
       >
-        <Box
-          component="input"
-          name="value"
-          type="number"
+        <NumberField
           required
-          value={newMeasure.value}
-          onChange={handleInputChange}
-          data-testid="value-id"
-          textAlign="center"
-          width="40px"
-          height="40px"
-          fontSize="14px"
-          border="1px solid #ccc"
-          borderRadius="6px"
-          bgcolor="background.containerLowest"
+          name="value"
+          value={newMeasure.value ?? ""}
+          onChange={(next) =>
+            setNewMeasure((prev: any) => ({ ...prev, value: next }))
+          }
+          min={1}
+          type="int"
+          fullWidth
+          inputProps={{
+            "data-testid": "value-id",
+          }}
+          margin="normal"
         />
       </Box>
 

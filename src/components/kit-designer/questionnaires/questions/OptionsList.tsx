@@ -16,6 +16,7 @@ import Add from "@mui/icons-material/Add";
 import { useKitDesignerContext } from "@/providers/kit-provider";
 import TitleWithTranslation from "@/components/common/fields/TranslationText";
 import { Text } from "@/components/common/Text";
+import { NumberField } from "@/components/common/fields/NumberField";
 
 interface OptionListProps {
   Options: Array<IOption>;
@@ -38,7 +39,7 @@ const OptionList = (props: OptionListProps) => {
     isAddingNew,
     setIsAddingNew,
     disableAddOption,
-    isDragDisabled
+    isDragDisabled,
   } = props;
 
   const [reorderedItems, setReorderedItems] = useState(Options);
@@ -167,7 +168,7 @@ const OptionRow = ({
   handleSaveClick,
   handleCancelClick,
   langCode,
-  isDragDisabled
+  isDragDisabled,
 }: {
   item: IOption;
   index: number;
@@ -181,7 +182,11 @@ const OptionRow = ({
 }) => {
   const isEditing = editMode === item.id;
   return (
-    <Draggable isDragDisabled={isDragDisabled} draggableId={item.id.toString()} index={index}>
+    <Draggable
+      isDragDisabled={isDragDisabled}
+      draggableId={item.id.toString()}
+      index={index}
+    >
       {(draggableProvided: any) => (
         <>
           <Box
@@ -284,20 +289,17 @@ const OptionValueSection = ({
 }: any) => (
   <Box sx={{ display: "flex", alignItems: "center" }}>
     {isEditing ? (
-      <TextField
-        type="number"
+      <NumberField
         required
-        value={tempValues?.value}
-        onChange={(e) =>
-          setTempValues({ ...tempValues, value: Number(e.target.value) })
-        }
-        variant="outlined"
-        size="small"
+        type="int"
         label={<Trans i18nKey="common.score" />}
-        sx={{
-          fontSize: 14,
-          "& .MuiInputBase-root": { fontSize: 14, overflow: "auto" },
-          "& .MuiFormLabel-root": { fontSize: 14 },
+        value={tempValues?.value}
+        onChange={(next) => setTempValues({ ...tempValues, value: next })}
+        min={0}
+        size="small"
+        variant="outlined"
+        inputProps={{
+          "data-testid": "value-id",
         }}
       />
     ) : (
