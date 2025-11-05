@@ -89,22 +89,23 @@ const ImpactForm: React.FC<ImpactFormProps> = ({
           ))}
         </Select>
       ))}
-      <NumberField
-        required
-        type="int"
-        label={<Trans i18nKey="common.weight" />}
-        value={newItem?.weight}
-        onChange={(next) =>
-          setNewItem((prev: any) => ({ ...prev, weight: next }))
-        }
-        min={0}
-        size="small"
-        variant="outlined"
-        inputProps={{
-          "data-testid": "weight-id",
-        }}
-      />
-
+      <Box width={100}>
+        <NumberField
+          required
+          type="int"
+          label={<Trans i18nKey="common.weight" />}
+          value={newItem?.weight}
+          onChange={(next) =>
+            setNewItem((prev: any) => ({ ...prev, weight: next }))
+          }
+          min={0}
+          size="small"
+          variant="outlined"
+          inputProps={{
+            "data-testid": "weight-id",
+          }}
+        />
+      </Box>
       <Box sx={{ ...styles.centerV }}>
         <IconButton size="small" color="primary" onClick={handleSave}>
           <CheckIcon />

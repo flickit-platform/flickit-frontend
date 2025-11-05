@@ -18,6 +18,7 @@ import EmptyState from "../../common/EmptyState";
 import { t } from "i18next";
 import showToast from "@/utils/toast-error";
 import { styles } from "@styles";
+import { WIDTH } from "./QuestionDialog";
 
 const OptionsSection = ({
   question,
@@ -169,8 +170,8 @@ const OptionsSection = ({
           }
           sx={{ width: "100%" }}
         >
-          <Box sx={{ ...styles.centerV, gap: 1.5, flex: 1, width: "100%" }}>
-            <Text variant={"titleSmall"} minWidth="112px">
+          <Box sx={{ ...styles.centerV, flex: 1, width: "100%" }}>
+            <Text variant={"titleSmall"} width={WIDTH}>
               {t("common.answerRange")}
             </Text>
             <Box sx={{ flex: 1 }}>
