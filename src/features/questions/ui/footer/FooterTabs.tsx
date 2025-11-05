@@ -6,7 +6,7 @@ import TabContext from '@mui/lab/TabContext';
 import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
 
-const EvidenceContainer = () => {
+const FooterTabs = () => {
   const { handleChange, selectedTab, tabItems, ActiveComponent, ...rest } = useTabs();
 
   return (
@@ -27,4 +27,4 @@ const EvidenceContainer = () => {
   );
 };
 
-export default EvidenceContainer;
+export default FooterTabs;

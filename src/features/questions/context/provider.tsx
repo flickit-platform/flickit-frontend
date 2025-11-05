@@ -8,11 +8,13 @@ interface IQuestionsProviderProps {
 export interface IQuestionsContext {
   questions: any;
   selectedQuestion: any;
+  tabData: any
 }
 
 export const QuestionsContext = createContext<IQuestionsContext>({
   questions: [],
   selectedQuestion: null,
+  tabData: []
 });
 
 const QuestionsDispatchContext = createContext<any>({
@@ -23,6 +25,7 @@ export const Provider: FC<IQuestionsProviderProps> = ({ children }) => {
   const [state, dispatch] = useReducer(questionReducer, {
     questions: [],
     selectedQuestion: null,
+    tabData: []
   });
 
   return (

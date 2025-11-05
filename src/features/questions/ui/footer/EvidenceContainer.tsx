@@ -22,7 +22,7 @@ const INITIAL_DELETE_DIALOG_STATE: ConfirmDeleteDialogState = {
   type: null,
 };
 
-const EvidenceList: React.FC<EvidenceListProps> = ({
+const EvidenceContainer: React.FC<EvidenceListProps> = ({
                                                      data: evidenceItems,
                                                      deleteItemAndRefresh,
                                                      refreshTab,
@@ -75,4 +75,4 @@ const EvidenceList: React.FC<EvidenceListProps> = ({
   );
 };
 
-export default EvidenceList;
+export default EvidenceContainer;

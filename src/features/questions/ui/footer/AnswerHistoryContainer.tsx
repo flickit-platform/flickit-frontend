@@ -1,4 +1,4 @@
-const AnswerHistory = (props) => {
+const AnswerHistoryContainer = () => {
     return (
         <div>
             AnswerHistory
@@ -6,4 +6,4 @@ const AnswerHistory = (props) => {
     );
 };
 
-export default AnswerHistory;
+export default AnswerHistoryContainer;

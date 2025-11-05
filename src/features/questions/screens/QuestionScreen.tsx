@@ -3,7 +3,7 @@ import { useQuestionContext } from "../context";
 import {useAssessmentContext} from "@providers/assessment-provider";
 import {useMemo} from "react";
 import {ASSESSMENT_MODE} from "@utils/enum-type";
-import EvidenceContainer from "@/features/questions/ui/footer/Container";
+import FooterTabs from "@/features/questions/ui/footer/FooterTabs";
 
 const QuestionScreen = () => {
   const { assessmentInfo } = useAssessmentContext();
@@ -18,7 +18,7 @@ const QuestionScreen = () => {
   const { selectedQuestion } = useQuestionContext();
   return <>
     {selectedQuestion?.title}
-    {isAdvanceMode && <EvidenceContainer />}
+    {isAdvanceMode && <FooterTabs />}
   </>;
 };
 

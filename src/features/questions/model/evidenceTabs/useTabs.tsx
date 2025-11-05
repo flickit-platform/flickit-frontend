@@ -1,11 +1,11 @@
-import { lazy, SyntheticEvent, useEffect, useMemo, useRef, useState } from "react";
+import { lazy, SyntheticEvent, useEffect, useMemo, useState } from "react";
 import showToast from "@utils/toast-error";
 import { ICustomError } from "@utils/custom-error";
 import useFetchData from "@/features/questions/model/evidenceTabs/useFetchData";
 import {useQuestionContext} from "@/features/questions/context";
 import { useTranslation } from "react-i18next";
-const EvidenceList = lazy(() => import("@/features/questions/ui/footer/EvidenceList"));
-const AnswerHistory = lazy(() => import("@/features/questions/ui/footer/AnswerHistory"));
+const EvidenceContainer = lazy(() => import("@/features/questions/ui/footer/EvidenceContainer"));
+const AnswerHistoryContainer = lazy(() => import("@/features/questions/ui/footer/AnswerHistoryContainer"));
 
 type TabValue = "evidence" | "comment" | "answerHistory";
 
@@ -25,9 +25,9 @@ interface EvidenceData {
 }
 
 const TAB_ITEMS: TabItem[] = [
-  { index: 0, label: "questions_temp.evidences", value: "evidence", component: EvidenceList },
-  { index: 1, label: "questions_temp.comments", value: "comment", component: EvidenceList },
-  { index: 2, label: "questions_temp.answerHistories", value: "answerHistory", component: AnswerHistory },
+  { index: 0, label: "questions_temp.evidences", value: "evidence", component: EvidenceContainer },
+  { index: 1, label: "questions_temp.comments", value: "comment", component: EvidenceContainer },
+  { index: 2, label: "questions_temp.answerHistories", value: "answerHistory", component: AnswerHistoryContainer },
 ];
 
 const useTabs = () => {
@@ -51,7 +51,7 @@ const useTabs = () => {
     setSelectedTab(newValue);
   };
 
-  const ActiveComponent = useMemo(() => {
+  const ActiveComponent = useMemo<any>(() => {
     const activeTab = tabItems.find((item) => item.value === selectedTab);
     return activeTab?.component ?? null;
   }, [selectedTab, tabItems]);

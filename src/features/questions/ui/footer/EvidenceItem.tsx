@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {Box, IconButton, Avatar, Button} from "@mui/material";
+import {Box, IconButton, Avatar} from "@mui/material";
 import {t} from "i18next";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
@@ -13,11 +13,6 @@ import {useServiceContext} from "@providers/service-provider";
 import useEvidenceBox from "@/features/questions/model/evidenceTabs/useEvidenceBox";
 import EvidenceDetail from "@/features/questions/ui/footer/EvidenceDetail";
 import uniqueId from "@utils/unique-id";
-
-interface ButtonConfig {
-    icon: React.ReactNode;
-    onClick: () => void;
-}
 
 interface EvidenceItemProps {
     id: string;
@@ -177,10 +172,10 @@ const HeaderItem: React.FC<any> = ({
     );
 };
 
-const ActionButtons = ({actions}) => {
+const ActionButtons = ({actions}: {actions: any}) => {
     return (
         <Box sx={{...styles.centerV, gap: 1}} onClick={(e) => e.stopPropagation()}>
-            {actions.map((button) => (
+            {actions.map((button: any) => (
                 <IconButton key={uniqueId()} onClick={button.onClick} sx={{p: 0.4}}>
                     {button.icon}
                 </IconButton>
