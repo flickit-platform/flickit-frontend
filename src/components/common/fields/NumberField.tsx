@@ -122,7 +122,7 @@ export const NumberField: React.FC<NumberFieldProps> = ({
       type="number"
       inputMode={type === "float" ? "decimal" : "numeric"}
       inputProps={{
-        ...(textFieldProps.inputProps || {}),
+        ...textFieldProps.inputProps,
         step: type === "float" ? "any" : 1,
         min,
         max,

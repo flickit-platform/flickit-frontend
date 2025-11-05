@@ -38,6 +38,30 @@ interface ITempValue {
   translations: { [key: string]: { title: string; hint: string } } | null;
 }
 
+export const WIDTH = i18next.language === "fa" ? "96px" : "124px";
+
+const fieldsName = [
+  {
+    name: "title",
+    label: "common.question",
+    multiline: true,
+    useRichEditor: false,
+    type: "text" as const,
+    options: [],
+    disabled: false,
+    width: i18next.language === "fa" ? "70px" : "84px",
+  },
+  {
+    name: "hint",
+    label: "common.hint",
+    multiline: true,
+    useRichEditor: false,
+    type: "text" as const,
+    options: [],
+    disabled: false,
+    width: i18next.language === "fa" ? "70px" : "84px",
+  },
+];
 interface IQuestionDetailsDialogDialogProps extends DialogProps {
   onClose: () => void;
   onPreviousQuestion: () => void;
@@ -81,7 +105,6 @@ const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
     editableFields,
     toggleTranslation,
     showTranslations,
-    fieldsName,
     handleCancelTextBox,
   } = useQuestionInfo(langCode, question, setTempValue);
 
@@ -264,7 +287,7 @@ const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
                     mt="2px"
                     height="100%"
                     whiteSpace="nowrap"
-                    minWidth="84px"
+                    width={width}
                   >
                     <Trans i18nKey={label} />{" "}
                     {name === "title" ? ` ${index + 1} ` : ""}
@@ -297,7 +320,7 @@ const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
           })}
 
           <Grid size={{ xs: 12 }} sx={{ ...styles.centerV, flex: 1 }}>
-            <Text variant={"titleSmall"} minWidth="124px">
+            <Text variant={"titleSmall"} width={WIDTH}>
               <Trans i18nKey="common.measure" />
             </Text>
             <Box sx={{ flex: 1 }}>
@@ -458,36 +481,12 @@ const useQuestionInfo = (
     }));
   }, []);
 
-  const fieldsName = [
-    {
-      name: "title",
-      label: "common.question",
-      multiline: true,
-      useRichEditor: false,
-      type: "text" as const,
-      options: [],
-      disabled: false,
-      width: i18next.language === "fa" ? "35px" : "60px",
-    },
-    {
-      name: "hint",
-      label: "common.hint",
-      multiline: true,
-      useRichEditor: false,
-      type: "text" as const,
-      options: [],
-      disabled: false,
-      width: i18next.language === "fa" ? "35px" : "60px",
-    },
-  ];
-
   return {
     editableFields,
     handleFieldEdit,
     handleCancelTextBox,
     toggleTranslation,
     showTranslations,
-    fieldsName,
   };
 };
 
