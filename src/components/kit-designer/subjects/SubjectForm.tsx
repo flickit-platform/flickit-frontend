@@ -74,6 +74,7 @@ const SubjectForm = ({
           size="small"
           variant="outlined"
           inputProps={{
+            "data-testid": "value-id",
             style: { textAlign: "center", width: 40 },
           }}
           sx={{
@@ -156,6 +157,7 @@ const SubjectForm = ({
           size="small"
           variant="outlined"
           inputProps={{
+            "data-testid": "weight-id",
             style: { textAlign: "center", width: 40 },
           }}
           sx={{

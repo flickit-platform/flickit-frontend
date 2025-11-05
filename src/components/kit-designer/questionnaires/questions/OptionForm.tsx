@@ -88,7 +88,7 @@ const OptionForm = (props: OptionFormProps) => {
           max={1}
           type="float"
           fullWidth
-          inputProps={{ "data-testid": "title-id" }}
+          inputProps={{ "data-testid": "value-id" }}
           margin="normal"
           sx={{
             mt: 0.3,

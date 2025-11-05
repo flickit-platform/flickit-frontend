@@ -154,7 +154,7 @@ const OptionContain = (props: any) => {
               type="float"
               fullWidth
               inputProps={{
-                "data-testid": "title-id",
+                "data-testid": "value-id",
                 style: { width: 40, textAlign: "center" },
               }}
               margin="normal"

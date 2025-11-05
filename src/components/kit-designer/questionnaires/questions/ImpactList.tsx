@@ -224,6 +224,7 @@ const ImpactDetails = ({
             size="small"
             variant="outlined"
             inputProps={{
+              "data-testid": "value-id",
               style: { textAlign: "center", width: 40 },
             }}
             sx={textFieldStyle}

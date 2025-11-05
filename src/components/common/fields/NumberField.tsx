@@ -27,39 +27,39 @@ export const NumberField: React.FC<NumberFieldProps> = ({
   ...textFieldProps
 }) => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    let s = e.target.value;
+    let string = e.target.value;
 
-    if (acceptComma) s = s.replace(/,/g, ".");
+    if (acceptComma) string = string.replace(/,/g, ".");
 
-    if (s === "") {
-      if (allowEmpty) onChange(s);
+    if (string === "") {
+      if (allowEmpty) onChange(string);
       return;
     }
 
-    if (min < 0 && s === "-") {
-      onChange(s);
+    if (min < 0 && string === "-") {
+      onChange(string);
       return;
     }
 
     if (type === "float") {
-      if (s === "." || s === "0." || (min < 0 && (s === "-." || s === "-0."))) {
-        onChange(s);
+      if (string === "." || string === "0." || (min < 0 && (string === "-." || string === "-0."))) {
+        onChange(string);
         return;
       }
-      if (!/^-?\d*\.?\d*$/.test(s)) return;
+      if (!/^-?\d*\.?\d*$/.test(string)) return;
     } else {
       // int
-      if (!/^-?\d*$/.test(s)) return;
+      if (!/^-?\d*$/.test(string)) return;
     }
 
-    let num = Number(s);
+    let num = Number(string);
     if (!Number.isFinite(num)) return;
 
     if (type === "int") num = Math.trunc(num);
     if (num < min) num = min;
     if (num > max) num = max;
 
-    onChange(String(num));
+    onChange(num);
   };
 
   return (

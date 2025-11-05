@@ -190,6 +190,7 @@ const CompetencesTable = ({
                           height: "20px",
                         }}
                         inputProps={{
+                          "data-testid": "value-id",
                           style: { textAlign: "center", width: 40 },
                         }}
                       />

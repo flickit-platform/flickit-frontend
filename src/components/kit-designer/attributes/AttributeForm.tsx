@@ -148,6 +148,7 @@ const AttributeForm = ({
             size="small"
             variant="outlined"
             inputProps={{
+              "data-testid": "weight-id",
               style: { textAlign: "center", width: 40 },
             }}
             sx={{

@@ -100,6 +100,9 @@ const ImpactForm: React.FC<ImpactFormProps> = ({
         min={0}
         size="small"
         variant="outlined"
+        inputProps={{
+          "data-testid": "weight-id",
+        }}
       />
 
       <Box sx={{ ...styles.centerV }}>
