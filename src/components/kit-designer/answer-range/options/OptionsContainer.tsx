@@ -143,7 +143,7 @@ const OptionContain = (props: any) => {
           <Box sx={{ width: { xs: "20%", md: "10%" }, textAlign: "center" }}>
             <NumberField
               required
-              label={<Trans i18nKey="common.score" />}
+              label={t("common.score")}
               name="value"
               value={tempValues.value ?? ""}
               onChange={(next) =>
