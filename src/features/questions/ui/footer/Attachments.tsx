@@ -1,11 +1,8 @@
-import React, { Fragment, useEffect, useState } from "react";
+import React, { Fragment, useState } from "react";
 import { Box, Chip, Divider, Accordion, AccordionSummary, AccordionDetails, useTheme } from "@mui/material";
-import { useForm } from "react-hook-form";
 import { t } from "i18next";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import AttachFileIcon from "@mui/icons-material/AttachFile";
-import FormProviderWithForm from "@common/FormProviderWithForm";
-import RichEditorField from "@common/fields/RichEditorField";
 import { Text } from "@/components/common/Text";
 import { styles } from "@styles";
 import uniqueId from "@/utils/unique-id";
@@ -16,12 +13,8 @@ import { ICustomError } from "@utils/custom-error";
 import toastError from "@utils/toast-error";
 import { downloadFile } from "@utils/download-file";
 import Tooltip from "@mui/material/Tooltip";
-import Radio from '@mui/material/Radio';
-import RadioGroup from '@mui/material/RadioGroup';
-import FormControlLabel from '@mui/material/FormControlLabel';
 import useFetchData from "@/features/questions/model/evidenceTabs/useFetchData";
 import {setTab, useQuestionContext, useQuestionDispatch} from "@/features/questions/context";
-import useSelectQuery from "@/features/questions/model/evidenceTabs/useSelectQuery";
 
 interface Attachment {
     link: string;
@@ -33,19 +26,6 @@ interface Attachment {
     email : string | null;
     id: string
   }
-}
-
-interface EvidenceDetailProps {
-    editId: string | null;
-    description: string;
-    id: string;
-    isEditing: boolean;
-    fetchAttachment?: (id: string, type: string) => Promise<{ attachments: Attachment[] }>;
-    attachmentsCount?: number;
-    type: string;
-    removeAttachment: any;
-    editTemp:{description: string, selectedType: string},
-    setEditTemp: React.Dispatch<React.SetStateAction<{description: string, selectedType: string}>>
 }
 
 const ACCORDION_BASE_STYLE = {
@@ -92,44 +72,7 @@ const CHIP_STYLE = {
 
 const MAX_FILENAME_LENGTH = 20;
 
-const EvidenceDetail: React.FC<EvidenceDetailProps> = ({
-                                                           editId,
-                                                           description,
-                                                           id: evidenceId,
-                                                           editTemp,
-                                                           setEditTemp,
-                                                           isEditing,
-                                                           fetchAttachment,
-                                                           attachmentsCount = 0,
-                                                           type,
-                                                           removeAttachment,
-                                                       }) => {
-    const hasAttachments = attachmentsCount > 0;
-
-    return (
-        <Box sx={{px: 2, pb: 2}}>
-            <DescriptionEvidence
-                description={description}
-                editId={editId}
-                evidenceId={evidenceId}
-                editTemp={editTemp}
-                setEditTemp={setEditTemp}
-                isEditing={isEditing}
-            />
-            {hasAttachments && fetchAttachment && (
-                <AttachmentEvidence
-                    type={type}
-                    fetchAttachment={fetchAttachment}
-                    evidenceId={evidenceId}
-                    attachmentsCount={attachmentsCount}
-                    removeAttachment={removeAttachment}
-                />
-            )}
-        </Box>
-    );
-};
-
-export const AttachmentEvidence: React.FC<any> = ({
+export const Attachments: React.FC<any> = ({
                                                evidenceId,
                                                attachmentsCount,
                                            }) => {
@@ -289,88 +232,4 @@ export const AttachmentEvidence: React.FC<any> = ({
     );
 };
 
-const DescriptionEvidence: React.FC<any> = ({
-                                                description,
-                                                editId,
-                                                evidenceId,
-                                                editTemp,
-                                                setEditTemp,
-                                            }) => {
-    const formMethods = useForm({ shouldUnregister: true });
-    const watchedDesc = formMethods.watch("evidence-description");
-
-
-    useEffect(() => {
-        const currentValue = formMethods.getValues()["evidence-description"] ?? description;
-      setEditTemp((prev: any) => ({ ...prev, description: currentValue }));
-    }, [watchedDesc, description, formMethods, setEditTemp]);
-
-    const isEditMode = editId === evidenceId;
-
-  const handleEvidenceChange = (event: any) => {
-    setEditTemp((prev: any) => ({ ...prev, selectedType: event.target.value }));
-  };
-    
-    return (
-
-            <Box width="100%" justifyContent="space-between" sx={{ ...styles.centerV, }}>
-                {isEditMode ? (
-                  <Box sx={{width: "100%", padding: "16px 0px"}}>
-                    <FormProviderWithForm formMethods={formMethods}>
-                      {editTemp.selectedType != "Comment" &&  <Box sx={{display: "flex", alignItems: "center", gap: 2}}>
-                        <Text variant="bodySmall" color="background.secondaryDark">{t("questions.typeOfEvidence")}</Text>
-                        <RadioGroup
-                          row
-                          aria-labelledby="demo-row-radio-buttons-group-label"
-                          name="row-radio-buttons-group"
-                          value={editTemp.selectedType}
-                          onChange={handleEvidenceChange}
-                        >
-                          <FormControlLabel
-                            value="Positive"
-                            control={<Radio sx={{padding: "4px"}} size="small"/>}
-                            label={<Text variant="bodySmall" color="background.secondaryDark">{t("questions.positiveEvidence")}</Text>}
-                            sx={{marginRight: 0}}
-                          />
-                          <FormControlLabel
-                            value="Negative"
-                            control={<Radio sx={{padding: "4px"}} size="small"/>}
-                            label={<Text variant="bodySmall" color="background.secondaryDark">{t("questions.negativeEvidence")}</Text>}
-                            sx={{marginRight: "16px"}}
-                          />
-                        </RadioGroup>
-                      </Box>
-                      }
-                      <Box
-                        sx={{
-                          width: "100%",
-                          mt: { xs: 26, sm: 17, md: 17, xl: 13 },
-                        }}
-                      >
-                        <RichEditorField
-                          name="evidence-description"
-                          label={t("common.description")}
-                          disable_label={false}
-                          required
-                          defaultValue={editTemp.description ?? ""}
-                          setEditTemp={setEditTemp}
-                          showEditorMenu
-                        />
-                      </Box>
-                    </FormProviderWithForm>
-                  </Box>
-                ) : (
-                    <Box sx={{  width: "100%", pt: 1 }}>
-                        <Text
-                            variant="bodyMedium"
-                            color="background.secondaryDark"
-                            dangerouslySetInnerHTML={{ __html: description }}
-                        />
-                    </Box>
-                )}
-            </Box>
-
-    );
-};
-
-export default EvidenceDetail;
+export default Attachments;

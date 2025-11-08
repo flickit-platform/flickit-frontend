@@ -19,23 +19,12 @@ import Radio from "@mui/material/Radio";
 import RichEditorField from "@common/fields/RichEditorField";
 import {useForm} from "react-hook-form";
 import UseFetchData from "@/features/questions/model/evidenceTabs/useFetchData";
-import {AttachmentEvidence} from "@/features/questions/ui/footer/EvidenceDetail";
-
-interface EvidenceListProps {
-  data: any[];
-  deleteItemAndRefresh: (evidenceId: string, type: string) => Promise<any>;
-  refreshTab: () => Promise<void>;
-}
+import Attachments from "@/features/questions/ui/footer/Attachments";
 
 const ICON_SIZE = {width: 24, height: 24};
-const EvidenceContainer: React.FC<EvidenceListProps> = ({
-                                                     data: evidenceItems,
-                                                     deleteItemAndRefresh,
-                                                     refreshTab,
-                                                     ...restProps
-                                                   }) => {
+const EvidenceContainer: React.FC<any> = () => {
 
-  const {tabData, deleteItem, editingItem} = useQuestionContext()
+  const {tabData, deleteItem} = useQuestionContext()
   const {data, activeTab} = tabData
   const dispatch = useQuestionDispatch()
   const {deleteEvidence, evidencesQueryData, commentesQueryData, } = UseFetchData()
@@ -61,8 +50,6 @@ const EvidenceContainer: React.FC<EvidenceListProps> = ({
 
   return (
       <Box sx={{ py: 2, px: 4 }}>
-
-
           {data?.[activeTab]?.map(item =>{
               return <Container >
                   <Header {...item} />
@@ -263,7 +250,7 @@ const Detail = (props) =>{
         </Box>
 
         {hasAttachments && (
-            <AttachmentEvidence
+            <Attachments
                 evidenceId={id}
                 attachmentsCount={attachmentsCount}
             />
