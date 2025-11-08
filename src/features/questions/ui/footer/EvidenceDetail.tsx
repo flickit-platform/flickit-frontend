@@ -19,6 +19,9 @@ import Tooltip from "@mui/material/Tooltip";
 import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
+import useFetchData from "@/features/questions/model/evidenceTabs/useFetchData";
+import {setTab, useQuestionContext, useQuestionDispatch} from "@/features/questions/context";
+import useSelectQuery from "@/features/questions/model/evidenceTabs/useSelectQuery";
 
 interface Attachment {
     link: string;
@@ -126,15 +129,19 @@ const EvidenceDetail: React.FC<EvidenceDetailProps> = ({
     );
 };
 
-const AttachmentEvidence: React.FC<any> = ({
-                                               fetchAttachment,
+export const AttachmentEvidence: React.FC<any> = ({
                                                evidenceId,
                                                attachmentsCount,
-                                               type,
-                                               removeAttachment
                                            }) => {
     const [expanded, setExpanded] = useState<boolean>(false);
     const [attachments, setAttachments] = useState<Attachment[]>([]);
+    const {fetchEvidenceAttachments, removeEvidenceAttachments,
+    evidencesQueryData,commentesQueryData
+    } = useFetchData()
+    const {tabData} = useQuestionContext()
+    const dispatch = useQuestionDispatch()
+
+    const {activeTab} = tabData
     const theme = useTheme()
     const tooltipStyle: any = {
     sx: {
@@ -145,6 +152,7 @@ const AttachmentEvidence: React.FC<any> = ({
         px: 0.5,
     } ,
   }
+
     const handleAccordionChange = async (
         _event: React.SyntheticEvent,
         isExpanded: boolean
@@ -152,13 +160,32 @@ const AttachmentEvidence: React.FC<any> = ({
         setExpanded(isExpanded);
 
         if (isExpanded) {
-            const result = await fetchAttachment(
-                evidenceId,
-                type === "Comment" ? "comment" : "evidence"
-            );
+            const result = await fetchEvidenceAttachments.query({evidence_id: evidenceId})
             setAttachments(result.attachments ?? []);
         }
     };
+
+    const handleDeleteAttachment = async (attachmentId: any) =>{
+        try {
+
+            const queryMap = {
+                evidence: evidencesQueryData,
+                comment: commentesQueryData,
+            }
+            const currentQuery = queryMap[activeTab];
+
+            await removeEvidenceAttachments.query({evidenceId, attachmentId })
+
+
+            const response = await currentQuery.query();
+            const items = response.items ?? [];
+            dispatch(setTab({ activeTab: activeTab, data: {...tabData.data, [activeTab]: items } }))
+
+        }catch (e){
+            const err = e as ICustomError;
+            toastError(err);
+        }
+    }
 
     const extractFileName = (link: string) => {
         const regex = /\/([^/?]+)\?/;
@@ -206,15 +233,6 @@ const AttachmentEvidence: React.FC<any> = ({
 
                         const handleDownloadAttachment = () =>{
                           downloadFile(attachment)
-                        }
-                        const handleDeleteAttachment = async (attachmentId: any) =>{
-                            try {
-                                const evidenceType = type === "Comment" ? "comment" : "evidence"
-                                await removeAttachment(evidenceId,attachmentId,evidenceType )
-                            }catch (e){
-                              const err = e as ICustomError;
-                              toastError(err);
-                            }
                         }
 
                         return (

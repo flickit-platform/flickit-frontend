@@ -24,6 +24,18 @@ const questionReducer = (
         ...prevState,
         tabData: action.payload,
       };
+    };
+    case QUESTION_ACTIONS_TYPE.SET_EDITING: {
+      return {
+        ...prevState,
+        editingItem: action.payload,
+      };
+    };
+    case QUESTION_ACTIONS_TYPE.SET_DELETE_ITEM: {
+      return {
+        ...prevState,
+        deleteItem: action.payload,
+      };
     }
     default:
       return prevState;

@@ -123,6 +123,10 @@ const HeaderItem: React.FC<any> = ({
         const type = boxType?.type
         setConfirmDeleteDialog({open: true, evidenceId: id, type});
     };
+    const handleDelete = () => {
+        const type = boxType?.type
+        setConfirmDeleteDialog({open: true, evidenceId: id, type});
+    };
 
     return (
         <Box sx={headerStyle}>

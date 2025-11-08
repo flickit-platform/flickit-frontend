@@ -14,7 +14,12 @@ const UseFetchData = () => {
         runOnMount: false,
     });
 
-    const RemoveEvidenceAttachments = useQuery({
+    const addEvidence = useQuery({
+        service: (args, config) => service.questions.evidences.save(args, config),
+        runOnMount: false,
+    });
+
+    const removeEvidenceAttachments = useQuery({
         service: (args, config) =>
             service.questions.evidences.removeAttachment(args, {}),
         runOnMount: false,
@@ -81,7 +86,8 @@ const UseFetchData = () => {
         evidencesQueryData,
         commentesQueryData,
         fetchEvidenceAttachments,
-        RemoveEvidenceAttachments
+        removeEvidenceAttachments,
+        addEvidence
     }
 };
 
