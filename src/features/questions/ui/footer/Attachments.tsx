@@ -55,9 +55,6 @@ const ACCORDION_SUMMARY_STYLE = {
         m: 0,
     },
     "& .MuiAccordionSummary-content.Mui-expanded": { margin: 0 },
-    "& .MuiAccordionSummary-expandIconWrapper": {
-        paddingInlineEnd: "10px",
-    },
 };
 
 const CHIP_STYLE = {
@@ -161,14 +158,14 @@ export const Attachments: React.FC<any> = ({
             >
                 <AccordionSummary expandIcon={<ExpandMoreIcon />} sx={ACCORDION_SUMMARY_STYLE}>
                     <Box sx={{ ...styles.centerVH, gap: 1 }}>
-                        <AttachFileIcon fontSize="small" sx={{ color: "primary.main" }} />
-                        <Text variant="bodySmall">
+                        <AttachFileIcon sx={{ color: "primary.main" ,width: 16, height: 16 }} />
+                        <Text variant="bodySmall" color="background.secondaryDark" sx={{fontWeight: 600}}>
                             {t("questions.attachments")} ({attachmentsCount})
                         </Text>
                     </Box>
                 </AccordionSummary>
 
-                <AccordionDetails sx={{ background: "#fff", p: 1, borderRadius: 1 }}>
+                <AccordionDetails sx={{ background: "#fff", p: 0, borderRadius: 1 }}>
                     {attachments.map((attachment, index) => {
                         const { id: attachmentId  } = attachment
                         const { name, extension } = extractFileName(attachment.link);
@@ -183,7 +180,8 @@ export const Attachments: React.FC<any> = ({
                                 <Box sx={{display: "flex", justifyContent: 'space-between', p: "6px 8px" }}>
                                     <Box sx={{ ...styles.centerV, gap: 1 }}>
                                         <Chip sx={CHIP_STYLE} label={extension} />
-                                        <Text>{formatFileName(name, extension)}</Text>
+                                        <Text variant="bodySmall"  color="background.secondaryDark">{formatFileName(name, extension)}</Text>
+                                      {attachment.description && <Text sx={{paddingInlineStart: 1}} variant="bodySmall" color="#627384">{attachment.description}</Text>}
                                     </Box>
                                     <Box>
                                       <Tooltip
