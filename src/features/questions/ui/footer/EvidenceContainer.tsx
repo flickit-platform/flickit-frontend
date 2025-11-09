@@ -51,7 +51,7 @@ const EvidenceContainer: React.FC<any> = () => {
   return (
       <Box sx={{ py: 2, px: 4 }}>
           {data?.[activeTab]?.map(item =>{
-              return <Box bgcolor={"background.background"} sx={{mb: 2, borderRadius: 1}}>
+              return <Box key={uniqueId()} bgcolor={"background.background"} sx={{mb: 2, borderRadius: 1}}>
                   <Header {...item} />
                   <Detail {...item} />
               </Box>
