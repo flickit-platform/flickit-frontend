@@ -21,7 +21,7 @@ import {useForm} from "react-hook-form";
 import UseFetchData from "@/features/questions/model/evidenceTabs/useFetchData";
 import Attachments from "@/features/questions/ui/footer/Attachments";
 
-const ICON_SIZE = {width: 24, height: 24};
+const ICON_SIZE = {width: 24, height: 24, color: "#627384"};
 const EvidenceContainer: React.FC<any> = () => {
 
   const {tabData, deleteItem} = useQuestionContext()
@@ -41,7 +41,7 @@ const EvidenceContainer: React.FC<any> = () => {
   };
 
   return (
-      <Box sx={{ py: 2, px: 4 }}>
+      <Box sx={{ py: 2, px: 3 }}>
           {data?.map((item: any) =>{
               return <Box key={item?.id} bgcolor={"background.background"} sx={{mb: 2, borderRadius: 1}}>
                   <Header {...item} />
@@ -81,6 +81,7 @@ const Header = (props: any) =>{
         py: 1,
         background: "#E8EBEE",
         borderInlineStart: `4px solid ${boxType.color}`,
+        borderRadius: 1
     };
 
     const labelStyle = {
@@ -112,7 +113,7 @@ const Header = (props: any) =>{
         <Box sx={headerStyle}>
             <Box sx={{...styles.centerVH, gap: 1}}>
                 <Avatar src={pictureLink} sx={{...ICON_SIZE, fontSize: 16}}/>
-                <Text variant="bodyMedium" color="background.secondaryDark">
+                <Text variant="bodyMedium" color="background.secondaryDark" sx={{fontWeight: 600}}>
                     {displayName}
                 </Text>
                 <Text variant="bodySmall" color="info.main">

@@ -153,7 +153,7 @@ export const Attachments: React.FC<any> = ({
     };
 
     return (
-        <Box>
+        <Box sx={{pt: 3}}>
             <Accordion
                 sx={ACCORDION_BASE_STYLE}
                 expanded={expanded}

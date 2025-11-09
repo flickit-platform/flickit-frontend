@@ -15,9 +15,16 @@ const FooterTabs = () => {
         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
           <TabList onChange={handleChange} aria-label="lab API tabs example">
             {tabItems.map((item: any) =>{
-              return  <Tab key={item.value} label={  <Text variant="bodyMedium">
+              return  <Tab key={item.value} label={  <Text variant="bodyMedium"
+                                                           sx={{
+                                                             textTransform: "none",
+                                                             color: selectedTab === item.value ? "primary.main" : "background.secondaryDark",
+                                                             fontWeight: selectedTab === item.value ? 600 : 400,
+                                                           }}
+              >
                 {item.label}{"  "}({item.counts})
-              </Text>} value={item.value} />
+              </Text>} value={item.value}
+              />
             })}
           </TabList>
         </Box>
