@@ -9,6 +9,22 @@ import { SidebarHeader } from "./SidebarHeader";
 import { QuestionsFilter } from "./QuestionsFilter";
 import { QuestionItem } from "./QuestionItem";
 import { useAssessmentMode } from "@/hooks/useAssessmentMode";
+import SidebarEmptyState from "../../assets/empty-state.svg";
+import { Text } from "@/components/common/Text";
+
+const EmptyState: React.FC<{ title: string }> = ({ title }) => (
+  <Box p={8} gap={2} sx={{ ...styles.centerCVH }}>
+    <Box
+      component="img"
+      src={SidebarEmptyState}
+      alt="empty state"
+      sx={{ width: "100%", maxWidth: 80 }}
+    />
+    <Text variant="bodyLarge" color="disabled.on" textAlign="center">
+      {title}
+    </Text>
+  </Box>
+);
 
 const SidebarContent = memo(({ questions }: Readonly<SideBarProps>) => {
   const { t } = useTranslation();
@@ -50,6 +66,7 @@ const SidebarContent = memo(({ questions }: Readonly<SideBarProps>) => {
           }),
         display: "flex",
         flexDirection: "column",
+        minHeight: "540px",
       }}
     >
       <SidebarHeader
@@ -71,28 +88,32 @@ const SidebarContent = memo(({ questions }: Readonly<SideBarProps>) => {
         filters={filterCheckboxes}
       />
 
-      <List
-        disablePadding
-        sx={[
-          {
-            py: uiState.isOpen ? 1 : 0.5,
-            flex: 1,
-            scrollbarGutter: "stable",
-            "& .MuiListItemButton-root": { my: 1 },
-          },
-        ]}
-      >
-        {filteredQuestionsList.map((item) => (
-          <Box key={item.key} sx={{ ...styles.centerCV }}>
-            <QuestionItem
-              {...item}
-              open={uiState.isOpen}
-              showChips={isAdvancedMode && uiState.showIssueChips}
-              onSelect={handleSelectItem}
-            />
-          </Box>
-        ))}
-      </List>
+      {filteredQuestionsList.length > 0 ? (
+        <List
+          disablePadding
+          sx={[
+            {
+              py: uiState.isOpen ? 1 : 0.5,
+              flex: 1,
+              scrollbarGutter: "stable",
+              "& .MuiListItemButton-root": { my: 1 },
+            },
+          ]}
+        >
+          {filteredQuestionsList.map((item) => (
+            <Box key={item.key} sx={{ ...styles.centerCV }}>
+              <QuestionItem
+                {...item}
+                open={uiState.isOpen}
+                showChips={isAdvancedMode && uiState.showIssueChips}
+                onSelect={handleSelectItem}
+              />
+            </Box>
+          ))}
+        </List>
+      ) : (
+        <EmptyState title={t("questions_temp.questionsEmptyState")} />
+      )}
     </Paper>
   );
 });
