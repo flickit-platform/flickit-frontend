@@ -1,5 +1,4 @@
 import Box from "@mui/material/Box";
-import TextField from "@mui/material/TextField";
 import IconButton from "@mui/material/IconButton";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
@@ -11,12 +10,14 @@ import { farsiFontFamily, primaryFontFamily } from "@config/theme";
 import { v3Tokens } from "@/config/tokens";
 import { styles } from "@styles";
 import { TId } from "@/types";
+import { NumberField } from "@/components/common/fields/NumberField";
 
 interface ImpactFormProps {
   newItem: Record<string, any>;
   handleInputChange: (field: string, value: any) => void;
   handleSave: () => void;
   handleCancel: () => void;
+  setNewItem: any;
   fields: {
     id: TId;
     name: string;
@@ -35,16 +36,12 @@ export const dropdownStyle = {
 const ImpactForm: React.FC<ImpactFormProps> = ({
   newItem,
   handleInputChange,
+  setNewItem,
   handleSave,
   handleCancel,
   fields,
 }) => {
   const handleSelectChange = (e: SelectChangeEvent<string>) => {
-    const { name, value } = e.target;
-    handleInputChange(name, value);
-  };
-
-  const handleTextFieldChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     handleInputChange(name, value);
   };
@@ -68,7 +65,7 @@ const ImpactForm: React.FC<ImpactFormProps> = ({
           sx={{
             ...dropdownStyle,
             fontFamily: farsiFontFamily,
-            bgcolor: "inherit",
+            bgcolor: "background.containerLowest",
           }}
           size="small"
           fullWidth
@@ -92,23 +89,23 @@ const ImpactForm: React.FC<ImpactFormProps> = ({
           ))}
         </Select>
       ))}
-
-      <TextField
-        required
-        name="weight"
-        label={<Trans i18nKey="common.weight" />}
-        value={newItem.weight}
-        onChange={handleTextFieldChange}
-        fullWidth
-        type="number"
-        size="small"
-        sx={{
-          mx: 1,
-          textFieldStyle,
-          width: "50%",
-        }}
-      />
-
+      <Box width={100}>
+        <NumberField
+          required
+          type="int"
+          label={<Trans i18nKey="common.weight" />}
+          value={newItem?.weight}
+          onChange={(next) =>
+            setNewItem((prev: any) => ({ ...prev, weight: next }))
+          }
+          min={0}
+          size="small"
+          variant="outlined"
+          inputProps={{
+            "data-testid": "weight-id",
+          }}
+        />
+      </Box>
       <Box sx={{ ...styles.centerV }}>
         <IconButton size="small" color="primary" onClick={handleSave}>
           <CheckIcon />
@@ -119,13 +116,6 @@ const ImpactForm: React.FC<ImpactFormProps> = ({
       </Box>
     </Box>
   );
-};
-
-const textFieldStyle = {
-  fontSize: 14,
-  ml: 2,
-  "& .MuiInputBase-root": { fontSize: 14, overflow: "auto" },
-  "& .MuiFormLabel-root": { fontSize: 14 },
 };
 
 export default ImpactForm;

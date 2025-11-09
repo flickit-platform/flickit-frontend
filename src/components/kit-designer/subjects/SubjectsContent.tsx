@@ -62,10 +62,9 @@ const SubjectsContent = () => {
   }, [fetchSubjectKit.data]);
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    const parsedValue = name === "value" ? parseInt(value) || 1 : value;
     setNewSubject((prev) => ({
       ...prev,
-      [name]: parsedValue,
+      [name]: value,
     }));
   };
 
@@ -137,7 +136,7 @@ const SubjectsContent = () => {
         title: subjectItem.title,
         weight: subjectItem.weight,
         description: subjectItem.description,
-        translations: subjectItem.translations
+        translations: subjectItem.translations,
       };
       await updateKitSubject.query({
         kitVersionId,

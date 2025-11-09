@@ -141,13 +141,9 @@ const QuestionnairePanel = ({
                         justifyContent="space-between"
                         width="100%"
                       >
-                        <Box display="flex" gap={0.5}>
-                          <Text variant="bodyMedium">{question.index}.</Text>{" "}
-                          <Text variant="bodyMedium" textAlign="justify">
-                            {" "}
-                            {question.title}
-                          </Text>
-                        </Box>
+                        <Text variant="bodyMedium" textAlign="justify">
+                          {question.index}. {question.title}
+                        </Text>
                         <Box display="flex" gap={1}>
                           {question.mayNotBeApplicable && (
                             <Chip
@@ -196,12 +192,12 @@ const QuestionnairePanel = ({
                             <Grid container>
                               {getTranslation(ques?.translations, "title") && (
                                 <>
-                                  <Grid size={{md: 12}}>
+                                  <Grid size={{ md: 12 }}>
                                     <Text variant="titleSmall" mb={0.5}>
                                       {t("kitDetail.questionTranslation")}
                                     </Text>
                                   </Grid>
-                                  <Grid size={{md:12}}>
+                                  <Grid size={{ md: 12 }}>
                                     <Text variant="bodyMedium" mb={1}>
                                       {getTranslation(
                                         ques?.translations,
@@ -213,7 +209,7 @@ const QuestionnairePanel = ({
                               )}
 
                               {ques?.hint && (
-                                <Grid size={{md: 12}} mb={2}>
+                                <Grid size={{ md: 12 }} mb={2}>
                                   <Text variant="titleSmall" mb={0.5}>
                                     {t("common.hint")}
                                   </Text>
@@ -233,13 +229,13 @@ const QuestionnairePanel = ({
                                 </Grid>
                               )}
 
-                              <Grid size={{xs: 12, md: 6}}>
+                              <Grid size={{ xs: 12, md: 6 }}>
                                 <InfoField
                                   label={t("common.measure")}
                                   value={ques.measure?.title}
                                 />
                               </Grid>
-                              <Grid size={{xs: 12, md: 6}}>
+                              <Grid size={{ xs: 12, md: 6 }}>
                                 <InfoField
                                   label={t("common.answerRange")}
                                   value={ques.answerRange?.title}

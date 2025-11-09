@@ -17,6 +17,7 @@
   "noEvidence": "No evidence",
   "typeOfEvidence": "Type of evidence",
   "positiveEvidence": "Positive evidence",
+  "questionsEmptyState": "No questions with the selected issues.",
   "questionsList": "Questions list ({{count}} questions)",
   "unanswered": "Unanswered"
 }

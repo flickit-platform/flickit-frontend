@@ -8,6 +8,7 @@ import { Trans } from "react-i18next";
 import { styles } from "@/config/styles";
 import languageDetector from "@/utils/language-detector";
 import { farsiFontFamily, primaryFontFamily } from "@config/theme";
+import { NumberField } from "@/components/common/fields/NumberField";
 
 interface QuestionFormProps {
   newItem: {
@@ -18,6 +19,7 @@ interface QuestionFormProps {
   handleInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   handleSave: () => void;
   handleCancel: () => void;
+  setNewItem: any;
 }
 
 const QuestionForm = ({
@@ -25,6 +27,7 @@ const QuestionForm = ({
   handleInputChange,
   handleSave,
   handleCancel,
+  setNewItem,
 }: QuestionFormProps) => (
   <Box
     mt={1.5}
@@ -44,26 +47,21 @@ const QuestionForm = ({
       mr={2}
       p={0.25}
     >
-      <TextField
+      <NumberField
         required
-        id="new-item"
-        type="number"
+        label={<Trans i18nKey="common.index" />}
         name="value"
-        value={newItem.value}
-        onChange={handleInputChange}
-        variant="outlined"
-        size="small"
+        value={newItem.value ?? ""}
+        onChange={(next) =>
+          setNewItem((prev: any) => ({ ...prev, value: next }))
+        }
+        min={1}
+        type="int"
+        fullWidth
         inputProps={{
-          "data-testid": "question-value",
-          style: { textAlign: "center", width: "40px" },
+          "data-testid": "value-id",
         }}
-        sx={{
-          fontSize: 14,
-          "& .MuiInputBase-root": {
-            fontSize: 14,
-          },
-          bgcolor: "background.containerLowest",
-        }}
+        margin="normal"
       />
     </Box>
 

@@ -1,5 +1,5 @@
 import { render, screen } from "@testing-library/react";
-import { vi } from "vitest";
+import { vi, expect } from "vitest";
 import SubjectTable from "@components/kit-designer/attributes/SubjectTable";
 import { KitLanguageProvider } from "@/providers/kit-provider";
 
@@ -71,9 +71,11 @@ describe("MaturityLevelList", () => {
     expect(screen.getByTestId("display-attribute-title")).toHaveTextContent(
       "attribute 1",
     );
-    expect(screen.getByTestId("display-attribute-description")).toHaveTextContent(
-      "description 1",
+    expect(
+      screen.getByTestId("display-attribute-description"),
+    ).toHaveTextContent("description 1");
+    expect(screen.getByTestId("display-attribute-weight")).toHaveTextContent(
+      "1",
     );
-    expect(screen.getByTestId("display-attribute-weight")).toHaveTextContent("1");
   });
 });

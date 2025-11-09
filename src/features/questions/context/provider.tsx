@@ -10,7 +10,8 @@ export interface IQuestionsContext {
   selectedQuestion: any;
   tabData: any;
   editingItem: any;
-  deleteItem: any
+  deleteItem: any;
+  filteredQuestions: any;
 }
 
 export const QuestionsContext = createContext<IQuestionsContext>({
@@ -18,7 +19,8 @@ export const QuestionsContext = createContext<IQuestionsContext>({
   selectedQuestion: null,
   tabData: [],
   editingItem: {},
-  deleteItem: {}
+  deleteItem: {},
+  filteredQuestions: null,
 });
 
 const QuestionsDispatchContext = createContext<any>({
@@ -31,7 +33,8 @@ export const Provider: FC<IQuestionsProviderProps> = ({ children }) => {
     selectedQuestion: null,
     tabData: [],
     editingItem: {},
-    deleteItem: {}
+    deleteItem: {},
+    filteredQuestions: null,
   });
 
   return (

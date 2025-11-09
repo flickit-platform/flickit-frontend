@@ -6,7 +6,6 @@ import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import Divider from "@mui/material/Divider";
 import { useParams } from "react-router-dom";
 import { IOption, KitDesignListItems, MultiLangs } from "@/types/index";
-import TextField from "@mui/material/TextField";
 import CheckRoundedIcon from "@mui/icons-material/CheckRounded";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import { useQuery } from "@/hooks/useQuery";
@@ -19,6 +18,7 @@ import { useKitDesignerContext } from "@/providers/kit-provider";
 import TitleWithTranslation from "@/components/common/fields/TranslationText";
 import { Text } from "@/components/common/Text";
 import { useTranslation } from "react-i18next";
+import { NumberField } from "@/components/common/fields/NumberField";
 
 interface ITempValues {
   title: string;
@@ -27,7 +27,7 @@ interface ITempValues {
 }
 
 const OptionContain = (props: any) => {
-  const {t} =useTranslation()
+  const { t } = useTranslation();
   const { kitState } = useKitDesignerContext();
   const langCode = kitState.translatedLanguage?.code;
 
@@ -139,35 +139,25 @@ const OptionContain = (props: any) => {
           )}
         </Box>
         {editMode === answerOption.id ? (
-          <TextField
-            required
-            value={tempValues.value}
-            onChange={(e) =>
-              setTempValues({
-                ...tempValues,
-                value: e.target.value,
-              })
-            }
-            variant="outlined"
-            fullWidth
-            size="small"
-            sx={{
-              mb: 1,
-              fontSize: 14,
-              "& .MuiInputBase-root": {
-                fontSize: 14,
-                overflow: "auto",
-              },
-              "& .MuiFormLabel-root": {
-                fontSize: 14,
-              },
-              width: { xs: "20%", md: "10%" },
-              bgcolor: "background.containerLowest",
-              borderRadius: "8px",
-            }}
-            name="value"
-            label={t("common.value")}
-          />
+          <Box sx={{ width: { xs: "20%", md: "10%" }, textAlign: "center" }}>
+            <NumberField
+              required
+              label={t("common.score")}
+              name="value"
+              value={tempValues.value ?? ""}
+              onChange={(next) =>
+                setTempValues((prev: any) => ({ ...prev, value: next }))
+              }
+              min={0}
+              max={1}
+              type="float"
+              fullWidth
+              inputProps={{
+                "data-testid": "value-id",
+              }}
+              margin="normal"
+            />
+          </Box>
         ) : (
           <Box sx={{ width: { xs: "20%", md: "10%" }, textAlign: "center" }}>
             {answerOption?.value}

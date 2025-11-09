@@ -202,7 +202,7 @@ const MaturityLevelList = ({
                       </IconButton>
                     </>
                   ) : (
-                    <>
+                    <Box display="flex" height="32px">
                       <IconButton
                         size="small"
                         onClick={() => handleEdit(item)}
@@ -225,7 +225,7 @@ const MaturityLevelList = ({
                       >
                         <DeleteOutlinedIcon fontSize="small" />
                       </IconButton>
-                    </>
+                    </Box>
                   )}
                 </Box>
               </Box>

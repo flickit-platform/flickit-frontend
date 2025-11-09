@@ -98,6 +98,6 @@ describe("AttributeForm", () => {
     fireEvent.click(saveButton);
 
     expect(handleInputChange).toHaveBeenCalled();
-    expect(handleInputChange).toHaveBeenCalledTimes(3);
+    expect(handleInputChange).toHaveBeenCalledTimes(2);
   });
 });

@@ -1,5 +1,4 @@
 import Box from "@mui/material/Box";
-import TextField from "@mui/material/TextField";
 import IconButton from "@mui/material/IconButton";
 import Link from "@mui/material/Link";
 import CheckIcon from "@mui/icons-material/Check";
@@ -12,6 +11,7 @@ import { useTranslationUpdater } from "@/hooks/useTranslationUpdater";
 import { MultiLangs } from "@/types";
 import { styles } from "@styles";
 import { Text } from "@/components/common/Text";
+import { NumberField } from "@/components/common/fields/NumberField";
 
 interface OptionFormProps {
   newItem: {
@@ -57,7 +57,7 @@ const OptionForm = (props: OptionFormProps) => {
           width: "120px",
         }}
       >
-        {`${t("option")} ${newItem.index}`}
+        {`${t("common.option")} ${newItem.index}`}
       </Text>
 
       <Box width="100%" mx={1}>
@@ -71,31 +71,29 @@ const OptionForm = (props: OptionFormProps) => {
             langCode ? (newItem.translations?.[langCode]?.title ?? "") : ""
           }
           onTranslationChange={updateTranslation("title", setNewItem)}
-          placeholder={t("kitDesigner.questionPlaceholder")?.toString()}
+          placeholder={t("kitDesigner.optionPlaceholder")?.toString()}
         />
       </Box>
       <Box width="20%" mx={1}>
-        <TextField
+        <NumberField
           required
           label={<Trans i18nKey="common.score" />}
           name="value"
-          value={newItem.value}
-          onChange={handleInputChange}
+          value={newItem.value ?? ""}
+          onChange={(next) =>
+            setNewItem((prev: any) => ({ ...prev, value: next }))
+          }
+          min={0}
+          max={1}
+          type="float"
           fullWidth
-          inputProps={{
-            "data-testid": "title-id",
-          }}
+          inputProps={{ "data-testid": "value-id" }}
           margin="normal"
           sx={{
             mt: 0.3,
             fontSize: 14,
-            "& .MuiInputBase-root": {
-              height: 36,
-              fontSize: 14,
-            },
-            "& .MuiFormLabel-root": {
-              fontSize: 14,
-            },
+            "& .MuiInputBase-root": { height: 36, fontSize: 14 },
+            "& .MuiFormLabel-root": { fontSize: 14 },
             bgcolor: "background.containerLowest",
           }}
         />

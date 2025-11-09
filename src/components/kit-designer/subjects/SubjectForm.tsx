@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Box, IconButton, TextField } from "@mui/material";
+import { Box, IconButton } from "@mui/material";
 import CheckIcon from "@mui/icons-material/Check";
 import CloseIcon from "@mui/icons-material/Close";
 import { Trans } from "react-i18next";
@@ -8,7 +8,7 @@ import { styles } from "@/config/styles";
 import { useKitDesignerContext } from "@/providers/kit-provider";
 import { MultiLangs } from "@/types";
 import { useTranslationUpdater } from "@/hooks/useTranslationUpdater";
-import { Text } from "@/components/common/Text";
+import { NumberField } from "@/components/common/fields/NumberField";
 
 interface SubjectFormProps {
   newSubject: {
@@ -44,37 +44,6 @@ const SubjectForm = ({
     Boolean(newSubject.translations?.[langCode]?.description),
   );
 
-  const renderNumericField = (
-    name: "value" | "weight",
-    value: number,
-    testId?: string,
-    label?: string,
-  ) => (
-    <Box gap={0.5} sx={{ ...styles.centerCH }}>
-      {label && (
-        <Text variant="caption" color="textSecondary">
-          <Trans i18nKey={label} />
-        </Text>
-      )}
-      <TextField
-        name={name}
-        type="number"
-        value={value}
-        onChange={handleInputChange}
-        size="small"
-        variant="outlined"
-        inputProps={{
-          style: { textAlign: "center", width: 40 },
-          ...(testId ? { "data-testid": testId } : {}),
-        }}
-        sx={{
-          bgcolor: "background.containerLowest",
-          borderRadius: "8px",
-        }}
-      />
-    </Box>
-  );
-
   return (
     <Box
       mt={1.5}
@@ -93,7 +62,25 @@ const SubjectForm = ({
         sx={{ ...styles.centerCVH, bgcolor: "background.container" }}
         borderRadius="0.5rem"
       >
-        {renderNumericField("value", newSubject.value, "value-id")}
+        <NumberField
+          required
+          type="int"
+          value={newSubject.value}
+          label={<Trans i18nKey="common.index" />}
+          onChange={(next) =>
+            setNewSubject((prev: any) => ({ ...prev, value: next }))
+          }
+          min={1}
+          size="small"
+          variant="outlined"
+          inputProps={{
+            "data-testid": "value-id",
+          }}
+          sx={{
+            bgcolor: "background.containerLowest",
+            borderRadius: "8px",
+          }}
+        />
       </Box>
 
       {/* Multilingual Texts */}
@@ -158,7 +145,25 @@ const SubjectForm = ({
             <CloseIcon />
           </IconButton>
         </Box>
-        {renderNumericField("weight", newSubject.weight, undefined, "weight")}
+        <NumberField
+          required
+          type="int"
+          value={newSubject.weight}
+          label={<Trans i18nKey="common.weight" />}
+          onChange={(next) =>
+            setNewSubject((prev: any) => ({ ...prev, weight: next }))
+          }
+          min={0}
+          size="small"
+          variant="outlined"
+          inputProps={{
+            "data-testid": "weight-id",
+          }}
+          sx={{
+            bgcolor: "background.containerLowest",
+            borderRadius: "8px",
+          }}
+        />
       </Box>
     </Box>
   );

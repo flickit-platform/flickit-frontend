@@ -1,12 +1,10 @@
 import { ChangeEvent, useState } from "react";
 import Box from "@mui/material/Box";
 import IconButton from "@mui/material/IconButton";
-import SwapVertRoundedIcon from "@mui/icons-material/SwapVertRounded";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
 import CheckRoundedIcon from "@mui/icons-material/CheckRounded";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
-import TextField from "@mui/material/TextField";
 import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
 import { styles } from "@styles";
 import { KitDesignListItems } from "@/types/index";
@@ -20,6 +18,7 @@ import TitleWithTranslation from "@/components/common/fields/TranslationText";
 import { Text } from "@/components/common/Text";
 import { Divider } from "@mui/material";
 import { SwapVertRounded } from "@mui/icons-material";
+import { NumberField } from "@/components/common/fields/NumberField";
 
 interface ListOfItemsProps {
   items: Array<KitDesignListItems>;
@@ -248,11 +247,10 @@ const ListOfItems = ({
                             </IconButton>
                           </Box>
                         ) : (
-                          <>
+                          <Box display="flex" height="32px">
                             <IconButton
                               size="small"
                               onClick={() => handleEditClick(item)}
-                              sx={{ mx: 1 }}
                               data-testid="items-edit-icon"
                               color="primary"
                             >
@@ -273,7 +271,7 @@ const ListOfItems = ({
                                 <DeleteOutlinedIcon fontSize="small" />
                               </IconButton>
                             )}
-                          </>
+                          </Box>
                         )}
                       </Box>
 
@@ -356,42 +354,26 @@ const ListOfItems = ({
                               </Text>
 
                               {editable && editMode === item.id ? (
-                                <TextField
+                                <NumberField
                                   required
+                                  name={editableFieldKey}
+                                  type="int"
                                   value={
                                     tempValues?.[editableFieldKey] as number
                                   }
-                                  onChange={(e) =>
+                                  onChange={(next) =>
                                     setTempValues?.({
                                       ...tempValues,
-                                      [editableFieldKey]: Number(
-                                        e.target.value,
-                                      ),
+                                      [editableFieldKey]: next,
                                     })
                                   }
-                                  name={editableFieldKey}
-                                  variant="outlined"
-                                  fullWidth
+                                  min={0}
                                   size="small"
-                                  margin="normal"
-                                  type="number"
+                                  variant="outlined"
                                   inputProps={{
-                                    style: {
-                                      textAlign: "center",
-                                      width: "40px",
-                                    },
+                                    "data-testid": `${editableFieldKey}-id`,
                                   }}
                                   sx={{
-                                    mb: 1,
-                                    mt: 1,
-                                    fontSize: 14,
-                                    "& .MuiInputBase-root": {
-                                      fontSize: 14,
-                                      overflow: "auto",
-                                    },
-                                    "& .MuiFormLabel-root": {
-                                      fontSize: 14,
-                                    },
                                     bgcolor: "background.containerLowest",
                                     borderRadius: "8px",
                                   }}

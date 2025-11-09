@@ -118,8 +118,10 @@ const QuestionContain = (props: any) => {
           translation={langCode ? question.translations?.[langCode]?.title : ""}
           variant="semiBoldMedium"
           showCopyIcon
+          titleSx={{ textAlign: "justify" }}
+          translationSx={{ textAlign: "justify" }}
         />{" "}
-        <Box width={{ xs: "20%", md: "10%" }} sx={{ ...styles.centerH }}>
+        <Box display="flex" height="100%">
           <IconButton
             data-testid="question-handel-edit"
             onClick={() => handleQuestionClick(index)}

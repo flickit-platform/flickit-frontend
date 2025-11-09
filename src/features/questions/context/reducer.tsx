@@ -33,6 +33,12 @@ const questionReducer = (
         ...prevState,
         deleteItem: action.payload,
       };
+    case QUESTION_ACTIONS_TYPE.SET_FILTERED_QUESTIONS: {
+      return {
+        ...prevState,
+        filteredQuestions: action.payload,
+      };
+    }
     default:
       return prevState;
   }

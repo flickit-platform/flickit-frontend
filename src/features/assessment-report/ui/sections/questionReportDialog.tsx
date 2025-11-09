@@ -121,18 +121,9 @@ const InnerAccordion = ({
       {data?.map((item: any, index: number) => (
         <Box key={item?.question?.id || index} sx={{ px: 2 }}>
           <Box sx={{ display: "flex", alignItems: "center", mb: 1, gap: 1 }}>
-            <Box
-              sx={{
-                display: "flex",
-              }}
-            >
-              <Text variant="bodyMedium" fontWeight="bold">
-                Q
-              </Text>
-              <Text variant="bodyMedium" fontWeight="bold">
-                .{item.question.index}
-              </Text>
-            </Box>
+            <Text variant="bodyMedium" fontWeight="bold">
+              Q.{item.question.index}
+            </Text>
             <Text
               variant="bodySmall"
               sx={{
