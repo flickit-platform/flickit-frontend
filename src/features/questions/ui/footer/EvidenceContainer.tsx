@@ -50,11 +50,11 @@ const EvidenceContainer: React.FC<any> = () => {
 
   return (
       <Box sx={{ py: 2, px: 4 }}>
-          {data?.[activeTab]?.map(item =>{
-              return <Container >
+          {data?.[activeTab]?.map((item) =>{
+              return <Box key={item?.id} bgcolor={"background.background"} sx={{mb: 2, borderRadius: 1}}>
                   <Header {...item} />
                   <Detail {...item} />
-              </Container>
+              </Box>
           })}
 
         <DeleteConfirmationDialog
@@ -77,7 +77,6 @@ const Header = (props) =>{
     const dispatch = useQuestionDispatch()
     const { editingItem, tabData } =useQuestionContext()
     const { addEvidence, evidencesQueryData,commentesQueryData } = UseFetchData()
-
 
     const isEditing = editingItem?.id === id;
     const {boxType} = useEvidenceBox(type, isEditing);
@@ -257,17 +256,6 @@ const Detail = (props) =>{
         )}
     </Box>)
 }
-
-
-const Container = ({children}) =>{
-
-    return (
-        <Box bgcolor={"background.background"} sx={{mb: 2, borderRadius: 1}}>
-            {children}
-        </Box>
-    )
-}
-
 
 
 export default EvidenceContainer;
