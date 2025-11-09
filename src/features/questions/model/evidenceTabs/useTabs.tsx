@@ -14,6 +14,7 @@ interface TabItem {
   label: string;
   value: TabValue;
   component: React.LazyExoticComponent<any>;
+  counts: number
 }
 
 interface EvidenceData {
@@ -21,17 +22,25 @@ interface EvidenceData {
 }
 
 const TAB_ITEMS: TabItem[] = [
-  { index: 0, label: "questions_temp.evidences", value: "evidence", component: EvidenceContainer },
-  { index: 1, label: "questions_temp.comments", value: "comment", component: EvidenceContainer },
-  { index: 2, label: "questions_temp.answerHistories", value: "answerHistory", component: AnswerHistoryContainer },
+  { index: 0, label: "questions_temp.evidences", value: "evidence", component: EvidenceContainer, counts: 0 },
+  { index: 1, label: "questions_temp.comments", value: "comment", component: EvidenceContainer , counts: 0},
+  { index: 2, label: "questions_temp.answerHistories", value: "answerHistory", component: AnswerHistoryContainer, counts: 0 },
 ];
+
+
 
 const useTabs = () => {
   const {selectedQuestion} = useQuestionContext()
+  const {answerHistories, comments, evidences} = selectedQuestion?.counts ?? {}
   const questionId = selectedQuestion?.id
-
   const [selectedTab, setSelectedTab] = useState<TabValue>("evidence");
   const dispatch = useQuestionDispatch()
+
+  const tabCounts = {
+    evidence: evidences,
+    comment: comments,
+    answerHistory: answerHistories
+  };
 
   const { t } = useTranslation()
   const tabItems = useMemo(
@@ -39,6 +48,7 @@ const useTabs = () => {
           TAB_ITEMS.map((item) => ({
             ...item,
             label: t(item.label),
+            counts: tabCounts[item.value]
           })),
       []
   );

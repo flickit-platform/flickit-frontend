@@ -5,6 +5,7 @@ import Tab from "@mui/material/Tab";
 import TabContext from '@mui/lab/TabContext';
 import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
+import { Text } from "@/components/common/Text";
 
 const FooterTabs = () => {
   const { handleChange, selectedTab, tabItems, ActiveComponent,  } = useTabs();
@@ -14,7 +15,9 @@ const FooterTabs = () => {
         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
           <TabList onChange={handleChange} aria-label="lab API tabs example">
             {tabItems.map((item: any) =>{
-              return  <Tab key={item.value} label={item.label} value={item.value} />
+              return  <Tab key={item.value} label={  <Text variant="bodyMedium">
+                {item.label}{"  "}({item.counts})
+              </Text>} value={item.value} />
             })}
           </TabList>
         </Box>
