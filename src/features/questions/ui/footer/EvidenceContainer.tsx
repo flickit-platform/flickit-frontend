@@ -79,7 +79,7 @@ const Header = (props) =>{
     const { addEvidence, evidencesQueryData,commentesQueryData } = UseFetchData()
 
     const isEditing = editingItem?.id === id;
-    const {boxType} = useEvidenceBox(type, isEditing);
+    const {boxType} = useEvidenceBox(isEditing, type);
 
     const headerStyle = {
         ...styles.centerV,
@@ -194,7 +194,7 @@ const Detail = (props) =>{
     return (  <Box sx={{px: 2, pb: 2}}>
         <Box width="100%" justifyContent="space-between" sx={{ ...styles.centerV, }}>
             {isEditing ? (
-                <Box sx={{width: "100%", padding: "16px 0px"}}>
+                <Box sx={{width: "100%", padding: editingItem.type ? "16px 0px" : ""}}>
                     <FormProviderWithForm formMethods={formMethods}>
                         {editingItem.type &&  <Box sx={{display: "flex", alignItems: "center", gap: 2}}>
                             <Text variant="bodySmall" color="background.secondaryDark">{t("questions.typeOfEvidence")}</Text>
