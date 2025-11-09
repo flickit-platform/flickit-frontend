@@ -13,30 +13,26 @@ const questionReducer = (
         ...prevState,
         questions: action.payload,
       };
-    case QUESTION_ACTIONS_TYPE.SET_SELECTED_QUESTION: {
+    case QUESTION_ACTIONS_TYPE.SET_SELECTED_QUESTION:
       return {
         ...prevState,
         selectedQuestion: action.payload,
       };
-    };
-    case QUESTION_ACTIONS_TYPE.SET_SELECTED_Tab: {
+    case QUESTION_ACTIONS_TYPE.SET_SELECTED_Tab:
       return {
         ...prevState,
         tabData: action.payload,
       };
-    };
-    case QUESTION_ACTIONS_TYPE.SET_EDITING: {
+    case QUESTION_ACTIONS_TYPE.SET_EDITING:
       return {
         ...prevState,
         editingItem: action.payload,
       };
-    };
-    case QUESTION_ACTIONS_TYPE.SET_DELETE_ITEM: {
+    case QUESTION_ACTIONS_TYPE.SET_DELETE_ITEM:
       return {
         ...prevState,
         deleteItem: action.payload,
       };
-    }
     default:
       return prevState;
   }

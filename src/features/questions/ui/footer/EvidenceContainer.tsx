@@ -32,7 +32,7 @@ const EvidenceContainer: React.FC<any> = () => {
   const handleConfirmDelete = async () => {
     const { id } = deleteItem;
 
-    if (!id) return;
+    if (!id && activeTab) return;
 
       const queryMap = {
               evidence: evidencesQueryData,
@@ -51,16 +51,16 @@ const EvidenceContainer: React.FC<any> = () => {
   return (
       <Box sx={{ py: 2, px: 4 }}>
           {data?.[activeTab]?.map(item =>{
-              return <Container >
+              return <Box bgcolor={"background.background"} sx={{mb: 2, borderRadius: 1}}>
                   <Header {...item} />
                   <Detail {...item} />
-              </Container>
+              </Box>
           })}
 
         <DeleteConfirmationDialog
             open={deleteItem.open}
             onClose={()=>dispatch(setDelete({...deleteItem, open: false}))}
-            onConfirm={handleConfirmDelete}
+            onConfirm={()=>handleConfirmDelete()}
             content={{
               category: t("questions.evidence"),
               title: "",
@@ -80,7 +80,7 @@ const Header = (props) =>{
 
 
     const isEditing = editingItem?.id === id;
-    const {boxType} = useEvidenceBox(type, isEditing);
+    const {boxType} = useEvidenceBox(isEditing, type );
 
     const headerStyle = {
         ...styles.centerV,
@@ -195,7 +195,7 @@ const Detail = (props) =>{
     return (  <Box sx={{px: 2, pb: 2}}>
         <Box width="100%" justifyContent="space-between" sx={{ ...styles.centerV, }}>
             {isEditing ? (
-                <Box sx={{width: "100%", padding: "16px 0px"}}>
+                <Box sx={{width: "100%", padding: editingItem.type ? "16px 0px" : ""}}>
                     <FormProviderWithForm formMethods={formMethods}>
                         {editingItem.type &&  <Box sx={{display: "flex", alignItems: "center", gap: 2}}>
                             <Text variant="bodySmall" color="background.secondaryDark">{t("questions.typeOfEvidence")}</Text>
@@ -257,17 +257,5 @@ const Detail = (props) =>{
         )}
     </Box>)
 }
-
-
-const Container = ({children}) =>{
-
-    return (
-        <Box bgcolor={"background.background"} sx={{mb: 2, borderRadius: 1}}>
-            {children}
-        </Box>
-    )
-}
-
-
 
 export default EvidenceContainer;

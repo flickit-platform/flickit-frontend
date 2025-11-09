@@ -26,7 +26,7 @@ const EVIDENCE_BOX_STYLES: EvidenceBoxMap = {
   },
 };
 
-const useEvidenceBox = (type: string = "Comment", isEditing: boolean) => {
+const useEvidenceBox = (isEditing: boolean, type: string = "Comment") => {
 
   const getBoxType = (): StyleItem => {
     if (isEditing) {
