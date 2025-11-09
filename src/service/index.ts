@@ -34,7 +34,7 @@ function getAssessmentIdFromUrl(u?: string): string | undefined {
   const i = parts.findIndex((p) => p.toLowerCase() === "assessments");
   if (i === -1) return;
   const after = parts.slice(i + 1);
-  if (Number.isNaN(after[0])) return after[0];
+  if (isNaN(Number(after[0]))) return after[0];
   else return after[1];
 }
 
