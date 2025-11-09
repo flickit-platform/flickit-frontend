@@ -8,6 +8,7 @@
   "negativeEvidence": "شاهد منفی",
   "noEvidence": "بدون شاهد",
   "positiveEvidence": "شاهد مثبت",
+  "questionsEmptyState": "سوالی با مشکلات انتخاب‌شده موجود نیست.",
   "questionsList": "فهرست پرسش‌ها ({{count}} پرسش)",
   "unanswered": "بدون پاسخ"
 

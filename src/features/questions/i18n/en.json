@@ -8,6 +8,7 @@
   "negativeEvidence": "Negative evidence",
   "noEvidence": "No evidence",
   "positiveEvidence": "Positive evidence",
+  "questionsEmptyState": "No questions with the selected issues.",
   "questionsList": "Questions list ({{count}} questions)",
   "unanswered": "Unanswered"
 }
