@@ -41,7 +41,7 @@ const QuestionView = () => {
   );
 
   const { isAdvanced } = useAssessmentMode();
-  const { submit, isSubmitting } = useAnswerSubmit();
+  const { submit, isLoading, approve } = useAnswerSubmit();
 
   const answer = activeQuestion?.answer;
 
@@ -129,8 +129,8 @@ const QuestionView = () => {
 
   const ConfidenceIconContainer = (props: any) => {
     const { value, ...other } = props;
-    const isFilled = value <= current;      
-    const shouldBorder = !isFilled && value <= prev; 
+    const isFilled = value <= current;
+    const shouldBorder = !isFilled && value <= prev;
     return (
       <span {...other}>
         {isFilled ? (
@@ -189,13 +189,30 @@ const QuestionView = () => {
               const wasSelectedBefore =
                 !notApplicable && !isSelectedNow && prevSelectedId === id;
 
-              const borderColor =
-                isSelectedNow || wasSelectedBefore
+              const hasUnapproved =
+                activeQuestion?.issues?.hasUnapprovedAnswer === true;
+
+              const showApproveButton = hasUnapproved && prevSelectedId === id;
+
+              const borderColor = showApproveButton
+                ? "tertiary.main"
+                : isSelectedNow || wasSelectedBefore
                   ? "primary.main"
                   : "outline.variant";
 
+              const bgColor = showApproveButton ? "tertiary.bg" : "transparent";
+              const selectedBgColor = showApproveButton
+                ? "tertiary.bg"
+                : "primary.states.selected";
+
               return (
-                <Box key={id} mb={1}>
+                <Box
+                  display="flex"
+                  key={id}
+                  mb={1}
+                  gap={1}
+                  sx={{ ...styles.centerV }}
+                >
                   <ToggleButton
                     data-cy="answer-option"
                     color="primary"
@@ -212,10 +229,18 @@ const QuestionView = () => {
                       borderColor,
                       justifyContent: "flex-start",
                       height: 36,
+                      bgcolor: bgColor,
+                      "&.Mui-selected": {
+                        bgcolor: selectedBgColor,
+                      },
                     }}
                     disabled={notApplicable}
                   >
-                    <Checkbox checked={isSelectedNow} size="small" />
+                    <Checkbox
+                      checked={isSelectedNow}
+                      size="small"
+                      color={showApproveButton ? "warning" : "primary"}
+                    />
                     <Text
                       variant="bodyMedium"
                       textTransform="initial"
@@ -224,6 +249,16 @@ const QuestionView = () => {
                       {displayIndex}. {title}
                     </Text>
                   </ToggleButton>
+                  {showApproveButton && (
+                    <LoadingButton
+                      size="small"
+                      variant="contained"
+                      sx={{ bgcolor: "tertiary.main", height: 28 }}
+                      onClick={approve}
+                    >
+                      {t("common.approve")}
+                    </LoadingButton>
+                  )}
                 </Box>
               );
             })}
@@ -234,7 +269,9 @@ const QuestionView = () => {
             mt={1.5}
             display="flex"
             alignItems="center"
-            justifyContent="space-between"
+            justifyContent={
+              activeQuestion?.mayNotBeApplicable ? "space-between" : "flex-end"
+            }
           >
             {activeQuestion?.mayNotBeApplicable && (
               <FormControlLabel
@@ -256,9 +293,8 @@ const QuestionView = () => {
                 variant="contained"
                 color="primary"
                 onClick={onSubmit}
-                loading={isSubmitting}
-                disabled={!selectedOption || confidence == null}
-                sx={{ alignSelf: "flex-end" }}
+                loading={isLoading}
+                disabled={selectedOption && confidence == null}
               >
                 {t("common.submit")}
               </LoadingButton>
