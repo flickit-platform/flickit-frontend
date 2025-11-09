@@ -41,7 +41,7 @@ export function useSidebarData({
 
   const filteredQuestionsList = useMemo(() => {
     const indexById = new Map<TId, number>();
-    for (const [idx, question] of questions?.entries()) {
+    for (const [idx, question] of questions.entries()) {
       const id = question?.id;
       if (id) indexById.set(id, idx);
     }
