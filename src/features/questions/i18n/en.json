@@ -16,6 +16,7 @@
   "negativeEvidence": "Negative evidence",
   "noEvidence": "No evidence",
   "notApplicable": "Not applicable",
+  "notApplicableDesc": "Some questions are scope-specific and don't apply to every assessment. You can mark them as not applicable, then they will be excluded from reports and won't affect your scores.",
   "typeOfEvidence": "Type of evidence",
   "positiveEvidence": "Positive evidence",
   "questionsEmptyState": "No questions with the selected issues.",

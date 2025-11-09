@@ -21,63 +21,70 @@ interface QuestionItemProps {
   onSelect: (idx: number) => void;
 }
 
-export const QuestionItem = memo(({
-  title,
-  issues,
-  idx,
-  active,
-  open,
-  showChips,
-  onSelect,
-}: QuestionItemProps) => {
-  const rtl = i18next.language === "fa";
+export const QuestionItem = memo(
+  ({
+    title,
+    issues,
+    idx,
+    active,
+    open,
+    showChips,
+    onSelect,
+  }: QuestionItemProps) => {
+    const rtl = i18next.language === "fa";
 
-  const badge = (
-    <QuestionBadge
-      index={idx}
-      isActive={active}
-      isUnanswered={issues?.isUnanswered}
-      isOpen={open}
-    />
-  );
+    const badge = (
+      <QuestionBadge
+        index={idx}
+        isActive={active}
+        isUnanswered={issues?.isUnanswered}
+        isOpen={open}
+      />
+    );
 
-  const body = (
-    <ListItemButton
-      selected={open && active}
-      onClick={() => onSelect(idx)}
-      sx={{ alignItems: "stretch" }}
-    >
-      <ListItemIcon
-        sx={{ minWidth: open ? 32 : 0, alignSelf: "stretch", display: "flex" }}
+    const body = (
+      <ListItemButton
+        selected={open && active}
+        onClick={() => onSelect(idx)}
+        sx={{
+          alignItems: "stretch",
+          justifyContent: open ? "initial" : "center",
+        }}
       >
-        {badge}
-      </ListItemIcon>
+        <ListItemIcon
+          sx={{
+            minWidth: open ? 32 : 0,
+            alignSelf: "stretch",
+            display: "flex",
+          }}
+        >
+          {badge}
+        </ListItemIcon>
 
-      {open && (
-        <ListItemText
-          disableTypography
-          sx={{ paddingInlineStart: 1.5, mb: 0 }}
-          primary={
-            <Text variant="bodyMedium" textAlign="justify">
-              {title}
-            </Text>
-          }
-          secondary={
-            <QuestionChips issues={issues} show={showChips} />
-          }
-        />
-      )}
-    </ListItemButton>
-  );
+        {open && (
+          <ListItemText
+            disableTypography
+            sx={{ paddingInlineStart: 1.5, mb: 0 }}
+            primary={
+              <Text variant="bodyMedium" textAlign="justify">
+                {title}
+              </Text>
+            }
+            secondary={<QuestionChips issues={issues} show={showChips} />}
+          />
+        )}
+      </ListItemButton>
+    );
 
-  if (open) return body;
+    if (open) return body;
 
-  return (
-    <Tooltip
-      title={<Text variant="labelSmall">{title}</Text>}
-      placement={rtl ? "left" : "right"}
-    >
-      <span>{body}</span>
-    </Tooltip>
-  );
-});
+    return (
+      <Tooltip
+        title={<Text variant="labelSmall">{title}</Text>}
+        placement={rtl ? "left" : "right"}
+      >
+        <span>{body}</span>
+      </Tooltip>
+    );
+  },
+);
