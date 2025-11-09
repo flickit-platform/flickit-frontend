@@ -60,7 +60,7 @@ const EvidenceContainer: React.FC<any> = () => {
         <DeleteConfirmationDialog
             open={deleteItem.open}
             onClose={()=>dispatch(setDelete({...deleteItem, open: false}))}
-            onConfirm={handleConfirmDelete}
+            onConfirm={()=>handleConfirmDelete()}
             content={{
               category: t("questions.evidence"),
               title: "",
@@ -77,6 +77,7 @@ const Header = (props) =>{
     const dispatch = useQuestionDispatch()
     const { editingItem, tabData } =useQuestionContext()
     const { addEvidence, evidencesQueryData,commentesQueryData } = UseFetchData()
+
 
     const isEditing = editingItem?.id === id;
     const {boxType} = useEvidenceBox(isEditing, type);
