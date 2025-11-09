@@ -10,11 +10,13 @@ import {
   FormControlLabel,
   Switch,
   Checkbox,
+  Tooltip,
 } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
 import { Text } from "@/components/common/Text";
 import { useTranslation } from "react-i18next";
 import {
+  InfoOutlineRounded,
   KeyboardArrowDownRounded,
   KeyboardArrowUpRounded,
   RadioButtonCheckedRounded,
@@ -234,6 +236,10 @@ const QuestionView = () => {
                       "&.Mui-selected": {
                         bgcolor: selectedBgColor,
                       },
+                      "&.Mui-disabled": {
+                        bgcolor: "background.container",
+                        color: "outline.variant",
+                      },
                     }}
                     disabled={notApplicable}
                   >
@@ -245,7 +251,7 @@ const QuestionView = () => {
                     <Text
                       variant="bodyMedium"
                       textTransform="initial"
-                      color="text.primary"
+                      color={"text.primary"}
                     >
                       {displayIndex}. {title}
                     </Text>
@@ -285,7 +291,16 @@ const QuestionView = () => {
                     }}
                   />
                 }
-                label={t("questions_temp.notApplicable") as string}
+                label={
+                  <Box color="info.main" sx={{ ...styles.centerV }} gap="6px">
+                    <Text variant="bodySmall" color="text.primary">
+                      {t("questions_temp.notApplicable")}
+                    </Text>
+                    <Tooltip title={t("questions_temp.notApplicableDesc")}>
+                      <InfoOutlineRounded fontSize="small" />
+                    </Tooltip>
+                  </Box>
+                }
               />
             )}
 
@@ -312,9 +327,25 @@ const QuestionView = () => {
           sx={{ ...styles.centerV }}
           justifyContent="space-between"
         >
-          <Box display="flex" gap={2} alignItems="center">
+          <Box>
             {isAdvanced && (
-              <>
+              <Box
+                sx={{
+                  ...styles.centerV,
+                  bgcolor:
+                    !confidence && selectedOption
+                      ? "error.states.hover"
+                      : "transparent",
+                  border: "1px solid",
+                  borderColor:
+                    !confidence && selectedOption
+                      ? "error.main"
+                      : "transparent",
+                  borderRadius: "4px",
+                }}
+                gap={3}
+                p="8px"
+              >
                 <Text variant="bodyMedium">{t("common.confidenceLevel")}</Text>
 
                 <Rating
@@ -323,26 +354,28 @@ const QuestionView = () => {
                   size="medium"
                   IconContainerComponent={ConfidenceIconContainer}
                 />
-              </>
+              </Box>
             )}
           </Box>
 
           <Box display="flex" gap={3}>
-            <FormControlLabel
-              control={
-                <Checkbox
-                  checked={autoNext}
-                  onChange={(_, checked) => setAutoNext(checked)}
-                  size="small"
-                  sx={{ p: 0, px: 0.5 }}
-                />
-              }
-              label={
-                <Text variant="bodySmall">
-                  {t("questions_temp.quickAnswer")}
-                </Text>
-              }
-            />
+            {isAdvanced && (
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={autoNext}
+                    onChange={(_, checked) => setAutoNext(checked)}
+                    size="small"
+                    sx={{ p: 0, px: 0.5 }}
+                  />
+                }
+                label={
+                  <Text variant="bodySmall">
+                    {t("questions_temp.quickAnswer")}
+                  </Text>
+                }
+              />
+            )}
             <Box display="flex" gap={1}>
               <IconButton
                 aria-label={t("common.prev") as string}

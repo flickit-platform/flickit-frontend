@@ -94,11 +94,12 @@ export function useAnswerSubmit() {
                   title: (value as any)?.title,
                 }
               : null),
-          confidenceLevel:
-            (serverAnswer?.selectedOption && serverAnswer?.confidenceLevel) ??
-            (shouldAttach && confidenceLevelId != null
-              ? { id: confidenceLevelId }
-              : (q?.answer?.confidenceLevel ?? null)),
+          confidenceLevel: serverAnswer?.selectedOption
+            ? (serverAnswer?.confidenceLevel ??
+              (shouldAttach && confidenceLevelId != null
+                ? { id: confidenceLevelId }
+                : (q?.answer?.confidenceLevel ?? null)))
+            : null,
           isNotApplicable: serverAnswer?.isNotApplicable ?? !!notApplicable,
           approved: serverAnswer?.approved ?? q?.answer?.approved,
         };
@@ -118,6 +119,7 @@ export function useAnswerSubmit() {
         return updatedItem;
       });
 
+      dispatch(questionActions.setSelectedQuestion(updatedItem));
       dispatch(questionActions.setQuestions(nextQuestions));
 
       return res;
