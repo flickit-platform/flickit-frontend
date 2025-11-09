@@ -15,6 +15,7 @@
   "areYouSureYouWantDelete": "Are you sure you want to delete this {{category}}?",
   "areYouSureYouWantSkipThisQuestion": "Your changes will be lost. Do you want to continue?",
   "attachmentCount": "Contains {{attachmentsCount}} attachments",
+  "attachments": "Attachments",
   "advisable": "Advisable",
   "comment": "Comment",
   "comments": "Comments",
@@ -25,6 +26,7 @@
   "evidence": "evidence",
   "evidenceIsLimited": "Each evidence is limited to five attachments. If you need more, simply create a new evidence and continue.",
   "evidencePlaceholder": "Write your text here...",
+  "editing": "Editing",
   "goodJob": "Good job!",
   "hmmm": "Hmmm!",
   "markedAsNotApplicable": "Marked as not applicable",
@@ -54,6 +56,7 @@
   "submitAnswerAutomaticallyAndGoToNextQuestion": "Automatically go to the next question after submitting the answer.",
   "theOptionSelectionIsDisabled": "The option selection is disabled as long as the question is marked as not applicable.",
   "toContinueToSubmitAnAnswer": "To continue to submit an answer, select your confidence level.",
+  "typeOfEvidence": "Type of evidence",
   "weHighlyRecommendAnsweringMoreQuestions": "We highly recommend answering more questions for more accurate and comprehensive insights.",
   "youAnsweredQuestionOf": "{{answeredQuestions}} out of {{totalQuestions}} questions in the <style>{{questionnaire}}</style> questionnaire have been answered."
 }

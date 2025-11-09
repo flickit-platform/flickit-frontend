@@ -24,6 +24,7 @@ import { styles } from "@styles";
 import { useQuestionNavigator } from "../model/sidebar/useQuestionNavigator";
 import { useAssessmentMode } from "@/hooks/useAssessmentMode";
 import { useAnswerSubmit } from "../model/useAnswerSubmit";
+import FooterTabs from "@/features/questions/ui/footer/FooterTabs";
 
 const QuestionView = () => {
   useDocumentTitle();
@@ -375,6 +376,7 @@ const QuestionView = () => {
           </Box>
         </Box>
       </Box>
+      {isAdvanced && <Box sx={{mt: 3}}><FooterTabs /></Box> }
     </Box>
   );
 };
