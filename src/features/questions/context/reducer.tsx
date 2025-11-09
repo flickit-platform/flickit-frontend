@@ -23,12 +23,12 @@ const questionReducer = (
         ...prevState,
         tabData: action.payload,
       };
-    case QUESTION_ACTIONS_TYPE.SET_EDITING:
+    case QUESTION_ACTIONS_TYPE.SET_EDITING_EVIDENCE:
       return {
         ...prevState,
         editingItem: action.payload,
       };
-    case QUESTION_ACTIONS_TYPE.SET_DELETE_ITEM:
+    case QUESTION_ACTIONS_TYPE.SET_DELETE_EVIDENCE:
       return {
         ...prevState,
         deleteItem: action.payload,
