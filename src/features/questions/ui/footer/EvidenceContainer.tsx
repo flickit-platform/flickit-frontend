@@ -33,19 +33,16 @@ const EvidenceContainer: React.FC<any> = () => {
     const { id } = deleteItem;
     if (!id) return;
     await deleteEvidence.query({id});
+    dispatch(setDelete({open: false, type: "", id: ""}))
     dispatch(setTab({
       activeTab,
-      data: {
-        ...tabData.data,
-        [activeTab]: tabData.data[activeTab].filter((item: any) => item.id !== id)
-      }
+      data: tabData.data.filter((item: any) => item.id !== id)
     }));
-      dispatch(setDelete({open: false, type: "", id: ""}))
   };
 
   return (
       <Box sx={{ py: 2, px: 4 }}>
-          {data?.[activeTab]?.map((item: any) =>{
+          {data?.map((item: any) =>{
               return <Box key={item?.id} bgcolor={"background.background"} sx={{mb: 2, borderRadius: 1}}>
                   <Header {...item} />
                   <Detail {...item} />
@@ -76,7 +73,6 @@ const Header = (props: any) =>{
 
     const isEditing = editingItem?.id === id;
     const {boxType} = useEvidenceBox(isEditing, type);
-
     const headerStyle = {
         ...styles.centerV,
         justifyContent: "space-between",
@@ -98,19 +94,16 @@ const Header = (props: any) =>{
         await addEvidence.query({
             description: editingItem.description,
             id: editingItem.id,
-            type: editingItem.type ? editingItem.type .toUpperCase() : null
+            type: editingItem.type ? editingItem.type.toUpperCase() : null
         });
         dispatch(setEditingMode({}))
         dispatch(setTab({
           activeTab,
-          data: {
-            ...tabData.data,
-            [activeTab]: tabData.data[activeTab].map((item: any) =>
+          data: tabData.data.map((item: any) =>
               item.id === editingItem.id
-                ? { ...item, description: editingItem.description }
+                ? { ...item, description: editingItem.description, type: editingItem.type}
                 : item
             )
-          }
         }));
     }
 
@@ -195,7 +188,6 @@ const Detail = (props: any) =>{
 
     const isEditing = editingItem?.id == id
     const hasAttachments = attachmentsCount > 0;
-
     return (  <Box sx={{px: 2, pb: 2}}>
         <Box width="100%" justifyContent="space-between" sx={{ ...styles.centerV, }}>
             {isEditing ? (

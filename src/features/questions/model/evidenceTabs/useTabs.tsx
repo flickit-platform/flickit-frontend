@@ -16,10 +16,6 @@ interface TabItem {
   component: React.LazyExoticComponent<any>;
 }
 
-interface FetchOptions {
-  force?: boolean;
-}
-
 interface EvidenceData {
   items?: any[];
 }
@@ -31,7 +27,7 @@ const TAB_ITEMS: TabItem[] = [
 ];
 
 const useTabs = () => {
-  const {selectedQuestion, tabData} = useQuestionContext()
+  const {selectedQuestion} = useQuestionContext()
   const questionId = selectedQuestion?.id
 
   const [selectedTab, setSelectedTab] = useState<TabValue>("evidence");
@@ -82,7 +78,7 @@ const useTabs = () => {
 
       const response: EvidenceData = await currentQuery.query();
       const items = response.items ?? [];
-      dispatch(setTab({ activeTab: selectedTab, data: {...tabData.data, [selectedTab]: items } }))
+      dispatch(setTab({ activeTab: selectedTab, data: items}))
 
     } catch (error) {
       const customError = error as ICustomError;
@@ -92,7 +88,7 @@ const useTabs = () => {
 
   useEffect(() => {
     if (questionId){
-      dispatch(setTab({activeTab: "evidence", data:{}}))
+      dispatch(setTab({activeTab: "evidence", data: []}))
       fetchData()
       setSelectedTab("evidence")
     }
