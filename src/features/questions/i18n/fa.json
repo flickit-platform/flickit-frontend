@@ -7,9 +7,10 @@
   "lowConfidence": "ضریب اطمینان کم",
   "negativeEvidence": "شاهد منفی",
   "noEvidence": "بدون شاهد",
+  "notApplicable": "نامرتبط",
   "positiveEvidence": "شاهد مثبت",
   "questionsEmptyState": "سوالی با مشکلات انتخاب‌شده موجود نیست.",
   "questionsList": "فهرست پرسش‌ها ({{count}} پرسش)",
+  "quickAnswer": "پاسخگویی سریع",
   "unanswered": "بدون پاسخ"
-
 }

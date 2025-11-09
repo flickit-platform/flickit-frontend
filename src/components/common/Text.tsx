@@ -170,12 +170,12 @@ export const Text = forwardRef<any, Props>(function Text(
           : {}),
         fontFamily:
           isFa ||
-          (hasNoFaOrEnLetters(content as string) &&
-            i18next.language === "fa")
+          (hasNoFaOrEnLetters(content as string) && i18next.language === "fa")
             ? farsiFontFamily
             : primaryFontFamily,
         ...clampSx,
         ...sx,
+        wordBreak: "break-word",
       }}
       {...((): Omit<TypographyProps, "title"> => {
         const { title, ...restNoTitle } = rest as any;
