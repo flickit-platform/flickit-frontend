@@ -8,6 +8,7 @@ import type { SideBarProps } from "../../types";
 import { SidebarHeader } from "./SidebarHeader";
 import { QuestionsFilter } from "./QuestionsFilter";
 import { QuestionItem } from "./QuestionItem";
+import { useAssessmentMode } from "@/hooks/useAssessmentMode";
 
 const SidebarContent = memo(({ questions }: Readonly<SideBarProps>) => {
   const { t } = useTranslation();
@@ -15,15 +16,16 @@ const SidebarContent = memo(({ questions }: Readonly<SideBarProps>) => {
   const {
     uiState,
     sidebarWidth,
-    isAdvancedMode,
     completionPercent,
     hasActiveFilters,
-    listItems,
+    filteredQuestionsList,
     filterCheckboxes,
     toggleSidebar,
     toggleIssueChips,
     handleSelectItem,
   } = useSidebar(questions);
+
+  const { isAdvanced: isAdvancedMode } = useAssessmentMode();
 
   const {
     anchorEl,
@@ -80,12 +82,12 @@ const SidebarContent = memo(({ questions }: Readonly<SideBarProps>) => {
           },
         ]}
       >
-        {listItems.map((item) => (
+        {filteredQuestionsList.map((item) => (
           <Box key={item.key} sx={{ ...styles.centerCV }}>
             <QuestionItem
               {...item}
               open={uiState.isOpen}
-              showChips={uiState.showIssueChips}
+              showChips={isAdvancedMode && uiState.showIssueChips}
               onSelect={handleSelectItem}
             />
           </Box>

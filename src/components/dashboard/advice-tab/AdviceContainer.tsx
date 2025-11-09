@@ -11,7 +11,6 @@ import QueryBatchData from "@common/QueryBatchData";
 import AdviceItems from "./advice-items/AdviceItems";
 import { styles } from "@styles";
 import Divider from "@mui/material/Divider";
-import useCalculate from "@/hooks/useCalculate";
 import { useAssessmentContext } from "@/providers/assessment-provider";
 import useInsightPopup from "@/hooks/useAssessmentInsightPopup";
 import ActionPopup from "@/components/common/buttons/ActionPopup";
@@ -38,7 +37,6 @@ const AssessmentAdviceContainer = (props: any) => {
   const fetchData = () => {
     fetchPreAdviceInfo.query();
   };
-  useCalculate(fetchPreAdviceInfo.errorObject, fetchData);
 
   const [expanded, setExpanded] = useState<boolean>(false);
   const [hasExpandedOnce, setHasExpandedOnce] = useState<boolean>(false);

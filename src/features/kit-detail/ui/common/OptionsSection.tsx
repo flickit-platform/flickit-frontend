@@ -37,10 +37,9 @@ export const OptionsSection = ({ options }: { options: IOption[] }) => {
               >
                 <Box display="flex" flexDirection="column">
                   {" "}
-                  <Box>
-                    <Text variant="bodyMedium">{option.index}.</Text>{" "}
-                    <Text variant="bodyMedium"> {option.title}</Text>
-                  </Box>
+                  <Text variant="bodyMedium">
+                    {option.index}. {option.title}
+                  </Text>
                   {getTranslation(option.translations, "title") && (
                     <>
                       <Divider

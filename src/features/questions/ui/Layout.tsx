@@ -17,7 +17,7 @@ const Layout = ({ children }: any) => {
       renderLoading={() => <LoadingSkeletonOfQuestions />}
       render={(data) => {
         return (
-          <Box display="flex"  width="100%">
+          <Box display="flex"  width="100%" gap={3}>
             {!isSmallScreen && <Sidebar questions={questions} />}
             <Box width="100%">{children}</Box>{" "}
           </Box>

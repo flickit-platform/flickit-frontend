@@ -91,12 +91,9 @@ const MaturityLevelsPanel = ({
                 flex={getTranslation(level?.translations, "title") ? 0.5 : 0.25}
                 gap={1}
               >
-                <Box display="flex" gap={0.5}>
-                  <Text variant="semiBoldMedium">{level.index}. </Text>
-                  <Text variant="semiBoldMedium" lines={1}>
-                    {level.title}
-                  </Text>
-                </Box>
+                <Text variant="semiBoldMedium" lines={1}>
+                  {level.index}. {level.title}
+                </Text>
 
                 {getTranslation(level?.translations, "title") && (
                   <Text variant="bodyMedium" lines={1}>

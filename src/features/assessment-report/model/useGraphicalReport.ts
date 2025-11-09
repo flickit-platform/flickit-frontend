@@ -3,7 +3,6 @@ import { useQuery } from "@/hooks/useQuery";
 import { IGraphicalReport, PathInfo } from "@/types";
 import { useAuthContext } from "@/providers/auth-provider";
 import { useServiceContext } from "@/providers/service-provider";
-import useCalculate from "@/hooks/useCalculate";
 
 export const useGraphicalReport = () => {
   const { isAuthenticatedUser } = useAuthContext();
@@ -35,7 +34,6 @@ export const useGraphicalReport = () => {
     fetchGraphicalReport.query();
   };
 
-  useCalculate(fetchGraphicalReport.errorObject, fetchData);
 
   return {
     fetchPathInfo,
