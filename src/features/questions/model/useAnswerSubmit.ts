@@ -95,7 +95,7 @@ export function useAnswerSubmit() {
                 }
               : null),
           confidenceLevel:
-            serverAnswer?.confidenceLevel ??
+            (serverAnswer?.selectedOption && serverAnswer?.confidenceLevel) ??
             (shouldAttach && confidenceLevelId != null
               ? { id: confidenceLevelId }
               : (q?.answer?.confidenceLevel ?? null)),
