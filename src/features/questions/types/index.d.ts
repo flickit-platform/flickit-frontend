@@ -52,8 +52,7 @@ interface SidebarUIState {
 interface SidebarData {
   completionPercent: number;
   hasActiveFilters: boolean;
-  listItems: ListItem[];
-  filteredQuestions: IQuestionInfo[];
+  filteredQuestionsList: ListItem[];
 }
 
 interface IIssueFilter {

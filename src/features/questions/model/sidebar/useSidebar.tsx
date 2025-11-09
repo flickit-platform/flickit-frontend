@@ -1,30 +1,22 @@
 import { useTranslation } from "react-i18next";
 import i18next from "i18next";
 import { useMemo, useCallback } from "react";
-import { useSidebarNavigation } from "./useSidebarNavigation";
 import { useSidebarUIState } from "./useSidebarUIState";
 import { useSidebarData } from "./useSidebarData";
 
 import type { IQuestionInfo } from "@/types";
 import { getFilterOptionsMeta } from "./issues.registry";
-import { useAssessmentContext } from "@/providers/assessment-provider";
-import { ASSESSMENT_MODE } from "@/utils/enum-type";
+import { useQuestionNavigator } from "./useQuestionNavigator";
 
 export function useSidebar(questions: IQuestionInfo[]) {
   const { t } = useTranslation();
-  const { assessmentInfo } = useAssessmentContext();
 
-  const isAdvancedMode = useMemo(
-    () => assessmentInfo?.mode?.code === ASSESSMENT_MODE.ADVANCED,
-    [assessmentInfo?.mode?.code],
-  );
-
-  const navigation = useSidebarNavigation(questions);
+  const navigation = useQuestionNavigator(questions);
   const uiState = useSidebarUIState();
   const data = useSidebarData({
     questions,
     activeFilters: uiState.activeFilters,
-    selectedIndex: navigation.selectedIndex,
+    selectedIndex: navigation.absoluteIndex,
   });
 
   const sidebarWidth = uiState.isOpen ? "33%" : 78;
@@ -49,10 +41,10 @@ export function useSidebar(questions: IQuestionInfo[]) {
 
   const handleSelectItem = useCallback(
     (index: number) => {
-      if (index === navigation.selectedIndex) return;
-      navigation.selectByIndex(index);
+      if (index === navigation.absoluteIndex) return;
+      navigation.selectAt(index);
     },
-    [navigation.selectedIndex, navigation.selectByIndex],
+    [navigation.absoluteIndex, navigation.selectAt],
   );
 
   return {
@@ -62,7 +54,6 @@ export function useSidebar(questions: IQuestionInfo[]) {
 
     sidebarWidth,
     isRTL,
-    isAdvancedMode,
 
     toggleSidebar: uiState.toggleSidebar,
     toggleIssueChips: uiState.toggleIssueChips,

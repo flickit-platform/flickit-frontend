@@ -14,7 +14,6 @@ import { useServiceContext } from "@/providers/service-provider";
 import { ICustomError } from "@/utils/custom-error";
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 import LoadingButton from "@mui/lab/LoadingButton";
-import useCalculate from "@/hooks/useCalculate";
 import showToast from "@/utils/toast-error";
 import { useTheme } from "@mui/material";
 import { Text } from "@/components/common/Text";
@@ -266,8 +265,6 @@ export const IssuesItem = ({
     await generateInsights.query();
     await fetchDashboard();
   };
-
-  useCalculate(generateInsights.errorObject, handleGenerateAll);
 
   const regeneratedAll = async () => {
     if (name == "expiredAdvices") {

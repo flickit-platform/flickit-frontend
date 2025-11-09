@@ -38,7 +38,7 @@ const QuestionsScreen = lazy(() => import("../screens/QuestionsScreen"));
 const QuestionScreen = lazy(() => import("../screens/QuestionScreen"));
 
 const QuestionsTempScreen = lazy(() => import("@/features/questions/screens/QuestionsScreen"));
-const QuestionTempScreen = lazy(() => import("@/features/questions/screens/QuestionScreen"));
+const QuestionTempScreen = lazy(() => import("@/features/questions/screens/QuestionView"));
 
 const QuestionnairesScreen = lazy(
   () => import("../screens/QuestionnairesScreen"),

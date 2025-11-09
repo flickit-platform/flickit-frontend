@@ -3,6 +3,7 @@ import type { IQuestionInfo, TId } from "@/types";
 import { SidebarData } from "../../types";
 import { useEffect, useMemo } from "react";
 import { IssueId, isQuestionMatchingAnyActiveFilter } from "./issues.registry";
+import { useQuestionNavigator } from "./useQuestionNavigator";
 
 interface UseSidebarDataProps {
   questions: IQuestionInfo[];
@@ -16,11 +17,7 @@ export function useSidebarData({
   selectedIndex,
 }: UseSidebarDataProps): SidebarData {
   const dispatch = useQuestionDispatch();
-
-  useEffect(() => {
-    const current = questions[selectedIndex];
-    if (current) dispatch(questionActions.setSelectedQuestion(current));
-  }, [questions, selectedIndex, dispatch]);
+  const navigation = useQuestionNavigator(questions);
 
   const completionPercent = useMemo(() => {
     if (!questions.length) return 0;
@@ -42,7 +39,7 @@ export function useSidebarData({
 
   const activeQuestion = questions[selectedIndex];
 
-  const listItems = useMemo(() => {
+  const filteredQuestionsList = useMemo(() => {
     const indexById = new Map<TId, number>();
     for (const [idx, question] of questions.entries()) {
       const id = question?.id;
@@ -62,6 +59,7 @@ export function useSidebarData({
       return {
         key: question.id,
         idx: fullIndex,
+        index: question.index,
         title: question.title,
         issues: question.issues,
         active: isActive,
@@ -69,10 +67,23 @@ export function useSidebarData({
     });
   }, [filteredQuestions, questions, activeQuestion?.id, selectedIndex]);
 
+  useEffect(() => {
+    dispatch(questionActions.setFilteredQuestions(filteredQuestionsList));
+
+    if (activeFilters.size > 0) {
+      const index = filteredQuestions.findIndex(
+        (res) => res.index == selectedIndex + 1,
+      );
+      if (filteredQuestions.length > 0 && index === -1) {
+        navigation.selectAt(filteredQuestions[0].index - 1);
+        dispatch(questionActions.setSelectedQuestion(filteredQuestions[0]));
+      }
+    }
+  }, [filteredQuestions]);
+
   return {
     completionPercent,
     hasActiveFilters,
-    listItems,
-    filteredQuestions,
+    filteredQuestionsList,
   };
 }

@@ -10,17 +10,11 @@ import { useQuery } from "@/hooks/useQuery";
 import LoadingSkeletonOfQuestions from "@common/loadings/LoadingSkeletonOfQuestions";
 import QuestionsTitle from "./QuestionsTitle";
 import QueryBatchData from "@common/QueryBatchData";
-import {
-  EAssessmentStatus,
-  IQuestion,
-  IQuestionnaireModel,
-  IQuestionsModel,
-} from "@/types/index";
+import { EAssessmentStatus, IQuestion, IQuestionnaireModel, IQuestionsModel } from "@/types/index";
 import { ICustomError } from "@/utils/custom-error";
 import { useQuestion } from "./QuestionContainer";
 import showToast from "@/utils/toast-error";
 import { styles } from "@styles";
-import useCalculate from "@/hooks/useCalculate";
 
 const QuestionsContainer = (
   props: PropsWithChildren<{ isReview?: boolean }>,
@@ -177,8 +171,6 @@ export const useQuestions = () => {
     });
   };
 
-  useCalculate(questionsResultQueryData.errorObject, fetchData);
-  // Fetch the initial set of questions (page 0) on mount
   useEffect(() => {
     fetchData();
   }, [questionnaireId]);

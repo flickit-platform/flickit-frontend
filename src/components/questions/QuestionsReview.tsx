@@ -359,7 +359,7 @@ export const Review = () => {
                 <Trans i18nKey="common.question" />
               </Text>
               <Text variant="h6" fontWeight="bold">
-                {q.index}.{q.title}
+                {q.index}. {q.title}
               </Text>
 
               {/* Answer */}
