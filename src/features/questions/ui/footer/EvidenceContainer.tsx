@@ -27,30 +27,25 @@ const EvidenceContainer: React.FC<any> = () => {
   const {tabData, deleteItem} = useQuestionContext()
   const {data, activeTab} = tabData
   const dispatch = useQuestionDispatch()
-  const {deleteEvidence, evidencesQueryData, commentesQueryData, } = UseFetchData()
+  const { deleteEvidence } = UseFetchData()
 
   const handleConfirmDelete = async () => {
     const { id } = deleteItem;
-
     if (!id) return;
-
-      const queryMap = {
-              evidence: evidencesQueryData,
-              comment: commentesQueryData,
-          }
-      const currentQuery = queryMap[activeTab];
-
     await deleteEvidence.query({id});
-
-      const response = await currentQuery.query();
-      const items = response.items ?? [];
-      dispatch(setTab({ activeTab, data: {...tabData.data, [activeTab]: items } }))
+    dispatch(setTab({
+      activeTab,
+      data: {
+        ...tabData.data,
+        [activeTab]: tabData.data[activeTab].filter((item: any) => item.id !== id)
+      }
+    }));
       dispatch(setDelete({open: false, type: "", id: ""}))
   };
 
   return (
       <Box sx={{ py: 2, px: 4 }}>
-          {data?.[activeTab]?.map((item) =>{
+          {data?.[activeTab]?.map((item: any) =>{
               return <Box key={item?.id} bgcolor={"background.background"} sx={{mb: 2, borderRadius: 1}}>
                   <Header {...item} />
                   <Detail {...item} />
@@ -70,13 +65,13 @@ const EvidenceContainer: React.FC<any> = () => {
   );
 };
 
-const Header = (props) =>{
+const Header = (props: any) =>{
 
     const {createdBy, lastModificationTime, id, editable, type, description} = props
     const {displayName, pictureLink}  = createdBy
     const dispatch = useQuestionDispatch()
     const { editingItem, tabData } =useQuestionContext()
-    const { addEvidence, evidencesQueryData,commentesQueryData } = UseFetchData()
+    const { addEvidence } = UseFetchData()
 
 
     const isEditing = editingItem?.id === id;
@@ -105,16 +100,18 @@ const Header = (props) =>{
             id: editingItem.id,
             type: editingItem.type ? editingItem.type .toUpperCase() : null
         });
-
-        const queryMap = {
-            evidence: evidencesQueryData,
-            comment: commentesQueryData,
-        }
-        const currentQuery = queryMap[activeTab];
         dispatch(setEditingMode({}))
-        const response = await currentQuery.query();
-        const items = response.items ?? [];
-        dispatch(setTab({ activeTab, data: {...tabData.data, [activeTab]: items } }))
+        dispatch(setTab({
+          activeTab,
+          data: {
+            ...tabData.data,
+            [activeTab]: tabData.data[activeTab].map((item: any) =>
+              item.id === editingItem.id
+                ? { ...item, description: editingItem.description }
+                : item
+            )
+          }
+        }));
     }
 
 
@@ -146,7 +143,7 @@ const Header = (props) =>{
                                 onClick: () => dispatch(setEditingMode({}))
                             }
                         ] : [
-                            boxType?.type === "comment" && {
+                            !type && {
                                 icon: <CheckIcon fontSize="small" sx={ICON_SIZE}/>,
                                 onClick: () => {
                                 }
@@ -177,13 +174,20 @@ const ActionButtons = ({actions}: {actions: any}) => {
         </Box>
     )
 };
-const Detail = (props) =>{
+const Detail = (props: any) =>{
     const {id, description, attachmentsCount} = props
     const dispatch = useQuestionDispatch()
     const { editingItem } =useQuestionContext()
 
     const formMethods = useForm({ shouldUnregister: true });
     const watchedDesc = formMethods.watch("evidence-description");
+
+  useEffect(() => {
+    if (editingItem?.id === id && description) {
+      formMethods.setValue("evidence-description", description);
+    }
+  }, [editingItem?.id, id, description]);
+
     useEffect(() => {
         const currentValue = formMethods.getValues()["evidence-description"] ?? description;
         dispatch(setEditingMode({...editingItem, description: currentValue}));

@@ -18,7 +18,7 @@ const questionReducer = (
         ...prevState,
         selectedQuestion: action.payload,
       };
-    case QUESTION_ACTIONS_TYPE.SET_SELECTED_Tab:
+    case QUESTION_ACTIONS_TYPE.SET_SELECTED_TAB:
       return {
         ...prevState,
         tabData: action.payload,

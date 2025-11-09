@@ -1,7 +1,7 @@
 export enum QUESTION_ACTIONS_TYPE {
   SET_QUESTIONS = "SET_QUESTIONS",
   SET_SELECTED_QUESTION = "SET_SELECTED_QUESTION",
-  SET_SELECTED_Tab = "SET_SELECTED_TAB",
+  SET_SELECTED_TAB = "SET_SELECTED_TAB",
   SET_EDITING_EVIDENCE = "SET_EDITING_EVIDENCE",
   SET_DELETE_EVIDENCE = "SET_DELETE_EVIDENCE",
 }
@@ -11,7 +11,7 @@ export const setQuestions = function (payload: any) {
 
 };
 export const setTab = function (payload: any) {
-  return { payload, type: QUESTION_ACTIONS_TYPE.SET_SELECTED_Tab };
+  return { payload, type: QUESTION_ACTIONS_TYPE.SET_SELECTED_TAB };
 };
 
 export const setEditingMode = function (payload: any) {
