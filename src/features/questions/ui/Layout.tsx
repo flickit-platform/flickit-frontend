@@ -15,7 +15,7 @@ const Layout = ({ children }: any) => {
     <QueryData
       {...questionsQuery}
       renderLoading={() => <LoadingSkeletonOfQuestions />}
-      render={(data) => {
+      render={() => {
         return (
           <Box display="flex"  width="100%" gap={3}>
             {!isSmallScreen && <Sidebar questions={questions} />}

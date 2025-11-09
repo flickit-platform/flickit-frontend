@@ -16,6 +16,7 @@
   "areYouSureYouWantSkipThisQuestion": "تغییرات شما از دست خواهد رفت. آیا می‌خواهید ادامه دهید؟",
   "attachmentCount": "{{attachmentsCount}} پیوست",
   "advisable": "توصیه‌پذیر",
+  "attachments": "پیوست‌ها",
   "comment": "یادداشت",
   "comments": "یادداشت‌ها",
   "createEvidence": "ایجاد {{title}}",
@@ -25,6 +26,7 @@
   "evidence": "شاهد",
   "evidenceIsLimited": "هر شاهد به پنج پیوست محدود شده‌ است. اگر نیاز به اضافه‌کردن موارد بیشتری دارید، کافی است یک شاهد جدید ایجاد کنید و پیوست‌ها را به آن اضافه کنید.",
   "evidencePlaceholder": "یادداشت و شواهد خود را اینجا وارد کنید...",
+  "editing": "درحال ویرایش",
   "goodJob": "کارت عالی بود!",
   "hmmm": "همممم!",
   "markedAsNotApplicable": "به عنوان «نامرتبط» علامت‌گذاری شده",
@@ -54,6 +56,7 @@
   "submitAnswerAutomaticallyAndGoToNextQuestion": "رفتن به پرسش بعدی پس از ثبت پاسخ",
   "theOptionSelectionIsDisabled": "انتخاب گزینه تا زمانی که پرسش به عنوان «نامرتبط» علامت‌گذاری شده، غیرفعال است.",
   "toContinueToSubmitAnAnswer": "برای ادامه و ارسال یک پاسخ، سطح اطمینان خود را انتخاب کنید",
+  "typeOfEvidence": "نوع شاهد",
   "weHighlyRecommendAnsweringMoreQuestions": "برای اطلاعات دقیق تر و جامع تر، ما به شدت توصیه می‌کنیم به پرسش‌های بیشتری پاسخ دهید.",
   "youAnsweredQuestionOf": "{{answeredQuestions}} از {{totalQuestions}} پرسش برای پرسش‌نامه <style>{{questionnaire}}</style> پاسخ داده شده است."
 }

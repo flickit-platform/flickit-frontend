@@ -47,7 +47,7 @@ const MoreActions = (props: IMoreActionsProps) => {
   }[];
 
   return menuItems.length > 0 ? (
-    <Box {...boxProps}>
+    <Box onClick={e => e.stopPropagation()} {...boxProps}>
       {!hideInnerIconButton && (
         <IconButton
           data-cy="more-action-btn"

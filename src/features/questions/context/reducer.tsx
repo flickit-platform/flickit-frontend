@@ -1,5 +1,8 @@
 import { QUESTION_ACTIONS_TYPE } from "./actions";
 
+const clamp = (i: number, n: number) =>
+  Math.max(0, Math.min(i, Math.max(n - 1, 0)));
+
 const questionReducer = (
   prevState: any,
   action: { type: QUESTION_ACTIONS_TYPE; payload: any },
@@ -10,12 +13,26 @@ const questionReducer = (
         ...prevState,
         questions: action.payload,
       };
-    case QUESTION_ACTIONS_TYPE.SET_SELECTED_QUESTION: {
+    case QUESTION_ACTIONS_TYPE.SET_SELECTED_QUESTION:
       return {
         ...prevState,
         selectedQuestion: action.payload,
       };
-    }
+    case QUESTION_ACTIONS_TYPE.SET_SELECTED_TAB:
+      return {
+        ...prevState,
+        tabData: action.payload,
+      };
+    case QUESTION_ACTIONS_TYPE.SET_EDITING_EVIDENCE:
+      return {
+        ...prevState,
+        editingItem: action.payload,
+      };
+    case QUESTION_ACTIONS_TYPE.SET_DELETE_EVIDENCE:
+      return {
+        ...prevState,
+        deleteItem: action.payload,
+      };
     case QUESTION_ACTIONS_TYPE.SET_FILTERED_QUESTIONS: {
       return {
         ...prevState,
