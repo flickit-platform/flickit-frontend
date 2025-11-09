@@ -146,7 +146,7 @@ const QuestionView = () => {
   };
 
   return (
-    <Box width="100%">
+    <Box width="100%" display="flex" flexDirection="column" gap={3}>
       <Box
         bgcolor="background.background"
         borderRadius="12px"
@@ -376,7 +376,7 @@ const QuestionView = () => {
           </Box>
         </Box>
       </Box>
-      {isAdvanced && <Box sx={{mt: 3}}><FooterTabs /></Box> }
+      {isAdvanced && <FooterTabs />}
     </Box>
   );
 };
