@@ -107,20 +107,16 @@ export const Attachments: React.FC<any> = ({
 
     const handleDeleteAttachment = async (attachmentId: any) =>{
         try {
-
             const queryMap = {
                 evidence: evidencesQueryData,
                 comment: commentesQueryData,
             }
             const currentQuery = queryMap[activeTab];
-
             await removeEvidenceAttachments.query({evidenceId, attachmentId })
-
-
             const response = await currentQuery.query();
             const items = response.items ?? [];
-            dispatch(setTab({ activeTab: activeTab, data: {...tabData.data, [activeTab]: items } }))
-
+            dispatch(setTab({ activeTab: activeTab, data: items }))
+            setAttachments(prevState => prevState.filter(item => item.id != attachmentId))
         }catch (e){
             const err = e as ICustomError;
             toastError(err);
