@@ -82,10 +82,6 @@ export const useQuestionnaire = () => {
     runOnMount: true,
   });
 
-  const fetchData = () => {
-    questionnaireQueryData.query();
-  };
-
   return {
     questionnaireQueryData,
     assessmentTotalProgress,

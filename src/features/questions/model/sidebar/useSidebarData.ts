@@ -78,7 +78,6 @@ export function useSidebarData({
         navigation.selectAt(filteredQuestions[0].index - 1);
         dispatch(questionActions.setSelectedQuestion(filteredQuestions[0]));
       }
-      return;
     }
   }, [filteredQuestions]);
 

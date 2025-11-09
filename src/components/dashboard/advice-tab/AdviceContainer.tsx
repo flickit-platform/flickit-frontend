@@ -34,10 +34,6 @@ const AssessmentAdviceContainer = (props: any) => {
     toastError: false,
   });
 
-  const fetchData = () => {
-    fetchPreAdviceInfo.query();
-  };
-
   const [expanded, setExpanded] = useState<boolean>(false);
   const [hasExpandedOnce, setHasExpandedOnce] = useState<boolean>(false);
 

@@ -34,7 +34,7 @@ function getAssessmentIdFromUrl(u?: string): string | undefined {
   const i = parts.findIndex((p) => p.toLowerCase() === "assessments");
   if (i === -1) return;
   const after = parts.slice(i + 1);
-  if (isNaN(Number(after[0]))) return after[0];
+  if (Number.isNaN(after[0])) return after[0];
   else return after[1];
 }
 
@@ -84,10 +84,11 @@ export const createService = (
     async (error) => {
       const cfg = error?.config as import("axios").AxiosRequestConfig;
       const code = error?.response?.data?.code as ECustomErrorType | undefined;
-      if (!cfg || !code) return Promise.reject(error);
+
+      if (!cfg || !code) throw error;
 
       const assessmentId = getAssessmentIdFromUrl(cfg.url);
-      if (!assessmentId) return Promise.reject(error);
+      if (!assessmentId) throw error;
 
       try {
         switch (code) {
@@ -101,11 +102,12 @@ export const createService = (
             await assessmentsService.info.migrateKitVersion({ assessmentId });
             break;
           default:
-            return Promise.reject(error);
+            throw error;
         }
+
         return axios.request(cfg);
       } catch {
-        return Promise.reject(error);
+        throw error;
       }
     },
   );

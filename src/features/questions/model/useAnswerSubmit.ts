@@ -13,7 +13,7 @@ type OptionLike =
   | null
   | undefined;
 
-const LOW_CONFIDENCE_THRESHOLD = 2; 
+const LOW_CONFIDENCE_THRESHOLD = 2;
 
 export function useAnswerSubmit() {
   const { service } = useServiceContext();
@@ -35,7 +35,12 @@ export function useAnswerSubmit() {
     }) => {
       if (!selectedQuestion?.id) return;
 
-      const { value, notApplicable, confidenceLevelId, submitOnAnswerSelection } = params ?? {};
+      const {
+        value,
+        notApplicable,
+        confidenceLevelId,
+        submitOnAnswerSelection,
+      } = params ?? {};
       const shouldAttach =
         !!value?.id || !!submitOnAnswerSelection || !!notApplicable;
 
@@ -46,13 +51,13 @@ export function useAnswerSubmit() {
           questionId: selectedQuestion.id,
           answerOptionId: value?.id ?? null,
           isNotApplicable: !!notApplicable,
-          confidenceLevelId: shouldAttach ? confidenceLevelId ?? null : null,
+          confidenceLevelId: shouldAttach ? (confidenceLevelId ?? null) : null,
         },
       };
 
       const res = await submitAnswer.query(payload);
 
-      const server = (res as any)?.data;
+      const server = res?.data;
       const serverQuestion = server?.question ?? server?.result ?? server;
       const serverAnswer = serverQuestion?.answer;
 
@@ -66,47 +71,53 @@ export function useAnswerSubmit() {
           selectedOption:
             serverAnswer?.selectedOption ??
             (value
-              ? { id: value.id ?? null, index: (value as any)?.index, title: (value as any)?.title }
+              ? {
+                  id: value.id ?? null,
+                  index: (value as any)?.index,
+                  title: (value as any)?.title,
+                }
               : null),
           confidenceLevel:
             serverAnswer?.confidenceLevel ??
-            (shouldAttach && confidenceLevelId != null ? { id: confidenceLevelId } : q?.answer?.confidenceLevel ?? null),
-          isNotApplicable:
-            serverAnswer?.isNotApplicable ?? !!notApplicable,
-          approved:
-            serverAnswer?.approved ?? q?.answer?.approved,
+            (shouldAttach && confidenceLevelId != null
+              ? { id: confidenceLevelId }
+              : (q?.answer?.confidenceLevel ?? null)),
+          isNotApplicable: serverAnswer?.isNotApplicable ?? !!notApplicable,
+          approved: serverAnswer?.approved ?? q?.answer?.approved,
         };
 
         const evidencesCount =
           serverQuestion?.counts?.evidences ?? q?.counts?.evidences ?? 0;
 
-        const answered = !!nextAnswer.selectedOption || !!nextAnswer.isNotApplicable;
+        const answered =
+          !!nextAnswer.selectedOption || !!nextAnswer.isNotApplicable;
         const confId = nextAnswer.confidenceLevel?.id as number | undefined;
 
         const nextIssues = {
           isUnanswered: !answered,
           isAnsweredWithLowConfidence:
-            answered && confId != null ? confId <= LOW_CONFIDENCE_THRESHOLD : false,
+            answered && confId != null
+              ? confId <= LOW_CONFIDENCE_THRESHOLD
+              : false,
           isAnsweredWithoutEvidences: answered && evidencesCount === 0,
           unresolvedCommentsCount:
             serverQuestion?.issues?.unresolvedCommentsCount ??
             q?.issues?.unresolvedCommentsCount ??
             0,
-          hasUnapprovedAnswer:
-            nextAnswer.approved === false,
+          hasUnapprovedAnswer: nextAnswer.approved === false,
         };
 
         updatedItem = {
           ...q,
           answer: { ...(q.answer ?? null), ...nextAnswer },
           issues: {
-            ...(q.issues ?? {}),
-            ...(serverQuestion?.issues ?? {}),
+            ...q.issues,
+            ...serverQuestion?.issues,
             ...nextIssues,
           },
           counts: {
-            ...(q.counts ?? {}),
-            ...(serverQuestion?.counts ?? {}),
+            ...q.counts,
+            ...serverQuestion?.counts,
           },
         };
 
@@ -120,7 +131,14 @@ export function useAnswerSubmit() {
 
       return res;
     },
-    [assessmentId, questionnaireId, selectedQuestion?.id, questions, submitAnswer, dispatch],
+    [
+      assessmentId,
+      questionnaireId,
+      selectedQuestion?.id,
+      questions,
+      submitAnswer,
+      dispatch,
+    ],
   );
 
   return {

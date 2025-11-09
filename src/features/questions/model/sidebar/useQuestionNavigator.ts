@@ -33,7 +33,6 @@ export function useQuestionNavigator(
   questions: IQuestionInfo[],
   filteredQuestions: IQuestionInfo[] = questions,
   activeQuestion?: IQuestionInfo | null,
-  opts: Options = { enablePagingShortcuts: true },
 ): QuestionNavigator {
   const dispatch = useQuestionDispatch();
   const navigate = useNavigate();
@@ -63,21 +62,18 @@ export function useQuestionNavigator(
     [spaceId, page, assessmentId, questionnaireId],
   );
 
-  const selectAt = useCallback(
-    (index: number) => {
-      console.log(index);
-      if (!questions.length) return;
-      const safeIndex = Math.min(
-        Math.max(index, 0),
-        Math.max(questions.length - 1, 0),
-      );
-      const q = questions[safeIndex];
-      if (!q) return;
+  const selectAt = useCallback((index: number) => {
+    console.log(index);
+    if (!questions.length) return;
+    const safeIndex = Math.min(
+      Math.max(index, 0),
+      Math.max(questions.length - 1, 0),
+    );
+    const q = questions[safeIndex];
+    if (!q) return;
 
-      navigate(makeQuestionPath(safeIndex));
-    },
-    [],
-  );
+    navigate(makeQuestionPath(safeIndex));
+  }, []);
 
   useEffect(() => {
     dispatch(

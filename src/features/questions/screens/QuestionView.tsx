@@ -36,7 +36,6 @@ const QuestionView = () => {
     questions,
     filteredQuestions,
     activeQuestion,
-    { enablePagingShortcuts: true },
   );
 
   const { isAdvanced } = useAssessmentMode();
@@ -77,19 +76,16 @@ const QuestionView = () => {
     activeQuestion,
   ]);
 
-  // انتخاب/حذف پاسخ با کلیک روی گزینه
   const onSelectOption = async (option: any) => {
     const isAlreadySelected = isAdvanced
       ? selectedOption?.id === option?.id
       : activeQuestion?.answer?.selectedOption?.id === option?.id;
 
     if (isAdvanced) {
-      // در حالت Advanced فقط لوکالی toggle؛ ارسال با Submit
       setSelectedOption(isAlreadySelected ? null : option);
       return;
     }
 
-    // حالت سریع (Non-Advanced): کلیک مجدد روی گزینه انتخاب‌شده ⇒ حذف پاسخ
     if (isAlreadySelected) {
       await submit({
         value: null,
@@ -97,10 +93,9 @@ const QuestionView = () => {
         confidenceLevelId: null,
         submitOnAnswerSelection: true,
       });
-      return; // روی همین سؤال بمان
+      return; 
     }
 
-    // انتخاب معمولی: ارسال و رفتن به سؤال بعد
     await submit({
       value: option,
       notApplicable: false,
@@ -120,10 +115,9 @@ const QuestionView = () => {
     if (autoNext) goNext();
   };
 
-  // منبع حقیقت برای نمایش انتخاب‌شدن در UI
   const selectedIdForRender = isAdvanced
-    ? selectedOption?.id ?? null
-    : activeQuestion?.answer?.selectedOption?.id ?? null;
+    ? (selectedOption?.id ?? null)
+    : (activeQuestion?.answer?.selectedOption?.id ?? null);
 
   return (
     <Box width="100%">
@@ -300,7 +294,9 @@ const QuestionView = () => {
                   color="primary"
                   onClick={onSubmit}
                   loading={isSubmitting}
-                  disabled={!selectedOption && !notApplicable && confidence == null}
+                  disabled={
+                    !selectedOption && !notApplicable && confidence == null
+                  }
                 >
                   {t("common.submit")}
                 </LoadingButton>

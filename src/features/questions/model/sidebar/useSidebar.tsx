@@ -6,8 +6,6 @@ import { useSidebarData } from "./useSidebarData";
 
 import type { IQuestionInfo } from "@/types";
 import { getFilterOptionsMeta } from "./issues.registry";
-import { useAssessmentContext } from "@/providers/assessment-provider";
-import { ASSESSMENT_MODE } from "@/utils/enum-type";
 import { useQuestionNavigator } from "./useQuestionNavigator";
 
 export function useSidebar(questions: IQuestionInfo[]) {
