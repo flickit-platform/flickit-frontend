@@ -15,9 +15,11 @@
   "lowConfidence": "Low confidence",
   "negativeEvidence": "Negative evidence",
   "noEvidence": "No evidence",
+  "notApplicable": "Not applicable",
   "typeOfEvidence": "Type of evidence",
   "positiveEvidence": "Positive evidence",
   "questionsEmptyState": "No questions with the selected issues.",
   "questionsList": "Questions list ({{count}} questions)",
+  "quickAnswer": "Quick answer",
   "unanswered": "Unanswered"
 }

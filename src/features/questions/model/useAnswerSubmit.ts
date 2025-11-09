@@ -7,22 +7,39 @@ import {
 } from "../context";
 import { useServiceContext } from "@/providers/service-provider";
 import { useQuery } from "@/hooks/useQuery";
+import { IQuestionsModel } from "@/types";
 
 type OptionLike =
   | { id?: string | number; title?: string; index?: number }
   | null
   | undefined;
 
-const LOW_CONFIDENCE_THRESHOLD = 2;
-
 export function useAnswerSubmit() {
   const { service } = useServiceContext();
-  const { assessmentId, questionnaireId } = useParams();
+  const { assessmentId = "", questionnaireId } = useParams();
   const { selectedQuestion, questions = [] } = useQuestionContext();
   const dispatch = useQuestionDispatch();
 
   const submitAnswer = useQuery({
     service: (args, config) => service.assessments.answer.submit(args, config),
+    runOnMount: false,
+  });
+
+  const approveAnswerQuery = useQuery({
+    service: (args, config) =>
+      service.assessments.answer.approve(
+        args ?? { assessmentId, data: { questionId: selectedQuestion.id } },
+        config,
+      ),
+    runOnMount: false,
+  });
+
+  const fetchQuestionIssues = useQuery<IQuestionsModel>({
+    service: (args, config) =>
+      service.assessments.questionnaire.getQuestionIssues(
+        { assessmentId, questionId: selectedQuestion?.id },
+        config,
+      ),
     runOnMount: false,
   });
 
@@ -56,7 +73,7 @@ export function useAnswerSubmit() {
       };
 
       const res = await submitAnswer.query(payload);
-
+      const issueRes = await fetchQuestionIssues.query();
       const server = res?.data;
       const serverQuestion = server?.question ?? server?.result ?? server;
       const serverAnswer = serverQuestion?.answer;
@@ -78,7 +95,7 @@ export function useAnswerSubmit() {
                 }
               : null),
           confidenceLevel:
-            serverAnswer?.confidenceLevel ??
+            (serverAnswer?.selectedOption && serverAnswer?.confidenceLevel) ??
             (shouldAttach && confidenceLevelId != null
               ? { id: confidenceLevelId }
               : (q?.answer?.confidenceLevel ?? null)),
@@ -86,34 +103,11 @@ export function useAnswerSubmit() {
           approved: serverAnswer?.approved ?? q?.answer?.approved,
         };
 
-        const evidencesCount =
-          serverQuestion?.counts?.evidences ?? q?.counts?.evidences ?? 0;
-
-        const answered =
-          !!nextAnswer.selectedOption || !!nextAnswer.isNotApplicable;
-        const confId = nextAnswer.confidenceLevel?.id as number | undefined;
-
-        const nextIssues = {
-          isUnanswered: !answered,
-          isAnsweredWithLowConfidence:
-            answered && confId != null
-              ? confId <= LOW_CONFIDENCE_THRESHOLD
-              : false,
-          isAnsweredWithoutEvidences: answered && evidencesCount === 0,
-          unresolvedCommentsCount:
-            serverQuestion?.issues?.unresolvedCommentsCount ??
-            q?.issues?.unresolvedCommentsCount ??
-            0,
-          hasUnapprovedAnswer: nextAnswer.approved === false,
-        };
-
         updatedItem = {
           ...q,
           answer: { ...(q.answer ?? null), ...nextAnswer },
           issues: {
-            ...q.issues,
-            ...serverQuestion?.issues,
-            ...nextIssues,
+            ...issueRes,
           },
           counts: {
             ...q.counts,
@@ -124,9 +118,6 @@ export function useAnswerSubmit() {
         return updatedItem;
       });
 
-      if (updatedItem && questionActions.setSelectedQuestion) {
-        dispatch(questionActions.setSelectedQuestion(updatedItem));
-      }
       dispatch(questionActions.setQuestions(nextQuestions));
 
       return res;
@@ -141,9 +132,41 @@ export function useAnswerSubmit() {
     ],
   );
 
+  const approve = useCallback(async () => {
+    if (!selectedQuestion?.id) return;
+
+    const res = await approveAnswerQuery.query();
+    const issueRes = await fetchQuestionIssues.query();
+
+    const nextQuestions = questions.map((q: any) => {
+      if (q?.id !== selectedQuestion?.id) return q;
+
+      const updatedItem = {
+        ...q,
+        issues: {
+          ...issueRes,
+        },
+      };
+
+      return updatedItem;
+    });
+
+    dispatch(
+      questionActions.setSelectedQuestion({
+        ...selectedQuestion,
+        issues: {
+          ...issueRes,
+        },
+      }),
+    );
+
+    dispatch(questionActions.setQuestions(nextQuestions));
+    return res;
+  }, [assessmentId, questionnaireId, selectedQuestion?.id]);
   return {
     submit,
-    isSubmitting: submitAnswer.loading,
+    isLoading: submitAnswer.loading,
+    approve,
     error: submitAnswer.error,
   };
 }
