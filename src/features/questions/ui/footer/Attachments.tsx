@@ -20,7 +20,6 @@ import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined
 import { ICustomError } from "@utils/custom-error";
 import toastError from "@utils/toast-error";
 import { downloadFile } from "@utils/download-file";
-import Tooltip from "@mui/material/Tooltip";
 import useFetchData from "@/features/questions/model/evidenceTabs/useFetchData";
 import {
   setTab,
@@ -28,6 +27,8 @@ import {
   useQuestionDispatch,
 } from "@/features/questions/context";
 import languageDetector from "@utils/language-detector";
+import useDialog from "@/hooks/useDialog";
+import { DeleteConfirmationDialog } from "@common/dialogs/DeleteConfirmationDialog";
 
 interface Attachment {
   link: string;
@@ -120,7 +121,7 @@ export const Attachments: React.FC<any> = ({
       setAttachments(result.attachments ?? []);
     }
   };
-
+  const dialogProps = useDialog();
   const handleDeleteAttachment = async (attachmentId: any) => {
     try {
       const queryMap = {
@@ -135,6 +136,7 @@ export const Attachments: React.FC<any> = ({
       setAttachments((prevState) =>
         prevState.filter((item) => item.id != attachmentId),
       );
+      dialogProps.onClose()
     } catch (e) {
       const err = e as ICustomError;
       toastError(err);
@@ -208,17 +210,24 @@ export const Attachments: React.FC<any> = ({
                     display: "flex",
                     justifyContent: "space-between",
                     alignItems: "center",
-                    height: "32px"
+                    height: "32px",
                   }}
                 >
                   <Box sx={{ ...styles.centerV, gap: 1 }}>
                     <Chip sx={CHIP_STYLE} label={extension} />
-                    <Text variant="bodySmall" color="background.secondaryDark" sx={{...styles.rtlStyle(isRTL)}}>
+                    <Text
+                      variant="bodySmall"
+                      color="background.secondaryDark"
+                      sx={{ ...styles.rtlStyle(isRTL) }}
+                    >
                       {formatFileName(name, extension)}
                     </Text>
                     {attachment.description && (
                       <Text
-                        sx={{ paddingInlineStart: 1, display: {xs: "none", sm: "flex"} }}
+                        sx={{
+                          paddingInlineStart: 1,
+                          display: { xs: "none", sm: "flex" },
+                        }}
                         variant="bodySmall"
                         color="#627384"
                       >
@@ -226,20 +235,28 @@ export const Attachments: React.FC<any> = ({
                       </Text>
                     )}
                   </Box>
-                  <Box>
-
-                      <IconButton onClick={handleDownloadAttachment}>
-                        <FileDownloadOutlined
-                          sx={{ color: "info.main", fontSize: "24px" }}
-                        />
-                      </IconButton>
-                      <IconButton
-                        onClick={() => handleDeleteAttachment(attachmentId)}
-                      >
-                        <DeleteOutlineOutlinedIcon
-                          sx={{ color: "info.main", fontSize: "24px" }}
-                        />
-                      </IconButton>
+                  <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                    <IconButton
+                      sx={{ p: 0.4 }}
+                      onClick={handleDownloadAttachment}
+                    >
+                      <FileDownloadOutlined
+                        sx={{ color: "info.main", fontSize: "24px" }}
+                      />
+                    </IconButton>
+                    <IconButton
+                      sx={{ p: 0.4 }}
+                      onClick={() => dialogProps.openDialog({
+                        type: "delete",
+                        data: {
+                         id: attachmentId
+                        }
+                      })}
+                    >
+                      <DeleteOutlineOutlinedIcon
+                        sx={{ color: "info.main", fontSize: "24px" }}
+                      />
+                    </IconButton>
                   </Box>
                 </Box>
                 {!isLast && (
@@ -256,6 +273,15 @@ export const Attachments: React.FC<any> = ({
             );
           })}
         </AccordionDetails>
+        <DeleteConfirmationDialog
+          open={dialogProps.open}
+          onClose={() => dialogProps.onClose()}
+          onConfirm={()=>handleDeleteAttachment(dialogProps?.context?.data.id)}
+          content={{
+            category: t("questions_temp.attachment").toLowerCase(),
+            title: "",
+          }}
+        />
       </Accordion>
     </Box>
   );
