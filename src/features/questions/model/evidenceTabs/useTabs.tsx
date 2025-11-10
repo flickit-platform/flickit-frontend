@@ -75,7 +75,7 @@ const useTabs = () => {
         label: t(item.label),
         counts: tabCounts[item.value],
       })),
-    [],
+    [answerHistories, comments, evidences],
   );
 
   const handleTabChange = (_event: SyntheticEvent, newValue: TabValue) => {
