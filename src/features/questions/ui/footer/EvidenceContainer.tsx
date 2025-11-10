@@ -26,48 +26,39 @@ import RichEditorField from "@common/fields/RichEditorField";
 import { useForm } from "react-hook-form";
 import UseFetchData from "@/features/questions/model/evidenceTabs/useFetchData";
 import Attachments from "@/features/questions/ui/footer/Attachments";
+import useDialog from "@/hooks/useDialog";
+import useFetchData from "@/features/questions/model/evidenceTabs/useFetchData";
 
 const ICON_SIZE = { width: 24, height: 24, color: "#627384" };
-const EvidenceContainer: React.FC<any> = () => {
-  const { tabData, deleteItem } = useQuestionContext();
-  const { data, activeTab } = tabData;
-  const dispatch = useQuestionDispatch();
-  const { deleteEvidence } = UseFetchData();
+const EvidenceContainer: React.FC<any> = (props: any) => {
+  const { item } = props;
+  const { deleteEvidence } = useFetchData();
+  const deleteDialog = useDialog();
 
   const handleConfirmDelete = async () => {
-    const { id } = deleteItem;
-    if (!id) return;
-    await deleteEvidence.query({ id });
-    dispatch(setDelete({ open: false, type: "", id: "" }));
-    dispatch(
-      setTab({
-        activeTab,
-        data: tabData.data.filter((item: any) => item.id !== id),
-      }),
-    );
+    try {
+      await deleteEvidence.query({ id: item.id });
+      deleteDialog.onClose();
+    } catch (error) {
+      console.error("Error deleting evidence:", error);
+    }
   };
 
   return (
-    <Box sx={{ py: 2, px: 3 }}>
-      {data?.map((item: any) => {
-        return (
-          <Box
-            key={item?.id}
-            bgcolor={"background.background"}
-            sx={{ mb: 2, borderRadius: 1 }}
-          >
-            <Header {...item} />
-            <Detail {...item} />
-          </Box>
-        );
-      })}
+    <Box>
+      <Box bgcolor={"background.background"} sx={{ mb: 2, borderRadius: 1 }}>
+        <Header {...item} deleteDialog={deleteDialog} />
+        <Detail {...item} />
+      </Box>
 
       <DeleteConfirmationDialog
-        open={deleteItem.open}
-        onClose={() => dispatch(setDelete({ ...deleteItem, open: false }))}
+        open={deleteDialog.open}
+        onClose={deleteDialog.onClose}
         onConfirm={() => handleConfirmDelete()}
         content={{
-          category: t("questions.evidence"),
+          category: item.type
+            ? t("questions.evidence")
+            : t("questions.comment"),
           title: "",
         }}
       />
@@ -76,8 +67,15 @@ const EvidenceContainer: React.FC<any> = () => {
 };
 
 const Header = (props: any) => {
-  const { createdBy, lastModificationTime, id, editable, type, description } =
-    props;
+  const {
+    createdBy,
+    lastModificationTime,
+    id,
+    editable,
+    type,
+    description,
+    deleteDialog,
+  } = props;
   const { displayName, pictureLink } = createdBy;
   const dispatch = useQuestionDispatch();
   const { editingItem, tabData } = useQuestionContext();
@@ -173,8 +171,7 @@ const Header = (props: any) => {
                     icon: (
                       <DeleteOutlinedIcon fontSize="small" sx={ICON_SIZE} />
                     ),
-                    onClick: () =>
-                      dispatch(setDelete({ id, open: true, type })),
+                    onClick: () => deleteDialog.openDialog({}),
                   },
                 ]
           }

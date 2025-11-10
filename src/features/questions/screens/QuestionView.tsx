@@ -409,7 +409,7 @@ const QuestionView = () => {
           </Box>
         </Box>
       </Box>
-      {isAdvanced && <FooterTabs />}
+      {isAdvanced && <FooterTabs activeQuestion={activeQuestion} />}
     </Box>
   );
 };
