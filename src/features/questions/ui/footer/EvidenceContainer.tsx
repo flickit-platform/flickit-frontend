@@ -76,7 +76,7 @@ const EvidenceContainer: React.FC<any> = () => {
 };
 
 const Header = (props: any) => {
-  const { createdBy, lastModificationTime, id, editable, type, description } =
+  const { createdBy, lastModificationTime, id = 0, editable, type, description } =
     props;
   const { displayName, pictureLink } = createdBy;
   const dispatch = useQuestionDispatch();
@@ -191,15 +191,15 @@ const ActionButtons = ({ actions }: { actions: any }) => {
       onClick={(e) => e.stopPropagation()}
     >
       {actions.map((button: any) => (
-        <IconButton key={uniqueId()} onClick={button.onClick} sx={{ p: 0.4 }}>
-          {button.icon}
+        <IconButton key={uniqueId()} onClick={button?.onClick} sx={{ p: 0.4 }}>
+          {button?.icon}
         </IconButton>
       ))}
     </Box>
   );
 };
 const Detail = (props: any) => {
-  const { id, description, attachmentsCount } = props;
+  const { id=0, description, attachmentsCount } = props;
   const dispatch = useQuestionDispatch();
   const { editingItem } = useQuestionContext();
 

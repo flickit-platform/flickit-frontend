@@ -30,7 +30,7 @@ const FooterTabs = () => {
                     }}
                   >
                     {item.label}
-                    {"  "}({item.counts ?? 0})
+                    {"  "}({item.counts})
                   </Text>
                 }
                 value={item.value}

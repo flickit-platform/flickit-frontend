@@ -54,28 +54,42 @@ const TAB_ITEMS: TabItem[] = [
 ];
 
 const useTabs = () => {
-  const { selectedQuestion } = useQuestionContext();
+  const { selectedQuestion, tabData } = useQuestionContext();
   const { answerHistories, comments, evidences } =
     selectedQuestion?.counts ?? {};
   const questionId = selectedQuestion?.id;
   const [selectedTab, setSelectedTab] = useState<TabValue>("evidence");
+  const [count, setCount] = useState<Record<TabValue, number | undefined>>({
+    evidence: undefined,
+    comment: undefined,
+    answerHistory: undefined,
+  });
   const dispatch = useQuestionDispatch();
+
+  useEffect(() => {
+    setCount((prev) => ({
+      ...prev,
+      [selectedTab]: tabData?.data?.length,
+    }));
+  }, [tabData?.data?.length]);
 
   const tabCounts = {
     evidence: evidences,
     comment: comments,
     answerHistory: answerHistories,
   };
-
   const { t } = useTranslation();
+  console.log(count,"test count");
   const tabItems = useMemo(
     () =>
-      TAB_ITEMS.map((item) => ({
-        ...item,
-        label: t(item.label),
-        counts: tabCounts[item.value],
-      })),
-    [answerHistories, comments, evidences],
+      TAB_ITEMS.map((item) => {
+        return {
+          ...item,
+          label: t(item.label),
+          counts: count[item.value] ?? tabCounts[item.value],
+        };
+      }),
+    [ answerHistories, comments, evidences, count[selectedTab]],
   );
 
   const handleTabChange = (_event: SyntheticEvent, newValue: TabValue) => {
@@ -109,6 +123,10 @@ const useTabs = () => {
       const response: EvidenceData = await currentQuery.query();
       const items = response.items ?? [];
       dispatch(setTab({ activeTab: selectedTab, data: items }));
+      setCount((prev) => ({
+        ...prev,
+        [selectedTab]: tabData?.data?.length,
+      }));
     } catch (error) {
       const customError = error as ICustomError;
       showToast(customError);
