@@ -27,6 +27,7 @@ import {
   useQuestionContext,
   useQuestionDispatch,
 } from "@/features/questions/context";
+import languageDetector from "@utils/language-detector";
 
 interface Attachment {
   link: string;
@@ -44,8 +45,7 @@ const ACCORDION_BASE_STYLE = {
   background: "#66809914",
   boxShadow: "none",
   borderRadius: "4px !important",
-  border: ".5px solid #66809980",
-  mb: 1,
+  border: "1px solid #C7CCD1",
   "&:before": {
     display: "none",
   },
@@ -57,9 +57,8 @@ const ACCORDION_SUMMARY_STYLE = {
   py: "6px",
   minHeight: "unset",
   borderRadius: 1,
-  border: ".5px solid #66809980",
   background: "#66809914",
-  "&.Mui-expanded": { margin: 0, minHeight: "unset" },
+  "&.Mui-expanded": { margin: 0, minHeight: "unset", borderBottom: "1px solid #C7CCD1" },
   "& .MuiAccordionSummary-content": {
     display: "flex",
     alignItems: "center",
@@ -147,9 +146,12 @@ export const Attachments: React.FC<any> = ({
     const match = regex.exec(link);
     if (!match) return { name: null, extension: null, fullName: null };
 
-    const fullName = match[1];
-    const name = fullName.split(".")[0];
-    const extension = fullName.substring(fullName.lastIndexOf("."));
+    const fullName = decodeURIComponent(match[1]);
+    const dotIndex = fullName.lastIndexOf(".");
+    const hasExtension = dotIndex !== -1;
+
+    const name = hasExtension ? fullName.substring(0, dotIndex) : fullName;
+    const extension = hasExtension ? fullName.substring(dotIndex + 1).toLowerCase() : "";
 
     return { name, extension, fullName };
   };
@@ -158,7 +160,7 @@ export const Attachments: React.FC<any> = ({
     if (!name || !extension) return "";
 
     if (name.length < MAX_FILENAME_LENGTH) {
-      return `${name} ${extension}`;
+      return `${name}.${extension}`;
     }
 
     return `${name.substring(0, MAX_FILENAME_LENGTH)}....${extension}`;
@@ -172,12 +174,12 @@ export const Attachments: React.FC<any> = ({
         onChange={handleAccordionChange}
       >
         <AccordionSummary
-          expandIcon={<ExpandMoreIcon />}
+          expandIcon={<ExpandMoreIcon sx={{color: "#627384"}} />}
           sx={ACCORDION_SUMMARY_STYLE}
         >
           <Box sx={{ ...styles.centerVH, gap: 1 }}>
             <AttachFileIcon
-              sx={{ color: "primary.main", width: 16, height: 16 }}
+              sx={{ color: "#627384", width: 16, height: 16 }}
             />
             <Text
               variant="bodySmall"
@@ -189,15 +191,15 @@ export const Attachments: React.FC<any> = ({
           </Box>
         </AccordionSummary>
 
-        <AccordionDetails sx={{ background: "#fff", p: 0, borderRadius: 1 }}>
+        <AccordionDetails sx={{ background: "#fff", p:"8px", borderRadius: 1 }}>
           {attachments.map((attachment, index) => {
             const { id: attachmentId } = attachment;
             const { name, extension } = extractFileName(attachment.link);
             const isLast = index === attachments.length - 1;
-
             const handleDownloadAttachment = () => {
               downloadFile(attachment);
             };
+            const isRTL = languageDetector(name);
 
             return (
               <Fragment key={uniqueId()}>
@@ -205,17 +207,18 @@ export const Attachments: React.FC<any> = ({
                   sx={{
                     display: "flex",
                     justifyContent: "space-between",
-                    p: "6px 8px",
+                    alignItems: "center",
+                    height: "32px"
                   }}
                 >
                   <Box sx={{ ...styles.centerV, gap: 1 }}>
                     <Chip sx={CHIP_STYLE} label={extension} />
-                    <Text variant="bodySmall" color="background.secondaryDark">
+                    <Text variant="bodySmall" color="background.secondaryDark" sx={{...styles.rtlStyle(isRTL)}}>
                       {formatFileName(name, extension)}
                     </Text>
                     {attachment.description && (
                       <Text
-                        sx={{ paddingInlineStart: 1 }}
+                        sx={{ paddingInlineStart: 1, display: {xs: "none", sm: "flex"} }}
                         variant="bodySmall"
                         color="#627384"
                       >
@@ -224,36 +227,19 @@ export const Attachments: React.FC<any> = ({
                     )}
                   </Box>
                   <Box>
-                    <Tooltip
-                      componentsProps={{
-                        tooltip: tooltipStyle,
-                        arrow: { sx: { color: "#66809920" } },
-                      }}
-                      title={`${t("common.download")} ${name}`}
-                    >
+
                       <IconButton onClick={handleDownloadAttachment}>
                         <FileDownloadOutlined
-                          sx={{ color: "info.main" }}
-                          fontSize={"small"}
+                          sx={{ color: "info.main", fontSize: "24px" }}
                         />
                       </IconButton>
-                    </Tooltip>
-                    <Tooltip
-                      componentsProps={{
-                        tooltip: tooltipStyle,
-                        arrow: { sx: { color: "#66809920" } },
-                      }}
-                      title={t("common.delete")}
-                    >
                       <IconButton
                         onClick={() => handleDeleteAttachment(attachmentId)}
                       >
                         <DeleteOutlineOutlinedIcon
-                          sx={{ color: "info.main" }}
-                          fontSize={"small"}
+                          sx={{ color: "info.main", fontSize: "24px" }}
                         />
                       </IconButton>
-                    </Tooltip>
                   </Box>
                 </Box>
                 {!isLast && (
