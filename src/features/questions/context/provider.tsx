@@ -8,18 +8,14 @@ interface IQuestionsProviderProps {
 export interface IQuestionsContext {
   questions: any;
   selectedQuestion: any;
-  tabData: any;
-  editingItem: any;
-  deleteItem: any;
+  questionItems: any;
   filteredQuestions: any;
 }
 
 export const QuestionsContext = createContext<IQuestionsContext>({
   questions: [],
   selectedQuestion: null,
-  tabData: [],
-  editingItem: {},
-  deleteItem: {},
+  questionItems: [],
   filteredQuestions: null,
 });
 
@@ -32,8 +28,6 @@ export const Provider: FC<IQuestionsProviderProps> = ({ children }) => {
     questions: [],
     selectedQuestion: null,
     tabData: [],
-    editingItem: {},
-    deleteItem: {},
     filteredQuestions: null,
   });
 

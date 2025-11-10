@@ -6,7 +6,6 @@ import {
   Accordion,
   AccordionSummary,
   AccordionDetails,
-  useTheme,
 } from "@mui/material";
 import { t } from "i18next";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
@@ -20,15 +19,10 @@ import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined
 import { ICustomError } from "@utils/custom-error";
 import toastError from "@utils/toast-error";
 import { downloadFile } from "@utils/download-file";
-import useFetchData from "@/features/questions/model/evidenceTabs/useFetchData";
-import {
-  setTab,
-  useQuestionContext,
-  useQuestionDispatch,
-} from "@/features/questions/context";
 import languageDetector from "@utils/language-detector";
 import useDialog from "@/hooks/useDialog";
 import { DeleteConfirmationDialog } from "@common/dialogs/DeleteConfirmationDialog";
+import useFetchData from "../../model/footer/useFetchData";
 
 interface Attachment {
   link: string;
@@ -59,7 +53,11 @@ const ACCORDION_SUMMARY_STYLE = {
   minHeight: "unset",
   borderRadius: 1,
   background: "#66809914",
-  "&.Mui-expanded": { margin: 0, minHeight: "unset", borderBottom: "1px solid #C7CCD1" },
+  "&.Mui-expanded": {
+    margin: 0,
+    minHeight: "unset",
+    borderBottom: "1px solid #C7CCD1",
+  },
   "& .MuiAccordionSummary-content": {
     display: "flex",
     alignItems: "center",
@@ -81,32 +79,12 @@ const CHIP_STYLE = {
 
 const MAX_FILENAME_LENGTH = 20;
 
-export const Attachments: React.FC<any> = ({
-  evidenceId,
-  attachmentsCount,
-}) => {
+export const Attachments: React.FC<any> = ({ id, attachmentsCount }) => {
   const [expanded, setExpanded] = useState<boolean>(false);
+  const [counter, setCounter] = useState<number>(attachmentsCount);
   const [attachments, setAttachments] = useState<Attachment[]>([]);
-  const {
-    fetchEvidenceAttachments,
-    removeEvidenceAttachments,
-    evidencesQueryData,
-    commentesQueryData,
-  } = useFetchData();
-  const { tabData } = useQuestionContext();
-  const dispatch = useQuestionDispatch();
-
-  const { activeTab } = tabData;
-  const theme = useTheme();
-  const tooltipStyle: any = {
-    sx: {
-      bgcolor: "#66809920",
-      color: theme.palette.text.primary,
-      fontWeight: 400,
-      fontSize: "11px",
-      px: 0.5,
-    },
-  };
+  const { fetchEvidenceAttachments, removeEvidenceAttachments } =
+    useFetchData();
 
   const handleAccordionChange = async (
     _event: React.SyntheticEvent,
@@ -116,28 +94,30 @@ export const Attachments: React.FC<any> = ({
 
     if (isExpanded) {
       const result = await fetchEvidenceAttachments.query({
-        evidence_id: evidenceId,
+        evidence_id: id,
       });
       setAttachments(result.attachments ?? []);
+      setCounter(result.attachments.length);
     }
   };
   const dialogProps = useDialog();
   const handleDeleteAttachment = async () => {
-    const id: string = dialogProps?.context?.data.id
+    const attachmentId: string = dialogProps?.context?.data.id;
     try {
-      const queryMap = {
-        evidence: evidencesQueryData,
-        comment: commentesQueryData,
-      };
-      const currentQuery = queryMap[activeTab];
-      await removeEvidenceAttachments.query({ evidenceId, attachmentId : id });
-      const response = await currentQuery.query();
-      const items = response.items ?? [];
-      dispatch(setTab({ activeTab: activeTab, data: items }));
-      setAttachments((prevState) =>
-        prevState.filter((item) => item.id != id),
-      );
-      dialogProps.onClose()
+      await removeEvidenceAttachments
+        .query({
+          evidenceId: id,
+          attachmentId: attachmentId,
+        })
+        .then(async () => {
+          const result = await fetchEvidenceAttachments.query({
+            evidence_id: id,
+          });
+          setAttachments(result.attachments ?? []);
+          setCounter(result.attachments.length);
+        });
+
+      dialogProps.onClose();
     } catch (e) {
       const err = e as ICustomError;
       toastError(err);
@@ -154,7 +134,9 @@ export const Attachments: React.FC<any> = ({
     const hasExtension = dotIndex !== -1;
 
     const name = hasExtension ? fullName.substring(0, dotIndex) : fullName;
-    const extension = hasExtension ? fullName.substring(dotIndex + 1).toLowerCase() : "";
+    const extension = hasExtension
+      ? fullName.substring(dotIndex + 1).toLowerCase()
+      : "";
 
     return { name, extension, fullName };
   };
@@ -170,121 +152,131 @@ export const Attachments: React.FC<any> = ({
   };
 
   return (
-    <Box sx={{ pt: 3 }}>
-      <Accordion
-        sx={ACCORDION_BASE_STYLE}
-        expanded={expanded}
-        onChange={handleAccordionChange}
-      >
-        <AccordionSummary
-          expandIcon={<ExpandMoreIcon sx={{color: "#627384"}} />}
-          sx={ACCORDION_SUMMARY_STYLE}
-        >
-          <Box sx={{ ...styles.centerVH, gap: 1 }}>
-            <AttachFileIcon
-              sx={{ color: "#627384", width: 16, height: 16 }}
-            />
-            <Text
-              variant="bodySmall"
-              color="background.secondaryDark"
-              sx={{ fontWeight: 600 }}
+    <>
+      {counter > 0 && (
+        <Box sx={{ pt: 3 }}>
+          <Accordion
+            sx={ACCORDION_BASE_STYLE}
+            expanded={expanded}
+            onChange={handleAccordionChange}
+          >
+            <AccordionSummary
+              expandIcon={<ExpandMoreIcon sx={{ color: "#627384" }} />}
+              sx={ACCORDION_SUMMARY_STYLE}
             >
-              {t("questions.attachments")} ({attachmentsCount})
-            </Text>
-          </Box>
-        </AccordionSummary>
-
-        <AccordionDetails sx={{ background: "#fff", p:"8px", borderRadius: 1 }}>
-          {attachments.map((attachment, index) => {
-            const { id: attachmentId } = attachment;
-            const { name, extension } = extractFileName(attachment.link);
-            const isLast = index === attachments.length - 1;
-            const handleDownloadAttachment = () => {
-              downloadFile(attachment);
-            };
-            const isRTL = languageDetector(name);
-
-            return (
-              <Fragment key={uniqueId()}>
-                <Box
-                  sx={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                    height: "32px",
-                  }}
+              <Box sx={{ ...styles.centerVH, gap: 1 }}>
+                <AttachFileIcon
+                  sx={{ color: "#627384", width: 16, height: 16 }}
+                />
+                <Text
+                  variant="bodySmall"
+                  color="background.secondaryDark"
+                  sx={{ fontWeight: 600 }}
                 >
-                  <Box sx={{ ...styles.centerV, gap: 1 }}>
-                    <Chip sx={CHIP_STYLE} label={extension} />
-                    <Text
-                      variant="bodySmall"
-                      color="background.secondaryDark"
-                      sx={{ ...styles.rtlStyle(isRTL) }}
+                  {t("questions.attachments")} ({counter})
+                </Text>
+              </Box>
+            </AccordionSummary>
+
+            <AccordionDetails
+              sx={{ background: "#fff", p: "8px", borderRadius: 1 }}
+            >
+              {attachments.map((attachment, index) => {
+                const { id: attachmentId } = attachment;
+                const { name, extension } = extractFileName(attachment.link);
+                const isLast = index === attachments.length - 1;
+                const handleDownloadAttachment = () => {
+                  downloadFile(attachment);
+                };
+                const isRTL = languageDetector(name);
+
+                return (
+                  <Fragment key={uniqueId()}>
+                    <Box
+                      sx={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        alignItems: "center",
+                        height: "32px",
+                      }}
                     >
-                      {formatFileName(name, extension)}
-                    </Text>
-                    {attachment.description && (
-                      <Text
-                        sx={{
-                          paddingInlineStart: 1,
-                          display: { xs: "none", sm: "flex" },
-                        }}
-                        variant="bodySmall"
-                        color="#627384"
+                      <Box sx={{ ...styles.centerV, gap: 1 }}>
+                        <Chip sx={CHIP_STYLE} label={extension} />
+                        <Text
+                          variant="bodySmall"
+                          color="background.secondaryDark"
+                          sx={{ ...styles.rtlStyle(isRTL) }}
+                        >
+                          {formatFileName(name, extension)}
+                        </Text>
+                        {attachment.description && (
+                          <Text
+                            sx={{
+                              paddingInlineStart: 1,
+                              display: { xs: "none", sm: "flex" },
+                            }}
+                            variant="bodySmall"
+                            color="#627384"
+                          >
+                            {attachment.description}
+                          </Text>
+                        )}
+                      </Box>
+                      <Box
+                        sx={{ display: "flex", alignItems: "center", gap: 1 }}
                       >
-                        {attachment.description}
-                      </Text>
+                        <IconButton
+                          sx={{ p: 0.4 }}
+                          onClick={handleDownloadAttachment}
+                        >
+                          <FileDownloadOutlined
+                            sx={{ color: "info.main", fontSize: "24px" }}
+                          />
+                        </IconButton>
+                        <IconButton
+                          sx={{ p: 0.4 }}
+                          onClick={() =>
+                            dialogProps.openDialog({
+                              type: "delete",
+                              data: {
+                                id: attachmentId,
+                              },
+                            })
+                          }
+                        >
+                          <DeleteOutlineOutlinedIcon
+                            sx={{ color: "info.main", fontSize: "24px" }}
+                          />
+                        </IconButton>
+                      </Box>
+                    </Box>
+                    {!isLast && (
+                      <Divider
+                        sx={{
+                          borderBottomWidth: "0.5px",
+                          borderColor: "#C7CCD1",
+                        }}
+                        orientation="horizontal"
+                        flexItem
+                      />
                     )}
-                  </Box>
-                  <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-                    <IconButton
-                      sx={{ p: 0.4 }}
-                      onClick={handleDownloadAttachment}
-                    >
-                      <FileDownloadOutlined
-                        sx={{ color: "info.main", fontSize: "24px" }}
-                      />
-                    </IconButton>
-                    <IconButton
-                      sx={{ p: 0.4 }}
-                      onClick={() => dialogProps.openDialog({
-                        type: "delete",
-                        data: {
-                         id: attachmentId
-                        }
-                      })}
-                    >
-                      <DeleteOutlineOutlinedIcon
-                        sx={{ color: "info.main", fontSize: "24px" }}
-                      />
-                    </IconButton>
-                  </Box>
-                </Box>
-                {!isLast && (
-                  <Divider
-                    sx={{
-                      borderBottomWidth: "0.5px",
-                      borderColor: "#C7CCD1",
-                    }}
-                    orientation="horizontal"
-                    flexItem
-                  />
-                )}
-              </Fragment>
-            );
-          })}
-        </AccordionDetails>
-        <DeleteConfirmationDialog
-          open={dialogProps.open}
-          onClose={() => dialogProps.onClose()}
-          onConfirm={handleDeleteAttachment}
-          content={{
-            category: t("questions_temp.attachment").toLowerCase(),
-            title: "",
-          }}
-        />
-      </Accordion>
-    </Box>
+                  </Fragment>
+                );
+              })}
+            </AccordionDetails>
+            <DeleteConfirmationDialog
+              open={dialogProps.open}
+              onClose={() => dialogProps.onClose()}
+              onConfirm={handleDeleteAttachment}
+              content={{
+                category: t("questions_temp.attachment").toLowerCase(),
+                title: "",
+              }}
+            />
+          </Accordion>
+        </Box>
+      )}
+    </>
   );
 };
 

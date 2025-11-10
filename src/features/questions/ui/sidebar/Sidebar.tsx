@@ -67,6 +67,7 @@ const SidebarContent = memo(({ questions }: Readonly<SideBarProps>) => {
         display: "flex",
         flexDirection: "column",
         minHeight: "540px",
+        height: "fit-content",
       }}
     >
       <SidebarHeader

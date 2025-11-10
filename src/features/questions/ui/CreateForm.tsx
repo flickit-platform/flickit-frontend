@@ -1,6 +1,13 @@
 import { useState, useMemo, useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
-import { Box, Theme, Tabs, Tab, Checkbox, FormControlLabel } from "@mui/material";
+import {
+  Box,
+  Theme,
+  Tabs,
+  Tab,
+  Checkbox,
+  FormControlLabel,
+} from "@mui/material";
 import { useTranslation } from "react-i18next";
 import FormProviderWithForm from "@/components/common/FormProviderWithForm";
 import RichEditorField from "@/components/common/fields/RichEditorField";
@@ -8,7 +15,11 @@ import { Text } from "@/components/common/Text";
 import { useServiceContext } from "@/providers/service-provider";
 import { useQuery } from "@/hooks/useQuery";
 import { useParams } from "react-router-dom";
-import { useQuestionContext } from "../context";
+import {
+  setSelectedQuestion,
+  useQuestionContext,
+  useQuestionDispatch,
+} from "../context";
 import { LoadingButton } from "@mui/lab";
 
 enum EVIDENCE_TYPE {
@@ -31,13 +42,14 @@ function stripHtml(input?: string): string {
   return doc.body.textContent?.replaceAll(/\u00A0/g, " ").trim() ?? "";
 }
 
-
 const CreateForm = ({
   showTabs,
   submitLabel,
+  fetchQuery,
 }: {
   showTabs?: boolean;
   submitLabel?: string;
+  fetchQuery?: any;
 }) => {
   const defaultType = showTabs ? EVIDENCE_TYPE.POSITIVE : null;
 
@@ -49,6 +61,7 @@ const CreateForm = ({
     runOnMount: false,
   });
   const { selectedQuestion } = useQuestionContext();
+  const dispatch = useQuestionDispatch();
 
   const [tab, setTab] = useState<EVIDENCE_TYPE | null>(defaultType);
 
@@ -84,6 +97,7 @@ const CreateForm = ({
   const disabled = charCount === 0 || charCount > LIMIT;
 
   const onSubmit = (values: FormValues) => {
+    const variant = values.type !== null ? "evidences" : "comments";
     createEvidence
       .query({
         questionId: selectedQuestion.id,
@@ -93,6 +107,16 @@ const CreateForm = ({
       .then(() => {
         formMethods.reset();
         setTab(EVIDENCE_TYPE.POSITIVE);
+        fetchQuery();
+        dispatch(
+          setSelectedQuestion({
+            ...selectedQuestion,
+            counts: {
+              ...selectedQuestion.counts,
+              [variant]: selectedQuestion.counts[variant] + 1,
+            },
+          }),
+        );
       });
   };
 
