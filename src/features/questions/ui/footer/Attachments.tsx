@@ -122,19 +122,20 @@ export const Attachments: React.FC<any> = ({
     }
   };
   const dialogProps = useDialog();
-  const handleDeleteAttachment = async (attachmentId: any) => {
+  const handleDeleteAttachment = async () => {
+    const id: string = dialogProps?.context?.data.id
     try {
       const queryMap = {
         evidence: evidencesQueryData,
         comment: commentesQueryData,
       };
       const currentQuery = queryMap[activeTab];
-      await removeEvidenceAttachments.query({ evidenceId, attachmentId });
+      await removeEvidenceAttachments.query({ evidenceId, attachmentId : id });
       const response = await currentQuery.query();
       const items = response.items ?? [];
       dispatch(setTab({ activeTab: activeTab, data: items }));
       setAttachments((prevState) =>
-        prevState.filter((item) => item.id != attachmentId),
+        prevState.filter((item) => item.id != id),
       );
       dialogProps.onClose()
     } catch (e) {
@@ -276,7 +277,7 @@ export const Attachments: React.FC<any> = ({
         <DeleteConfirmationDialog
           open={dialogProps.open}
           onClose={() => dialogProps.onClose()}
-          onConfirm={()=>handleDeleteAttachment(dialogProps?.context?.data.id)}
+          onConfirm={handleDeleteAttachment}
           content={{
             category: t("questions_temp.attachment").toLowerCase(),
             title: "",
