@@ -94,12 +94,13 @@ export function useAnswerSubmit() {
                   title: (value as any)?.title,
                 }
               : null),
-          confidenceLevel: serverAnswer?.selectedOption
-            ? (serverAnswer?.confidenceLevel ??
-              (shouldAttach && confidenceLevelId != null
-                ? { id: confidenceLevelId }
-                : (q?.answer?.confidenceLevel ?? null)))
-            : null,
+          confidenceLevel:
+            serverAnswer?.selectedOption || value?.id
+              ? (serverAnswer?.confidenceLevel ??
+                (shouldAttach && confidenceLevelId != null
+                  ? { id: confidenceLevelId }
+                  : (q?.answer?.confidenceLevel ?? null)))
+              : null,
           isNotApplicable: serverAnswer?.isNotApplicable ?? !!notApplicable,
           approved: serverAnswer?.approved ?? q?.answer?.approved,
         };

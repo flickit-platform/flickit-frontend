@@ -14,24 +14,21 @@ const questionReducer = (
         questions: action.payload,
       };
     case QUESTION_ACTIONS_TYPE.SET_SELECTED_QUESTION:
+      const updatedQuestions = prevState.questions?.map((question: any) =>
+        question.id === action.payload.id
+          ? { ...question, ...action.payload }
+          : question,
+      ) ?? [action.payload];
+
       return {
         ...prevState,
         selectedQuestion: action.payload,
+        questions: updatedQuestions,
       };
-    case QUESTION_ACTIONS_TYPE.SET_SELECTED_TAB:
+    case QUESTION_ACTIONS_TYPE.SET_QUESTION_ITEMS:
       return {
         ...prevState,
-        tabData: action.payload,
-      };
-    case QUESTION_ACTIONS_TYPE.SET_EDITING_EVIDENCE:
-      return {
-        ...prevState,
-        editingItem: action.payload,
-      };
-    case QUESTION_ACTIONS_TYPE.SET_DELETE_EVIDENCE:
-      return {
-        ...prevState,
-        deleteItem: action.payload,
+        questionItems: action.payload,
       };
     case QUESTION_ACTIONS_TYPE.SET_FILTERED_QUESTIONS: {
       return {

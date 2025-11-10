@@ -21,9 +21,9 @@ import { ICustomError } from "@utils/custom-error";
 import toastError from "@utils/toast-error";
 import { downloadFile } from "@utils/download-file";
 import Tooltip from "@mui/material/Tooltip";
-import useFetchData from "@/features/questions/model/evidenceTabs/useFetchData";
+import useFetchData from "@/features/questions/model/footer/useFetchData";
 import {
-  setTab,
+  setQuestionItems,
   useQuestionContext,
   useQuestionDispatch,
 } from "@/features/questions/context";
@@ -132,7 +132,7 @@ export const Attachments: React.FC<any> = ({
       await removeEvidenceAttachments.query({ evidenceId, attachmentId });
       const response = await currentQuery.query();
       const items = response.items ?? [];
-      dispatch(setTab({ activeTab: activeTab, data: items }));
+      dispatch(setQuestionItems({ activeTab: activeTab, data: items }));
       setAttachments((prevState) =>
         prevState.filter((item) => item.id != attachmentId),
       );

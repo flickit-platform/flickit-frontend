@@ -521,7 +521,7 @@ export const getTheme = (lang: any) => {
           }
         }
         body {
-          background: #EDEFF1;
+          background: #F3F5F6;
           direction:${is_farsi ? "rtl" : "ltr"};
         }
         .nc-footer {

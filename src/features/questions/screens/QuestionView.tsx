@@ -26,7 +26,7 @@ import { styles } from "@styles";
 import { useQuestionNavigator } from "../model/sidebar/useQuestionNavigator";
 import { useAssessmentMode } from "@/hooks/useAssessmentMode";
 import { useAnswerSubmit } from "../model/useAnswerSubmit";
-import FooterTabs from "@/features/questions/ui/footer/FooterTabs";
+import FooterTabs from "@/features/questions/ui/footer/Tabs";
 
 const QuestionView = () => {
   useDocumentTitle();
