@@ -15,6 +15,7 @@ import { Text } from "@/components/common/Text";
 import { useTranslation } from "react-i18next";
 import useFetchData from "../../model/footer/useFetchData";
 import EvidenceContainer from "./Container";
+import CreateForm from "../CreateForm";
 
 type FooterTab = "evidences" | "comments" | "history";
 
@@ -144,17 +145,26 @@ const Tabs = (props: any) => {
       </Box>
 
       {configs.map((cfg) => (
-        <TabPanel key={cfg.value} value={cfg.value} sx={{ px: 0 }}>
+        <TabPanel key={cfg.value} value={cfg.value} sx={{ px: 4, py: 2 }}>
+          {cfg.value !== "history" && (
+            <CreateForm
+              showTabs={cfg.value === "evidences"}
+              fetchQuery={() => fetchByTab(selectedTab)}
+            />
+          )}
+
           <ListPanel
             data={cfg.data}
             state={cfg.state}
             isActive={cfg.value === selectedTab}
             renderItem={(item: any) => (
-              <EvidenceContainer
-                key={item?.id}
-                item={item}
-                fetchByTab={() => fetchByTab(selectedTab)}
-              />
+              <>
+                <EvidenceContainer
+                  key={item?.id}
+                  item={item}
+                  fetchByTab={() => fetchByTab(selectedTab)}
+                />
+              </>
             )}
           />
         </TabPanel>
@@ -185,7 +195,7 @@ const ListPanel = ({
   }
 
   return (
-    <Box display="flex" flexDirection="column" gap={1.5} py={2} px={4}>
+    <Box display="flex" flexDirection="column" gap={1.5}>
       {data.map(renderItem)}
 
       {isActive && state.loadingMore && (

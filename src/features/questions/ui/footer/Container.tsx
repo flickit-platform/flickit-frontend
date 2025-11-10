@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Avatar, Box, IconButton, Chip } from "@mui/material";
+import { Avatar, Box, IconButton, Chip, Rating, Grid } from "@mui/material";
 import { t } from "i18next";
 import { DeleteConfirmationDialog } from "@common/dialogs/DeleteConfirmationDialog";
 import { styles } from "@styles";
@@ -25,6 +25,11 @@ import {
 import CheckRoundedIcon from "@mui/icons-material/CheckRounded";
 import { useQuery } from "@/hooks/useQuery";
 import useFetchData from "@/features/questions/model/footer/useFetchData";
+import { Trans } from "react-i18next";
+import {
+  RadioButtonCheckedRounded,
+  RadioButtonUncheckedRounded,
+} from "@mui/icons-material";
 
 type Polarity = "Positive" | "Negative" | "";
 type Variant = "history" | "evidences" | "comments";
@@ -197,7 +202,11 @@ const Container: React.FC<{ item: any; fetchByTab: any }> = ({
   );
 
   return (
-    <Box bgcolor={"background.background"} sx={{ mb: 2, borderRadius: 1 }}>
+    <Box
+      key={item.id}
+      bgcolor={"background.background"}
+      sx={{ mb: 2, borderRadius: 1 }}
+    >
       <Header
         item={item}
         variant={variant}
@@ -315,48 +324,78 @@ const Detail: React.FC<{
   >;
   formMethods: ReturnType<typeof useForm>;
 }> = ({ item, variant, isEditing, draft, setDraft, formMethods }) => {
-  const { id, description, attachmentsCount, answer } = item;
-  const hasAttachments = (attachmentsCount ?? 0) > 0;
+  const { id, description, attachmentsCount } = item;
 
   if (variant === "history") {
     return (
-      <Box sx={{ px: 2, pb: 2 }}>
-        <Box sx={{ width: "100%", pt: 1 }}>
-          <Text variant="bodyMedium" sx={{ color: "#333", mb: 1 }}>
-            {t("questions_temp.answer")}:{" "}
-            <Text component="span" sx={{ fontWeight: 600, color: "#1976D2" }}>
-              {answer?.selectedOption?.index
-                ? `${t("common.option")} ${answer.selectedOption.index}`
-                : "-"}
+      <Grid container spacing={2} sx={{ width: "100%", p: "24px 16px" }}>
+        <Grid size={{ xs: 12, md: 6 }}>
+          <Box display="flex" alignItems="center" gap={3} flexWrap="wrap">
+            <Text variant="bodyMedium">
+              <Trans i18nKey="questions.selectedOption" />
             </Text>
-          </Text>
-
-          {answer?.confidenceLevel?.title && (
-            <Text variant="bodySmall" sx={{ color: "#666", mb: 1 }}>
-              {t("common.confidenceLevel")}:{" "}
-              <Text component="span" sx={{ fontWeight: 500, color: "#008D4B" }}>
-                {answer.confidenceLevel.title}
-              </Text>
+            <Text variant="bodyMedium" sx={{ maxWidth: 400 }}>
+              {item?.answer?.selectedOption ? (
+                <>
+                  {t("common.option")} {item?.answer?.selectedOption?.index}
+                </>
+              ) : (
+                <Trans i18nKey="questions.noOptionSelected" />
+              )}
             </Text>
-          )}
+          </Box>
+        </Grid>
 
-          {answer?.isNotApplicable && (
-            <Chip
-              label={t("history.notApplicable")}
-              size="small"
-              sx={{
-                bgcolor: "#FFF3E0",
-                color: "#E65100",
-                border: "1px solid #FFB74D",
-                fontWeight: 500,
-                fontSize: "11px",
-                height: "20px",
-              }}
-              variant="outlined"
-            />
-          )}
-        </Box>
-      </Box>
+        <Grid size={{ xs: 12, md: 6 }}>
+          <Box
+            display="flex"
+            alignItems="center"
+            gap={2}
+            flexWrap="wrap"
+            justifyContent="flex-start"
+          >
+            {item?.answer?.confidenceLevel?.title && (
+              <Box display="flex" alignItems="center" gap={3}>
+                <Text variant="bodyMedium">
+                  <Trans i18nKey="common.confidenceLevel" />
+                </Text>
+                <Rating
+                  value={
+                    item?.answer?.confidenceLevel?.id !== null
+                      ? (item?.answer?.confidenceLevel?.id as number)
+                      : null
+                  }
+                  readOnly
+                  size="medium"
+                  icon={<RadioButtonCheckedRounded fontSize="inherit" />}
+                  emptyIcon={<RadioButtonUncheckedRounded fontSize="inherit" />}
+                  sx={{
+                    "& .MuiRating-iconFilled": { color: "primary.main" },
+                    pointerEvents: "none",
+                    cursor: "default",
+                  }}
+                />
+              </Box>
+            )}
+
+            {item?.answer?.isNotApplicable && (
+              <Chip
+                label={t("history.notApplicable")}
+                size="small"
+                sx={{
+                  bgcolor: "#FFF3E0",
+                  color: "#E65100",
+                  border: "1px solid #FFB74D",
+                  fontWeight: 500,
+                  fontSize: "11px",
+                  height: "20px",
+                }}
+                variant="outlined"
+              />
+            )}
+          </Box>
+        </Grid>
+      </Grid>
     );
   }
 
@@ -444,8 +483,13 @@ const Detail: React.FC<{
         )}
       </Box>
 
-      {hasAttachments && (
-        <Attachments evidenceId={id} attachmentsCount={attachmentsCount} />
+      {attachmentsCount > 0 && (
+        <Attachments
+          id={id}
+          attachmentsCount={attachmentsCount}
+          variant={variant}
+          attachments={item.attachments}
+        />
       )}
     </Box>
   );

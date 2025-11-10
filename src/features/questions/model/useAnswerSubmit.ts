@@ -114,6 +114,7 @@ export function useAnswerSubmit() {
           counts: {
             ...q.counts,
             ...serverQuestion?.counts,
+            answerHistories: q.counts.answerHistories + 1,
           },
         };
 
