@@ -13,7 +13,7 @@ const questionReducer = (
         ...prevState,
         questions: action.payload,
       };
-    case QUESTION_ACTIONS_TYPE.SET_SELECTED_QUESTION:
+    case QUESTION_ACTIONS_TYPE.SET_SELECTED_QUESTION: {
       const updatedQuestions = prevState.questions?.map((question: any) =>
         question.id === action.payload.id
           ? { ...question, ...action.payload }
@@ -25,6 +25,7 @@ const questionReducer = (
         selectedQuestion: action.payload,
         questions: updatedQuestions,
       };
+    }
     case QUESTION_ACTIONS_TYPE.SET_QUESTION_ITEMS:
       return {
         ...prevState,

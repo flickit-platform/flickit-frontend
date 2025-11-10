@@ -8,17 +8,6 @@ export type FooterTab = "evidences" | "comments" | "history";
 
 const PAGE_SIZE = 10;
 
-type PageResponse =
-  | {
-      items?: any[];
-      list?: any[];
-      content?: any[];
-      total?: number;
-      totalElements?: number;
-      count?: number;
-    }
-  | any;
-
 type TabState = {
   page: number;
   size: number;
@@ -31,7 +20,7 @@ type TabState = {
 
 type StateMap = Record<FooterTab, TabState>;
 
-function normalizeItems(r: PageResponse): any[] {
+function normalizeItems(r: any): any[] {
   if (!r) return [];
   if (Array.isArray(r)) return r;
   if (Array.isArray(r?.items)) return r.items;
@@ -39,7 +28,7 @@ function normalizeItems(r: PageResponse): any[] {
   if (Array.isArray(r?.content)) return r.content;
   return [];
 }
-function getTotal(r: PageResponse): number | undefined {
+function getTotal(r: any): number | undefined {
   return r?.total ?? r?.totalElements ?? r?.count ?? undefined;
 }
 
@@ -74,6 +63,11 @@ const useFetchData = () => {
   const removeEvidenceAttachments = useQuery({
     service: (args, config) =>
       service.questions.evidences.removeAttachment(args, config),
+    runOnMount: false,
+  });
+
+  const resolveComment = useQuery({
+    service: (args, config) => service.questions.comments.resolve(args, config),
     runOnMount: false,
   });
 
@@ -158,7 +152,7 @@ const useFetchData = () => {
         items,
         total,
         hasMore:
-          total != null ? items.length < total : items.length === PAGE_SIZE,
+          total == null ? items.length === PAGE_SIZE : items.length < total,
         loadingMore: false,
         initialized: true,
       }));
@@ -193,7 +187,7 @@ const useFetchData = () => {
         const total = getTotal(r) ?? current.total;
         const totalCount = current.items.length + newItems.length;
         const hasMore =
-          total != null ? totalCount < total : newItems.length === current.size;
+          total == null ? newItems.length === current.size : totalCount < total;
 
         setTabState(tab, (s) => ({
           ...s,
@@ -241,6 +235,7 @@ const useFetchData = () => {
     deleteEvidence,
     removeEvidenceAttachments,
     addEvidence,
+    resolveComment,
 
     // infinite data
     evidences,

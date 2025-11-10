@@ -151,7 +151,7 @@ const Tabs = (props: any) => {
             isActive={cfg.value === selectedTab}
             renderItem={(item: any) => (
               <EvidenceContainer
-                key={item?.id ?? `${cfg.value}-${Math.random()}`}
+                key={item?.id}
                 item={item}
                 fetchByTab={() => fetchByTab(selectedTab)}
               />

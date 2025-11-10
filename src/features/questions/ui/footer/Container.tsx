@@ -15,7 +15,6 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import Radio from "@mui/material/Radio";
 import RichEditorField from "@common/fields/RichEditorField";
 import { useForm } from "react-hook-form";
-import UseFetchData from "@/features/questions/model/footer/useFetchData";
 import Attachments from "@/features/questions/ui/footer/Attachments";
 import useDialog from "@/hooks/useDialog";
 import {
@@ -23,6 +22,9 @@ import {
   useQuestionContext,
   useQuestionDispatch,
 } from "../../context";
+import CheckRoundedIcon from "@mui/icons-material/CheckRounded";
+import { useQuery } from "@/hooks/useQuery";
+import useFetchData from "@/features/questions/model/footer/useFetchData";
 
 type Polarity = "Positive" | "Negative" | "";
 type Variant = "history" | "evidences" | "comments";
@@ -32,13 +34,19 @@ const ICON_SIZE = { width: 24, height: 24 };
 const BOX_STYLES = {
   Positive: { color: "#17823B", label: "questions_temp.positiveEvidence" },
   Negative: { color: "#821717", label: "questions_temp.negativeEvidence" },
-  Comment: { color: "#73808C", label: "questions_temp.comment" },
+  Comment: { color: "#73808C", label: "" },
   History: { color: "transparent", label: "" },
   Edit: { color: "#2466A8", label: "questions_temp.editing" },
 } as const;
 
-const getVariant = (item: any): Variant =>
-  item?.answer ? "history" : item?.type ? "evidences" : "comments";
+const getVariant = (item: any): Variant => {
+  const hasAnswer = Boolean(item?.answer);
+  const hasType = Boolean(item?.type);
+
+  if (hasAnswer) return "history";
+  if (hasType) return "evidences";
+  return "comments";
+};
 
 const Container: React.FC<{ item: any; fetchByTab: any }> = ({
   item,
@@ -47,7 +55,7 @@ const Container: React.FC<{ item: any; fetchByTab: any }> = ({
   const dispatch = useQuestionDispatch();
   const { selectedQuestion } = useQuestionContext();
   const variant = getVariant(item);
-  const { addEvidence, deleteEvidence } = UseFetchData();
+  const { addEvidence, deleteEvidence, resolveComment } = useFetchData();
 
   const [isEditing, setIsEditing] = useState(false);
   const [draft, setDraft] = useState<{ description: string; type?: Polarity }>({
@@ -131,9 +139,29 @@ const Container: React.FC<{ item: any; fetchByTab: any }> = ({
       });
   };
 
+  const handleResolve = async () => {
+    await resolveComment
+      .query({ id: item.id })
+      .then(() => {
+        fetchByTab();
+      })
+      .finally(() => {
+        deleteDialog.onClose();
+        dispatch(
+          setSelectedQuestion({
+            ...selectedQuestion,
+            counts: {
+              ...selectedQuestion.counts,
+              [variant]: selectedQuestion.counts[variant] - 1,
+            },
+          }),
+        );
+      });
+  };
+
   const headerActions = (
     <>
-      {isEditing && (
+      {isEditing ? (
         <>
           <IconButton onClick={handleSave} sx={{ p: 0.4 }}>
             <CheckIcon fontSize="small" sx={ICON_SIZE} />
@@ -142,18 +170,28 @@ const Container: React.FC<{ item: any; fetchByTab: any }> = ({
             <CloseIcon fontSize="small" sx={ICON_SIZE} />
           </IconButton>
         </>
-      )}
+      ) : (
+        <>
+          {item?.resolvable && (
+            <IconButton onClick={handleResolve} sx={{ p: 0.4 }}>
+              <CheckRoundedIcon fontSize="small" sx={ICON_SIZE} />
+            </IconButton>
+          )}
+          {item?.editable && (
+            <IconButton onClick={handleStartEdit} sx={{ p: 0.4 }}>
+              <EditOutlinedIcon fontSize="small" sx={ICON_SIZE} />
+            </IconButton>
+          )}
 
-      {!isEditing && item?.editable && (
-        <IconButton onClick={handleStartEdit} sx={{ p: 0.4 }}>
-          <EditOutlinedIcon fontSize="small" sx={ICON_SIZE} />
-        </IconButton>
-      )}
-
-      {!isEditing && item?.deletable && (
-        <IconButton onClick={() => deleteDialog.openDialog({})} sx={{ p: 0.4 }}>
-          <DeleteOutlinedIcon fontSize="small" sx={ICON_SIZE} />
-        </IconButton>
+          {item?.deletable && (
+            <IconButton
+              onClick={() => deleteDialog.openDialog({})}
+              sx={{ p: 0.4 }}
+            >
+              <DeleteOutlinedIcon fontSize="small" sx={ICON_SIZE} />
+            </IconButton>
+          )}
+        </>
       )}
     </>
   );
