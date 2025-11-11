@@ -27,6 +27,12 @@ import { useQuestionNavigator } from "../model/sidebar/useQuestionNavigator";
 import { useAssessmentMode } from "@/hooks/useAssessmentMode";
 import { useAnswerSubmit } from "../model/useAnswerSubmit";
 import FooterTabs from "@/features/questions/ui/footer/Tabs";
+import useDialog from "@/hooks/useDialog";
+import ReportDialog from "@/features/questions/ui/ReportDialog";
+import MoreActions from "@common/MoreActions";
+import useMenu from "@/hooks/useMenu";
+import { v3Tokens } from "@config/tokens";
+import ReportGmailerrorredIcon from '@mui/icons-material/ReportGmailerrorred';
 
 const QuestionView = () => {
   useDocumentTitle();
@@ -45,8 +51,9 @@ const QuestionView = () => {
 
   const { isAdvanced } = useAssessmentMode();
   const { submit, isLoading, approve } = useAnswerSubmit();
-
+  const dialogProps= useDialog()
   const answer = activeQuestion?.answer;
+  const menu = useMenu();
 
   const prevSelectedId = answer?.selectedOption?.id ?? null;
   const prevConfidenceId = answer?.confidenceLevel?.id ?? null;
@@ -156,23 +163,41 @@ const QuestionView = () => {
       >
         {/* Header */}
         <Box padding="16px 24px" sx={{ ...styles.centerCV }} gap="10px">
-          <Text
-            variant="semiBoldMedium"
-            color="background.contrastText"
-            textAlign="justify"
-          >
-            {activeQuestion?.index}. {activeQuestion?.title}
-            {activeQuestion?.hint && (
-              <Text
-                variant="semiBoldSmall"
-                color="primary.main"
-                p={0.5}
-                marginInlineStart={0.5}
-              >
-                {t("common.hint")}
-              </Text>
-            )}
-          </Text>
+       <Box sx={{ ...styles.centerVH, justifyContent: "space-between" }}>
+         <Text
+           variant="semiBoldMedium"
+           color="background.contrastText"
+           textAlign="justify"
+         >
+           {activeQuestion?.index}. {activeQuestion?.title}
+           {activeQuestion?.hint && (
+             <Text
+               variant="semiBoldSmall"
+               color="primary.main"
+               p={0.5}
+               marginInlineStart={0.5}
+             >
+               {t("common.hint")}
+             </Text>
+           )}
+         </Text>
+         {isAdvanced && <MoreActions
+           {...menu}
+           boxProps={{ sx:{
+               "& .MuiIconButton-root": {p : 0.4}
+             }}}
+           items={[
+             {
+               icon:  <ReportGmailerrorredIcon sx={{fontSize: "18px", color: "error.main", px: 0.2}} />,
+               text:  <Text color="error.main" variant={"bodySmall"}>{t("questions_temp.reportQuestion")}</Text>,
+               onClick: ()=> dialogProps.openDialog({})
+             }
+
+           ]}
+           color={v3Tokens.surface.on}
+           IconButtonProps={{ width: "24px", height: "24px" }}
+         /> }
+       </Box>
           {activeQuestion?.hint && (
             <Text variant="bodySmall" color="text.primary" textAlign="justify">
               {activeQuestion?.hint}
@@ -328,7 +353,7 @@ const QuestionView = () => {
           justifyContent="space-between"
         >
           <Box>
-            {isAdvanced && (
+            {isAdvanced ? (
               <Box
                 sx={{
                   ...styles.centerV,
@@ -355,6 +380,12 @@ const QuestionView = () => {
                   IconContainerComponent={ConfidenceIconContainer}
                 />
               </Box>
+            ) : (
+              <Box onClick={()=>dialogProps.openDialog({})} sx={{...styles.centerVH, color: "error.main"}}>
+                <Text variant={"bodySmall"}>{t("questions_temp.reportQuestion")}</Text>
+                <ReportGmailerrorredIcon sx={{fontSize: "18px", px: 0.2}} />
+              </Box>
+
             )}
           </Box>
 
@@ -410,6 +441,7 @@ const QuestionView = () => {
         </Box>
       </Box>
       {isAdvanced && <FooterTabs activeQuestion={activeQuestion} />}
+      {dialogProps.open && <ReportDialog {...dialogProps}/>}
     </Box>
   );
 };
