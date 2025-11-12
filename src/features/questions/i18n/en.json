@@ -32,6 +32,7 @@
   "quickAnswer": "Quick answer",
   "submitReport": "Submit Report",
   "reportQuestion": "Report question",
+  "reportSentSuccessfully": "The report has been sent successfully.",
   "whatIssuesLikeToReport": "What issues would you like to report about this question?",
   "unanswered": "Unanswered"
 }

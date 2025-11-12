@@ -24,6 +24,7 @@
   "positiveEvidence": "شاهد مثبت",
   "questionsEmptyState": "سوالی با مشکلات انتخاب‌شده موجود نیست.",
   "reportQuestion": "گزارش سوال",
+  "reportSentSuccessfully": "گزارش با موفقیت ارسال شد.",
   "questionsList": "فهرست پرسش‌ها ({{count}} پرسش)",
   "questionIsUnclear": "سوال نامفهوم است",
   "questionIsIncorrect": "سوال از نظر فنی درست نیست",

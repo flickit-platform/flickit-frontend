@@ -190,7 +190,10 @@ const QuestionView = () => {
              {
                icon:  <ReportGmailerrorredIcon sx={{fontSize: "18px", color: "error.main", px: 0.2}} />,
                text:  <Text color="error.main" variant={"bodySmall"}>{t("questions_temp.reportQuestion")}</Text>,
-               onClick: ()=> dialogProps.openDialog({})
+               onClick: ()=> dialogProps.openDialog({
+                 type: "create",
+                 data: { questionId: activeQuestion?.id },
+               })
              }
 
            ]}
@@ -381,7 +384,10 @@ const QuestionView = () => {
                 />
               </Box>
             ) : (
-              <Box onClick={()=>dialogProps.openDialog({})} sx={{...styles.centerVH, color: "error.main"}}>
+              <Box onClick={()=>dialogProps.openDialog({
+                type: "create",
+                data: { questionId: activeQuestion?.id },
+              })} sx={{...styles.centerVH, color: "error.main", cursor: "pointer"}}>
                 <Text variant={"bodySmall"}>{t("questions_temp.reportQuestion")}</Text>
                 <ReportGmailerrorredIcon sx={{fontSize: "18px", px: 0.2}} />
               </Box>

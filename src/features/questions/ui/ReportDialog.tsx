@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo, useState } from "react";
 import { CEDialog, CEDialogActions } from "@common/dialogs/CEDialog";
 import Box from "@mui/material/Box";
 import { styles } from "@styles";
@@ -9,6 +9,8 @@ import ReportGmailerrorredIcon from "@mui/icons-material/ReportGmailerrorred";
 import { Checkbox, ToggleButton, ToggleButtonGroup } from "@mui/material";
 import { Text } from "@common/Text";
 import { InputFieldUC } from "@common/fields/InputField";
+import { useForm as useFormSpree } from "@formspree/react";
+import showToast from "@utils/toast-error";
 
 type ReportItem = {id: number, title: string}
 const ReportItems: ReportItem[] =  [
@@ -21,7 +23,13 @@ const ReportItems: ReportItem[] =  [
 ];
 
 const ReportDialog = (props: any) => {
-  const { onClose, ...rest } = props;
+  const { onClose,context, ...rest } = props;
+
+  const abortController = useMemo(() => new AbortController(), [rest.open]);
+  const [state, handleSubmitSpree] = useFormSpree(
+    import.meta.env.VITE_FORM_SPREE,
+  );
+  const [dialogKey, setDialogKey] = useState(0);
 
   const formMethods = useForm({
     shouldUnregister: true,
@@ -34,15 +42,28 @@ const ReportDialog = (props: any) => {
   const { control, handleSubmit } = formMethods;
 
   const onSubmit = (data: any) => {
-    console.log(data, "test");
+   const questionId = context?.data?.questionId ?? ""
+    const reportData = {...data, questionId}
+    handleSubmitSpree(reportData).then(() => {
+      showToast(t("question_temp.reportSentSuccessfully"), { variant: "success" })
+      close();
+    });
   };
+
+  const close = () =>{
+    abortController.abort();
+    formMethods.reset();
+    setDialogKey((prev) => prev + 1);
+    onClose();
+  }
 
   const borderColor = "";
 
   return (
     <CEDialog
       {...rest}
-      closeDialog={onClose}
+      key={dialogKey}
+      closeDialog={close}
       fullWidth
       maxWidth="md"
       title={
@@ -153,10 +174,11 @@ const ReportDialog = (props: any) => {
         </Box>
 
         <CEDialogActions
-          closeDialog={onClose}
+          closeDialog={close}
           submitButtonLabel={"questions_temp.submitReport"}
           hideCancelButton
           onSubmit={handleSubmit(onSubmit)}
+          loading={state.submitting}
         />
       </FormProviderWithForm>
     </CEDialog>
