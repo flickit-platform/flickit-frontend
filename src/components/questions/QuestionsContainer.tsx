@@ -62,7 +62,9 @@ export const QuestionsContainerC = (
   const { questionnaireId } = useParams();
 
   useEffect(() => {
-    fetchPathInfo.query();
+    if(questionsResultQueryData.loaded){
+      fetchPathInfo.query();
+    }
   }, [questionnaireId]);
   return (
     <QueryBatchData<IQuestionsModel | IQuestionnaireModel>
