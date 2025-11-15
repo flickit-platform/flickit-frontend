@@ -43,7 +43,7 @@ const ReportDialog = (props: any) => {
 
   const onSubmit = (data: any) => {
    const questionId = context?.data?.questionId ?? ""
-    const reportData = {...data, questionId, type: `Report Question - ${window.location.href}`}
+    const reportData = {...data, questionId, type: `Report Question - ${globalThis.location.href}`}
     handleSubmitSpree(reportData).then(() => {
       showToast(t("questions_temp.reportSentSuccessfully"), { variant: "success" })
       close();
