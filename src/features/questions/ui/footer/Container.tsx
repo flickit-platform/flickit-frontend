@@ -1,5 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { Avatar, Box, IconButton, Chip, Rating, Grid } from "@mui/material";
+import {
+  Avatar,
+  Box,
+  IconButton,
+  Chip,
+  Rating,
+  Grid,
+  Button,
+} from "@mui/material";
 import { t } from "i18next";
 import { DeleteConfirmationDialog } from "@common/dialogs/DeleteConfirmationDialog";
 import { styles } from "@styles";
@@ -23,7 +31,7 @@ import {
   useQuestionDispatch,
 } from "../../context";
 import CheckRoundedIcon from "@mui/icons-material/CheckRounded";
-import { useQuery } from "@/hooks/useQuery";
+import AttachementPlus from "../../assets/attachment-plus.svg";
 import useFetchData from "@/features/questions/model/footer/useFetchData";
 import { Trans } from "react-i18next";
 import {
@@ -53,10 +61,12 @@ const getVariant = (item: any): Variant => {
   return "comments";
 };
 
-const Container: React.FC<{ item: any; fetchByTab: any }> = ({
-  item,
-  fetchByTab,
-}) => {
+const Container: React.FC<{
+  item: any;
+  fetchByTab: any;
+  autoOpenAttachments?: boolean;
+  onAttachmentsFlowDone?: () => void;
+}> = ({ item, fetchByTab, autoOpenAttachments, onAttachmentsFlowDone }) => {
   const dispatch = useQuestionDispatch();
   const { selectedQuestion } = useQuestionContext();
   const variant = getVariant(item);
@@ -223,6 +233,8 @@ const Container: React.FC<{ item: any; fetchByTab: any }> = ({
         draft={draft}
         setDraft={setDraft}
         formMethods={formMethods}
+        autoOpenAttachments={autoOpenAttachments}
+        onAttachmentsFlowDone={onAttachmentsFlowDone}
       />
 
       {variant !== "history" && (
@@ -323,8 +335,29 @@ const Detail: React.FC<{
     React.SetStateAction<{ description: string; type?: Polarity }>
   >;
   formMethods: ReturnType<typeof useForm>;
-}> = ({ item, variant, isEditing, draft, setDraft, formMethods }) => {
+  autoOpenAttachments?: boolean;
+  onAttachmentsFlowDone?: () => void;
+}> = ({
+  item,
+  variant,
+  isEditing,
+  draft,
+  setDraft,
+  formMethods,
+  autoOpenAttachments,
+  onAttachmentsFlowDone,
+}) => {
   const { id, description, attachmentsCount } = item;
+  const totalAttachments = attachmentsCount ?? 0;
+
+  const [showAttachments, setShowAttachments] = useState(totalAttachments > 0);
+  const [startAddMode, setStartAddMode] = useState(false);
+  useEffect(() => {
+    if (autoOpenAttachments) {
+      setShowAttachments(true);
+      setStartAddMode(true);
+    }
+  }, [autoOpenAttachments]);
 
   if (variant === "history") {
     return (
@@ -483,12 +516,46 @@ const Detail: React.FC<{
         )}
       </Box>
 
-      {attachmentsCount > 0 && (
+      {totalAttachments === 0 && !showAttachments && (
+        <Button
+          variant="text"
+          size="small"
+          sx={{
+            px: 0,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: 0.5,
+          }}
+          onClick={() => {
+            setShowAttachments(true);
+            setStartAddMode(true);
+          }}
+          startIcon={
+            <Box
+              component="img"
+              src={AttachementPlus}
+              alt="empty state"
+              sx={{ width: "100%", maxWidth: 80 }}
+            />
+          }
+        >
+          {t("questions_temp.addAttachment")}
+        </Button>
+      )}
+
+      {(totalAttachments > 0 || showAttachments) && (
         <Attachments
           id={id}
-          attachmentsCount={attachmentsCount}
-          variant={variant}
-          attachments={item.attachments}
+          attachmentsCount={totalAttachments}
+          startAddMode={startAddMode}
+          onCloseAddMode={(noAttachments: boolean) => {
+            setStartAddMode(false);
+            if (noAttachments) {
+              setShowAttachments(false);
+            }
+            onAttachmentsFlowDone?.();
+          }}
         />
       )}
     </Box>

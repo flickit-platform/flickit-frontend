@@ -56,13 +56,22 @@ const useFetchData = () => {
     service: (args, config) => service.questions.evidences.remove(args, config),
     runOnMount: false,
   });
+
   const addEvidence = useQuery({
     service: (args, config) => service.questions.evidences.save(args, config),
     runOnMount: false,
   });
+
   const removeEvidenceAttachments = useQuery({
     service: (args, config) =>
       service.questions.evidences.removeAttachment(args, config),
+    runOnMount: false,
+  });
+
+  // 🔹 جدید: اضافه کردن پیوست برای شاهد
+  const addEvidenceAttachments = useQuery({
+    service: (args, config) =>
+      service.questions.evidences.addAttachment(args, config),
     runOnMount: false,
   });
 
@@ -76,17 +85,20 @@ const useFetchData = () => {
     toastError: true,
     runOnMount: false,
   });
+
   const commentesQueryData = useQuery({
     service: (args, config) => service.questions.comments.getAll(args, config),
     toastError: true,
     runOnMount: false,
   });
+
   const answerHistoryQueryData = useQuery({
     service: (args, config) =>
       service.assessments.answer.getHistory(args, config),
     toastError: true,
     runOnMount: false,
   });
+
   const fetchEvidenceAttachments = useQuery({
     service: (args, config) =>
       service.questions.evidences.getAttachments(args, config),
@@ -235,6 +247,7 @@ const useFetchData = () => {
     deleteEvidence,
     removeEvidenceAttachments,
     addEvidence,
+    addEvidenceAttachments, // 👈 اینو اضافه کردیم
     resolveComment,
 
     // infinite data
