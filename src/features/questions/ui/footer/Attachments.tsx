@@ -110,13 +110,6 @@ const ALLOWED_FILE_TYPES = [
   "7z",
   "tar",
   "gz",
-  "avi",
-  "mp4",
-  "mkv",
-  "mov",
-  "wmv",
-  "flv",
-  "webm",
   "txt",
   "csv",
 ];
