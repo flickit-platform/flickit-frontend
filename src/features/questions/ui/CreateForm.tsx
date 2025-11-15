@@ -46,10 +46,12 @@ const CreateForm = ({
   showTabs,
   submitLabel,
   fetchQuery,
+  onOpenAttachments,
 }: {
   showTabs?: boolean;
   submitLabel?: string;
   fetchQuery?: any;
+  onOpenAttachments?: () => void;
 }) => {
   const defaultType = showTabs ? EVIDENCE_TYPE.POSITIVE : null;
 
@@ -104,7 +106,7 @@ const CreateForm = ({
         assessmentId,
         ...values,
       })
-      .then(() => {
+      .then((res) => {
         formMethods.reset();
         setTab(EVIDENCE_TYPE.POSITIVE);
         fetchQuery();
@@ -117,6 +119,10 @@ const CreateForm = ({
             },
           }),
         );
+
+        if (values.addAttachment && onOpenAttachments) {
+          onOpenAttachments();
+        }
       });
   };
 

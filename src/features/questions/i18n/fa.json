@@ -1,5 +1,7 @@
 {
   "addAttachmentAfterCreation": "افزودن پیوست (پس از ایجاد شاهد)",
+  "addAttachment": "افزودن پیوست",
+  "attachmentDescription": "توضیحات (اختیاری)",
   "attachments": "پیوست‌ها",
   "answersHistory": "تاریخچه پاسخ‌ها",
   "attachment": "پیوست‌",
@@ -10,6 +12,7 @@
   "createEvidence": "ایجاد شاهد",
   "comment": "یاداشت‌",
   "comments": "یاداشت‌ها",
+  "dropOrSelectFile": "فایل خود را به اینجا بکشید یا انتخاب کنید",
   "displayIssues": "نمایش مسئله‌ها",
   "hideIssues": "پنهان کردن مسئله‌ها",
   "lowConfidence": "ضریب اطمینان کم",

@@ -37,6 +37,9 @@ const Tabs = (props: any) => {
   const { activeQuestion } = props;
   const { t } = useTranslation();
   const [selectedTab, setSelectedTab] = useState<FooterTab>("evidences");
+  const [attachmentTargetId, setAttachmentTargetId] = useState<number | null>(
+    null,
+  );
 
   const {
     fetchByTab,
@@ -150,6 +153,9 @@ const Tabs = (props: any) => {
             <CreateForm
               showTabs={cfg.value === "evidences"}
               fetchQuery={() => fetchByTab(selectedTab)}
+              onOpenAttachments={() => {
+                setAttachmentTargetId(0);
+              }}
             />
           )}
 
@@ -157,15 +163,19 @@ const Tabs = (props: any) => {
             data={cfg.data}
             state={cfg.state}
             isActive={cfg.value === selectedTab}
-            renderItem={(item: any) => (
-              <>
-                <EvidenceContainer
-                  key={item?.id}
-                  item={item}
-                  fetchByTab={() => fetchByTab(selectedTab)}
-                />
-              </>
-            )}
+            renderItem={(item: any, index: number) => {
+              return (
+                <>
+                  <EvidenceContainer
+                    key={item?.id}
+                    item={item}
+                    fetchByTab={() => fetchByTab(selectedTab)}
+                    autoOpenAttachments={attachmentTargetId === index}
+                    onAttachmentsFlowDone={() => setAttachmentTargetId(null)}
+                  />
+                </>
+              );
+            }}
           />
         </TabPanel>
       ))}
