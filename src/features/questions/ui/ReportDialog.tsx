@@ -12,8 +12,8 @@ import { InputFieldUC } from "@common/fields/InputField";
 import { useForm as useFormSpree } from "@formspree/react";
 import showToast from "@utils/toast-error";
 
-type ReportItem = {id: number, title: string}
-const ReportItems: ReportItem[] =  [
+type ReportItem = { id: number; title: string };
+const ReportItems: ReportItem[] = [
   { id: 1, title: "questionIsUnclear" },
   { id: 2, title: "questionIsIncorrect" },
   { id: 3, title: "questionHaveMultipleAnswers" },
@@ -23,7 +23,7 @@ const ReportItems: ReportItem[] =  [
 ];
 
 const ReportDialog = (props: any) => {
-  const { onClose,context, ...rest } = props;
+  const { onClose, context, ...rest } = props;
 
   const abortController = useMemo(() => new AbortController(), [rest.open]);
   const [state, handleSubmitSpree] = useFormSpree(
@@ -42,20 +42,26 @@ const ReportDialog = (props: any) => {
   const { control, handleSubmit } = formMethods;
 
   const onSubmit = (data: any) => {
-   const questionId = context?.data?.questionId ?? ""
-    const reportData = {...data, questionId, type: `Report Question - ${globalThis.location.href}`}
+    const questionId = context?.data?.questionId ?? "";
+    const reportData = {
+      ...data,
+      questionId,
+      type: `Report Question - ${globalThis.location.href}`,
+    };
     handleSubmitSpree(reportData).then(() => {
-      showToast(t("questions_temp.reportSentSuccessfully"), { variant: "success" })
+      showToast(t("questions_temp.reportSentSuccessfully"), {
+        variant: "success",
+      });
       close();
     });
   };
 
-  const close = () =>{
+  const close = () => {
     abortController.abort();
     formMethods.reset();
     setDialogKey((prev) => prev + 1);
     onClose();
-  }
+  };
 
   const borderColor = "";
 
@@ -163,11 +169,7 @@ const ReportDialog = (props: any) => {
         <Box sx={{ mt: 3 }}>
           <InputFieldUC
             name="feedbackQuestionReport"
-            label={
-              <Text color="#627384" variant="bodyMedium">
-                {t("questions_temp.moreDetails")}
-              </Text>
-            }
+            label={t("questions_temp.moreDetails")}
             multiline
             rows={4}
           />
