@@ -120,13 +120,19 @@ jobs:
   Frontend_Deploy:
     needs: Frontend_Push_Image
     runs-on: ubuntu-latest
+  
+    container:
+      image: hamravesh/darkube-cli:v1.1
+      options: --user root
+  
     steps:
-      - name: Deploy service on Webhook
+      - name: darkube-cli deploy
         run: |
-          status_code=$(curl --silent --output /dev/null --write-out "%{http_code}" -X POST "${{ secrets.FRONTEND_VERSION }}?FRONTEND_VERSION=${TAG}")
-          if [ "$status_code" -ne 204 ]; then
-            echo "Unexpected status code: $status_code"
-            exit 1
-          fi
+          darkube deploy \
+            --token ${{ secrets.DEPLOY_TOKEN_FRONTEND_FLICKIT_HAMRAVESH_C13 }} \
+            --app-id ${{ secrets.APP_ID_FRONTEND_FLICKIT_HAMRAVESH_C13 }} \
+            --image-tag "${TAG}" \
+            --job-id "${GITHUB_RUN_ID}"
         env:
-          TAG: ${{needs.Frontend_Push_Image.outputs.TAG}}
+          TAG: ${{ needs.Frontend_Push_Image.outputs.TAG }}
+
