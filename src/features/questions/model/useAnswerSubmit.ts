@@ -9,7 +9,6 @@ import {
 } from "../context";
 import { useServiceContext } from "@/providers/service-provider";
 import { useQuery } from "@/hooks/useQuery";
-import { IQuestionsModel } from "@/types";
 import { useAuthContext } from "@/providers/auth-provider";
 import { useUpdateQuestionIssues } from "./useQuestionIssues";
 
@@ -35,15 +34,6 @@ export function useAnswerSubmit() {
     service: (args, config) =>
       service.assessments.answer.approve(
         args ?? { assessmentId, data: { questionId: selectedQuestion.id } },
-        config,
-      ),
-    runOnMount: false,
-  });
-
-  const fetchQuestionIssues = useQuery<IQuestionsModel>({
-    service: (args, config) =>
-      service.assessments.questionnaire.getQuestionIssues(
-        { assessmentId, questionId: selectedQuestion?.id },
         config,
       ),
     runOnMount: false,
@@ -79,7 +69,6 @@ export function useAnswerSubmit() {
       };
 
       const res = await submitAnswer.query(payload);
-      // const issueRes = await fetchQuestionIssues.query();
       const server = res?.data;
       const serverQuestion = server?.question ?? server?.result ?? server;
       const serverAnswer = serverQuestion?.answer;

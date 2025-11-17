@@ -124,7 +124,7 @@ export function useCreateEvidenceForm({
           },
           editable: true,
           deletable: true,
-          resolvable: values.type ? false : true,
+          resolvable: !values.type,
         };
 
         dispatch(

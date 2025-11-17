@@ -1,6 +1,6 @@
 import Box, { BoxProps } from "@mui/material/Box";
 import IconButton from "@mui/material/IconButton";
-import MoreVertIcon from "@mui/icons-material/MoreVertRounded";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
 import CircularProgress from "@mui/material/CircularProgress";
 import Menu from "@mui/material/Menu";
 import MenuItem, { MenuItemProps } from "@mui/material/MenuItem";
