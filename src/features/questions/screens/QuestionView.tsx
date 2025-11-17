@@ -11,6 +11,7 @@ import {
   Switch,
   Checkbox,
   Tooltip,
+  Collapse,
 } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
 import { Text } from "@/components/common/Text";
@@ -32,7 +33,8 @@ import ReportDialog from "@/features/questions/ui/ReportDialog";
 import MoreActions from "@common/MoreActions";
 import useMenu from "@/hooks/useMenu";
 import { v3Tokens } from "@config/tokens";
-import ReportGmailerrorredIcon from '@mui/icons-material/ReportGmailerrorred';
+import ReportGmailerrorredIcon from "@mui/icons-material/ReportGmailerrorred";
+import languageDetector from "@/utils/language-detector";
 
 const QuestionView = () => {
   useDocumentTitle();
@@ -51,7 +53,7 @@ const QuestionView = () => {
 
   const { isAdvanced } = useAssessmentMode();
   const { submit, isLoading, approve } = useAnswerSubmit();
-  const dialogProps= useDialog()
+  const dialogProps = useDialog();
   const answer = activeQuestion?.answer;
   const menu = useMenu();
 
@@ -72,6 +74,12 @@ const QuestionView = () => {
     !!answer?.isNotApplicable,
   );
   const [autoNext, setAutoNext] = useState<boolean>(true);
+  const [showHint, setShowHint] = useState<boolean>(false);
+
+  const isTitleRTL = useMemo(
+    () => languageDetector(activeQuestion?.title),
+    [activeQuestion?.title],
+  );
 
   useEffect(() => {
     setSelectedOption(
@@ -81,6 +89,7 @@ const QuestionView = () => {
     );
     setConfidence(answer?.confidenceLevel?.id ?? null);
     setNotApplicable(!!answer?.isNotApplicable);
+    setShowHint(false);
   }, [
     activeQuestion?.id,
     answer?.selectedOption,
@@ -160,52 +169,90 @@ const QuestionView = () => {
         bgcolor="background.background"
         borderRadius="12px"
         boxShadow="0 0 0 1px rgba(0,0,0,0.04), 0 8px 8px -8px rgba(0,0,0,0.16)"
+        sx={{ direction: isTitleRTL ? "rtl" : "ltr" }}
       >
         {/* Header */}
         <Box padding="16px 24px" sx={{ ...styles.centerCV }} gap="10px">
-       <Box sx={{ ...styles.centerVH, justifyContent: "space-between" }}>
-         <Text
-           variant="semiBoldMedium"
-           color="background.contrastText"
-           textAlign="justify"
-         >
-           {activeQuestion?.index}. {activeQuestion?.title}
-           {activeQuestion?.hint && (
-             <Text
-               variant="semiBoldSmall"
-               color="primary.main"
-               p={0.5}
-               marginInlineStart={0.5}
-             >
-               {t("common.hint")}
-             </Text>
-           )}
-         </Text>
-         {isAdvanced && <MoreActions
-           {...menu}
-           boxProps={{ sx:{
-               "& .MuiIconButton-root": {p : 0.4}
-             }}}
-           items={[
-             {
-               icon:  <ReportGmailerrorredIcon sx={{fontSize: "18px", color: "error.main", px: 0.2}} />,
-               text:  <Text color="error.main" variant={"bodySmall"}>{t("questions_temp.reportQuestion")}</Text>,
-               onClick: ()=> dialogProps.openDialog({
-                 type: "create",
-                 data: { questionId: activeQuestion?.id },
-               })
-             }
+          <Box
+            sx={{
+              ...styles.centerVH,
+              justifyContent: "space-between",
+              alignItems: "flex-start",
+            }}
+          >
+            <Box sx={{ flex: 1 }}>
+              <Text variant="semiBoldMedium" color="background.contrastText">
+                {activeQuestion?.index}. {activeQuestion?.title}
+                {activeQuestion?.hint && (
+                  <Text
+                    component="span"
+                    variant="semiBoldSmall"
+                    color="primary.main"
+                    p={0.5}
+                    marginInlineStart={0.5}
+                    sx={{
+                      cursor: "pointer",
+                      display: "inline-flex",
+                      alignItems: "center",
+                      gap: 0.5,
+                    }}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setShowHint((prev) => !prev);
+                    }}
+                  >
+                    {t("common.hint")}
+                  </Text>
+                )}
+              </Text>
 
-           ]}
-           color={v3Tokens.surface.on}
-           IconButtonProps={{ width: "24px", height: "24px" }}
-         /> }
-       </Box>
-          {activeQuestion?.hint && (
-            <Text variant="bodySmall" color="text.primary" textAlign="justify">
-              {activeQuestion?.hint}
-            </Text>
-          )}
+              {activeQuestion?.hint && (
+                <Collapse in={showHint}>
+                  <Text
+                    variant="bodySmall"
+                    color="text.primary"
+                    sx={{
+                      mt: 0.5,
+                    }}
+                  >
+                    {activeQuestion?.hint}
+                  </Text>
+                </Collapse>
+              )}
+            </Box>
+
+            {isAdvanced && (
+              <MoreActions
+                {...menu}
+                boxProps={{
+                  sx: {
+                    "& .MuiIconButton-root": { p: 0.4 },
+                  },
+                }}
+                items={[
+                  {
+                    icon: (
+                      <ReportGmailerrorredIcon
+                        sx={{ fontSize: "18px", color: "error.main", px: 0.2 }}
+                      />
+                    ),
+                    text: (
+                      <Text color="error.main" variant={"bodySmall"}>
+                        {t("questions_temp.reportQuestion")}
+                      </Text>
+                    ),
+                    onClick: () =>
+                      dialogProps.openDialog({
+                        type: "create",
+                        data: { questionId: activeQuestion?.id },
+                      }),
+                  },
+                ]}
+                color={v3Tokens.surface.on}
+                IconButtonProps={{ width: "24px", height: "24px" }}
+              />
+            )}
+          </Box>
         </Box>
 
         <Divider sx={{ width: "100%" }} />
@@ -384,14 +431,24 @@ const QuestionView = () => {
                 />
               </Box>
             ) : (
-              <Box onClick={()=>dialogProps.openDialog({
-                type: "create",
-                data: { questionId: activeQuestion?.id },
-              })} sx={{...styles.centerVH, color: "error.main", cursor: "pointer"}}>
-                <Text variant={"bodySmall"}>{t("questions_temp.reportQuestion")}</Text>
-                <ReportGmailerrorredIcon sx={{fontSize: "18px", px: 0.2}} />
+              <Box
+                onClick={() =>
+                  dialogProps.openDialog({
+                    type: "create",
+                    data: { questionId: activeQuestion?.id },
+                  })
+                }
+                sx={{
+                  ...styles.centerVH,
+                  color: "error.main",
+                  cursor: "pointer",
+                }}
+              >
+                <Text variant={"bodySmall"}>
+                  {t("questions_temp.reportQuestion")}
+                </Text>
+                <ReportGmailerrorredIcon sx={{ fontSize: "18px", px: 0.2 }} />
               </Box>
-
             )}
           </Box>
 
@@ -414,40 +471,44 @@ const QuestionView = () => {
               />
             )}
             <Box display="flex" gap={1}>
-              <IconButton
-                aria-label={t("common.prev") as string}
-                color="primary"
-                disabled={isAtStart}
-                onClick={goPrevious}
-                sx={{
-                  borderRadius: "4px",
-                  border: "1px solid",
-                  borderColor: "primary.main",
-                  p: 0,
-                }}
-              >
-                <KeyboardArrowUpRounded fontSize="large" />
-              </IconButton>
-              <IconButton
-                aria-label={t("common.next") as string}
-                color="primary"
-                disabled={isAtEnd}
-                onClick={goNext}
-                sx={{
-                  borderRadius: "4px",
-                  border: "1px solid",
-                  borderColor: "primary.main",
-                  p: 0,
-                }}
-              >
-                <KeyboardArrowDownRounded fontSize="large" />
-              </IconButton>
+              <Tooltip title={t("questions_temp.previousQuestion")}>
+                <IconButton
+                  aria-label={t("questions_temp.previousQuestion") as string}
+                  color="primary"
+                  disabled={isAtStart}
+                  onClick={goPrevious}
+                  sx={{
+                    borderRadius: "4px",
+                    border: "1px solid",
+                    borderColor: "primary.main",
+                    p: 0,
+                  }}
+                >
+                  <KeyboardArrowUpRounded fontSize="large" />
+                </IconButton>
+              </Tooltip>
+              <Tooltip title={t("questions_temp.nextQuestion")}>
+                <IconButton
+                  aria-label={t("questions_temp.nextQuestion") as string}
+                  color="primary"
+                  disabled={isAtEnd}
+                  onClick={goNext}
+                  sx={{
+                    borderRadius: "4px",
+                    border: "1px solid",
+                    borderColor: "primary.main",
+                    p: 0,
+                  }}
+                >
+                  <KeyboardArrowDownRounded fontSize="large" />
+                </IconButton>
+              </Tooltip>
             </Box>
           </Box>
         </Box>
       </Box>
       {isAdvanced && <FooterTabs activeQuestion={activeQuestion} />}
-      {dialogProps.open && <ReportDialog {...dialogProps}/>}
+      {dialogProps.open && <ReportDialog {...dialogProps} />}
     </Box>
   );
 };

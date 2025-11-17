@@ -177,7 +177,7 @@ const ReportDialog = (props: any) => {
 
         <CEDialogActions
           closeDialog={close}
-          submitButtonLabel={"questions_temp.submitReport"}
+          submitButtonLabel={"common.submit"}
           hideCancelButton
           onSubmit={handleSubmit(onSubmit)}
           loading={state.submitting}

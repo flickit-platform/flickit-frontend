@@ -47,13 +47,7 @@ function stripHtml(input?: string): string {
   return doc.body.textContent?.replaceAll(/\u00A0/g, " ").trim() ?? "";
 }
 
-const CreateForm = ({
-  showTabs,
-  submitLabel,
-}: {
-  showTabs?: boolean;
-  submitLabel?: string;
-}) => {
+const CreateForm = ({ showTabs }: { showTabs?: boolean }) => {
   const defaultType = showTabs ? EVIDENCE_TYPE.POSITIVE : null;
 
   const { t } = useTranslation();
@@ -63,7 +57,7 @@ const CreateForm = ({
     service: (args, config) => service.evidence.create(args, config),
     runOnMount: false,
   });
-  const { selectedQuestion, evidences } = useQuestionContext();
+  const { selectedQuestion } = useQuestionContext();
   const { userInfo } = useAuthContext();
 
   const dispatch = useQuestionDispatch();
@@ -269,7 +263,9 @@ const CreateForm = ({
             onClick={handleSubmit(onSubmit)}
             loading={createEvidence.loading}
           >
-            {submitLabel ?? t("questions_temp.createEvidence")}
+            {showTabs
+              ? t("questions_temp.createEvidence")
+              : t("questions_temp.createComment")}
           </LoadingButton>
         </Box>
       </FormProviderWithForm>

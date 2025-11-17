@@ -10,6 +10,7 @@ import { Text } from "@/components/common/Text";
 import { QuestionBadge } from "./QuestionBadge";
 import { QuestionChips } from "./QuestionChips";
 import type { QuestionIssue } from "../../types";
+import languageDetector from "@/utils/language-detector";
 
 interface QuestionItemProps {
   title: string;
@@ -31,7 +32,14 @@ export const QuestionItem = memo(
     showChips,
     onSelect,
   }: QuestionItemProps) => {
-    const rtl = i18next.language === "fa";
+    const uiLang = i18next.language;
+    const isUILangRTL = uiLang === "fa";
+    const isTitleRTL = languageDetector(title);
+
+    const paddingSide: "paddingInlineStart" | "paddingInlineEnd" =
+      (isTitleRTL && isUILangRTL) || (!isTitleRTL && uiLang === "en")
+        ? "paddingInlineStart"
+        : "paddingInlineEnd";
 
     const badge = (
       <QuestionBadge
@@ -42,7 +50,7 @@ export const QuestionItem = memo(
       />
     );
 
-    const body = (
+    const listItem = (
       <ListItemButton
         selected={open && active}
         onClick={() => onSelect(idx)}
@@ -64,7 +72,11 @@ export const QuestionItem = memo(
         {open && (
           <ListItemText
             disableTypography
-            sx={{ paddingInlineStart: 1.5, mb: 0 }}
+            sx={{
+              mb: 0,
+              direction: isTitleRTL ? "rtl" : "ltr",
+              [paddingSide]: 1.5,
+            }}
             primary={
               <Text variant="bodyMedium" textAlign="justify">
                 {title}
@@ -76,14 +88,14 @@ export const QuestionItem = memo(
       </ListItemButton>
     );
 
-    if (open) return body;
+    if (open) return listItem;
 
     return (
       <Tooltip
         title={<Text variant="labelSmall">{title}</Text>}
-        placement={rtl ? "left" : "right"}
+        placement={isUILangRTL ? "left" : "right"}
       >
-        <span>{body}</span>
+        <span>{listItem}</span>
       </Tooltip>
     );
   },

@@ -18,6 +18,7 @@
   "limitSizeExceeded": "حجم هر فایل پیوست حداکثر ۵ مگابایت می‌تواند باشد.",
   "lowConfidence": "ضریب اطمینان کم",
   "negativeEvidence": "شاهد منفی",
+  "nextQuestion": "پرسش بعدی",
   "noEvidence": "بدون شاهد",
   "notApplicable": "نامرتبط",
   "notApplicableDesc": "بعضی سوالات ممکن است محدوده‌ی خاصی را مورد پرسش قرار دهند و برای همه‌ی ارزیابی‌ها صدق نکنند. این سوالات می‌توانند به عنوان نامرتبط تعیین شوند. در این صورت؛ در محاسبات مربوط به گزارش ارزیابی نادیده گرفته خواهند شد و تاثیری نخواهند داشت.",
@@ -25,6 +26,7 @@
   "typeOfEvidence": "نوع شاهد",
   "optionsNotMatch": "گزینه‌ها با صورت سوال تناسب ندارند",
   "other": "موارد دیگر",
+  "previousQuestion": "پرسش قبلی",
   "positiveEvidence": "شاهد مثبت",
   "questionsEmptyState": "سوالی با مشکلات انتخاب‌شده موجود نیست.",
   "reportQuestion": "گزارش سوال",
@@ -35,7 +37,6 @@
   "questionHaveMultipleAnswers": "سوال دو پهلو است و ممکن است چند جواب داشته باشد",
   "questionPhraseBetter": "سوال میتواند بهتر بیان شود (صورت پیشنهادی خود را نیز بنویسید)",
   "quickAnswer": "پاسخگویی سریع",
-  "submitReport": "ارسال گزارش",
   "whatIssuesLikeToReport": "چه مشکلاتی را می‌خواهید در ارتباط با این سوال گزارش کنید؟",
   "unanswered": "بدون پاسخ",
   "unsupportedFileFormat": "پیوست‌ها باید فقط از نوع فایل‌های pdf, jpg, png, docx, pptx, rar, zip, excel باشند."
