@@ -42,6 +42,8 @@ import {
   RadioButtonCheckedRounded,
   RadioButtonUncheckedRounded,
 } from "@mui/icons-material";
+import languageDetector from "@/utils/language-detector";
+import { useUpdateQuestionIssues } from "../../model/useQuestionIssues";
 
 type Variant = "history" | "evidences" | "comments";
 
@@ -64,9 +66,10 @@ const getVariant = (item: any): Variant => {
   return "comments";
 };
 
-const Container: React.FC<{
+const Panel: React.FC<{
   item: any;
-}> = ({ item }) => {
+  readonly?: boolean;
+}> = ({ item, readonly }) => {
   const dispatch = useQuestionDispatch();
   const { selectedQuestion } = useQuestionContext();
   const variant = getVariant(item);
@@ -78,6 +81,7 @@ const Container: React.FC<{
     description: item?.description ?? "",
     type: (item?.type as Polarity) ?? "",
   });
+  const { updateQuestionIssues } = useUpdateQuestionIssues();
 
   const deleteDialog = useDialog();
 
@@ -152,18 +156,20 @@ const Container: React.FC<{
             ? deleteEvidence({ id: item.id })
             : deleteComment({ id: item.id }),
         );
+        const updatedQuestion = {
+          ...selectedQuestion,
+          counts: {
+            ...selectedQuestion.counts,
+            [variant]: selectedQuestion.counts[variant] - 1,
+          },
+        };
+        dispatch(setSelectedQuestion(updatedQuestion));
+        setTimeout(() => {
+          updateQuestionIssues(updatedQuestion);
+        }, 400);
       })
       .finally(() => {
         deleteDialog.onClose();
-        dispatch(
-          setSelectedQuestion({
-            ...selectedQuestion,
-            counts: {
-              ...selectedQuestion.counts,
-              [variant]: selectedQuestion.counts[variant] - 1,
-            },
-          }),
-        );
       });
   };
 
@@ -172,18 +178,20 @@ const Container: React.FC<{
       .query({ id: item.id })
       .then(() => {
         dispatch(deleteComment({ id: item.id }));
+        const updatedQuestion = {
+          ...selectedQuestion,
+          counts: {
+            ...selectedQuestion.counts,
+            [variant]: selectedQuestion.counts[variant] - 1,
+          },
+        };
+        dispatch(setSelectedQuestion(updatedQuestion));
+        setTimeout(() => {
+          updateQuestionIssues(updatedQuestion);
+        }, 400);
       })
       .finally(() => {
         deleteDialog.onClose();
-        dispatch(
-          setSelectedQuestion({
-            ...selectedQuestion,
-            counts: {
-              ...selectedQuestion.counts,
-              [variant]: selectedQuestion.counts[variant] - 1,
-            },
-          }),
-        );
       });
   };
 
@@ -236,7 +244,7 @@ const Container: React.FC<{
         isEditing={isEditing}
         currentType={draft.type}
       >
-        {variant !== "history" && <>{headerActions}</>}
+        {variant !== "history" && !readonly && <>{headerActions}</>}
       </Header>
 
       <Detail
@@ -246,6 +254,7 @@ const Container: React.FC<{
         draft={draft}
         setDraft={setDraft}
         formMethods={formMethods}
+        readonly={readonly}
       />
 
       {variant !== "history" && (
@@ -265,7 +274,7 @@ const Container: React.FC<{
   );
 };
 
-export default Container;
+export default Panel;
 
 const resolveBoxMeta = (
   variant: Variant,
@@ -346,7 +355,8 @@ const Detail: React.FC<{
     React.SetStateAction<{ description: string; type?: Polarity }>
   >;
   formMethods: ReturnType<typeof useForm>;
-}> = ({ item, variant, isEditing, draft, setDraft, formMethods }) => {
+  readonly?: boolean;
+}> = ({ item, variant, isEditing, draft, setDraft, formMethods, readonly }) => {
   const { id, description, attachmentsCount } = item;
   const totalAttachments = attachmentsCount ?? 0;
   const dispatch = useQuestionDispatch();
@@ -393,9 +403,9 @@ const Detail: React.FC<{
                 </Text>
                 <Rating
                   value={
-                    item?.answer?.confidenceLevel?.id !== null
-                      ? (item?.answer?.confidenceLevel?.id as number)
-                      : null
+                    item?.answer?.confidenceLevel?.id === null
+                      ? null
+                      : (item?.answer?.confidenceLevel?.id as number)
                   }
                   readOnly
                   size="medium"
@@ -432,7 +442,7 @@ const Detail: React.FC<{
   }
 
   return (
-    <Box sx={{ px: 2, pb: 2 }}>
+    <Box sx={{ px: 2, pb: 1 }}>
       <Box
         width="100%"
         justifyContent="space-between"
@@ -505,8 +515,14 @@ const Detail: React.FC<{
             </FormProviderWithForm>
           </Box>
         ) : (
-          <Box sx={{ width: "100%", pt: 1 }}>
+          <Box
+            sx={{
+              ...styles.rtlStyle(languageDetector(description)),
+              width: "100%",
+            }}
+          >
             <Text
+              textAlign="justify"
               variant="bodyMedium"
               color="background.secondaryDark"
               dangerouslySetInnerHTML={{ __html: description ?? "" }}
@@ -521,6 +537,7 @@ const Detail: React.FC<{
           type={item.type}
           attachmentsCount={attachmentsCount}
           startAddMode={startAddMode}
+          readonly={readonly}
           onCloseAddMode={(noAttachments: boolean) => {
             setStartAddMode(false);
             dispatch(
@@ -531,31 +548,33 @@ const Detail: React.FC<{
           }}
         />
       ) : (
-        <Button
-          variant="text"
-          size="small"
-          sx={{
-            px: 0,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            gap: 0.5,
-          }}
-          onClick={() => {
-            setShowAttachments(true);
-            setStartAddMode(true);
-          }}
-          startIcon={
-            <Box
-              component="img"
-              src={AttachementPlus}
-              alt="empty state"
-              sx={{ width: "100%", maxWidth: 80 }}
-            />
-          }
-        >
-          {t("questions_temp.addAttachment")}
-        </Button>
+        !readonly && (
+          <Button
+            variant="text"
+            size="small"
+            sx={{
+              px: 0,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              gap: 0.5,
+            }}
+            onClick={() => {
+              setShowAttachments(true);
+              setStartAddMode(true);
+            }}
+            startIcon={
+              <Box
+                component="img"
+                src={AttachementPlus}
+                alt="empty state"
+                sx={{ width: "100%", maxWidth: 80 }}
+              />
+            }
+          >
+            {t("questions_temp.addAttachment")}
+          </Button>
+        )
       )}
     </Box>
   );

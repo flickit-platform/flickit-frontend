@@ -59,7 +59,6 @@ export function useQuestionNavigator(
   );
 
   const selectAt = useCallback((index: number) => {
-    console.log(index);
     if (!questions.length) return;
     const safeIndex = Math.min(
       Math.max(index, 0),

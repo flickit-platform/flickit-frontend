@@ -10,18 +10,31 @@ const questionReducer = (
         questions: action.payload,
       };
     case QUESTION_ACTIONS_TYPE.SET_SELECTED_QUESTION: {
-      const updatedQuestions = prevState.questions?.map((question: any) =>
-        question.id === action?.payload?.id
-          ? { ...question, ...action.payload }
-          : question,
-      ) ?? [action.payload];
+      const { payload } = action;
+
+      const prevQuestions = Array.isArray(prevState.questions)
+        ? prevState.questions
+        : [];
+
+      const shouldUpdateQuestions = !payload?.readonly;
+
+      const updatedQuestions = shouldUpdateQuestions
+        ? prevQuestions.length > 0
+          ? prevQuestions.map((question: any) =>
+              question.id === payload?.id
+                ? { ...question, ...payload }
+                : question,
+            )
+          : [payload]
+        : prevQuestions; 
 
       return {
         ...prevState,
-        selectedQuestion: action.payload,
+        selectedQuestion: payload,
         questions: updatedQuestions,
       };
     }
+
     case QUESTION_ACTIONS_TYPE.SET_QUESTION_ITEMS:
       return {
         ...prevState,
@@ -38,8 +51,6 @@ const questionReducer = (
     // Evidences
     // ======================
     case QUESTION_ACTIONS_TYPE.SET_EVIDENCES:
-      console.log("REDUCER SET_EVIDENCES", action.payload);
-
       return {
         ...prevState,
         evidences: action.payload,
@@ -137,7 +148,6 @@ const questionReducer = (
         answerHistory: [action.payload, ...prevanAwerHistory],
       };
     }
-  
 
     default:
       return prevState;

@@ -63,15 +63,13 @@ const ReportDialog = (props: any) => {
     onClose();
   };
 
-  const borderColor = "";
-
   return (
     <CEDialog
       {...rest}
       key={dialogKey}
       closeDialog={close}
       fullWidth
-      maxWidth="md"
+      maxWidth="sm"
       title={
         <Box sx={{ ...styles.centerVH, gap: "6px" }}>
           <ReportGmailerrorredIcon
@@ -107,7 +105,7 @@ const ReportDialog = (props: any) => {
                 flexDirection: "column",
                 "& .MuiToggleButtonGroup-grouped": {
                   border: "1px solid",
-                  borderColor,
+                  borderColor: "outline.variant",
                   borderRadius: "8px !important",
                   margin: 0,
                 },
@@ -127,19 +125,20 @@ const ReportDialog = (props: any) => {
                 >
                   <ToggleButton
                     value={title}
+                    data-cy="answer-option"
                     color="primary"
                     size="large"
                     sx={{
                       p: 0,
-                      px: 1.5,
-                      borderRadius: "8px !important",
+                      paddingInlineStart: "4px",
+                      paddingInlineEnd: "12px",
+                      borderRadius: "8px",
                       border: "1px solid",
-                      borderColor,
                       justifyContent: "flex-start",
-                      height: 36,
                       bgcolor: "transparent",
                       "&.Mui-selected": {
                         bgcolor: "primary.states.selected",
+                        borderColor: "primary.main",
                       },
                       "&.Mui-disabled": {
                         bgcolor: "background.container",
@@ -151,11 +150,13 @@ const ReportDialog = (props: any) => {
                       checked={field.value.includes(title)}
                       size="small"
                       color="primary"
+                      disableRipple
                     />
                     <Text
                       variant="bodyMedium"
                       textTransform="initial"
-                      color="text.primary"
+                      color={"text.primary"}
+                      textAlign="start"
                     >
                       {t(`questions_temp.${title}`)}
                     </Text>

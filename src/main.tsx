@@ -19,7 +19,8 @@ import { AssessmentProvider } from "./providers/assessment-provider";
 import i18next from "i18next";
 import { KitLanguageProvider } from "./providers/kit-provider";
 import { LangProvider, useLangContext } from "./providers/lang-provider";
-import "./globals.css"
+import "./globals.css";
+import { Provider } from "./features/questions/context";
 
 // Lazy load non-critical components
 const ToastContainer = lazy(() =>
@@ -93,21 +94,23 @@ const AppWithTheme = () => {
               <ServiceProvider>
                 <KitLanguageProvider>
                   <ConfigProvider>
-                    <CssBaseline />
-                    <Suspense fallback={null}>
-                      <ToastContainer
-                        {...toastDefaultConfig}
-                        toastStyle={{
-                          fontFamily:
-                            lang === "fa"
-                              ? farsiFontFamily
-                              : primaryFontFamily,
-                          direction: lang === "fa" ? "rtl" : "ltr",
-                          textAlign: lang === "fa" ? "right" : "left",
-                        }}
-                      />
-                    </Suspense>
-                    <AppWithNovu />
+                    <Provider>
+                      <CssBaseline />
+                      <Suspense fallback={null}>
+                        <ToastContainer
+                          {...toastDefaultConfig}
+                          toastStyle={{
+                            fontFamily:
+                              lang === "fa"
+                                ? farsiFontFamily
+                                : primaryFontFamily,
+                            direction: lang === "fa" ? "rtl" : "ltr",
+                            textAlign: lang === "fa" ? "right" : "left",
+                          }}
+                        />
+                      </Suspense>
+                      <AppWithNovu />
+                    </Provider>
                   </ConfigProvider>
                 </KitLanguageProvider>
               </ServiceProvider>
@@ -123,7 +126,7 @@ const renderApp = () => {
   createRoot(document.getElementById("root") as HTMLElement).render(
     <LangProvider>
       <AppWithTheme />
-    </LangProvider>
+    </LangProvider>,
   );
 };
 

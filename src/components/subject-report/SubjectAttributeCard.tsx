@@ -33,6 +33,7 @@ import { useTheme } from "@mui/material";
 import Title from "@common/Title";
 import { Text } from "../common/Text";
 import { getSemanticColors } from "@/config/colors";
+import { setQuestions, useQuestionDispatch } from "@/features/questions/context";
 
 const SubjectAttributeCard = (props: any) => {
   const {
@@ -47,6 +48,7 @@ const SubjectAttributeCard = (props: any) => {
     insight,
     reloadQuery,
   } = props;
+  const dispatch = useQuestionDispatch();
   const { permissions } = useAssessmentContext();
   const { assessmentId = "" } = useParams();
 
@@ -156,6 +158,13 @@ const SubjectAttributeCard = (props: any) => {
     });
   };
 
+  useEffect(() => {
+    if (fetchAffectedQuestionsOnAttributeQueryData?.data?.items) {
+      const { items = [] } = fetchAffectedQuestionsOnAttributeQueryData.data;
+      dispatch(setQuestions(items));
+    }
+  }, [fetchAffectedQuestionsOnAttributeQueryData.data]);
+
   const maturityHandelClick = (id: number) => {
     setSelectedMaturityLevel(id);
   };
@@ -166,10 +175,7 @@ const SubjectAttributeCard = (props: any) => {
     setSortOrder(null);
   };
 
-  const colorPallet = getSemanticColors(
-    maturity_levels_count,
-    "bg",
-  );
+  const colorPallet = getSemanticColors(maturity_levels_count, "bg");
   const backgroundColor = colorPallet[maturityLevel.value - 1];
 
   const handleSortChange = (sortBy: any, sortOrder: any) => {
@@ -241,7 +247,7 @@ const SubjectAttributeCard = (props: any) => {
               alignItems: "center",
             }}
           >
-            <Grid size={{xs: 12, sm: 9}} sx={{ p: 4 }}>
+            <Grid size={{ xs: 12, sm: 9 }} sx={{ p: 4 }}>
               <Title>
                 <Text
                   variant="headlineSmall"
@@ -273,7 +279,7 @@ const SubjectAttributeCard = (props: any) => {
                 {description}
               </Text>
             </Grid>
-            <Grid size={{xs: 12, sm: 3}} height={{ sm: "100%", xs: "unset" }}>
+            <Grid size={{ xs: 12, sm: 3 }} height={{ sm: "100%", xs: "unset" }}>
               {" "}
               <Box
                 width="100%"
@@ -460,7 +466,7 @@ const SubjectAttributeCard = (props: any) => {
                     ]) => {
                       return (
                         <MaturityLevelTable
-                          tempData={affectedQuestionsOnAttribute}
+                          data={affectedQuestionsOnAttribute}
                           scoreState={scoreState}
                           updateSortOrder={updateSortOrder}
                           setPage={setPage}
@@ -480,15 +486,15 @@ const SubjectAttributeCard = (props: any) => {
 
               {topTab === 1 && (
                 <Grid container>
-                  <Grid size={{xs: 12, sm: 9.4}}></Grid>
-                  <Grid size={{xs: 12, sm: 2.5}}>
+                  <Grid size={{ xs: 12, sm: 9.4 }}></Grid>
+                  <Grid size={{ xs: 12, sm: 2.5 }}>
                     <DropDownContent
                       onSortChange={handleSortChange}
                       sortBy={sortBy}
                       sortOrder={sortOrder}
                     />
                   </Grid>
-                  <Grid size={{xs: 12, sm: 12}}>
+                  <Grid size={{ xs: 12, sm: 12 }}>
                     <ScoreImpactBarChart
                       measures={fetchMeasures.data.measures}
                       language={i18next.language}
