@@ -54,7 +54,7 @@ export function useQuestionNavigator(
 
   const makeQuestionPath = useCallback(
     (index: number) =>
-      `/${spaceId}/assessments/${page}/${assessmentId}/questionnaires_temp/${questionnaireId}/${index + 1}`,
+      `/${spaceId}/assessments/${page}/${assessmentId}/questionnaires/${questionnaireId}/${index + 1}`,
     [spaceId, page, assessmentId, questionnaireId],
   );
 

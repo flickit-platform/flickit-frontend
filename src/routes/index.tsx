@@ -141,14 +141,14 @@ const Routes = () => {
             <Route path="questionnaires/" element={<QuestionnairesScreen />} />
 
             <Route
-              path="questionnaires_temp/:questionnaireId"
+              path="questionnaires/:questionnaireId"
               element={<QuestionsTempScreen />}
             >
               <Route path="" element={<QuestionTempScreen />} />
               <Route path=":questionIndex" element={<QuestionTempScreen />} />
             </Route>
             <Route
-              path="questionnaires/:questionnaireId"
+              path="questionnaires_temp/:questionnaireId"
               element={<QuestionsScreen />}
             >
               <Route path="" element={<QuestionScreen />} />
