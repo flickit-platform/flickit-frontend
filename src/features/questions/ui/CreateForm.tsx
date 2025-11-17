@@ -16,11 +16,16 @@ import { useServiceContext } from "@/providers/service-provider";
 import { useQuery } from "@/hooks/useQuery";
 import { useParams } from "react-router-dom";
 import {
+  addComment,
+  addEvidence,
+  setEvidences,
   setSelectedQuestion,
   useQuestionContext,
   useQuestionDispatch,
 } from "../context";
 import { LoadingButton } from "@mui/lab";
+import { useAuthContext } from "@/providers/auth-provider";
+import { capitalizeFirstChar } from "@/utils/helpers";
 
 enum EVIDENCE_TYPE {
   POSITIVE = "POSITIVE",
@@ -30,7 +35,7 @@ enum EVIDENCE_TYPE {
 type FormValues = {
   description: string;
   type: EVIDENCE_TYPE | null;
-  addAttachment: boolean;
+  autoOpenAttachment: boolean;
 };
 
 const LIMIT = 500;
@@ -45,13 +50,9 @@ function stripHtml(input?: string): string {
 const CreateForm = ({
   showTabs,
   submitLabel,
-  fetchQuery,
-  onOpenAttachments,
 }: {
   showTabs?: boolean;
   submitLabel?: string;
-  fetchQuery?: any;
-  onOpenAttachments?: () => void;
 }) => {
   const defaultType = showTabs ? EVIDENCE_TYPE.POSITIVE : null;
 
@@ -62,7 +63,9 @@ const CreateForm = ({
     service: (args, config) => service.evidence.create(args, config),
     runOnMount: false,
   });
-  const { selectedQuestion } = useQuestionContext();
+  const { selectedQuestion, evidences } = useQuestionContext();
+  const { userInfo } = useAuthContext();
+
   const dispatch = useQuestionDispatch();
 
   const [tab, setTab] = useState<EVIDENCE_TYPE | null>(defaultType);
@@ -72,7 +75,7 @@ const CreateForm = ({
     defaultValues: {
       description: "",
       type: defaultType,
-      addAttachment: false,
+      autoOpenAttachment: false,
     },
   });
 
@@ -107,9 +110,27 @@ const CreateForm = ({
         ...values,
       })
       .then((res) => {
+        const newEvidence = {
+          autoOpenAttachment: values.autoOpenAttachment,
+          description: values.description,
+          type: capitalizeFirstChar(values.type),
+          attachmentsCount: 0,
+          lastModificationTime: new Date().toISOString(),
+          id: res.id,
+          createdBy: {
+            id: userInfo.id,
+            displayName: userInfo.displayName,
+            pictureLink: userInfo.pictureLink,
+          },
+          editable: true,
+          deletable: true,
+        };
+        dispatch(
+          values.type ? addEvidence(newEvidence) : addComment(newEvidence),
+        );
         formMethods.reset();
+        formMethods.setValue("type", defaultType);
         setTab(EVIDENCE_TYPE.POSITIVE);
-        fetchQuery();
         dispatch(
           setSelectedQuestion({
             ...selectedQuestion,
@@ -119,10 +140,6 @@ const CreateForm = ({
             },
           }),
         );
-
-        if (values.addAttachment && onOpenAttachments) {
-          onOpenAttachments();
-        }
       });
   };
 
@@ -212,7 +229,7 @@ const CreateForm = ({
           }}
         >
           <Controller
-            name="addAttachment"
+            name="autoOpenAttachment"
             control={formMethods.control}
             render={({ field }) => (
               <FormControlLabel

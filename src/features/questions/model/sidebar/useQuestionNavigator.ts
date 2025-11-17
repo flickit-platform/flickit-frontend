@@ -1,6 +1,10 @@
 import { useMemo, useCallback, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { questionActions, useQuestionDispatch } from "../../context";
+import {
+  questionActions,
+  setSelectedQuestion,
+  useQuestionDispatch,
+} from "../../context";
 import type { IQuestionInfo } from "@/types";
 
 type Options = {
@@ -76,9 +80,7 @@ export function useQuestionNavigator(
   }, []);
 
   useEffect(() => {
-    dispatch(
-      questionActions.setSelectedQuestion(questions[Number(questionIndex) - 1]),
-    );
+    dispatch(setSelectedQuestion(questions[Number(questionIndex) - 1]));
   }, [questionIndex]);
 
   const goPrevious = useCallback(() => {

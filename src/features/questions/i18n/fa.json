@@ -15,6 +15,7 @@
   "dropOrSelectFile": "فایل خود را به اینجا بکشید یا انتخاب کنید",
   "displayIssues": "نمایش مسئله‌ها",
   "hideIssues": "پنهان کردن مسئله‌ها",
+  "limitSizeExceeded": "حجم هر فایل پیوست حداکثر ۵ مگابایت می‌تواند باشد.",
   "lowConfidence": "ضریب اطمینان کم",
   "negativeEvidence": "شاهد منفی",
   "noEvidence": "بدون شاهد",
@@ -36,5 +37,6 @@
   "quickAnswer": "پاسخگویی سریع",
   "submitReport": "ارسال گزارش",
   "whatIssuesLikeToReport": "چه مشکلاتی را می‌خواهید در ارتباط با این سوال گزارش کنید؟",
-  "unanswered": "بدون پاسخ"
+  "unanswered": "بدون پاسخ",
+  "unsupportedFileFormat": "پیوست‌ها باید فقط از نوع فایل‌های pdf, jpg, png, docx, pptx, rar, zip, excel باشند."
 }

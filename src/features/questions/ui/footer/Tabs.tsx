@@ -16,6 +16,7 @@ import { useTranslation } from "react-i18next";
 import useFetchData from "../../model/footer/useFetchData";
 import EvidenceContainer from "./Container";
 import CreateForm from "../CreateForm";
+import { useQuestionContext } from "../../context";
 
 type FooterTab = "evidences" | "comments" | "history";
 
@@ -37,16 +38,11 @@ const Tabs = (props: any) => {
   const { activeQuestion } = props;
   const { t } = useTranslation();
   const [selectedTab, setSelectedTab] = useState<FooterTab>("evidences");
-  const [attachmentTargetId, setAttachmentTargetId] = useState<number | null>(
-    null,
-  );
+  const { evidences, comments, answerHistory } = useQuestionContext();
 
   const {
     fetchByTab,
     loadMoreByTab,
-    evidences,
-    comments,
-    histories,
     evidencesState,
     commentsState,
     historyState,
@@ -72,7 +68,7 @@ const Tabs = (props: any) => {
         value: "history",
         label: t("questions_temp.answersHistory"),
         count: activeQuestion?.counts?.answerHistories ?? 0,
-        data: histories ?? [],
+        data: answerHistory ?? [],
         state: historyState,
       },
     ],
@@ -82,7 +78,7 @@ const Tabs = (props: any) => {
       activeQuestion?.counts?.answerHistories,
       evidences,
       comments,
-      histories,
+      answerHistory,
       evidencesState,
       commentsState,
       historyState,
@@ -150,13 +146,7 @@ const Tabs = (props: any) => {
       {configs.map((cfg) => (
         <TabPanel key={cfg.value} value={cfg.value} sx={{ px: 4, py: 2 }}>
           {cfg.value !== "history" && (
-            <CreateForm
-              showTabs={cfg.value === "evidences"}
-              fetchQuery={() => fetchByTab(selectedTab)}
-              onOpenAttachments={() => {
-                setAttachmentTargetId(0);
-              }}
-            />
+            <CreateForm showTabs={cfg.value === "evidences"} />
           )}
 
           <ListPanel
@@ -166,13 +156,7 @@ const Tabs = (props: any) => {
             renderItem={(item: any, index: number) => {
               return (
                 <>
-                  <EvidenceContainer
-                    key={item?.id}
-                    item={item}
-                    fetchByTab={() => fetchByTab(selectedTab)}
-                    autoOpenAttachments={attachmentTargetId === index}
-                    onAttachmentsFlowDone={() => setAttachmentTargetId(null)}
-                  />
+                  <EvidenceContainer key={item?.id} item={item} />
                 </>
               );
             }}

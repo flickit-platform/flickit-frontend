@@ -10,6 +10,9 @@ export interface IQuestionsContext {
   selectedQuestion: any;
   questionItems: any;
   filteredQuestions: any;
+  evidences: any[];
+  comments: any[];
+  answerHistory: any[];
 }
 
 export const QuestionsContext = createContext<IQuestionsContext>({
@@ -17,6 +20,9 @@ export const QuestionsContext = createContext<IQuestionsContext>({
   selectedQuestion: null,
   questionItems: [],
   filteredQuestions: null,
+  evidences: [],
+  comments: [],
+  answerHistory: [],
 });
 
 const QuestionsDispatchContext = createContext<any>({
@@ -27,8 +33,11 @@ export const Provider: FC<IQuestionsProviderProps> = ({ children }) => {
   const [state, dispatch] = useReducer(questionReducer, {
     questions: [],
     selectedQuestion: null,
-    tabData: [],
+    questionItems: [],
     filteredQuestions: null,
+    evidences: [],
+    comments: [],
+    answerHistory: [],
   });
 
   return (

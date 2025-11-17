@@ -59,6 +59,10 @@ export const useIntersectOnce = (targetId: string, onHit: () => void) => {
   }, [targetId, onHit]);
 };
 
+export const capitalizeFirstChar = (s?: string | null) =>
+  s ? s.charAt(0).toUpperCase() + s.slice(1).toLowerCase() : s;
+
+
 export const showExpertGroups = () =>
   flagsmith.hasFeature(FLAGS.display_expert_groups) || !flagsmith.initialised;
 

@@ -2,7 +2,13 @@ import { useEffect, useMemo, useRef, useState, useCallback } from "react";
 import { useQuery } from "@/hooks/useQuery";
 import { useServiceContext } from "@providers/service-provider";
 import { useParams } from "react-router-dom";
-import { useQuestionContext } from "@/features/questions/context";
+import {
+  setAnswerHistory,
+  setComments,
+  setEvidences,
+  useQuestionContext,
+  useQuestionDispatch,
+} from "@/features/questions/context";
 
 export type FooterTab = "evidences" | "comments" | "history";
 
@@ -46,18 +52,20 @@ const useFetchData = () => {
   const { service } = useServiceContext();
   const { assessmentId = "" } = useParams();
   const { selectedQuestion } = useQuestionContext();
+  const dispatch = useQuestionDispatch();
+
   const questionId = selectedQuestion?.id;
 
   const isLoadingRef = useRef(false);
   const debounceRef = useRef<NodeJS.Timeout | null>(null);
 
   // --- mutations / queries
-  const deleteEvidence = useQuery({
+  const deleteEvidenceQuery = useQuery({
     service: (args, config) => service.questions.evidences.remove(args, config),
     runOnMount: false,
   });
 
-  const addEvidence = useQuery({
+  const addEvidenceQuery = useQuery({
     service: (args, config) => service.questions.evidences.save(args, config),
     runOnMount: false,
   });
@@ -68,7 +76,6 @@ const useFetchData = () => {
     runOnMount: false,
   });
 
-  // 🔹 جدید: اضافه کردن پیوست برای شاهد
   const addEvidenceAttachments = useQuery({
     service: (args, config) =>
       service.questions.evidences.addAttachment(args, config),
@@ -146,80 +153,89 @@ const useFetchData = () => {
     resetAll();
   }, [questionId, assessmentId, resetAll]);
 
-  // --- generic fetch (first page)
-  const fetchByTab = useCallback(
-    async (tab: FooterTab) => {
+  // --- generic page fetcher (reset or append)
+  const fetchPageByTab = useCallback(
+    async (tab: FooterTab, options?: { append?: boolean }) => {
+      const append = options?.append ?? false;
+
       if (!questionId || !assessmentId) return;
+
       const q = queriesMap[tab];
       if (!q) return;
 
-      const args = { questionId, assessmentId, page: 1, size: PAGE_SIZE };
-      const r = await q.query(args);
-      const items = normalizeItems(r);
-      const total = getTotal(r);
-
-      setTabState(tab, () => ({
-        page: 1,
-        size: PAGE_SIZE,
-        items,
-        total,
-        hasMore:
-          total == null ? items.length === PAGE_SIZE : items.length < total,
-        loadingMore: false,
-        initialized: true,
-      }));
-
-      return r;
-    },
-    [questionId, assessmentId, queriesMap, setTabState],
-  );
-
-  // --- generic load more (append)
-  const loadMoreByTab = useCallback(
-    async (tab: FooterTab) => {
-      if (isLoadingRef.current) return;
-
-      const q = queriesMap[tab];
       const current = stateMap[tab];
-      if (!q || !current.hasMore || current.loadingMore) return;
 
-      isLoadingRef.current = true;
-      setTabState(tab, (s) => ({ ...s, loadingMore: true }));
+      if (append) {
+        if (isLoadingRef.current) return;
+        if (!current.hasMore || current.loadingMore) return;
+
+        isLoadingRef.current = true;
+        setTabState(tab, (s) => ({ ...s, loadingMore: true }));
+      }
 
       try {
-        const nextPage = current.page + 1;
+        const nextPage = append ? current.page + 1 : 1;
+        const pageSize = append ? current.size : PAGE_SIZE;
+
         const r = await q.query({
           questionId,
           assessmentId,
           page: nextPage,
-          size: current.size,
+          size: pageSize,
         });
 
         const newItems = normalizeItems(r);
         const total = getTotal(r) ?? current.total;
-        const totalCount = current.items.length + newItems.length;
+
+        const mergedItems = append ? [...current.items, ...newItems] : newItems;
+
+        const totalCount = mergedItems.length;
         const hasMore =
-          total == null ? newItems.length === current.size : totalCount < total;
+          total == null ? newItems.length === pageSize : totalCount < total;
 
         setTabState(tab, (s) => ({
           ...s,
           page: nextPage,
-          items: [...s.items, ...newItems],
+          size: pageSize,
+          items: mergedItems,
           total,
           hasMore,
           loadingMore: false,
           initialized: true,
         }));
 
+        if (tab === "evidences") {
+          dispatch(setEvidences(mergedItems));
+        } else if (tab === "comments") {
+          dispatch(setComments(mergedItems));
+        } else if (tab === "history") {
+          dispatch(setAnswerHistory(mergedItems));
+        }
+
         return r;
       } catch (e) {
-        setTabState(tab, (s) => ({ ...s, loadingMore: false }));
+        if (append) {
+          setTabState(tab, (s) => ({ ...s, loadingMore: false }));
+        }
         throw e;
       } finally {
-        isLoadingRef.current = false;
+        if (append) {
+          isLoadingRef.current = false;
+        }
       }
     },
-    [assessmentId, questionId, queriesMap, stateMap, setTabState],
+    [assessmentId, questionId, queriesMap, stateMap, setTabState, dispatch],
+  );
+
+  // --- public APIs
+  const fetchByTab = useCallback(
+    (tab: FooterTab) => fetchPageByTab(tab, { append: false }),
+    [fetchPageByTab],
+  );
+
+  const loadMoreByTab = useCallback(
+    (tab: FooterTab) => fetchPageByTab(tab, { append: true }),
+    [fetchPageByTab],
   );
 
   const debouncedLoadMore = useCallback(
@@ -244,10 +260,10 @@ const useFetchData = () => {
 
   return {
     // mutations
-    deleteEvidence,
+    deleteEvidenceQuery,
     removeEvidenceAttachments,
-    addEvidence,
-    addEvidenceAttachments, // 👈 اینو اضافه کردیم
+    addEvidenceQuery,
+    addEvidenceAttachments,
     resolveComment,
 
     // infinite data

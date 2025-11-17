@@ -1,4 +1,4 @@
-import { questionActions, useQuestionDispatch } from "../../context";
+import { questionActions, setFilteredQuestions, setSelectedQuestion, useQuestionDispatch } from "../../context";
 import type { IQuestionInfo, TId } from "@/types";
 import { SidebarData } from "../../types";
 import { useEffect, useMemo } from "react";
@@ -68,7 +68,7 @@ export function useSidebarData({
   }, [filteredQuestions, questions, activeQuestion?.id, selectedIndex]);
 
   useEffect(() => {
-    dispatch(questionActions.setFilteredQuestions(filteredQuestionsList));
+    dispatch(setFilteredQuestions(filteredQuestionsList));
 
     if (activeFilters.size > 0) {
       const index = filteredQuestions.findIndex(
@@ -76,7 +76,7 @@ export function useSidebarData({
       );
       if (filteredQuestions.length > 0 && index === -1) {
         navigation.selectAt(filteredQuestions[0].index - 1);
-        dispatch(questionActions.setSelectedQuestion(filteredQuestions[0]));
+        dispatch(setSelectedQuestion(filteredQuestions[0]));
       }
     }
   }, [filteredQuestions]);

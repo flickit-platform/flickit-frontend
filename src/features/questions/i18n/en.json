@@ -16,6 +16,7 @@
   "displayIssues": "Display issues",
   "dropOrSelectFile": "Drop or select file",
   "hideIssues": "Hide issues",
+  "limitSizeExceeded": "File size exceeds the limit. Maximum allowed size is 5 MB per file.",
   "lowConfidence": "Low confidence",
   "negativeEvidence": "Negative evidence",
   "noEvidence": "No evidence",
@@ -37,5 +38,6 @@
   "reportQuestion": "Report question",
   "reportSentSuccessfully": "The report has been sent successfully.",
   "whatIssuesLikeToReport": "What issues would you like to report about this question?",
-  "unanswered": "Unanswered"
+  "unanswered": "Unanswered",
+  "unsupportedFileFormat": "Allowed file types: PDF, JPG, PNG, DOCX, PPTX, RAR, ZIP, Excel files."
 }

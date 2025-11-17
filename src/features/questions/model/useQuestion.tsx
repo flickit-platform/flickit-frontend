@@ -1,6 +1,6 @@
 import { useServiceContext } from "@/providers/service-provider";
 import { useEffect } from "react";
-import { questionActions, useQuestionDispatch } from "../context";
+import { questionActions, setQuestions, useQuestionDispatch } from "../context";
 import { useParams } from "react-router-dom";
 import { IQuestionsModel } from "@/types";
 import { useQuery } from "@/hooks/useQuery";
@@ -42,7 +42,7 @@ export const useQuestions = () => {
       .then((response) => {
         if (response) {
           const { items = [] } = response;
-          dispatch(questionActions.setQuestions(items));
+          dispatch(setQuestions(items));
         }
       })
       .catch((e) => {
