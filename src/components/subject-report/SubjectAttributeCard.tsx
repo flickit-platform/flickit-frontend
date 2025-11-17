@@ -33,11 +33,7 @@ import { useTheme } from "@mui/material";
 import Title from "@common/Title";
 import { Text } from "../common/Text";
 import { getSemanticColors } from "@/config/colors";
-import {
-  setQuestions,
-  useQuestionContext,
-  useQuestionDispatch,
-} from "@/features/questions/context";
+import { setQuestions, useQuestionDispatch } from "@/features/questions/context";
 
 const SubjectAttributeCard = (props: any) => {
   const {

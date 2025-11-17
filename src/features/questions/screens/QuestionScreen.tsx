@@ -1,9 +1,7 @@
 import useDocumentTitle from "@/hooks/useDocumentTitle";
-import { Box, Tabs } from "@mui/material";
+import { Box } from "@mui/material";
 import { useAssessmentMode } from "@/hooks/useAssessmentMode";
 import FooterTabs from "@/features/questions/ui/footer/Tabs";
-import useDialog from "@/hooks/useDialog";
-import ReportDialog from "@/features/questions/ui/ReportDialog";
 import Body from "../ui/Body";
 
 const QuestionScreen = () => {

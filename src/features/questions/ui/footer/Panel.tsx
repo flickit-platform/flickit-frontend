@@ -403,9 +403,9 @@ const Detail: React.FC<{
                 </Text>
                 <Rating
                   value={
-                    item?.answer?.confidenceLevel?.id !== null
-                      ? (item?.answer?.confidenceLevel?.id as number)
-                      : null
+                    item?.answer?.confidenceLevel?.id === null
+                      ? null
+                      : (item?.answer?.confidenceLevel?.id as number)
                   }
                   readOnly
                   size="medium"
