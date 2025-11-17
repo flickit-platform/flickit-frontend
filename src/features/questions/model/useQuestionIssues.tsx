@@ -1,4 +1,3 @@
-import { useCallback } from "react";
 import { useServiceContext } from "@/providers/service-provider";
 import { useQuery } from "@/hooks/useQuery";
 import {
