@@ -157,29 +157,7 @@ const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
             </AlertTitle>
           </AlertBox>
         )}
-        <Box width="100%">
-          {open && (
-            <Tabs readonly />
-            // <QuestionTabsTemplate
-            //   value={value}
-            //   setValue={setValue}
-            //   questionsInfo={{
-            //     ...questionsInfo,
-            //     permissions: {
-            //       addEvidence: false,
-            //       viewAnswerHistory: true,
-            //       viewEvidenceList: true,
-            //       readonly: true,
-            //     },
-            //   }}
-            //   questionInfo={{
-            //     ...questionInfo?.question,
-            //     questionId: questionInfo?.question?.id,
-            //   }}
-            //   position={position}
-            // />
-          )}
-        </Box>
+        <Box width="100%">{open && <Tabs readonly />}</Box>
       </Box>
     );
   };
