@@ -11,6 +11,7 @@ import { useServiceContext } from "@/providers/service-provider";
 import { useQuery } from "@/hooks/useQuery";
 import { IQuestionsModel } from "@/types";
 import { useAuthContext } from "@/providers/auth-provider";
+import { useUpdateQuestionIssues } from "./useQuestionIssues";
 
 type OptionLike =
   | { id?: string | number; title?: string; index?: number }
@@ -23,6 +24,7 @@ export function useAnswerSubmit() {
   const { selectedQuestion, questions = [] } = useQuestionContext();
   const dispatch = useQuestionDispatch();
   const { userInfo } = useAuthContext();
+  const { updateQuestionIssues } = useUpdateQuestionIssues();
 
   const submitAnswer = useQuery({
     service: (args, config) => service.assessments.answer.submit(args, config),
@@ -77,7 +79,7 @@ export function useAnswerSubmit() {
       };
 
       const res = await submitAnswer.query(payload);
-      const issueRes = await fetchQuestionIssues.query();
+      // const issueRes = await fetchQuestionIssues.query();
       const server = res?.data;
       const serverQuestion = server?.question ?? server?.result ?? server;
       const serverAnswer = serverQuestion?.answer;
@@ -112,16 +114,12 @@ export function useAnswerSubmit() {
         updatedItem = {
           ...q,
           answer: { ...(q.answer ?? null), ...nextAnswer },
-          issues: {
-            ...issueRes,
-          },
           counts: {
             ...q.counts,
             ...serverQuestion?.counts,
             answerHistories: q.counts.answerHistories + 1,
           },
         };
-
         return updatedItem;
       });
       const newAnswerHistory = {
@@ -143,6 +141,8 @@ export function useAnswerSubmit() {
       dispatch(setSelectedQuestion(updatedItem));
       dispatch(setQuestions(nextQuestions));
 
+      updateQuestionIssues(updatedItem);
+
       return res;
     },
     [
@@ -159,31 +159,8 @@ export function useAnswerSubmit() {
     if (!selectedQuestion?.id) return;
 
     const res = await approveAnswerQuery.query();
-    const issueRes = await fetchQuestionIssues.query();
+    updateQuestionIssues(selectedQuestion);
 
-    const nextQuestions = questions.map((q: any) => {
-      if (q?.id !== selectedQuestion?.id) return q;
-
-      const updatedItem = {
-        ...q,
-        issues: {
-          ...issueRes,
-        },
-      };
-
-      return updatedItem;
-    });
-
-    dispatch(
-      setSelectedQuestion({
-        ...selectedQuestion,
-        issues: {
-          ...issueRes,
-        },
-      }),
-    );
-
-    dispatch(setQuestions(nextQuestions));
     return res;
   }, [assessmentId, questionnaireId, selectedQuestion?.id]);
   return {

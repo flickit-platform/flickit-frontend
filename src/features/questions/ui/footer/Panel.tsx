@@ -43,6 +43,7 @@ import {
   RadioButtonUncheckedRounded,
 } from "@mui/icons-material";
 import languageDetector from "@/utils/language-detector";
+import { useUpdateQuestionIssues } from "../../model/useQuestionIssues";
 
 type Variant = "history" | "evidences" | "comments";
 
@@ -80,6 +81,7 @@ const Panel: React.FC<{
     description: item?.description ?? "",
     type: (item?.type as Polarity) ?? "",
   });
+  const { updateQuestionIssues } = useUpdateQuestionIssues();
 
   const deleteDialog = useDialog();
 
@@ -154,18 +156,20 @@ const Panel: React.FC<{
             ? deleteEvidence({ id: item.id })
             : deleteComment({ id: item.id }),
         );
+        const updatedQuestion = {
+          ...selectedQuestion,
+          counts: {
+            ...selectedQuestion.counts,
+            [variant]: selectedQuestion.counts[variant] - 1,
+          },
+        };
+        dispatch(setSelectedQuestion(updatedQuestion));
+        setTimeout(() => {
+          updateQuestionIssues(updatedQuestion);
+        }, 400);
       })
       .finally(() => {
         deleteDialog.onClose();
-        dispatch(
-          setSelectedQuestion({
-            ...selectedQuestion,
-            counts: {
-              ...selectedQuestion.counts,
-              [variant]: selectedQuestion.counts[variant] - 1,
-            },
-          }),
-        );
       });
   };
 
@@ -174,18 +178,20 @@ const Panel: React.FC<{
       .query({ id: item.id })
       .then(() => {
         dispatch(deleteComment({ id: item.id }));
+        const updatedQuestion = {
+          ...selectedQuestion,
+          counts: {
+            ...selectedQuestion.counts,
+            [variant]: selectedQuestion.counts[variant] - 1,
+          },
+        };
+        dispatch(setSelectedQuestion(updatedQuestion));
+        setTimeout(() => {
+          updateQuestionIssues(updatedQuestion);
+        }, 400);
       })
       .finally(() => {
         deleteDialog.onClose();
-        dispatch(
-          setSelectedQuestion({
-            ...selectedQuestion,
-            counts: {
-              ...selectedQuestion.counts,
-              [variant]: selectedQuestion.counts[variant] - 1,
-            },
-          }),
-        );
       });
   };
 

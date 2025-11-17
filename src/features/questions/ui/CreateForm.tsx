@@ -1,5 +1,4 @@
-import { useState, useMemo, useEffect } from "react";
-import { Controller, useForm } from "react-hook-form";
+import { Controller } from "react-hook-form";
 import {
   Box,
   Theme,
@@ -12,129 +11,29 @@ import { useTranslation } from "react-i18next";
 import FormProviderWithForm from "@/components/common/FormProviderWithForm";
 import RichEditorField from "@/components/common/fields/RichEditorField";
 import { Text } from "@/components/common/Text";
-import { useServiceContext } from "@/providers/service-provider";
-import { useQuery } from "@/hooks/useQuery";
-import { useParams } from "react-router-dom";
-import {
-  addComment,
-  addEvidence,
-  setSelectedQuestion,
-  useQuestionContext,
-  useQuestionDispatch,
-} from "../context";
 import { LoadingButton } from "@mui/lab";
-import { useAuthContext } from "@/providers/auth-provider";
-import { capitalizeFirstChar } from "@/utils/helpers";
+import { useCreateEvidenceForm } from "../model/useCreateEvidenceForm";
 
 enum EVIDENCE_TYPE {
   POSITIVE = "POSITIVE",
   NEGATIVE = "NEGATIVE",
 }
 
-type FormValues = {
-  description: string;
-  type: EVIDENCE_TYPE | null;
-  autoOpenAttachment: boolean;
-};
 
-const LIMIT = 500;
+type CreateFormViewProps = UseCreateEvidenceFormResult;
 
-function stripHtml(input?: string): string {
-  if (!input) return "";
-  const parser = new DOMParser();
-  const doc = parser.parseFromString(input, "text/html");
-  return doc.body.textContent?.replaceAll(/\u00A0/g, " ").trim() ?? "";
-}
-
-const CreateForm = ({ showTabs }: { showTabs?: boolean }) => {
-  const defaultType = showTabs ? EVIDENCE_TYPE.POSITIVE : null;
-
+const CreateFormView = ({
+  showTabs,
+  tab,
+  onTabChange,
+  formMethods,
+  charCount,
+  limit,
+  disabled,
+  loading,
+  onSubmit,
+}: CreateFormViewProps) => {
   const { t } = useTranslation();
-  const { service } = useServiceContext();
-  const { assessmentId } = useParams();
-  const createEvidence = useQuery({
-    service: (args, config) => service.evidence.create(args, config),
-    runOnMount: false,
-  });
-  const { selectedQuestion } = useQuestionContext();
-  const { userInfo } = useAuthContext();
-
-  const dispatch = useQuestionDispatch();
-
-  const [tab, setTab] = useState<EVIDENCE_TYPE | null>(defaultType);
-
-  const formMethods = useForm<FormValues>({
-    shouldUnregister: true,
-    defaultValues: {
-      description: "",
-      type: defaultType,
-      autoOpenAttachment: false,
-    },
-  });
-
-  const { setValue, handleSubmit, watch } = formMethods;
-
-  useEffect(() => {
-    setValue("type", tab, { shouldDirty: true });
-  }, [tab, setValue]);
-
-  const handleTabChange = (
-    _: React.SyntheticEvent,
-    newValue: EVIDENCE_TYPE,
-  ) => {
-    setTab(newValue);
-  };
-
-  const descriptionHtml = watch("description");
-  const descriptionText = useMemo(
-    () => stripHtml(descriptionHtml),
-    [descriptionHtml],
-  );
-  const charCount = descriptionText.length;
-
-  const disabled = charCount === 0 || charCount > LIMIT;
-
-  const onSubmit = (values: FormValues) => {
-    const variant = values.type !== null ? "evidences" : "comments";
-    createEvidence
-      .query({
-        questionId: selectedQuestion.id,
-        assessmentId,
-        ...values,
-      })
-      .then((res) => {
-        const newEvidence = {
-          autoOpenAttachment: values.autoOpenAttachment,
-          description: values.description,
-          type: capitalizeFirstChar(values.type),
-          attachmentsCount: 0,
-          lastModificationTime: new Date().toISOString(),
-          id: res.id,
-          createdBy: {
-            id: userInfo.id,
-            displayName: userInfo.displayName,
-            pictureLink: userInfo.pictureLink,
-          },
-          editable: true,
-          deletable: true,
-        };
-        dispatch(
-          values.type ? addEvidence(newEvidence) : addComment(newEvidence),
-        );
-        formMethods.reset();
-        formMethods.setValue("type", defaultType);
-        setTab(EVIDENCE_TYPE.POSITIVE);
-        dispatch(
-          setSelectedQuestion({
-            ...selectedQuestion,
-            counts: {
-              ...selectedQuestion.counts,
-              [variant]: selectedQuestion.counts[variant] + 1,
-            },
-          }),
-        );
-      });
-  };
 
   return (
     <Box width="100%">
@@ -143,7 +42,7 @@ const CreateForm = ({ showTabs }: { showTabs?: boolean }) => {
         {showTabs && (
           <Tabs
             value={tab}
-            onChange={handleTabChange}
+            onChange={onTabChange}
             aria-label="evidence tabs"
             variant="fullWidth"
             sx={{
@@ -207,6 +106,7 @@ const CreateForm = ({ showTabs }: { showTabs?: boolean }) => {
           />
         </Box>
 
+        {/* footer: checkbox + counter */}
         <Box
           sx={{
             display: "flex",
@@ -245,9 +145,9 @@ const CreateForm = ({ showTabs }: { showTabs?: boolean }) => {
 
           <Text
             variant="bodySmall"
-            color={charCount > LIMIT ? "error.main" : "background.onVariant"}
+            color={charCount > limit ? "error.main" : "background.onVariant"}
           >
-            {charCount ?? 0} / {LIMIT}
+            {charCount ?? 0} / {limit}
           </Text>
         </Box>
 
@@ -259,8 +159,8 @@ const CreateForm = ({ showTabs }: { showTabs?: boolean }) => {
             color="primary"
             size="small"
             disabled={disabled}
-            onClick={handleSubmit(onSubmit)}
-            loading={createEvidence.loading}
+            onClick={onSubmit}
+            loading={loading}
           >
             {showTabs
               ? t("questions_temp.createEvidence")
@@ -272,4 +172,11 @@ const CreateForm = ({ showTabs }: { showTabs?: boolean }) => {
   );
 };
 
+
+const CreateForm = ({ showTabs }: { showTabs?: boolean }) => {
+  const logic = useCreateEvidenceForm({ showTabs });
+  return <CreateFormView {...logic} />;
+};
+
 export default CreateForm;
+export { EVIDENCE_TYPE, CreateFormView };
