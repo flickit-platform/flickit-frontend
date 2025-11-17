@@ -184,7 +184,15 @@ export const Attachments: React.FC<{
   attachmentsCount: number;
   startAddMode?: boolean;
   onCloseAddMode?: (noAttachments: boolean) => void;
-}> = ({ id, attachmentsCount, startAddMode, onCloseAddMode, type }) => {
+  readonly?: boolean;
+}> = ({
+  id,
+  attachmentsCount,
+  startAddMode,
+  onCloseAddMode,
+  type,
+  readonly,
+}) => {
   const dispatch = useQuestionDispatch();
   const [expanded, setExpanded] = useState<boolean>(!!startAddMode);
   const [attachments, setAttachments] = useState<Attachment[]>([]);
@@ -450,19 +458,21 @@ export const Attachments: React.FC<{
                         sx={{ color: "info.main", fontSize: "24px" }}
                       />
                     </IconButton>
-                    <IconButton
-                      sx={{ p: 0.4 }}
-                      onClick={() =>
-                        dialogProps.openDialog({
-                          type: "delete",
-                          data: { id: attachmentId },
-                        })
-                      }
-                    >
-                      <DeleteOutlineOutlinedIcon
-                        sx={{ color: "info.main", fontSize: "24px" }}
-                      />
-                    </IconButton>
+                    {!readonly && (
+                      <IconButton
+                        sx={{ p: 0.4 }}
+                        onClick={() =>
+                          dialogProps.openDialog({
+                            type: "delete",
+                            data: { id: attachmentId },
+                          })
+                        }
+                      >
+                        <DeleteOutlineOutlinedIcon
+                          sx={{ color: "info.main", fontSize: "24px" }}
+                        />
+                      </IconButton>
+                    )}
                   </Box>
                 </Box>
                 {!isLast && (
@@ -479,40 +489,43 @@ export const Attachments: React.FC<{
             );
           })}
 
-          {attachments.length > 0 && !isAdding && !attachmentsLimitReached && (
-            <Box
-              sx={{
-                mt: 2,
-                display: "flex",
-                justifyContent: "center",
-              }}
-            >
-              <Button
-                variant="text"
-                size="small"
+          {attachments.length > 0 &&
+            !isAdding &&
+            !attachmentsLimitReached &&
+            !readonly && (
+              <Box
                 sx={{
-                  px: 0,
+                  mt: 2,
                   display: "flex",
-                  alignItems: "center",
                   justifyContent: "center",
-                  gap: 0.5,
                 }}
-                onClick={() => {
-                  setIsAdding(true);
-                }}
-                startIcon={
-                  <Box
-                    component="img"
-                    src={AttachementPlus}
-                    alt="empty state"
-                    sx={{ width: "100%", maxWidth: 80 }}
-                  />
-                }
               >
-                {t("questions_temp.addAttachment")}
-              </Button>
-            </Box>
-          )}
+                <Button
+                  variant="text"
+                  size="small"
+                  sx={{
+                    px: 0,
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    gap: 0.5,
+                  }}
+                  onClick={() => {
+                    setIsAdding(true);
+                  }}
+                  startIcon={
+                    <Box
+                      component="img"
+                      src={AttachementPlus}
+                      alt="empty state"
+                      sx={{ width: "100%", maxWidth: 80 }}
+                    />
+                  }
+                >
+                  {t("questions_temp.addAttachment")}
+                </Button>
+              </Box>
+            )}
 
           {isAdding && !attachmentsLimitReached && (
             <Box

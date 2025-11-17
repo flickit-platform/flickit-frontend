@@ -20,7 +20,7 @@ export enum QUESTION_ACTIONS_TYPE {
   SET_ANSWER_HISTORY = "SET_ANSWER_HISTORY",
   ADD_ANSWER_HISTORY = "ADD_ANSWER_HISTORY",
 }
-export const setQuestions = function (payload: any) {
+export const setQuestions = function (payload: any[]) {
   return { payload, type: QUESTION_ACTIONS_TYPE.SET_QUESTIONS };
 };
 

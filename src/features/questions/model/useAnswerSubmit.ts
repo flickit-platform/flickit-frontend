@@ -139,7 +139,6 @@ export function useAnswerSubmit() {
         },
         creationTime: new Date().toISOString(),
       };
-      console.log(newAnswerHistory);
       dispatch(addAnswerHistory(newAnswerHistory));
       dispatch(setSelectedQuestion(updatedItem));
       dispatch(setQuestions(nextQuestions));

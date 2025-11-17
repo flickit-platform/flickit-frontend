@@ -18,6 +18,8 @@ import NavigationButtons from "@/components/common/buttons/NavigationButtons";
 import { useTheme } from "@mui/material";
 import { CircleRating } from "../CircleRating";
 import { Text } from "@/components/common/Text";
+import Tabs from "@/features/questions/ui/footer/Tabs";
+import { useQuestionContext } from "@/features/questions/context";
 
 interface IQuestionDetailsDialogDialogProps extends DialogProps {
   onClose: () => void;
@@ -35,20 +37,18 @@ const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
     open,
     ...rest
   } = props;
-  const { questionInfo = {}, questionsInfo, index } = context;
-
-  const [value, setValue] = useState("");
+  const { selectedQuestion, questions } = useQuestionContext();
 
   const renderQuestionDetails = () => (
     <Box sx={{ ...styles.centerCV, gap: 2 }}>
       <Chip
         data-testid={"question-detail-questionnaire-title"}
-        label={questionInfo?.questionnaire?.title}
+        label={selectedQuestion?.questionnaire?.title}
         sx={{
           backgroundColor: generateColorFromString(
-            questionInfo?.questionnaire?.title,
+            selectedQuestion?.questionnaire?.title,
           ).backgroundColor,
-          color: generateColorFromString(questionInfo?.questionnaire?.title)
+          color: generateColorFromString(selectedQuestion?.questionnaire?.title)
             .color,
           marginInlineEnd: "auto",
         }}
@@ -57,18 +57,18 @@ const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
         variant="semiBoldXLarge"
         color="text.primary"
         sx={{
-          textAlign: languageDetector(questionInfo?.question?.title ?? "")
+          textAlign: languageDetector(selectedQuestion?.question?.title ?? "")
             ? "right"
             : "left",
           ...styles.rtlStyle(
-            languageDetector(questionInfo?.question?.title ?? ""),
+            languageDetector(selectedQuestion?.question?.title ?? ""),
           ),
         }}
         data-testid={"question-detail-title"}
       >
-        {questionInfo?.question?.title}
+        {selectedQuestion?.question?.title}
       </Text>
-      {questionInfo?.question?.hint && (
+      {selectedQuestion?.question?.hint && (
         <Box
           sx={{
             ...styles.centerVH,
@@ -84,16 +84,13 @@ const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
           >
             <Trans i18nKey="common.hint" />:
           </Text>
-          <Text variant="bodyMedium">
-            {questionInfo?.question?.hint}
-          </Text>
+          <Text variant="bodyMedium">{selectedQuestion?.question?.hint}</Text>
         </Box>
       )}
     </Box>
   );
 
-  const renderAnswerDetails = (props: any) => {
-    const { position } = props;
+  const renderAnswerDetails = () => {
     return (
       <Box
         flex={1}
@@ -103,7 +100,7 @@ const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
         <Text variant="semiBoldMedium" color="background.onVariant">
           <Trans i18nKey="questions.selectedOption" />:
         </Text>
-        {questionInfo?.answer?.index ? (
+        {selectedQuestion?.answer?.index ? (
           <>
             <Box
               sx={{
@@ -116,20 +113,20 @@ const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
                 variant="bodyMedium"
                 sx={{
                   ...styles.rtlStyle(
-                    languageDetector(questionInfo?.answer?.title),
+                    languageDetector(selectedQuestion?.answer?.title),
                   ),
                 }}
               >
-                {questionInfo?.answer?.index +
+                {selectedQuestion?.answer?.index +
                   ". " +
-                  questionInfo?.answer?.title}
+                  selectedQuestion?.answer?.title}
               </Text>
             </Box>
             <Box sx={{ ...styles.centerVH, alignSelf: "flex-end", gap: 1 }}>
               <Text>
                 <Trans i18nKey="common.yourConfidence" />
               </Text>
-              <CircleRating value={questionInfo?.answer?.confidenceLevel} />
+              <CircleRating value={selectedQuestion?.answer?.confidenceLevel} />
             </Box>
           </>
         ) : (
@@ -149,7 +146,7 @@ const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
                 color="error"
                 component={Link}
                 target="_blank"
-                to={`./../questionnaires/${questionInfo?.questionnaire?.id}/${questionInfo?.question?.index}`}
+                to={`./../questionnaires/${selectedQuestion?.questionnaire?.id}/${selectedQuestion?.question?.index}`}
               >
                 <Trans i18nKey="subject.answerNow" />
               </Button>
@@ -160,27 +157,29 @@ const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
             </AlertTitle>
           </AlertBox>
         )}
-
-        {open && (
-          <QuestionTabsTemplate
-            value={value}
-            setValue={setValue}
-            questionsInfo={{
-              ...questionsInfo,
-              permissions: {
-                addEvidence: false,
-                viewAnswerHistory: true,
-                viewEvidenceList: true,
-                readonly: true,
-              },
-            }}
-            questionInfo={{
-              ...questionInfo?.question,
-              questionId: questionInfo?.question?.id,
-            }}
-            position={position}
-          />
-        )}
+        <Box width="100%">
+          {open && (
+            <Tabs readonly />
+            // <QuestionTabsTemplate
+            //   value={value}
+            //   setValue={setValue}
+            //   questionsInfo={{
+            //     ...questionsInfo,
+            //     permissions: {
+            //       addEvidence: false,
+            //       viewAnswerHistory: true,
+            //       viewEvidenceList: true,
+            //       readonly: true,
+            //     },
+            //   }}
+            //   questionInfo={{
+            //     ...questionInfo?.question,
+            //     questionId: questionInfo?.question?.id,
+            //   }}
+            //   position={position}
+            // />
+          )}
+        </Box>
       </Box>
     );
   };
@@ -198,15 +197,27 @@ const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
         <NavigationButtons
           onPrevious={onPreviousQuestion}
           onNext={onNextQuestion}
-          isPreviousDisabled={index - 1 < 0}
-          isNextDisabled={index + 2 > questionsInfo?.length}
+          isPreviousDisabled={
+            questions?.findIndex(
+              (x: any) => x.question.id === selectedQuestion?.question?.id,
+            ) -
+              1 <
+            0
+          }
+          isNextDisabled={
+            questions?.findIndex(
+              (x: any) => x.question.id === selectedQuestion?.question?.id,
+            ) +
+              2 >
+            questions?.length
+          }
           direction={theme.direction}
           previousTextKey="questions.previousQuestion"
           nextTextKey="questions.nextQuestion"
         />
         {renderQuestionDetails()}
         <Divider sx={{ width: "100%", my: 2 }} />
-        {renderAnswerDetails({ position: "dialog" })}
+        {renderAnswerDetails()}
       </Box>
       <CEDialogActions
         type="close"
@@ -219,7 +230,7 @@ const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
           variant="outlined"
           color="primary"
           component={Link}
-          to={`./../questionnaires/${questionInfo?.questionnaire?.id}/${questionInfo?.question?.index}`}
+          to={`./../questionnaires/${selectedQuestion?.questionnaire?.id}/${selectedQuestion?.question?.index}`}
           startIcon={<QuestionAnswer />}
           target="_blank"
         >

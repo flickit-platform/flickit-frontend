@@ -66,7 +66,8 @@ const getVariant = (item: any): Variant => {
 
 const Container: React.FC<{
   item: any;
-}> = ({ item }) => {
+  readonly?: boolean;
+}> = ({ item, readonly }) => {
   const dispatch = useQuestionDispatch();
   const { selectedQuestion } = useQuestionContext();
   const variant = getVariant(item);
@@ -236,7 +237,7 @@ const Container: React.FC<{
         isEditing={isEditing}
         currentType={draft.type}
       >
-        {variant !== "history" && <>{headerActions}</>}
+        {variant !== "history" && !readonly && <>{headerActions}</>}
       </Header>
 
       <Detail
@@ -246,6 +247,7 @@ const Container: React.FC<{
         draft={draft}
         setDraft={setDraft}
         formMethods={formMethods}
+        readonly={readonly}
       />
 
       {variant !== "history" && (
@@ -346,7 +348,8 @@ const Detail: React.FC<{
     React.SetStateAction<{ description: string; type?: Polarity }>
   >;
   formMethods: ReturnType<typeof useForm>;
-}> = ({ item, variant, isEditing, draft, setDraft, formMethods }) => {
+  readonly?: boolean;
+}> = ({ item, variant, isEditing, draft, setDraft, formMethods, readonly }) => {
   const { id, description, attachmentsCount } = item;
   const totalAttachments = attachmentsCount ?? 0;
   const dispatch = useQuestionDispatch();
@@ -521,6 +524,7 @@ const Detail: React.FC<{
           type={item.type}
           attachmentsCount={attachmentsCount}
           startAddMode={startAddMode}
+          readonly={readonly}
           onCloseAddMode={(noAttachments: boolean) => {
             setStartAddMode(false);
             dispatch(
@@ -531,31 +535,33 @@ const Detail: React.FC<{
           }}
         />
       ) : (
-        <Button
-          variant="text"
-          size="small"
-          sx={{
-            px: 0,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            gap: 0.5,
-          }}
-          onClick={() => {
-            setShowAttachments(true);
-            setStartAddMode(true);
-          }}
-          startIcon={
-            <Box
-              component="img"
-              src={AttachementPlus}
-              alt="empty state"
-              sx={{ width: "100%", maxWidth: 80 }}
-            />
-          }
-        >
-          {t("questions_temp.addAttachment")}
-        </Button>
+        !readonly && (
+          <Button
+            variant="text"
+            size="small"
+            sx={{
+              px: 0,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              gap: 0.5,
+            }}
+            onClick={() => {
+              setShowAttachments(true);
+              setStartAddMode(true);
+            }}
+            startIcon={
+              <Box
+                component="img"
+                src={AttachementPlus}
+                alt="empty state"
+                sx={{ width: "100%", maxWidth: 80 }}
+              />
+            }
+          >
+            {t("questions_temp.addAttachment")}
+          </Button>
+        )
       )}
     </Box>
   );

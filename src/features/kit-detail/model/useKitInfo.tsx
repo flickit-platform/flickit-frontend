@@ -185,7 +185,6 @@ export function useKitInfo(
           {
             position: "end",
             render: (show: boolean) => {
-              console.log(show);
               return (
                 show && (
                   <Box ml={1}>

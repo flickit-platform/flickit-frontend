@@ -26,6 +26,12 @@ import usePopover from "@/hooks/usePopover";
 import { styles } from "@styles";
 import { CircleRating } from "./CircleRating";
 import { Text } from "../common/Text";
+import {
+  setQuestions,
+  setSelectedQuestion,
+  useQuestionContext,
+  useQuestionDispatch,
+} from "@/features/questions/context";
 
 interface Item {
   questionnaire: { id: string; title: string };
@@ -126,7 +132,7 @@ const columns: TableColumn[] = [
 ];
 
 const MaturityLevelTable = ({
-  tempData,
+  data,
   updateSortOrder,
   scoreState,
   setPage,
@@ -138,7 +144,7 @@ const MaturityLevelTable = ({
   sortOrder,
   setSortOrder,
 }: {
-  tempData: any;
+  data: any;
   updateSortOrder: any;
   scoreState: any;
   setPage: any;
@@ -151,7 +157,8 @@ const MaturityLevelTable = ({
   setSortOrder: any;
 }) => {
   const theme = useTheme();
-
+  const { questions } = useQuestionContext();
+  const dispatch = useQuestionDispatch();
   const { gainedScore, maxPossibleScore, questionsCount } = scoreState;
   const [selectedQuestionIndex, setSelectedQuestionIndex] = useState<
     number | null
@@ -163,40 +170,26 @@ const MaturityLevelTable = ({
 
   const handleQuestionClick = (index: number) => {
     setSelectedQuestionIndex(index);
-    dialogProps.openDialog({
-      type: "details",
-      questionInfo: tempData.items[index],
-      questionsInfo: tempData.items,
-      index: index,
-    });
+    dispatch(setSelectedQuestion({ ...questions[index], readonly: true }));
+    dialogProps.openDialog({});
   };
 
   const navigateToPreviousQuestion = () => {
     if (selectedQuestionIndex !== null && selectedQuestionIndex > 0) {
       const newIndex = selectedQuestionIndex - 1;
       setSelectedQuestionIndex(newIndex);
-      dialogProps.openDialog({
-        type: "details",
-        questionInfo: tempData.items[newIndex],
-        questionsInfo: tempData.items,
-        index: selectedQuestionIndex - 1,
-      });
+      dispatch(setSelectedQuestion({ ...questions[newIndex], readonly: true }));
     }
   };
 
   const navigateToNextQuestion = () => {
     if (
       selectedQuestionIndex !== null &&
-      selectedQuestionIndex < tempData.items.length - 1
+      selectedQuestionIndex < questions.length - 1
     ) {
       const newIndex = selectedQuestionIndex + 1;
       setSelectedQuestionIndex(newIndex);
-      dialogProps.openDialog({
-        type: "details",
-        questionInfo: tempData.items[newIndex],
-        questionsInfo: tempData.items,
-        index: selectedQuestionIndex + 1,
-      });
+      dispatch(setSelectedQuestion({ ...questions[newIndex], readonly: true }));
     }
   };
 
@@ -274,7 +267,7 @@ const MaturityLevelTable = ({
   };
 
   const formatMaturityNumber = (num: any) => {
-    if (num.toString().includes(".")) {
+    if (num?.toString().includes(".")) {
       return parseFloat(num).toFixed(1);
     } else {
       return num;
@@ -369,9 +362,9 @@ const MaturityLevelTable = ({
       <TableRow>
         {columns.map((column) => {
           const isActive =
-            tempData.sort === column.field ||
-            (tempData.sort === "missedScore" && column.field === "gainedScore");
-          const direction = isActive ? tempData.order : "asc";
+            data.sort === column.field ||
+            (data.sort === "missedScore" && column.field === "gainedScore");
+          const direction = isActive ? data.order : "asc";
 
           return (
             <TableCell
@@ -411,11 +404,7 @@ const MaturityLevelTable = ({
                       ? handlePopoverOpen
                       : handleSort(
                           column.serverKey,
-                          getSortOrder(
-                            tempData.sort,
-                            tempData.order,
-                            column.field,
-                          ),
+                          getSortOrder(data.sort, data.order, column.field),
                         )
                   }
                   sx={{
@@ -460,8 +449,8 @@ const MaturityLevelTable = ({
   // Extracted Table Body
   const renderTableBody = () => (
     <TableBody>
-      {tempData?.items.length > 0 ? (
-        tempData.items.map((item: any, index: number) => {
+      {questions.length > 0 ? (
+        questions.map((item: any, index: number) => {
           const row = mapItemToRow(item);
           return (
             <TableRow
@@ -536,12 +525,14 @@ const MaturityLevelTable = ({
           }
         />
       </TableContainer>
-      <QuestionDetailsContainer
-        {...dialogProps}
-        onClose={() => dialogProps.onClose()}
-        onPreviousQuestion={navigateToPreviousQuestion}
-        onNextQuestion={navigateToNextQuestion}
-      />
+      {dialogProps.open && (
+        <QuestionDetailsContainer
+          {...dialogProps}
+          onClose={() => dialogProps.onClose()}
+          onPreviousQuestion={navigateToPreviousQuestion}
+          onNextQuestion={navigateToNextQuestion}
+        />
+      )}
     </Box>
   );
 };

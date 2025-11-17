@@ -54,7 +54,7 @@ const useFetchData = () => {
   const { selectedQuestion } = useQuestionContext();
   const dispatch = useQuestionDispatch();
 
-  const questionId = selectedQuestion?.id;
+  const questionId = selectedQuestion?.id || selectedQuestion?.question?.id;
 
   const isLoadingRef = useRef(false);
   const debounceRef = useRef<NodeJS.Timeout | null>(null);
@@ -159,6 +159,7 @@ const useFetchData = () => {
       const append = options?.append ?? false;
 
       if (!questionId || !assessmentId) return;
+      // console.log(tab)
 
       const q = queriesMap[tab];
       if (!q) return;

@@ -34,8 +34,9 @@ type PanelConfig = {
   state: PanelState;
 };
 
-const Tabs = (props: any) => {
-  const { activeQuestion } = props;
+const Tabs = (props: Readonly<{ readonly?: boolean }>) => {
+  const { readonly } = props;
+  const { selectedQuestion } = useQuestionContext();
   const { t } = useTranslation();
   const [selectedTab, setSelectedTab] = useState<FooterTab>("evidences");
   const { evidences, comments, answerHistory } = useQuestionContext();
@@ -53,29 +54,30 @@ const Tabs = (props: any) => {
       {
         value: "evidences",
         label: t("questions_temp.evidences"),
-        count: activeQuestion?.counts?.evidences ?? 0,
+        count: selectedQuestion?.counts?.evidences ?? evidences?.length,
         data: evidences ?? [],
         state: evidencesState,
       },
       {
         value: "comments",
         label: t("questions_temp.comments"),
-        count: activeQuestion?.counts?.comments ?? 0,
+        count: selectedQuestion?.counts?.comments ?? comments?.length,
         data: comments ?? [],
         state: commentsState,
       },
       {
         value: "history",
         label: t("questions_temp.answersHistory"),
-        count: activeQuestion?.counts?.answerHistories ?? 0,
+        count:
+          selectedQuestion?.counts?.answerHistories ?? answerHistory?.length,
         data: answerHistory ?? [],
         state: historyState,
       },
     ],
     [
-      activeQuestion?.counts?.evidences,
-      activeQuestion?.counts?.comments,
-      activeQuestion?.counts?.answerHistories,
+      selectedQuestion?.counts?.evidences,
+      selectedQuestion?.counts?.comments,
+      selectedQuestion?.counts?.answerHistories,
       evidences,
       comments,
       answerHistory,
@@ -92,7 +94,7 @@ const Tabs = (props: any) => {
 
   useEffect(() => {
     fetchByTab(selectedTab);
-  }, [selectedTab, activeQuestion?.id]);
+  }, [selectedTab, selectedQuestion?.id, selectedQuestion?.question?.id]);
 
   const handleWindowScroll = useCallback(() => {
     const cfg = configs.find((c) => c.value === selectedTab);
@@ -145,7 +147,7 @@ const Tabs = (props: any) => {
 
       {configs.map((cfg) => (
         <TabPanel key={cfg.value} value={cfg.value} sx={{ px: 4, py: 2 }}>
-          {cfg.value !== "history" && (
+          {cfg.value !== "history" && !readonly && (
             <CreateForm showTabs={cfg.value === "evidences"} />
           )}
 
@@ -153,10 +155,14 @@ const Tabs = (props: any) => {
             data={cfg.data}
             state={cfg.state}
             isActive={cfg.value === selectedTab}
-            renderItem={(item: any, index: number) => {
+            renderItem={(item: any) => {
               return (
                 <>
-                  <EvidenceContainer key={item?.id} item={item} />
+                  <EvidenceContainer
+                    key={item?.id}
+                    item={item}
+                    readonly={readonly}
+                  />
                 </>
               );
             }}
