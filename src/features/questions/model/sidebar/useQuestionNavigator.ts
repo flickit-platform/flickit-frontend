@@ -1,15 +1,7 @@
 import { useMemo, useCallback, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import {
-  questionActions,
-  setSelectedQuestion,
-  useQuestionDispatch,
-} from "../../context";
+import { setSelectedQuestion, useQuestionDispatch } from "../../context";
 import type { IQuestionInfo } from "@/types";
-
-type Options = {
-  enablePagingShortcuts?: boolean;
-};
 
 export type QuestionNavigator = {
   absoluteIndex: number;

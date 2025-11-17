@@ -18,7 +18,6 @@ import { useParams } from "react-router-dom";
 import {
   addComment,
   addEvidence,
-  setEvidences,
   setSelectedQuestion,
   useQuestionContext,
   useQuestionDispatch,

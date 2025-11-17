@@ -1,6 +1,6 @@
 import { useServiceContext } from "@/providers/service-provider";
 import { useEffect } from "react";
-import { questionActions, setQuestions, useQuestionDispatch } from "../context";
+import { setQuestions, useQuestionDispatch } from "../context";
 import { useParams } from "react-router-dom";
 import { IQuestionsModel } from "@/types";
 import { useQuery } from "@/hooks/useQuery";
