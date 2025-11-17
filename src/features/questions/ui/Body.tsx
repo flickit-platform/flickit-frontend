@@ -31,6 +31,7 @@ import MoreActions from "@common/MoreActions";
 import useMenu from "@/hooks/useMenu";
 import ReportGmailerrorredIcon from "@mui/icons-material/ReportGmailerrorred";
 import languageDetector from "@/utils/language-detector";
+import ReportDialog from "./ReportDialog";
 
 const Body = () => {
   const { t } = useTranslation();
@@ -166,7 +167,6 @@ const Body = () => {
     >
       {/* Header */}
       <Box
-        padding="16px 24px"
         sx={{ ...styles.centerCV, direction: isTitleRTL ? "rtl" : "ltr" }}
         gap="10px"
       >
@@ -177,8 +177,12 @@ const Body = () => {
             alignItems: "flex-start",
           }}
         >
-          <Box sx={{ flex: 1 }}>
-            <Text variant="semiBoldMedium" color="background.contrastText">
+          <Box sx={{ flex: 1 }} padding="16px 24px">
+            <Text
+              variant="semiBoldMedium"
+              color="background.contrastText"
+              textAlign="justify"
+            >
               {activeQuestion?.index}. {activeQuestion?.title}
               {activeQuestion?.hint && (
                 <Text
@@ -208,6 +212,7 @@ const Body = () => {
                 <Text
                   variant="bodySmall"
                   color="text.primary"
+                  textAlign="justify"
                   sx={{
                     mt: 0.5,
                   }}
@@ -223,7 +228,7 @@ const Body = () => {
               {...menu}
               boxProps={{
                 sx: {
-                  "&.MuiListItemIcon-root": { minWidth: "16px important" },
+                  p: 1,
                 },
               }}
               items={[
@@ -247,7 +252,6 @@ const Body = () => {
                     }),
                 },
               ]}
-              // IconButtonProps={{ width: "24px", height: "24px" }}
             />
           )}
         </Box>
@@ -302,13 +306,13 @@ const Body = () => {
                   onClick={() => onSelectOption(option)}
                   sx={{
                     p: 0,
+                    gap: "8px",
                     paddingInlineStart: "4px",
                     paddingInlineEnd: "12px",
                     borderRadius: "8px",
                     border: "1px solid",
                     borderColor,
                     justifyContent: "flex-start",
-                    height: 36,
                     bgcolor: bgColor,
                     "&.Mui-selected": {
                       bgcolor: selectedBgColor,
@@ -324,6 +328,8 @@ const Body = () => {
                     checked={isSelectedNow}
                     size="small"
                     color={showApproveButton ? "warning" : "primary"}
+                    sx={{ p: "6.5px" }}
+                    disableRipple
                   />
                   <Text
                     variant="bodyMedium"
@@ -486,7 +492,7 @@ const Body = () => {
                 sx={{
                   borderRadius: "4px",
                   border: "1px solid",
-                  borderColor: "primary.main",
+                  borderColor: isAtStart ? "" : "primary.main",
                   p: 0,
                 }}
               >
@@ -502,7 +508,7 @@ const Body = () => {
                 sx={{
                   borderRadius: "4px",
                   border: "1px solid",
-                  borderColor: "primary.main",
+                  borderColor: isAtEnd ? "" : "primary.main",
                   p: 0,
                 }}
               >
@@ -512,6 +518,7 @@ const Body = () => {
           </Box>
         </Box>
       </Box>
+      {dialogProps.open && <ReportDialog {...dialogProps} />}
     </Box>
   );
 };

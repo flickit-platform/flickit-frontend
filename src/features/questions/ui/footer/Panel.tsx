@@ -42,6 +42,7 @@ import {
   RadioButtonCheckedRounded,
   RadioButtonUncheckedRounded,
 } from "@mui/icons-material";
+import languageDetector from "@/utils/language-detector";
 
 type Variant = "history" | "evidences" | "comments";
 
@@ -64,7 +65,7 @@ const getVariant = (item: any): Variant => {
   return "comments";
 };
 
-const Container: React.FC<{
+const Panel: React.FC<{
   item: any;
   readonly?: boolean;
 }> = ({ item, readonly }) => {
@@ -267,7 +268,7 @@ const Container: React.FC<{
   );
 };
 
-export default Container;
+export default Panel;
 
 const resolveBoxMeta = (
   variant: Variant,
@@ -435,7 +436,7 @@ const Detail: React.FC<{
   }
 
   return (
-    <Box sx={{ px: 2, pb: 2 }}>
+    <Box sx={{ px: 2, pb: 1 }}>
       <Box
         width="100%"
         justifyContent="space-between"
@@ -508,8 +509,14 @@ const Detail: React.FC<{
             </FormProviderWithForm>
           </Box>
         ) : (
-          <Box sx={{ width: "100%", pt: 1 }}>
+          <Box
+            sx={{
+              ...styles.rtlStyle(languageDetector(description)),
+              width: "100%",
+            }}
+          >
             <Text
+              textAlign="justify"
               variant="bodyMedium"
               color="background.secondaryDark"
               dangerouslySetInnerHTML={{ __html: description ?? "" }}

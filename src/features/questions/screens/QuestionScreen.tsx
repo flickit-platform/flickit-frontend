@@ -10,13 +10,11 @@ const QuestionScreen = () => {
   useDocumentTitle();
 
   const { isAdvanced } = useAssessmentMode();
-  const dialogProps = useDialog();
 
   return (
     <Box width="100%" display="flex" flexDirection="column" gap={3}>
       <Body />
       {isAdvanced && <FooterTabs />}
-      {dialogProps.open && <ReportDialog {...dialogProps} />}
     </Box>
   );
 };

@@ -14,7 +14,7 @@ import { CircularProgress } from "@mui/material";
 import { Text } from "@/components/common/Text";
 import { useTranslation } from "react-i18next";
 import useFetchData from "../../model/footer/useFetchData";
-import EvidenceContainer from "./Container";
+import Panel from "./Panel";
 import CreateForm from "../CreateForm";
 import { useQuestionContext } from "../../context";
 
@@ -151,20 +151,12 @@ const Tabs = (props: Readonly<{ readonly?: boolean }>) => {
             <CreateForm showTabs={cfg.value === "evidences"} />
           )}
 
-          <ListPanel
+          <PanelContainer
             data={cfg.data}
             state={cfg.state}
             isActive={cfg.value === selectedTab}
             renderItem={(item: any) => {
-              return (
-                <>
-                  <EvidenceContainer
-                    key={item?.id}
-                    item={item}
-                    readonly={readonly}
-                  />
-                </>
-              );
+              return <Panel key={item?.id} item={item} readonly={readonly} />;
             }}
           />
         </TabPanel>
@@ -175,7 +167,7 @@ const Tabs = (props: Readonly<{ readonly?: boolean }>) => {
 
 export default Tabs;
 
-const ListPanel = ({
+const PanelContainer = ({
   data,
   state,
   isActive,
@@ -195,7 +187,7 @@ const ListPanel = ({
   }
 
   return (
-    <Box display="flex" flexDirection="column" gap={1.5}>
+    <Box display="flex" flexDirection="column" gap={1.5} my={2}>
       {data.map(renderItem)}
 
       {isActive && state.loadingMore && (
