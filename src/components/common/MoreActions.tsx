@@ -47,7 +47,7 @@ const MoreActions = (props: IMoreActionsProps) => {
   }[];
 
   return menuItems.length > 0 ? (
-    <Box onClick={e => e.stopPropagation()} {...boxProps}>
+    <Box onClick={(e) => e.stopPropagation()} {...boxProps}>
       {!hideInnerIconButton && (
         <IconButton
           data-cy="more-action-btn"
@@ -71,7 +71,7 @@ const MoreActions = (props: IMoreActionsProps) => {
         open={open}
         onClose={closeMenu}
         anchorEl={anchorEl}
-        PaperProps={{ sx: { minWidth: "160px" } }}
+        PaperProps={{ sx: { minWidth: "120px" } }}
       >
         {menuItems.map((item, index) => {
           const {
@@ -90,9 +90,14 @@ const MoreActions = (props: IMoreActionsProps) => {
                 onClick(e);
               }}
               id={id}
+              sx={{ display: "flex", gap: "4px" }}
             >
-              {icon && <ListItemIcon>{icon}</ListItemIcon>}
-              <ListItemText>{text}</ListItemText>
+              {icon && (
+                <ListItemIcon sx={{ minWidth: "16px !important" }}>
+                  {icon}
+                </ListItemIcon>
+              )}
+             {text}
             </MenuItem>
           );
         })}

@@ -1,5 +1,4 @@
 import { useState, useEffect, useMemo } from "react";
-import useDocumentTitle from "@/hooks/useDocumentTitle";
 import { useQuestionContext } from "../context";
 import {
   Box,
@@ -30,7 +29,6 @@ import { useAnswerSubmit } from "../model/useAnswerSubmit";
 import useDialog from "@/hooks/useDialog";
 import MoreActions from "@common/MoreActions";
 import useMenu from "@/hooks/useMenu";
-import { v3Tokens } from "@config/tokens";
 import ReportGmailerrorredIcon from "@mui/icons-material/ReportGmailerrorred";
 import languageDetector from "@/utils/language-detector";
 
@@ -165,10 +163,13 @@ const Body = () => {
       bgcolor="background.background"
       borderRadius="12px"
       boxShadow="0 0 0 1px rgba(0,0,0,0.04), 0 8px 8px -8px rgba(0,0,0,0.16)"
-      sx={{ direction: isTitleRTL ? "rtl" : "ltr" }}
     >
       {/* Header */}
-      <Box padding="16px 24px" sx={{ ...styles.centerCV }} gap="10px">
+      <Box
+        padding="16px 24px"
+        sx={{ ...styles.centerCV, direction: isTitleRTL ? "rtl" : "ltr" }}
+        gap="10px"
+      >
         <Box
           sx={{
             ...styles.centerVH,
@@ -222,18 +223,20 @@ const Body = () => {
               {...menu}
               boxProps={{
                 sx: {
-                  "& .MuiIconButton-root": { p: 0.4 },
+                  "&.MuiListItemIcon-root": { minWidth: "16px important" },
                 },
               }}
               items={[
                 {
                   icon: (
-                    <ReportGmailerrorredIcon
-                      sx={{ fontSize: "18px", color: "error.main", px: 0.2 }}
-                    />
+                    <ReportGmailerrorredIcon fontSize="small" color="error" />
                   ),
                   text: (
-                    <Text color="error.main" variant={"bodySmall"}>
+                    <Text
+                      color="error.main"
+                      variant={"bodySmall"}
+                      display="flex"
+                    >
                       {t("questions_temp.reportQuestion")}
                     </Text>
                   ),
@@ -244,8 +247,7 @@ const Body = () => {
                     }),
                 },
               ]}
-              color={v3Tokens.surface.on}
-              IconButtonProps={{ width: "24px", height: "24px" }}
+              // IconButtonProps={{ width: "24px", height: "24px" }}
             />
           )}
         </Box>
@@ -254,7 +256,12 @@ const Body = () => {
       <Divider sx={{ width: "100%" }} />
 
       {/* Options */}
-      <Box display="flex" padding="16px 24px" flexDirection="column">
+      <Box
+        display="flex"
+        padding="16px 24px"
+        flexDirection="column"
+        sx={{ direction: isTitleRTL ? "rtl" : "ltr" }}
+      >
         <Box>
           {activeQuestion?.options?.map((option: any) => {
             const { index: displayIndex, title, id } = option ?? {};
@@ -435,12 +442,13 @@ const Body = () => {
                 ...styles.centerVH,
                 color: "error.main",
                 cursor: "pointer",
+                gap: 1,
               }}
             >
+              <ReportGmailerrorredIcon fontSize="small" />
               <Text variant={"bodySmall"}>
                 {t("questions_temp.reportQuestion")}
               </Text>
-              <ReportGmailerrorredIcon sx={{ fontSize: "18px", px: 0.2 }} />
             </Box>
           )}
         </Box>
@@ -457,16 +465,21 @@ const Body = () => {
                 />
               }
               label={
-                <Text variant="bodySmall">
-                  {t("questions_temp.quickAnswer")}
-                </Text>
+                <Box color="info.main" sx={{ ...styles.centerV }} gap="6px">
+                  <Text variant="bodySmall" color="text.primary">
+                    {t("questions_temp.quickAnswer")}
+                  </Text>
+                  <Tooltip title={t("questions_temp.quickAnswerDesc")}>
+                    <InfoOutlineRounded fontSize="small" />
+                  </Tooltip>
+                </Box>
               }
             />
           )}
           <Box display="flex" gap={1}>
-            <Tooltip title={t("questions_temp.previousQuestion")}>
+            <Tooltip title={t("common.previous")}>
               <IconButton
-                aria-label={t("questions_temp.previousQuestion") as string}
+                aria-label={t("common.preivous")}
                 color="primary"
                 disabled={isAtStart}
                 onClick={goPrevious}
@@ -480,9 +493,9 @@ const Body = () => {
                 <KeyboardArrowUpRounded fontSize="large" />
               </IconButton>
             </Tooltip>
-            <Tooltip title={t("questions_temp.nextQuestion")}>
+            <Tooltip title={t("common.next")}>
               <IconButton
-                aria-label={t("questions_temp.nextQuestion") as string}
+                aria-label={t("common.next")}
                 color="primary"
                 disabled={isAtEnd}
                 onClick={goNext}

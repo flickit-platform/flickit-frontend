@@ -67,7 +67,7 @@ const Tabs = (props: Readonly<{ readonly?: boolean }>) => {
       },
       {
         value: "history",
-        label: t("questions_temp.answersHistory"),
+        label: t("questions_temp.answerHistory"),
         count:
           selectedQuestion?.counts?.answerHistories ?? answerHistory?.length,
         data: answerHistory ?? [],
