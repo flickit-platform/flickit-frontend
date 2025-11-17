@@ -3,11 +3,14 @@ import { useParams } from "react-router-dom";
 import {
   useQuestionContext,
   useQuestionDispatch,
-  questionActions,
+  setQuestions,
+  setSelectedQuestion,
+  addAnswerHistory,
 } from "../context";
 import { useServiceContext } from "@/providers/service-provider";
 import { useQuery } from "@/hooks/useQuery";
 import { IQuestionsModel } from "@/types";
+import { useAuthContext } from "@/providers/auth-provider";
 
 type OptionLike =
   | { id?: string | number; title?: string; index?: number }
@@ -19,6 +22,7 @@ export function useAnswerSubmit() {
   const { assessmentId = "", questionnaireId } = useParams();
   const { selectedQuestion, questions = [] } = useQuestionContext();
   const dispatch = useQuestionDispatch();
+  const { userInfo } = useAuthContext();
 
   const submitAnswer = useQuery({
     service: (args, config) => service.assessments.answer.submit(args, config),
@@ -120,9 +124,25 @@ export function useAnswerSubmit() {
 
         return updatedItem;
       });
-
-      dispatch(questionActions.setSelectedQuestion(updatedItem));
-      dispatch(questionActions.setQuestions(nextQuestions));
+      const newAnswerHistory = {
+        createdBy: {
+          id: userInfo.id,
+          pictureLink: userInfo.pictureLink,
+          displayName: userInfo.displayName,
+        },
+        answer: {
+          ...updatedItem.answer,
+          confidenceLevel: {
+            ...updatedItem.answer.confidenceLevel,
+            title: "Fairly unsure",
+          },
+        },
+        creationTime: new Date().toISOString(),
+      };
+      console.log(newAnswerHistory);
+      dispatch(addAnswerHistory(newAnswerHistory));
+      dispatch(setSelectedQuestion(updatedItem));
+      dispatch(setQuestions(nextQuestions));
 
       return res;
     },
@@ -156,7 +176,7 @@ export function useAnswerSubmit() {
     });
 
     dispatch(
-      questionActions.setSelectedQuestion({
+      setSelectedQuestion({
         ...selectedQuestion,
         issues: {
           ...issueRes,
@@ -164,7 +184,7 @@ export function useAnswerSubmit() {
       }),
     );
 
-    dispatch(questionActions.setQuestions(nextQuestions));
+    dispatch(setQuestions(nextQuestions));
     return res;
   }, [assessmentId, questionnaireId, selectedQuestion?.id]);
   return {

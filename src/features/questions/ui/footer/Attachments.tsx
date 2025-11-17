@@ -33,6 +33,11 @@ import { DeleteConfirmationDialog } from "@common/dialogs/DeleteConfirmationDial
 import useFetchData from "../../model/footer/useFetchData";
 import showToast from "@utils/toast-error";
 import FileUploadOutlinedIcon from "@mui/icons-material/FileUploadOutlined";
+import {
+  updateComment,
+  updateEvidence,
+  useQuestionDispatch,
+} from "../../context";
 
 interface Attachment {
   link: string;
@@ -145,12 +150,12 @@ const formatFileName = (baseName: string, extension: string) => {
 
 const validateFile = (file: File): string | null => {
   if (file.size > MAX_FILE_SIZE) {
-    return "حجم هر فایل پیوست حداکثر ۵ مگابایت می‌تواند باشد.";
+    return t("questions_temp.limitSizeExceeded");
   }
 
   const fileExtension = file.name.split(".").pop()?.toLowerCase();
   if (!fileExtension || !ALLOWED_FILE_TYPES.includes(fileExtension)) {
-    return "پیوست‌ها باید فقط از نوع فایل‌های مجاز باشند.";
+    return t("questions_temp.unsupportedFileFormat");
   }
 
   return null;
@@ -175,12 +180,13 @@ const extractFileNameFromLink = (link: string) => {
 
 export const Attachments: React.FC<{
   id: string;
+  type: Polarity;
   attachmentsCount: number;
   startAddMode?: boolean;
   onCloseAddMode?: (noAttachments: boolean) => void;
-}> = ({ id, attachmentsCount, startAddMode, onCloseAddMode }) => {
+}> = ({ id, attachmentsCount, startAddMode, onCloseAddMode, type }) => {
+  const dispatch = useQuestionDispatch();
   const [expanded, setExpanded] = useState<boolean>(!!startAddMode);
-  const [counter, setCounter] = useState<number>(attachmentsCount);
   const [attachments, setAttachments] = useState<Attachment[]>([]);
 
   const [isAdding, setIsAdding] = useState<boolean>(!!startAddMode);
@@ -215,16 +221,14 @@ export const Attachments: React.FC<{
         evidence_id: id,
       });
       setAttachments(result.attachments ?? []);
-      setCounter(result.attachments.length);
     }
   };
 
   const resetAddForm = (shouldHideWhenEmpty: boolean) => {
     setIsAdding(false);
-    // setSelectedFile(null);
     setDescription("");
     setFileError(null);
-    if (shouldHideWhenEmpty && counter === 0) {
+    if (shouldHideWhenEmpty) {
       onCloseAddMode?.(true);
     } else {
       onCloseAddMode?.(false);
@@ -302,8 +306,12 @@ export const Attachments: React.FC<{
         evidence_id: id,
       });
       setAttachments(result.attachments ?? []);
-      setCounter(result.attachments.length);
-
+      dispatch(
+        type
+          ? updateEvidence({ attachmentsCount: attachmentsCount + 1, id })
+          : updateComment({ attachmentsCount: attachmentsCount + 1, id }),
+      );
+      setSelectedFile(null);
       resetAddForm(false);
     } catch (e: any) {
       const err = e as ICustomError;
@@ -326,8 +334,12 @@ export const Attachments: React.FC<{
           const result = await fetchEvidenceAttachments.query({
             evidence_id: id,
           });
+          dispatch(
+            type
+              ? updateEvidence({ attachmentsCount: attachmentsCount - 1, id })
+              : updateComment({ attachmentsCount: attachmentsCount - 1, id }),
+          );
           setAttachments(result.attachments ?? []);
-          setCounter(result.attachments.length);
         });
 
       dialogProps.onClose();
@@ -373,7 +385,7 @@ export const Attachments: React.FC<{
               color="background.secondaryDark"
               sx={{ fontWeight: 600 }}
             >
-              {t("questions.attachments")} ({counter})
+              {t("questions.attachments")} ({attachmentsCount})
             </Text>
           </Box>
         </AccordionSummary>

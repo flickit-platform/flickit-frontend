@@ -26,7 +26,11 @@ import { useForm } from "react-hook-form";
 import Attachments from "@/features/questions/ui/footer/Attachments";
 import useDialog from "@/hooks/useDialog";
 import {
+  deleteComment,
+  deleteEvidence,
   setSelectedQuestion,
+  updateComment,
+  updateEvidence,
   useQuestionContext,
   useQuestionDispatch,
 } from "../../context";
@@ -39,7 +43,6 @@ import {
   RadioButtonUncheckedRounded,
 } from "@mui/icons-material";
 
-type Polarity = "Positive" | "Negative" | "";
 type Variant = "history" | "evidences" | "comments";
 
 const ICON_SIZE = { width: 24, height: 24 };
@@ -63,14 +66,12 @@ const getVariant = (item: any): Variant => {
 
 const Container: React.FC<{
   item: any;
-  fetchByTab: any;
-  autoOpenAttachments?: boolean;
-  onAttachmentsFlowDone?: () => void;
-}> = ({ item, fetchByTab, autoOpenAttachments, onAttachmentsFlowDone }) => {
+}> = ({ item }) => {
   const dispatch = useQuestionDispatch();
   const { selectedQuestion } = useQuestionContext();
   const variant = getVariant(item);
-  const { addEvidence, deleteEvidence, resolveComment } = useFetchData();
+  const { addEvidenceQuery, deleteEvidenceQuery, resolveComment } =
+    useFetchData();
 
   const [isEditing, setIsEditing] = useState(false);
   const [draft, setDraft] = useState<{ description: string; type?: Polarity }>({
@@ -120,14 +121,22 @@ const Container: React.FC<{
   };
 
   const handleSave = async () => {
-    await addEvidence
+    await addEvidenceQuery
       .query({
         id: item.id,
         description: draft.description,
         type: draft.type ? draft.type.toUpperCase() : null,
       })
       .then(() => {
-        fetchByTab();
+        dispatch(
+          draft.type
+            ? updateEvidence({
+                id: item.id,
+                description: draft.description,
+                type: draft.type.toUpperCase(),
+              })
+            : updateComment({ id: item.id, description: draft.description }),
+        );
       })
       .finally(() => {
         setIsEditing(false);
@@ -135,10 +144,14 @@ const Container: React.FC<{
   };
 
   const handleConfirmDelete = async () => {
-    await deleteEvidence
+    await deleteEvidenceQuery
       .query({ id: item.id })
       .then(() => {
-        fetchByTab();
+        dispatch(
+          item.type
+            ? deleteEvidence({ id: item.id })
+            : deleteComment({ id: item.id }),
+        );
       })
       .finally(() => {
         deleteDialog.onClose();
@@ -158,7 +171,7 @@ const Container: React.FC<{
     await resolveComment
       .query({ id: item.id })
       .then(() => {
-        fetchByTab();
+        dispatch(deleteComment({ id: item.id }));
       })
       .finally(() => {
         deleteDialog.onClose();
@@ -233,8 +246,6 @@ const Container: React.FC<{
         draft={draft}
         setDraft={setDraft}
         formMethods={formMethods}
-        autoOpenAttachments={autoOpenAttachments}
-        onAttachmentsFlowDone={onAttachmentsFlowDone}
       />
 
       {variant !== "history" && (
@@ -335,29 +346,17 @@ const Detail: React.FC<{
     React.SetStateAction<{ description: string; type?: Polarity }>
   >;
   formMethods: ReturnType<typeof useForm>;
-  autoOpenAttachments?: boolean;
-  onAttachmentsFlowDone?: () => void;
-}> = ({
-  item,
-  variant,
-  isEditing,
-  draft,
-  setDraft,
-  formMethods,
-  autoOpenAttachments,
-  onAttachmentsFlowDone,
-}) => {
+}> = ({ item, variant, isEditing, draft, setDraft, formMethods }) => {
   const { id, description, attachmentsCount } = item;
   const totalAttachments = attachmentsCount ?? 0;
+  const dispatch = useQuestionDispatch();
 
   const [showAttachments, setShowAttachments] = useState(totalAttachments > 0);
   const [startAddMode, setStartAddMode] = useState(false);
   useEffect(() => {
-    if (autoOpenAttachments) {
-      setShowAttachments(true);
-      setStartAddMode(true);
-    }
-  }, [autoOpenAttachments]);
+    setShowAttachments(item.autoOpenAttachment);
+    setStartAddMode(item.autoOpenAttachment);
+  }, [item.autoOpenAttachment]);
 
   if (variant === "history") {
     return (
@@ -516,7 +515,22 @@ const Detail: React.FC<{
         )}
       </Box>
 
-      {totalAttachments === 0 && !showAttachments && (
+      {attachmentsCount > 0 || showAttachments ? (
+        <Attachments
+          id={id}
+          type={item.type}
+          attachmentsCount={attachmentsCount}
+          startAddMode={startAddMode}
+          onCloseAddMode={(noAttachments: boolean) => {
+            setStartAddMode(false);
+            dispatch(
+              item.type
+                ? updateEvidence({ autoOpenAttachment: false, id: item.id })
+                : updateComment({ autoOpenAttachment: false, id: item.id }),
+            );
+          }}
+        />
+      ) : (
         <Button
           variant="text"
           size="small"
@@ -542,21 +556,6 @@ const Detail: React.FC<{
         >
           {t("questions_temp.addAttachment")}
         </Button>
-      )}
-
-      {(totalAttachments > 0 || showAttachments) && (
-        <Attachments
-          id={id}
-          attachmentsCount={totalAttachments}
-          startAddMode={startAddMode}
-          onCloseAddMode={(noAttachments: boolean) => {
-            setStartAddMode(false);
-            if (noAttachments) {
-              setShowAttachments(false);
-            }
-            onAttachmentsFlowDone?.();
-          }}
-        />
       )}
     </Box>
   );
