@@ -246,7 +246,7 @@ const ActionButtons = ({
       {progress === 100 && <ActionButton to={`${id}/1`} text="common.edit" />}
       {progress > 0 && (
         <ActionButton
-          to={`${id}/completed`}
+          to={`${id}/review`}
           text="common.review"
           state={{ name: "Questionnaires" }}
         />

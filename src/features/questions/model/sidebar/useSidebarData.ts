@@ -1,4 +1,4 @@
-import { questionActions, setFilteredQuestions, setSelectedQuestion, useQuestionDispatch } from "../../context";
+import { setFilteredQuestions, useQuestionDispatch } from "../../context";
 import type { IQuestionInfo, TId } from "@/types";
 import { SidebarData } from "../../types";
 import { useEffect, useMemo } from "react";
@@ -76,7 +76,6 @@ export function useSidebarData({
       );
       if (filteredQuestions.length > 0 && index === -1) {
         navigation.selectAt(filteredQuestions[0].index - 1);
-        dispatch(setSelectedQuestion(filteredQuestions[0]));
       }
     }
   }, [filteredQuestions]);

@@ -12,7 +12,7 @@ import FormProviderWithForm from "@/components/common/FormProviderWithForm";
 import RichEditorField from "@/components/common/fields/RichEditorField";
 import { Text } from "@/components/common/Text";
 import { LoadingButton } from "@mui/lab";
-import { useCreateEvidenceForm } from "../model/useCreateEvidenceForm";
+import { useCreateEvidenceForm } from "../../model/question/useCreateEvidenceForm";
 
 enum EVIDENCE_TYPE {
   POSITIVE = "POSITIVE",

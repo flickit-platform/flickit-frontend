@@ -21,22 +21,21 @@ const commonService = {
 
   // ========== Path & Navigation ==========
   getPathInfo(
-    {
-      assessmentId,
-      spaceId,
-      questionnaireId,
-    }: { assessmentId?: string; spaceId?: string; questionnaireId?: string },
-    config?: AxiosRequestConfig<any>,
+    params: { assessmentId?: string; spaceId?: string; questionnaireId?: string },
+    config?: AxiosRequestConfig,
   ) {
-    return axios.get(
-      `/api/v1/path-info?${
-        assessmentId ? `assessment_id=${assessmentId}` : ""
-      }${spaceId ? `&&space_id=${spaceId}` : ""}${
-        questionnaireId ? `&&questionnaire_id=${questionnaireId}` : ""
-      }`,
-      { skipAuth: true, ...config },
-    );
-  },
+    const { assessmentId, spaceId, questionnaireId } = params ?? {};
+  
+    return axios.get("/api/v1/path-info/", {
+      params: {
+        ...(assessmentId ? { assessment_id: assessmentId } : {}),
+        ...(spaceId ? { space_id: spaceId } : {}),
+        ...(questionnaireId ? { questionnaire_id: questionnaireId } : {}),
+      },
+      skipAuth: true,
+      ...config,
+    });
+  },  
 
   getBreadcrumbInfo(
     args: { assessmentId?: TId; spaceId?: TId; questionnaireId?: TId },

@@ -37,8 +37,15 @@ const AssessmentsScreen = lazy(() => import("../screens/AssessmentsScreen"));
 const QuestionsScreen = lazy(() => import("../screens/QuestionsScreen"));
 const QuestionScreen = lazy(() => import("../screens/QuestionScreen"));
 
-const QuestionsTempScreen = lazy(() => import("@/features/questions/screens/QuestionsScreen"));
-const QuestionTempScreen = lazy(() => import("@/features/questions/screens/QuestionScreen"));
+const QuestionsTempScreen = lazy(
+  () => import("@/features/questions/screens/QuestionsScreen"),
+);
+const QuestionTempScreen = lazy(
+  () => import("@/features/questions/screens/QuestionScreen"),
+);
+const ReviewScreen = lazy(
+  () => import("@/features/questions/screens/ReviewScreen"),
+);
 
 const QuestionnairesScreen = lazy(
   () => import("../screens/QuestionnairesScreen"),
@@ -145,7 +152,8 @@ const Routes = () => {
               element={<QuestionsTempScreen />}
             >
               <Route path="" element={<QuestionTempScreen />} />
-              <Route path=":questionIndex" element={<QuestionTempScreen />} />
+              <Route path=":questionIndex" element={<QuestionTempScreen />}/>
+              <Route path="review" element={<ReviewScreen />} />
             </Route>
             <Route
               path="questionnaires_temp/:questionnaireId"

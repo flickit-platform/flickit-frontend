@@ -43,7 +43,6 @@ import {
   RadioButtonUncheckedRounded,
 } from "@mui/icons-material";
 import languageDetector from "@/utils/language-detector";
-import { useUpdateQuestionIssues } from "../../model/useQuestionIssues";
 
 type Variant = "history" | "evidences" | "comments";
 
@@ -73,7 +72,7 @@ const Panel: React.FC<{
   const dispatch = useQuestionDispatch();
   const { selectedQuestion } = useQuestionContext();
   const variant = getVariant(item);
-  const { addEvidenceQuery, deleteEvidenceQuery, resolveComment } =
+  const { addEvidenceQuery, deleteEvidenceQuery, resolveComment, fetchIssues } =
     useFetchData();
 
   const [isEditing, setIsEditing] = useState(false);
@@ -81,7 +80,6 @@ const Panel: React.FC<{
     description: item?.description ?? "",
     type: (item?.type as Polarity) ?? "",
   });
-  const { updateQuestionIssues } = useUpdateQuestionIssues();
 
   const deleteDialog = useDialog();
 
@@ -150,23 +148,31 @@ const Panel: React.FC<{
   const handleConfirmDelete = async () => {
     await deleteEvidenceQuery
       .query({ id: item.id })
-      .then(() => {
+      .then(async () => {
         dispatch(
           item.type
             ? deleteEvidence({ id: item.id })
             : deleteComment({ id: item.id }),
         );
-        const updatedQuestion = {
-          ...selectedQuestion,
-          counts: {
-            ...selectedQuestion.counts,
-            [variant]: selectedQuestion.counts[variant] - 1,
-          },
-        };
-        dispatch(setSelectedQuestion(updatedQuestion));
-        setTimeout(() => {
-          updateQuestionIssues(updatedQuestion);
-        }, 400);
+        let resIssues = selectedQuestion.issues;
+        await fetchIssues
+          .query({
+            questionId: selectedQuestion.id,
+          })
+          .then((res) => {
+            resIssues = res;
+          })
+          .finally(() => {
+            const updatedQuestion = {
+              ...selectedQuestion,
+              counts: {
+                ...selectedQuestion.counts,
+                [variant]: selectedQuestion.counts[variant] - 1,
+              },
+              issues: resIssues,
+            };
+            dispatch(setSelectedQuestion(updatedQuestion));
+          });
       })
       .finally(() => {
         deleteDialog.onClose();
@@ -176,19 +182,28 @@ const Panel: React.FC<{
   const handleResolve = async () => {
     await resolveComment
       .query({ id: item.id })
-      .then(() => {
+      .then(async () => {
         dispatch(deleteComment({ id: item.id }));
-        const updatedQuestion = {
-          ...selectedQuestion,
-          counts: {
-            ...selectedQuestion.counts,
-            [variant]: selectedQuestion.counts[variant] - 1,
-          },
-        };
-        dispatch(setSelectedQuestion(updatedQuestion));
-        setTimeout(() => {
-          updateQuestionIssues(updatedQuestion);
-        }, 400);
+
+        let resIssues = selectedQuestion.issues;
+        await fetchIssues
+          .query({
+            questionId: selectedQuestion.id,
+          })
+          .then((res) => {
+            resIssues = res;
+          })
+          .finally(() => {
+            const updatedQuestion = {
+              ...selectedQuestion,
+              counts: {
+                ...selectedQuestion.counts,
+                [variant]: selectedQuestion.counts[variant] - 1,
+              },
+              issues: resIssues,
+            };
+            dispatch(setSelectedQuestion(updatedQuestion));
+          });
       })
       .finally(() => {
         deleteDialog.onClose();

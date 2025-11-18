@@ -61,6 +61,7 @@ export interface IMapper {
 export interface PathInfo {
   space?: ModelValue;
   assessment?: ModelValue;
+  questionnaire?: ModelValue;
 }
 
 export type TQueryProps<T = any, A = any> = {

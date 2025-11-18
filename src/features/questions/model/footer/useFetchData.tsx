@@ -9,6 +9,7 @@ import {
   useQuestionContext,
   useQuestionDispatch,
 } from "@/features/questions/context";
+import { IQuestionsModel } from "@/types";
 
 export type FooterTab = "evidences" | "comments" | "history";
 
@@ -60,6 +61,15 @@ const useFetchData = () => {
   const debounceRef = useRef<NodeJS.Timeout | null>(null);
 
   // --- mutations / queries
+  const fetchIssues = useQuery<IQuestionsModel>({
+    service: (args, config) =>
+      service.assessments.questionnaire.getQuestionIssues(
+        { assessmentId, questionId: selectedQuestion?.id },
+        config,
+      ),
+    runOnMount: false,
+  });
+
   const deleteEvidenceQuery = useQuery({
     service: (args, config) => service.questions.evidences.remove(args, config),
     runOnMount: false,
@@ -159,7 +169,6 @@ const useFetchData = () => {
       const append = options?.append ?? false;
 
       if (!questionId || !assessmentId) return;
-      // console.log(tab)
 
       const q = queriesMap[tab];
       if (!q) return;
@@ -266,6 +275,7 @@ const useFetchData = () => {
     addEvidenceQuery,
     addEvidenceAttachments,
     resolveComment,
+    fetchIssues,
 
     // infinite data
     evidences,

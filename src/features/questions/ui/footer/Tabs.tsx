@@ -15,7 +15,7 @@ import { Text } from "@/components/common/Text";
 import { useTranslation } from "react-i18next";
 import useFetchData from "../../model/footer/useFetchData";
 import Panel from "./Panel";
-import CreateForm from "../CreateForm";
+import CreateForm from "../question/CreateForm";
 import { useQuestionContext } from "../../context";
 
 type FooterTab = "evidences" | "comments" | "history";
@@ -32,10 +32,13 @@ type PanelConfig = {
   count: number;
   data: any[];
   state: PanelState;
+  disabled?: boolean;
 };
 
-const Tabs = (props: Readonly<{ readonly?: boolean }>) => {
-  const { readonly } = props;
+const Tabs = (
+  props: Readonly<{ readonly?: boolean; hideAnswerHistory?: boolean }>,
+) => {
+  const { readonly, hideAnswerHistory } = props;
   const { selectedQuestion } = useQuestionContext();
   const { t } = useTranslation();
   const [selectedTab, setSelectedTab] = useState<FooterTab>("evidences");
@@ -72,6 +75,7 @@ const Tabs = (props: Readonly<{ readonly?: boolean }>) => {
           selectedQuestion?.counts?.answerHistories ?? answerHistory?.length,
         data: answerHistory ?? [],
         state: historyState,
+        disabled: hideAnswerHistory,
       },
     ],
     [
@@ -123,6 +127,7 @@ const Tabs = (props: Readonly<{ readonly?: boolean }>) => {
         <TabList onChange={handleChange} aria-label="footer tabs">
           {configs.map((cfg) => (
             <Tab
+              disabled={cfg.disabled}
               key={cfg.value}
               value={cfg.value}
               label={
@@ -130,10 +135,7 @@ const Tabs = (props: Readonly<{ readonly?: boolean }>) => {
                   variant="bodyMedium"
                   sx={{
                     textTransform: "none",
-                    color:
-                      selectedTab === cfg.value
-                        ? "primary.main"
-                        : "background.secondaryDark",
+
                     fontWeight: selectedTab === cfg.value ? 600 : 400,
                   }}
                 >

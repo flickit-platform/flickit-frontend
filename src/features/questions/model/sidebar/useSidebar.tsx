@@ -44,7 +44,7 @@ export function useSidebar(questions: IQuestionInfo[]) {
       if (index === navigation.absoluteIndex) return;
       navigation.selectAt(index);
     },
-    [navigation.absoluteIndex, navigation.selectAt],
+    [navigation.absoluteIndex],
   );
 
   return {

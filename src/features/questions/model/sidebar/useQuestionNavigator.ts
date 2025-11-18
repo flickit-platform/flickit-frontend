@@ -38,7 +38,10 @@ export function useQuestionNavigator(
   const absoluteIndex = useMemo(() => {
     const oneBased = Number(questionIndex) || 1;
     const zeroBased = Math.max(1, oneBased) - 1;
-    return Math.min(zeroBased, Math.max(questions.length - 1, 0));
+    const isReviewPage = globalThis.location.pathname.includes("review")
+      ? -10
+      : zeroBased;
+    return Math.min(zeroBased, Math.max(questions.length - 1, 0), isReviewPage);
   }, [questionIndex, questions.length]);
 
   const filteredIndex = useMemo(() => {
@@ -58,6 +61,12 @@ export function useQuestionNavigator(
     [spaceId, page, assessmentId, questionnaireId],
   );
 
+  const makeReviewPath = useCallback(
+    () =>
+      `/${spaceId}/assessments/${page}/${assessmentId}/questionnaires/${questionnaireId}/review`,
+    [spaceId, page, assessmentId, questionnaireId],
+  );
+
   const selectAt = useCallback((index: number) => {
     if (!questions.length) return;
     const safeIndex = Math.min(
@@ -71,8 +80,8 @@ export function useQuestionNavigator(
   }, []);
 
   useEffect(() => {
-    dispatch(setSelectedQuestion(questions[Number(questionIndex) - 1]));
-  }, [questionIndex]);
+    dispatch(setSelectedQuestion(questions[absoluteIndex]));
+  }, [absoluteIndex]);
 
   const goPrevious = useCallback(() => {
     if (!filteredQuestions?.length || !activeQuestion) return;
@@ -87,10 +96,16 @@ export function useQuestionNavigator(
   }, [filteredQuestions, activeQuestion, questions, selectAt]);
 
   const goNext = useCallback(() => {
+    console.log(activeQuestion);
+
     if (!filteredQuestions?.length || !activeQuestion) return;
     const cur = filteredQuestions.findIndex(
       (q) => q?.index === activeQuestion.index || q?.id === activeQuestion.id,
     );
+
+    if (cur === filteredQuestions.length - 1) {
+      navigate(makeReviewPath());
+    }
 
     if (cur === -1 || cur >= filteredQuestions.length - 1) return;
     const nextObj = filteredQuestions[cur + 1];
