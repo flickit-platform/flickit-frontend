@@ -9,7 +9,7 @@ export const ISSUE_CATALOG = [
     showAsChip: true,
     showInFilter: true,
     matches: (questionIssues: QuestionIssue) =>
-      !!questionIssues.isAnsweredWithLowConfidence,
+      !!questionIssues?.isAnsweredWithLowConfidence,
   },
   {
     id: "noevidence",
@@ -18,7 +18,7 @@ export const ISSUE_CATALOG = [
     showAsChip: true,
     showInFilter: true,
     matches: (questionIssues: QuestionIssue) =>
-      !!questionIssues.isAnsweredWithoutEvidences,
+      !!questionIssues?.isAnsweredWithoutEvidences,
   },
   {
     id: "unresolved",
@@ -27,7 +27,7 @@ export const ISSUE_CATALOG = [
     showAsChip: true,
     showInFilter: true,
     matches: (questionIssues: QuestionIssue) =>
-      (questionIssues.unresolvedCommentsCount ?? 0) > 0,
+      (questionIssues?.unresolvedCommentsCount ?? 0) > 0,
   },
   {
     id: "unapproved",
@@ -36,7 +36,7 @@ export const ISSUE_CATALOG = [
     showAsChip: true,
     showInFilter: true,
     matches: (questionIssues: QuestionIssue) =>
-      !!questionIssues.hasUnapprovedAnswer,
+      !!questionIssues?.hasUnapprovedAnswer,
   },
   {
     id: "unanswered",
@@ -44,7 +44,7 @@ export const ISSUE_CATALOG = [
     chipTone: "error",
     showAsChip: false,
     showInFilter: true,
-    matches: (questionIssues: QuestionIssue) => !!questionIssues.isUnanswered,
+    matches: (questionIssues: QuestionIssue) => !!questionIssues?.isUnanswered,
   },
 ] as const satisfies Readonly<IssueDefinition[]>;
 

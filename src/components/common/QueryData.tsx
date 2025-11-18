@@ -8,7 +8,7 @@ import ErrorDataLoading from "./errors/ErrorDataLoading";
 import { ErrorNotFoundOrAccessDenied } from "./errors/ErrorNotFoundOrAccessDenied";
 import GettingThingsReadyLoading from "./loadings/GettingThingsReadyLoading";
 
-interface IQueryDataProps<T> {
+export interface IQueryDataProps<T> {
   loadingComponent?: ReactNode;
   emptyDataComponent?: ReactNode;
   errorComponent?: ReactNode;

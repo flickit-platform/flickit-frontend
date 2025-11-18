@@ -9,11 +9,11 @@ import {
   setSelectedQuestion,
   useQuestionContext,
   useQuestionDispatch,
-} from "../context";
+} from "../../context";
 import { useAuthContext } from "@/providers/auth-provider";
 import { capitalizeFirstChar } from "@/utils/helpers";
-import { EVIDENCE_TYPE } from "../ui/CreateForm";
-import { useUpdateQuestionIssues } from "./useQuestionIssues";
+import { EVIDENCE_TYPE } from "../../ui/question/CreateForm";
+import { IQuestionsModel } from "@/types";
 
 type FormValues = {
   description: string;
@@ -60,6 +60,15 @@ export function useCreateEvidenceForm({
   const defaultType = showTabs ? EVIDENCE_TYPE.POSITIVE : null;
 
   const { service } = useServiceContext();
+
+  const fetchQuestionIssues = useQuery<IQuestionsModel>({
+    service: (args, config) =>
+      service.assessments.questionnaire.getQuestionIssues(
+        { assessmentId, questionId: selectedQuestion?.id },
+        config,
+      ),
+    runOnMount: false,
+  });
   const { assessmentId = "" } = useParams();
   const createEvidence = useQuery({
     service: (args, config) => service.evidence.create(args, config),
@@ -80,8 +89,6 @@ export function useCreateEvidenceForm({
       autoOpenAttachment: false,
     },
   });
-
-  const { updateQuestionIssues } = useUpdateQuestionIssues();
 
   const { setValue, handleSubmit, watch, reset } = formMethods;
 
@@ -135,16 +142,25 @@ export function useCreateEvidenceForm({
         setValue("type", defaultType);
         setTab(EVIDENCE_TYPE.POSITIVE);
 
-        const updatedQuestion = {
-          ...selectedQuestion,
-          counts: {
-            ...selectedQuestion.counts,
-            [variant]: selectedQuestion.counts[variant] + 1,
-          },
-        };
-        dispatch(setSelectedQuestion(updatedQuestion));
-
-        updateQuestionIssues(updatedQuestion);
+        let resIssues = selectedQuestion.issues;
+        await fetchQuestionIssues
+          .query({
+            questionId: selectedQuestion.id,
+          })
+          .then((res) => {
+            resIssues = res;
+          })
+          .finally(() => {
+            const updatedQuestion = {
+              ...selectedQuestion,
+              counts: {
+                ...selectedQuestion.counts,
+                [variant]: selectedQuestion.counts[variant] + 1,
+              },
+              issues: resIssues,
+            };
+            dispatch(setSelectedQuestion(updatedQuestion));
+          });
       });
   };
 

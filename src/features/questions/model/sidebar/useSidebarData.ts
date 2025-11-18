@@ -76,7 +76,6 @@ export function useSidebarData({
       );
       if (filteredQuestions.length > 0 && index === -1) {
         navigation.selectAt(filteredQuestions[0].index - 1);
-        dispatch(setSelectedQuestion(filteredQuestions[0]));
       }
     }
   }, [filteredQuestions]);

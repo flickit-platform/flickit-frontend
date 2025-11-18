@@ -15,7 +15,7 @@ import { Text } from "@/components/common/Text";
 import { useTranslation } from "react-i18next";
 import useFetchData from "../../model/footer/useFetchData";
 import Panel from "./Panel";
-import CreateForm from "../CreateForm";
+import CreateForm from "../question/CreateForm";
 import { useQuestionContext } from "../../context";
 
 type FooterTab = "evidences" | "comments" | "history";
@@ -34,8 +34,10 @@ type PanelConfig = {
   state: PanelState;
 };
 
-const Tabs = (props: Readonly<{ readonly?: boolean }>) => {
-  const { readonly } = props;
+const Tabs = (
+  props: Readonly<{ readonly?: boolean; hideAnswerHistory?: boolean }>,
+) => {
+  const { readonly, hideAnswerHistory } = props;
   const { selectedQuestion } = useQuestionContext();
   const { t } = useTranslation();
   const [selectedTab, setSelectedTab] = useState<FooterTab>("evidences");

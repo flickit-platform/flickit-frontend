@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo } from "react";
-import { useQuestionContext } from "../context";
+import { useQuestionContext } from "../../context";
 import {
   Box,
   Divider,
@@ -23,17 +23,20 @@ import {
   RadioButtonUncheckedRounded,
 } from "@mui/icons-material";
 import { styles } from "@styles";
-import { useQuestionNavigator } from "../model/sidebar/useQuestionNavigator";
+import { useQuestionNavigator } from "../../model/sidebar/useQuestionNavigator";
 import { useAssessmentMode } from "@/hooks/useAssessmentMode";
-import { useAnswerSubmit } from "../model/useAnswerSubmit";
+import { useAnswerSubmit } from "../../model/question/useAnswerSubmit";
 import useDialog from "@/hooks/useDialog";
 import MoreActions from "@common/MoreActions";
 import useMenu from "@/hooks/useMenu";
 import ReportGmailerrorredIcon from "@mui/icons-material/ReportGmailerrorred";
 import languageDetector from "@/utils/language-detector";
 import ReportDialog from "./ReportDialog";
+import { IPermissions } from "@/types";
 
-const Body = () => {
+const Body = (props: Readonly<{ permissions: IPermissions }>) => {
+  const { permissions }: { permissions: IPermissions } = props;
+
   const { t } = useTranslation();
   const {
     selectedQuestion: activeQuestion,
@@ -322,7 +325,7 @@ const Body = () => {
                       color: "outline.variant",
                     },
                   }}
-                  disabled={notApplicable}
+                  disabled={notApplicable || !permissions.answerQuestion}
                 >
                   <Checkbox
                     checked={isSelectedNow}
@@ -393,7 +396,10 @@ const Body = () => {
               color="primary"
               onClick={onSubmit}
               loading={isLoading}
-              disabled={selectedOption && confidence == null}
+              disabled={
+                (selectedOption && confidence == null) ||
+                !permissions.answerQuestion
+              }
             >
               {t("common.submit")}
             </LoadingButton>
@@ -430,6 +436,7 @@ const Body = () => {
               <Text variant="bodyMedium">{t("common.confidenceLevel")}</Text>
 
               <Rating
+                disabled={!permissions.answerQuestion}
                 value={current}
                 onChange={(_, v) => setConfidence(v ?? null)}
                 size="medium"
@@ -468,6 +475,7 @@ const Body = () => {
                   onChange={(_, checked) => setAutoNext(checked)}
                   size="small"
                   sx={{ p: 0, px: 0.5 }}
+                  disabled={!permissions.answerQuestion}
                 />
               }
               label={

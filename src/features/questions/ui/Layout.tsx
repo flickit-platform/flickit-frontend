@@ -1,4 +1,4 @@
-import { useQuestions } from "../model/useQuestion";
+import { useQuestions } from "../model/question/useQuestion";
 import LoadingSkeletonOfQuestions from "@/components/common/loadings/LoadingSkeletonOfQuestions";
 import { Box } from "@mui/material";
 import QueryData from "@/components/common/QueryData";

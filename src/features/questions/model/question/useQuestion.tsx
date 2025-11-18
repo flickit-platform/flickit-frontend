@@ -1,6 +1,6 @@
 import { useServiceContext } from "@/providers/service-provider";
 import { useEffect } from "react";
-import { setQuestions, useQuestionDispatch } from "../context";
+import { setQuestions, useQuestionDispatch } from "../../context";
 import { useParams } from "react-router-dom";
 import { IQuestionsModel } from "@/types";
 import { useQuery } from "@/hooks/useQuery";
@@ -27,15 +27,6 @@ export const useQuestions = () => {
     runOnMount: false,
   });
 
-  const fetchPathInfo = useQuery({
-    service: (args, config) =>
-      service.common.getPathInfo(
-        { questionnaireId, assessmentId, ...args },
-        config,
-      ),
-    runOnMount: false,
-  });
-
   useEffect(() => {
     questionsQuery
       .query({ page: 0 })
@@ -50,5 +41,5 @@ export const useQuestions = () => {
       });
   }, [questionnaireId]);
 
-  return { fetchPathInfo, questionsQuery };
+  return { questionsQuery };
 };

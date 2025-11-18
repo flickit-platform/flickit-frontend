@@ -35,10 +35,8 @@ export const questionnaire = {
 
   getNext(
     args: {
-      questionnaireId: TId;
-      assessmentId: TId;
-      size: number;
-      page: number;
+      questionnaireId: string;
+      assessmentId: string;
     },
     config?: AxiosRequestConfig<any>,
   ) {
