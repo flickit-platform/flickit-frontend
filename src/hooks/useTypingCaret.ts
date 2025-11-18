@@ -8,7 +8,7 @@ export function useTypingCaret(idleMs = 500) {
   const kick = useCallback(() => {
     set(true);
     if (t.current !== null) window.clearTimeout(t.current);
-    t.current = globalThis.setTimeout(() => set(false), idleMs);
+    t.current = window.setTimeout(() => set(false), idleMs);
   }, [idleMs]);
 
   useEffect(() => {

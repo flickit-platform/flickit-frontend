@@ -1,7 +1,7 @@
 import { render, fireEvent, screen } from "@testing-library/react";
 import MaturityLevelList from "../MaturityLevelList";
 import { IMaturityLevel } from "@/types/index";
-import { vi } from "vitest";
+import { vi, expect } from "vitest";
 import { DeleteConfirmationDialog } from "@common/dialogs/DeleteConfirmationDialog";
 import { KitLanguageProvider } from "@/providers/kit-provider";
 

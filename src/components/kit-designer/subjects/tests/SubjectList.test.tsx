@@ -1,5 +1,5 @@
 import { render, fireEvent, screen } from "@testing-library/react";
-import { vi } from "vitest";
+import { vi, expect } from "vitest";
 import ListOfItems from "../../common/GeneralList";
 import { KitLanguageProvider } from "@/providers/kit-provider";
 
