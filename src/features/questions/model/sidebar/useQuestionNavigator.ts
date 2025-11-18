@@ -38,7 +38,7 @@ export function useQuestionNavigator(
   const absoluteIndex = useMemo(() => {
     const oneBased = Number(questionIndex) || 1;
     const zeroBased = Math.max(1, oneBased) - 1;
-    const isReviewPage = window.location.pathname.includes("review")
+    const isReviewPage = globalThis.location.pathname.includes("review")
       ? -10
       : zeroBased;
     return Math.min(zeroBased, Math.max(questions.length - 1, 0), isReviewPage);

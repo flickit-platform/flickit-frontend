@@ -1,4 +1,4 @@
-import { IQuestionnairesModel, TId } from "@/types";
+import { IQuestionnairesModel } from "@/types";
 import { useQuestionContext } from "../../context";
 import { useSidebar } from "../sidebar/useSidebar";
 import {

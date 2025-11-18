@@ -15,7 +15,7 @@ import { useLangDispatch } from "./providers/lang-provider";
 import { initClarity } from "./utils/clarity";
 
 function getLangFromHash() {
-  const hash = window.location.hash;
+  const hash = globalThis.location.hash;
   const paramsString = hash.split("?")[1];
   if (!paramsString) return null;
   const params = new URLSearchParams(paramsString);
@@ -29,7 +29,7 @@ function App() {
 
   const [searchParams] = useSearchParams();
   let lang = searchParams.get("lang");
-  if (!lang && window.location.hash) {
+  if (!lang && globalThis.location.hash) {
     const hashLang = getLangFromHash();
     if (hashLang) lang = hashLang;
   }

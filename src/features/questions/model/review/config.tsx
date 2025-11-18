@@ -2,8 +2,6 @@ import SuccessCheck from "@/assets/svg/success-check.svg";
 import FailureEmoji from "@/assets/svg/failure-emoji.svg";
 import WarningEmptyState from "@/assets/svg/warning-empty-state.svg";
 import type { TypographyProps } from "@mui/material/Typography";
-import { useSidebar } from "../sidebar/useSidebar";
-import { useQuestionContext } from "../../context";
 
 export type ReviewStatusId = "complete" | "empty" | "incomplete";
 

@@ -56,7 +56,7 @@ export function useAnswerSubmit() {
   useEffect(() => {
     return () => {
       if (loadingTimeoutRef.current) {
-        window.clearTimeout(loadingTimeoutRef.current);
+        globalThis.clearTimeout(loadingTimeoutRef.current);
       }
     };
   }, []);

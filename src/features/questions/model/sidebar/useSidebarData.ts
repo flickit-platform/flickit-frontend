@@ -1,4 +1,4 @@
-import { questionActions, setFilteredQuestions, setSelectedQuestion, useQuestionDispatch } from "../../context";
+import { setFilteredQuestions, useQuestionDispatch } from "../../context";
 import type { IQuestionInfo, TId } from "@/types";
 import { SidebarData } from "../../types";
 import { useEffect, useMemo } from "react";

@@ -32,6 +32,7 @@ type PanelConfig = {
   count: number;
   data: any[];
   state: PanelState;
+  disabled?: boolean;
 };
 
 const Tabs = (
@@ -74,6 +75,7 @@ const Tabs = (
           selectedQuestion?.counts?.answerHistories ?? answerHistory?.length,
         data: answerHistory ?? [],
         state: historyState,
+        disabled: hideAnswerHistory,
       },
     ],
     [
@@ -125,6 +127,7 @@ const Tabs = (
         <TabList onChange={handleChange} aria-label="footer tabs">
           {configs.map((cfg) => (
             <Tab
+              disabled={cfg.disabled}
               key={cfg.value}
               value={cfg.value}
               label={
@@ -132,10 +135,7 @@ const Tabs = (
                   variant="bodyMedium"
                   sx={{
                     textTransform: "none",
-                    color:
-                      selectedTab === cfg.value
-                        ? "primary.main"
-                        : "background.secondaryDark",
+
                     fontWeight: selectedTab === cfg.value ? 600 : 400,
                   }}
                 >
