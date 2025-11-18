@@ -21,6 +21,7 @@ import { ASSESSMENT_MODE } from "@/utils/enum-type";
 import InputCustomEditor from "../common/fields/InputCustomEditor";
 import showToast from "@/utils/toast-error";
 import { Text } from "../common/Text";
+import QueryData from "../common/QueryData";
 
 const maxLength = 40;
 
@@ -28,7 +29,7 @@ const DashbordContainer: React.FC = () => {
   const location = useLocation();
   const [selectedTab, setSelectedTab] = useState<string>("dashboard");
   const { service } = useServiceContext();
-  const { assessmentId = "" } = useParams<{ assessmentId?: string }>();
+  const { assessmentId = "", questionnaireId = "" } = useParams();
   const outlet = useOutlet();
   const { assessmentInfo, permissions, dispatch } = useAssessmentContext();
 
@@ -45,7 +46,10 @@ const DashbordContainer: React.FC = () => {
 
   const fetchPathInfo = useQuery<PathInfo>({
     service: (args, config) =>
-      service.common.getPathInfo({ assessmentId, ...(args ?? {}) }, config),
+      service.common.getPathInfo(
+        { assessmentId, questionnaireId, ...(args ?? {}) },
+        config,
+      ),
     runOnMount: true,
   });
 
@@ -96,95 +100,109 @@ const DashbordContainer: React.FC = () => {
   };
   const theme = useTheme();
 
+  useEffect(() => {
+    fetchPathInfo.query();
+  }, [questionnaireId, assessmentId]);
+
   return (
-    <QueryBatchData
-      queryBatchData={[fetchPathInfo]}
-      renderLoading={() => <LoadingSkeletonOfAssessmentRoles />}
-      render={() => (
-        <Box sx={{ ...styles.centerCV }} m="auto" pb={3} gap={1}>
+    <>
+      <QueryData
+        {...fetchPathInfo}
+        renderLoading={() => <LoadingSkeletonOfAssessmentRoles />}
+        render={(pathInfo) => (
           <DashboardTitle
-            pathInfo={fetchPathInfo.data}
+            pathInfo={pathInfo}
             title={assessmentInfo?.title}
             permissions={permissions}
           />
+        )}
+      />
+      <Box sx={{ ...styles.centerCV }} m="auto" pb={3} gap={1}>
+        <Grid
+          container
+          columns={12}
+          alignItems="center"
+          justifyContent="flex-end"
+        >
+          <Grid
+            size={{
+              xs: titleLength < maxLength ? 7 : 12,
+              sm:
+                titleLength < maxLength || selectedTab === "settings"
+                  ? 6.8
+                  : 12,
+            }}
+            sx={{
+              my: assessmentInfo?.mode?.code === ASSESSMENT_MODE.QUICK ? 2 : 0,
+            }}
+          >
+            {selectedTab === "settings" ? (
+              <Text color="primary" textAlign="left" variant="headlineLarge">
+                <IconButton
+                  color="primary"
+                  component={Link}
+                  to={`./questionnaires/`}
+                >
+                  <ArrowForward
+                    sx={{
+                      ...theme.typography.headlineMedium,
+                      transform: `scaleX(${theme.direction === "rtl" ? 1 : -1})`,
+                    }}
+                  />
+                </IconButton>
+                {t("common.settings")}
+              </Text>
+            ) : (
+              <Box paddingX={isEditing ? 1 : 0}>
+                {isEditing ? (
+                  <InputCustomEditor
+                    value={editedValue}
+                    inputHandler={(e: any) => setEditedValue(e.target.value)}
+                    handleDone={handleSaveEdit}
+                    handleCancel={handleCancelEdit}
+                    hasError={false}
+                  />
+                ) : (
+                  <Text
+                    color="primary"
+                    textAlign="left"
+                    variant="headlineLarge"
+                  >
+                    {title}
+                    {permissions?.grantUserAssessmentRole && (
+                      <IconButton color="primary" onClick={handleStartEdit}>
+                        <EditOutlined />
+                      </IconButton>
+                    )}
+                  </Text>
+                )}
+              </Box>
+            )}
+          </Grid>
 
           <Grid
-            container
-            columns={12}
-            alignItems="center"
-            justifyContent="flex-end"
+            size={{
+              xs: titleLength < maxLength ? 5 : 12,
+              sm:
+                titleLength < maxLength || selectedTab === "settings"
+                  ? 5.2
+                  : 12,
+            }}
+            sx={{ display: "flex", my: 1, justifyContent: "flex-end" }}
           >
-            <Grid
-              size={{xs: titleLength < maxLength ? 7 : 12, sm: titleLength < maxLength || selectedTab === "settings" ? 6.8 : 12  }}
-              sx={{
-                my:
-                  assessmentInfo?.mode?.code === ASSESSMENT_MODE.QUICK ? 2 : 0,
-              }}
-            >
-              {selectedTab === "settings" ? (
-                <Text color="primary" textAlign="left" variant="headlineLarge">
-                  <IconButton
-                    color="primary"
-                    component={Link}
-                    to={`./questionnaires/`}
-                  >
-                    <ArrowForward
-                      sx={{
-                        ...theme.typography.headlineMedium,
-                        transform: `scaleX(${theme.direction === "rtl" ? 1 : -1})`,
-                      }}
-                    />
-                  </IconButton>
-                  {t("common.settings")}
-                </Text>
-              ) : (
-                <Box paddingX={isEditing ? 1 : 0}>
-                  {isEditing ? (
-                    <InputCustomEditor
-                      value={editedValue}
-                      inputHandler={(e: any) => setEditedValue(e.target.value)}
-                      handleDone={handleSaveEdit}
-                      handleCancel={handleCancelEdit}
-                      hasError={false}
-                    />
-                  ) : (
-                    <Text
-                      color="primary"
-                      textAlign="left"
-                      variant="headlineLarge"
-                    >
-                      {title}
-                      {permissions?.grantUserAssessmentRole && (
-                        <IconButton color="primary" onClick={handleStartEdit}>
-                          <EditOutlined />
-                        </IconButton>
-                      )}
-                    </Text>
-                  )}
-                </Box>
-              )}
-            </Grid>
-
-            <Grid
-              size={{xs: titleLength < maxLength ? 5 : 12, sm: titleLength < maxLength || selectedTab === "settings" ? 5.2 : 12}}
-              sx={{ display: "flex", my: 1, justifyContent: "flex-end" }}
-            >
-              <MainTabs
-                onTabChange={handleTabChange}
-                selectedTab={selectedTab}
-                flexColumn={titleLength < maxLength}
-              />
-            </Grid>
-
-            <Grid sx={{width: "100%"}} container mt={2}>
-              <Grid size={{xs: 12}}>
-                {outlet}
-              </Grid>
-            </Grid>
+            <MainTabs
+              onTabChange={handleTabChange}
+              selectedTab={selectedTab}
+              flexColumn={titleLength < maxLength}
+            />
           </Grid>
-        </Box>
-      )}
-    />
+
+          <Grid sx={{ width: "100%" }} container mt={2}>
+            <Grid size={{ xs: 12 }}>{outlet}</Grid>
+          </Grid>
+        </Grid>
+      </Box>
+    </>
   );
 };
 

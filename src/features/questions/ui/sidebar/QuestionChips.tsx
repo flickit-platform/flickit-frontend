@@ -17,7 +17,7 @@ export const QuestionChips = memo(({ issues, show }: QuestionChipsProps) => {
   if (!show || !chips.length) return null;
 
   return (
-    <Box sx={{ mt: 1, display: 'flex', gap: 1, flexWrap: 'wrap' }}>
+    <Box sx={{ mt: 0.5, display: 'flex', gap: 1, flexWrap: 'wrap' }}>
       {chips.map((chip) => (
         <Chip
           key={chip.id}
@@ -30,7 +30,7 @@ export const QuestionChips = memo(({ issues, show }: QuestionChipsProps) => {
               borderRadius: 1,
               bgcolor: palette.states?.selected,
               color: palette.main,
-              '& .MuiChip-label': { p: 0.5 },
+              '& .MuiChip-label': { p: 0.5,...theme.typography.labelSmall },
             };
           }}
         />

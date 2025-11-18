@@ -12,12 +12,15 @@ import { useParams } from "react-router-dom";
 
 export function useReviewStatus(): ReviewStatusConfig & {
   status: ReviewStatusId;
+  answeredCount: number;
+  questionsCount: number;
   completionPercent: number;
   getNextQuestionnaire: any;
   fetchPathInfo: any;
 } {
   const { questions } = useQuestionContext();
-  const { completionPercent } = useSidebar(questions);
+  const { completionPercent, answeredCount, questionsCount } =
+    useSidebar(questions);
   const { service } = useServiceContext();
   const { assessmentId = "", questionnaireId = "" } = useParams();
 
@@ -58,5 +61,7 @@ export function useReviewStatus(): ReviewStatusConfig & {
     completionPercent: percent,
     getNextQuestionnaire,
     fetchPathInfo,
+    answeredCount,
+    questionsCount,
   };
 }

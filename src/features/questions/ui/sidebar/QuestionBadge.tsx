@@ -46,7 +46,7 @@ export const QuestionBadge = memo(({
       )}
       <Text
         color={isActive ? 'primary.contrastText' : 'text.primary'}
-        variant="bodyMedium"
+        variant="bodySmall"
       >
         {index + 1}
       </Text>

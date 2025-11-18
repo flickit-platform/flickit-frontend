@@ -97,7 +97,6 @@ const SidebarContent = memo(({ questions }: Readonly<SideBarProps>) => {
               py: uiState.isOpen ? 1 : 0.5,
               flex: 1,
               scrollbarGutter: "stable",
-              "& .MuiListItemButton-root": { my: 1 },
             },
           ]}
         >

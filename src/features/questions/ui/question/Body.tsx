@@ -279,7 +279,10 @@ const Body = (props: Readonly<{ permissions: IPermissions }>) => {
             const hasUnapproved =
               activeQuestion?.issues?.hasUnapprovedAnswer === true;
 
-            const showApproveButton = hasUnapproved && prevSelectedId === id;
+            const showApproveButton =
+              hasUnapproved &&
+              prevSelectedId === id &&
+              permissions.approveAnswer;
 
             const borderColor = showApproveButton
               ? "tertiary.main"
