@@ -50,6 +50,8 @@ interface SidebarUIState {
 }
 
 interface SidebarData {
+  answeredCount: number,
+  questionsCount: number,
   completionPercent: number;
   hasActiveFilters: boolean;
   filteredQuestionsList: ListItem[];

@@ -19,6 +19,19 @@ export function useSidebarData({
   const dispatch = useQuestionDispatch();
   const navigation = useQuestionNavigator(questions);
 
+  const answeredCount = useMemo(() => {
+    if (!questions.length) return 0;
+    const answeredCount = questions.reduce(
+      (acc, question) => acc + Number(question.answer?.selectedOption != null),
+      0,
+    );
+    return answeredCount;
+  }, [questions]);
+
+  const questionsCount = useMemo(() => {
+    return questions.length;
+  }, [questions]);
+
   const completionPercent = useMemo(() => {
     if (!questions.length) return 0;
     const answeredCount = questions.reduce(
@@ -81,6 +94,8 @@ export function useSidebarData({
   }, [filteredQuestions]);
 
   return {
+    answeredCount,
+    questionsCount,
     completionPercent,
     hasActiveFilters,
     filteredQuestionsList,

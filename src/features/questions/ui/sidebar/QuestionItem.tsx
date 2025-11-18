@@ -78,7 +78,7 @@ export const QuestionItem = memo(
               [paddingSide]: 1.5,
             }}
             primary={
-              <Text variant="bodyMedium" textAlign="justify">
+              <Text variant="bodySmall" textAlign="justify">
                 {title}
               </Text>
             }

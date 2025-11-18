@@ -8,11 +8,17 @@ import ReviewScreenSkeleton from "../ui/review/ReviewScreenSkleton";
 import QueryBatchData from "@/components/common/QueryBatchData";
 
 const ReviewScreen = () => {
-  const { image, texts, status, getNextQuestionnaire, fetchPathInfo } =
-    useReviewStatus();
+  const {
+    image,
+    texts,
+    status,
+    getNextQuestionnaire,
+    fetchPathInfo,
+    answeredCount,
+    questionsCount,
+  } = useReviewStatus();
   const navigate = useNavigate();
 
-  
   return (
     <QueryBatchData
       queryBatchData={[fetchPathInfo, getNextQuestionnaire]}
@@ -44,7 +50,7 @@ const ReviewScreen = () => {
               <Box flex={1} sx={{ ...styles.centerCVH }}>
                 {texts.map((t, idx) => (
                   <Text
-                  textAlign="justify"
+                    textAlign="justify"
                     key={idx}
                     variant={t.variant}
                     color={t.color}
@@ -60,6 +66,8 @@ const ReviewScreen = () => {
                       }
                       values={{
                         questionnaire: pathInfo?.questionnaire?.title,
+                        answeredQuestions: answeredCount,
+                        totalQuestions: questionsCount,
                       }}
                       components={{
                         style: (

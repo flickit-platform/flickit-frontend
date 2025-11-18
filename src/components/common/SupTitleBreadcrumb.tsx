@@ -3,7 +3,6 @@ import MuiLink from "@mui/material/Link";
 import { Link } from "react-router-dom";
 import { styles } from "@styles";
 import Box from "@mui/material/Box";
-import { LoadingSkeleton } from "./loadings/LoadingSkeleton";
 import Chip from "@mui/material/Chip";
 import { useTheme } from "@mui/material/styles";
 import uniqueId from "@/utils/unique-id";
