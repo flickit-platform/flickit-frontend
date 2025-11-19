@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import QueryBatchData from "@common/QueryBatchData";
@@ -7,7 +6,7 @@ import { useQuery } from "@/hooks/useQuery";
 import { AssessmentSubjectList } from "./AssessmentSubjectList";
 import { useServiceContext } from "@/providers/service-provider";
 import LoadingSkeletonOfAssessmentReport from "@common/loadings/LoadingSkeletonOfAssessmentReport";
-import { ECustomErrorType, RolesType } from "@/types/index";
+import { RolesType } from "@/types/index";
 import { styles } from "@styles";
 import { AssessmentInsight } from "./AssessmentInsight";
 import PermissionControl from "../../../common/PermissionControl";
@@ -27,22 +26,7 @@ const AssessmentReportContainer = (props: any) => {
       service.assessments.insight.getList({ assessmentId }, config),
     toastError: false,
   });
-  const calculateMaturityLevelQuery = useQuery({
-    service: (args, config) =>
-      service.assessments.info.calculateMaturity(
-        args ?? { assessmentId },
-        config,
-      ),
-    runOnMount: false,
-  });
-  const calculateConfidenceLevelQuery = useQuery({
-    service: (args, config) =>
-      service.assessments.info.calculateConfidence(
-        args ?? { assessmentId },
-        config,
-      ),
-    runOnMount: false,
-  });
+
   const assessmentTotalProgress = useQuery({
     service: (args, config) =>
       service.assessments.info.getProgress(
@@ -50,39 +34,6 @@ const AssessmentReportContainer = (props: any) => {
         config,
       ),
   });
-  const runCalculationWithRefresh = async (calculationQuery: any) => {
-    await calculationQuery.query();
-    await fetchAssessmentInsight.query();
-    await fetchInsightsIssues.query();
-  };
-
-  const calculate = () =>
-    runCalculationWithRefresh(calculateMaturityLevelQuery);
-  const calculateConfidenceLevel = () =>
-    runCalculationWithRefresh(calculateConfidenceLevelQuery);
-
-  useEffect(() => {
-    if (
-      fetchAssessmentInsight.errorObject?.response?.data?.code ==
-      ECustomErrorType.CALCULATE_NOT_VALID
-    ) {
-      calculate();
-    }
-    if (
-      fetchAssessmentInsight.errorObject?.response?.data?.code ==
-      ECustomErrorType.CONFIDENCE_CALCULATION_NOT_VALID
-    ) {
-      calculateConfidenceLevel();
-    }
-    if (
-      fetchAssessmentInsight?.errorObject?.response?.data?.code ===
-      ECustomErrorType.DEPRECATED
-    ) {
-      service.assessments.info.migrateKitVersion({ assessmentId }).then(() => {
-        fetchAssessmentInsight.query();
-      });
-    }
-  }, [fetchAssessmentInsight.errorObject]);
 
   const fetchInsightsIssues = useQuery<RolesType>({
     service: (args, config) =>
