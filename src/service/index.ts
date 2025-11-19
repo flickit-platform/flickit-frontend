@@ -27,15 +27,25 @@ declare module "axios" {
 const getCurrentLocale = () =>
   i18next.language ?? navigator.language ?? "en-US";
 
-function getAssessmentIdFromUrl(u?: string): string | undefined {
-  if (!u) return;
-  const path = String(u).split("?")[0];
+function getAssessmentId(): string | undefined {
+  if (typeof window === "undefined") return;
+
+  const path = window.location.pathname || "";
   const parts = path.split("/").filter(Boolean);
+
   const i = parts.findIndex((p) => p.toLowerCase() === "assessments");
   if (i === -1) return;
+
   const after = parts.slice(i + 1);
-  if (isNaN(Number(after[0]))) return after[0];
-  else return after[1];
+  if (!after.length) return;
+
+  const first = after[0];
+
+  if (first && first.length > 10) {
+    return first;
+  }
+  const second = after[1];
+  return second || undefined;
 }
 
 export const createService = (
@@ -87,7 +97,7 @@ export const createService = (
 
       if (!cfg || !code) throw error;
 
-      const assessmentId = getAssessmentIdFromUrl(cfg.url);
+      const assessmentId = getAssessmentId();
       if (!assessmentId) throw error;
 
       try {
