@@ -12,6 +12,7 @@ import { useAuthContext } from "@/providers/auth-provider";
 import { IQuestionsModel } from "@/types";
 import showToast from "@/utils/toast-error";
 import { ICustomError } from "@/utils/custom-error";
+import { useAssessmentContext } from "@/providers/assessment-provider";
 
 type OptionLike =
   | { id?: string | number; title?: string; index?: number }
@@ -21,6 +22,7 @@ type OptionLike =
 const MIN_LOADING_MS = 500;
 
 export function useAnswerSubmit() {
+  const { permissions } = useAssessmentContext();
   const { service } = useServiceContext();
   const { assessmentId = "", questionnaireId } = useParams();
   const { selectedQuestion, questions = [] } = useQuestionContext();
@@ -122,47 +124,48 @@ export function useAnswerSubmit() {
           approved:
             serverAnswer?.approved ?? selectedQuestion?.answer?.approved,
         };
-        let issuesRes = selectedQuestion.issues;
-        await fetchQuestionIssues
-          .query({
-            questionId: selectedQuestion.id,
-          })
-          .then((res) => {
-            issuesRes = res;
-          })
-          .finally(() => {
-            updatedItem = {
-              ...selectedQuestion,
-              answer: { ...(selectedQuestion.answer ?? null), ...nextAnswer },
-              counts: {
-                ...selectedQuestion.counts,
-                ...serverQuestion?.counts,
-                answerHistories: selectedQuestion.counts.answerHistories + 1,
-              },
-              issues: {
-                ...issuesRes,
-              },
-            };
+        let resIssues = selectedQuestion.issues;
 
-            const newAnswerHistory = {
-              createdBy: {
-                id: userInfo.id,
-                pictureLink: userInfo.pictureLink,
-                displayName: userInfo.displayName,
-              },
-              answer: {
-                ...updatedItem?.answer,
-                confidenceLevel: {
-                  ...updatedItem?.answer.confidenceLevel,
-                  title: "Fairly unsure",
-                },
-              },
-              creationTime: new Date().toISOString(),
-            };
-            dispatch(setSelectedQuestion(updatedItem));
+        if (permissions?.viewDashboard) {
+          await fetchQuestionIssues
+            .query({
+              questionId: selectedQuestion.id,
+            })
+            .then((res) => {
+              resIssues = res;
+            });
+        }
+        updatedItem = {
+          ...selectedQuestion,
+          answer: { ...(selectedQuestion.answer ?? null), ...nextAnswer },
+          counts: {
+            ...selectedQuestion.counts,
+            ...serverQuestion?.counts,
+            answerHistories: selectedQuestion.counts.answerHistories + 1,
+          },
+          issues: {
+            ...resIssues,
+          },
+        };
 
-            dispatch(addAnswerHistory(newAnswerHistory));
-          });
+        const newAnswerHistory = {
+          createdBy: {
+            id: userInfo.id,
+            pictureLink: userInfo.pictureLink,
+            displayName: userInfo.displayName,
+          },
+          answer: {
+            ...updatedItem?.answer,
+            confidenceLevel: {
+              ...updatedItem?.answer.confidenceLevel,
+              title: "Fairly unsure",
+            },
+          },
+          creationTime: new Date().toISOString(),
+        };
+        dispatch(setSelectedQuestion(updatedItem));
+
+        dispatch(addAnswerHistory(newAnswerHistory));
 
         return res;
       } catch (err) {
@@ -197,20 +200,20 @@ export function useAnswerSubmit() {
     if (!selectedQuestion?.id) return;
     const res = await approveAnswerQuery.query().then(async () => {
       let resIssues = selectedQuestion.issues;
-      await fetchQuestionIssues
-        .query({
-          questionId: selectedQuestion.id,
-        })
-        .then((res) => {
-          resIssues = res;
-        })
-        .finally(() => {
-          const updatedItem = {
-            ...selectedQuestion,
-            issues: resIssues,
-          };
-          dispatch(setSelectedQuestion(updatedItem));
-        });
+      if (permissions?.viewDashboard) {
+        await fetchQuestionIssues
+          .query({
+            questionId: selectedQuestion.id,
+          })
+          .then((res) => {
+            resIssues = res;
+          });
+      }
+      const updatedItem = {
+        ...selectedQuestion,
+        issues: resIssues,
+      };
+      dispatch(setSelectedQuestion(updatedItem));
     });
 
     return res;

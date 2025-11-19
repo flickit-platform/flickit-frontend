@@ -18,7 +18,7 @@ interface SidebarHeaderProps {
   progress: number;
   onOpenFilter: (e: React.MouseEvent<HTMLElement>) => void;
   hasActiveFilters: boolean;
-  isAdvancedMode: boolean;
+  displayFilter: boolean;
 }
 
 export const SidebarHeader = memo(
@@ -31,7 +31,7 @@ export const SidebarHeader = memo(
     progress,
     onOpenFilter,
     hasActiveFilters,
-    isAdvancedMode,
+    displayFilter,
   }: SidebarHeaderProps) => {
     const { t } = useTranslation();
     const rtl = i18next.language === "fa";
@@ -75,7 +75,7 @@ export const SidebarHeader = memo(
             sx={{ ...styles.centerV }}
           >
             <Text variant="semiBoldMedium">{title}</Text>
-            {isAdvancedMode && (
+            {displayFilter && (
               <Box display="flex" gap={0.75}>
                 <Tooltip
                   title={

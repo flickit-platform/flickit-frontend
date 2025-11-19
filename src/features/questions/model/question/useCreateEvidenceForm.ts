@@ -14,6 +14,7 @@ import { useAuthContext } from "@/providers/auth-provider";
 import { capitalizeFirstChar } from "@/utils/helpers";
 import { EVIDENCE_TYPE } from "../../ui/question/CreateForm";
 import { IQuestionsModel } from "@/types";
+import { useAssessmentContext } from "@/providers/assessment-provider";
 
 type FormValues = {
   description: string;
@@ -57,6 +58,7 @@ type UseCreateEvidenceFormResult = {
 export function useCreateEvidenceForm({
   showTabs,
 }: UseCreateEvidenceFormArgs): UseCreateEvidenceFormResult {
+  const { permissions } = useAssessmentContext();
   const defaultType = showTabs ? EVIDENCE_TYPE.POSITIVE : null;
 
   const { service } = useServiceContext();
@@ -143,24 +145,24 @@ export function useCreateEvidenceForm({
         setTab(EVIDENCE_TYPE.POSITIVE);
 
         let resIssues = selectedQuestion.issues;
-        await fetchQuestionIssues
-          .query({
-            questionId: selectedQuestion.id,
-          })
-          .then((res) => {
-            resIssues = res;
-          })
-          .finally(() => {
-            const updatedQuestion = {
-              ...selectedQuestion,
-              counts: {
-                ...selectedQuestion.counts,
-                [variant]: selectedQuestion.counts[variant] + 1,
-              },
-              issues: resIssues,
-            };
-            dispatch(setSelectedQuestion(updatedQuestion));
-          });
+        if (permissions?.viewDashboard) {
+          await fetchQuestionIssues
+            .query({
+              questionId: selectedQuestion.id,
+            })
+            .then((res) => {
+              resIssues = res;
+            });
+        }
+        const updatedQuestion = {
+          ...selectedQuestion,
+          counts: {
+            ...selectedQuestion.counts,
+            [variant]: selectedQuestion.counts[variant] + 1,
+          },
+          issues: resIssues,
+        };
+        dispatch(setSelectedQuestion(updatedQuestion));
       });
   };
 
