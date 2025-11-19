@@ -39,9 +39,9 @@ const SidebarContent = memo(({ questions }: Readonly<SideBarProps>) => {
     toggleSidebar,
     toggleIssueChips,
     handleSelectItem,
+    displayChips,
+    displayFilter,
   } = useSidebar(questions);
-
-  const { isAdvanced: isAdvancedMode } = useAssessmentMode();
 
   const {
     anchorEl,
@@ -79,7 +79,7 @@ const SidebarContent = memo(({ questions }: Readonly<SideBarProps>) => {
         progress={completionPercent}
         onOpenFilter={openFilterPopover}
         hasActiveFilters={hasActiveFilters}
-        isAdvancedMode={isAdvancedMode}
+        displayFilter={displayFilter}
       />
 
       <QuestionsFilter
@@ -105,7 +105,7 @@ const SidebarContent = memo(({ questions }: Readonly<SideBarProps>) => {
               <QuestionItem
                 {...item}
                 open={uiState.isOpen}
-                showChips={isAdvancedMode && uiState.showIssueChips}
+                showChips={displayChips}
                 onSelect={handleSelectItem}
               />
             </Box>

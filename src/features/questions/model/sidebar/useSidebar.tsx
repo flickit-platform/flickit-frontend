@@ -7,9 +7,13 @@ import { useSidebarData } from "./useSidebarData";
 import type { IQuestionInfo } from "@/types";
 import { getFilterOptionsMeta } from "./issues.registry";
 import { useQuestionNavigator } from "./useQuestionNavigator";
+import { useAssessmentContext } from "@/providers/assessment-provider";
+import { useAssessmentMode } from "@/hooks/useAssessmentMode";
 
 export function useSidebar(questions: IQuestionInfo[]) {
   const { t } = useTranslation();
+  const { permissions } = useAssessmentContext();
+  const { isAdvanced } = useAssessmentMode();
 
   const navigation = useQuestionNavigator(questions);
   const uiState = useSidebarUIState();
@@ -47,6 +51,14 @@ export function useSidebar(questions: IQuestionInfo[]) {
     [navigation.absoluteIndex],
   );
 
+  const displayFilter = useMemo(() => {
+    return permissions?.viewDashboard && isAdvanced;
+  }, [isAdvanced, permissions]);
+
+  const displayChips = useMemo(() => {
+    return uiState.showIssueChips && displayFilter;
+  }, [isAdvanced, uiState.showIssueChips]);
+
   return {
     uiState,
 
@@ -54,6 +66,9 @@ export function useSidebar(questions: IQuestionInfo[]) {
 
     sidebarWidth,
     isRTL,
+
+    displayFilter,
+    displayChips,
 
     toggleSidebar: uiState.toggleSidebar,
     toggleIssueChips: uiState.toggleIssueChips,
