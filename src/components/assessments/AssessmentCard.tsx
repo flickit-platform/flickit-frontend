@@ -138,7 +138,7 @@ const AssessmentCard = ({
     if (permissions.canViewReport && hasReport) {
       return `/${spaceId ?? defaultSpaceId ?? propSpaceId.id}/assessments/${id}/graphical-report/`;
     }
-    if (permissions.canViewQuestionnaires && isQuickMode) {
+    if (permissions.canViewQuestionnaires) {
       return `/${spaceId ?? defaultSpaceId ?? propSpaceId.id}/assessments/1/${id}/questionnaires`;
     }
     return "";
