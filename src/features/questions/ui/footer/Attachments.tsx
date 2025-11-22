@@ -150,12 +150,12 @@ const formatFileName = (baseName: string, extension: string) => {
 
 const validateFile = (file: File): string | null => {
   if (file.size > MAX_FILE_SIZE) {
-    return t("questions_temp.limitSizeExceeded");
+    return t("questions_temp.limitSizeExceededMessage");
   }
 
   const fileExtension = file.name.split(".").pop()?.toLowerCase();
   if (!fileExtension || !ALLOWED_FILE_TYPES.includes(fileExtension)) {
-    return t("questions_temp.unsupportedFileFormat");
+    return t("questions_temp.unsupportedFileFormatMessage");
   }
 
   return null;
@@ -393,7 +393,7 @@ export const Attachments: React.FC<{
               color="background.secondaryDark"
               sx={{ fontWeight: 600 }}
             >
-              {t("questions.attachments")} ({attachmentsCount})
+              {t("questions_temp.attachmentsTitle")} ({attachmentsCount})
             </Text>
           </Box>
         </AccordionSummary>
@@ -598,7 +598,7 @@ export const Attachments: React.FC<{
                   >
                     {selectedFile
                       ? selectedDisplayName
-                      : t("questions_temp.dropOrSelectFile")}
+                      : t("questions_temp.dropOrSelectFileLabel")}
                   </Text>
                   {selectedFile && (
                     <IconButton
@@ -629,7 +629,7 @@ export const Attachments: React.FC<{
                   fullWidth
                   value={description}
                   onChange={handleDescriptionChange}
-                  placeholder={t("questions_temp.attachmentDescription")}
+                  placeholder={t("questions_temp.attachmentDescriptionOptional")}
                   sx={(theme) => ({
                     bgcolor: "background.containerLowest",
                     "& .MuiInputBase-root": {
@@ -707,7 +707,7 @@ export const Attachments: React.FC<{
           onClose={() => dialogProps.onClose()}
           onConfirm={handleDeleteAttachment}
           content={{
-            category: t("questions_temp.attachment").toLowerCase(),
+            category: t("questions_temp.attachmentLabel").toLowerCase(),
             title: "",
           }}
         />

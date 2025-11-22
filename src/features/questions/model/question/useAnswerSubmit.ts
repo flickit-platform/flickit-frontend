@@ -96,33 +96,26 @@ export function useAnswerSubmit() {
       const startedAt = Date.now();
 
       try {
-        const res = await submitAnswer.query(payload);
-        const server = res?.data;
-        const serverQuestion = server?.question ?? server?.result ?? server;
-        const serverAnswer = serverQuestion?.answer;
+        // const server = res?.data;
+        // const serverQuestion = server?.question ?? server?.result ?? server;
+        // const serverAnswer = serverQuestion?.answer;
 
         let updatedItem: any = null;
 
         const nextAnswer = {
-          selectedOption:
-            serverAnswer?.selectedOption ??
-            (value
-              ? {
-                  id: value.id ?? null,
-                  index: (value as any)?.index,
-                  title: (value as any)?.title,
-                }
-              : null),
+          selectedOption: value
+            ? {
+                id: value.id ?? null,
+                index: (value as any)?.index,
+                title: (value as any)?.title,
+              }
+            : null,
           confidenceLevel:
-            serverAnswer?.selectedOption || value?.id
-              ? (serverAnswer?.confidenceLevel ??
-                (shouldAttach && confidenceLevelId != null
-                  ? { id: confidenceLevelId }
-                  : (selectedQuestion?.answer?.confidenceLevel ?? null)))
-              : null,
-          isNotApplicable: serverAnswer?.isNotApplicable ?? !!notApplicable,
-          approved:
-            serverAnswer?.approved ?? selectedQuestion?.answer?.approved,
+            shouldAttach && confidenceLevelId != null
+              ? { id: confidenceLevelId }
+              : (selectedQuestion?.answer?.confidenceLevel ?? null),
+          isNotApplicable: !!notApplicable,
+          approved: selectedQuestion?.answer?.approved,
         };
         let resIssues = selectedQuestion.issues;
 
@@ -140,7 +133,6 @@ export function useAnswerSubmit() {
           answer: { ...(selectedQuestion.answer ?? null), ...nextAnswer },
           counts: {
             ...selectedQuestion.counts,
-            ...serverQuestion?.counts,
             answerHistories: selectedQuestion.counts.answerHistories + 1,
           },
           issues: {
@@ -166,6 +158,7 @@ export function useAnswerSubmit() {
         dispatch(setSelectedQuestion(updatedItem));
 
         dispatch(addAnswerHistory(newAnswerHistory));
+        const res = await submitAnswer.query(payload);
 
         return res;
       } catch (err) {

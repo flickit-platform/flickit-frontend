@@ -52,45 +52,49 @@ const Tabs = (
     historyState,
   } = useFetchData();
 
-  const configs: PanelConfig[] = useMemo(
-    () => [
+  const configs: PanelConfig[] = useMemo(() => {
+    const base: PanelConfig[] = [
       {
         value: "evidences",
-        label: t("questions_temp.evidences"),
+        label: t("questions_temp.evidencesLabel"),
         count: selectedQuestion?.counts?.evidences ?? evidences?.length,
         data: evidences ?? [],
         state: evidencesState,
       },
       {
         value: "comments",
-        label: t("questions_temp.comments"),
+        label: t("questions_temp.commentsLabel"),
         count: selectedQuestion?.counts?.comments ?? comments?.length,
         data: comments ?? [],
         state: commentsState,
       },
-      {
+    ];
+
+    if (!hideAnswerHistory) {
+      base.push({
         value: "history",
-        label: t("questions_temp.answerHistory"),
+        label: t("questions_temp.answerHistoryLabel"),
         count:
           selectedQuestion?.counts?.answerHistories ?? answerHistory?.length,
         data: answerHistory ?? [],
         state: historyState,
-        disabled: hideAnswerHistory,
-      },
-    ],
-    [
-      selectedQuestion?.counts?.evidences,
-      selectedQuestion?.counts?.comments,
-      selectedQuestion?.counts?.answerHistories,
-      evidences,
-      comments,
-      answerHistory,
-      evidencesState,
-      commentsState,
-      historyState,
-      t,
-    ],
-  );
+      });
+    }
+
+    return base;
+  }, [
+    hideAnswerHistory,
+    selectedQuestion?.counts?.evidences,
+    selectedQuestion?.counts?.comments,
+    selectedQuestion?.counts?.answerHistories,
+    evidences,
+    comments,
+    answerHistory,
+    evidencesState,
+    commentsState,
+    historyState,
+    t,
+  ]);
 
   const handleChange = (_: SyntheticEvent, newValue: string) => {
     setSelectedTab(newValue as FooterTab);
