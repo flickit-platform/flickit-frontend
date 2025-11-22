@@ -115,6 +115,8 @@ const Body = (props: Readonly<{ permissions: IPermissions }>) => {
         confidenceLevelId: null,
         submitOnAnswerSelection: true,
       });
+      goNext();
+
       return;
     }
 
