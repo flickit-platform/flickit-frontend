@@ -1,43 +1,59 @@
 {
-  "addAttachmentAfterCreation": "افزودن پیوست (پس از ایجاد شاهد)",
+  "addAttachmentsAfterCreation": "افزودن پیوست (پس از ایجاد شاهد)",
   "addAttachment": "افزودن پیوست",
-  "attachmentDescription": "توضیحات (اختیاری)",
-  "attachments": "پیوست‌ها",
-  "answerHistory": "تاریخچه پاسخ‌ها",
-  "attachment": "پیوست‌",
-  "editing": "درحال ویرایش",
-  "evidence": "شاهد",
-  "evidences": "شواهد",
-  "createComment": "ایجاد یادداشت",
-  "createEvidence": "ایجاد شاهد",
-  "comment": "یاداشت‌",
-  "comments": "یاداشت‌ها",
-  "dropOrSelectFile": "فایل خود را به اینجا بکشید یا انتخاب کنید",
-  "displayIssues": "نمایش مسئله‌ها",
-  "hideIssues": "پنهان کردن مسئله‌ها",
-  "limitSizeExceeded": "حجم هر فایل پیوست حداکثر ۵ مگابایت می‌تواند باشد.",
-  "lowConfidence": "ضریب اطمینان کم",
-  "negativeEvidence": "شاهد منفی",
-  "noEvidence": "بدون شاهد",
-  "notApplicable": "نامرتبط",
-  "notApplicableDesc": "بعضی پرسشات ممکن است محدوده‌ی خاصی را مورد پرسش قرار دهند و برای همه‌ی ارزیابی‌ها صدق نکنند. این پرسشات می‌توانند به عنوان نامرتبط تعیین شوند. در این صورت؛ در محاسبات مربوط به گزارش ارزیابی نادیده گرفته خواهند شد و تاثیری نخواهند داشت.",
-  "moreDetails": "در صورت تمایل، می‌توانید توضیحات بیشتری درباره گزارش خود اضافه کنید (اختیاری).",
-  "typeOfEvidence": "نوع شاهد",
-  "optionsNotMatch": "گزینه‌ها با متن پرسش هم‌خوانی ندارند",
-  "other": "سایر موارد",
-  "previousQuestion": "پرسش قبلی",
-  "positiveEvidence": "شاهد مثبت",
-  "questionsEmptyState": "پرسشی با مشکلات انتخاب‌شده موجود نیست.",
-  "reportQuestion": "گزارش پرسش",
-  "reportSentSuccessfully": "گزارش با موفقیت ارسال شد.",
-  "questionsList": "فهرست پرسش‌ها ({{count}} پرسش)",
-  "questionIsUnclear": "پرسش نامفهوم یا گیج‌کننده است",
-  "questionIsIncorrect": "پرسش از نظر فنی یا محتوایی نادرست است",
-  "questionHaveMultipleAnswers": "پرسش مبهم است و ممکن است چند پاسخ درست داشته باشد",
-  "questionPhraseBetter": "پرسش می‌تواند بهتر بیان شود (لطفا پیشنهاد خود را بنویسید)",
-  "quickAnswer": "پاسخ‌گویی سریع",
-  "quickAnswerDesc": "در صورت فعال بودن، پس از ثبت پاسخ به سؤال بعد می‌روید. در غیر این صورت، در همین صفحه باقی می‌مانید.",
-  "whatIssuesLikeToReport": "لطفا مشکلات مربوط به این پرسش را مشخص کنید:",
-  "unanswered": "بدون پاسخ",
-  "unsupportedFileFormat": "پیوست‌ها باید فقط از نوع فایل‌های pdf, jpg, png, docx, pptx, rar, zip, excel باشند."
+  "attachmentDescriptionOptional": "توضیحات (اختیاری)",
+  "attachmentsTitle": "پیوست‌ها",
+  "attachmentLabel": "پیوست",
+
+  "answerHistoryLabel": "تاریخچهٔ پاسخ‌ها",
+  "editingLabel": "در حال ویرایش",
+
+  "evidenceLabel": "شاهد",
+  "evidencesLabel": "شواهد",
+
+  "createCommentLabel": "ایجاد یادداشت",
+  "createEvidenceLabel": "ایجاد شاهد",
+
+  "commentLabel": "یادداشت",
+  "commentsLabel": "یادداشت‌ها",
+
+  "dropOrSelectFileLabel": "فایل خود را به اینجا بکشید یا انتخاب کنید",
+
+  "displayIssuesLabel": "نمایش موارد دارای مشکل",
+  "hideIssuesLabel": "پنهان کردن موارد دارای مشکل",
+
+  "limitSizeExceededMessage": "حجم هر فایل پیوست حداکثر می‌تواند ۵ مگابایت باشد.",
+
+  "lowConfidenceLabel": "ضریب اطمینان کم",
+  "negativeEvidenceLabel": "شاهد منفی",
+  "noEvidenceLabel": "بدون شاهد",
+
+  "notApplicableLabel": "نامرتبط",
+  "notApplicableDescription": "بعضی پرسش‌ها ممکن است محدودهٔ خاصی را مورد پرسش قرار دهند و برای همهٔ ارزیابی‌ها صدق نکنند. این پرسش‌ها می‌توانند به‌عنوان نامرتبط تعیین شوند؛ در این صورت در محاسبات مربوط به گزارش ارزیابی نادیده گرفته خواهند شد و تأثیری نخواهند داشت.",
+
+  "reportAdditionalDetailsPlaceholder": "در صورت تمایل، می‌توانید توضیحات بیشتری دربارهٔ این گزارش اضافه کنید (اختیاری).",
+  "evidenceTypeLabel": "نوع شاهد",
+
+  "optionsDoNotMatchQuestion": "گزینه‌ها با متن پرسش هم‌خوانی ندارند",
+  "otherIssuesLabel": "سایر موارد",
+
+  "positiveEvidenceLabel": "شاهد مثبت",
+
+  "questionsEmptyStateMessage": "پرسشی با مشکلات انتخاب‌شده یافت نشد.",
+  "questionsListTitle": "فهرست پرسش‌ها ({{count}} پرسش)",
+
+  "questionIsUnclearLabel": "پرسش نامفهوم یا گیج‌کننده است",
+  "questionIsIncorrectLabel": "پرسش از نظر فنی یا محتوایی نادرست است",
+  "questionHasMultipleAnswers": "پرسش مبهم است و ممکن است چند پاسخ درست داشته باشد",
+  "questionCouldBeBetterPhrased": "پرسش می‌تواند بهتر بیان شود (لطفاً پیشنهاد خود را بنویسید).",
+
+  "autoAdvanceToggleLabel": "پاسخ‌گویی سریع",
+  "autoAdvanceToggleDescription": "در صورت فعال بودن، پس از ثبت پاسخ به پرسش بعدی می‌روید. در غیر این صورت، در همین صفحه باقی می‌مانید.",
+
+  "reportQuestionTitle": "گزارش پرسش",
+  "reportSentSuccessMessage": "گزارش با موفقیت ارسال شد.",
+  "reportIssuesPrompt": "لطفاً مشکلات مربوط به این پرسش را مشخص کنید:",
+
+  "unansweredLabel": "بدون پاسخ",
+  "unsupportedFileFormatMessage": "پیوست‌ها باید فقط از نوع فایل‌های pdf، jpg، png، docx، pptx، rar، zip یا فایل‌های Excel باشند."
 }

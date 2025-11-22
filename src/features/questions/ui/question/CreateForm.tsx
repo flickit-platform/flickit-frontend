@@ -60,7 +60,7 @@ const CreateFormView = ({
               value={EVIDENCE_TYPE.POSITIVE}
               label={
                 <Text variant="semiBoldSmall">
-                  {t("questions_temp.positiveEvidence")}
+                  {t("questions_temp.positiveEvidenceLabel")}
                 </Text>
               }
             />
@@ -68,7 +68,7 @@ const CreateFormView = ({
               value={EVIDENCE_TYPE.NEGATIVE}
               label={
                 <Text variant="semiBoldSmall">
-                  {t("questions_temp.negativeEvidence")}
+                  {t("questions_temp.negativeEvidenceLabel")}
                 </Text>
               }
             />
@@ -135,7 +135,7 @@ const CreateFormView = ({
                 }
                 label={
                   <Text variant="semiBoldSmall">
-                    {t("questions_temp.addAttachmentAfterCreation")}
+                    {t("questions_temp.addAttachmentsAfterCreation")}
                   </Text>
                 }
                 sx={{ m: 0 }}
@@ -163,8 +163,8 @@ const CreateFormView = ({
             loading={loading}
           >
             {showTabs
-              ? t("questions_temp.createEvidence")
-              : t("questions_temp.createComment")}
+              ? t("questions_temp.createEvidenceLabel")
+              : t("questions_temp.createCommentLabel")}
           </LoadingButton>
         </Box>
       </FormProviderWithForm>

@@ -245,7 +245,7 @@ const Body = (props: Readonly<{ permissions: IPermissions }>) => {
                       variant={"bodySmall"}
                       display="flex"
                     >
-                      {t("questions_temp.reportQuestion")}
+                      {t("questions_temp.reportQuestionTitle")}
                     </Text>
                   ),
                   onClick: () =>
@@ -307,6 +307,7 @@ const Body = (props: Readonly<{ permissions: IPermissions }>) => {
                   data-cy="answer-option"
                   color="primary"
                   size="large"
+                  disableRipple
                   value={id}
                   selected={isSelectedNow}
                   onClick={() => onSelectOption(option)}
@@ -383,9 +384,9 @@ const Body = (props: Readonly<{ permissions: IPermissions }>) => {
               label={
                 <Box color="info.main" sx={{ ...styles.centerV }} gap="6px">
                   <Text variant="bodySmall" color="text.primary">
-                    {t("questions_temp.notApplicable")}
+                    {t("questions_temp.notApplicableLabel")}
                   </Text>
-                  <Tooltip title={t("questions_temp.notApplicableDesc")}>
+                  <Tooltip title={t("questions_temp.notApplicableDescription")}>
                     <InfoOutlineRounded fontSize="small" />
                   </Tooltip>
                 </Box>
@@ -463,7 +464,7 @@ const Body = (props: Readonly<{ permissions: IPermissions }>) => {
             >
               <ReportGmailerrorredIcon fontSize="small" />
               <Text variant={"bodySmall"}>
-                {t("questions_temp.reportQuestion")}
+                {t("questions_temp.reportQuestionTitle")}
               </Text>
             </Box>
           )}
@@ -484,9 +485,9 @@ const Body = (props: Readonly<{ permissions: IPermissions }>) => {
               label={
                 <Box color="info.main" sx={{ ...styles.centerV }} gap="6px">
                   <Text variant="bodySmall" color="text.primary">
-                    {t("questions_temp.quickAnswer")}
+                    {t("questions_temp.autoAdvanceToggleLabel")}
                   </Text>
-                  <Tooltip title={t("questions_temp.quickAnswerDesc")}>
+                  <Tooltip title={t("questions_temp.autoAdvanceToggleDescription")}>
                     <InfoOutlineRounded fontSize="small" />
                   </Tooltip>
                 </Box>

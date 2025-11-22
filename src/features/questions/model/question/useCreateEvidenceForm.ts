@@ -141,6 +141,7 @@ export function useCreateEvidenceForm({
         );
 
         reset();
+        console.log(defaultType)
         setValue("type", defaultType);
         setTab(EVIDENCE_TYPE.POSITIVE);
 

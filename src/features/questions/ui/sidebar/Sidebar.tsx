@@ -71,7 +71,7 @@ const SidebarContent = memo(({ questions }: Readonly<SideBarProps>) => {
       }}
     >
       <SidebarHeader
-        title={t("questions_temp.questionsList", { count: questions.length })}
+        title={t("questions_temp.questionsListTitle", { count: questions.length })}
         open={uiState.isOpen}
         onToggleOpen={toggleSidebar}
         showChips={uiState.showIssueChips}
@@ -112,7 +112,7 @@ const SidebarContent = memo(({ questions }: Readonly<SideBarProps>) => {
           ))}
         </List>
       ) : (
-        <EmptyState title={t("questions_temp.questionsEmptyState")} />
+        <EmptyState title={t("questions_temp.questionsEmptyStateMessage")} />
       )}
     </Paper>
   );

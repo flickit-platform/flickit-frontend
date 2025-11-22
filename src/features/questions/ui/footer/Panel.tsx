@@ -49,11 +49,11 @@ type Variant = "history" | "evidences" | "comments";
 const ICON_SIZE = { width: 24, height: 24 };
 
 const BOX_STYLES = {
-  Positive: { color: "#17823B", label: "questions_temp.positiveEvidence" },
-  Negative: { color: "#821717", label: "questions_temp.negativeEvidence" },
+  Positive: { color: "#17823B", label: "questions_temp.positiveEvidenceLabel" },
+  Negative: { color: "#821717", label: "questions_temp.negativeEvidenceLabel" },
   Comment: { color: "#73808C", label: "" },
   History: { color: "transparent", label: "" },
-  Edit: { color: "#2466A8", label: "questions_temp.editing" },
+  Edit: { color: "#2466A8", label: "questions_temp.editingLabel" },
 } as const;
 
 const getVariant = (item: any): Variant => {
@@ -155,24 +155,26 @@ const Panel: React.FC<{
             : deleteComment({ id: item.id }),
         );
         let resIssues = selectedQuestion.issues;
-        await fetchIssues
-          .query({
-            questionId: selectedQuestion.id,
-          })
-          .then((res) => {
-            resIssues = res;
-          })
-          .finally(() => {
-            const updatedQuestion = {
-              ...selectedQuestion,
-              counts: {
-                ...selectedQuestion.counts,
-                [variant]: selectedQuestion.counts[variant] - 1,
-              },
-              issues: resIssues,
-            };
-            dispatch(setSelectedQuestion(updatedQuestion));
-          });
+        setTimeout(async () => {
+          await fetchIssues
+            .query({
+              questionId: selectedQuestion.id,
+            })
+            .then((res) => {
+              resIssues = res;
+            })
+            .finally(() => {
+              const updatedQuestion = {
+                ...selectedQuestion,
+                counts: {
+                  ...selectedQuestion.counts,
+                  [variant]: selectedQuestion.counts[variant] - 1,
+                },
+                issues: resIssues,
+              };
+              dispatch(setSelectedQuestion(updatedQuestion));
+            });
+        }, 500);
       })
       .finally(() => {
         deleteDialog.onClose();
@@ -186,24 +188,26 @@ const Panel: React.FC<{
         dispatch(deleteComment({ id: item.id }));
 
         let resIssues = selectedQuestion.issues;
-        await fetchIssues
-          .query({
-            questionId: selectedQuestion.id,
-          })
-          .then((res) => {
-            resIssues = res;
-          })
-          .finally(() => {
-            const updatedQuestion = {
-              ...selectedQuestion,
-              counts: {
-                ...selectedQuestion.counts,
-                [variant]: selectedQuestion.counts[variant] - 1,
-              },
-              issues: resIssues,
-            };
-            dispatch(setSelectedQuestion(updatedQuestion));
-          });
+        setTimeout(async () => {
+          await fetchIssues
+            .query({
+              questionId: selectedQuestion.id,
+            })
+            .then((res) => {
+              resIssues = res;
+            })
+            .finally(() => {
+              const updatedQuestion = {
+                ...selectedQuestion,
+                counts: {
+                  ...selectedQuestion.counts,
+                  [variant]: selectedQuestion.counts[variant] - 1,
+                },
+                issues: resIssues,
+              };
+              dispatch(setSelectedQuestion(updatedQuestion));
+            });
+        }, 500);
       })
       .finally(() => {
         deleteDialog.onClose();
@@ -224,7 +228,11 @@ const Panel: React.FC<{
       ) : (
         <>
           {item?.resolvable && (
-            <IconButton onClick={handleResolve} sx={{ p: 0.4 }}>
+            <IconButton
+              onClick={handleResolve}
+              sx={{ p: 0.4 }}
+              loading={resolveComment.loading}
+            >
               <CheckRoundedIcon fontSize="small" sx={ICON_SIZE} />
             </IconButton>
           )}
@@ -279,8 +287,8 @@ const Panel: React.FC<{
           onConfirm={handleConfirmDelete}
           content={{
             category: item.type
-              ? t("questions.evidence")
-              : t("questions.comment"),
+              ? t("questions_temp.evidenceLabel")
+              : t("questions_temp.commentLabel"),
             title: "",
           }}
         />
@@ -437,7 +445,7 @@ const Detail: React.FC<{
 
             {item?.answer?.isNotApplicable && (
               <Chip
-                label={t("history.notApplicable")}
+                label={t("questions_temp.notApplicableLabel")}
                 size="small"
                 sx={{
                   bgcolor: "#FFF3E0",
@@ -469,7 +477,7 @@ const Detail: React.FC<{
               {!!draft.type && (
                 <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
                   <Text variant="bodySmall" color="background.secondaryDark">
-                    {t("questions.typeOfEvidence")}
+                    {t("questions_temp.evidenceTypeLabel")}
                   </Text>
                   <RadioGroup
                     row
@@ -490,7 +498,7 @@ const Detail: React.FC<{
                           variant="bodySmall"
                           color="background.secondaryDark"
                         >
-                          {t("questions.positiveEvidence")}
+                          {t("questions_temp.positiveEvidenceLabel")}
                         </Text>
                       }
                       sx={{ marginRight: 0 }}
@@ -503,7 +511,7 @@ const Detail: React.FC<{
                           variant="bodySmall"
                           color="background.secondaryDark"
                         >
-                          {t("questions.negativeEvidence")}
+                          {t("questions_temp.negativeEvidenceLabel")}
                         </Text>
                       }
                       sx={{ marginRight: "16px" }}

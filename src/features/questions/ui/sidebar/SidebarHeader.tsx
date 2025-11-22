@@ -80,8 +80,8 @@ export const SidebarHeader = memo(
                 <Tooltip
                   title={
                     showChips
-                      ? t("questions_temp.hideIssues")
-                      : t("questions_temp.displayIssues")
+                      ? t("questions_temp.hideIssuesLabel")
+                      : t("questions_temp.displayIssuesLabel")
                   }
                 >
                   <IconButton

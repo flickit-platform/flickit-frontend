@@ -1,43 +1,58 @@
 {
-  "addAttachmentAfterCreation": "Add attachments (after creation)",
+  "addAttachmentsAfterCreation": "Add attachments (after creation)",
   "addAttachment": "Add attachment",
-  "attachmentDescription": "Description (optional)",
-  "attachments": "Attachments",
-  "attachment": "Attachment",
-  "answerHistory": "Answer history",
-  "editing": "Editing",
-  "evidence": "Evidence",
-  "evidences": "Evidences",
-  "createComment": "Create comment",
-  "createEvidence": "Create evidence",
-  "comment": "Comment",
-  "comments": "Comments",
-  "displayIssues": "Display issues",
-  "dropOrSelectFile": "Drop or select file",
-  "hideIssues": "Hide issues",
-  "limitSizeExceeded": "File size exceeds the limit. Maximum allowed size is 5 MB per file.",
-  "lowConfidence": "Low confidence",
-  "negativeEvidence": "Negative evidence",
-  "noEvidence": "No evidence",
-  "notApplicable": "Not applicable",
-  "notApplicableDesc": "Some questions are scope-specific and don't apply to every assessment. You can mark them as not applicable, then they will be excluded from reports and won't affect your scores.",
-  "moreDetails": "You may provide additional details about your report (optional).",
-  "typeOfEvidence": "Type of evidence",
-  "optionsNotMatch": "The options do not match the question",
-  "other": "Other issues",
-  "previousQuestion": "Previous question",
-  "positiveEvidence": "Positive evidence",
-  "questionsEmptyState": "No questions with the selected issues.",
-  "questionsList": "Questions list ({{count}} questions)",
-  "questionIsUnclear": "The question is unclear or confusing",
-  "questionIsIncorrect": "The question is technically or factually incorrect",
-  "questionHaveMultipleAnswers": "The question is ambiguous / may have multiple correct answers",
-  "questionPhraseBetter": "The question could be better phrased (please provide your suggestion)",
-  "quickAnswer": "Auto-advance",
-  "quickAnswerDesc": "If enabled, you will be taken to the next question after submitting. Otherwise, you will stay on this page.",
-  "reportQuestion": "Report question",
-  "reportSentSuccessfully": "The report has been sent successfully.",
-  "whatIssuesLikeToReport": "Please specify any issues related to this question:",
-  "unanswered": "Unanswered",
-  "unsupportedFileFormat": "Allowed file types: PDF, JPG, PNG, DOCX, PPTX, RAR, ZIP, Excel files."
+  "attachmentDescriptionOptional": "Description (optional)",
+  "attachmentsTitle": "Attachments",
+  "attachmentLabel": "Attachment",
+
+  "answerHistoryLabel": "Answer history",
+  "editingLabel": "Editing",
+
+  "evidenceLabel": "Evidence",
+  "evidencesLabel": "Evidences",
+
+  "createCommentLabel": "Create comment",
+  "createEvidenceLabel": "Create evidence",
+
+  "commentLabel": "Comment",
+  "commentsLabel": "Comments",
+
+  "displayIssuesLabel": "Display issues",
+  "hideIssuesLabel": "Hide issues",
+
+  "dropOrSelectFileLabel": "Drop or select file",
+  "limitSizeExceededMessage": "File size exceeds the limit. Maximum allowed size is 5 MB per file.",
+
+  "lowConfidenceLabel": "Low confidence",
+  "negativeEvidenceLabel": "Negative evidence",
+  "noEvidenceLabel": "No evidence",
+
+  "notApplicableLabel": "Not applicable",
+  "notApplicableDescription": "Some questions are scope-specific and don't apply to every assessment. You can mark them as not applicable, then they will be excluded from reports and won't affect your scores.",
+
+  "reportAdditionalDetailsPlaceholder": "You may provide additional details about your report (optional).",
+  "evidenceTypeLabel": "Type of evidence",
+
+  "optionsDoNotMatchQuestion": "The options do not match the question",
+  "otherIssuesLabel": "Other issues",
+
+  "positiveEvidenceLabel": "Positive evidence",
+
+  "questionsEmptyStateMessage": "No questions with the selected issues.",
+  "questionsListTitle": "Questions list ({{count}} questions)",
+
+  "questionIsUnclearLabel": "The question is unclear or confusing",
+  "questionIsIncorrectLabel": "The question is technically or factually incorrect",
+  "questionHasMultipleAnswers": "The question is ambiguous / may have multiple correct answers",
+  "questionCouldBeBetterPhrased": "The question could be better phrased (please provide your suggestion)",
+
+  "autoAdvanceToggleLabel": "Auto-advance",
+  "autoAdvanceToggleDescription": "If enabled, you will be taken to the next question after submitting. Otherwise, you will stay on this page.",
+
+  "reportQuestionTitle": "Report question",
+  "reportSentSuccessMessage": "The report has been sent successfully.",
+  "reportIssuesPrompt": "Please specify any issues related to this question:",
+
+  "unansweredLabel": "Unanswered",
+  "unsupportedFileFormatMessage": "Allowed file types: PDF, JPG, PNG, DOCX, PPTX, RAR, ZIP, Excel files."
 }

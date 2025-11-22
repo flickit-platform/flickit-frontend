@@ -4,7 +4,7 @@ import { IssueChipTone, IssueDefinition, QuestionIssue } from "../../types";
 export const ISSUE_CATALOG = [
   {
     id: "lowconf",
-    i18nKey: "questions_temp.lowConfidence",
+    i18nKey: "questions_temp.lowConfidenceLabel",
     chipTone: "error",
     showAsChip: true,
     showInFilter: true,
@@ -13,7 +13,7 @@ export const ISSUE_CATALOG = [
   },
   {
     id: "noevidence",
-    i18nKey: "questions_temp.noEvidence",
+    i18nKey: "questions_temp.noEvidenceLabel",
     chipTone: "error",
     showAsChip: true,
     showInFilter: true,
@@ -40,7 +40,7 @@ export const ISSUE_CATALOG = [
   },
   {
     id: "unanswered",
-    i18nKey: "questions_temp.unanswered",
+    i18nKey: "questions_temp.unansweredLabel",
     chipTone: "error",
     showAsChip: false,
     showInFilter: true,

@@ -54,7 +54,7 @@ export const questionnaire = {
     config?: AxiosRequestConfig<any>,
   ) {
     return axios.get(
-      `/api/v1/assessments/${args.assessmentId}/questions/${args.questionId}/issues`,
+      `/api/v1/assessments/${args.assessmentId}/questions/${args.questionId}/issues/`,
       {
         ...(config ?? {}),
       },
