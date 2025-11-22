@@ -13,6 +13,7 @@ import { IQuestionsModel } from "@/types";
 import showToast from "@/utils/toast-error";
 import { ICustomError } from "@/utils/custom-error";
 import { useAssessmentContext } from "@/providers/assessment-provider";
+import { useAssessmentMode } from "@/hooks/useAssessmentMode";
 
 type OptionLike =
   | { id?: string | number; title?: string; index?: number }
@@ -22,6 +23,8 @@ type OptionLike =
 const MIN_LOADING_MS = 500;
 
 export function useAnswerSubmit() {
+  const { isAdvanced } = useAssessmentMode();
+
   const { permissions } = useAssessmentContext();
   const { service } = useServiceContext();
   const { assessmentId = "", questionnaireId } = useParams();
@@ -96,26 +99,38 @@ export function useAnswerSubmit() {
       const startedAt = Date.now();
 
       try {
-        // const server = res?.data;
-        // const serverQuestion = server?.question ?? server?.result ?? server;
-        // const serverAnswer = serverQuestion?.answer;
+        let server;
+        let serverQuestion;
+        let serverAnswer;
+        if (isAdvanced) {
+          const res = await submitAnswer.query(payload);
+          server = res?.data;
+          serverQuestion = server?.question ?? server?.result ?? server;
+          serverAnswer = serverQuestion?.answer;
+        }
 
         let updatedItem: any = null;
 
         const nextAnswer = {
-          selectedOption: value
-            ? {
-                id: value.id ?? null,
-                index: (value as any)?.index,
-                title: (value as any)?.title,
-              }
-            : null,
+          selectedOption:
+            serverAnswer?.selectedOption ??
+            (value
+              ? {
+                  id: value.id ?? null,
+                  index: (value as any)?.index,
+                  title: (value as any)?.title,
+                }
+              : null),
           confidenceLevel:
-            shouldAttach && confidenceLevelId != null
-              ? { id: confidenceLevelId }
-              : (selectedQuestion?.answer?.confidenceLevel ?? null),
-          isNotApplicable: !!notApplicable,
-          approved: selectedQuestion?.answer?.approved,
+            serverAnswer?.selectedOption || value?.id
+              ? (serverAnswer?.confidenceLevel ??
+                (shouldAttach && confidenceLevelId != null
+                  ? { id: confidenceLevelId }
+                  : (selectedQuestion?.answer?.confidenceLevel ?? null)))
+              : null,
+          isNotApplicable: serverAnswer?.isNotApplicable ?? !!notApplicable,
+          approved:
+            serverAnswer?.approved ?? selectedQuestion?.answer?.approved,
         };
         let resIssues = selectedQuestion.issues;
 
@@ -133,10 +148,13 @@ export function useAnswerSubmit() {
           answer: { ...(selectedQuestion.answer ?? null), ...nextAnswer },
           counts: {
             ...selectedQuestion.counts,
+            ...serverQuestion?.counts,
             answerHistories: selectedQuestion.counts.answerHistories + 1,
           },
           issues: {
             ...resIssues,
+            isUnanswered: Boolean(!value?.id),
+
           },
         };
 
@@ -158,9 +176,9 @@ export function useAnswerSubmit() {
         dispatch(setSelectedQuestion(updatedItem));
 
         dispatch(addAnswerHistory(newAnswerHistory));
-        const res = await submitAnswer.query(payload);
-
-        return res;
+        if (!isAdvanced) {
+          await submitAnswer.query(payload);
+        }
       } catch (err) {
         showToast(err as ICustomError);
       } finally {
