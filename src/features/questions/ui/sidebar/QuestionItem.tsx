@@ -73,8 +73,7 @@ export const QuestionItem = memo(
           <ListItemText
             disableTypography
             sx={{
-              mb: 0,
-              textAlign:isTitleRTL ? "right":"left",
+              textAlign: isTitleRTL ? "right" : "left",
               direction: isTitleRTL ? "rtl" : "ltr",
               [paddingSide]: 1.5,
             }}
