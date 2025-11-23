@@ -331,7 +331,7 @@ const Body = (props: Readonly<{ permissions: IPermissions }>) => {
                       color: "outline.variant",
                     },
                   }}
-                  disabled={notApplicable || !permissions.answerQuestion}
+                  disabled={notApplicable || !permissions?.answerQuestion}
                 >
                   <Checkbox
                     checked={isSelectedNow}
@@ -404,7 +404,7 @@ const Body = (props: Readonly<{ permissions: IPermissions }>) => {
               loading={isLoading}
               disabled={
                 (selectedOption && confidence == null) ||
-                !permissions.answerQuestion
+                !permissions?.answerQuestion
               }
             >
               {t("common.submit")}
@@ -442,7 +442,7 @@ const Body = (props: Readonly<{ permissions: IPermissions }>) => {
               <Text variant="bodyMedium">{t("common.confidenceLevel")}</Text>
 
               <Rating
-                disabled={!permissions.answerQuestion}
+                disabled={!permissions?.answerQuestion}
                 value={current}
                 onChange={(_, v) => setConfidence(v ?? null)}
                 size="medium"
@@ -481,7 +481,7 @@ const Body = (props: Readonly<{ permissions: IPermissions }>) => {
                   onChange={(_, checked) => setAutoNext(checked)}
                   size="small"
                   sx={{ p: 0, px: 0.5 }}
-                  disabled={!permissions.answerQuestion}
+                  disabled={!permissions?.answerQuestion}
                 />
               }
               label={

@@ -11,7 +11,6 @@ import FolderOutlinedIcon from "@mui/icons-material/FolderOutlined";
 const DashboardTitle = (props: any) => {
   const { pathInfo, title, permissions } = props;
   const { spaceId, page, assessmentId } = useParams();
-  console.log(pathInfo);
 
   const hasAccessTonSettings = useMemo(() => {
     return permissions?.grantUserAssessmentRole;
