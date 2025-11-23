@@ -22,6 +22,7 @@ import InputCustomEditor from "../common/fields/InputCustomEditor";
 import showToast from "@/utils/toast-error";
 import { Text } from "../common/Text";
 import QueryData from "../common/QueryData";
+import PermissionControl from "../common/PermissionControl";
 
 const maxLength = 40;
 
@@ -106,17 +107,19 @@ const DashbordContainer: React.FC = () => {
 
   return (
     <>
-      <QueryData
-        {...fetchPathInfo}
-        renderLoading={() => <LoadingSkeletonOfAssessmentRoles />}
-        render={(pathInfo) => (
-          <DashboardTitle
-            pathInfo={pathInfo}
-            title={assessmentInfo?.title}
-            permissions={permissions}
-          />
-        )}
-      />
+      {!fetchPathInfo.errorObject && (
+        <QueryData
+          {...fetchPathInfo}
+          renderLoading={() => <LoadingSkeletonOfAssessmentRoles />}
+          render={(pathInfo) => (
+            <DashboardTitle
+              pathInfo={pathInfo}
+              title={assessmentInfo?.title}
+              permissions={permissions}
+            />
+          )}
+        />
+      )}
       <Box sx={{ ...styles.centerCV }} m="auto" pb={3} gap={1}>
         <Grid
           container

@@ -12,16 +12,6 @@ export const useQuestions = () => {
   const dispatch = useQuestionDispatch();
   const { questionnaireId = "", assessmentId = "" } = useParams();
   const pageSize = 50;
-
-  const fetchPathInfo = useQuery({
-    service: (args, config) =>
-      service.common.getPathInfo(
-        { questionnaireId, assessmentId, ...args },
-        config,
-      ),
-    runOnMount: true,
-  });
-
   const questionsQuery = useQuery<IQuestionsModel>({
     service: (args, config) =>
       service.assessments.questionnaire.getQuestionnaireAnswers(
@@ -50,5 +40,5 @@ export const useQuestions = () => {
       });
   }, [questionnaireId]);
 
-  return { questionsQuery, fetchPathInfo };
+  return { questionsQuery };
 };
