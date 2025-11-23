@@ -96,8 +96,6 @@ export function useQuestionNavigator(
   }, [filteredQuestions, activeQuestion, questions, selectAt]);
 
   const goNext = useCallback(() => {
-    console.log(activeQuestion);
-
     if (!filteredQuestions?.length || !activeQuestion) return;
     const cur = filteredQuestions.findIndex(
       (q) => q?.index === activeQuestion.index || q?.id === activeQuestion.id,

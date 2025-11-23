@@ -136,14 +136,14 @@ export function useCreateEvidenceForm({
           resolvable: !values.type,
         };
 
-        dispatch(
-          values.type ? addEvidence(newEvidence) : addComment(newEvidence),
-        );
+        if (values.type) {
+          dispatch(addEvidence(newEvidence));
+        } else {
+          dispatch(addComment(newEvidence));
+        }
 
         reset();
-        console.log(defaultType)
         setValue("type", defaultType);
-        setTab(EVIDENCE_TYPE.POSITIVE);
 
         let resIssues = selectedQuestion.issues;
         if (permissions?.viewDashboard) {
