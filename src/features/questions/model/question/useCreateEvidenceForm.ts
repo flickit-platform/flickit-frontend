@@ -144,6 +144,9 @@ export function useCreateEvidenceForm({
 
         reset();
         setValue("type", defaultType);
+        if (showTabs) {
+          setTab(EVIDENCE_TYPE.POSITIVE);
+        }
 
         let resIssues = selectedQuestion.issues;
         if (permissions?.viewDashboard) {
