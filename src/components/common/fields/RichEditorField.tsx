@@ -97,7 +97,7 @@ const RichEditorFieldBase = (props: any) => {
       }}
       error={hasError}
     >
-      {show_label && (
+      {show_label && menuProps?.variant !== "inline" && (
         <InputLabel
           className={focus ? "Mui-focused" : ""}
           shrink={shrink}

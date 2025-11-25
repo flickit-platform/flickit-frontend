@@ -153,7 +153,7 @@ const AdviceListNewForm = ({
       >
         <Box sx={{ width: "100%" }} mx={1}>
           <Grid container spacing={1.4}>
-            <Grid size={{xs: 12, md: 6}}>
+            <Grid size={{ xs: 12, md: 6 }}>
               <TextField
                 error={errormessage?.title}
                 id="new-advice-item"
@@ -186,7 +186,7 @@ const AdviceListNewForm = ({
             {selectAdvice?.map((item: any) => {
               return (
                 <Grid
-                  size={{xs: 12, md: 2}}
+                  size={{ xs: 12, md: 2 }}
                   sx={{
                     display: "flex",
                     justifyContent: { xs: "center" },
@@ -253,18 +253,20 @@ const AdviceListNewForm = ({
             <Box
               width="100%"
               justifyContent="space-between"
-              mt={{ xs: 26, sm: 17, md: 11, xl: 7 }}
               sx={{ ...styles.centerV }}
             >
               <RichEditorField
                 name="advice-description"
-                label={t("common.description")}
+                placeholder={t("common.description")}
                 disable_label={false}
                 required={true}
                 defaultValue={newAdvice.description}
                 errorMessage={errormessage?.description}
                 type={errormessage?.description ? "error" : ""}
                 showEditorMenu={true}
+                menuProps={{
+                  variant: "inline",
+                }}
               />
             </Box>
           </FormProviderWithForm>

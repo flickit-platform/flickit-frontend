@@ -19,7 +19,6 @@ enum EVIDENCE_TYPE {
   NEGATIVE = "NEGATIVE",
 }
 
-
 type CreateFormViewProps = UseCreateEvidenceFormResult;
 
 const CreateFormView = ({
@@ -76,7 +75,7 @@ const CreateFormView = ({
         )}
 
         {/* Editor */}
-        <Box mt={5.5}>
+        <Box>
           <RichEditorField
             name="description"
             disable_label={false}
@@ -92,7 +91,7 @@ const CreateFormView = ({
               borderRadius: "0px !important",
             }}
             menuProps={{
-              top: "0px",
+              variant: "inline",
               boxShadow: "none",
               includeTable: false,
               width: "100%",
@@ -171,7 +170,6 @@ const CreateFormView = ({
     </Box>
   );
 };
-
 
 const CreateForm = ({ showTabs }: { showTabs?: boolean }) => {
   const logic = useCreateEvidenceForm({ showTabs });

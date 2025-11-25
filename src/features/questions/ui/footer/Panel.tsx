@@ -523,7 +523,7 @@ const Detail: React.FC<{
               <Box
                 sx={{
                   width: "100%",
-                  mt: { xs: 26, sm: 17, md: 17, lg: 12 },
+                  mt:1
                 }}
               >
                 <RichEditorField
@@ -533,6 +533,9 @@ const Detail: React.FC<{
                   required
                   defaultValue={draft.description ?? ""}
                   showEditorMenu
+                  menuProps={{
+                    variant: "inline",
+                  }}
                 />
               </Box>
             </FormProviderWithForm>
