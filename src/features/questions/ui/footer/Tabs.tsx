@@ -152,7 +152,11 @@ const Tabs = (
       </Box>
 
       {configs.map((cfg) => (
-        <TabPanel key={cfg.value} value={cfg.value} sx={{ px: 4, py: 2 }}>
+        <TabPanel
+          key={cfg.value}
+          value={cfg.value}
+          sx={{ px: { lg: 4 }, py: { lg: 2 } }}
+        >
           {cfg.value !== "history" && !readonly && (
             <CreateForm showTabs={cfg.value === "evidences"} />
           )}

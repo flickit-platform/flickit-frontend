@@ -18,6 +18,7 @@ interface IRichEditorMenuBarProps {
   hasPermission?: (perm: string) => boolean;
   top?: string;
   boxShadow?: string;
+  variant?: "floating" | "inline"; 
 }
 
 const RichEditorMenuBar = (props: IRichEditorMenuBarProps) => {
@@ -28,30 +29,45 @@ const RichEditorMenuBar = (props: IRichEditorMenuBarProps) => {
     hasPermission,
     top = "-11px",
     boxShadow = " 2px 2px 12px -3px #9d9d9d61",
+    variant = "floating",
     ...rest
   } = props;
 
   const menuItems = getMenuItems(editor, { includeTable, hasPermission });
+  const isFloating = variant === "floating";
+
   return (
     <Box
       className="rich-editor--menu"
       sx={{
         display: "flex",
         flexWrap: "wrap",
-        position: "absolute",
         bgcolor: "background.containerLowest",
-        zIndex: -1,
-        right: 0,
-        opacity: 0,
-        transform: "translateY(-100%)",
-        py: 0.5,
-        px: 0.6,
         maxWidth: "100%",
         borderRadius: 1,
-        transition: "z-index .2s .1s ease, opacity .2s .1s ease",
-        top,
-        boxShadow,
+        py: 0.5,
+        px: 0.6,
         justifyContent: includeTable ? "flex-start" : "center",
+
+        ...(isFloating
+          ? {
+              position: "absolute",
+              zIndex: -1,
+              right: 0,
+              opacity: 0,
+              transform: "translateY(-100%)",
+              transition: "z-index .2s .1s ease, opacity .2s .1s ease",
+              top,
+              boxShadow,
+            }
+          : {
+              position: "relative",
+              zIndex: 1,
+              opacity: 1,
+              transform: "none",
+              top: "auto",
+              boxShadow: "none",
+            }),
         ...rest,
       }}
       onClick={(e) => {

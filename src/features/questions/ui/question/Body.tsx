@@ -344,6 +344,7 @@ const Body = (props: Readonly<{ permissions: IPermissions }>) => {
                     variant="bodyMedium"
                     textTransform="initial"
                     color={"text.primary"}
+                    textAlign="start"
                   >
                     {displayIndex}. {title}
                   </Text>
@@ -419,7 +420,10 @@ const Body = (props: Readonly<{ permissions: IPermissions }>) => {
       <Box
         display="flex"
         padding="16px 24px"
-        sx={{ ...styles.centerV }}
+        sx={{
+          display: "flex",
+          flexDirection: { sm: "row", xs: "column" },
+        }}
         justifyContent="space-between"
       >
         <Box>
@@ -435,9 +439,10 @@ const Body = (props: Readonly<{ permissions: IPermissions }>) => {
                 borderColor:
                   !confidence && selectedOption ? "error.main" : "transparent",
                 borderRadius: "4px",
+                px: { xs: 0, sm: "8px" },
+                py: "8px",
               }}
               gap={3}
-              p="8px"
             >
               <Text variant="bodyMedium">{t("common.confidenceLevel")}</Text>
 
@@ -472,7 +477,7 @@ const Body = (props: Readonly<{ permissions: IPermissions }>) => {
           )}
         </Box>
 
-        <Box display="flex" gap={3}>
+        <Box display="flex" gap={3} justifyContent="space-between">
           {isAdvanced && (
             <FormControlLabel
               control={
@@ -489,7 +494,9 @@ const Body = (props: Readonly<{ permissions: IPermissions }>) => {
                   <Text variant="bodySmall" color="text.primary">
                     {t("questions_temp.autoAdvanceToggleLabel")}
                   </Text>
-                  <Tooltip title={t("questions_temp.autoAdvanceToggleDescription")}>
+                  <Tooltip
+                    title={t("questions_temp.autoAdvanceToggleDescription")}
+                  >
                     <InfoOutlineRounded fontSize="small" />
                   </Tooltip>
                 </Box>
