@@ -87,7 +87,7 @@ export function useSidebarData({
       const index = filteredQuestions.findIndex(
         (res) => res.index == selectedIndex + 1,
       );
-      if (filteredQuestions.length > 0 && index === -1) {
+      if (filteredQuestions?.length > 0 && index === -1) {
         navigation.selectAt(filteredQuestions[0].index - 1);
       }
     }

@@ -45,7 +45,7 @@ export function useQuestionNavigator(
   }, [questionIndex, questions.length]);
 
   const filteredIndex = useMemo(() => {
-    if (!activeQuestion || !filteredQuestions.length) return -1;
+    if (!activeQuestion || !filteredQuestions?.length) return -1;
     return filteredQuestions.findIndex(
       (q) => q?.id === activeQuestion.id || q?.index === activeQuestion.index,
     );
@@ -53,7 +53,7 @@ export function useQuestionNavigator(
 
   const isAtStart = filteredIndex === -1 || filteredIndex <= 0;
   const isAtEnd =
-    filteredIndex === -1 || filteredIndex >= filteredQuestions.length - 1;
+    filteredIndex === -1 || filteredIndex >= filteredQuestions?.length - 1;
 
   const makeQuestionPath = useCallback(
     (index: number) =>
@@ -101,11 +101,11 @@ export function useQuestionNavigator(
       (q) => q?.index === activeQuestion.index || q?.id === activeQuestion.id,
     );
 
-    if (cur === filteredQuestions.length - 1) {
+    if (cur === filteredQuestions?.length - 1) {
       navigate(makeReviewPath());
     }
 
-    if (cur === -1 || cur >= filteredQuestions.length - 1) return;
+    if (cur === -1 || cur >= filteredQuestions?.length - 1) return;
     const nextObj = filteredQuestions[cur + 1];
     const abs = toAbsoluteIndexFromQuestion(nextObj, questions);
     if (abs < 0) return;

@@ -344,6 +344,7 @@ const Body = (props: Readonly<{ permissions: IPermissions }>) => {
                     variant="bodyMedium"
                     textTransform="initial"
                     color={"text.primary"}
+                    textAlign="start"
                   >
                     {displayIndex}. {title}
                   </Text>
