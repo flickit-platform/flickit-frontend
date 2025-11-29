@@ -36,11 +36,16 @@ const uiStateReducer = (state: UIState, action: UIAction): UIState => {
 export function useSidebarUIState(): SidebarUIState {
   const { t } = useTranslation();
 
-
   const [uiState, dispatchUIState] = useReducer(uiStateReducer, {
     isOpen: true,
     showIssueChips: true,
-    activeFilters: new Set<string>(),
+    activeFilters: new Set<string>([
+      "unanswered",
+      "lowconf",
+      "noevidence",
+      "unresolved",
+      "unapproved",
+    ]),
   });
 
   const userToggledRef = useRef(false);
@@ -48,7 +53,6 @@ export function useSidebarUIState(): SidebarUIState {
     userToggledRef.current = true;
     dispatchUIState({ type: "TOGGLE_ISSUE_CHIPS" });
   }, []);
-
 
   const toggleSidebar = useCallback(
     () => dispatchUIState({ type: "TOGGLE_SIDEBAR" }),

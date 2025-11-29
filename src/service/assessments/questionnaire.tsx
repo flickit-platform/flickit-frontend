@@ -61,6 +61,18 @@ export const questionnaire = {
     );
   },
 
+  getQuestion(
+    args: { assessmentId: TId; questionId: TId },
+    config?: AxiosRequestConfig<any>,
+  ) {
+    return axios.get(
+      `/api/v1/assessments/${args.assessmentId}/questions/${args.questionId}/`,
+      {
+        ...(config ?? {}),
+      },
+    );
+  },
+
   resolveAllComments(
     args: { assessmentId: TId },
     config?: AxiosRequestConfig<any>,
