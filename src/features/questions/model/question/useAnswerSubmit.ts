@@ -20,8 +20,6 @@ type OptionLike =
   | null
   | undefined;
 
-const MIN_LOADING_MS = 500;
-
 export function useAnswerSubmit() {
   const { isAdvanced } = useAssessmentMode();
 
@@ -55,7 +53,6 @@ export function useAnswerSubmit() {
     runOnMount: false,
   });
 
-  const [delayedLoading, setDelayedLoading] = useState(false);
   const loadingTimeoutRef = useRef<number | null>(null);
 
   useEffect(() => {
@@ -94,9 +91,6 @@ export function useAnswerSubmit() {
           confidenceLevelId: shouldAttach ? (confidenceLevelId ?? null) : null,
         },
       };
-
-      setDelayedLoading(true);
-      const startedAt = Date.now();
 
       try {
         let server;
@@ -154,7 +148,6 @@ export function useAnswerSubmit() {
           issues: {
             ...resIssues,
             isUnanswered: Boolean(!value?.id),
-
           },
         };
 
@@ -181,18 +174,7 @@ export function useAnswerSubmit() {
         }
       } catch (err) {
         showToast(err as ICustomError);
-      } finally {
-        const elapsed = Date.now() - startedAt;
-        const remaining = MIN_LOADING_MS - elapsed;
-
-        if (remaining > 0) {
-          loadingTimeoutRef.current = window.setTimeout(() => {
-            setDelayedLoading(false);
-          }, remaining);
-        } else {
-          setDelayedLoading(false);
-        }
-      }
+      } 
     },
     [
       assessmentId,
@@ -232,7 +214,8 @@ export function useAnswerSubmit() {
 
   return {
     submit,
-    isLoading: submitAnswer.loading || delayedLoading,
+    isLoading: submitAnswer.loading ,
+    isLoadingApprove: approveAnswerQuery.loading,
     approve,
     error: submitAnswer.error,
   };
