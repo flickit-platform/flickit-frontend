@@ -239,37 +239,56 @@ const Body = (props: Readonly<{ permissions: IPermissions }>) => {
                 }}
               >
                 <Box sx={{ flex: 1 }} padding="16px 24px">
-                  <Text
-                    variant="semiBoldMedium"
-                    color="background.contrastText"
-                    textAlign="justify"
-                    sx={{ ...styles.centerV }}
+                  <Box
+                    sx={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: 0.5,
+                      flexWrap: "wrap",
+                      textAlign: "justify",
+                    }}
                   >
-                    {activeQuestion?.index}. {activeQuestion?.title}
-                    {activeQuestion?.hint && (
-                      <Text
-                        component="span"
-                        variant="semiBoldSmall"
-                        color="primary.main"
-                        p={0.5}
-                        marginInlineStart={0.5}
-                        sx={{
-                          cursor: "pointer",
-                          display: "inline-flex",
-                          alignItems: "center",
-                          gap: 0.5,
-                        }}
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          setShowHint((prev) => !prev);
-                        }}
-                      >
-                        {t("common.hint")}
-                        <InfoOutlineRounded sx={{ fontSize: "16px" }} />
-                      </Text>
-                    )}
-                  </Text>
-
+                    <Text
+                      variant="semiBoldMedium"
+                      color="background.contrastText"
+                      sx={{
+                        display: "inline",
+                        alignItems: "center",
+                        gap: 0.5,
+                      }}
+                    >
+                      {activeQuestion?.index}. {activeQuestion?.title}
+                      {activeQuestion?.hint && (
+                        <Box
+                          component="span"
+                          sx={{
+                            paddingInlineStart: 1,
+                            display: "inline-flex",
+                            alignItems: "center",
+                            cursor: "pointer",
+                          }}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setShowHint((prev) => !prev);
+                          }}
+                        >
+                          <Text
+                            component="span"
+                            variant="semiBoldSmall"
+                            color="primary.main"
+                            sx={{
+                              display: "inline-flex",
+                              alignItems: "center",
+                              gap: 0.5,
+                            }}
+                          >
+                            {t("common.hint")}
+                            <InfoOutlineRounded sx={{ fontSize: 16 }} />
+                          </Text>
+                        </Box>
+                      )}
+                    </Text>
+                  </Box>
                   {activeQuestion?.hint && (
                     <Collapse in={showHint}>
                       <Text
@@ -291,7 +310,8 @@ const Body = (props: Readonly<{ permissions: IPermissions }>) => {
                     {...menu}
                     boxProps={{
                       sx: {
-                        p: 1,
+                        py: 1,
+                        paddingInlineStart: 0,
                       },
                     }}
                     items={[
