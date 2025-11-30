@@ -48,9 +48,7 @@ export const useQuestions = () => {
       .catch((e) => {
         showToast(e as ICustomError);
       });
-    confidenceQueryData.query().then((res) => {
-      dispatch(setSelectedConfidence(res?.defaultConfidenceLevel?.id));
-    });
+    dispatch(setSelectedConfidence(null));
   }, [questionnaireId]);
 
   return { questionsQuery };

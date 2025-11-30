@@ -218,7 +218,7 @@ const Body = (props: Readonly<{ permissions: IPermissions }>) => {
   return (
     <QueryData
       {...fetchQuestion}
-      renderLoading={() => <LoadingSkeleton height={360} />}
+      renderLoading={() => <LoadingSkeleton height={420} />}
       render={() => {
         return (
           <Box
