@@ -1,5 +1,6 @@
 import { useState, useEffect, useMemo } from "react";
 import {
+  setSelectedConfidence,
   setSelectedQuestion,
   useQuestionContext,
   useQuestionDispatch,
@@ -158,6 +159,8 @@ const Body = (props: Readonly<{ permissions: IPermissions }>) => {
       confidenceLevelId: confidence ?? null,
       submitOnAnswerSelection: false,
     });
+    dispatch(setSelectedConfidence(confidence));
+
     if (autoNext) goNext();
   };
 
@@ -549,7 +552,9 @@ const Body = (props: Readonly<{ permissions: IPermissions }>) => {
                     <Rating
                       disabled={!permissions?.answerQuestion}
                       value={current}
-                      onChange={(_, v) => setConfidence(v ?? null)}
+                      onChange={(_, v) => {
+                        setConfidence(v ?? null);
+                      }}
                       size="medium"
                       IconContainerComponent={ConfidenceIconContainer}
                     />
@@ -631,7 +636,10 @@ const Body = (props: Readonly<{ permissions: IPermissions }>) => {
                       aria-label={t("common.next")}
                       color="primary"
                       disabled={isAtEnd}
-                      onClick={goNext}
+                      onClick={() => {
+                        goNext();
+                        dispatch(setSelectedConfidence(confidence));
+                      }}
                       sx={{
                         borderRadius: "4px",
                         border: "1px solid",

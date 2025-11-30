@@ -1,13 +1,7 @@
 import { useMemo, useCallback, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import {
-  setSelectedConfidence,
-  setSelectedQuestion,
-  useQuestionDispatch,
-} from "../../context";
+import { setSelectedQuestion, useQuestionDispatch } from "../../context";
 import type { IQuestionInfo } from "@/types";
-import { useQuery } from "@/hooks/useQuery";
-import { useServiceContext } from "@/providers/service-provider";
 
 export type QuestionNavigator = {
   absoluteIndex: number;
@@ -41,6 +35,10 @@ export function useQuestionNavigator(
   const { spaceId, page, assessmentId, questionnaireId, questionIndex } =
     useParams();
 
+  const effectiveFilteredQuestions = useMemo(
+    () => (filteredQuestions ? filteredQuestions : questions),
+    [filteredQuestions, questions],
+  );
   const absoluteIndex = useMemo(() => {
     const oneBased = Number(questionIndex) || 1;
     const zeroBased = Math.max(1, oneBased) - 1;
@@ -51,15 +49,16 @@ export function useQuestionNavigator(
   }, [questionIndex, questions.length]);
 
   const filteredIndex = useMemo(() => {
-    if (!activeQuestion || !filteredQuestions?.length) return -1;
-    return filteredQuestions.findIndex(
+    if (!activeQuestion || !effectiveFilteredQuestions?.length) return -1;
+    return effectiveFilteredQuestions.findIndex(
       (q) => q?.id === activeQuestion.id || q?.index === activeQuestion.index,
     );
-  }, [filteredQuestions, activeQuestion]);
+  }, [effectiveFilteredQuestions, activeQuestion]);
 
   const isAtStart = filteredIndex === -1 || filteredIndex <= 0;
   const isAtEnd =
-    filteredIndex === -1 || filteredIndex >= filteredQuestions?.length - 1;
+    filteredIndex === -1 ||
+    filteredIndex >= effectiveFilteredQuestions?.length - 1;
 
   const makeQuestionPath = useCallback(
     (index: number) =>
@@ -90,33 +89,34 @@ export function useQuestionNavigator(
   }, [absoluteIndex]);
 
   const goPrevious = useCallback(() => {
-    if (!filteredQuestions?.length || !activeQuestion) return;
-    const cur = filteredQuestions.findIndex(
+    if (!effectiveFilteredQuestions?.length || !activeQuestion) return;
+
+    const cur = effectiveFilteredQuestions.findIndex(
       (q) => q?.index === activeQuestion.index || q?.id === activeQuestion.id,
     );
     if (cur <= 0) return;
-    const prevObj = filteredQuestions[cur - 1];
+    const prevObj = effectiveFilteredQuestions[cur - 1];
     const abs = toAbsoluteIndexFromQuestion(prevObj, questions);
     if (abs < 0) return;
     selectAt(abs);
-  }, [filteredQuestions, activeQuestion, questions, selectAt]);
+  }, [effectiveFilteredQuestions, activeQuestion, questions, selectAt]);
 
   const goNext = useCallback(() => {
-    if (!filteredQuestions?.length || !activeQuestion) return;
-    const cur = filteredQuestions.findIndex(
+    if (!effectiveFilteredQuestions?.length || !activeQuestion) return;
+    const cur = effectiveFilteredQuestions.findIndex(
       (q) => q?.index === activeQuestion.index || q?.id === activeQuestion.id,
     );
 
-    if (cur === filteredQuestions?.length - 1) {
+    if (cur === effectiveFilteredQuestions?.length - 1) {
       navigate(makeReviewPath());
     }
 
-    if (cur === -1 || cur >= filteredQuestions?.length - 1) return;
-    const nextObj = filteredQuestions[cur + 1];
+    if (cur === -1 || cur >= effectiveFilteredQuestions?.length - 1) return;
+    const nextObj = effectiveFilteredQuestions[cur + 1];
     const abs = toAbsoluteIndexFromQuestion(nextObj, questions);
     if (abs < 0) return;
     selectAt(abs);
-  }, [filteredQuestions, activeQuestion]);
+  }, [effectiveFilteredQuestions, activeQuestion]);
 
   return {
     absoluteIndex,

@@ -128,7 +128,7 @@ const Tabs = (
 
   useEffect(() => {
     setSelectedTab("evidences");
-  }, [selectedQuestion.id]);
+  }, [selectedQuestion?.id]);
 
   return (
     <TabContext value={selectedTab}>
