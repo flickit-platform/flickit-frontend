@@ -360,13 +360,13 @@ const AssessmentKitCEFromDialog = (props: IAssessmentKitCEFromDialogProps) => {
           size={{ xs: 12, sm: 4, md: 4 }}
           display={activeStep === 0 ? "none" : ""}
         >
-          <SelectLanguage
-            handleChange={handleSelectedChange}
-            mainLanguage={{ value: lang.code, label: lang.title }}
-            languages={languages.map((lng: any) => {
-              return { value: lng.code, label: lng.title };
-            })}
-          />
+          {type !== "convert" && <SelectLanguage
+              handleChange={handleSelectedChange}
+              mainLanguage={{ value: lang.code, label: lang.title }}
+              languages={languages.map((lng: any) => {
+                return { value: lng.code, label: lng.title };
+              })}
+          />}
         </Grid>
         <Grid
           size={{ xs: 12, md: 12 }}
