@@ -3,6 +3,7 @@ export enum QUESTION_ACTIONS_TYPE {
   SET_SELECTED_QUESTION = "SET_SELECTED_QUESTION",
   SET_FILTERED_QUESTIONS = "SET_FILTERED_QUESTIONS",
   SET_QUESTION_ITEMS = "SET_QUESTION_ITEMS",
+  SET_SELECTED_CONFIDENCE = "SET_SELECTED_CONFIDENCE",
 
   // Evidences
   SET_EVIDENCES = "SET_EVIDENCES",
@@ -31,6 +32,11 @@ export const setQuestionItems = function (payload: any) {
 export const setFilteredQuestions = function (payload: any) {
   return { payload, type: QUESTION_ACTIONS_TYPE.SET_FILTERED_QUESTIONS };
 };
+
+export const setSelectedConfidence = (payload: any) => ({
+  type: QUESTION_ACTIONS_TYPE.SET_SELECTED_CONFIDENCE as const,
+  payload,
+});
 
 export const setSelectedQuestion = (payload: any) => ({
   type: QUESTION_ACTIONS_TYPE.SET_SELECTED_QUESTION as const,

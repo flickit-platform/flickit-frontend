@@ -26,7 +26,7 @@ const questionReducer = (
                 : question,
             )
           : [payload]
-        : prevQuestions; 
+        : prevQuestions;
 
       return {
         ...prevState,
@@ -44,6 +44,13 @@ const questionReducer = (
       return {
         ...prevState,
         filteredQuestions: action.payload,
+      };
+    }
+
+    case QUESTION_ACTIONS_TYPE.SET_SELECTED_CONFIDENCE: {
+      return {
+        ...prevState,
+        selectedConfidence: action.payload,
       };
     }
 

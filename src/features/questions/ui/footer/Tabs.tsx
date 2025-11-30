@@ -78,6 +78,7 @@ const Tabs = (
           selectedQuestion?.counts?.answerHistories ?? answerHistory?.length,
         data: answerHistory ?? [],
         state: historyState,
+        disabled: selectedQuestion?.counts?.answerHistories < 1,
       });
     }
 
@@ -124,6 +125,10 @@ const Tabs = (
     window.addEventListener("scroll", handleWindowScroll);
     return () => window.removeEventListener("scroll", handleWindowScroll);
   }, [handleWindowScroll]);
+
+  useEffect(() => {
+    setSelectedTab("evidences");
+  }, [selectedQuestion.id]);
 
   return (
     <TabContext value={selectedTab}>

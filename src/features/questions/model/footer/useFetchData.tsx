@@ -6,6 +6,7 @@ import {
   setAnswerHistory,
   setComments,
   setEvidences,
+  setSelectedQuestion,
   useQuestionContext,
   useQuestionDispatch,
 } from "@/features/questions/context";

@@ -13,6 +13,7 @@ export interface IQuestionsContext {
   evidences: any[];
   comments: any[];
   answerHistory: any[];
+  selectedConfidence: number;
 }
 
 export const QuestionsContext = createContext<IQuestionsContext>({
@@ -23,6 +24,7 @@ export const QuestionsContext = createContext<IQuestionsContext>({
   evidences: [],
   comments: [],
   answerHistory: [],
+  selectedConfidence: 0,
 });
 
 const QuestionsDispatchContext = createContext<any>({
@@ -38,6 +40,7 @@ export const Provider: FC<IQuestionsProviderProps> = ({ children }) => {
     evidences: [],
     comments: [],
     answerHistory: [],
+    selectedConfidence: 0,
   });
 
   return (

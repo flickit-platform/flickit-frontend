@@ -1,6 +1,10 @@
 import { useMemo, useCallback, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { setSelectedQuestion, useQuestionDispatch } from "../../context";
+import {
+  setSelectedConfidence,
+  setSelectedQuestion,
+  useQuestionDispatch,
+} from "../../context";
 import type { IQuestionInfo } from "@/types";
 import { useQuery } from "@/hooks/useQuery";
 import { useServiceContext } from "@/providers/service-provider";
@@ -14,7 +18,6 @@ export type QuestionNavigator = {
   selectAt: (index: number) => void;
   goPrevious: () => void;
   goNext: () => void;
-  fetchQuestion: any;
 };
 
 function toAbsoluteIndexFromQuestion(
@@ -33,17 +36,10 @@ export function useQuestionNavigator(
   filteredQuestions: IQuestionInfo[] = questions,
   activeQuestion?: IQuestionInfo | null,
 ): QuestionNavigator {
-  const { service } = useServiceContext();
-
   const dispatch = useQuestionDispatch();
   const navigate = useNavigate();
   const { spaceId, page, assessmentId, questionnaireId, questionIndex } =
     useParams();
-  const fetchQuestion = useQuery({
-    service: (args, config) =>
-      service.assessments.questionnaire.getQuestion(args, config),
-    runOnMount: false,
-  });
 
   const absoluteIndex = useMemo(() => {
     const oneBased = Number(questionIndex) || 1;
@@ -90,13 +86,7 @@ export function useQuestionNavigator(
   }, []);
 
   useEffect(() => {
-    if (questions[absoluteIndex]?.id) {
-      fetchQuestion
-        .query({ assessmentId, questionId: questions[absoluteIndex]?.id })
-        .then((res: any) => {
-          dispatch(setSelectedQuestion(res));
-        });
-    }
+    dispatch(setSelectedQuestion(questions[absoluteIndex]));
   }, [absoluteIndex]);
 
   const goPrevious = useCallback(() => {
@@ -137,6 +127,5 @@ export function useQuestionNavigator(
     selectAt,
     goPrevious,
     goNext,
-    fetchQuestion,
   };
 }
