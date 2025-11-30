@@ -40,11 +40,14 @@ const Body = (props: Readonly<{ permissions: IPermissions }>) => {
   const { permissions }: { permissions: IPermissions } = props;
 
   const { t } = useTranslation();
-  const { selectedQuestion: activeQuestion, questions = [] } =
-    useQuestionContext();
+  const {
+    selectedQuestion: activeQuestion,
+    questions = [],
+    filteredQuestions,
+  } = useQuestionContext();
 
   const { isAtStart, isAtEnd, goPrevious, goNext, fetchQuestion } =
-    useQuestionNavigator(questions, activeQuestion);
+    useQuestionNavigator(questions, filteredQuestions, activeQuestion);
 
   const { isAdvanced } = useAssessmentMode();
   const { submit, isLoading, approve, isLoadingApprove } = useAnswerSubmit();

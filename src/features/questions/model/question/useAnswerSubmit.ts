@@ -20,6 +20,8 @@ type OptionLike =
   | null
   | undefined;
 
+const MIN_LOADING_MS = 500;
+
 export function useAnswerSubmit() {
   const { isAdvanced } = useAssessmentMode();
 
@@ -29,6 +31,7 @@ export function useAnswerSubmit() {
   const { selectedQuestion, questions = [] } = useQuestionContext();
   const dispatch = useQuestionDispatch();
   const { userInfo } = useAuthContext();
+  const [delayedLoading, setDelayedLoading] = useState(false);
 
   const fetchQuestionIssues = useQuery<IQuestionsModel>({
     service: (args, config) =>
@@ -91,6 +94,9 @@ export function useAnswerSubmit() {
           confidenceLevelId: shouldAttach ? (confidenceLevelId ?? null) : null,
         },
       };
+
+      setDelayedLoading(true);
+      const startedAt = Date.now();
 
       try {
         let server;
@@ -174,7 +180,18 @@ export function useAnswerSubmit() {
         }
       } catch (err) {
         showToast(err as ICustomError);
-      } 
+      } finally {
+        const elapsed = Date.now() - startedAt;
+        const remaining = MIN_LOADING_MS - elapsed;
+
+        if (remaining > 0) {
+          loadingTimeoutRef.current = window.setTimeout(() => {
+            setDelayedLoading(false);
+          }, remaining);
+        } else {
+          setDelayedLoading(false);
+        }
+      }
     },
     [
       assessmentId,
@@ -214,7 +231,7 @@ export function useAnswerSubmit() {
 
   return {
     submit,
-    isLoading: submitAnswer.loading ,
+    isLoading: submitAnswer.loading || delayedLoading,
     isLoadingApprove: approveAnswerQuery.loading,
     approve,
     error: submitAnswer.error,

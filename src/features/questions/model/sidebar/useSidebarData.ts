@@ -1,7 +1,9 @@
+import { setFilteredQuestions, useQuestionDispatch } from "../../context";
 import type { IQuestionInfo, TId } from "@/types";
 import { SidebarData } from "../../types";
-import { useMemo } from "react";
-import { IssueId } from "./issues.registry";
+import { useEffect, useMemo } from "react";
+import { IssueId, isQuestionMatchingAnyActiveFilter } from "./issues.registry";
+import { useQuestionNavigator } from "./useQuestionNavigator";
 
 interface UseSidebarDataProps {
   questions: IQuestionInfo[];
@@ -14,7 +16,9 @@ export function useSidebarData({
   activeFilters,
   selectedIndex,
 }: UseSidebarDataProps): SidebarData {
-  
+  const dispatch = useQuestionDispatch();
+  const navigation = useQuestionNavigator(questions);
+
   const answeredCount = useMemo(() => {
     if (!questions.length) return 0;
     const answeredCount = questions.reduce(
@@ -39,36 +43,13 @@ export function useSidebarData({
 
   const hasActiveFilters = activeFilters.size > 0;
 
-  const filteredQuestions = useMemo(() => {  
-    return questions.map((question) => {
-      const issues = question.issues ?? {};
-  
-      const updatedIssues = {
-        ...issues,
-        isUnanswered: activeFilters.has("unanswered")
-          ? issues.isUnanswered
-          : false,
-        isAnsweredWithLowConfidence: activeFilters.has("lowconf")
-          ? issues.isAnsweredWithLowConfidence
-          : false,
-        isAnsweredWithoutEvidences: activeFilters.has("noevidence")
-          ? issues.isAnsweredWithoutEvidences
-          : false,
-        unresolvedCommentsCount: activeFilters.has("unresolved")
-          ? issues.unresolvedCommentsCount
-          : 0,
-        hasUnapprovedAnswer: activeFilters.has("unapproved")
-          ? issues.hasUnapprovedAnswer
-          : false,
-      };
-  
-      return {
-        ...question,
-        issues: updatedIssues,
-      };
-    });
-  }, [questions, activeFilters, hasActiveFilters]);
-  
+  const filteredQuestions = useMemo(() => {
+    if (!hasActiveFilters) return questions;
+    return questions.filter((question) =>
+      isQuestionMatchingAnyActiveFilter(question, activeFilters),
+    );
+  }, [activeFilters, hasActiveFilters]);
+
   const activeQuestion = questions[selectedIndex];
 
   const filteredQuestionsList = useMemo(() => {
@@ -93,11 +74,24 @@ export function useSidebarData({
         idx: fullIndex,
         index: question.index,
         title: question.title,
-        issues: question.issues,
+        issues: questions[fullIndex].issues,
         active: isActive,
       };
     });
   }, [filteredQuestions, questions, activeQuestion?.id, selectedIndex]);
+
+  useEffect(() => {
+    dispatch(setFilteredQuestions(filteredQuestionsList));
+
+    if (activeFilters.size > 0) {
+      const index = filteredQuestions.findIndex(
+        (res) => res.index == selectedIndex + 1,
+      );
+      if (filteredQuestions?.length > 0 && index === -1) {
+        navigation.selectAt(filteredQuestions[0].index - 1);
+      }
+    }
+  }, [filteredQuestions]);
 
   return {
     answeredCount,

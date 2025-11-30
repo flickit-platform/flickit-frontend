@@ -39,13 +39,7 @@ export function useSidebarUIState(): SidebarUIState {
   const [uiState, dispatchUIState] = useReducer(uiStateReducer, {
     isOpen: true,
     showIssueChips: true,
-    activeFilters: new Set<string>([
-      "unanswered",
-      "lowconf",
-      "noevidence",
-      "unresolved",
-      "unapproved",
-    ]),
+    activeFilters: new Set<string>(),
   });
 
   const userToggledRef = useRef(false);
