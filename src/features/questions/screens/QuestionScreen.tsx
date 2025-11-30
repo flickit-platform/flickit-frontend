@@ -12,7 +12,14 @@ const QuestionScreen = () => {
   const { permissions } = useAssessmentContext();
 
   return (
-    <Box width="100%" display="flex" flexDirection="column" gap={3}>
+    <Box
+      width="100%"
+      display="flex"
+      flexDirection="column"
+      gap={3}
+      position="sticky"
+      top={60}
+    >
       <Body permissions={permissions} />
       {isAdvanced && (
         <Tabs
