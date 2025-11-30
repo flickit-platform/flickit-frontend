@@ -5,6 +5,7 @@ import {
   useQuestionDispatch,
   setSelectedQuestion,
   addAnswerHistory,
+  setSelectedConfidence,
 } from "../../context";
 import { useServiceContext } from "@/providers/service-provider";
 import { useQuery } from "@/hooks/useQuery";
@@ -173,7 +174,6 @@ export function useAnswerSubmit() {
           creationTime: new Date().toISOString(),
         };
         dispatch(setSelectedQuestion(updatedItem));
-
         dispatch(addAnswerHistory(newAnswerHistory));
         if (!isAdvanced) {
           await submitAnswer.query(payload);

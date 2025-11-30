@@ -70,10 +70,8 @@ export function useSidebarData({
         : fullIndex === selectedIndex;
 
       return {
-        key: question.id,
+        ...question,
         idx: fullIndex,
-        index: question.index,
-        title: question.title,
         issues: questions[fullIndex].issues,
         active: isActive,
       };

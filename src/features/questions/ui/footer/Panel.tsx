@@ -396,18 +396,20 @@ const Detail: React.FC<{
       <Grid container spacing={2} sx={{ width: "100%", p: "24px 16px" }}>
         <Grid size={{ xs: 12, md: 6 }}>
           <Box display="flex" alignItems="center" gap={3} flexWrap="wrap">
-            <Text variant="bodyMedium">
-              <Trans i18nKey="questions.selectedOption" />
-            </Text>
-            <Text variant="bodyMedium" sx={{ maxWidth: 400 }}>
-              {item?.answer?.selectedOption ? (
-                <>
+            {item?.answer?.selectedOption ? (
+              <>
+                <Text variant="bodyMedium">
+                  <Trans i18nKey="questions.selectedOption" />
+                </Text>
+                <Text variant="bodyMedium" sx={{ maxWidth: 400 }}>
                   {t("common.option")} {item?.answer?.selectedOption?.index}
-                </>
-              ) : (
+                </Text>
+              </>
+            ) : (
+              <Text variant="bodyMedium">
                 <Trans i18nKey="questions.noOptionSelected" />
-              )}
-            </Text>
+              </Text>
+            )}
           </Box>
         </Grid>
 
@@ -523,7 +525,7 @@ const Detail: React.FC<{
               <Box
                 sx={{
                   width: "100%",
-                  mt:1
+                  mt: 1,
                 }}
               >
                 <RichEditorField

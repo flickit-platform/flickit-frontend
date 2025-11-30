@@ -1,6 +1,10 @@
 import { useServiceContext } from "@/providers/service-provider";
 import { useEffect } from "react";
-import { setQuestions, useQuestionDispatch } from "../../context";
+import {
+  setQuestions,
+  setSelectedConfidence,
+  useQuestionDispatch,
+} from "../../context";
 import { useParams } from "react-router-dom";
 import { IQuestionsModel } from "@/types";
 import { useQuery } from "@/hooks/useQuery";
@@ -26,6 +30,12 @@ export const useQuestions = () => {
     runOnMount: false,
   });
 
+  const confidenceQueryData = useQuery({
+    service: (args, config) =>
+      service.questions.info.getConfidenceLevels(args ?? {}, config),
+    toastError: false,
+  });
+
   useEffect(() => {
     questionsQuery
       .query({ page: 0 })
@@ -38,6 +48,7 @@ export const useQuestions = () => {
       .catch((e) => {
         showToast(e as ICustomError);
       });
+    dispatch(setSelectedConfidence(null));
   }, [questionnaireId]);
 
   return { questionsQuery };

@@ -1,5 +1,10 @@
 import { useState, useEffect, useMemo } from "react";
-import { useQuestionContext } from "../../context";
+import {
+  setSelectedConfidence,
+  setSelectedQuestion,
+  useQuestionContext,
+  useQuestionDispatch,
+} from "../../context";
 import {
   Box,
   Divider,
@@ -35,19 +40,36 @@ import ReportDialog from "./ReportDialog";
 import { IPermissions } from "@/types";
 import QueryData from "@/components/common/QueryData";
 import { LoadingSkeleton } from "@/components/common/loadings/LoadingSkeleton";
+import { useQuery } from "@/hooks/useQuery";
+import { useServiceContext } from "@/providers/service-provider";
+import { useParams } from "react-router-dom";
 
 const Body = (props: Readonly<{ permissions: IPermissions }>) => {
   const { permissions }: { permissions: IPermissions } = props;
+
+  const { assessmentId } = useParams();
+  const { service } = useServiceContext();
+  const dispatch = useQuestionDispatch();
 
   const { t } = useTranslation();
   const {
     selectedQuestion: activeQuestion,
     questions = [],
     filteredQuestions,
+    selectedConfidence,
   } = useQuestionContext();
 
-  const { isAtStart, isAtEnd, goPrevious, goNext, fetchQuestion } =
-    useQuestionNavigator(questions, filteredQuestions, activeQuestion);
+  const { isAtStart, isAtEnd, goPrevious, goNext } = useQuestionNavigator(
+    questions,
+    filteredQuestions,
+    activeQuestion,
+  );
+
+  const fetchQuestion = useQuery({
+    service: (args, config) =>
+      service.assessments.questionnaire.getQuestion(args, config),
+    runOnMount: false,
+  });
 
   const { isAdvanced } = useAssessmentMode();
   const { submit, isLoading, approve, isLoadingApprove } = useAnswerSubmit();
@@ -67,7 +89,9 @@ const Body = (props: Readonly<{ permissions: IPermissions }>) => {
   );
 
   const [selectedOption, setSelectedOption] = useState<any>(initialSelected);
-  const [confidence, setConfidence] = useState<number | null>(prevConfidenceId);
+  const [confidence, setConfidence] = useState<number | null>(
+    prevConfidenceId ?? selectedConfidence,
+  );
   const [notApplicable, setNotApplicable] = useState<boolean>(
     !!answer?.isNotApplicable,
   );
@@ -85,7 +109,7 @@ const Body = (props: Readonly<{ permissions: IPermissions }>) => {
         activeQuestion?.options?.find((o: any) => o?.isSelected) ??
         null,
     );
-    setConfidence(answer?.confidenceLevel?.id ?? null);
+    setConfidence(answer?.confidenceLevel?.id ?? selectedConfidence);
     setNotApplicable(!!answer?.isNotApplicable);
     setShowHint(false);
   }, [
@@ -135,6 +159,8 @@ const Body = (props: Readonly<{ permissions: IPermissions }>) => {
       confidenceLevelId: confidence ?? null,
       submitOnAnswerSelection: false,
     });
+    dispatch(setSelectedConfidence(confidence));
+
     if (autoNext) goNext();
   };
 
@@ -179,10 +205,20 @@ const Body = (props: Readonly<{ permissions: IPermissions }>) => {
     );
   };
 
+  useEffect(() => {
+    if (activeQuestion?.id) {
+      fetchQuestion
+        .query({ assessmentId, questionId: activeQuestion.id })
+        .then((res: any) => {
+          dispatch(setSelectedQuestion(res));
+        });
+    }
+  }, [activeQuestion?.id]);
+
   return (
     <QueryData
       {...fetchQuestion}
-      renderLoading={() => <LoadingSkeleton height={360} />}
+      renderLoading={() => <LoadingSkeleton height={420} />}
       render={() => {
         return (
           <Box
@@ -516,7 +552,9 @@ const Body = (props: Readonly<{ permissions: IPermissions }>) => {
                     <Rating
                       disabled={!permissions?.answerQuestion}
                       value={current}
-                      onChange={(_, v) => setConfidence(v ?? null)}
+                      onChange={(_, v) => {
+                        setConfidence(v ?? null);
+                      }}
                       size="medium"
                       IconContainerComponent={ConfidenceIconContainer}
                     />
@@ -598,7 +636,10 @@ const Body = (props: Readonly<{ permissions: IPermissions }>) => {
                       aria-label={t("common.next")}
                       color="primary"
                       disabled={isAtEnd}
-                      onClick={goNext}
+                      onClick={() => {
+                        goNext();
+                        dispatch(setSelectedConfidence(confidence));
+                      }}
                       sx={{
                         borderRadius: "4px",
                         border: "1px solid",
