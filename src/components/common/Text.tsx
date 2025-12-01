@@ -175,7 +175,6 @@ export const Text = forwardRef<any, Props>(function Text(
             : primaryFontFamily,
         ...clampSx,
         ...sx,
-        wordBreak: "break-word",
       }}
       {...((): Omit<TypographyProps, "title"> => {
         const { title, ...restNoTitle } = rest as any;
