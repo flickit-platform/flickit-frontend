@@ -460,7 +460,11 @@ const Body = (props: Readonly<{ permissions: IPermissions }>) => {
                         sx={{ ...styles.centerV }}
                         gap="6px"
                       >
-                        <Text variant="bodySmall" color="text.primary">
+                        <Text
+                          variant="bodySmall"
+                          color="text.primary"
+                          width="100%"
+                        >
                           {t("questions_temp.notApplicableLabel")}
                         </Text>
                         <Tooltip
