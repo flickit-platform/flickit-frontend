@@ -463,7 +463,7 @@ const Body = (props: Readonly<{ permissions: IPermissions }>) => {
                         <Text
                           variant="bodySmall"
                           color="text.primary"
-                          width="100%"
+                          width="max-content"
                         >
                           {t("questions_temp.notApplicableLabel")}
                         </Text>
