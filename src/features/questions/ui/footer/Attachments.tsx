@@ -538,84 +538,88 @@ export const Attachments: React.FC<{
                 display: "flex",
                 flexDirection: { xs: "column", sm: "row" },
                 gap: 1.5,
-                alignItems: { xs: "stretch", sm: "center" },
+                alignItems: { xs: "stretch", sm: "flex-start" },
                 p: 1,
               }}
             >
-              <Box
-                sx={{
-                  flexBasis: { xs: "100%", sm: "40%" },
-                  minHeight: 32,
-                  border: selectedFile ? "none" : "1px dashed #C7CCD1",
-                  borderRadius: 1,
-                  display: "flex",
-                  alignItems: "center",
-                  cursor: "pointer",
-                  bgcolor: selectedFile
-                    ? "transparent"
-                    : "primary.states.selected",
-                  borderColor: fileError ? "error.main" : "primary.main",
-                }}
-                onClick={() => fileInputRef.current?.click()}
-                onDragOver={handleDragOver}
-                onDrop={handleDrop}
-              >
-                <input
-                  ref={fileInputRef}
-                  type="file"
-                  hidden
-                  accept={ACCEPT_FILE_TYPES}
-                  onChange={handleFileChange}
-                />
+              <Box display="flex" flexDirection="column" gap={0.5}>
                 <Box
                   sx={{
+                    flexBasis: { xs: "100%", sm: "40%" },
+                    minHeight: 32,
+                    border: selectedFile ? "none" : "1px dashed #C7CCD1",
+                    borderRadius: 1,
                     display: "flex",
                     alignItems: "center",
-                    gap: 1,
-                    px: 1,
+                    cursor: "pointer",
+                    bgcolor: selectedFile
+                      ? "transparent"
+                      : "primary.states.selected",
+                    borderColor: fileError ? "error.main" : "primary.main",
                   }}
+                  onClick={() => fileInputRef.current?.click()}
+                  onDragOver={handleDragOver}
+                  onDrop={handleDrop}
                 >
-                  <FileUploadOutlinedIcon
-                    sx={{
-                      fontSize: 18,
-                      color: fileError ? "error.main" : "info.main",
-                    }}
+                  <input
+                    ref={fileInputRef}
+                    type="file"
+                    hidden
+                    accept={ACCEPT_FILE_TYPES}
+                    onChange={handleFileChange}
                   />
-                  {selectedFile && selectedExtension && (
-                    <Chip sx={CHIP_STYLE} label={selectedExtension} />
-                  )}
-                  <Text
-                    variant="bodySmall"
-                    color={fileError ? "error.main" : "primary.main"}
+                  <Box
                     sx={{
-                      textAlign: "center",
-                      flex: 1,
-                      whiteSpace: "nowrap",
-                      overflow: "hidden",
-                      textOverflow: "ellipsis",
-                      pl: 0.5,
+                      display: "flex",
+                      alignItems: "center",
+                      gap: 1,
+                      px: 1,
                     }}
                   >
-                    {selectedFile
-                      ? selectedDisplayName
-                      : t("questions_temp.dropOrSelectFileLabel")}
-                  </Text>
-                  {selectedFile && (
-                    <IconButton
-                      sx={{ p: 0.4 }}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        fileInputRef.current?.click();
+                    <FileUploadOutlinedIcon
+                      sx={{
+                        fontSize: 18,
+                        color: fileError ? "error.main" : "info.main",
+                      }}
+                    />
+                    {selectedFile && selectedExtension && (
+                      <Chip sx={CHIP_STYLE} label={selectedExtension} />
+                    )}
+                    <Text
+                      variant="bodySmall"
+                      color={fileError ? "error.main" : "primary.main"}
+                      sx={{
+                        textAlign: "center",
+                        flex: 1,
+                        whiteSpace: "nowrap",
+                        overflow: "hidden",
+                        textOverflow: "ellipsis",
+                        pl: 0.5,
                       }}
                     >
-                      <RestartAltOutlinedIcon
-                        sx={{ fontSize: 20, color: "info.main" }}
-                      />
-                    </IconButton>
-                  )}
+                      {selectedFile
+                        ? selectedDisplayName
+                        : t("questions_temp.dropOrSelectFileLabel")}
+                    </Text>
+                    {selectedFile && (
+                      <IconButton
+                        sx={{ p: 0.4 }}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          fileInputRef.current?.click();
+                        }}
+                      >
+                        <RestartAltOutlinedIcon
+                          sx={{ fontSize: 20, color: "info.main" }}
+                        />
+                      </IconButton>
+                    )}
+                  </Box>
                 </Box>
+                <Text variant="labelSmall" color="#627384" textAlign="justify">
+                  {t("questions_temp.unsupportedFileFormatMessage")}
+                </Text>
               </Box>
-
               <Box
                 sx={{
                   flexBasis: { xs: "100%", sm: "50%" },
@@ -624,17 +628,21 @@ export const Attachments: React.FC<{
                 }}
               >
                 <TextField
+                  multiline
+                  minRows={3}
                   variant="outlined"
                   size="small"
                   fullWidth
                   value={description}
                   onChange={handleDescriptionChange}
-                  placeholder={t("questions_temp.attachmentDescriptionOptional")}
+                  placeholder={t(
+                    "questions_temp.attachmentDescriptionOptional",
+                  )}
                   sx={(theme) => ({
                     bgcolor: "background.containerLowest",
                     "& .MuiInputBase-root": {
                       ...theme.typography.bodySmall,
-                      height: 32,
+                      alignItems: "flex-start",
                     },
                     "& .MuiInputBase-input": {
                       ...theme.typography.bodySmall,
@@ -648,7 +656,6 @@ export const Attachments: React.FC<{
                     endAdornment: (
                       <InputAdornment position="end">
                         <Text
-                          paddingInlineEnd={1}
                           variant="bodySmall"
                           color={
                             isDescriptionTooLong
