@@ -594,6 +594,8 @@ const Body = (props: Readonly<{ permissions: IPermissions }>) => {
                         value={current}
                         max={confidenceLevels.length}
                         onChange={(_, v) => {
+                          setConfidence(v ?? null);
+
                           const updatedItem = {
                             ...selectedQuestion,
                             answer: {
@@ -607,7 +609,6 @@ const Body = (props: Readonly<{ permissions: IPermissions }>) => {
                           };
 
                           dispatch(setSelectedQuestion(updatedItem));
-                          setConfidence(v ?? null);
                         }}
                         size="medium"
                         IconContainerComponent={ConfidenceIconContainer}
@@ -616,11 +617,12 @@ const Body = (props: Readonly<{ permissions: IPermissions }>) => {
                         }
                       />
 
-                      {current && (
+                      {(current || confidence) && (
                         <Text variant="semiBoldMedium">
                           {
-                            confidenceLevels.find((l) => l.id === current)
-                              ?.title
+                            confidenceLevels.find(
+                              (l) => l.id === current || l.id === confidence,
+                            )?.title
                           }
                         </Text>
                       )}
