@@ -46,6 +46,7 @@ import { useParams } from "react-router-dom";
 
 const Body = (props: Readonly<{ permissions: IPermissions }>) => {
   const { permissions }: { permissions: IPermissions } = props;
+  const { selectedQuestion } = useQuestionContext();
 
   const { assessmentId } = useParams();
   const { service } = useServiceContext();
@@ -128,6 +129,20 @@ const Body = (props: Readonly<{ permissions: IPermissions }>) => {
     if (isAdvanced) {
       setNotApplicable(false);
       setSelectedOption(isAlreadySelected ? null : option);
+
+      const updatedItem = {
+        ...selectedQuestion,
+        answer: {
+          ...selectedQuestion?.answer,
+          selectedOption: {
+            ...selectedQuestion?.answer?.selectedOption,
+            ...option,
+          },
+          confidenceLevel: { id: confidence },
+        },
+      };
+
+      dispatch(setSelectedQuestion(updatedItem));
       return;
     }
 
@@ -577,6 +592,19 @@ const Body = (props: Readonly<{ permissions: IPermissions }>) => {
                       disabled={!permissions?.answerQuestion}
                       value={current}
                       onChange={(_, v) => {
+                        const updatedItem = {
+                          ...selectedQuestion,
+                          answer: {
+                            ...selectedQuestion.answer,
+                            selectedOption: {
+                              ...selectedQuestion.answer.selectedOption,
+                              id: selectedOption?.id,
+                            },
+                            confidenceLevel: { id: v },
+                          },
+                        };
+                        dispatch(setSelectedQuestion(updatedItem));
+
                         setConfidence(v ?? null);
                       }}
                       size="medium"

@@ -34,6 +34,8 @@ import TableCellClearIcon from "@atlaskit/icon/core/table-cell-clear";
 import TableCellMergeIcon from "@atlaskit/icon/core/table-cell-merge";
 import TableCellSplitIcon from "@atlaskit/icon/core/table-cell-split";
 import showToast from "@/utils/toast-error";
+import { CEDialogActions } from "../dialogs/CEDialog";
+import { Box } from "@mui/material";
 
 type Divider = { type: "divider" };
 type MenuItem = IRichEditorMenuItem | Divider;
@@ -132,7 +134,7 @@ export const defaultGetMenuItems = (
         promptBody(closePrompt) {
           return <PromptLinkBody editor={editor} closePrompt={closePrompt} />;
         },
-        title: "common.addLink",
+        title: t("common.addLink"),
       },
       action: editor.isActive("link")
         ? () => editor.chain().focus().unsetLink().run()
@@ -259,7 +261,7 @@ const PromptLinkBody = (props: { editor: Editor; closePrompt: () => void }) => {
   };
 
   return (
-    <>
+    <Box p={1}>
       <DialogContent>
         <TextField
           placeholder="https://example.com"
@@ -267,17 +269,15 @@ const PromptLinkBody = (props: { editor: Editor; closePrompt: () => void }) => {
           size="small"
           inputRef={inputRef}
           defaultValue="https://"
+          dir="ltr"
         />
       </DialogContent>
-      <DialogActions sx={{ py: 2, px: 3 }}>
-        <Button onClick={closePrompt} size="small">
-          <Trans i18nKey="common.cancel" />
-        </Button>
-        <Button onClick={addLink} variant="contained" size="small">
-          <Trans i18nKey="common.addLink" />
-        </Button>
-      </DialogActions>
-    </>
+      <CEDialogActions
+        closeDialog={closePrompt}
+        submitButtonLabel="common.addLink"
+        onSubmit={() => addLink()}
+      />
+    </Box>
   );
 };
 
