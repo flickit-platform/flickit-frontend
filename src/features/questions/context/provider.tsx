@@ -7,6 +7,7 @@ interface IQuestionsProviderProps {
 
 export interface IQuestionsContext {
   questions: any;
+  confidenceLevels: any[];
   selectedQuestion: any;
   questionItems: any;
   filteredQuestions: any;
@@ -18,6 +19,7 @@ export interface IQuestionsContext {
 
 export const QuestionsContext = createContext<IQuestionsContext>({
   questions: [],
+  confidenceLevels: [],
   selectedQuestion: null,
   questionItems: [],
   filteredQuestions: null,
@@ -34,6 +36,7 @@ const QuestionsDispatchContext = createContext<any>({
 export const Provider: FC<IQuestionsProviderProps> = ({ children }) => {
   const [state, dispatch] = useReducer(questionReducer, {
     questions: [],
+    confidenceLevels: [],
     selectedQuestion: null,
     questionItems: [],
     filteredQuestions: null,

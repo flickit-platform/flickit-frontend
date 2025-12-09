@@ -1,5 +1,6 @@
 export enum QUESTION_ACTIONS_TYPE {
   SET_QUESTIONS = "SET_QUESTIONS",
+  SET_CONFIDENCE_LEVELS = "SET_CONFIDENCE_LEVELS",
   SET_SELECTED_QUESTION = "SET_SELECTED_QUESTION",
   SET_FILTERED_QUESTIONS = "SET_FILTERED_QUESTIONS",
   SET_QUESTION_ITEMS = "SET_QUESTION_ITEMS",
@@ -23,6 +24,10 @@ export enum QUESTION_ACTIONS_TYPE {
 }
 export const setQuestions = function (payload: any[]) {
   return { payload, type: QUESTION_ACTIONS_TYPE.SET_QUESTIONS };
+};
+
+export const setConfidenceLevels = function (payload: any[]) {
+  return { payload, type: QUESTION_ACTIONS_TYPE.SET_CONFIDENCE_LEVELS };
 };
 
 export const setQuestionItems = function (payload: any) {
@@ -95,6 +100,7 @@ export const addAnswerHistory = (payload: any) => ({
 
 export const questionActions = {
   setQuestions,
+  setConfidenceLevels,
   setFilteredQuestions,
   setSelectedQuestion,
   setQuestionItems,
