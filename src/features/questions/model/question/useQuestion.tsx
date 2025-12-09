@@ -1,6 +1,7 @@
 import { useServiceContext } from "@/providers/service-provider";
 import { useEffect } from "react";
 import {
+  setConfidenceLevels,
   setQuestions,
   setSelectedConfidence,
   useQuestionDispatch,
@@ -34,6 +35,7 @@ export const useQuestions = () => {
     service: (args, config) =>
       service.questions.info.getConfidenceLevels(args ?? {}, config),
     toastError: false,
+    runOnMount: false,
   });
 
   useEffect(() => {
@@ -49,6 +51,13 @@ export const useQuestions = () => {
         showToast(e as ICustomError);
       });
     dispatch(setSelectedConfidence(null));
+
+    confidenceQueryData.query().then((response) => {
+      if (response) {
+        const { confidenceLevels = [] } = response;
+        dispatch(setConfidenceLevels(confidenceLevels));
+      }
+    });
   }, [questionnaireId]);
 
   return { questionsQuery };

@@ -54,6 +54,12 @@ const questionReducer = (
       };
     }
 
+    case QUESTION_ACTIONS_TYPE.SET_CONFIDENCE_LEVELS:
+      return {
+        ...prevState,
+        confidenceLevels: action.payload,
+      };
+
     // ======================
     // Evidences
     // ======================

@@ -46,7 +46,7 @@ import { useParams } from "react-router-dom";
 
 const Body = (props: Readonly<{ permissions: IPermissions }>) => {
   const { permissions }: { permissions: IPermissions } = props;
-  const { selectedQuestion } = useQuestionContext();
+  const { selectedQuestion, confidenceLevels } = useQuestionContext();
 
   const { assessmentId } = useParams();
   const { service } = useServiceContext();
@@ -588,28 +588,43 @@ const Body = (props: Readonly<{ permissions: IPermissions }>) => {
                       {t("common.confidenceLevel")}
                     </Text>
 
-                    <Rating
-                      disabled={!permissions?.answerQuestion}
-                      value={current}
-                      onChange={(_, v) => {
-                        const updatedItem = {
-                          ...selectedQuestion,
-                          answer: {
-                            ...selectedQuestion.answer,
-                            selectedOption: {
-                              ...selectedQuestion.answer.selectedOption,
-                              id: selectedOption?.id,
+                    <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                      <Rating
+                        disabled={!permissions?.answerQuestion}
+                        value={current}
+                        max={confidenceLevels.length}
+                        onChange={(_, v) => {
+                          const updatedItem = {
+                            ...selectedQuestion,
+                            answer: {
+                              ...selectedQuestion.answer,
+                              selectedOption: {
+                                ...selectedQuestion.answer.selectedOption,
+                                id: selectedOption?.id,
+                              },
+                              confidenceLevel: v ? { id: v } : null,
                             },
-                            confidenceLevel: { id: v },
-                          },
-                        };
-                        dispatch(setSelectedQuestion(updatedItem));
+                          };
 
-                        setConfidence(v ?? null);
-                      }}
-                      size="medium"
-                      IconContainerComponent={ConfidenceIconContainer}
-                    />
+                          dispatch(setSelectedQuestion(updatedItem));
+                          setConfidence(v ?? null);
+                        }}
+                        size="medium"
+                        IconContainerComponent={ConfidenceIconContainer}
+                        getLabelText={(value) =>
+                          confidenceLevels.find((l) => l.id === value)?.title
+                        }
+                      />
+
+                      {current && (
+                        <Text variant="semiBoldMedium">
+                          {
+                            confidenceLevels.find((l) => l.id === current)
+                              ?.title
+                          }
+                        </Text>
+                      )}
+                    </Box>
                   </Box>
                 ) : (
                   <Box
