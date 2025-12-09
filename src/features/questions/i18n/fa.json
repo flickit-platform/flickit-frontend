@@ -55,5 +55,5 @@
   "reportIssuesPrompt": "لطفاً مشکلات مربوط به این پرسش را مشخص کنید:",
 
   "unansweredLabel": "بدون پاسخ",
-  "unsupportedFileFormatMessage": "پیوست‌ها باید فقط از نوع فایل‌های pdf، jpg، png، docx، pptx، rar، zip یا فایل‌های Excel باشند."
+  "unsupportedFileFormatMessage": "فرمت‌های مجاز: pdf, jpg, png, docx, pptx, rar, zip, excel.\n تا حجم حداکثر ۵ مگابایت"
 }
