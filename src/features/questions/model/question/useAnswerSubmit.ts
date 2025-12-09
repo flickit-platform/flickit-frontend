@@ -5,7 +5,6 @@ import {
   useQuestionDispatch,
   setSelectedQuestion,
   addAnswerHistory,
-  setSelectedConfidence,
 } from "../../context";
 import { useServiceContext } from "@/providers/service-provider";
 import { useQuery } from "@/hooks/useQuery";
@@ -158,6 +157,7 @@ export function useAnswerSubmit() {
           },
         };
 
+        console.log(selectedQuestion.answer)
         const newAnswerHistory = {
           createdBy: {
             id: userInfo.id,
