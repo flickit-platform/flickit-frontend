@@ -9,6 +9,7 @@ export interface IQuestionsContext {
   questions: any;
   confidenceLevels: any[];
   selectedQuestion: any;
+  serverQuestion: any;
   questionItems: any;
   filteredQuestions: any;
   evidences: any[];
@@ -21,6 +22,7 @@ export const QuestionsContext = createContext<IQuestionsContext>({
   questions: [],
   confidenceLevels: [],
   selectedQuestion: null,
+  serverQuestion: null,
   questionItems: [],
   filteredQuestions: null,
   evidences: [],
@@ -38,6 +40,7 @@ export const Provider: FC<IQuestionsProviderProps> = ({ children }) => {
     questions: [],
     confidenceLevels: [],
     selectedQuestion: null,
+    serverQuestion: null,
     questionItems: [],
     filteredQuestions: null,
     evidences: [],
