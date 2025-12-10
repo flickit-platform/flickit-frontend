@@ -206,25 +206,28 @@ const Body = (props: Readonly<{ permissions: IPermissions }>) => {
     selectedIdForRender === prevSelectedId &&
     confidence == prevConfidenceId;
 
-    const currentSelectedId = selectedOption?.id ?? null;
-    const currentConfidenceId = confidence ?? null;
-    
-    const hasAnswerChanged =
-      (prevSelectedId !== null || prevConfidenceId !== null) &&
-      (prevSelectedId !== currentSelectedId ||
-        prevConfidenceId !== currentConfidenceId);
-    
-    const hasNewAnswerOnEmptyPrev =
-      prevSelectedId === null &&
-      prevConfidenceId === null &&
-      currentSelectedId !== null &&
-      currentConfidenceId !== null;
-    
-    const shouldShowSubmit =
-      isAdvanced &&
-      permissions.answerQuestion &&
-      (hasAnswerChanged || hasNewAnswerOnEmptyPrev);
-    
+  const currentSelectedId = selectedOption?.id ?? null;
+  const currentConfidenceId = confidence ?? null;
+
+  const hasAnswerChanged =
+    (prevSelectedId !== null || prevConfidenceId !== null) &&
+    (prevSelectedId !== currentSelectedId ||
+      prevConfidenceId !== currentConfidenceId);
+
+  const hasNewAnswerOnEmptyPrev =
+    prevSelectedId === null &&
+    prevConfidenceId === null &&
+    currentSelectedId !== null &&
+    currentConfidenceId !== null;
+
+  const isIncompleteCurrentAnswer =
+    currentSelectedId !== null && currentConfidenceId === null;
+
+  const shouldShowSubmit =
+    isAdvanced &&
+    permissions.answerQuestion &&
+    !isIncompleteCurrentAnswer &&
+    (hasAnswerChanged || hasNewAnswerOnEmptyPrev);
 
   const current = Number(confidence) || 0;
   const prev = Number(prevConfidenceId) || 0;

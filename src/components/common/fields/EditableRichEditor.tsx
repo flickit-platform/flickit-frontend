@@ -19,6 +19,23 @@ import { Text } from "../Text";
 
 const MAX_HEIGHT = 210;
 
+const MAX_TEXT_LENGTH = 50000;
+
+export const toPlainText = (html: string | undefined | null): string => {
+  if (!html) return "";
+  const safeHtml =
+    html.length > MAX_TEXT_LENGTH ? html.slice(0, MAX_TEXT_LENGTH) : html;
+
+  if (typeof document !== "undefined") {
+    const div = document.createElement("div");
+    div.innerHTML = safeHtml;
+    const text = div.textContent || div.innerText || "";
+    return text.replace(/\u00a0/g, " ").trim();
+  }
+
+  return safeHtml.replace(/\u00a0/g, " ").trim();
+};
+
 interface EditableRichEditorProps {
   defaultValue: string;
   editable?: boolean;
@@ -91,10 +108,7 @@ export const EditableRichEditor = (props: EditableRichEditorProps) => {
   const onSubmitInternal = async (data: any, event: any) => {
     try {
       const value = (data?.[fieldName] as string) ?? "";
-      const plainText = value
-        .replace(/<[^>]+>/g, "")
-        .replace(/&nbsp;/g, " ")
-        .trim();
+      const plainText = toPlainText(value);
       const length = plainText.length;
 
       if (typeof charLimit === "number" && length > charLimit) {
@@ -152,10 +166,7 @@ export const EditableRichEditor = (props: EditableRichEditorProps) => {
   const cancelLeaveEditor = () => setShowUnsavedDialog(false);
 
   const rawFieldValue = (formMethods.watch(fieldName) as string) || "";
-  const plainTextValue = rawFieldValue
-    .replace(/<\/?[^>]+(>|$)/g, "")
-    .replace(/&nbsp;/g, " ")
-    .trim();
+  const plainTextValue = toPlainText(rawFieldValue);
   const currentLength = plainTextValue.length;
   const isRtl = languageDetector(rawFieldValue || tempData);
 
