@@ -41,6 +41,9 @@ interface IAdviceListProps {
   postAdviceItem: any;
   errormessage?: any;
 }
+
+const DESCRIPTION_CHAR_LIMIT = 1500;
+
 const AdviceListNewForm = ({
   newAdvice,
   handleInputChange,
@@ -103,6 +106,7 @@ const AdviceListNewForm = ({
     };
     fetchAdviceOptions();
   }, []);
+
   const getIcon = (type: string) => {
     let element;
     if (type === "cost") {
@@ -129,6 +133,32 @@ const AdviceListNewForm = ({
       description: formMethods.getValues()["advice-description"],
     }));
   }, [formMethods.watch("advice-description")]);
+
+  const rawDescription =
+    (formMethods.watch("advice-description") as string) ??
+    newAdvice.description ??
+    "";
+  const plainDescription = rawDescription
+    .replace(/<[^>]+>/g, "")
+    .replace(/&nbsp;/g, " ")
+    .trim();
+  const currentLength = plainDescription.length;
+  const isDescriptionOverLimit = currentLength > DESCRIPTION_CHAR_LIMIT;
+  const isRtlDescription = languageDetector(
+    rawDescription || newAdvice.description || "",
+  );
+
+  const handleSaveWithLimit = () => {
+    if (isDescriptionOverLimit) {
+      const msg = t("common.maxCharacters", {
+        count: DESCRIPTION_CHAR_LIMIT,
+      });
+      showToast(msg as any);
+      return;
+    }
+
+    handleSave();
+  };
 
   return (
     <Box
@@ -199,7 +229,6 @@ const AdviceListNewForm = ({
                 >
                   <FormControl sx={{ width: { xs: "100%" } }}>
                     <InputLabel id="demo-multiple-name-label">
-                      {" "}
                       <Trans i18nKey={`common.${item}`} />
                     </InputLabel>
                     <Select
@@ -233,7 +262,6 @@ const AdviceListNewForm = ({
                           }}
                         >
                           {getIcon(item)}
-
                           <Trans i18nKey={item.toLowerCase()} />
                         </Text>
                       </MenuItem>
@@ -249,27 +277,60 @@ const AdviceListNewForm = ({
               );
             })}
           </Grid>
+
           <FormProviderWithForm formMethods={formMethods}>
             <Box
               width="100%"
               justifyContent="space-between"
               sx={{ ...styles.centerV }}
             >
-              <RichEditorField
-                name="advice-description"
-                placeholder={t("common.description")}
-                disable_label={false}
-                required={true}
-                defaultValue={newAdvice.description}
-                errorMessage={errormessage?.description}
-                type={errormessage?.description ? "error" : ""}
-                showEditorMenu={true}
-                menuProps={{
-                  variant: "inline",
-                }}
-              />
+              <Box sx={{ width: "100%", position: "relative" }}>
+                <RichEditorField
+                  name="advice-description"
+                  placeholder={t("common.description")}
+                  disable_label={false}
+                  required={true}
+                  defaultValue={newAdvice.description}
+                  errorMessage={errormessage?.description}
+                  type={
+                    errormessage?.description || isDescriptionOverLimit
+                      ? "error"
+                      : ""
+                  }
+                  showEditorMenu={true}
+                  menuProps={{
+                    variant: "inline",
+                  }}
+                />
+
+                {/* شمارنده کاراکتر داخل خود ادیتور */}
+                <Box
+                  sx={{
+                    position: "absolute",
+                    bottom: 6,
+                    right: isRtlDescription ? "unset" : 10,
+                    left: isRtlDescription ? 10 : "unset",
+                    px: 0.75,
+                    py: 0.25,
+                    borderRadius: "8px",
+                    pointerEvents: "none",
+                  }}
+                >
+                  <Text
+                    variant="caption"
+                    sx={{
+                      color: isDescriptionOverLimit
+                        ? theme.palette.error.main
+                        : theme.palette.text.secondary,
+                    }}
+                  >
+                    {currentLength}/{DESCRIPTION_CHAR_LIMIT}
+                  </Text>
+                </Box>
+              </Box>
             </Box>
           </FormProviderWithForm>
+
           {errormessage?.description && (
             <FormHelperText error>
               {t(errormessage?.description)}
@@ -296,8 +357,11 @@ const AdviceListNewForm = ({
               mt: { xs: 2, sm: "unset" },
             }}
           >
-            {" "}
-            <IconButton size="small" color="primary" onClick={handleSave}>
+            <IconButton
+              size="small"
+              color="primary"
+              onClick={handleSaveWithLimit}
+            >
               {postAdviceItem.loading ? <CircularProgress /> : <CheckIcon />}
             </IconButton>
             <IconButton size="small" color="secondary" onClick={handleCancel}>

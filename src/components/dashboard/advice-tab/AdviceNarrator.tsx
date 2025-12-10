@@ -58,6 +58,7 @@ export const AssessmentReportNarrator = ({ fetchAdviceNarration }: any) => {
             infoQuery={fetchAdviceNarration.query}
             placeholder={t("advice.writeYourOwnAdvices") ?? ""}
             showEditorMenu={true}
+            charLimit={1500}
           />
           {aboutSection?.creationTime && (
             <Text variant="bodyMedium" mx={1}>

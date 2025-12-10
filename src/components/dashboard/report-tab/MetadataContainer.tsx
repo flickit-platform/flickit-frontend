@@ -21,18 +21,22 @@ const reportFields: {
   name: string;
   title: string;
   placeholder: string;
+  charLimit?: number;
+
 }[] = [
   {
     id: 1,
     name: "intro",
     title: "assessmentReport.introductionReport",
     placeholder: "assessmentReport.writeIntroduction",
+    charLimit: 1000
   },
   {
     id: 2,
     name: "prosAndCons",
     title: "assessmentReport.maturityMapOfAssessedAttributes",
     placeholder: "assessmentReport.writeStrengthAndAreas",
+    charLimit: 1000
   },
   {
     id: 3,
@@ -84,7 +88,7 @@ const ReportTab = () => {
         return (
           <>
             {reportFields.map((field) => {
-              const { id, name, title, placeholder } = field;
+              const { id, name, title, placeholder, charLimit } = field;
               return (
                 <Box
                   key={id}
@@ -136,6 +140,7 @@ const ReportTab = () => {
                         infoQuery={fetchReportFields.query}
                         placeholder={t(placeholder) ?? ""}
                         required={false}
+                        charLimit={charLimit}
                       />
                     </Box>
                   </Box>

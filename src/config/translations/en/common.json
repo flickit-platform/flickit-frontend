@@ -111,6 +111,7 @@
   "mainLanguage": "(Main)",
   "maturityLevel": "Maturity level",
   "maturityLevels": "Maturity levels",
+  "maxCharacters": "A maximum of {{count}} characters is allowed.",
   "measure": "Measure",
   "medium": "Medium",
   "member": "Member",

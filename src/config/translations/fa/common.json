@@ -111,6 +111,7 @@
   "mainLanguage": "(زبان اصلی)",
   "maturityLevel": "سطح بلوغ",
   "maturityLevels": "سطوح بلوغ",
+  "maxCharacters": "حداکثر {{count}} کاراکتر مجاز است.",
   "measure": "سنجه",
   "medium": "متوسط",
   "member": "عضو",

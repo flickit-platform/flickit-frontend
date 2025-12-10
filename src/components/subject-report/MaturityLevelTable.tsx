@@ -297,7 +297,7 @@ const MaturityLevelTable = ({
           }}
         />
       ),
-      question: item.question.index
+      question: item?.question?.index
         ? item.question.index + ". " + item.question.title
         : "-",
       gainedScore: item?.answer?.gainedScore,

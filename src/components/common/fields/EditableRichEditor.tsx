@@ -28,6 +28,7 @@ interface EditableRichEditorProps {
   placeholder?: string;
   required?: boolean;
   showEditorMenu?: boolean;
+  charLimit?: number; 
 }
 
 export const EditableRichEditor = (props: EditableRichEditorProps) => {
@@ -40,6 +41,7 @@ export const EditableRichEditor = (props: EditableRichEditorProps) => {
     placeholder,
     required = true,
     showEditorMenu,
+    charLimit,
   } = props;
 
   const theme = useTheme();
@@ -56,51 +58,81 @@ export const EditableRichEditor = (props: EditableRichEditorProps) => {
   const editorRef = useRef<HTMLDivElement>(null);
 
   const formMethods = useForm({
-    defaultValues: { [fieldName]: defaultValue ?? "" },
+    defaultValues: {
+      [fieldName]: defaultValue ?? "",
+    },
     shouldUnregister: true,
   });
 
   const [tempData, setTempData] = useState(defaultValue ?? "");
 
-  // هر بار defaultValue تغییر کرد، هم state نمایشی و هم فرم را sync کن
   useEffect(() => {
     setTempData(defaultValue ?? "");
-    formMethods.reset({ [fieldName]: defaultValue ?? "" });
+    formMethods.reset({
+      [fieldName]: defaultValue ?? "",
+    });
   }, [defaultValue, fieldName, formMethods]);
 
   const openEditor = () => {
     if (!editable) return;
-    formMethods.reset({ [fieldName]: tempData ?? "" });
+    formMethods.reset({
+      [fieldName]: tempData ?? "",
+    });
     setShowEditor(true);
   };
 
   const handleCancel = () => {
     setShowEditor(false);
-    formMethods.reset({ [fieldName]: defaultValue ?? "" });
+    formMethods.reset({
+      [fieldName]: defaultValue ?? "",
+    });
   };
 
   const onSubmitInternal = async (data: any, event: any) => {
     try {
+      const value = (data?.[fieldName] as string) ?? "";
+      const plainText = value
+        .replace(/<[^>]+>/g, "")
+        .replace(/&nbsp;/g, " ")
+        .trim();
+      const length = plainText.length;
+  
+      if (typeof charLimit === "number" && length > charLimit) {
+        showToast(
+          t("common.maxCharacters", {
+            count: charLimit,
+          }) as any
+        );
+        return;
+      }
+  
       await onSubmit(data, event);
       await infoQuery();
+  
       const newVal = data?.[fieldName] ?? "";
       setTempData(newVal);
       setShowEditor(false);
-      formMethods.reset({ [fieldName]: newVal });
+      formMethods.reset({
+        [fieldName]: newVal,
+      });
     } catch (e) {
       const err = e as ICustomError;
       showToast(err);
     }
   };
-
+  
   useEffect(() => {
+    if (showMore) return;
+  
     if (paragraphRef.current && containerRef.current) {
       const isOverflowing =
         paragraphRef.current.scrollHeight > paragraphRef.current.clientHeight ||
         containerRef.current.scrollHeight > containerRef.current.clientHeight;
+  
       setShowBtn(isOverflowing);
     }
   }, [tempData, showMore]);
+  
 
   const toggleShowMore = () => setShowMore((prev) => !prev);
 
@@ -120,13 +152,21 @@ export const EditableRichEditor = (props: EditableRichEditorProps) => {
 
   const cancelLeaveEditor = () => setShowUnsavedDialog(false);
 
+  const rawFieldValue = (formMethods.watch(fieldName) as string) || "";
+  const plainTextValue = rawFieldValue
+    .replace(/<[^>]+>/g, "")
+    .replace(/&nbsp;/g, " ")
+    .trim();
+  const currentLength = plainTextValue.length;
+  const isRtl = languageDetector(rawFieldValue || tempData);
+
   return (
     <Box
       height="100%"
       width="100%"
       sx={{
         ...styles.centerV,
-        direction: languageDetector(tempData) ? "rtl" : "ltr",
+        direction: isRtl ? "rtl" : "ltr",
       }}
     >
       {editable && showEditor ? (
@@ -144,15 +184,54 @@ export const EditableRichEditor = (props: EditableRichEditorProps) => {
               alignItems: "stretch",
             }}
           >
-            <RichEditorField
-              name={fieldName}
-              label={<Box />}
-              disable_label
-              required={required}
-              defaultValue={defaultValue ?? ""}
-              textAlign="justify"
-              showEditorMenu={showEditorMenu}
-            />
+            <Box
+              sx={{
+                flex: 1,
+                display: "flex",
+                flexDirection: "column",
+                gap: 1,
+              }}
+            >
+              <Box sx={{ position: "relative" }}>
+                <RichEditorField
+                  name={fieldName}
+                  label={<Box />}
+                  disable_label
+                  required={required}
+                  defaultValue={defaultValue ?? ""}
+                  textAlign="justify"
+                  showEditorMenu={showEditorMenu}
+                />
+
+                {typeof charLimit === "number" && (
+                  <Box
+                    sx={{
+                      position: "absolute",
+                      bottom: 6,
+                      right: isRtl ? "unset" : 10,
+                      left: isRtl ? 10 : "unset",
+                      px: 0.75,
+                      py: 0.25,
+                      borderRadius: "8px",
+                      pointerEvents: "none",
+                    }}
+                  >
+                    <Text
+                      variant="caption"
+                      sx={{
+                        color:
+                          currentLength > charLimit
+                            ? theme.palette.error.main
+                            : theme.palette.text.secondary,
+                      }}
+                    >
+                      {currentLength} / {charLimit}
+                    </Text>
+                  </Box>
+                )}
+              </Box>
+            </Box>
+
             <Box
               sx={{
                 ...styles.centerCVH,
@@ -163,9 +242,7 @@ export const EditableRichEditor = (props: EditableRichEditorProps) => {
                 sx={{
                   bgcolor: "primary.main",
                   "&:hover": { bgcolor: "primary.dark" },
-                  borderRadius: languageDetector(tempData)
-                    ? "8px 0 0 0"
-                    : "0 8px 0 0",
+                  borderRadius: isRtl ? "8px 0 0 0" : "0 8px 0 0",
                   height: "49%",
                 }}
                 onClick={formMethods.handleSubmit(onSubmitInternal)}
@@ -178,9 +255,7 @@ export const EditableRichEditor = (props: EditableRichEditorProps) => {
                 sx={{
                   bgcolor: "primary.main",
                   "&:hover": { bgcolor: "primary.dark" },
-                  borderRadius: languageDetector(tempData)
-                    ? "0 0 0 8px"
-                    : "0 0 8px 0",
+                  borderRadius: isRtl ? "0 0 0 8px" : "0 0 8px 0",
                   height: "49%",
                 }}
                 onClick={handleCancel}
@@ -202,8 +277,8 @@ export const EditableRichEditor = (props: EditableRichEditorProps) => {
             sx={{
               ...styles.centerV,
               wordBreak: "break-word",
-              pr: languageDetector(tempData) ? 1 : 5,
-              pl: languageDetector(tempData) ? 5 : 1,
+              pr: isRtl ? 1 : 5,
+              pl: isRtl ? 5 : 1,
               "&:hover": {
                 border: editable ? "1px solid #1976d299" : "unset",
                 borderColor: editable ? "primary.main" : "unset",
@@ -288,13 +363,11 @@ export const EditableRichEditor = (props: EditableRichEditorProps) => {
                 sx={{
                   bgcolor: "primary.main",
                   "&:hover": { bgcolor: "primary.dark" },
-                  borderRadius: languageDetector(tempData)
-                    ? "8px 0 0 8px"
-                    : "0 8px 8px 0",
+                  borderRadius: isRtl ? "8px 0 0 8px" : "0 8px 8px 0",
                   height: "100%",
                   position: "absolute",
-                  right: languageDetector(tempData) ? "unset" : 0,
-                  left: languageDetector(tempData) ? 0 : "unset",
+                  right: isRtl ? "unset" : 0,
+                  left: isRtl ? 0 : "unset",
                   top: 0,
                 }}
                 onClick={openEditor}
