@@ -78,8 +78,12 @@ const Body = (props: Readonly<{ permissions: IPermissions }>) => {
   const answer = activeQuestion?.answer;
   const menu = useMenu();
 
-  const prevSelectedId = answer?.selectedOption?.id ?? null;
-  const prevConfidenceId = answer?.confidenceLevel?.id ?? null;
+  const [prevSelectedId, setPrevSelectedId] = useState<number | null>(
+    selectedQuestion?.answer?.selectedOption?.id ?? null,
+  );
+  const [prevConfidenceId, setPrevConfidenceId] = useState<number | null>(
+    selectedQuestion?.answer?.confidenceLevel?.id ?? null,
+  );
 
   const initialSelected = useMemo(
     () =>
@@ -181,6 +185,13 @@ const Body = (props: Readonly<{ permissions: IPermissions }>) => {
     if (autoNext) goNext();
   };
 
+  const onApprove = async () => {
+    await approve();
+    dispatch(setSelectedConfidence(confidence));
+
+    if (autoNext || !isAdvanced) goNext();
+  };
+
   const selectedIdForRender = isAdvanced
     ? (selectedOption?.id ?? null)
     : (activeQuestion?.answer?.selectedOption?.id ?? null);
@@ -195,6 +206,26 @@ const Body = (props: Readonly<{ permissions: IPermissions }>) => {
     selectedIdForRender === prevSelectedId &&
     confidence == prevConfidenceId;
 
+    const currentSelectedId = selectedOption?.id ?? null;
+    const currentConfidenceId = confidence ?? null;
+    
+    const hasAnswerChanged =
+      (prevSelectedId !== null || prevConfidenceId !== null) &&
+      (prevSelectedId !== currentSelectedId ||
+        prevConfidenceId !== currentConfidenceId);
+    
+    const hasNewAnswerOnEmptyPrev =
+      prevSelectedId === null &&
+      prevConfidenceId === null &&
+      currentSelectedId !== null &&
+      currentConfidenceId !== null;
+    
+    const shouldShowSubmit =
+      isAdvanced &&
+      permissions.answerQuestion &&
+      (hasAnswerChanged || hasNewAnswerOnEmptyPrev);
+    
+
   const current = Number(confidence) || 0;
   const prev = Number(prevConfidenceId) || 0;
 
@@ -205,7 +236,13 @@ const Body = (props: Readonly<{ permissions: IPermissions }>) => {
     return (
       <span {...other}>
         {isFilled ? (
-          <RadioButtonCheckedRounded color="primary" />
+          <RadioButtonCheckedRounded
+            color={
+              hasUnapprovedFromServer && confidence === prevConfidenceId
+                ? "warning"
+                : "primary"
+            }
+          />
         ) : shouldBorder ? (
           <RadioButtonUncheckedRounded
             sx={{
@@ -228,6 +265,8 @@ const Body = (props: Readonly<{ permissions: IPermissions }>) => {
         .query({ assessmentId, questionId: activeQuestion.id })
         .then((res: any) => {
           dispatch(setSelectedQuestion(res));
+          setPrevSelectedId(res?.answer?.selectedOption?.id ?? null);
+          setPrevConfidenceId(res?.answer?.confidenceLevel?.id ?? null);
         });
     }
   }, [activeQuestion?.id]);
@@ -493,16 +532,8 @@ const Body = (props: Readonly<{ permissions: IPermissions }>) => {
                     }
                   />
                 )}
-                <Box
-                  display="flex"
-                  justifyContent={
-                    showUnapprovedBanner && isAdvanced
-                      ? "space-between"
-                      : "flex-end"
-                  }
-                  width="100%"
-                >
-                  {showUnapprovedBanner && (
+                <Box display="flex" justifyContent={"flex-end"} width="100%">
+                  {showUnapprovedBanner ? (
                     <Box
                       display="flex"
                       justifySelf="flex-end"
@@ -527,28 +558,25 @@ const Body = (props: Readonly<{ permissions: IPermissions }>) => {
                           color: "tertiary.main",
                           height: 28,
                         }}
-                        onClick={approve}
+                        onClick={onApprove}
                         loading={isLoadingApprove}
                       >
                         {t("common.approve")}
                       </LoadingButton>
                     </Box>
-                  )}
-
-                  {isAdvanced && (
-                    <LoadingButton
-                      variant="contained"
-                      color="primary"
-                      onClick={onSubmit}
-                      loading={isLoading}
-                      disabled={
-                        (selectedOption && confidence == null) ||
-                        !permissions?.answerQuestion ||
-                        showUnapprovedBanner
-                      }
-                    >
-                      {t("common.submit")}
-                    </LoadingButton>
+                  ) : (
+                    <>
+                      {shouldShowSubmit && (
+                        <LoadingButton
+                          variant="contained"
+                          color="primary"
+                          onClick={onSubmit}
+                          loading={isLoading}
+                        >
+                          {t("common.submit")}
+                        </LoadingButton>
+                      )}
+                    </>
                   )}
                 </Box>
               </Box>

@@ -264,11 +264,7 @@ export const QuestionCard = (props: IQuestionCardProps) => {
                               fontWeight={900}
                               sx={{ borderBottom: "1px solid", mx: 1 }}
                             >
-                              <Trans
-                                i18nKey={toCamelCase(
-                                  `common.${labels[selcetedConfidenceLevel - 1]?.title}`,
-                                )}
-                              />
+                              {labels[selcetedConfidenceLevel - 1]?.title}
                             </Text>
                           </Box>
                         </Box>
@@ -1366,7 +1362,7 @@ const AnswerHistoryItem = (props: any) => {
   return (
     <Grid container spacing={2} px={1}>
       <Grid
-        size={{xs: 12, md: 12, lg: 4, xl: 4}}
+        size={{ xs: 12, md: 12, lg: 4, xl: 4 }}
         sx={{ ...styles.centerV, gap: 2, width: "100%" }}
       >
         <Avatar
@@ -1389,7 +1385,7 @@ const AnswerHistoryItem = (props: any) => {
       ) : (
         <Grid
           size={{ xs: 12, md: 12, lg: 5, xl: 5 }}
-          sx={{display: "flex", flexDirection: "column", gap: 1.5}}
+          sx={{ display: "flex", flexDirection: "column", gap: 1.5 }}
         >
           <Box sx={{ ...styles.centerV }} gap={1.5}>
             <Text variant="titleSmall">
@@ -1435,8 +1431,8 @@ const AnswerHistoryItem = (props: any) => {
         </Grid>
       )}
       <Grid
-        size={{xs: 12, md: 12, lg: 3, xl: 3}}
-        sx={{display: "flex", justifyContent: "flex-end"}}
+        size={{ xs: 12, md: 12, lg: 3, xl: 3 }}
+        sx={{ display: "flex", justifyContent: "flex-end" }}
       >
         <Text variant="bodyMedium">
           {getReadableDate(item.creationTime, "relativeWithDate", true)}
@@ -1743,7 +1739,7 @@ const Evidence = (props: any) => {
                   )}
                 </TabList>
               </TabContext>
-              <Grid size={{xs: 12}} position={"relative"}>
+              <Grid size={{ xs: 12 }} position={"relative"}>
                 <InputFieldUC
                   multiline
                   minRows={3}
@@ -2194,7 +2190,7 @@ const EvidenceDetail = (props: any) => {
                 }}
               >
                 <Grid container display={"flex"} justifyContent={"end"}>
-                  <Grid size={{xs: 12}} position={"relative"}>
+                  <Grid size={{ xs: 12 }} position={"relative"}>
                     <Text
                       color={evidenceBG.borderColor}
                       sx={{

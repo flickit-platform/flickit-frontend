@@ -157,7 +157,6 @@ export function useAnswerSubmit() {
           },
         };
 
-        console.log(selectedQuestion.answer)
         const newAnswerHistory = {
           createdBy: {
             id: userInfo.id,
@@ -208,6 +207,9 @@ export function useAnswerSubmit() {
 
   const approve = useCallback(async () => {
     if (!selectedQuestion?.id) return;
+    setDelayedLoading(true);
+    const startedAt = Date.now();
+
     const res = await approveAnswerQuery.query().then(async () => {
       let resIssues = selectedQuestion.issues;
       if (permissions?.viewDashboard) {
@@ -217,6 +219,18 @@ export function useAnswerSubmit() {
           })
           .then((res) => {
             resIssues = res;
+          })
+          .finally(() => {
+            const elapsed = Date.now() - startedAt;
+            const remaining = MIN_LOADING_MS - elapsed;
+
+            if (remaining > 0) {
+              loadingTimeoutRef.current = window.setTimeout(() => {
+                setDelayedLoading(false);
+              }, remaining);
+            } else {
+              setDelayedLoading(false);
+            }
           });
       }
       const updatedItem = {
@@ -232,7 +246,7 @@ export function useAnswerSubmit() {
   return {
     submit,
     isLoading: submitAnswer.loading || delayedLoading,
-    isLoadingApprove: approveAnswerQuery.loading,
+    isLoadingApprove: approveAnswerQuery.loading || delayedLoading,
     approve,
     error: submitAnswer.error,
   };

@@ -28,7 +28,7 @@ interface EditableRichEditorProps {
   placeholder?: string;
   required?: boolean;
   showEditorMenu?: boolean;
-  charLimit?: number; 
+  charLimit?: number;
 }
 
 export const EditableRichEditor = (props: EditableRichEditorProps) => {
@@ -96,19 +96,19 @@ export const EditableRichEditor = (props: EditableRichEditorProps) => {
         .replace(/&nbsp;/g, " ")
         .trim();
       const length = plainText.length;
-  
+
       if (typeof charLimit === "number" && length > charLimit) {
         showToast(
           t("common.maxCharacters", {
             count: charLimit,
-          }) as any
+          }) as any,
         );
         return;
       }
-  
+
       await onSubmit(data, event);
       await infoQuery();
-  
+
       const newVal = data?.[fieldName] ?? "";
       setTempData(newVal);
       setShowEditor(false);
@@ -120,19 +120,18 @@ export const EditableRichEditor = (props: EditableRichEditorProps) => {
       showToast(err);
     }
   };
-  
+
   useEffect(() => {
     if (showMore) return;
-  
+
     if (paragraphRef.current && containerRef.current) {
       const isOverflowing =
         paragraphRef.current.scrollHeight > paragraphRef.current.clientHeight ||
         containerRef.current.scrollHeight > containerRef.current.clientHeight;
-  
+
       setShowBtn(isOverflowing);
     }
   }, [tempData, showMore]);
-  
 
   const toggleShowMore = () => setShowMore((prev) => !prev);
 
@@ -154,7 +153,7 @@ export const EditableRichEditor = (props: EditableRichEditorProps) => {
 
   const rawFieldValue = (formMethods.watch(fieldName) as string) || "";
   const plainTextValue = rawFieldValue
-    .replace(/<[^>]+>/g, "")
+    .replace(/<\/?[^>]+(>|$)/g, "")
     .replace(/&nbsp;/g, " ")
     .trim();
   const currentLength = plainTextValue.length;
