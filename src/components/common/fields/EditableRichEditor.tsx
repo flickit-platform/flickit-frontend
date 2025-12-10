@@ -92,7 +92,7 @@ export const EditableRichEditor = (props: EditableRichEditorProps) => {
     try {
       const value = (data?.[fieldName] as string) ?? "";
       const plainText = value
-        .replace(/<[^>]+>/g, "")
+        .replace(/<\/?[^>]+(>|$)/g, "")
         .replace(/&nbsp;/g, " ")
         .trim();
       const length = plainText.length;
