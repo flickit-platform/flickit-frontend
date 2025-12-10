@@ -163,6 +163,7 @@ const SubjectOverallInsight = ({
                 title: t("common.insight").toLowerCase(),
               }) ?? ""
             }
+            charLimit={1000}
           />
         )}
       </Box>

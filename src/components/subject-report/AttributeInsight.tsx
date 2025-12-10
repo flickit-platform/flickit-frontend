@@ -167,6 +167,7 @@ const AttributeInsight = ({
                 title: t("common.insight").toLowerCase(),
               }) ?? ""
             }
+            charLimit={1000}
           />
         )}
       </Box>

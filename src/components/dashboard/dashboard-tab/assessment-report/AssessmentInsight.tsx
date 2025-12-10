@@ -146,6 +146,7 @@ export const AssessmentInsight = ({ defaultInsight, reloadQuery }: any) => {
             t("assessmentReport.writeYourInsightsOfTheAssessmentResultsHere") ??
             ""
           }
+          charLimit={1000}
         />
       )}
     </Box>

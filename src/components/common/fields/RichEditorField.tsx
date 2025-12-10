@@ -1,7 +1,8 @@
-import FormControl from "@mui/material/FormControl";
-import FormHelperText from "@mui/material/FormHelperText";
-import InputLabel from "@mui/material/InputLabel";
 import { useState } from "react";
+import FormControl from "@mui/material/FormControl";
+import InputLabel from "@mui/material/InputLabel";
+import Box from "@mui/material/Box";
+import { useTheme } from "@mui/material";
 import { Controller, useFormContext } from "react-hook-form";
 import getFieldError from "@/utils/get-field-error";
 import RichEditor from "../rich-editor/RichEditor";
@@ -56,6 +57,8 @@ const RichEditorFieldBase = (props: any) => {
     menuProps,
     richEditorProps,
   } = props;
+
+  const theme = useTheme();
   const [shrink, setShrink] = useState(() => Boolean(defaultValue));
   const [focus, setFocus] = useState(false);
   const [hover, setHover] = useState(false);
@@ -65,6 +68,9 @@ const RichEditorFieldBase = (props: any) => {
   } = useFormContext();
   const { hasError, errorMessage } = getFieldError(errors, name);
   const show_label = !disable_label;
+
+  const safeDefaultValue = (defaultValue || "") as string;
+
   return (
     <FormControl
       fullWidth
@@ -110,6 +116,7 @@ const RichEditorFieldBase = (props: any) => {
           {label}
         </InputLabel>
       )}
+
       <RichEditor
         isEditable={true}
         className={
@@ -117,9 +124,9 @@ const RichEditorFieldBase = (props: any) => {
           (focus ? " Mui-focused" : "") +
           (hasError ? " Mui-error" : "")
         }
-        defaultValue={defaultValue}
+        defaultValue={safeDefaultValue}
         field={field}
-        checkLang={firstCharDetector(defaultValue.replace(/<[^<>]+>/g, ""))}
+        checkLang={firstCharDetector(safeDefaultValue.replace(/<[^<>]+>/g, ""))}
         placeholder={placeholder}
         type={type}
         showEditorMenu={showEditorMenu || hover}
@@ -127,9 +134,23 @@ const RichEditorFieldBase = (props: any) => {
         menuProps={menuProps}
         richEditorProps={richEditorProps}
       />
-      <FormHelperText style={{ marginTop: 0, marginLeft: 0, marginRight: 0 }}>
-        {errorMessage as string}
-      </FormHelperText>
+
+      {hasError && errorMessage && (
+        <Box
+          sx={{
+            position: "absolute",
+            bottom: 4,
+            left: 12,
+            right: 12,
+            pointerEvents: "none",
+            fontSize: "0.75rem",
+            lineHeight: 1.4,
+            color: theme.palette.error.main,
+          }}
+        >
+          {errorMessage as string}
+        </Box>
+      )}
     </FormControl>
   );
 };

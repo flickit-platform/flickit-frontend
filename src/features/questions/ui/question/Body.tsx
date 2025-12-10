@@ -134,10 +134,12 @@ const Body = (props: Readonly<{ permissions: IPermissions }>) => {
         ...selectedQuestion,
         answer: {
           ...selectedQuestion?.answer,
-          selectedOption: {
-            ...selectedQuestion?.answer?.selectedOption,
-            ...option,
-          },
+          selectedOption: isAlreadySelected
+            ? null
+            : {
+                ...selectedQuestion?.answer?.selectedOption,
+                ...option,
+              },
           confidenceLevel: { id: confidence },
         },
       };
