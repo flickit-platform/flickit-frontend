@@ -21,7 +21,7 @@ const MAX_HEIGHT = 210;
 
 const MAX_TEXT_LENGTH = 50000;
 
-const toPlainText = (html: string | undefined | null): string => {
+export const toPlainText = (html: string | undefined | null): string => {
   if (!html) return "";
   const safeHtml =
     html.length > MAX_TEXT_LENGTH ? html.slice(0, MAX_TEXT_LENGTH) : html;

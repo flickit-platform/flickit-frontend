@@ -30,6 +30,7 @@ import RichEditorField from "@/components/common/fields/RichEditorField";
 import showToast from "@/utils/toast-error";
 import { useTheme } from "@mui/material";
 import { Text } from "@/components/common/Text";
+import { toPlainText } from "@/components/common/fields/EditableRichEditor";
 
 interface IAdviceListProps {
   newAdvice: any;
@@ -138,10 +139,7 @@ const AdviceListNewForm = ({
     (formMethods.watch("advice-description") as string) ??
     newAdvice.description ??
     "";
-  const plainDescription = rawDescription
-    .replace(/<[^>]+>/g, "")
-    .replace(/&nbsp;/g, " ")
-    .trim();
+  const plainDescription = toPlainText(rawDescription)
   const currentLength = plainDescription.length;
   const isDescriptionOverLimit = currentLength > DESCRIPTION_CHAR_LIMIT;
   const isRtlDescription = languageDetector(
