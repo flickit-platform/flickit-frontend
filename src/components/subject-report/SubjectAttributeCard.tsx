@@ -47,6 +47,7 @@ const SubjectAttributeCard = (props: any) => {
     progress,
     insight,
     reloadQuery,
+    weight
   } = props;
   const dispatch = useQuestionDispatch();
   const { permissions } = useAssessmentContext();
@@ -265,7 +266,7 @@ const SubjectAttributeCard = (props: any) => {
                   marginX={2}
                 >
                   {"("}
-                  <Trans i18nKey="common.weight" />: {maturityLevel?.value}
+                  <Trans i18nKey="common.weight" />: {weight}
                   {")"}
                 </Text>
               </Title>

@@ -21,6 +21,7 @@ interface IAssessmentSubjectCardProps extends ISubjectInfo {
   attributes?: any;
   maturityLevelCount?: number;
   reloadQuery?: any;
+  weight?: number
 }
 
 export const AssessmentSubjectAccordion = (
@@ -33,6 +34,7 @@ export const AssessmentSubjectAccordion = (
     confidenceValue,
     description = "",
     reloadQuery,
+    weight,
   } = props;
 
   const [expanded, setExpanded] = useState<boolean>(false);
@@ -80,7 +82,7 @@ export const AssessmentSubjectAccordion = (
           alignItems="center"
           sx={{ textDecoration: "none", color: "inherit", width: "100%" }}
         >
-          <Grid size={{xs:12, md: 3, sm: 12}}>
+          <Grid size={{ xs: 12, md: 3, sm: 12 }}>
             <Box sx={{ ...styles.centerCVH }} gap={1}>
               <Box
                 sx={{
@@ -103,15 +105,15 @@ export const AssessmentSubjectAccordion = (
               </Box>
               <Text variant="bodyMedium">
                 {"("}
-                <Trans i18nKey="common.weight" />: {maturityLevel?.value}
+                <Trans i18nKey="common.weight" />: {weight}
                 {")"}
               </Text>
             </Box>
           </Grid>
-          <Grid size={{xs: 12, md: 0.5, sm: 12}}></Grid>
+          <Grid size={{ xs: 12, md: 0.5, sm: 12 }}></Grid>
 
           {!isMobileScreen && (
-            <Grid size={{xs:12, md: 5, sm: 12}}>
+            <Grid size={{ xs: 12, md: 5, sm: 12 }}>
               <Box
                 sx={{
                   maxHeight: "100px",
@@ -137,9 +139,9 @@ export const AssessmentSubjectAccordion = (
               </Box>
             </Grid>
           )}
-          <Grid size={{xs: 12, md: 1, sm: 12}}></Grid>
+          <Grid size={{ xs: 12, md: 1, sm: 12 }}></Grid>
           {isMobileScreen && (
-            <Grid size={{xs: 12, md: 2, sm: 12}} py={1}>
+            <Grid size={{ xs: 12, md: 2, sm: 12 }} py={1}>
               <FlatGaugeComponent
                 levels={maturityLevelCount}
                 levelValue={maturityLevel?.value ?? 1}
@@ -152,7 +154,7 @@ export const AssessmentSubjectAccordion = (
               />
             </Grid>
           )}
-          <Grid size={{xs: 12, sm: 12, md: 2}}>
+          <Grid size={{ xs: 12, sm: 12, md: 2 }}>
             <Box
               sx={{
                 ...styles.centerCVH,
@@ -184,7 +186,7 @@ export const AssessmentSubjectAccordion = (
             </Box>
           </Grid>
           {!isMobileScreen && (
-            <Grid size={{xs: 0.4}}>
+            <Grid size={{ xs: 0.4 }}>
               <FlatGaugeComponent
                 levels={maturityLevelCount}
                 levelValue={maturityLevel?.value ?? 1}
