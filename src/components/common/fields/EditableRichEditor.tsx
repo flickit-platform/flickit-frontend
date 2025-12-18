@@ -21,6 +21,14 @@ const MAX_HEIGHT = 210;
 
 const MAX_TEXT_LENGTH = 50000;
 
+function isAnyMuiModalOpen() {
+  return Boolean(
+    document.querySelector(
+      '.MuiModal-root[aria-hidden="false"], .MuiDialog-root',
+    ),
+  );
+}
+
 export const toPlainText = (html: string | undefined | null): string => {
   if (!html) return "";
   const safeHtml =
@@ -151,6 +159,8 @@ export const EditableRichEditor = (props: EditableRichEditorProps) => {
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
+      if (isAnyMuiModalOpen()) return;
+
       if (
         showEditor &&
         editorRef.current &&

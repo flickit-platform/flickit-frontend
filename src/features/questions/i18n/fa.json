@@ -55,5 +55,5 @@
   "reportIssuesPrompt": "لطفاً مشکلات مربوط به این پرسش را مشخص کنید:",
 
   "unansweredLabel": "بدون پاسخ",
-  "unsupportedFileFormatMessage": "فرمت‌های مجاز: pdf, jpg, png, docx, pptx, rar, zip, excel.\n تا حجم حداکثر ۵ مگابایت"
+  "unsupportedFileFormatMessage": "فرمت‌های مجاز: pdf, jpg, png, docx, pptx, rar, zip, excel, mp4. حداکثر حجم مجاز: ۵ مگابایت"
 }
