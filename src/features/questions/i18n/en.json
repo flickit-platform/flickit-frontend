@@ -54,5 +54,5 @@
   "reportIssuesPrompt": "Please specify any issues related to this question:",
 
   "unansweredLabel": "Unanswered",
-  "unsupportedFileFormatMessage": "Allowed file types: PDF, JPG, PNG, DOCX, PPTX, RAR, ZIP, Excel.\n Up to 5MB."
+  "unsupportedFileFormatMessage": "Allowed file types: pdf, jpg, png, docx, pptx, rar, zip, excel. Up to 5MB."
 }
