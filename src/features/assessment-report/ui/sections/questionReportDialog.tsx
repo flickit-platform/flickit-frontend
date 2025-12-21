@@ -32,7 +32,6 @@ interface IInnerAccordion {
   expanded: boolean;
   onChange: any;
   lng: string;
-  measureId: TId;
   assessmentId: TId;
 }
 
@@ -72,7 +71,6 @@ const InnerAccordion = ({
   expanded,
   onChange,
   lng,
-  measureId,
   assessmentId,
 }: IInnerAccordion) => (
   <Accordion
@@ -186,7 +184,7 @@ const InnerAccordion = ({
 
             <Text
               component={Link}
-              to={`./../../1/${assessmentId}/questionnaires/${measureId}/${item?.question?.index}`}
+              to={`./../../1/${assessmentId}/questionnaires/${item?.questionnaire?.id}/${item?.question?.index}`}
               target="_blank"
               variant="bodyMedium"
               color="primary.main"
@@ -272,7 +270,6 @@ const QuestionReportDialog = (props: IQuestionReportDialog) => {
               expanded={expanded === "low"}
               onChange={handleAccordionChange("low")}
               lng={lng}
-              measureId={measureId}
               assessmentId={assessmentId}
             />
           )}
@@ -283,7 +280,6 @@ const QuestionReportDialog = (props: IQuestionReportDialog) => {
               expanded={expanded === "high"}
               onChange={handleAccordionChange("high")}
               lng={lng}
-              measureId={measureId}
               assessmentId={assessmentId}
             />
           )}
