@@ -46,7 +46,7 @@ export function useKitAside({
 
   const fetchAssessmentKitDownloadUrlQuery = useQuery({
     service: (args, config) =>
-      service.assessmentKit.dsl.getDownloadUrl(
+      service.assessmentKit.dsl.getExportUrl(
         args ?? { assessmentKitId },
         config,
       ),
@@ -64,17 +64,25 @@ export function useKitAside({
 
   const handleDownloadDSL = useCallback(async () => {
     try {
-      const response: any = await fetchAssessmentKitDownloadUrlQuery.query();
-      const fileUrl = response.url;
+      const res: any = await fetchAssessmentKitDownloadUrlQuery.query();
+      const blob: Blob = res;
+
+      const cd = (res.headers?.["content-disposition"] as string) ?? "";
+      const m = cd.match(/filename\*?=(?:UTF-8'')?["']?([^"';]+)["']?/i);
+      const fileName =
+        decodeURIComponent(m?.[1] ?? "") ||
+        `${assessmentKitTitle ?? "download"}.zip`;
+
+      const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
-      a.href = fileUrl;
-      a.download = `${assessmentKitTitle ?? "download"}.zip`;
+      a.href = url;
+      a.download = fileName;
       document.body.appendChild(a);
       a.click();
       a.remove();
+      setTimeout(() => URL.revokeObjectURL(url), 1000);
     } catch (e) {
-      const err = e as ICustomError;
-      showToast(err);
+      showToast(e as ICustomError);
     }
   }, [assessmentKitTitle, fetchAssessmentKitDownloadUrlQuery]);
 
@@ -150,11 +158,7 @@ export function useKitAside({
       },
       right: {
         title: t("common.liked"),
-        value: (
-          <>
-            {stats.likes ?? "0"}
-          </>
-        ),
+        value: <>{stats.likes ?? "0"}</>,
         icon: (
           <FavoriteBorderOutlined
             sx={{ color: theme.palette.primary.dark, width: 32, height: 32 }}
