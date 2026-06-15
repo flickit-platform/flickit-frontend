@@ -117,11 +117,7 @@ const Body = (props: Readonly<{ permissions: IPermissions }>) => {
     setConfidence(answer?.confidenceLevel?.id ?? selectedConfidence);
     setNotApplicable(!!answer?.isNotApplicable);
     setShowHint(false);
-  }, [
-    activeQuestion?.id,
-    answer?.selectedOption,
-    answer?.isNotApplicable,
-  ]);
+  }, [activeQuestion?.id, answer?.selectedOption, answer?.isNotApplicable]);
 
   const onSelectOption = async (option: any) => {
     const isAlreadySelected = isAdvanced
@@ -143,6 +139,7 @@ const Body = (props: Readonly<{ permissions: IPermissions }>) => {
                 ...option,
               },
           confidenceLevel: { id: confidence },
+          isNotApplicable: notApplicable,
         },
       };
 
@@ -153,7 +150,7 @@ const Body = (props: Readonly<{ permissions: IPermissions }>) => {
     if (isAlreadySelected) {
       await submit({
         value: null,
-        notApplicable: false,
+        notApplicable: notApplicable,
         confidenceLevelId: null,
         submitOnAnswerSelection: true,
       });
@@ -164,7 +161,7 @@ const Body = (props: Readonly<{ permissions: IPermissions }>) => {
 
     await submit({
       value: option,
-      notApplicable: false,
+      notApplicable: notApplicable,
       confidenceLevelId: 3,
       submitOnAnswerSelection: true,
     });
@@ -507,6 +504,17 @@ const Body = (props: Readonly<{ permissions: IPermissions }>) => {
                         checked={notApplicable}
                         onChange={(_, checked) => {
                           setNotApplicable(checked);
+                          if (!isAdvanced && checked) {
+                            submit({
+                              value: null,
+                              notApplicable: checked,
+                              confidenceLevelId: 3,
+                              submitOnAnswerSelection: true,
+                            }).then(() => {
+                              goNext();
+                            });
+                          }
+
                           if (checked) setSelectedOption(null);
                         }}
                       />
